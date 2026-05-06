@@ -1,0 +1,110 @@
+{
+  "id": "4p042-per-mby-unit-2",
+  "name": "PER-MBY - Unit 2",
+  "filename": "slots-seeded:4P042:2",
+  "pdNumber": "4P042",
+  "unitNumber": "2",
+  "revision": "",
+  "lwcType": "ONSKID",
+  "color": "",
+  "unitType": "UNSPECIFIED",
+  "unitTypes": [
+    "UNSPECIFIED"
+  ],
+  "createdAt": "2026-05-06T18:39:30.532Z",
+  "dueDate": "",
+  "planConlayDate": "2026-06-19T07:00:00.000Z",
+  "planConassyDate": "2026-06-30T07:00:00.000Z",
+  "sheets": [],
+  "assignments": {},
+  "lifecycleGates": [
+    {
+      "gateId": "LEGALS_READY",
+      "status": "READY",
+      "notes": "Seeded from Schedule.csv legals milestone."
+    },
+    {
+      "gateId": "BRANDLIST_COMPLETE",
+      "status": "READY",
+      "notes": "Seeded from Schedule.csv brand-list milestone."
+    },
+    {
+      "gateId": "BRANDING_READY",
+      "status": "READY",
+      "targetDate": "2026-06-17T07:00:00.000Z",
+      "notes": "Seeded from Schedule.csv branding milestone."
+    },
+    {
+      "gateId": "KITTING_READY",
+      "status": "READY",
+      "targetDate": "2026-06-18T07:00:00.000Z",
+      "notes": "Seeded from Schedule.csv kitting milestone."
+    }
+  ],
+  "aggregates": {
+    "totalAssignments": 0,
+    "completedAssignments": 0,
+    "inProgressAssignments": 0,
+    "blockedAssignments": 0,
+    "totalEstimatedMinutes": 0,
+    "totalRemainingMinutes": 0,
+    "totalActualMinutes": 0,
+    "overallProgress": 0,
+    "highestPriority": "low",
+    "priorityCounts": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "stageCounts": {}
+  },
+  "panducts": 0,
+  "rails": 0,
+  "status": "legals_pending",
+  "estimatedTotalHours": null,
+  "estimatedPanelCount": null,
+  "estimatedSampleCount": null,
+  "daysLate": null,
+  "deptTargetDate": "",
+  "shipDate": "",
+  "activeWorkbookRevisionId": null,
+  "activeLayoutRevisionId": null,
+  "scheduleMetadata": {
+    "source": "Schedule.csv",
+    "slotKey": "4P042::PER-MBY",
+    "pdNumber": "4P042",
+    "projectName": "PER-MBY",
+    "displayName": "PER-MBY - Unit 2",
+    "unitNumber": "2",
+    "lwcType": "ONSKID",
+    "dueDate": "",
+    "dueMonth": null,
+    "planConlayDate": "2026-06-19T07:00:00.000Z",
+    "planConassyDate": "2026-06-30T07:00:00.000Z",
+    "shipDate": "",
+    "deptTargetDate": "",
+    "daysLate": null,
+    "estimatedTotalHours": null,
+    "estimatedPanelCount": null,
+    "estimatedSampleCount": null,
+    "unitType": "UNSPECIFIED",
+    "projectType": "",
+    "controlsSlot": "",
+    "pmName": "",
+    "cmpName": "",
+    "coordinatorName": "",
+    "needDate": "",
+    "milestones": {
+      "legals": "",
+      "brandList": "",
+      "brandWire": "2026-06-17T07:00:00.000Z",
+      "projKitted": "2026-06-18T07:00:00.000Z",
+      "conlay": "2026-06-19T07:00:00.000Z",
+      "conassy": "2026-06-30T07:00:00.000Z",
+      "pwrchk": "2026-07-09T07:00:00.000Z",
+      "d380FinalBiq": "2026-07-10T07:00:00.000Z",
+      "dept380Target": ""
+    }
+  }
+}

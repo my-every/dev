@@ -1,0 +1,236 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-06T07:39:25.217Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb71-b-door-ctrl",
+  "sheetName": "JB71 B DOOR CTRL",
+  "totalRows": 7,
+  "header": {
+    "locationTitle": "JB71 B DOOR CTRL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4L841",
+    "projectName": "MER-PGM",
+    "revision": "A.1",
+    "controlsDE": "Poovarasan M"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB71 B,DOOR CTRL",
+    "normalizedSheetName": "jb71-b-door-ctrl",
+    "bundleNames": [
+      "AT1100",
+      "KA0461:16 / KA0352A1",
+      "KA0461",
+      "KA - AT"
+    ],
+    "bundleDisplays": [
+      "AT1100 - B - PNL CTRL1",
+      "KA0461:16 / KA0352A1 - B - PNL GEN CTRL",
+      "KA0461 - B - PNL GEN CTRL",
+      "KA0461:16 / KA0352A1 - C - PNL GPP FULL",
+      "KA - AT - C - PNL GPP FULL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT1100",
+          "toLocation": "JB71 B,PNL CTRL1",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "AT1100:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0070:12",
+              "toTerminal": "12",
+              "toLocation": "JB71 B,PNL CTRL1",
+              "bundleName": "AT1100",
+              "bundleDisplay": "AT1100 - B - PNL CTRL1",
+              "devicePrefix": "AT",
+              "isNegative": true,
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "AT1100:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1100",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU1100:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB71 B,PNL CTRL1",
+              "bundleName": "AT1100",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "KA",
+      "bundles": [
+        {
+          "bundleName": "KA0461:16 / KA0352A1",
+          "toLocation": "JB71 B,PNL GEN CTRL",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 16,
+              "fromDeviceId": "KA0461:16",
+              "fromTerminal": "16",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA0352A1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0123:5",
+              "toTerminal": "5",
+              "toLocation": "JB71 B,PNL GEN CTRL",
+              "bundleName": "KA0461:16 / KA0352A1",
+              "bundleDisplay": "KA0461:16 / KA0352A1 - B - PNL GEN CTRL",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "KA0461",
+          "toLocation": "JB71 B,PNL GEN CTRL",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "KA0461:14",
+              "fromTerminal": "14",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0126",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT4001:10",
+              "toTerminal": "10",
+              "toLocation": "JB71 B,PNL GEN CTRL",
+              "bundleName": "KA0461",
+              "bundleDisplay": "KA0461 - B - PNL GEN CTRL",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-7",
+              "rowIndex": 17,
+              "fromDeviceId": "KA0461:B",
+              "fromTerminal": "B",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0120:10",
+              "toTerminal": "10",
+              "toLocation": "JB71 B,PNL GEN CTRL",
+              "bundleName": "KA0461",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "KA0461:16 / KA0352A1",
+          "toLocation": "JB71 C,PNL GPP FULL",
+          "rows": [
+            {
+              "rowId": "row-8",
+              "rowIndex": 18,
+              "fromDeviceId": "KA0461:16",
+              "fromTerminal": "16",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA0352A1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AT4000:34",
+              "toTerminal": "34",
+              "toLocation": "JB71 C,PNL GPP FULL",
+              "bundleName": "KA0461:16 / KA0352A1",
+              "bundleDisplay": "KA0461:16 / KA0352A1 - C - PNL GPP FULL",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "KA - AT",
+          "toLocation": "JB71 C,PNL GPP FULL",
+          "rows": [
+            {
+              "rowId": "row-9",
+              "rowIndex": 19,
+              "fromDeviceId": "KA0461:G",
+              "fromTerminal": "G",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA0461G",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "AT4000:32",
+              "toTerminal": "32",
+              "toLocation": "JB71 C,PNL GPP FULL",
+              "bundleName": "KA - AT",
+              "bundleDisplay": "KA - AT - C - PNL GPP FULL",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "2a5a71e41fdb1b59104dcde5bf46663727320b55b9bdfdab6574d140910fc3a3"
+}

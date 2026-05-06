@@ -1,0 +1,110 @@
+{
+  "id": "4h801-tag-i-unit-3",
+  "name": "TAG-I - Unit 3",
+  "filename": "slots-seeded:4H801:3",
+  "pdNumber": "4H801",
+  "unitNumber": "3",
+  "revision": "",
+  "lwcType": "ONSKID",
+  "color": "",
+  "unitType": "UNSPECIFIED",
+  "unitTypes": [
+    "UNSPECIFIED"
+  ],
+  "createdAt": "2026-05-06T18:39:30.805Z",
+  "dueDate": "",
+  "planConlayDate": "2027-03-02T08:00:00.000Z",
+  "planConassyDate": "2027-03-11T08:00:00.000Z",
+  "sheets": [],
+  "assignments": {},
+  "lifecycleGates": [
+    {
+      "gateId": "LEGALS_READY",
+      "status": "READY",
+      "notes": "Seeded from Schedule.csv legals milestone."
+    },
+    {
+      "gateId": "BRANDLIST_COMPLETE",
+      "status": "READY",
+      "notes": "Seeded from Schedule.csv brand-list milestone."
+    },
+    {
+      "gateId": "BRANDING_READY",
+      "status": "READY",
+      "targetDate": "2027-02-26T08:00:00.000Z",
+      "notes": "Seeded from Schedule.csv branding milestone."
+    },
+    {
+      "gateId": "KITTING_READY",
+      "status": "READY",
+      "targetDate": "2027-02-27T08:00:00.000Z",
+      "notes": "Seeded from Schedule.csv kitting milestone."
+    }
+  ],
+  "aggregates": {
+    "totalAssignments": 0,
+    "completedAssignments": 0,
+    "inProgressAssignments": 0,
+    "blockedAssignments": 0,
+    "totalEstimatedMinutes": 0,
+    "totalRemainingMinutes": 0,
+    "totalActualMinutes": 0,
+    "overallProgress": 0,
+    "highestPriority": "low",
+    "priorityCounts": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "stageCounts": {}
+  },
+  "panducts": 0,
+  "rails": 0,
+  "status": "legals_pending",
+  "estimatedTotalHours": null,
+  "estimatedPanelCount": null,
+  "estimatedSampleCount": null,
+  "daysLate": null,
+  "deptTargetDate": "",
+  "shipDate": "",
+  "activeWorkbookRevisionId": null,
+  "activeLayoutRevisionId": null,
+  "scheduleMetadata": {
+    "source": "Schedule.csv",
+    "slotKey": "4H801::TAG-I",
+    "pdNumber": "4H801",
+    "projectName": "TAG-I",
+    "displayName": "TAG-I - Unit 3",
+    "unitNumber": "3",
+    "lwcType": "ONSKID",
+    "dueDate": "",
+    "dueMonth": null,
+    "planConlayDate": "2027-03-02T08:00:00.000Z",
+    "planConassyDate": "2027-03-11T08:00:00.000Z",
+    "shipDate": "",
+    "deptTargetDate": "",
+    "daysLate": null,
+    "estimatedTotalHours": null,
+    "estimatedPanelCount": null,
+    "estimatedSampleCount": null,
+    "unitType": "UNSPECIFIED",
+    "projectType": "",
+    "controlsSlot": "",
+    "pmName": "",
+    "cmpName": "",
+    "coordinatorName": "",
+    "needDate": "",
+    "milestones": {
+      "legals": "",
+      "brandList": "",
+      "brandWire": "2027-02-26T08:00:00.000Z",
+      "projKitted": "2027-02-27T08:00:00.000Z",
+      "conlay": "2027-03-02T08:00:00.000Z",
+      "conassy": "2027-03-11T08:00:00.000Z",
+      "pwrchk": "2027-03-19T07:00:00.000Z",
+      "d380FinalBiq": "2027-03-22T07:00:00.000Z",
+      "dept380Target": ""
+    }
+  }
+}
