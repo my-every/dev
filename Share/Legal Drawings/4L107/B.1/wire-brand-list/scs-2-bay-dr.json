@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:15:08.887Z",
+  "mode": "branding-export",
+  "sheetSlug": "scs-2-bay-dr",
+  "sheetName": "SCS 2 BAY DR",
+  "totalRows": 3,
+  "header": {
+    "locationTitle": "SCS 2 BAY DR",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4L107",
+    "projectName": "4L107",
+    "revision": "B.1",
+    "controlsDE": "ALEX. JEZEQUEL",
+    "controlsME": "HECTOR, MEDRANO"
+  },
+  "importHints": {
+    "canonicalSheetName": "SCS 2-BAY DR",
+    "normalizedSheetName": "scs-2-bay-dr",
+    "bundleNames": [
+      "EL - ZS",
+      "EL - XT",
+      "ZS - XT"
+    ],
+    "bundleDisplays": [
+      "EL - ZS",
+      "EL - XT - SCS MONITOR MEDIA",
+      "ZS - XT - SCS MONITOR MEDIA"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "EL",
+      "bundles": [
+        {
+          "bundleName": "EL - ZS",
+          "toLocation": "SCS 2-BAY DR",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "EL0275:B1",
+              "fromTerminal": "B1",
+              "fromTerminalOrder": null,
+              "wireNo": "ZS0275",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "ZS0275:2",
+              "toTerminal": "2",
+              "toLocation": "SCS 2-BAY DR",
+              "bundleName": "EL - ZS",
+              "bundleDisplay": "EL - ZS",
+              "devicePrefix": "EL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "EL",
+      "bundles": [
+        {
+          "bundleName": "EL - XT",
+          "toLocation": "SCS MONITOR MEDIA",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "EL0275:W1",
+              "fromTerminal": "W1",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0275:2",
+              "toTerminal": "2",
+              "toLocation": "SCS MONITOR MEDIA",
+              "bundleName": "EL - XT",
+              "bundleDisplay": "EL - XT - SCS MONITOR MEDIA",
+              "devicePrefix": "EL",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "ZS",
+      "bundles": [
+        {
+          "bundleName": "ZS - XT",
+          "toLocation": "SCS MONITOR MEDIA",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "ZS0275:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0275",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0275:1",
+              "toTerminal": "1",
+              "toLocation": "SCS MONITOR MEDIA",
+              "bundleName": "ZS - XT",
+              "bundleDisplay": "ZS - XT - SCS MONITOR MEDIA",
+              "devicePrefix": "ZS"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "5549047d16f3d589c12573b5c3a950528f30674e8b0bb0dfa2728027ee08b768"
+}

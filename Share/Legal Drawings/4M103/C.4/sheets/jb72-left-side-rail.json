@@ -1,0 +1,68 @@
+{
+  "slug": "jb72-left-side-rail",
+  "name": "JB72 LEFT SIDE RAIL",
+  "kind": "operational",
+  "sheetIndex": 11,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR0143:",
+      "wireType": "SC",
+      "wireNo": "GR0143",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "5.A6",
+      "toDeviceId": "FRAME",
+      "toLocation": "JB72 LEFT SIDE RAIL",
+      "toPageZone": "5.A6",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0143",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "5.A6",
+      "Location": "JB72 LEFT SIDE RAIL"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "THE WILLIAM COMPANIES INC",
+    "revision": "C.4",
+    "controlsDE": "Trevor Montrone",
+    "controlsME": "Nathaniel Brown"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Side Rail in title - Rail assembly"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:28:28.300Z"
+}

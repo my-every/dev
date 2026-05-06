@@ -1,0 +1,278 @@
+{
+  "category": "devices",
+  "version": 1,
+  "updatedAt": "2026-05-05T04:32:27.594Z",
+  "types": {
+    "alarm-devices": {
+      "count": 2,
+      "label": "Alarm Devices"
+    },
+    "circuit-breakers": {
+      "count": 128,
+      "label": "Circuit Breakers"
+    },
+    "computing": {
+      "count": 2,
+      "label": "Computing"
+    },
+    "condition-monitoring": {
+      "count": 8,
+      "label": "Condition Monitoring"
+    },
+    "control-modules": {
+      "count": 198,
+      "label": "Control Modules"
+    },
+    "control-relays": {
+      "count": 75,
+      "label": "Control Relays"
+    },
+    "counters": {
+      "count": 1,
+      "label": "Counters"
+    },
+    "distributed-io": {
+      "count": 18,
+      "label": "Distributed Io"
+    },
+    "gateways": {
+      "count": 1,
+      "label": "Gateways"
+    },
+    "hmi-panels": {
+      "count": 2,
+      "label": "Hmi Panels"
+    },
+    "indicators": {
+      "count": 1,
+      "label": "Indicators"
+    },
+    "measurement": {
+      "count": 1,
+      "label": "Measurement"
+    },
+    "networking": {
+      "count": 25,
+      "label": "Networking"
+    },
+    "operator-controls": {
+      "count": 16,
+      "label": "Operator Controls"
+    },
+    "panel-lighting": {
+      "count": 46,
+      "label": "Panel Lighting"
+    },
+    "passive-components": {
+      "count": 32,
+      "label": "Passive Components"
+    },
+    "plc-comm": {
+      "count": 4,
+      "label": "Plc Comm"
+    },
+    "plc-modules": {
+      "count": 2,
+      "label": "Plc Modules"
+    },
+    "plc-racks": {
+      "count": 2,
+      "label": "Plc Racks"
+    },
+    "power-conversion": {
+      "count": 2,
+      "label": "Power Conversion"
+    },
+    "power-supplies": {
+      "count": 1,
+      "label": "Power Supplies"
+    },
+    "protection-relays": {
+      "count": 1,
+      "label": "Protection Relays"
+    },
+    "relay-sockets": {
+      "count": 1,
+      "label": "Relay Sockets"
+    },
+    "safety-controllers": {
+      "count": 3,
+      "label": "Safety Controllers"
+    },
+    "signal-conditioning": {
+      "count": 27,
+      "label": "Signal Conditioning"
+    },
+    "suppression": {
+      "count": 14,
+      "label": "Suppression"
+    },
+    "time-sync": {
+      "count": 1,
+      "label": "Time Sync"
+    },
+    "timing-relays": {
+      "count": 2,
+      "label": "Timing Relays"
+    }
+  },
+  "schema": {
+    "version": 1,
+    "id": "device-details",
+    "name": "Device Details",
+    "description": "Detail fields for control devices and electronic components",
+    "groups": [
+      {
+        "key": "electrical",
+        "label": "Electrical Specifications",
+        "order": 1
+      },
+      {
+        "key": "physical",
+        "label": "Physical Specifications",
+        "order": 2
+      },
+      {
+        "key": "symbols",
+        "label": "Symbols & References",
+        "order": 3
+      },
+      {
+        "key": "installation",
+        "label": "Installation",
+        "order": 4,
+        "collapsible": true
+      }
+    ],
+    "fields": [
+      {
+        "key": "voltageRating",
+        "label": "Voltage Rating",
+        "type": "text",
+        "group": "electrical",
+        "placeholder": "e.g., 24V DC, 120V AC"
+      },
+      {
+        "key": "currentRating",
+        "label": "Current Rating",
+        "type": "text",
+        "group": "electrical",
+        "placeholder": "e.g., 10A, 5mA"
+      },
+      {
+        "key": "operatingTemp",
+        "label": "Operating Temperature",
+        "type": "text",
+        "group": "environmental",
+        "placeholder": "e.g., -20C to +60C"
+      },
+      {
+        "key": "ipRating",
+        "label": "IP Rating",
+        "type": "text",
+        "group": "environmental",
+        "placeholder": "e.g., IP65, IP20"
+      },
+      {
+        "key": "coilVoltage",
+        "label": "Coil Voltage",
+        "type": "text",
+        "group": "electrical",
+        "placeholder": "e.g., 24V DC"
+      },
+      {
+        "key": "contactConfiguration",
+        "label": "Contact Configuration",
+        "type": "text",
+        "group": "electrical",
+        "placeholder": "e.g., 2NO+2NC, DPDT"
+      },
+      {
+        "key": "mountType",
+        "label": "Mount Type",
+        "type": "select",
+        "group": "physical",
+        "options": [
+          {
+            "value": "din_rail",
+            "label": "DIN Rail"
+          },
+          {
+            "value": "panel_mount",
+            "label": "Panel Mount"
+          },
+          {
+            "value": "socket",
+            "label": "Socket"
+          },
+          {
+            "value": "pcb",
+            "label": "PCB Mount"
+          }
+        ]
+      },
+      {
+        "key": "dimensions",
+        "label": "Dimensions (WxHxD)",
+        "type": "text",
+        "group": "physical",
+        "placeholder": "e.g., 22.5 x 82.5 x 55 mm"
+      },
+      {
+        "key": "layoutSymbol",
+        "label": "Layout Symbol",
+        "type": "image",
+        "group": "symbols",
+        "description": "Schematic/layout symbol for this device"
+      },
+      {
+        "key": "blueLabelRef",
+        "label": "Blue Label Reference",
+        "type": "text",
+        "group": "symbols",
+        "description": "Reference to blue label identifier"
+      },
+      {
+        "key": "devicePrefixes",
+        "label": "Device Prefixes",
+        "type": "multi-select",
+        "group": "symbols",
+        "description": "Typical device ID prefixes (e.g., KA, CR)",
+        "options": [
+          {
+            "value": "KA",
+            "label": "KA - Control Relay"
+          },
+          {
+            "value": "CR",
+            "label": "CR - Control Relay"
+          },
+          {
+            "value": "KT",
+            "label": "KT - Timing Relay"
+          },
+          {
+            "value": "K",
+            "label": "K - Contactor"
+          },
+          {
+            "value": "Q",
+            "label": "Q - Circuit Breaker"
+          },
+          {
+            "value": "F",
+            "label": "F - Fuse"
+          }
+        ]
+      },
+      {
+        "key": "installationSteps",
+        "label": "Installation Steps",
+        "type": "installation-steps",
+        "group": "installation",
+        "description": "Step-by-step installation instructions with images and dos/don'ts"
+      }
+    ]
+  },
+  "totalParts": 616
+}

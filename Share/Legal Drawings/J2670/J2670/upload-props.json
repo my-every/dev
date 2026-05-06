@@ -1,0 +1,924 @@
+{
+  "generatedAt": "2026-05-05T14:18:35.904Z",
+  "workbookFileName": "J2670-UCPWiringList_0.1.xlsx",
+  "sheets": [
+    {
+      "sheetSlug": "blue-labels",
+      "sheetName": "Blue Labels",
+      "kind": "reference",
+      "rowCount": 56,
+      "columnCount": 12,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "(SHT 10) PWR DISTRIBUTION RAIL",
+          "sampleValue": "FU0600"
+        },
+        {
+          "propKey": "wireType",
+          "sourceColumnIndex": 1,
+          "sourceHeader": "(SHT 11) TCP",
+          "sampleValue": "HL0411"
+        },
+        {
+          "propKey": "wireNo",
+          "sourceColumnIndex": 2,
+          "sourceHeader": "(SHT 12) LEFT WALL PANEL",
+          "sampleValue": "XT0345"
+        },
+        {
+          "propKey": "wireId",
+          "sourceColumnIndex": 3,
+          "sourceHeader": "(SHT 13) BACK WALL PANEL",
+          "sampleValue": "FU0310"
+        },
+        {
+          "propKey": "gaugeSize",
+          "sourceColumnIndex": 4,
+          "sourceHeader": "(SHT 2) JB128 BOX 1 COVER",
+          "sampleValue": "XS1100"
+        },
+        {
+          "propKey": "fromPageZone",
+          "sourceColumnIndex": 5,
+          "sourceHeader": "(SHT 3) JB128 BOX 1",
+          "sampleValue": "F0200"
+        },
+        {
+          "propKey": "toDeviceId",
+          "sourceColumnIndex": 6,
+          "sourceHeader": "(SHT 4) JB129 BOX 2 COVER",
+          "sampleValue": "FU0210"
+        },
+        {
+          "propKey": "toLocation",
+          "sourceColumnIndex": 7,
+          "sourceHeader": "(SHT 5) JB129 BOX 2",
+          "sampleValue": "AU0080"
+        },
+        {
+          "propKey": "toPageZone",
+          "sourceColumnIndex": 8,
+          "sourceHeader": "(SHT 6) JB73 HP EP BOX",
+          "sampleValue": "GR0122"
+        }
+      ]
+    },
+    {
+      "sheetSlug": "white-labels",
+      "sheetName": "White Labels",
+      "kind": "reference",
+      "rowCount": 8,
+      "columnCount": 13,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "(SHT 13) BACK WALL PANEL",
+          "sampleValue": "IEG03571"
+        },
+        {
+          "propKey": "wireType",
+          "sourceColumnIndex": 1,
+          "sourceHeader": "(SHT 13) BACK WALL PANEL - (SHT 12) LEFT WALL PANEL",
+          "sampleValue": "IEG0210"
+        },
+        {
+          "propKey": "wireNo",
+          "sourceColumnIndex": 2,
+          "sourceHeader": "(SHT 3) JB128 BOX 1",
+          "sampleValue": "AF0094G"
+        },
+        {
+          "propKey": "wireId",
+          "sourceColumnIndex": 3,
+          "sourceHeader": "(SHT 3) JB128 BOX 1 - (SHT 2) JB128 BOX 1 COVER",
+          "sampleValue": "PEG01302"
+        },
+        {
+          "propKey": "gaugeSize",
+          "sourceColumnIndex": 4,
+          "sourceHeader": "(SHT 3) JB128 BOX 1 - (SHT 5) JB129 BOX 2",
+          "sampleValue": "IEG02301"
+        },
+        {
+          "propKey": "fromPageZone",
+          "sourceColumnIndex": 5,
+          "sourceHeader": "(SHT 5) JB129 BOX 2",
+          "sampleValue": "AF0064G"
+        },
+        {
+          "propKey": "toDeviceId",
+          "sourceColumnIndex": 6,
+          "sourceHeader": "(SHT 5) JB129 BOX 2 - (SHT 4) JB129 BOX 2 COVER",
+          "sampleValue": "IEG023010"
+        },
+        {
+          "propKey": "toLocation",
+          "sourceColumnIndex": 7,
+          "sourceHeader": "(SHT 4) JB129 BOX 2 COVER",
+          "sampleValue": "GR0232,GRN/YEL"
+        },
+        {
+          "propKey": "toPageZone",
+          "sourceColumnIndex": 8,
+          "sourceHeader": "(SHT 6) JB73 HP EP BOX",
+          "sampleValue": "AF1203G"
+        }
+      ]
+    },
+    {
+      "sheetSlug": "heat-shrink-labels",
+      "sheetName": "Heat Shrink Labels",
+      "kind": "reference",
+      "rowCount": 1,
+      "columnCount": 2,
+      "mappedProps": []
+    },
+    {
+      "sheetSlug": "back-wall-panel",
+      "sheetName": "BACK WALL PANEL",
+      "kind": "operational",
+      "rowCount": 38,
+      "columnCount": 9,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "Device ID",
+          "sampleValue": "UJ0133:OK2"
+        },
+        {
+          "propKey": "wireType",
+          "sourceColumnIndex": 1,
+          "sourceHeader": "Cable (W)\r\n Conductor (SC)\r\nJumper Clip (JC)"
+        },
+        {
+          "propKey": "wireNo",
+          "sourceColumnIndex": 2,
+          "sourceHeader": "Wire No.",
+          "sampleValue": "UJ0133OK2"
+        },
+        {
+          "propKey": "wireId",
+          "sourceColumnIndex": 3,
+          "sourceHeader": "Wire ID",
+          "sampleValue": "WHT"
+        },
+        {
+          "propKey": "gaugeSize",
+          "sourceColumnIndex": 4,
+          "sourceHeader": "Gauge/Size",
+          "sampleValue": "20"
+        },
+        {
+          "propKey": "fromPageZone",
+          "sourceColumnIndex": 5,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "58.B4"
+        },
+        {
+          "propKey": "toDeviceId",
+          "sourceColumnIndex": 6,
+          "sourceHeader": "Device ID",
+          "sampleValue": "UJ0133:OK2"
+        },
+        {
+          "propKey": "toLocation",
+          "sourceColumnIndex": 7,
+          "sourceHeader": "Location",
+          "sampleValue": "BACK WALL PANEL"
+        },
+        {
+          "propKey": "toPageZone",
+          "sourceColumnIndex": 8,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "58.B4"
+        }
+      ]
+    },
+    {
+      "sheetSlug": "console",
+      "sheetName": "CONSOLE",
+      "kind": "operational",
+      "rowCount": 8,
+      "columnCount": 9,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "Device ID",
+          "sampleValue": "FRAME"
+        },
+        {
+          "propKey": "wireType",
+          "sourceColumnIndex": 1,
+          "sourceHeader": "Cable (W)\r\n Conductor (SC)\r\nJumper Clip (JC)"
+        },
+        {
+          "propKey": "wireNo",
+          "sourceColumnIndex": 2,
+          "sourceHeader": "Wire No.",
+          "sampleValue": "AT0190G"
+        },
+        {
+          "propKey": "wireId",
+          "sourceColumnIndex": 3,
+          "sourceHeader": "Wire ID",
+          "sampleValue": "GRN/YEL"
+        },
+        {
+          "propKey": "gaugeSize",
+          "sourceColumnIndex": 4,
+          "sourceHeader": "Gauge/Size",
+          "sampleValue": "14"
+        },
+        {
+          "propKey": "fromPageZone",
+          "sourceColumnIndex": 5,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "60.C3"
+        },
+        {
+          "propKey": "toDeviceId",
+          "sourceColumnIndex": 6,
+          "sourceHeader": "Device ID",
+          "sampleValue": "FRAME"
+        },
+        {
+          "propKey": "toLocation",
+          "sourceColumnIndex": 7,
+          "sourceHeader": "Location",
+          "sampleValue": "CONSOLE"
+        },
+        {
+          "propKey": "toPageZone",
+          "sourceColumnIndex": 8,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "60.C3"
+        }
+      ]
+    },
+    {
+      "sheetSlug": "jb128-box-1",
+      "sheetName": "JB128 BOX 1",
+      "kind": "operational",
+      "rowCount": 238,
+      "columnCount": 9,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0011:2"
+        },
+        {
+          "propKey": "wireType",
+          "sourceColumnIndex": 1,
+          "sourceHeader": "Cable (W)\r\n Conductor (SC)\r\nJumper Clip (JC)"
+        },
+        {
+          "propKey": "wireNo",
+          "sourceColumnIndex": 2,
+          "sourceHeader": "Wire No.",
+          "sampleValue": "0V"
+        },
+        {
+          "propKey": "wireId",
+          "sourceColumnIndex": 3,
+          "sourceHeader": "Wire ID",
+          "sampleValue": "CLIP"
+        },
+        {
+          "propKey": "gaugeSize",
+          "sourceColumnIndex": 4,
+          "sourceHeader": "Gauge/Size",
+          "sampleValue": "---"
+        },
+        {
+          "propKey": "fromPageZone",
+          "sourceColumnIndex": 5,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "12.C4"
+        },
+        {
+          "propKey": "toDeviceId",
+          "sourceColumnIndex": 6,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0011:2"
+        },
+        {
+          "propKey": "toLocation",
+          "sourceColumnIndex": 7,
+          "sourceHeader": "Location",
+          "sampleValue": "JB128 BOX 1"
+        },
+        {
+          "propKey": "toPageZone",
+          "sourceColumnIndex": 8,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "12.C4"
+        }
+      ]
+    },
+    {
+      "sheetSlug": "jb128-box-1-cover",
+      "sheetName": "JB128 BOX 1 COVER",
+      "kind": "operational",
+      "rowCount": 59,
+      "columnCount": 9,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "Device ID",
+          "sampleValue": "FU1100:LD"
+        },
+        {
+          "propKey": "wireType",
+          "sourceColumnIndex": 1,
+          "sourceHeader": "Cable (W)\r\n Conductor (SC)\r\nJumper Clip (JC)"
+        },
+        {
+          "propKey": "wireNo",
+          "sourceColumnIndex": 2,
+          "sourceHeader": "Wire No.",
+          "sampleValue": "FU1100"
+        },
+        {
+          "propKey": "wireId",
+          "sourceColumnIndex": 3,
+          "sourceHeader": "Wire ID",
+          "sampleValue": "WHT"
+        },
+        {
+          "propKey": "gaugeSize",
+          "sourceColumnIndex": 4,
+          "sourceHeader": "Gauge/Size",
+          "sampleValue": "14"
+        },
+        {
+          "propKey": "fromPageZone",
+          "sourceColumnIndex": 5,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "23.D2"
+        },
+        {
+          "propKey": "toDeviceId",
+          "sourceColumnIndex": 6,
+          "sourceHeader": "Device ID",
+          "sampleValue": "FU1100:LD"
+        },
+        {
+          "propKey": "toLocation",
+          "sourceColumnIndex": 7,
+          "sourceHeader": "Location",
+          "sampleValue": "JB128 BOX 1 COVER"
+        },
+        {
+          "propKey": "toPageZone",
+          "sourceColumnIndex": 8,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "23.D2"
+        }
+      ]
+    },
+    {
+      "sheetSlug": "jb129-box-2",
+      "sheetName": "JB129 BOX 2",
+      "kind": "operational",
+      "rowCount": 253,
+      "columnCount": 9,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0070:2"
+        },
+        {
+          "propKey": "wireType",
+          "sourceColumnIndex": 1,
+          "sourceHeader": "Cable (W)\r\n Conductor (SC)\r\nJumper Clip (JC)"
+        },
+        {
+          "propKey": "wireNo",
+          "sourceColumnIndex": 2,
+          "sourceHeader": "Wire No.",
+          "sampleValue": "0V"
+        },
+        {
+          "propKey": "wireId",
+          "sourceColumnIndex": 3,
+          "sourceHeader": "Wire ID",
+          "sampleValue": "CLIP"
+        },
+        {
+          "propKey": "gaugeSize",
+          "sourceColumnIndex": 4,
+          "sourceHeader": "Gauge/Size",
+          "sampleValue": "---"
+        },
+        {
+          "propKey": "fromPageZone",
+          "sourceColumnIndex": 5,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "11.B1"
+        },
+        {
+          "propKey": "toDeviceId",
+          "sourceColumnIndex": 6,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0070:2"
+        },
+        {
+          "propKey": "toLocation",
+          "sourceColumnIndex": 7,
+          "sourceHeader": "Location",
+          "sampleValue": "JB129 BOX 2"
+        },
+        {
+          "propKey": "toPageZone",
+          "sourceColumnIndex": 8,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "11.B1"
+        }
+      ]
+    },
+    {
+      "sheetSlug": "jb129-box-2-cover",
+      "sheetName": "JB129 BOX 2 COVER",
+      "kind": "operational",
+      "rowCount": 71,
+      "columnCount": 9,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0400:1"
+        },
+        {
+          "propKey": "wireType",
+          "sourceColumnIndex": 1,
+          "sourceHeader": "Cable (W)\r\n Conductor (SC)\r\nJumper Clip (JC)"
+        },
+        {
+          "propKey": "wireNo",
+          "sourceColumnIndex": 2,
+          "sourceHeader": "Wire No.",
+          "sampleValue": "XT04001"
+        },
+        {
+          "propKey": "wireId",
+          "sourceColumnIndex": 3,
+          "sourceHeader": "Wire ID",
+          "sampleValue": "GRN"
+        },
+        {
+          "propKey": "gaugeSize",
+          "sourceColumnIndex": 4,
+          "sourceHeader": "Gauge/Size",
+          "sampleValue": "16"
+        },
+        {
+          "propKey": "fromPageZone",
+          "sourceColumnIndex": 5,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "17.C6"
+        },
+        {
+          "propKey": "toDeviceId",
+          "sourceColumnIndex": 6,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0400:1"
+        },
+        {
+          "propKey": "toLocation",
+          "sourceColumnIndex": 7,
+          "sourceHeader": "Location",
+          "sampleValue": "JB129 BOX 2 COVER"
+        },
+        {
+          "propKey": "toPageZone",
+          "sourceColumnIndex": 8,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "17.C6"
+        }
+      ]
+    },
+    {
+      "sheetSlug": "jb73-hp-ep-box",
+      "sheetName": "JB73 HP EP BOX",
+      "kind": "operational",
+      "rowCount": 93,
+      "columnCount": 9,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0130:2"
+        },
+        {
+          "propKey": "wireType",
+          "sourceColumnIndex": 1,
+          "sourceHeader": "Cable (W)\r\n Conductor (SC)\r\nJumper Clip (JC)"
+        },
+        {
+          "propKey": "wireNo",
+          "sourceColumnIndex": 2,
+          "sourceHeader": "Wire No.",
+          "sampleValue": "0V"
+        },
+        {
+          "propKey": "wireId",
+          "sourceColumnIndex": 3,
+          "sourceHeader": "Wire ID",
+          "sampleValue": "CLIP"
+        },
+        {
+          "propKey": "gaugeSize",
+          "sourceColumnIndex": 4,
+          "sourceHeader": "Gauge/Size",
+          "sampleValue": "---"
+        },
+        {
+          "propKey": "fromPageZone",
+          "sourceColumnIndex": 5,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "18.A5"
+        },
+        {
+          "propKey": "toDeviceId",
+          "sourceColumnIndex": 6,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0130:2"
+        },
+        {
+          "propKey": "toLocation",
+          "sourceColumnIndex": 7,
+          "sourceHeader": "Location",
+          "sampleValue": "JB73 HP EP BOX"
+        },
+        {
+          "propKey": "toPageZone",
+          "sourceColumnIndex": 8,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "18.A5"
+        }
+      ]
+    },
+    {
+      "sheetSlug": "jb74-bop-ep-box",
+      "sheetName": "JB74 BOP EP BOX",
+      "kind": "operational",
+      "rowCount": 87,
+      "columnCount": 9,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0140:2"
+        },
+        {
+          "propKey": "wireType",
+          "sourceColumnIndex": 1,
+          "sourceHeader": "Cable (W)\r\n Conductor (SC)\r\nJumper Clip (JC)"
+        },
+        {
+          "propKey": "wireNo",
+          "sourceColumnIndex": 2,
+          "sourceHeader": "Wire No.",
+          "sampleValue": "0V"
+        },
+        {
+          "propKey": "wireId",
+          "sourceColumnIndex": 3,
+          "sourceHeader": "Wire ID",
+          "sampleValue": "CLIP"
+        },
+        {
+          "propKey": "gaugeSize",
+          "sourceColumnIndex": 4,
+          "sourceHeader": "Gauge/Size",
+          "sampleValue": "---"
+        },
+        {
+          "propKey": "fromPageZone",
+          "sourceColumnIndex": 5,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "19.A5"
+        },
+        {
+          "propKey": "toDeviceId",
+          "sourceColumnIndex": 6,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0140:2"
+        },
+        {
+          "propKey": "toLocation",
+          "sourceColumnIndex": 7,
+          "sourceHeader": "Location",
+          "sampleValue": "JB74 BOP EP BOX"
+        },
+        {
+          "propKey": "toPageZone",
+          "sourceColumnIndex": 8,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "19.A5"
+        }
+      ]
+    },
+    {
+      "sheetSlug": "left-wall-panel",
+      "sheetName": "LEFT WALL PANEL",
+      "kind": "operational",
+      "rowCount": 32,
+      "columnCount": 9,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0006:1"
+        },
+        {
+          "propKey": "wireType",
+          "sourceColumnIndex": 1,
+          "sourceHeader": "Cable (W)\r\n Conductor (SC)\r\nJumper Clip (JC)"
+        },
+        {
+          "propKey": "wireNo",
+          "sourceColumnIndex": 2,
+          "sourceHeader": "Wire No.",
+          "sampleValue": "0V1"
+        },
+        {
+          "propKey": "wireId",
+          "sourceColumnIndex": 3,
+          "sourceHeader": "Wire ID",
+          "sampleValue": "WHT"
+        },
+        {
+          "propKey": "gaugeSize",
+          "sourceColumnIndex": 4,
+          "sourceHeader": "Gauge/Size",
+          "sampleValue": "14"
+        },
+        {
+          "propKey": "fromPageZone",
+          "sourceColumnIndex": 5,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "4.A6"
+        },
+        {
+          "propKey": "toDeviceId",
+          "sourceColumnIndex": 6,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0006:1"
+        },
+        {
+          "propKey": "toLocation",
+          "sourceColumnIndex": 7,
+          "sourceHeader": "Location",
+          "sampleValue": "LEFT WALL PANEL"
+        },
+        {
+          "propKey": "toPageZone",
+          "sourceColumnIndex": 8,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "4.A6"
+        }
+      ]
+    },
+    {
+      "sheetSlug": "pwr-distribution-rail",
+      "sheetName": "PWR DISTRIBUTION RAIL",
+      "kind": "operational",
+      "rowCount": 42,
+      "columnCount": 9,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0561:1"
+        },
+        {
+          "propKey": "wireType",
+          "sourceColumnIndex": 1,
+          "sourceHeader": "Cable (W)\r\n Conductor (SC)\r\nJumper Clip (JC)"
+        },
+        {
+          "propKey": "wireNo",
+          "sourceColumnIndex": 2,
+          "sourceHeader": "Wire No.",
+          "sampleValue": "FU0200LI"
+        },
+        {
+          "propKey": "wireId",
+          "sourceColumnIndex": 3,
+          "sourceHeader": "Wire ID",
+          "sampleValue": "CLIP"
+        },
+        {
+          "propKey": "gaugeSize",
+          "sourceColumnIndex": 4,
+          "sourceHeader": "Gauge/Size",
+          "sampleValue": "---"
+        },
+        {
+          "propKey": "fromPageZone",
+          "sourceColumnIndex": 5,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "59.B5"
+        },
+        {
+          "propKey": "toDeviceId",
+          "sourceColumnIndex": 6,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0561:1"
+        },
+        {
+          "propKey": "toLocation",
+          "sourceColumnIndex": 7,
+          "sourceHeader": "Location",
+          "sampleValue": "PWR DISTRIBUTION RAIL"
+        },
+        {
+          "propKey": "toPageZone",
+          "sourceColumnIndex": 8,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "59.B5"
+        }
+      ]
+    },
+    {
+      "sheetSlug": "tcp",
+      "sheetName": "TCP",
+      "kind": "operational",
+      "rowCount": 101,
+      "columnCount": 9,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "Device ID",
+          "sampleValue": "HL0400:A+"
+        },
+        {
+          "propKey": "wireType",
+          "sourceColumnIndex": 1,
+          "sourceHeader": "Cable (W)\r\n Conductor (SC)\r\nJumper Clip (JC)"
+        },
+        {
+          "propKey": "wireNo",
+          "sourceColumnIndex": 2,
+          "sourceHeader": "Wire No.",
+          "sampleValue": "TCP01AP"
+        },
+        {
+          "propKey": "wireId",
+          "sourceColumnIndex": 3,
+          "sourceHeader": "Wire ID",
+          "sampleValue": "WHT"
+        },
+        {
+          "propKey": "gaugeSize",
+          "sourceColumnIndex": 4,
+          "sourceHeader": "Gauge/Size",
+          "sampleValue": "20"
+        },
+        {
+          "propKey": "fromPageZone",
+          "sourceColumnIndex": 5,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "61.A1"
+        },
+        {
+          "propKey": "toDeviceId",
+          "sourceColumnIndex": 6,
+          "sourceHeader": "Device ID",
+          "sampleValue": "HL0400:A+"
+        },
+        {
+          "propKey": "toLocation",
+          "sourceColumnIndex": 7,
+          "sourceHeader": "Location",
+          "sampleValue": "TCP"
+        },
+        {
+          "propKey": "toPageZone",
+          "sourceColumnIndex": 8,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "61.A1"
+        }
+      ]
+    },
+    {
+      "sheetSlug": "panel-errors",
+      "sheetName": "Panel Errors",
+      "kind": "reference",
+      "rowCount": 2,
+      "columnCount": 10,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0020:1"
+        },
+        {
+          "propKey": "toLocation",
+          "sourceColumnIndex": 1,
+          "sourceHeader": "Location",
+          "sampleValue": "BACK WALL PANEL"
+        },
+        {
+          "propKey": "wireType",
+          "sourceColumnIndex": 2,
+          "sourceHeader": "Cable (W)\r\n Conductor (SC)\r\nJumper Clip (JC)"
+        },
+        {
+          "propKey": "wireId",
+          "sourceColumnIndex": 3,
+          "sourceHeader": "Wire ID"
+        },
+        {
+          "propKey": "wireNo",
+          "sourceColumnIndex": 4,
+          "sourceHeader": "Wire No.",
+          "sampleValue": "52007"
+        },
+        {
+          "propKey": "gaugeSize",
+          "sourceColumnIndex": 5,
+          "sourceHeader": "Gauge/Size"
+        },
+        {
+          "propKey": "fromPageZone",
+          "sourceColumnIndex": 6,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "58.B2"
+        },
+        {
+          "propKey": "toDeviceId",
+          "sourceColumnIndex": 7,
+          "sourceHeader": "Device ID",
+          "sampleValue": "XT0020:1"
+        },
+        {
+          "propKey": "fromLocation",
+          "sourceColumnIndex": 8,
+          "sourceHeader": "Location",
+          "sampleValue": "BACK WALL PANEL"
+        },
+        {
+          "propKey": "toPageZone",
+          "sourceColumnIndex": 9,
+          "sourceHeader": "Page/Zone",
+          "sampleValue": "58.B2"
+        }
+      ]
+    },
+    {
+      "sheetSlug": "cable-part-numbers",
+      "sheetName": "Cable Part Numbers",
+      "kind": "reference",
+      "rowCount": 22,
+      "columnCount": 3,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "Device ID",
+          "sampleValue": "WC8059"
+        }
+      ]
+    },
+    {
+      "sheetSlug": "part-number-list",
+      "sheetName": "Part Number List",
+      "kind": "reference",
+      "rowCount": 337,
+      "columnCount": 4,
+      "mappedProps": [
+        {
+          "propKey": "fromDeviceId",
+          "sourceColumnIndex": 0,
+          "sourceHeader": "Device ID",
+          "sampleValue": "AF0210"
+        },
+        {
+          "propKey": "toLocation",
+          "sourceColumnIndex": 3,
+          "sourceHeader": "Location",
+          "sampleValue": "BACK WALL PANEL"
+        }
+      ]
+    }
+  ]
+}

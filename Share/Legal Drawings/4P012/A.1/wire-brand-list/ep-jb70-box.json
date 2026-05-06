@@ -1,0 +1,924 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:50:20.133Z",
+  "mode": "branding-export",
+  "sheetSlug": "ep-jb70-box",
+  "sheetName": "EP JB70 BOX",
+  "totalRows": 42,
+  "header": {
+    "locationTitle": "EP JB70 BOX",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4P012",
+    "projectName": "BBS-B2 - Unit 1",
+    "revision": "A.1",
+    "controlsDE": "COVARRUBIAS, A."
+  },
+  "importHints": {
+    "canonicalSheetName": "EP JB70 BOX",
+    "normalizedSheetName": "ep-jb70-box",
+    "bundleNames": [
+      "HL0475",
+      "HL0476",
+      "SA0475",
+      "SB0451",
+      "SB0452",
+      "SB0453",
+      "SB0454",
+      "SB0455",
+      "SB0456",
+      "SB0457",
+      "SB0458",
+      "SB0472",
+      "SB0473",
+      "SB0474",
+      "SB0475",
+      "SB0476",
+      "AT1100",
+      "XT0470"
+    ],
+    "bundleDisplays": [
+      "HL0475",
+      "HL0476",
+      "SA0475 - EP",
+      "SB0451 - EP",
+      "SB0452 - EP",
+      "SB0453 - EP",
+      "SB0454 - EP",
+      "SB0455 - EP",
+      "SB0456 - EP",
+      "SB0457 - EP",
+      "SB0458 - EP",
+      "SB0472 - EP",
+      "SB0473 - EP",
+      "SB0474 - EP",
+      "SB0475 - EP",
+      "SB0476 - EP",
+      "AT1100 - EP",
+      "XT0470 - EP"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "HL",
+      "bundles": [
+        {
+          "bundleName": "HL0475",
+          "toLocation": "EP JB70 BOX",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "HL0475:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "HL04751",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0470:3",
+              "toTerminal": "3",
+              "toLocation": "EP JB70 BOX",
+              "bundleName": "HL0475",
+              "bundleDisplay": "HL0475",
+              "devicePrefix": "HL"
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "HL0475:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "HL04752",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0470:4",
+              "toTerminal": "4",
+              "toLocation": "EP JB70 BOX",
+              "bundleName": "HL0475",
+              "bundleDisplay": "",
+              "devicePrefix": "HL"
+            }
+          ]
+        },
+        {
+          "bundleName": "HL0476",
+          "toLocation": "EP JB70 BOX",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "HL0476:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "HL04761",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0470:1",
+              "toTerminal": "1",
+              "toLocation": "EP JB70 BOX",
+              "bundleName": "HL0476",
+              "bundleDisplay": "HL0476",
+              "devicePrefix": "HL"
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "HL0476:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "HL04762",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0470:2",
+              "toTerminal": "2",
+              "toLocation": "EP JB70 BOX",
+              "bundleName": "HL0476",
+              "bundleDisplay": "",
+              "devicePrefix": "HL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "SA",
+      "bundles": [
+        {
+          "bundleName": "SA0475",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-7",
+              "rowIndex": 17,
+              "fromDeviceId": "SA0475:A3",
+              "fromTerminal": "A3",
+              "fromTerminalOrder": null,
+              "wireNo": "SA0475A3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:17",
+              "toTerminal": "17",
+              "toLocation": "JB70,EP",
+              "bundleName": "SA0475",
+              "bundleDisplay": "SA0475 - EP",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-8",
+              "rowIndex": 18,
+              "fromDeviceId": "SA0475:A4",
+              "fromTerminal": "A4",
+              "fromTerminalOrder": null,
+              "wireNo": "SA0475A4",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:18",
+              "toTerminal": "18",
+              "toLocation": "JB70,EP",
+              "bundleName": "SA0475",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-9",
+              "rowIndex": 19,
+              "fromDeviceId": "SA0475:B1",
+              "fromTerminal": "B1",
+              "fromTerminalOrder": null,
+              "wireNo": "SA0475B1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:19",
+              "toTerminal": "19",
+              "toLocation": "JB70,EP",
+              "bundleName": "SA0475",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-10",
+              "rowIndex": 20,
+              "fromDeviceId": "SA0475:B2",
+              "fromTerminal": "B2",
+              "fromTerminalOrder": null,
+              "wireNo": "SA0475B2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:20",
+              "toTerminal": "20",
+              "toLocation": "JB70,EP",
+              "bundleName": "SA0475",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "SB",
+      "bundles": [
+        {
+          "bundleName": "SB0451",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 21,
+              "fromDeviceId": "SB0451:A3",
+              "fromTerminal": "A3",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0451A3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:21",
+              "toTerminal": "21",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0451",
+              "bundleDisplay": "SB0451 - EP",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-12",
+              "rowIndex": 22,
+              "fromDeviceId": "SB0451:A4",
+              "fromTerminal": "A4",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0451A4",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:22",
+              "toTerminal": "22",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0451",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            }
+          ]
+        },
+        {
+          "bundleName": "SB0452",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-13",
+              "rowIndex": 23,
+              "fromDeviceId": "SB0452:A3",
+              "fromTerminal": "A3",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0452A3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:23",
+              "toTerminal": "23",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0452",
+              "bundleDisplay": "SB0452 - EP",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-14",
+              "rowIndex": 24,
+              "fromDeviceId": "SB0452:A4",
+              "fromTerminal": "A4",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0452A4",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:24",
+              "toTerminal": "24",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0452",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            }
+          ]
+        },
+        {
+          "bundleName": "SB0453",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-15",
+              "rowIndex": 25,
+              "fromDeviceId": "SB0453:A3",
+              "fromTerminal": "A3",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0453A3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:25",
+              "toTerminal": "25",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0453",
+              "bundleDisplay": "SB0453 - EP",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-16",
+              "rowIndex": 26,
+              "fromDeviceId": "SB0453:A4",
+              "fromTerminal": "A4",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0453A4",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:26",
+              "toTerminal": "26",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0453",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            }
+          ]
+        },
+        {
+          "bundleName": "SB0454",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-17",
+              "rowIndex": 27,
+              "fromDeviceId": "SB0454:A3",
+              "fromTerminal": "A3",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0454A3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:27",
+              "toTerminal": "27",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0454",
+              "bundleDisplay": "SB0454 - EP",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-18",
+              "rowIndex": 28,
+              "fromDeviceId": "SB0454:A4",
+              "fromTerminal": "A4",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0454A4",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:28",
+              "toTerminal": "28",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0454",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            }
+          ]
+        },
+        {
+          "bundleName": "SB0455",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-19",
+              "rowIndex": 29,
+              "fromDeviceId": "SB0455:A3",
+              "fromTerminal": "A3",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0455A3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:29",
+              "toTerminal": "29",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0455",
+              "bundleDisplay": "SB0455 - EP",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-20",
+              "rowIndex": 30,
+              "fromDeviceId": "SB0455:A4",
+              "fromTerminal": "A4",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0455A4",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:30",
+              "toTerminal": "30",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0455",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            }
+          ]
+        },
+        {
+          "bundleName": "SB0456",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-21",
+              "rowIndex": 31,
+              "fromDeviceId": "SB0456:A3",
+              "fromTerminal": "A3",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0456A3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:31",
+              "toTerminal": "31",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0456",
+              "bundleDisplay": "SB0456 - EP",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-22",
+              "rowIndex": 32,
+              "fromDeviceId": "SB0456:A4",
+              "fromTerminal": "A4",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0456A4",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:32",
+              "toTerminal": "32",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0456",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            }
+          ]
+        },
+        {
+          "bundleName": "SB0457",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-23",
+              "rowIndex": 33,
+              "fromDeviceId": "SB0457:A3",
+              "fromTerminal": "A3",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0457A3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:33",
+              "toTerminal": "33",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0457",
+              "bundleDisplay": "SB0457 - EP",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-24",
+              "rowIndex": 34,
+              "fromDeviceId": "SB0457:A4",
+              "fromTerminal": "A4",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0457A4",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:34",
+              "toTerminal": "34",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0457",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            }
+          ]
+        },
+        {
+          "bundleName": "SB0458",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-25",
+              "rowIndex": 35,
+              "fromDeviceId": "SB0458:A3",
+              "fromTerminal": "A3",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0458A3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:35",
+              "toTerminal": "35",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0458",
+              "bundleDisplay": "SB0458 - EP",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-26",
+              "rowIndex": 36,
+              "fromDeviceId": "SB0458:A4",
+              "fromTerminal": "A4",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0458A4",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:36",
+              "toTerminal": "36",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0458",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            }
+          ]
+        },
+        {
+          "bundleName": "SB0472",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-27",
+              "rowIndex": 37,
+              "fromDeviceId": "SB0472:1-B1",
+              "fromTerminal": "1-B1",
+              "fromTerminalOrder": null,
+              "wireNo": "ESTOPA",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:14",
+              "toTerminal": "14",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0472",
+              "bundleDisplay": "SB0472 - EP",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-28",
+              "rowIndex": 38,
+              "fromDeviceId": "SB0472:1-B2",
+              "fromTerminal": "1-B2",
+              "fromTerminalOrder": null,
+              "wireNo": "ESTOPB",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:13",
+              "toTerminal": "13",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0472",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-29",
+              "rowIndex": 39,
+              "fromDeviceId": "SB0472:2-B1",
+              "fromTerminal": "2-B1",
+              "fromTerminalOrder": null,
+              "wireNo": "SB04722B1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:16",
+              "toTerminal": "16",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0472",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-30",
+              "rowIndex": 40,
+              "fromDeviceId": "SB0472:2-B2",
+              "fromTerminal": "2-B2",
+              "fromTerminalOrder": null,
+              "wireNo": "SB04722B2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:15",
+              "toTerminal": "15",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0472",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            }
+          ]
+        },
+        {
+          "bundleName": "SB0473",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-31",
+              "rowIndex": 41,
+              "fromDeviceId": "SB0473:A3",
+              "fromTerminal": "A3",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0473A3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:9",
+              "toTerminal": "9",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0473",
+              "bundleDisplay": "SB0473 - EP",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-32",
+              "rowIndex": 42,
+              "fromDeviceId": "SB0473:A4",
+              "fromTerminal": "A4",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0473A4",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:10",
+              "toTerminal": "10",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0473",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            }
+          ]
+        },
+        {
+          "bundleName": "SB0474",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-33",
+              "rowIndex": 43,
+              "fromDeviceId": "SB0474:A3",
+              "fromTerminal": "A3",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0474A3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:11",
+              "toTerminal": "11",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0474",
+              "bundleDisplay": "SB0474 - EP",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-34",
+              "rowIndex": 44,
+              "fromDeviceId": "SB0474:A4",
+              "fromTerminal": "A4",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0474A4",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:12",
+              "toTerminal": "12",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0474",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            }
+          ]
+        },
+        {
+          "bundleName": "SB0475",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-35",
+              "rowIndex": 45,
+              "fromDeviceId": "SB0475:B1",
+              "fromTerminal": "B1",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0475B1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:5",
+              "toTerminal": "5",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0475",
+              "bundleDisplay": "SB0475 - EP",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-36",
+              "rowIndex": 46,
+              "fromDeviceId": "SB0475:B2",
+              "fromTerminal": "B2",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0475B2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:6",
+              "toTerminal": "6",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0475",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            }
+          ]
+        },
+        {
+          "bundleName": "SB0476",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-37",
+              "rowIndex": 47,
+              "fromDeviceId": "SB0476:A3",
+              "fromTerminal": "A3",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0476A3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:1",
+              "toTerminal": "1",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0476",
+              "bundleDisplay": "SB0476 - EP",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-38",
+              "rowIndex": 48,
+              "fromDeviceId": "SB0476:A4",
+              "fromTerminal": "A4",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0476A4",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:2",
+              "toTerminal": "2",
+              "toLocation": "JB70,EP",
+              "bundleName": "SB0476",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT1100",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "AT1100:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0800:38",
+              "toTerminal": "38",
+              "toLocation": "JB70,EP",
+              "bundleName": "AT1100",
+              "bundleDisplay": "AT1100 - EP",
+              "devicePrefix": "AT",
+              "isNegative": true
+            },
+            {
+              "rowId": "row-6",
+              "rowIndex": 16,
+              "fromDeviceId": "AT1100:POS",
+              "fromTerminal": "POS",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1100",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU1100:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB70,EP",
+              "bundleName": "AT1100",
+              "bundleDisplay": "",
+              "devicePrefix": "AT"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0470",
+          "toLocation": "JB70,EP",
+          "rows": [
+            {
+              "rowId": "row-39",
+              "rowIndex": 49,
+              "fromDeviceId": "XT0470:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "HL04761",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:3",
+              "toTerminal": "3",
+              "toLocation": "JB70,EP",
+              "bundleName": "XT0470",
+              "bundleDisplay": "XT0470 - EP",
+              "devicePrefix": "XT"
+            },
+            {
+              "rowId": "row-40",
+              "rowIndex": 50,
+              "fromDeviceId": "XT0470:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "HL04762",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:4",
+              "toTerminal": "4",
+              "toLocation": "JB70,EP",
+              "bundleName": "XT0470",
+              "bundleDisplay": "",
+              "devicePrefix": "XT"
+            },
+            {
+              "rowId": "row-41",
+              "rowIndex": 51,
+              "fromDeviceId": "XT0470:3",
+              "fromTerminal": "3",
+              "fromTerminalOrder": null,
+              "wireNo": "HL04751",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:7",
+              "toTerminal": "7",
+              "toLocation": "JB70,EP",
+              "bundleName": "XT0470",
+              "bundleDisplay": "",
+              "devicePrefix": "XT"
+            },
+            {
+              "rowId": "row-42",
+              "rowIndex": 52,
+              "fromDeviceId": "XT0470:4",
+              "fromTerminal": "4",
+              "fromTerminalOrder": null,
+              "wireNo": "HL04752",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0800:8",
+              "toTerminal": "8",
+              "toLocation": "JB70,EP",
+              "bundleName": "XT0470",
+              "bundleDisplay": "",
+              "devicePrefix": "XT"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "c4e348278665c62475c7c439aa1efa92da554d385fe05e36307c284a95b80bae"
+}

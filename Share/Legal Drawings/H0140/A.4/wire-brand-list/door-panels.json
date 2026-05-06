@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:04:16.324Z",
+  "mode": "branding-export",
+  "sheetSlug": "door-panels",
+  "sheetName": "DOOR PANELS",
+  "totalRows": 2,
+  "header": {
+    "locationTitle": "DOOR PANELS",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "H0140",
+    "projectName": "H0140",
+    "revision": "A.4",
+    "controlsDE": "M. ZUNIGA",
+    "controlsME": "R. DURAN"
+  },
+  "importHints": {
+    "canonicalSheetName": "DOOR PANELS",
+    "normalizedSheetName": "door-panels",
+    "bundleNames": [
+      "AT0190"
+    ],
+    "bundleDisplays": [
+      "AT0190 - POWER DISTRIBUTION - RAIL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT0190",
+          "toLocation": "POWER DISTRIBUTION RAIL",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "AT0190:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0562:2",
+              "toTerminal": "2",
+              "toLocation": "POWER DISTRIBUTION RAIL",
+              "bundleName": "AT0190",
+              "bundleDisplay": "AT0190 - POWER DISTRIBUTION - RAIL",
+              "devicePrefix": "AT",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "AT0190:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0190",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0190:LD",
+              "toTerminal": "LD",
+              "toLocation": "POWER DISTRIBUTION RAIL",
+              "bundleName": "AT0190",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "16154c8f2ab528dec5673bad962499d510df30166a6c3578f10f14934ac8e3b6"
+}

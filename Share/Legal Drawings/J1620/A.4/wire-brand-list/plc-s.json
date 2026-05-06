@@ -1,0 +1,90 @@
+{
+  "sheetSlug": "plc-s",
+  "sheetName": "PLC_S",
+  "sourceSheetName": "PLC_S",
+  "metadata": {
+    "normalizedSheetName": "plc-s",
+    "bundleNames": [
+      "PC",
+      "UV",
+      "UV0600"
+    ]
+  },
+  "rows": [
+    {
+      "importedRowId": "plc-s-13",
+      "rowIndex": 13,
+      "matchKey": "PC0470:INP_A|-009312|WHT|20|AF0093:12|A",
+      "fromDeviceId": "PC0470:INP_A",
+      "wireNo": "-009312",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "length": 80,
+      "toDeviceId": "AF0093:12",
+      "toLocation": "A",
+      "devicePrefix": "PC0470",
+      "bundleName": "PC",
+      "bundleDisplay": "PC"
+    },
+    {
+      "importedRowId": "plc-s-14",
+      "rowIndex": 14,
+      "matchKey": "PC0470:-PWR|-009328|WHT|20|AF0093:28|A",
+      "fromDeviceId": "PC0470:-PWR",
+      "wireNo": "-009328",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "length": 80,
+      "toDeviceId": "AF0093:28",
+      "toLocation": "A",
+      "devicePrefix": "PC0470",
+      "bundleName": "PC",
+      "bundleDisplay": "PC"
+    },
+    {
+      "importedRowId": "plc-s-15",
+      "rowIndex": 15,
+      "matchKey": "PC0470:+PWR|-009344|WHT|20|AF0093:44|A",
+      "fromDeviceId": "PC0470:+PWR",
+      "wireNo": "-009344",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "length": 80,
+      "toDeviceId": "AF0093:44",
+      "toLocation": "A",
+      "devicePrefix": "PC0470",
+      "bundleName": "PC",
+      "bundleDisplay": "PC"
+    },
+    {
+      "importedRowId": "plc-s-17",
+      "rowIndex": 17,
+      "matchKey": "UV0600:(+)|FU0010|WHT|14|FU0010:LD|A",
+      "fromDeviceId": "UV0600:(+)",
+      "wireNo": "FU0010",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 80,
+      "toDeviceId": "FU0010:LD",
+      "toLocation": "A",
+      "devicePrefix": "UV0600",
+      "bundleName": "UV",
+      "bundleDisplay": "UV"
+    },
+    {
+      "importedRowId": "plc-s-19",
+      "rowIndex": 19,
+      "matchKey": "UV0600:(-)|-0V|WHT|12|XT0135:1|A",
+      "fromDeviceId": "UV0600:(-)",
+      "wireNo": "-0V",
+      "wireId": "WHT",
+      "gaugeSize": "12",
+      "length": 80,
+      "toDeviceId": "XT0135:1",
+      "toLocation": "A",
+      "devicePrefix": "UV0600",
+      "bundleName": "UV0600",
+      "bundleDisplay": "UV0600"
+    }
+  ]
+}

@@ -1,0 +1,345 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:18:32.189Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb175-door",
+  "sheetName": "JB175 DOOR",
+  "totalRows": 11,
+  "header": {
+    "locationTitle": "JB175 DOOR",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J2631",
+    "projectName": "J2631",
+    "revision": "J2631",
+    "controlsDE": "M.MURALI",
+    "controlsME": "M.HARISH"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB175 DOOR",
+    "normalizedSheetName": "jb175-door",
+    "bundleNames": [
+      "HL0401",
+      "HL0409",
+      "HL0411",
+      "SB0403",
+      "SB0404"
+    ],
+    "bundleDisplays": [
+      "HL0401",
+      "HL0401 - INTELLIGENT START - PANEL",
+      "HL0409 - INTELLIGENT START - PANEL",
+      "HL0411 - INTELLIGENT START - PANEL",
+      "SB0403 - INTELLIGENT START - PANEL",
+      "SB0404 - INTELLIGENT START - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "HL",
+      "bundles": [
+        {
+          "bundleName": "HL0401",
+          "toLocation": "JB175 DOOR",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "HL0401:X1",
+              "fromTerminal": "X1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "HL0409X1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "HL0409:X1",
+              "toTerminal": "X1",
+              "toLocation": "JB175 DOOR",
+              "bundleName": "HL0401",
+              "bundleDisplay": "HL0401",
+              "devicePrefix": "HL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "HL0401:X1",
+              "fromTerminal": "X1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "HL0409X1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "HL0411:X1",
+              "toTerminal": "X1",
+              "toLocation": "JB175 DOOR",
+              "bundleName": "HL0401",
+              "bundleDisplay": "",
+              "devicePrefix": "HL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "HL",
+      "bundles": [
+        {
+          "bundleName": "HL0401",
+          "toLocation": "INTELLIGENT START PANEL",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "HL0401:X2",
+              "fromTerminal": "X2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "HL0401X2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AP0603:11",
+              "toTerminal": "11",
+              "toLocation": "INTELLIGENT START PANEL",
+              "bundleName": "HL0401",
+              "bundleDisplay": "HL0401 - INTELLIGENT START - PANEL",
+              "devicePrefix": "HL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "HL0409",
+          "toLocation": "INTELLIGENT START PANEL",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "HL0409:X1",
+              "fromTerminal": "X1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "HL0409X1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AP0603:14",
+              "toTerminal": "14",
+              "toLocation": "INTELLIGENT START PANEL",
+              "bundleName": "HL0409",
+              "bundleDisplay": "HL0409 - INTELLIGENT START - PANEL",
+              "devicePrefix": "HL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "HL0409:X2",
+              "fromTerminal": "X2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "HL0409X2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AP0603:10",
+              "toTerminal": "10",
+              "toLocation": "INTELLIGENT START PANEL",
+              "bundleName": "HL0409",
+              "bundleDisplay": "",
+              "devicePrefix": "HL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "HL0411",
+          "toLocation": "INTELLIGENT START PANEL",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "HL0411:X2",
+              "fromTerminal": "X2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "HL0411X2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA0141:11",
+              "toTerminal": "11",
+              "toLocation": "INTELLIGENT START PANEL",
+              "bundleName": "HL0411",
+              "bundleDisplay": "HL0411 - INTELLIGENT START - PANEL",
+              "devicePrefix": "HL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "HL0411:X2",
+              "fromTerminal": "X2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "HL0411X2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA0141:11",
+              "toTerminal": "11",
+              "toLocation": "INTELLIGENT START PANEL",
+              "bundleName": "HL0411",
+              "bundleDisplay": "",
+              "devicePrefix": "HL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "SB",
+      "bundles": [
+        {
+          "bundleName": "SB0403",
+          "toLocation": "INTELLIGENT START PANEL",
+          "rows": [
+            {
+              "rowId": "row-7",
+              "rowIndex": 18,
+              "fromDeviceId": "SB0403:13",
+              "fromTerminal": "13",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SB040313",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AP0602:7",
+              "toTerminal": "7",
+              "toLocation": "INTELLIGENT START PANEL",
+              "bundleName": "SB0403",
+              "bundleDisplay": "SB0403 - INTELLIGENT START - PANEL",
+              "devicePrefix": "SB",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-8",
+              "rowIndex": 19,
+              "fromDeviceId": "SB0403:14",
+              "fromTerminal": "14",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SB040314",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AP0602:6",
+              "toTerminal": "6",
+              "toLocation": "INTELLIGENT START PANEL",
+              "bundleName": "SB0403",
+              "bundleDisplay": "",
+              "devicePrefix": "SB",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "SB0404",
+          "toLocation": "INTELLIGENT START PANEL",
+          "rows": [
+            {
+              "rowId": "row-9",
+              "rowIndex": 20,
+              "fromDeviceId": "SB0404:13",
+              "fromTerminal": "13",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SB040413",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AP0602:10",
+              "toTerminal": "10",
+              "toLocation": "INTELLIGENT START PANEL",
+              "bundleName": "SB0404",
+              "bundleDisplay": "SB0404 - INTELLIGENT START - PANEL",
+              "devicePrefix": "SB",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "SB0404:14",
+              "fromTerminal": "14",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SB040414",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AP0602:9",
+              "toTerminal": "9",
+              "toLocation": "INTELLIGENT START PANEL",
+              "bundleName": "SB0404",
+              "bundleDisplay": "",
+              "devicePrefix": "SB",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "c2b61214f5e47e733c9b102ce0cbf47328bc3ff9677eb641d13c4a9f173f20f3"
+}

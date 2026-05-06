@@ -1,0 +1,346 @@
+{
+  "id": "legal-4m891cb-a-1-m-2",
+  "name": "VOLTAGD SHIP AHEAD",
+  "filename": "4M891-UCPWiringList_A.1_M1.xlsx",
+  "pdNumber": "4M891CB",
+  "revision": "A.1_M.2",
+  "createdAt": "2026-05-05T13:42:54.257Z",
+  "sheets": [
+    {
+      "slug": "blue-labels",
+      "name": "Blue Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/blue-labels.json",
+      "rowCount": 19,
+      "columnCount": 2,
+      "sheetIndex": 0,
+      "hasData": true
+    },
+    {
+      "slug": "white-labels",
+      "name": "White Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/white-labels.json",
+      "rowCount": 2,
+      "columnCount": 1,
+      "sheetIndex": 1,
+      "hasData": true
+    },
+    {
+      "slug": "heat-shrink-labels",
+      "name": "Heat Shrink Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/heat-shrink-labels.json",
+      "rowCount": 0,
+      "columnCount": 0,
+      "sheetIndex": 2,
+      "hasData": false
+    },
+    {
+      "slug": "jb1123-media-converter",
+      "name": "JB1123 MEDIA CONVERTER",
+      "kind": "operational",
+      "sheetPath": "sheets/jb1123-media-converter.json",
+      "rowCount": 13,
+      "columnCount": 9,
+      "sheetIndex": 3,
+      "hasData": true
+    },
+    {
+      "slug": "jb70",
+      "name": "JB70",
+      "kind": "operational",
+      "sheetPath": "sheets/jb70.json",
+      "rowCount": 6,
+      "columnCount": 9,
+      "sheetIndex": 4,
+      "hasData": true
+    },
+    {
+      "slug": "panel-errors",
+      "name": "Panel Errors",
+      "kind": "reference",
+      "sheetPath": "sheets/panel-errors.json",
+      "rowCount": 958,
+      "columnCount": 10,
+      "sheetIndex": 5,
+      "hasData": true
+    },
+    {
+      "slug": "cable-part-numbers",
+      "name": "Cable Part Numbers",
+      "kind": "reference",
+      "sheetPath": "sheets/cable-part-numbers.json",
+      "rowCount": 46,
+      "columnCount": 3,
+      "sheetIndex": 6,
+      "hasData": true
+    },
+    {
+      "slug": "part-number-list",
+      "name": "Part Number List",
+      "kind": "reference",
+      "sheetPath": "sheets/part-number-list.json",
+      "rowCount": 358,
+      "columnCount": 4,
+      "sheetIndex": 7,
+      "hasData": true
+    }
+  ],
+  "assignments": {
+    "jb1123-media-converter": {
+      "sheetSlug": "jb1123-media-converter",
+      "sheetName": "JB1123 MEDIA CONVERTER",
+      "kind": "operational",
+      "sheetPath": "sheets/jb1123-media-converter.json",
+      "rowCount": 13,
+      "columnCount": 9,
+      "sheetIndex": 3,
+      "hasData": true,
+      "swsType": "BASIC",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [
+        "5.75\" RAIL",
+        "10\" Rail"
+      ],
+      "whiteLabels": [
+        "GR1125",
+        "GR1128"
+      ],
+      "blueLabels": [
+        "BA0005",
+        "BA0006",
+        "GR1123",
+        "IEG1123",
+        "FU0005",
+        "FU0006",
+        "XT0003",
+        "GR1125",
+        "UJ0011",
+        "GR1128"
+      ],
+      "partNumbers": [
+        "1043265-1",
+        "1043265-3",
+        "1066730-32",
+        "1066730-7",
+        "1066730-8",
+        "1067996-82",
+        "1271449-1",
+        "1271449-5",
+        "903849C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb1123-media-converter.json",
+        "brandListSchemaPath": "wire-brand-list/jb1123-media-converter.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 1,
+          "title": "VFD MEDIA CONVERTER JB1123",
+          "normalizedTitle": "VFD MEDIA CONVERTER",
+          "unitType": "JB1123",
+          "panelNumber": "1058112-2300",
+          "boxNumber": "1054596-50",
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 311
+        },
+        "pages": []
+      },
+      "devices": {},
+      "unitType": "JB1123",
+      "boxSide": "topBackSide",
+      "externalLocations": [],
+      "buildUpEstTime": "14m",
+      "wireListEstTime": "10m",
+      "totalEstimatedMinutes": 24,
+      "remainingMinutes": 24,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb70": {
+      "sheetSlug": "jb70",
+      "sheetName": "JB70",
+      "kind": "operational",
+      "sheetPath": "sheets/jb70.json",
+      "rowCount": 6,
+      "columnCount": 9,
+      "sheetIndex": 4,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [
+        "UV0170",
+        "AT0170",
+        "HA0472",
+        "HL0171",
+        "HL0172",
+        "HL0173",
+        "SA0170",
+        "SB0170",
+        "AT1100",
+        "SB0471",
+        "SB0473",
+        "SB0474",
+        "SA0471",
+        "SH0470",
+        "SA0473",
+        "SB0472",
+        "SH0471",
+        "SH0472",
+        "SA0472"
+      ],
+      "partNumbers": [
+        "1043265-1",
+        "1043265-5",
+        "1056244-2",
+        "1056244-29",
+        "1103208-101",
+        "1577354-4502",
+        "2380746-1",
+        "2380746-10",
+        "2380746-2",
+        "2380746-3",
+        "2380746-4",
+        "2380746-5",
+        "2380746-7",
+        "2380746-9"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb70.json",
+        "brandListSchemaPath": "wire-brand-list/jb70.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "No high-confidence layout page matched JB70."
+      },
+      "devices": {},
+      "unitType": "JB70",
+      "boxSide": "topBackSide",
+      "externalLocations": [],
+      "buildUpEstTime": "7m",
+      "wireListEstTime": "5m",
+      "totalEstimatedMinutes": 12,
+      "remainingMinutes": 12,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    }
+  },
+  "referenceSheets": {
+    "blue-labels": {
+      "sheetSlug": "blue-labels",
+      "sheetName": "Blue Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/blue-labels.json",
+      "rowCount": 19,
+      "columnCount": 2,
+      "sheetIndex": 0,
+      "hasData": true
+    },
+    "white-labels": {
+      "sheetSlug": "white-labels",
+      "sheetName": "White Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/white-labels.json",
+      "rowCount": 2,
+      "columnCount": 1,
+      "sheetIndex": 1,
+      "hasData": true
+    },
+    "heat-shrink-labels": {
+      "sheetSlug": "heat-shrink-labels",
+      "sheetName": "Heat Shrink Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/heat-shrink-labels.json",
+      "rowCount": 0,
+      "columnCount": 0,
+      "sheetIndex": 2,
+      "hasData": false
+    },
+    "panel-errors": {
+      "sheetSlug": "panel-errors",
+      "sheetName": "Panel Errors",
+      "kind": "reference",
+      "sheetPath": "sheets/panel-errors.json",
+      "rowCount": 958,
+      "columnCount": 10,
+      "sheetIndex": 5,
+      "hasData": true
+    },
+    "cable-part-numbers": {
+      "sheetSlug": "cable-part-numbers",
+      "sheetName": "Cable Part Numbers",
+      "kind": "reference",
+      "sheetPath": "sheets/cable-part-numbers.json",
+      "rowCount": 46,
+      "columnCount": 3,
+      "sheetIndex": 6,
+      "hasData": true
+    },
+    "part-number-list": {
+      "sheetSlug": "part-number-list",
+      "sheetName": "Part Number List",
+      "kind": "reference",
+      "sheetPath": "sheets/part-number-list.json",
+      "rowCount": 358,
+      "columnCount": 4,
+      "sheetIndex": 7,
+      "hasData": true
+    }
+  },
+  "unitType": "JB1123",
+  "unitTypes": [
+    "JB1123",
+    "JB70"
+  ],
+  "rails": 2,
+  "aggregates": {
+    "totalAssignments": 2,
+    "completedAssignments": 0,
+    "inProgressAssignments": 0,
+    "blockedAssignments": 0,
+    "totalEstimatedMinutes": 36,
+    "totalRemainingMinutes": 36,
+    "totalActualMinutes": 0,
+    "overallProgress": 0,
+    "highestPriority": "low",
+    "priorityCounts": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 2
+    },
+    "stageCounts": {
+      "READY_TO_LAY": 2
+    }
+  },
+  "assignmentsByUnitType": {
+    "JB1123": [
+      "jb1123-media-converter"
+    ],
+    "JB70": [
+      "jb70"
+    ]
+  },
+  "projectName": "VOLTAGD SHIP AHEAD",
+  "lwcType": "New"
+}

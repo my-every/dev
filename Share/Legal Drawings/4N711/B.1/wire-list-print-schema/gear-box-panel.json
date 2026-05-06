@@ -1,0 +1,634 @@
+{
+  "generatedAt": "2026-05-05T13:49:10.743Z",
+  "sheetName": "GEAR BOX PANEL",
+  "mode": "standardize",
+  "totalPages": 3,
+  "totalRows": 23,
+  "settings": {
+    "showEstTime": false,
+    "showFromCheckbox": true,
+    "showToCheckbox": true,
+    "showIPV": true,
+    "showComments": true,
+    "showLength": false,
+    "showCoverPage": true,
+    "showTableOfContents": true,
+    "showIPVCodes": false,
+    "showFeedbackSection": false,
+    "showDeviceSubheaders": false,
+    "enableBlueDeviceIDColumns": false,
+    "sectionColumnVisibility": {},
+    "feedbackRenderMode": "BLANK",
+    "feedbackSections": [
+      "Header",
+      "Accuracy & Usability",
+      "Termination Clarity",
+      "Routing & Layout Alignment",
+      "Build Sequence & Efficiency",
+      "Hardware & Materials",
+      "Quality & Rework",
+      "Time & Effort",
+      "Safety & Compliance",
+      "Documentation Quality",
+      "Automation Checks",
+      "Final Sign-Off",
+      "Footer"
+    ],
+    "customQuestions": [
+      "accuracyBlueLabelsClear",
+      "accuracySequenceMatchedLayout",
+      "accuracyMissingDuplicateIncorrectEntries",
+      "accuracyLocationColumnCorrect",
+      "terminationTypesClear",
+      "terminationLengthsAccurate",
+      "terminationReworkDueToInstructionClarity",
+      "terminationJumperRulesEasyToFollow",
+      "routingAlignedWithLayout",
+      "routingLengthFit",
+      "routingConflictsPanduct",
+      "routingConflictsRails",
+      "routingConflictsAdjacentDevices",
+      "routingEfficientOrder",
+      "buildOrderHelpful",
+      "buildRequiredDeviation",
+      "buildDeviationReason",
+      "buildCausedDelays",
+      "materialsFerrulesAvailable",
+      "materialsLugsAvailable",
+      "materialsJumpersAvailable",
+      "materialsWireTypesAvailable",
+      "materialsIssuesNotes",
+      "qualityErrorsCaughtDuringWiring",
+      "qualityReterminatedWires",
+      "qualityReroutedWires",
+      "qualityReplacedWires",
+      "qualityCommonIssues",
+      "estimatedWiringTimeHours",
+      "actualWiringTimeHours",
+      "timeVarianceReason",
+      "safetyGroundsClearlyIdentified",
+      "safetyTerminationsCompliant",
+      "safetyConcernsNotes",
+      "documentationDifficulty",
+      "documentationImprovementAreas",
+      "documentationOtherImprovementArea",
+      "documentationSpecificSuggestions",
+      "automationJumperPredictionCorrect",
+      "automationBlueLabelSequencesCorrect",
+      "automationKtRulesCorrect",
+      "automationReusableTemplateCandidate",
+      "finalQualityRating",
+      "finalComments"
+    ],
+    "crossWireSections": [],
+    "hiddenRows": [],
+    "hiddenSections": [],
+    "brandingSortMode": "device-prefix",
+    "wireListSortMode": "device-prefix"
+  },
+  "pages": [
+    {
+      "pageType": "cover",
+      "pageNumber": 1,
+      "projectInfo": {
+        "projectNumber": "4N711",
+        "projectName": "ONE-E1 - Unit 1",
+        "revision": "B.1",
+        "pdNumber": "4N711",
+        "unitNumber": "1",
+        "preparedBy": "",
+        "badgeNumber": "",
+        "date": "",
+        "time": "",
+        "personnel": [
+          {
+            "id": "1",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "2",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "3",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "4",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "5",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "6",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          }
+        ]
+      },
+      "sheetTitle": "GEAR BOX PANEL"
+    },
+    {
+      "pageType": "toc",
+      "pageNumber": 2,
+      "locationGroups": [
+        {
+          "location": "GEAR BOX PANEL",
+          "isExternal": false,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Grounds",
+              "rowCount": 8,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 2,
+              "label": "Clips",
+              "rowCount": 7,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 3,
+              "label": "Single Connections",
+              "rowCount": 4,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "FU9780",
+                  "rowCount": 2
+                },
+                {
+                  "label": "XT - XT",
+                  "rowCount": 2
+                }
+              ]
+            },
+            {
+              "index": 4,
+              "label": "Cables",
+              "rowCount": 4,
+              "estimatedPage": 3,
+              "subEntries": []
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "locations": 1,
+        "sections": 6,
+        "rows": 23,
+        "pages": 3
+      }
+    },
+    {
+      "pageType": "wire-list",
+      "pageNumber": 3,
+      "locationGroups": [
+        {
+          "location": "GEAR BOX PANEL",
+          "isExternal": false,
+          "totalRows": 23,
+          "subsections": [
+            {
+              "label": "Grounds",
+              "sectionKind": "grounds",
+              "rowCount": 8,
+              "rows": [
+                {
+                  "rowId": "row-8",
+                  "rowIndex": 19,
+                  "fromDeviceId": "H9780:GND",
+                  "toDeviceId": "XT9782:1",
+                  "wireType": "WCH9780",
+                  "wireNo": "CCH9780G",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "18",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "70.B7",
+                  "toPageZone": "70.B6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-3",
+                  "rowIndex": 14,
+                  "fromDeviceId": "XT9780:3",
+                  "toDeviceId": "XT9781:3",
+                  "wireType": "SC",
+                  "wireNo": "CCH9780G",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "16",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "70.B3",
+                  "toPageZone": "70.B5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-5",
+                  "rowIndex": 16,
+                  "fromDeviceId": "XT9781:3",
+                  "toDeviceId": "XT9782:1",
+                  "wireType": "SC",
+                  "wireNo": "CCH9780G",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "16",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "70.B5",
+                  "toPageZone": "70.B6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-19",
+                  "rowIndex": 30,
+                  "fromDeviceId": "GR1320",
+                  "toDeviceId": "FRAME",
+                  "wireType": "SC",
+                  "wireNo": "GR1320",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "14",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "2.A6",
+                  "toPageZone": "2.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-20",
+                  "rowIndex": 31,
+                  "fromDeviceId": "GR1321",
+                  "toDeviceId": "FRAME",
+                  "wireType": "SC",
+                  "wireNo": "GR1321",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "14",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "2.A6",
+                  "toPageZone": "2.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-21",
+                  "rowIndex": 32,
+                  "fromDeviceId": "GR1322",
+                  "toDeviceId": "FRAME",
+                  "wireType": "SC",
+                  "wireNo": "GR1322",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "14",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "2.A7",
+                  "toPageZone": "2.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-22",
+                  "rowIndex": 33,
+                  "fromDeviceId": "GR1323",
+                  "toDeviceId": "FRAME",
+                  "wireType": "SC",
+                  "wireNo": "GR1323",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "14",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "2.A7",
+                  "toPageZone": "2.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-11",
+                  "rowIndex": 22,
+                  "fromDeviceId": "TS9780:GND",
+                  "toDeviceId": "XT9780G:1",
+                  "wireType": "WCTS9780",
+                  "wireNo": "TS9780G",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "14",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "70.A4",
+                  "toPageZone": "70.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Clips",
+              "sectionKind": "clips",
+              "rowCount": 7,
+              "rows": [
+                {
+                  "rowId": "row-12",
+                  "rowIndex": 23,
+                  "fromDeviceId": "XT0835:1",
+                  "toDeviceId": "XT0835:2",
+                  "wireType": "JC",
+                  "wireNo": "TE82001",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "63.A4",
+                  "toPageZone": "63.A4",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-17",
+                  "rowIndex": 28,
+                  "fromDeviceId": "XT0835:5",
+                  "toDeviceId": "XT0835:6",
+                  "wireType": "JC",
+                  "wireNo": "TE82011",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "63.B4",
+                  "toPageZone": "63.B4",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-18",
+                  "rowIndex": 29,
+                  "fromDeviceId": "XT0835:9",
+                  "toDeviceId": "XT0835:10",
+                  "wireType": "JC",
+                  "wireNo": "TE83011",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "64.A4",
+                  "toPageZone": "64.A4",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-13",
+                  "rowIndex": 24,
+                  "fromDeviceId": "XT0835:13",
+                  "toDeviceId": "XT0835:14",
+                  "wireType": "JC",
+                  "wireNo": "TE83041",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "64.B4",
+                  "toPageZone": "64.B4",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-14",
+                  "rowIndex": 25,
+                  "fromDeviceId": "XT0835:17",
+                  "toDeviceId": "XT0835:18",
+                  "wireType": "JC",
+                  "wireNo": "TE83071",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "64.C4",
+                  "toPageZone": "64.C4",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-15",
+                  "rowIndex": 26,
+                  "fromDeviceId": "XT0835:21",
+                  "toDeviceId": "XT0835:22",
+                  "wireType": "JC",
+                  "wireNo": "TE83602",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "65.A4",
+                  "toPageZone": "65.A4",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-16",
+                  "rowIndex": 27,
+                  "fromDeviceId": "XT0835:25",
+                  "toDeviceId": "XT0835:26",
+                  "wireType": "JC",
+                  "wireNo": "TE83702",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "65.B4",
+                  "toPageZone": "65.B4",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 4,
+              "rows": [
+                {
+                  "rowId": "row-0",
+                  "rowIndex": 11,
+                  "fromDeviceId": "FU9780:LD",
+                  "toDeviceId": "XT9781:1",
+                  "wireType": "SC",
+                  "wireNo": "FU9780L1",
+                  "wireId": "RED",
+                  "gaugeSize": "16",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "70.A3",
+                  "toPageZone": "70.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-1",
+                  "rowIndex": 12,
+                  "fromDeviceId": "FU9780:LI",
+                  "toDeviceId": "XT9780:1",
+                  "wireType": "SC",
+                  "wireNo": "CCH9780L1",
+                  "wireId": "RED",
+                  "gaugeSize": "16",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "70.A3",
+                  "toPageZone": "70.A3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-2",
+                  "rowIndex": 13,
+                  "fromDeviceId": "XT9780:2",
+                  "toDeviceId": "XT9781:2",
+                  "wireType": "SC",
+                  "wireNo": "CCH9780L2",
+                  "wireId": "RED",
+                  "gaugeSize": "16",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "70.A3",
+                  "toPageZone": "70.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-4",
+                  "rowIndex": 15,
+                  "fromDeviceId": "XT9781:2",
+                  "toDeviceId": "XT9782:2",
+                  "wireType": "SC",
+                  "wireNo": "CCH9780L2",
+                  "wireId": "RED",
+                  "gaugeSize": "16",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "70.A5",
+                  "toPageZone": "70.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "FU9780",
+                  "rowCount": 2
+                },
+                {
+                  "label": "XT - XT",
+                  "rowCount": 2
+                }
+              ]
+            },
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 4,
+              "rows": [
+                {
+                  "rowId": "row-6",
+                  "rowIndex": 17,
+                  "fromDeviceId": "H9780:L1",
+                  "toDeviceId": "XT9782:2",
+                  "wireType": "WCH9780",
+                  "wireNo": "CCH9780L2",
+                  "wireId": "BLU",
+                  "gaugeSize": "18",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "70.B7",
+                  "toPageZone": "70.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-7",
+                  "rowIndex": 18,
+                  "fromDeviceId": "H9780:L2",
+                  "toDeviceId": "XT9782:3",
+                  "wireType": "WCH9780",
+                  "wireNo": "TS9780L1",
+                  "wireId": "BRN",
+                  "gaugeSize": "18",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "70.B7",
+                  "toPageZone": "70.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-9",
+                  "rowIndex": 20,
+                  "fromDeviceId": "TS9780:NC",
+                  "toDeviceId": "XT9781:1",
+                  "wireType": "WCTS9780",
+                  "wireNo": "FU9780L1",
+                  "wireId": "BLU",
+                  "gaugeSize": "14",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "70.A4",
+                  "toPageZone": "70.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-10",
+                  "rowIndex": 21,
+                  "fromDeviceId": "TS9780:C",
+                  "toDeviceId": "XT9782:3",
+                  "wireType": "WCTS9780",
+                  "wireNo": "TS9780L1",
+                  "wireId": "BRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "GEAR BOX PANEL",
+                  "toLocation": "GEAR BOX PANEL",
+                  "fromPageZone": "70.A4",
+                  "toPageZone": "70.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

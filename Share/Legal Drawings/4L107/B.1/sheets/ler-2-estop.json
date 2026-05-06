@@ -1,0 +1,143 @@
+{
+  "slug": "ler-2-estop",
+  "name": "LER 2 ESTOP",
+  "kind": "operational",
+  "sheetIndex": 10,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "SB0500:B1-11",
+      "wireType": "SC",
+      "wireNo": "SB0500B111",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "fromLocation": "",
+      "fromPageZone": "47.D5",
+      "toDeviceId": "XT1036:3",
+      "toLocation": "LER,PNL,LFT",
+      "toPageZone": "47.D6",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-1",
+      "fromDeviceId": "SB0500:B1-12",
+      "wireType": "SC",
+      "wireNo": "SB0500B112",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "fromLocation": "",
+      "fromPageZone": "47.D5",
+      "toDeviceId": "XT1036:4",
+      "toLocation": "LER,PNL,LFT",
+      "toPageZone": "47.D6",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-2",
+      "fromDeviceId": "SB0500:B2-11",
+      "wireType": "SC",
+      "wireNo": "ESTOP2",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "fromLocation": "",
+      "fromPageZone": "47.D5",
+      "toDeviceId": "XT1036:1",
+      "toLocation": "LER,PNL,LFT",
+      "toPageZone": "47.D5",
+      "location": ""
+    },
+    {
+      "__rowIndex": 14,
+      "__rowId": "row-3",
+      "fromDeviceId": "SB0500:B2-12",
+      "wireType": "SC",
+      "wireNo": "ESTOP3",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "fromLocation": "",
+      "fromPageZone": "47.D5",
+      "toDeviceId": "XT1036:2",
+      "toLocation": "LER,PNL,LFT",
+      "toPageZone": "47.D5",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "XT1036:3",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "SB0500B111",
+      "Wire ID": "WHT",
+      "Gauge/Size": "20",
+      "Page/Zone": "47.D6",
+      "Location": "LER,PNL,LFT"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "XT1036:4",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "SB0500B112",
+      "Wire ID": "WHT",
+      "Gauge/Size": "20",
+      "Page/Zone": "47.D6",
+      "Location": "LER,PNL,LFT"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "XT1036:1",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "ESTOP2",
+      "Wire ID": "WHT",
+      "Gauge/Size": "20",
+      "Page/Zone": "47.D5",
+      "Location": "LER,PNL,LFT"
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "XT1036:2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "ESTOP3",
+      "Wire ID": "WHT",
+      "Gauge/Size": "20",
+      "Page/Zone": "47.D5",
+      "Location": "LER,PNL,LFT"
+    }
+  ],
+  "rowCount": 4,
+  "metadata": {
+    "projectName": "WHITEWATER MIDSTREAM^BAYRUNNER PIPELINE",
+    "revision": "B",
+    "controlsDE": "ALEX. JEZEQUEL",
+    "controlsME": "HECTOR, MEDRANO"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:14:45.289Z"
+}

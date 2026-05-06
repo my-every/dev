@@ -1,0 +1,124 @@
+{
+  "partNumber": "1503046-1",
+  "description": "MULTI-FUNCTION RELAY, MINV - PH SEQ",
+  "category": "devices",
+  "type": "control-modules",
+  "tags": [
+    "auto-ingest",
+    "devices"
+  ],
+  "source": "workbook_ingest",
+  "lifecycle": {
+    "status": "new",
+    "needsTraining": true,
+    "needsImages": true,
+    "needsReviewByRole": "team_lead",
+    "discoveredFrom": {
+      "projectId": "ang01-stock-9",
+      "sourceSheet": "JB71 B,PNL GEN CTRL",
+      "sourceLocation": "JB71 B,PNL GEN CTRL",
+      "discoveredAt": "2026-04-24T15:20:59.889Z"
+    }
+  },
+  "createdAt": "2026-04-24T15:20:59.890Z",
+  "updatedAt": "2026-05-05T04:31:12.254Z",
+  "terminalSchema": {
+    "negativePatterns": [
+      "-",
+      "0V",
+      "0VDC",
+      "COM",
+      "COMMON",
+      "DC-",
+      "NEG",
+      "NEGATIVE"
+    ],
+    "updatedAt": "2026-05-05T04:31:12.254Z",
+    "terminals": [
+      {
+        "name": "11",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "20",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "14",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "20",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "21",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "20",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "24",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "20",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "L1",
+        "aliases": [],
+        "wireId": "RED",
+        "size": "16",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "L2",
+        "aliases": [],
+        "wireId": "RED",
+        "size": "16",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "L3",
+        "aliases": [],
+        "wireId": "RED",
+        "size": "16",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      }
+    ]
+  }
+}

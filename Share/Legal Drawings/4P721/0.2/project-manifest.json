@@ -1,0 +1,2336 @@
+{
+  "id": "legal-4p721-0-2",
+  "name": "MEPCO",
+  "filename": "4P721-UCPWiringList_0.2.xlsx",
+  "pdNumber": "4P721",
+  "revision": "0.2",
+  "createdAt": "2026-05-05T13:53:50.167Z",
+  "sheets": [
+    {
+      "slug": "blue-labels",
+      "name": "Blue Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/blue-labels.json",
+      "rowCount": 69,
+      "columnCount": 16,
+      "sheetIndex": 0,
+      "hasData": true
+    },
+    {
+      "slug": "white-labels",
+      "name": "White Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/white-labels.json",
+      "rowCount": 5,
+      "columnCount": 19,
+      "sheetIndex": 1,
+      "hasData": true
+    },
+    {
+      "slug": "heat-shrink-labels",
+      "name": "Heat Shrink Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/heat-shrink-labels.json",
+      "rowCount": 8,
+      "columnCount": 6,
+      "sheetIndex": 2,
+      "hasData": true
+    },
+    {
+      "slug": "jb71-b-eqp-pwr-door",
+      "name": "JB71 B, EQP PWR DOOR",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-eqp-pwr-door.json",
+      "rowCount": 32,
+      "columnCount": 9,
+      "sheetIndex": 3,
+      "hasData": true
+    },
+    {
+      "slug": "jb71-b-box-control",
+      "name": "JB71 B,BOX CONTROL",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-box-control.json",
+      "rowCount": 4,
+      "columnCount": 9,
+      "sheetIndex": 4,
+      "hasData": true
+    },
+    {
+      "slug": "jb71-b-door-ctrl",
+      "name": "JB71 B,DOOR CTRL",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-door-ctrl.json",
+      "rowCount": 5,
+      "columnCount": 9,
+      "sheetIndex": 5,
+      "hasData": true
+    },
+    {
+      "slug": "jb71-b-door-opr",
+      "name": "JB71 B,DOOR OPR",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-door-opr.json",
+      "rowCount": 41,
+      "columnCount": 9,
+      "sheetIndex": 6,
+      "hasData": true
+    },
+    {
+      "slug": "jb71-b-pnl-ctrl1",
+      "name": "JB71 B,PNL CTRL1",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-pnl-ctrl1.json",
+      "rowCount": 183,
+      "columnCount": 9,
+      "sheetIndex": 7,
+      "hasData": true
+    },
+    {
+      "slug": "jb71-b-pnl-ctrl2",
+      "name": "JB71 B,PNL CTRL2",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-pnl-ctrl2.json",
+      "rowCount": 337,
+      "columnCount": 9,
+      "sheetIndex": 8,
+      "hasData": true
+    },
+    {
+      "slug": "jb71-b-pnl-customer",
+      "name": "JB71 B,PNL CUSTOMER",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-pnl-customer.json",
+      "rowCount": 324,
+      "columnCount": 9,
+      "sheetIndex": 9,
+      "hasData": true
+    },
+    {
+      "slug": "jb71-b-pnl-dc-pwr",
+      "name": "JB71 B,PNL DC PWR",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-pnl-dc-pwr.json",
+      "rowCount": 101,
+      "columnCount": 9,
+      "sheetIndex": 10,
+      "hasData": true
+    },
+    {
+      "slug": "jb71-b-pnl-gen-ctrl",
+      "name": "JB71 B,PNL GEN CTRL",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-pnl-gen-ctrl.json",
+      "rowCount": 368,
+      "columnCount": 9,
+      "sheetIndex": 11,
+      "hasData": true
+    },
+    {
+      "slug": "jb71-b-pnl-vibration",
+      "name": "JB71 B,PNL VIBRATION",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-pnl-vibration.json",
+      "rowCount": 39,
+      "columnCount": 9,
+      "sheetIndex": 12,
+      "hasData": true
+    },
+    {
+      "slug": "jb71-c-door-pnl-eqp",
+      "name": "JB71 C,DOOR PNL EQP",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-c-door-pnl-eqp.json",
+      "rowCount": 20,
+      "columnCount": 9,
+      "sheetIndex": 13,
+      "hasData": true
+    },
+    {
+      "slug": "jb71-c-liquid-fuel",
+      "name": "JB71 C,LIQUID FUEL",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-c-liquid-fuel.json",
+      "rowCount": 84,
+      "columnCount": 9,
+      "sheetIndex": 14,
+      "hasData": true
+    },
+    {
+      "slug": "jb71-c-pnl-eqp-ctrl",
+      "name": "JB71 C,PNL EQP CTRL",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-c-pnl-eqp-ctrl.json",
+      "rowCount": 134,
+      "columnCount": 9,
+      "sheetIndex": 15,
+      "hasData": true
+    },
+    {
+      "slug": "jb71-c-pnl-gpp-full",
+      "name": "JB71 C,PNL GPP FULL",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-c-pnl-gpp-full.json",
+      "rowCount": 51,
+      "columnCount": 9,
+      "sheetIndex": 16,
+      "hasData": true
+    },
+    {
+      "slug": "jb71-c-pnl-pss",
+      "name": "JB71 C,PNL PSS",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-c-pnl-pss.json",
+      "rowCount": 126,
+      "columnCount": 9,
+      "sheetIndex": 17,
+      "hasData": true
+    },
+    {
+      "slug": "pnl-probe-driver",
+      "name": "PNL,PROBE DRIVER",
+      "kind": "operational",
+      "sheetPath": "sheets/pnl-probe-driver.json",
+      "rowCount": 1,
+      "columnCount": 9,
+      "sheetIndex": 18,
+      "hasData": true
+    },
+    {
+      "slug": "panel-errors",
+      "name": "Panel Errors",
+      "kind": "reference",
+      "sheetPath": "sheets/panel-errors.json",
+      "rowCount": 0,
+      "columnCount": 10,
+      "sheetIndex": 19,
+      "hasData": false
+    },
+    {
+      "slug": "cable-part-numbers",
+      "name": "Cable Part Numbers",
+      "kind": "reference",
+      "sheetPath": "sheets/cable-part-numbers.json",
+      "rowCount": 55,
+      "columnCount": 3,
+      "sheetIndex": 20,
+      "hasData": true
+    },
+    {
+      "slug": "part-number-list",
+      "name": "Part Number List",
+      "kind": "reference",
+      "sheetPath": "sheets/part-number-list.json",
+      "rowCount": 406,
+      "columnCount": 4,
+      "sheetIndex": 21,
+      "hasData": true
+    }
+  ],
+  "assignments": {
+    "jb71-b-eqp-pwr-door": {
+      "sheetSlug": "jb71-b-eqp-pwr-door",
+      "sheetName": "JB71 B, EQP PWR DOOR",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-eqp-pwr-door.json",
+      "rowCount": 32,
+      "columnCount": 9,
+      "sheetIndex": 3,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [
+        "8.5\" RAIL"
+      ],
+      "whiteLabels": [
+        "GR0175",
+        "UV0170G"
+      ],
+      "blueLabels": [
+        "UV0170",
+        "FU0170",
+        "FU0171",
+        "FU0172",
+        "XT0175",
+        "GR0175"
+      ],
+      "partNumbers": [
+        "1043265-1",
+        "1043265-4",
+        "1043265-5",
+        "1043265-6",
+        "1056244-2",
+        "1066730-7",
+        "903842C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb71-b-eqp-pwr-door.json",
+        "brandListSchemaPath": "wire-brand-list/jb71-b-eqp-pwr-door.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 11,
+          "title": "JB71 B,DOOR OPR",
+          "normalizedTitle": "B DR OPR",
+          "unitType": "JB71",
+          "panelNumber": null,
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 169
+        },
+        "pages": [
+          {
+            "pageNumber": 11,
+            "title": "JB71 B,DOOR OPR",
+            "normalizedTitle": "B DR OPR",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 169
+          },
+          {
+            "pageNumber": 12,
+            "title": "JB71 C,DOOR PNL EQP",
+            "normalizedTitle": "C DR PNL EQP",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 169
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB71",
+      "externalLocations": [],
+      "buildUpEstTime": "35m",
+      "wireListEstTime": "24m",
+      "totalEstimatedMinutes": 59,
+      "remainingMinutes": 59,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb71-b-box-control": {
+      "sheetSlug": "jb71-b-box-control",
+      "sheetName": "JB71 B,BOX CONTROL",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-box-control.json",
+      "rowCount": 4,
+      "columnCount": 9,
+      "sheetIndex": 4,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [
+        "1x2x25",
+        "1x2x77",
+        "2x5x13.3",
+        "2x5x17.3",
+        "2x5x22.3",
+        "2x5x27",
+        "2x5x20",
+        "2x5x43",
+        "2x5x45",
+        "2x4x11.5",
+        "2x5x5",
+        "2x5x14",
+        "1x4x12",
+        "2x4x5.25",
+        "2x5x21.3",
+        "2x4x67.9",
+        "2x4x45",
+        "2x5x65.7",
+        "1x4x20",
+        "1x4x8",
+        "2x5x10",
+        "2x5x12",
+        "1x4x9",
+        "2x4x12",
+        "2x5x12.75"
+      ],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [
+        "EL0100",
+        "EL0101"
+      ],
+      "partNumbers": [
+        "2403630-1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb71-b-box-control.json",
+        "brandListSchemaPath": "wire-brand-list/jb71-b-box-control.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 6,
+          "title": "JB71 B,PNL GEN CTRL",
+          "normalizedTitle": "B PNL GEN CTRL",
+          "unitType": "JB71",
+          "panelNumber": null,
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 149
+        },
+        "pages": [
+          {
+            "pageNumber": 6,
+            "title": "JB71 B,PNL GEN CTRL",
+            "normalizedTitle": "B PNL GEN CTRL",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 149
+          },
+          {
+            "pageNumber": 7,
+            "title": "JB71 C,PNL EQP CTRL",
+            "normalizedTitle": "C PNL EQP CTRL",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 131
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB71",
+      "boxSide": "leftBackSide",
+      "externalLocations": [
+        {
+          "location": "CONTROL B",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "CONTROL JB70 TT6",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "F G EDIO ONSK",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "FIRE SYSTEM RAIL",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "GEN CTRL",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "PLC",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "RAIL RIGHT JB70",
+          "wireListVisible": false,
+          "brandingVisible": false
+        }
+      ],
+      "buildUpEstTime": "4m",
+      "wireListEstTime": "3m",
+      "totalEstimatedMinutes": 7,
+      "remainingMinutes": 7,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb71-b-door-ctrl": {
+      "sheetSlug": "jb71-b-door-ctrl",
+      "sheetName": "JB71 B,DOOR CTRL",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-door-ctrl.json",
+      "rowCount": 5,
+      "columnCount": 9,
+      "sheetIndex": 5,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [
+        "AT1100K",
+        "AT1100"
+      ],
+      "partNumbers": [
+        "1068334",
+        "1577354-5100"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb71-b-door-ctrl.json",
+        "brandListSchemaPath": "wire-brand-list/jb71-b-door-ctrl.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 11,
+          "title": "JB71 B,DOOR OPR",
+          "normalizedTitle": "B DR OPR",
+          "unitType": "JB71",
+          "panelNumber": null,
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 171
+        },
+        "pages": [
+          {
+            "pageNumber": 11,
+            "title": "JB71 B,DOOR OPR",
+            "normalizedTitle": "B DR OPR",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 171
+          },
+          {
+            "pageNumber": 16,
+            "title": "JB71 B, EQP PWR DOOR",
+            "normalizedTitle": "B EQP PWR DR",
+            "unitType": "JB71",
+            "panelNumber": "1058134-41",
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 168
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB71",
+      "externalLocations": [],
+      "buildUpEstTime": "6m",
+      "wireListEstTime": "4m",
+      "totalEstimatedMinutes": 10,
+      "remainingMinutes": 10,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb71-b-door-opr": {
+      "sheetSlug": "jb71-b-door-opr",
+      "sheetName": "JB71 B,DOOR OPR",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-door-opr.json",
+      "rowCount": 41,
+      "columnCount": 9,
+      "sheetIndex": 6,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [
+        "SB0472",
+        "SH0471",
+        "SH0470",
+        "SB0471",
+        "SB0473",
+        "SB0474",
+        "SA0471",
+        "SA0475",
+        "HA0472",
+        "SH0472",
+        "SA0473",
+        "SB0333"
+      ],
+      "partNumbers": [
+        "1483682-10",
+        "1483682-11",
+        "1483682-12",
+        "1483682-14",
+        "1483682-18",
+        "1483682-20",
+        "1483682-31",
+        "1483682-32",
+        "1483682-33",
+        "1483682-37",
+        "1483682-38",
+        "1483682-6"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb71-b-door-opr.json",
+        "brandListSchemaPath": "wire-brand-list/jb71-b-door-opr.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 10,
+          "title": "JB71 B,DOOR CTRL",
+          "normalizedTitle": "B DR CTRL",
+          "unitType": "JB71",
+          "panelNumber": null,
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 171
+        },
+        "pages": [
+          {
+            "pageNumber": 10,
+            "title": "JB71 B,DOOR CTRL",
+            "normalizedTitle": "B DR CTRL",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 171
+          },
+          {
+            "pageNumber": 16,
+            "title": "JB71 B, EQP PWR DOOR",
+            "normalizedTitle": "B EQP PWR DR",
+            "unitType": "JB71",
+            "panelNumber": "1058134-41",
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 169
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB71",
+      "externalLocations": [],
+      "buildUpEstTime": "45m",
+      "wireListEstTime": "31m",
+      "totalEstimatedMinutes": 76,
+      "remainingMinutes": 76,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb71-b-pnl-ctrl1": {
+      "sheetSlug": "jb71-b-pnl-ctrl1",
+      "sheetName": "JB71 B,PNL CTRL1",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-pnl-ctrl1.json",
+      "rowCount": 183,
+      "columnCount": 9,
+      "sheetIndex": 7,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [
+        "1x4x7.25",
+        "2x5x42.7",
+        "2x5x18.7",
+        "2x5x45.3"
+      ],
+      "rails": [
+        "17\" Rail",
+        "21.25\" Rail"
+      ],
+      "whiteLabels": [
+        "AF0071G",
+        "IEG00115",
+        "IEG00116",
+        "IEG0011G",
+        "AF0074G",
+        "PT6410S",
+        "IEG00117",
+        "AF0093G",
+        "AF0093P",
+        "AF0095G"
+      ],
+      "blueLabels": [
+        "WC0020",
+        "FU0010",
+        "FU0100",
+        "FU0210",
+        "FU0070",
+        "FU0071",
+        "FU0072",
+        "FU0073",
+        "FU0091",
+        "FU0092",
+        "FU0093",
+        "FU0094",
+        "FU0099",
+        "FU1100",
+        "XT0070",
+        "PC0470",
+        "PC0471",
+        "GR0071",
+        "AF0094",
+        "AF0096",
+        "AF0093",
+        "AF0092",
+        "AF0091",
+        "AU0090",
+        "GR0090",
+        "AF0075",
+        "AF0074",
+        "AF0073",
+        "AF0072",
+        "AF0071",
+        "AU0070",
+        "GR0070",
+        "AF0095",
+        "XT0071",
+        "XT0091",
+        "KA0233",
+        "KA0234",
+        "KA0875",
+        "KA1020",
+        "GR0091",
+        "AT0600",
+        "UV0600",
+        "AP0601",
+        "AP0602",
+        "AP0603",
+        "AP0604",
+        "AP0605",
+        "AP0606",
+        "AR0600",
+        "IEG0011"
+      ],
+      "partNumbers": [
+        "1043265-1",
+        "1043265-3",
+        "1043265-4",
+        "1043265-5",
+        "1043265-6",
+        "1061979-1",
+        "1066730-7",
+        "1089241-15",
+        "1089241-28",
+        "1089241-29",
+        "1089241-40",
+        "1089241-43",
+        "2271605-1",
+        "232941-300",
+        "2684693-17",
+        "2684693-18",
+        "2684693-19",
+        "2684693-21",
+        "2684693-22",
+        "2684693-23",
+        "2684693-24",
+        "2684693-27",
+        "2684693-28",
+        "2684693-30",
+        "2684693-32",
+        "2684693-33",
+        "2684693-36",
+        "2684693-55",
+        "2684693-56",
+        "903842C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb71-b-pnl-ctrl1.json",
+        "brandListSchemaPath": "wire-brand-list/jb71-b-pnl-ctrl1.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 5,
+          "title": "JB71 B,PNL CTRL2",
+          "normalizedTitle": "B PNL CTRL2",
+          "unitType": "JB71",
+          "panelNumber": null,
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 174
+        },
+        "pages": [
+          {
+            "pageNumber": 5,
+            "title": "JB71 B,PNL CTRL2",
+            "normalizedTitle": "B PNL CTRL2",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 174
+          },
+          {
+            "pageNumber": 3,
+            "title": "JB71 B,PNL VIBRATION",
+            "normalizedTitle": "B PNL VIB",
+            "unitType": "JB71",
+            "panelNumber": "1702271-160",
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 172
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB71",
+      "externalLocations": [],
+      "buildUpEstTime": "3h 21m",
+      "wireListEstTime": "2h 17m",
+      "totalEstimatedMinutes": 338,
+      "remainingMinutes": 338,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb71-b-pnl-ctrl2": {
+      "sheetSlug": "jb71-b-pnl-ctrl2",
+      "sheetName": "JB71 B,PNL CTRL2",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-pnl-ctrl2.json",
+      "rowCount": 337,
+      "columnCount": 9,
+      "sheetIndex": 8,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [
+        "2x5x12.75",
+        "2x5x65.7",
+        "2x4x5.25",
+        "2x4x68"
+      ],
+      "rails": [
+        "65.25\" Rail",
+        "2.75\" Rail"
+      ],
+      "whiteLabels": [
+        "IEG00115",
+        "AF0062G",
+        "GR0060",
+        "PT6410S",
+        "AF0063G",
+        "IEG00108",
+        "AF0064G",
+        "AF0382G",
+        "AU0060G"
+      ],
+      "blueLabels": [
+        "KA0060",
+        "KA0380",
+        "KA0382",
+        "KA0061",
+        "KA0062",
+        "KA0070",
+        "XT0069",
+        "KA0130",
+        "KA0131",
+        "KA0132",
+        "KA0133",
+        "KA0134",
+        "KA0135",
+        "KA0136",
+        "KA0137",
+        "KA0138",
+        "KA0141",
+        "KA0176",
+        "KA0177",
+        "KA0231",
+        "KA0232",
+        "KA0235",
+        "KA0238",
+        "KA0239",
+        "KA0240",
+        "KA0241",
+        "KA0242",
+        "KA0244",
+        "KA0248",
+        "KA0249",
+        "KA0243",
+        "KA0245",
+        "KT0140",
+        "KT0141",
+        "KT0142",
+        "KT0143",
+        "KT0144",
+        "KT0145",
+        "KT0146",
+        "UAI6410",
+        "XT6410",
+        "XTFG12",
+        "XT0237",
+        "GR0383",
+        "GR0382",
+        "XT0072",
+        "XT0087",
+        "XT0089",
+        "XT1200",
+        "GR0381",
+        "FU0060",
+        "FU0061",
+        "FU0062",
+        "FU0380",
+        "FU0381",
+        "FU0382",
+        "FU0387",
+        "FU0388",
+        "FU0389",
+        "FU2108",
+        "XT0060",
+        "XT0080",
+        "XT0081",
+        "AF0385",
+        "AF0384",
+        "AF0383",
+        "AF0382",
+        "AF0381",
+        "AU0380"
+      ],
+      "partNumbers": [
+        "1043265-1",
+        "1043265-3",
+        "1043265-4",
+        "1043265-5",
+        "1043265-6",
+        "1053038-49",
+        "1053038-53",
+        "1053834-11",
+        "1061979-1",
+        "1066730-1",
+        "1066730-10",
+        "1066730-7",
+        "1066730-8",
+        "1066730-9",
+        "1067996-4",
+        "1096409-1",
+        "1096409-3",
+        "1483682-24",
+        "1483682-30",
+        "2651077-1",
+        "2651077-3",
+        "2684693-17",
+        "2684693-18",
+        "2684693-19",
+        "2684693-22",
+        "2684693-23",
+        "2684693-25",
+        "2684693-27",
+        "2684693-28",
+        "2684693-30",
+        "2684693-33",
+        "2684693-55",
+        "2684693-56",
+        "903842C1",
+        "981089C1",
+        "981090C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb71-b-pnl-ctrl2.json",
+        "brandListSchemaPath": "wire-brand-list/jb71-b-pnl-ctrl2.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 4,
+          "title": "JB71 B,PNL CTRL1",
+          "normalizedTitle": "B PNL CTRL1",
+          "unitType": "JB71",
+          "panelNumber": null,
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 174
+        },
+        "pages": [
+          {
+            "pageNumber": 4,
+            "title": "JB71 B,PNL CTRL1",
+            "normalizedTitle": "B PNL CTRL1",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 174
+          },
+          {
+            "pageNumber": 3,
+            "title": "JB71 B,PNL VIBRATION",
+            "normalizedTitle": "B PNL VIB",
+            "unitType": "JB71",
+            "panelNumber": "1702271-160",
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 172
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB71",
+      "externalLocations": [],
+      "buildUpEstTime": "6h 11m",
+      "wireListEstTime": "4h 13m",
+      "totalEstimatedMinutes": 624,
+      "remainingMinutes": 624,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb71-b-pnl-customer": {
+      "sheetSlug": "jb71-b-pnl-customer",
+      "sheetName": "JB71 B,PNL CUSTOMER",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-pnl-customer.json",
+      "rowCount": 324,
+      "columnCount": 9,
+      "sheetIndex": 9,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [
+        "2x5x43",
+        "2x5x20",
+        "2x5x5",
+        "2x5x45"
+      ],
+      "rails": [
+        "41.25\" Rail",
+        "12.75\" Rail",
+        "22.75\" Rail",
+        "39.75\" Rail"
+      ],
+      "whiteLabels": [
+        "IEG00116",
+        "AF0652G",
+        "GR0180",
+        "IEG00117",
+        "AF0654G",
+        "GR0650",
+        "AU0180G",
+        "PT1170S",
+        "AU0650G",
+        "XT01403",
+        "GR0651"
+      ],
+      "blueLabels": [
+        "FU0180",
+        "FU0181",
+        "FU0182",
+        "FU0183",
+        "FU0650",
+        "FU0651",
+        "FU0652",
+        "FU0659",
+        "XT0180",
+        "AU0650",
+        "AF0651",
+        "AF0652",
+        "AF0653",
+        "AF0654",
+        "AF0655",
+        "XT0187",
+        "XT0188",
+        "KA0191",
+        "KA0193",
+        "KA0190",
+        "KA0192",
+        "GR0650",
+        "KA0180",
+        "KA0181",
+        "KA0184",
+        "KA0290",
+        "KA0291",
+        "KA0650",
+        "KA0651",
+        "KA0652",
+        "KA0653",
+        "KA0654",
+        "KA0655",
+        "KA0656",
+        "KA0657",
+        "KA0658",
+        "UAI1170",
+        "XT1170",
+        "GR0652",
+        "XT0186",
+        "XT0189",
+        "GR0651",
+        "FU0128",
+        "FU0129",
+        "FU0250",
+        "XT0129",
+        "KA0310",
+        "KA0128",
+        "KA0123",
+        "XT0140",
+        "XT4003",
+        "XT0144",
+        "AF0183",
+        "AF0182",
+        "AF0181",
+        "XT0291",
+        "XT0292",
+        "XT0299",
+        "GR0180",
+        "AU0180"
+      ],
+      "partNumbers": [
+        "1043265-1",
+        "1043265-3",
+        "1043265-4",
+        "1043265-5",
+        "1043265-6",
+        "1053038-49",
+        "1053038-53",
+        "1061979-1",
+        "1066730-4",
+        "1066730-7",
+        "1066730-8",
+        "1096409-1",
+        "2227550-1",
+        "2684693-17",
+        "2684693-18",
+        "2684693-22",
+        "2684693-23",
+        "2684693-24",
+        "2684693-25",
+        "2684693-27",
+        "2684693-30",
+        "2684693-56",
+        "903842C1",
+        "960592C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb71-b-pnl-customer.json",
+        "brandListSchemaPath": "wire-brand-list/jb71-b-pnl-customer.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 3,
+          "title": "JB71 B,PNL VIBRATION",
+          "normalizedTitle": "B PNL VIB",
+          "unitType": "JB71",
+          "panelNumber": "1702271-160",
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 172
+        },
+        "pages": [
+          {
+            "pageNumber": 3,
+            "title": "JB71 B,PNL VIBRATION",
+            "normalizedTitle": "B PNL VIB",
+            "unitType": "JB71",
+            "panelNumber": "1702271-160",
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 172
+          },
+          {
+            "pageNumber": 4,
+            "title": "JB71 B,PNL CTRL1",
+            "normalizedTitle": "B PNL CTRL1",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 172
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB71",
+      "externalLocations": [],
+      "buildUpEstTime": "5h 56m",
+      "wireListEstTime": "4h 3m",
+      "totalEstimatedMinutes": 599,
+      "remainingMinutes": 599,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb71-b-pnl-dc-pwr": {
+      "sheetSlug": "jb71-b-pnl-dc-pwr",
+      "sheetName": "JB71 B,PNL DC PWR",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-pnl-dc-pwr.json",
+      "rowCount": 101,
+      "columnCount": 9,
+      "sheetIndex": 10,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [
+        "2x4x11",
+        "2x4x45"
+      ],
+      "rails": [
+        "4.25\" Rail",
+        "11.25\" Rail"
+      ],
+      "whiteLabels": [
+        "IEG0011G",
+        "GR0060",
+        "GR0180",
+        "0V",
+        "GR0120",
+        "XT04002",
+        "GR0050",
+        "IEG00108",
+        "GR0650",
+        "IEG001011",
+        "GR0350",
+        "PT1170S",
+        "IEG00105",
+        "XT01403",
+        "IEG00106"
+      ],
+      "blueLabels": [
+        "PEG0130",
+        "XTFG78",
+        "XT0786",
+        "XT0785",
+        "XT0784",
+        "XT0781",
+        "XT2551",
+        "GR0133",
+        "XT0005",
+        "XT0004",
+        "XT0003",
+        "XT0002",
+        "GR0132",
+        "UJ0131",
+        "FU0136",
+        "FU0005",
+        "FU0004",
+        "GR0130",
+        "IEG0010",
+        "XTFG08",
+        "XTFG06",
+        "XT0011",
+        "FU0015",
+        "FU0014",
+        "FU0013",
+        "FU0012",
+        "FU0011",
+        "GR0131",
+        "XT0012"
+      ],
+      "partNumbers": [
+        "1043265-1",
+        "1043265-3",
+        "1043265-5",
+        "1043265-7",
+        "1043265-9",
+        "1066730-1",
+        "1066730-16",
+        "1066730-2",
+        "1066730-7",
+        "1247052-1",
+        "1286570-1",
+        "1503051-1",
+        "232941-110",
+        "232941-300",
+        "903842C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb71-b-pnl-dc-pwr.json",
+        "brandListSchemaPath": "wire-brand-list/jb71-b-pnl-dc-pwr.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 3,
+          "title": "JB71 B,PNL VIBRATION",
+          "normalizedTitle": "B PNL VIB",
+          "unitType": "JB71",
+          "panelNumber": "1702271-160",
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 124
+        },
+        "pages": [
+          {
+            "pageNumber": 3,
+            "title": "JB71 B,PNL VIBRATION",
+            "normalizedTitle": "B PNL VIB",
+            "unitType": "JB71",
+            "panelNumber": "1702271-160",
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 124
+          },
+          {
+            "pageNumber": 4,
+            "title": "JB71 B,PNL CTRL1",
+            "normalizedTitle": "B PNL CTRL1",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 124
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB71",
+      "externalLocations": [],
+      "buildUpEstTime": "1h 51m",
+      "wireListEstTime": "1h 16m",
+      "totalEstimatedMinutes": 187,
+      "remainingMinutes": 187,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb71-b-pnl-gen-ctrl": {
+      "sheetSlug": "jb71-b-pnl-gen-ctrl",
+      "sheetName": "JB71 B,PNL GEN CTRL",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-pnl-gen-ctrl.json",
+      "rowCount": 368,
+      "columnCount": 9,
+      "sheetIndex": 11,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [
+        "2x5x27",
+        "2x5x14",
+        "2x5x45"
+      ],
+      "rails": [
+        "27\" Rail",
+        "44\" Rail"
+      ],
+      "whiteLabels": [
+        "GR0120",
+        "AU0120G",
+        "WC8102",
+        "IEG001011",
+        "WC8201",
+        "WC8301"
+      ],
+      "blueLabels": [
+        "AT0140",
+        "XT0782",
+        "XT0780",
+        "QF0784",
+        "QF0782",
+        "QF0781",
+        "XT0783",
+        "XT0141",
+        "XT0142",
+        "XT0313",
+        "XT0143",
+        "KA0313",
+        "XT0122",
+        "FV0721",
+        "FV0722",
+        "KA0188",
+        "KA0189",
+        "KA0332",
+        "KA0333",
+        "KA0342",
+        "XT0336",
+        "XT0337",
+        "XT0338",
+        "GR0140",
+        "KA0186",
+        "KA0185",
+        "KA0365",
+        "KA0352",
+        "KA0351",
+        "XT0123",
+        "KA0336",
+        "KA0330",
+        "XT4001",
+        "XT0125",
+        "XT0120",
+        "FU0127",
+        "FU0126",
+        "FU0125",
+        "FU0124",
+        "FU0123",
+        "FU0122",
+        "FU0121",
+        "FU0120",
+        "XT0128",
+        "XT0124",
+        "XT0121",
+        "XT4002",
+        "XT4004",
+        "GR0141",
+        "AF0126",
+        "AF0125",
+        "AF0124",
+        "AF0123",
+        "AF0122",
+        "AF0121",
+        "AU0120",
+        "GR0120",
+        "KA0364"
+      ],
+      "partNumbers": [
+        "1031741-4",
+        "1043265-1",
+        "1043265-4",
+        "1043265-5",
+        "1043265-7",
+        "1061979-1",
+        "1066730-62",
+        "1066730-7",
+        "1066730-79",
+        "1503046-1",
+        "1503049-1",
+        "1503049-2",
+        "1503049-3",
+        "1503049-4",
+        "1503050-2",
+        "1503050-3",
+        "1503051-1",
+        "1503051-2",
+        "2684693-17",
+        "2684693-19",
+        "2684693-22",
+        "2684693-23",
+        "2684693-24",
+        "2684693-33",
+        "2769310-1",
+        "2769310-4",
+        "3193338-4",
+        "903849C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb71-b-pnl-gen-ctrl.json",
+        "brandListSchemaPath": "wire-brand-list/jb71-b-pnl-gen-ctrl.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 7,
+          "title": "JB71 C,PNL EQP CTRL",
+          "normalizedTitle": "C PNL EQP CTRL",
+          "unitType": "JB71",
+          "panelNumber": null,
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 151
+        },
+        "pages": [
+          {
+            "pageNumber": 7,
+            "title": "JB71 C,PNL EQP CTRL",
+            "normalizedTitle": "C PNL EQP CTRL",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 151
+          },
+          {
+            "pageNumber": 1,
+            "title": "JB71 B,BOX CONTROL",
+            "normalizedTitle": "B BOX CTRL",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 149
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB71",
+      "boxSide": "rightBackSide",
+      "externalLocations": [],
+      "buildUpEstTime": "6h 45m",
+      "wireListEstTime": "4h 36m",
+      "totalEstimatedMinutes": 681,
+      "remainingMinutes": 681,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb71-b-pnl-vibration": {
+      "sheetSlug": "jb71-b-pnl-vibration",
+      "sheetName": "JB71 B,PNL VIBRATION",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-b-pnl-vibration.json",
+      "rowCount": 39,
+      "columnCount": 9,
+      "sheetIndex": 12,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [
+        "2x5x9",
+        "2x5x22.3",
+        "1x4x9"
+      ],
+      "rails": [
+        "20\" Rail",
+        "21.25\" LOW RAIL"
+      ],
+      "whiteLabels": [
+        "XT04002",
+        "XT04001"
+      ],
+      "blueLabels": [
+        "FU0400",
+        "FU0410",
+        "FU0411",
+        "FU0412",
+        "FU0680",
+        "XT0401",
+        "UA1520",
+        "XT1520",
+        "XT1521",
+        "AT0680",
+        "GR0400",
+        "AF0450",
+        "AF0420",
+        "AF0410",
+        "AF0400",
+        "XT0400"
+      ],
+      "partNumbers": [
+        "1043265-1",
+        "1043265-3",
+        "1043265-4",
+        "1066730-1",
+        "1066730-2",
+        "1066730-7",
+        "1066730-8",
+        "1105411-11",
+        "1322418-11",
+        "1322418-20",
+        "1322418-31",
+        "1322418-40",
+        "1322418-70",
+        "1322418-71",
+        "1322418-72",
+        "1322418-73",
+        "1634974-100",
+        "903842C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb71-b-pnl-vibration.json",
+        "brandListSchemaPath": "wire-brand-list/jb71-b-pnl-vibration.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 4,
+          "title": "JB71 B,PNL CTRL1",
+          "normalizedTitle": "B PNL CTRL1",
+          "unitType": "JB71",
+          "panelNumber": null,
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 172
+        },
+        "pages": [
+          {
+            "pageNumber": 4,
+            "title": "JB71 B,PNL CTRL1",
+            "normalizedTitle": "B PNL CTRL1",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 172
+          },
+          {
+            "pageNumber": 5,
+            "title": "JB71 B,PNL CTRL2",
+            "normalizedTitle": "B PNL CTRL2",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 172
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB71",
+      "externalLocations": [],
+      "buildUpEstTime": "43m",
+      "wireListEstTime": "29m",
+      "totalEstimatedMinutes": 72,
+      "remainingMinutes": 72,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb71-c-door-pnl-eqp": {
+      "sheetSlug": "jb71-c-door-pnl-eqp",
+      "sheetName": "JB71 C,DOOR PNL EQP",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-c-door-pnl-eqp.json",
+      "rowCount": 20,
+      "columnCount": 9,
+      "sheetIndex": 13,
+      "hasData": true,
+      "swsType": "PANEL",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [
+        "SA0170",
+        "HL0171",
+        "HL0172",
+        "SH6500"
+      ],
+      "partNumbers": [
+        "1483682-10",
+        "1483682-26",
+        "1483682-27",
+        "1483682-28",
+        "1483682-29"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb71-c-door-pnl-eqp.json",
+        "brandListSchemaPath": "wire-brand-list/jb71-c-door-pnl-eqp.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 16,
+          "title": "JB71 B, EQP PWR DOOR",
+          "normalizedTitle": "B EQP PWR DR",
+          "unitType": "JB71",
+          "panelNumber": "1058134-41",
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 169
+        },
+        "pages": [
+          {
+            "pageNumber": 16,
+            "title": "JB71 B, EQP PWR DOOR",
+            "normalizedTitle": "B EQP PWR DR",
+            "unitType": "JB71",
+            "panelNumber": "1058134-41",
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 169
+          },
+          {
+            "pageNumber": 11,
+            "title": "JB71 B,DOOR OPR",
+            "normalizedTitle": "B DR OPR",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 150
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB71",
+      "boxSide": "leftDoor",
+      "externalLocations": [],
+      "buildUpEstTime": "34m",
+      "wireListEstTime": "22m",
+      "totalEstimatedMinutes": 56,
+      "remainingMinutes": 56,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb71-c-liquid-fuel": {
+      "sheetSlug": "jb71-c-liquid-fuel",
+      "sheetName": "JB71 C,LIQUID FUEL",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-c-liquid-fuel.json",
+      "rowCount": 84,
+      "columnCount": 9,
+      "sheetIndex": 14,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [
+        "2x5x13.3",
+        "2x5x17.3",
+        "2x5x22.3",
+        "2x5x20"
+      ],
+      "rails": [
+        "17.00\" Rail",
+        "20.00\" Rail"
+      ],
+      "whiteLabels": [
+        "GR0050",
+        "AU0050G",
+        "GR0350",
+        "AU0350G",
+        "IEG00105",
+        "IEG00106"
+      ],
+      "blueLabels": [
+        "GR0050",
+        "AF0051",
+        "AF0052",
+        "AF0053",
+        "XT0059",
+        "AU0050",
+        "XT0050",
+        "FU0051",
+        "FU0052",
+        "FU0350",
+        "FU0050",
+        "FU0351",
+        "FU0355",
+        "FU2220",
+        "FU2228",
+        "FU2611",
+        "KA2200",
+        "KA0383",
+        "KA0071",
+        "KA0051",
+        "KA0050",
+        "KA0381",
+        "GR0051",
+        "AF0352",
+        "AF0351",
+        "AU0350",
+        "GR0350"
+      ],
+      "partNumbers": [
+        "1043265-1",
+        "1043265-3",
+        "1043265-5",
+        "1043265-7",
+        "1061979-1",
+        "1066730-7",
+        "1067996-3",
+        "1096409-1",
+        "1096409-3",
+        "2684693-17",
+        "2684693-18",
+        "2684693-22",
+        "2684693-23",
+        "2684693-25",
+        "2684693-56",
+        "903849C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb71-c-liquid-fuel.json",
+        "brandListSchemaPath": "wire-brand-list/jb71-c-liquid-fuel.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 7,
+          "title": "JB71 C,PNL EQP CTRL",
+          "normalizedTitle": "C PNL EQP CTRL",
+          "unitType": "JB71",
+          "panelNumber": null,
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 111
+        },
+        "pages": [
+          {
+            "pageNumber": 7,
+            "title": "JB71 C,PNL EQP CTRL",
+            "normalizedTitle": "C PNL EQP CTRL",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 111
+          },
+          {
+            "pageNumber": 8,
+            "title": "JB71 C,PNL PSS",
+            "normalizedTitle": "C PNL PSS",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 111
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB71",
+      "externalLocations": [],
+      "buildUpEstTime": "1h 32m",
+      "wireListEstTime": "1h 3m",
+      "totalEstimatedMinutes": 155,
+      "remainingMinutes": 155,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb71-c-pnl-eqp-ctrl": {
+      "sheetSlug": "jb71-c-pnl-eqp-ctrl",
+      "sheetName": "JB71 C,PNL EQP CTRL",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-c-pnl-eqp-ctrl.json",
+      "rowCount": 134,
+      "columnCount": 9,
+      "sheetIndex": 15,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [
+        "1x4x12",
+        "2x5x22.3",
+        "1x4x20",
+        "1x4x7"
+      ],
+      "rails": [
+        "11.25\" Rail",
+        "20\" Rail"
+      ],
+      "whiteLabels": [
+        "GR0170",
+        "GR0171",
+        "GR0172"
+      ],
+      "blueLabels": [
+        "AT0178",
+        "KA0172",
+        "KA0174",
+        "KA0178",
+        "XT0173",
+        "GR0171",
+        "AT0170",
+        "AT0176",
+        "AT0175",
+        "GR0172",
+        "XT0170",
+        "XT0171",
+        "XT0172",
+        "GR0170"
+      ],
+      "partNumbers": [
+        "1056244-27",
+        "1056244-5",
+        "1061979-1",
+        "1066730-7",
+        "903842C1",
+        "912137C1",
+        "960592C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb71-c-pnl-eqp-ctrl.json",
+        "brandListSchemaPath": "wire-brand-list/jb71-c-pnl-eqp-ctrl.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 6,
+          "title": "JB71 B,PNL GEN CTRL",
+          "normalizedTitle": "B PNL GEN CTRL",
+          "unitType": "JB71",
+          "panelNumber": null,
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 151
+        },
+        "pages": [
+          {
+            "pageNumber": 6,
+            "title": "JB71 B,PNL GEN CTRL",
+            "normalizedTitle": "B PNL GEN CTRL",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 151
+          },
+          {
+            "pageNumber": 12,
+            "title": "JB71 C,DOOR PNL EQP",
+            "normalizedTitle": "C DR PNL EQP",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 148
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB71",
+      "externalLocations": [],
+      "buildUpEstTime": "2h 27m",
+      "wireListEstTime": "1h 41m",
+      "totalEstimatedMinutes": 248,
+      "remainingMinutes": 248,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb71-c-pnl-gpp-full": {
+      "sheetSlug": "jb71-c-pnl-gpp-full",
+      "sheetName": "JB71 C,PNL GPP FULL",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-c-pnl-gpp-full.json",
+      "rowCount": 51,
+      "columnCount": 9,
+      "sheetIndex": 16,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [
+        "AT4000"
+      ],
+      "partNumbers": [
+        "1503048-1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb71-c-pnl-gpp-full.json",
+        "brandListSchemaPath": "wire-brand-list/jb71-c-pnl-gpp-full.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 8,
+          "title": "JB71 C,PNL PSS",
+          "normalizedTitle": "C PNL PSS",
+          "unitType": "JB71",
+          "panelNumber": null,
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 172
+        },
+        "pages": [
+          {
+            "pageNumber": 8,
+            "title": "JB71 C,PNL PSS",
+            "normalizedTitle": "C PNL PSS",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 172
+          },
+          {
+            "pageNumber": 4,
+            "title": "JB71 B,PNL CTRL1",
+            "normalizedTitle": "B PNL CTRL1",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 153
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB71",
+      "externalLocations": [],
+      "buildUpEstTime": "56m",
+      "wireListEstTime": "38m",
+      "totalEstimatedMinutes": 94,
+      "remainingMinutes": 94,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb71-c-pnl-pss": {
+      "sheetSlug": "jb71-c-pnl-pss",
+      "sheetName": "JB71 C,PNL PSS",
+      "kind": "operational",
+      "sheetPath": "sheets/jb71-c-pnl-pss.json",
+      "rowCount": 126,
+      "columnCount": 9,
+      "sheetIndex": 17,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [
+        "1x4x12",
+        "2x4x22.3"
+      ],
+      "rails": [
+        "11.25\" RAIL"
+      ],
+      "whiteLabels": [
+        "WC8102",
+        "AT025083",
+        "WC8301",
+        "AT025095",
+        "GR0176"
+      ],
+      "blueLabels": [
+        "KA2400",
+        "KA2401",
+        "KA2402",
+        "KA2500",
+        "KA2501",
+        "KA2502",
+        "KA2503",
+        "KA2504",
+        "KA2505",
+        "KA2506",
+        "KA2507",
+        "KA2508",
+        "KA2509",
+        "KA2510",
+        "KA2511",
+        "KA2512",
+        "KA2513",
+        "KA2514",
+        "KA2515",
+        "GR0176",
+        "AT0250"
+      ],
+      "partNumbers": [
+        "1061979-1",
+        "1835036-2",
+        "903842C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb71-c-pnl-pss.json",
+        "brandListSchemaPath": "wire-brand-list/jb71-c-pnl-pss.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 14,
+          "title": "JB71 C,PNL GPP FULL",
+          "normalizedTitle": "C PNL GPP FULL",
+          "unitType": "JB71",
+          "panelNumber": null,
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 172
+        },
+        "pages": [
+          {
+            "pageNumber": 14,
+            "title": "JB71 C,PNL GPP FULL",
+            "normalizedTitle": "C PNL GPP FULL",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 172
+          },
+          {
+            "pageNumber": 3,
+            "title": "JB71 B,PNL VIBRATION",
+            "normalizedTitle": "B PNL VIB",
+            "unitType": "JB71",
+            "panelNumber": "1702271-160",
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 153
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB71",
+      "externalLocations": [],
+      "buildUpEstTime": "2h 19m",
+      "wireListEstTime": "1h 35m",
+      "totalEstimatedMinutes": 234,
+      "remainingMinutes": 234,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "pnl-probe-driver": {
+      "sheetSlug": "pnl-probe-driver",
+      "sheetName": "PNL,PROBE DRIVER",
+      "kind": "operational",
+      "sheetPath": "sheets/pnl-probe-driver.json",
+      "rowCount": 1,
+      "columnCount": 9,
+      "sheetIndex": 18,
+      "hasData": true,
+      "swsType": "BASIC",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [
+        "12\" RAIL"
+      ],
+      "whiteLabels": [],
+      "blueLabels": [
+        "UA1210",
+        "UA1211",
+        "UA1220",
+        "UA1221",
+        "UA1230",
+        "UA1231",
+        "UA1262",
+        "UA1263",
+        "XTFGJB5",
+        "GR1110"
+      ],
+      "partNumbers": [],
+      "files": {
+        "wireListSchemaPath": "sheets/pnl-probe-driver.json",
+        "brandListSchemaPath": "wire-brand-list/pnl-probe-driver.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 9,
+          "title": "PNL,PROBE DRIVER",
+          "normalizedTitle": "PNL PROBE DRIVER",
+          "panelNumber": "1060659",
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 215
+        },
+        "pages": []
+      },
+      "devices": {},
+      "boxSide": "topBackSide",
+      "externalLocations": [],
+      "buildUpEstTime": "1m",
+      "wireListEstTime": "1m",
+      "totalEstimatedMinutes": 2,
+      "remainingMinutes": 2,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    }
+  },
+  "referenceSheets": {
+    "blue-labels": {
+      "sheetSlug": "blue-labels",
+      "sheetName": "Blue Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/blue-labels.json",
+      "rowCount": 69,
+      "columnCount": 16,
+      "sheetIndex": 0,
+      "hasData": true
+    },
+    "white-labels": {
+      "sheetSlug": "white-labels",
+      "sheetName": "White Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/white-labels.json",
+      "rowCount": 5,
+      "columnCount": 19,
+      "sheetIndex": 1,
+      "hasData": true
+    },
+    "heat-shrink-labels": {
+      "sheetSlug": "heat-shrink-labels",
+      "sheetName": "Heat Shrink Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/heat-shrink-labels.json",
+      "rowCount": 8,
+      "columnCount": 6,
+      "sheetIndex": 2,
+      "hasData": true
+    },
+    "panel-errors": {
+      "sheetSlug": "panel-errors",
+      "sheetName": "Panel Errors",
+      "kind": "reference",
+      "sheetPath": "sheets/panel-errors.json",
+      "rowCount": 0,
+      "columnCount": 10,
+      "sheetIndex": 19,
+      "hasData": false
+    },
+    "cable-part-numbers": {
+      "sheetSlug": "cable-part-numbers",
+      "sheetName": "Cable Part Numbers",
+      "kind": "reference",
+      "sheetPath": "sheets/cable-part-numbers.json",
+      "rowCount": 55,
+      "columnCount": 3,
+      "sheetIndex": 20,
+      "hasData": true
+    },
+    "part-number-list": {
+      "sheetSlug": "part-number-list",
+      "sheetName": "Part Number List",
+      "kind": "reference",
+      "sheetPath": "sheets/part-number-list.json",
+      "rowCount": 406,
+      "columnCount": 4,
+      "sheetIndex": 21,
+      "hasData": true
+    }
+  },
+  "unitType": "JB71",
+  "unitTypes": [
+    "JB71"
+  ],
+  "panducts": 34,
+  "rails": 18,
+  "aggregates": {
+    "totalAssignments": 16,
+    "completedAssignments": 0,
+    "inProgressAssignments": 0,
+    "blockedAssignments": 0,
+    "totalEstimatedMinutes": 3442,
+    "totalRemainingMinutes": 3442,
+    "totalActualMinutes": 0,
+    "overallProgress": 0,
+    "highestPriority": "low",
+    "priorityCounts": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 16
+    },
+    "stageCounts": {
+      "READY_TO_LAY": 16
+    }
+  },
+  "assignmentsByUnitType": {
+    "JB71": [
+      "jb71-b-eqp-pwr-door",
+      "jb71-b-box-control",
+      "jb71-b-door-ctrl",
+      "jb71-b-door-opr",
+      "jb71-b-pnl-ctrl1",
+      "jb71-b-pnl-ctrl2",
+      "jb71-b-pnl-customer",
+      "jb71-b-pnl-dc-pwr",
+      "jb71-b-pnl-gen-ctrl",
+      "jb71-b-pnl-vibration",
+      "jb71-c-door-pnl-eqp",
+      "jb71-c-liquid-fuel",
+      "jb71-c-pnl-eqp-ctrl",
+      "jb71-c-pnl-gpp-full",
+      "jb71-c-pnl-pss"
+    ],
+    "UNASSIGNED": [
+      "pnl-probe-driver"
+    ]
+  },
+  "projectName": "MEPCO",
+  "lwcType": "Onskid"
+}

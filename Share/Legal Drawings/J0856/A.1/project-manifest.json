@@ -1,0 +1,519 @@
+{
+  "id": "legal-j0856-a-1",
+  "name": "J0856",
+  "filename": "J0856-UCPWiringList_A.1.xlsx",
+  "pdNumber": "J0856",
+  "revision": "A.1",
+  "createdAt": "2026-05-05T14:11:47.677Z",
+  "sheets": [
+    {
+      "slug": "blue-labels",
+      "name": "Blue Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/blue-labels.json",
+      "rowCount": 88,
+      "columnCount": 2,
+      "sheetIndex": 0,
+      "hasData": true
+    },
+    {
+      "slug": "white-labels",
+      "name": "White Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/white-labels.json",
+      "rowCount": 2,
+      "columnCount": 2,
+      "sheetIndex": 1,
+      "hasData": true
+    },
+    {
+      "slug": "heat-shrink-labels",
+      "name": "Heat Shrink Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/heat-shrink-labels.json",
+      "rowCount": 1,
+      "columnCount": 1,
+      "sheetIndex": 2,
+      "hasData": true
+    },
+    {
+      "slug": "recompressor-box",
+      "name": "RECOMPRESSOR BOX",
+      "kind": "operational",
+      "sheetPath": "sheets/recompressor-box.json",
+      "rowCount": 38,
+      "columnCount": 9,
+      "sheetIndex": 3,
+      "hasData": true
+    },
+    {
+      "slug": "recompressor-panel",
+      "name": "RECOMPRESSOR PANEL",
+      "kind": "operational",
+      "sheetPath": "sheets/recompressor-panel.json",
+      "rowCount": 287,
+      "columnCount": 9,
+      "sheetIndex": 4,
+      "hasData": true
+    },
+    {
+      "slug": "panel-errors",
+      "name": "Panel Errors",
+      "kind": "reference",
+      "sheetPath": "sheets/panel-errors.json",
+      "rowCount": 0,
+      "columnCount": 10,
+      "sheetIndex": 5,
+      "hasData": false
+    },
+    {
+      "slug": "cable-part-numbers",
+      "name": "Cable Part Numbers",
+      "kind": "reference",
+      "sheetPath": "sheets/cable-part-numbers.json",
+      "rowCount": 6,
+      "columnCount": 3,
+      "sheetIndex": 6,
+      "hasData": true
+    },
+    {
+      "slug": "part-number-list",
+      "name": "Part Number List",
+      "kind": "reference",
+      "sheetPath": "sheets/part-number-list.json",
+      "rowCount": 120,
+      "columnCount": 4,
+      "sheetIndex": 7,
+      "hasData": true
+    }
+  ],
+  "assignments": {
+    "recompressor-box": {
+      "sheetSlug": "recompressor-box",
+      "sheetName": "RECOMPRESSOR BOX",
+      "kind": "operational",
+      "sheetPath": "sheets/recompressor-box.json",
+      "rowCount": 38,
+      "columnCount": 9,
+      "sheetIndex": 3,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [
+        "AT1101G"
+      ],
+      "blueLabels": [
+        "AT1101",
+        "HL7776",
+        "HL7778",
+        "SB7771",
+        "SA7774",
+        "HL7777",
+        "HL7779",
+        "SB7770",
+        "SB7540",
+        "HA0454",
+        "HL7775",
+        "SB7773",
+        "SB7772",
+        "SH0455"
+      ],
+      "partNumbers": [
+        "1035040-106",
+        "1035040-107",
+        "1035040-119",
+        "1035040-120",
+        "1035040-123",
+        "1035040-2025",
+        "1035040-2026",
+        "1035040-2027",
+        "1035040-2028",
+        "1035040-2029",
+        "1035040-32",
+        "1103208-101",
+        "1577354-4501",
+        "2380746-1",
+        "2380746-3",
+        "2380746-4",
+        "2380746-5",
+        "2380746-7"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/recompressor-box.json",
+        "brandListSchemaPath": "wire-brand-list/recompressor-box.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 2,
+          "title": "RECOMPRESSOR PANEL JB40",
+          "normalizedTitle": "RECOMPRESSOR PNL",
+          "unitType": "JB40",
+          "panelNumber": null,
+          "boxNumber": null,
+          "confidence": "medium",
+          "matchMethod": "title",
+          "score": 98
+        },
+        "pages": [
+          {
+            "pageNumber": 2,
+            "title": "RECOMPRESSOR PANEL JB40",
+            "normalizedTitle": "RECOMPRESSOR PNL",
+            "unitType": "JB40",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "medium",
+            "matchMethod": "title",
+            "score": 98
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB40",
+      "externalLocations": [],
+      "buildUpEstTime": "42m",
+      "wireListEstTime": "29m",
+      "totalEstimatedMinutes": 71,
+      "remainingMinutes": 71,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "recompressor-panel": {
+      "sheetSlug": "recompressor-panel",
+      "sheetName": "RECOMPRESSOR PANEL",
+      "kind": "operational",
+      "sheetPath": "sheets/recompressor-panel.json",
+      "rowCount": 287,
+      "columnCount": 9,
+      "sheetIndex": 4,
+      "hasData": true,
+      "swsType": "PANEL",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [
+        "2X5X40",
+        "3X5X21.3"
+      ],
+      "rails": [
+        "22.75\" RAIL",
+        "44\" RAIL",
+        "52.5\" RAIL"
+      ],
+      "whiteLabels": [
+        "AT1101G",
+        "AF1301G",
+        "AF1324G"
+      ],
+      "blueLabels": [
+        "AR0600",
+        "AP0606",
+        "AP0605",
+        "AP0604",
+        "AP0602",
+        "AP0601",
+        "AT0600",
+        "UV0600",
+        "AP0603",
+        "FU1321P",
+        "FU1321N",
+        "FU1322P",
+        "FU1322N",
+        "FU1323P",
+        "FU1323N",
+        "XT1320",
+        "AF1321",
+        "AF1322",
+        "AF1323",
+        "AF1324",
+        "AF1325",
+        "AF1326",
+        "XT1304",
+        "KA0351",
+        "KA0352",
+        "KA0353",
+        "KA0354",
+        "KA0355",
+        "KA0356",
+        "KA0357",
+        "KA0358",
+        "KA0359",
+        "KA0360",
+        "KA0361",
+        "KA0362",
+        "KA0363",
+        "KA0364",
+        "KA0365",
+        "KA1344",
+        "KA1345",
+        "KT1325",
+        "GR1303",
+        "FU1320P",
+        "FU1320N",
+        "FU1102P",
+        "FU1102N",
+        "GR1301",
+        "FU1305P",
+        "FU1305N",
+        "FU1306P",
+        "FU1306N",
+        "FU1307P",
+        "FU1307N",
+        "XT1305",
+        "AF1301",
+        "AF1302",
+        "AF1303",
+        "AF1304",
+        "AF1305",
+        "AF1306",
+        "XT1385",
+        "KA1261",
+        "KA1262",
+        "KA7701",
+        "KA7702",
+        "KA7703",
+        "KA7705",
+        "KA7760",
+        "KA7770",
+        "GR1304",
+        "XT1311",
+        "XT1312",
+        "XT1354",
+        "XT1355",
+        "XT1302",
+        "XT1303",
+        "FU1301P",
+        "FU1301N",
+        "FU1302P",
+        "FU1302N",
+        "FU1303P",
+        "FU1303N",
+        "FU7701P",
+        "FU7701N",
+        "FU7763P",
+        "FU7763N",
+        "BA1101",
+        "UJ1101"
+      ],
+      "partNumbers": [
+        "1043265-1",
+        "1043265-3",
+        "1043265-5",
+        "1043265-7",
+        "1061979-1",
+        "1066730-7",
+        "1066730-8",
+        "1066730-9",
+        "1067996-4",
+        "1088442-4",
+        "1089241-20",
+        "1089241-28",
+        "1089241-29",
+        "1089241-36",
+        "1089241-40",
+        "1089241-43",
+        "1286570-1",
+        "1337728-1",
+        "232941-110",
+        "232941-200",
+        "2651077-3",
+        "2684693-17",
+        "2684693-18",
+        "2684693-19",
+        "2684693-22",
+        "2684693-23",
+        "2684693-24",
+        "2684693-28",
+        "2684693-30",
+        "2684693-33",
+        "2684693-48",
+        "2684693-51",
+        "2684693-55",
+        "2684693-56",
+        "903849C1",
+        "981089C1",
+        "981090C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/recompressor-panel.json",
+        "brandListSchemaPath": "wire-brand-list/recompressor-panel.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 1,
+          "title": "RECOMPRESSOR BOX JB40",
+          "normalizedTitle": "RECOMPRESSOR BOX",
+          "unitType": "JB40",
+          "panelNumber": null,
+          "boxNumber": null,
+          "confidence": "medium",
+          "matchMethod": "title",
+          "score": 98
+        },
+        "pages": [
+          {
+            "pageNumber": 1,
+            "title": "RECOMPRESSOR BOX JB40",
+            "normalizedTitle": "RECOMPRESSOR BOX",
+            "unitType": "JB40",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "medium",
+            "matchMethod": "title",
+            "score": 98
+          }
+        ]
+      },
+      "devices": {},
+      "unitType": "JB40",
+      "boxSide": "leftBackSide",
+      "externalLocations": [
+        {
+          "location": "JB70 DOOR",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "JB70 LEFT SIDE RAIL",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "JB70 VIBRATION PANEL",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "PANEL B JB70",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "PLC PANEL JB70",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "RIGHT SIDE RAIL JB70",
+          "wireListVisible": false,
+          "brandingVisible": false
+        }
+      ],
+      "buildUpEstTime": "8h 8m",
+      "wireListEstTime": "5h 16m",
+      "totalEstimatedMinutes": 804,
+      "remainingMinutes": 804,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    }
+  },
+  "referenceSheets": {
+    "blue-labels": {
+      "sheetSlug": "blue-labels",
+      "sheetName": "Blue Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/blue-labels.json",
+      "rowCount": 88,
+      "columnCount": 2,
+      "sheetIndex": 0,
+      "hasData": true
+    },
+    "white-labels": {
+      "sheetSlug": "white-labels",
+      "sheetName": "White Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/white-labels.json",
+      "rowCount": 2,
+      "columnCount": 2,
+      "sheetIndex": 1,
+      "hasData": true
+    },
+    "heat-shrink-labels": {
+      "sheetSlug": "heat-shrink-labels",
+      "sheetName": "Heat Shrink Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/heat-shrink-labels.json",
+      "rowCount": 1,
+      "columnCount": 1,
+      "sheetIndex": 2,
+      "hasData": true
+    },
+    "panel-errors": {
+      "sheetSlug": "panel-errors",
+      "sheetName": "Panel Errors",
+      "kind": "reference",
+      "sheetPath": "sheets/panel-errors.json",
+      "rowCount": 0,
+      "columnCount": 10,
+      "sheetIndex": 5,
+      "hasData": false
+    },
+    "cable-part-numbers": {
+      "sheetSlug": "cable-part-numbers",
+      "sheetName": "Cable Part Numbers",
+      "kind": "reference",
+      "sheetPath": "sheets/cable-part-numbers.json",
+      "rowCount": 6,
+      "columnCount": 3,
+      "sheetIndex": 6,
+      "hasData": true
+    },
+    "part-number-list": {
+      "sheetSlug": "part-number-list",
+      "sheetName": "Part Number List",
+      "kind": "reference",
+      "sheetPath": "sheets/part-number-list.json",
+      "rowCount": 120,
+      "columnCount": 4,
+      "sheetIndex": 7,
+      "hasData": true
+    }
+  },
+  "unitType": "JB40",
+  "unitTypes": [
+    "JB40"
+  ],
+  "panducts": 2,
+  "rails": 3,
+  "aggregates": {
+    "totalAssignments": 2,
+    "completedAssignments": 0,
+    "inProgressAssignments": 0,
+    "blockedAssignments": 0,
+    "totalEstimatedMinutes": 875,
+    "totalRemainingMinutes": 875,
+    "totalActualMinutes": 0,
+    "overallProgress": 0,
+    "highestPriority": "low",
+    "priorityCounts": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 2
+    },
+    "stageCounts": {
+      "READY_TO_LAY": 2
+    }
+  },
+  "assignmentsByUnitType": {
+    "JB40": [
+      "recompressor-box",
+      "recompressor-panel"
+    ]
+  },
+  "projectName": "J0856"
+}

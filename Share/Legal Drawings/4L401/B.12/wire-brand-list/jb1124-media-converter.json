@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:20:05.087Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb1124-media-converter",
+  "sheetName": "JB1124 MEDIA CONVERTER",
+  "totalRows": 6,
+  "header": {
+    "locationTitle": "JB1124 MEDIA CONVERTER",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4L401",
+    "projectName": "4L401",
+    "revision": "B.12",
+    "controlsDE": "A. COVARRUBIAS",
+    "controlsME": "N. LOPEZ"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB1124 MEDIA CONVERTER",
+    "normalizedSheetName": "jb1124-media-converter",
+    "bundleNames": [
+      "BA0010",
+      "BA0020",
+      "FU - UJ"
+    ],
+    "bundleDisplays": [
+      "BA0010",
+      "BA0020",
+      "FU - UJ"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA0010",
+          "toLocation": "JB1124 MEDIA CONVERTER",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "BA0010:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0010V1N",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UJ0010:V1(-)",
+              "toTerminal": "V1(-)",
+              "toLocation": "JB1124 MEDIA CONVERTER",
+              "bundleName": "BA0010",
+              "bundleDisplay": "BA0010",
+              "devicePrefix": "BA"
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "BA0010:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0020",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0020:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB1124 MEDIA CONVERTER",
+              "bundleName": "BA0010",
+              "bundleDisplay": "",
+              "devicePrefix": "BA"
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0020",
+          "toLocation": "JB1124 MEDIA CONVERTER",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "BA0020:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0010V2N",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UJ0010:V2(-)",
+              "toTerminal": "V2(-)",
+              "toLocation": "JB1124 MEDIA CONVERTER",
+              "bundleName": "BA0020",
+              "bundleDisplay": "BA0020",
+              "devicePrefix": "BA"
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "BA0020:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0021",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0021:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB1124 MEDIA CONVERTER",
+              "bundleName": "BA0020",
+              "bundleDisplay": "",
+              "devicePrefix": "BA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - UJ",
+          "toLocation": "JB1124 MEDIA CONVERTER",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "FU0020:LI",
+              "fromTerminal": "LI",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0010V1P",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UJ0010:V1(+)",
+              "toTerminal": "V1(+)",
+              "toLocation": "JB1124 MEDIA CONVERTER",
+              "bundleName": "FU - UJ",
+              "bundleDisplay": "FU - UJ",
+              "devicePrefix": "FU"
+            },
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "FU0021:LI",
+              "fromTerminal": "LI",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0010V2P",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UJ0010:V2(+)",
+              "toTerminal": "V2(+)",
+              "toLocation": "JB1124 MEDIA CONVERTER",
+              "bundleName": "FU - UJ",
+              "bundleDisplay": "",
+              "devicePrefix": "FU"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "89b352a32f8f7a6b7f776cc9688653e183341f08b6d5db7444a0678a894b44f8"
+}

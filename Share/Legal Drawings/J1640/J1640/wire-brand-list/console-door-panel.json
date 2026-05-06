@@ -1,0 +1,238 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:17:37.003Z",
+  "mode": "branding-export",
+  "sheetSlug": "console-door-panel",
+  "sheetName": "CONSOLE DOOR PANEL",
+  "totalRows": 9,
+  "header": {
+    "locationTitle": "CONSOLE DOOR PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J1640",
+    "projectName": "J1640",
+    "revision": "J1640",
+    "controlsDE": "D.JOHN",
+    "controlsME": "A.ABENGOZA"
+  },
+  "importHints": {
+    "canonicalSheetName": "CONSOLE DOOR^PANEL",
+    "normalizedSheetName": "console-door-panel",
+    "bundleNames": [
+      "SA0710 - RED",
+      "SA0770 - RED",
+      "AT0190"
+    ],
+    "bundleDisplays": [
+      "SA0710 - RED - METER AND SWITCH PANELS",
+      "SA0770 - RED - METER AND SWITCH PANELS",
+      "AT0190 - PWR DISTRIBUTION - RAIL LEFT DOOR"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "SA",
+      "bundles": [
+        {
+          "bundleName": "SA0710 - RED",
+          "toLocation": "METER AND SWITCH^PANELS",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "SA0710:16",
+              "fromTerminal": "16",
+              "fromTerminalOrder": null,
+              "wireNo": "VGENA",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "TM0102:1",
+              "toTerminal": "1",
+              "toLocation": "METER AND SWITCH^PANELS",
+              "bundleName": "SA0710 - RED",
+              "bundleDisplay": "SA0710 - RED - METER AND SWITCH PANELS",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "SA0710:17",
+              "fromTerminal": "17",
+              "fromTerminalOrder": null,
+              "wireNo": "VGENC",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "TM0102:3",
+              "toTerminal": "3",
+              "toLocation": "METER AND SWITCH^PANELS",
+              "bundleName": "SA0710 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "SA0710:26",
+              "fromTerminal": "26",
+              "fromTerminalOrder": null,
+              "wireNo": "VGENB",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "TM0102:2",
+              "toTerminal": "2",
+              "toLocation": "METER AND SWITCH^PANELS",
+              "bundleName": "SA0710 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            }
+          ]
+        },
+        {
+          "bundleName": "SA0770 - RED",
+          "toLocation": "METER AND SWITCH^PANELS",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 16,
+              "fromDeviceId": "SA0770:13",
+              "fromTerminal": "13",
+              "fromTerminalOrder": null,
+              "wireNo": "TM01024",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "TM0102:4",
+              "toTerminal": "4",
+              "toLocation": "METER AND SWITCH^PANELS",
+              "bundleName": "SA0770 - RED",
+              "bundleDisplay": "SA0770 - RED - METER AND SWITCH PANELS",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-7",
+              "rowIndex": 17,
+              "fromDeviceId": "SA0770:17",
+              "fromTerminal": "17",
+              "fromTerminalOrder": null,
+              "wireNo": "TM01025",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "TM0102:5",
+              "toTerminal": "5",
+              "toLocation": "METER AND SWITCH^PANELS",
+              "bundleName": "SA0770 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-9",
+              "rowIndex": 19,
+              "fromDeviceId": "SA0770:23",
+              "fromTerminal": "23",
+              "fromTerminalOrder": null,
+              "wireNo": "TM01027",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "TM0102:7",
+              "toTerminal": "7",
+              "toLocation": "METER AND SWITCH^PANELS",
+              "bundleName": "SA0770 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-8",
+              "rowIndex": 18,
+              "fromDeviceId": "SA0770:27",
+              "fromTerminal": "27",
+              "fromTerminalOrder": null,
+              "wireNo": "TM01026",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "TM0102:6",
+              "toTerminal": "6",
+              "toLocation": "METER AND SWITCH^PANELS",
+              "bundleName": "SA0770 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT0190",
+          "toLocation": "PWR,DISTRIBUTION RAIL^LEFT DOOR",
+          "rows": [
+            {
+              "rowId": "row-10",
+              "rowIndex": 20,
+              "fromDeviceId": "AT0190:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0562:2",
+              "toTerminal": "2",
+              "toLocation": "PWR,DISTRIBUTION RAIL^LEFT DOOR",
+              "bundleName": "AT0190",
+              "bundleDisplay": "AT0190 - PWR DISTRIBUTION - RAIL LEFT DOOR",
+              "devicePrefix": "AT",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-11",
+              "rowIndex": 21,
+              "fromDeviceId": "AT0190:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0190",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0190:LD",
+              "toTerminal": "LD",
+              "toLocation": "PWR,DISTRIBUTION RAIL^LEFT DOOR",
+              "bundleName": "AT0190",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "cf84ef84ca74ddb3fc2ef70b2c31cee13bce9bf5c907a140dcb5156ad13948b3"
+}

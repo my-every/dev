@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:49:21.445Z",
+  "mode": "branding-export",
+  "sheetSlug": "plc-panel",
+  "sheetName": "PLC PANEL",
+  "totalRows": 2,
+  "header": {
+    "locationTitle": "PLC PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4N711",
+    "projectName": "ONE-E1 - Unit 1",
+    "revision": "B.1",
+    "controlsDE": "D. KIM",
+    "controlsME": "A. PLVAN"
+  },
+  "importHints": {
+    "canonicalSheetName": "PLC PANEL",
+    "normalizedSheetName": "plc-panel",
+    "bundleNames": [
+      "UV - FU",
+      "UV - XT"
+    ],
+    "bundleDisplays": [
+      "UV - FU - PANEL A",
+      "UV - XT - PANEL B"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV - FU",
+          "toLocation": "PANEL A",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "UV0600:(+)",
+              "fromTerminal": "(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0010",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0010:LD",
+              "toTerminal": "LD",
+              "toLocation": "PANEL A",
+              "bundleName": "UV - FU",
+              "bundleDisplay": "UV - FU - PANEL A",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV - XT",
+          "toLocation": "PANEL B",
+          "rows": [
+            {
+              "rowId": "row-7",
+              "rowIndex": 18,
+              "fromDeviceId": "UV0600:(-)",
+              "fromTerminal": "(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0135:1",
+              "toTerminal": "1",
+              "toLocation": "PANEL B",
+              "bundleName": "UV - XT",
+              "bundleDisplay": "UV - XT - PANEL B",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "169f2226c259c66b2d2f80dae946abdd5e2f40306926555b0716915c640c6899"
+}

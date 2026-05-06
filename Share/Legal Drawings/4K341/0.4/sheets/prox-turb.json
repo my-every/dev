@@ -1,0 +1,91 @@
+{
+  "slug": "prox-turb",
+  "name": "PROX,TURB",
+  "kind": "operational",
+  "sheetIndex": 13,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1210:",
+      "wireType": "SC",
+      "wireNo": "GR1210",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "22.A6",
+      "toDeviceId": "FRAME",
+      "toLocation": "PROX,TURB",
+      "toPageZone": "22.A6",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "GR1211:",
+      "wireType": "SC",
+      "wireNo": "GR1211",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "22.A6",
+      "toDeviceId": "FRAME",
+      "toLocation": "PROX,TURB",
+      "toPageZone": "22.A6",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1210",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "22.A6",
+      "Location": "PROX,TURB"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1211",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "22.A6",
+      "Location": "PROX,TURB"
+    }
+  ],
+  "rowCount": 2,
+  "metadata": {
+    "projectName": "Enterprise SMT130 M4 WTX",
+    "revision": "0.4"
+  },
+  "assignment": {
+    "swsType": "BLANK",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "BLANK",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Has Prox - Basic/Blank panel"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:11:42.195Z"
+}

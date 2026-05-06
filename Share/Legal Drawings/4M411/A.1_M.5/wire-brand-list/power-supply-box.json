@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:33:19.687Z",
+  "mode": "branding-export",
+  "sheetSlug": "power-supply-box",
+  "sheetName": "POWER SUPPLY BOX",
+  "totalRows": 7,
+  "header": {
+    "locationTitle": "POWER SUPPLY BOX",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M411",
+    "projectName": "4M411",
+    "revision": "A.1_M.5",
+    "controlsDE": "J. LI",
+    "controlsME": "test"
+  },
+  "importHints": {
+    "canonicalSheetName": "POWER SUPPLY BOX",
+    "normalizedSheetName": "power-supply-box",
+    "bundleNames": [
+      "FU - UJ",
+      "UJ0031"
+    ],
+    "bundleDisplays": [
+      "FU - UJ",
+      "UJ0031"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - UJ",
+          "toLocation": "POWER SUPPLY BOX",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "FU0019:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0019",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "UJ0031:+",
+              "toTerminal": "+",
+              "toLocation": "POWER SUPPLY BOX",
+              "bundleName": "FU - UJ",
+              "bundleDisplay": "FU - UJ",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UJ",
+      "bundles": [
+        {
+          "bundleName": "UJ0031",
+          "toLocation": "POWER SUPPLY BOX",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "UJ0031:-",
+              "fromTerminal": "-",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-CCUJ0031N",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0019:1",
+              "toTerminal": "1",
+              "toLocation": "POWER SUPPLY BOX",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "UJ0031",
+              "devicePrefix": "UJ",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "UJ0031",
+          "toLocation": "POWER SUPPLY BOX",
+          "rows": [
+            {
+              "rowId": "row-7",
+              "rowIndex": 18,
+              "fromDeviceId": "UJ0031:IOUT",
+              "fromTerminal": "IOUT",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0031IOUT",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0033:2",
+              "toTerminal": "2",
+              "toLocation": "POWER SUPPLY BOX",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "UJ0031",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-8",
+              "rowIndex": 19,
+              "fromDeviceId": "UJ0031:IS",
+              "fromTerminal": "IS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0131IS",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0033:3",
+              "toTerminal": "3",
+              "toLocation": "POWER SUPPLY BOX",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-9",
+              "rowIndex": 20,
+              "fromDeviceId": "UJ0031:OK1",
+              "fromTerminal": "OK1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0031OK1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0033:4",
+              "toTerminal": "4",
+              "toLocation": "POWER SUPPLY BOX",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "UJ0031:OK2",
+              "fromTerminal": "OK2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0031OK2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0033:5",
+              "toTerminal": "5",
+              "toLocation": "POWER SUPPLY BOX",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-12",
+              "rowIndex": 23,
+              "fromDeviceId": "UJ0031:VIN",
+              "fromTerminal": "VIN",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0031VIN",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0033:1",
+              "toTerminal": "1",
+              "toLocation": "POWER SUPPLY BOX",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "817ffbbaf899842de8f8d8d2efdf0630c6f2b8d6b165b87e56e776983bfe9ac7"
+}

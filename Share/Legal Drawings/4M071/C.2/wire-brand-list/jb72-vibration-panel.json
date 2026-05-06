@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:26:54.618Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb72-vibration-panel",
+  "sheetName": "JB72 VIBRATION PANEL",
+  "totalRows": 4,
+  "header": {
+    "locationTitle": "JB72 VIBRATION PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M071",
+    "projectName": "SR-SEEP - Unit 1",
+    "revision": "C.2",
+    "controlsDE": "J. UNGER"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB72 VIBRATION PANEL",
+    "normalizedSheetName": "jb72-vibration-panel",
+    "bundleNames": [
+      "AF0510",
+      "FU - XT",
+      "XT - XT"
+    ],
+    "bundleDisplays": [
+      "AF0510",
+      "FU - XT - GENERATOR - PANEL",
+      "XT - XT - GENERATOR - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AF",
+      "bundles": [
+        {
+          "bundleName": "AF0510",
+          "toLocation": "JB72 VIBRATION PANEL",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "AF0510:53",
+              "fromTerminal": "53",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0501:2",
+              "toTerminal": "2",
+              "toLocation": "JB72 VIBRATION PANEL",
+              "bundleName": "AF0510",
+              "bundleDisplay": "AF0510",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "AF0510:55",
+              "fromTerminal": "55",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0510",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0510:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB72 VIBRATION PANEL",
+              "bundleName": "AF0510",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "JB72 GENERATOR PANEL",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 16,
+              "fromDeviceId": "FU0510:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0335:3",
+              "toTerminal": "3",
+              "toLocation": "JB72 GENERATOR PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT - GENERATOR - PANEL",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "JB72 GENERATOR PANEL",
+          "rows": [
+            {
+              "rowId": "row-8",
+              "rowIndex": 18,
+              "fromDeviceId": "XT0501:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0336:3",
+              "toTerminal": "3",
+              "toLocation": "JB72 GENERATOR PANEL",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT - GENERATOR - PANEL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "d8fd7cf32ab80fec75b973f2c8ad9f39b1488e07adb23fff9dc6ee39281e921e"
+}

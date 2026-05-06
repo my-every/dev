@@ -1,0 +1,11 @@
+export { ProjectOverviewTab } from "@/components/projects/tabs/project-overview-tab";
+export { ProjectLegalsTab } from "@/components/projects/tabs/project-legals-tab";
+export { ProjectAssignmentsTab } from "@/components/projects/tabs/project-assignments-tab";
+export { ProjectSettingsTab } from "@/components/projects/tabs/project-settings-tab";
+export { ProjectPlaceholderTab } from "@/components/projects/tabs/project-placeholder-tab";
+export { ProjectSwsTab } from "@/components/projects/tabs/project-sws-tab";
+export { ProjectFilesTab } from "@/components/projects/tabs/project-files-tab";
+export { ProjectPartNumbersTab } from "@/components/projects/tabs/project-part-numbers-tab";
+export { ProjectBiqTab } from "@/components/projects/tabs/project-biq-tab";
+export { ProjectActivityTab } from "@/components/projects/tabs/project-activity-tab";
+export { ProjectTeamTab } from "@/components/projects/tabs/project-team-tab";

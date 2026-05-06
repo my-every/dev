@@ -1,0 +1,427 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:14:17.994Z",
+  "mode": "branding-export",
+  "sheetSlug": "rail-left-jb73",
+  "sheetName": "RAIL LEFT JB73",
+  "totalRows": 13,
+  "header": {
+    "locationTitle": "RAIL LEFT JB73",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4K931",
+    "projectName": "4K931",
+    "revision": "B.4",
+    "controlsDE": "S. LOPEZ",
+    "controlsME": "H. MEDRANO"
+  },
+  "importHints": {
+    "canonicalSheetName": "RAIL,LEFT,JB73",
+    "normalizedSheetName": "rail-left-jb73",
+    "bundleNames": [
+      "FU - XT",
+      "XT0121",
+      "FU - BA",
+      "XT - BA",
+      "XT - FU",
+      "XT - XT"
+    ],
+    "bundleDisplays": [
+      "FU - XT",
+      "XT0121",
+      "FU - BA - BOP - PNL",
+      "XT - BA - BOP - PNL",
+      "XT - FU - BOP - PNL",
+      "XT - XT - BOP - PNL",
+      "XT0121 - HPC - PNL",
+      "XT - FU - HPC - PNL",
+      "XT - XT - HPC - PNL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "RAIL,LEFT,JB73",
+          "rows": [
+            {
+              "rowId": "row-20",
+              "rowIndex": 31,
+              "fromDeviceId": "FU0332:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0335:1",
+              "toTerminal": "1",
+              "toLocation": "RAIL,LEFT,JB73",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-22",
+              "rowIndex": 33,
+              "fromDeviceId": "FU2108:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0335:3",
+              "toTerminal": "3",
+              "toLocation": "RAIL,LEFT,JB73",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "RAIL,LEFT,JB73",
+          "rows": [
+            {
+              "rowId": "row-21",
+              "rowIndex": 32,
+              "fromDeviceId": "FU1212:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0231P2",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0007:1",
+              "toTerminal": "1",
+              "toLocation": "RAIL,LEFT,JB73",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0121",
+          "toLocation": "RAIL,LEFT,JB73",
+          "rows": [
+            {
+              "rowId": "row-24",
+              "rowIndex": 35,
+              "fromDeviceId": "XT0121:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0122",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0121:5",
+              "toTerminal": "5",
+              "toLocation": "RAIL,LEFT,JB73",
+              "bundleName": "XT0121",
+              "bundleDisplay": "XT0121",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-25",
+              "rowIndex": 36,
+              "fromDeviceId": "XT0121:4",
+              "fromTerminal": "4",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0121:6",
+              "toTerminal": "6",
+              "toLocation": "RAIL,LEFT,JB73",
+              "bundleName": "XT0121",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - BA",
+          "toLocation": "BOP PNL",
+          "rows": [
+            {
+              "rowId": "row-26",
+              "rowIndex": 37,
+              "fromDeviceId": "FU1212:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1212",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "BA1212:POS",
+              "toTerminal": "POS",
+              "toLocation": "BOP PNL",
+              "bundleName": "FU - BA",
+              "bundleDisplay": "FU - BA - BOP - PNL",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT - BA",
+          "toLocation": "BOP PNL",
+          "rows": [
+            {
+              "rowId": "row-27",
+              "rowIndex": 38,
+              "fromDeviceId": "XT0007:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0231N2",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "BA1212:NEG",
+              "toTerminal": "NEG",
+              "toLocation": "BOP PNL",
+              "bundleName": "XT - BA",
+              "bundleDisplay": "XT - BA - BOP - PNL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT - FU",
+          "toLocation": "BOP PNL",
+          "rows": [
+            {
+              "rowId": "row-28",
+              "rowIndex": 39,
+              "fromDeviceId": "XT0335:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 120,
+              "toDeviceId": "FU0146:LI",
+              "toTerminal": "LI",
+              "toLocation": "BOP PNL",
+              "bundleName": "XT - FU",
+              "bundleDisplay": "XT - FU - BOP - PNL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "BOP PNL",
+          "rows": [
+            {
+              "rowId": "row-29",
+              "rowIndex": 40,
+              "fromDeviceId": "XT0336:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0140:1",
+              "toTerminal": "1",
+              "toLocation": "BOP PNL",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT - BOP - PNL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0121",
+          "toLocation": "HPC PNL",
+          "rows": [
+            {
+              "rowId": "row-30",
+              "rowIndex": 41,
+              "fromDeviceId": "XT0121:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0122",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0510:LI",
+              "toTerminal": "LI",
+              "toLocation": "HPC PNL",
+              "bundleName": "XT0121",
+              "bundleDisplay": "XT0121 - HPC - PNL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-31",
+              "rowIndex": 42,
+              "fromDeviceId": "XT0121:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0510:2",
+              "toTerminal": "2",
+              "toLocation": "HPC PNL",
+              "bundleName": "XT0121",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT - FU",
+          "toLocation": "HPC PNL",
+          "rows": [
+            {
+              "rowId": "row-32",
+              "rowIndex": 43,
+              "fromDeviceId": "XT0335:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 120,
+              "toDeviceId": "FU0122:LI",
+              "toTerminal": "LI",
+              "toLocation": "HPC PNL",
+              "bundleName": "XT - FU",
+              "bundleDisplay": "XT - FU - HPC - PNL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "HPC PNL",
+          "rows": [
+            {
+              "rowId": "row-33",
+              "rowIndex": 44,
+              "fromDeviceId": "XT0336:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 120,
+              "toDeviceId": "XT0120:1",
+              "toTerminal": "1",
+              "toLocation": "HPC PNL",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT - HPC - PNL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "e12d281d6638d2e0796c42dc98d363b661ad36e6a3ce638c8887213aa08cf848"
+}

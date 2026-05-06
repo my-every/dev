@@ -1,0 +1,167 @@
+{
+  "slug": "turbine-box-left-rail-jb70",
+  "name": "TURBINE BOX^LEFT RAIL^JB70",
+  "kind": "operational",
+  "sheetIndex": 9,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1101:",
+      "wireType": "SC",
+      "wireNo": "GR1101",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "4.A6",
+      "toDeviceId": "FRAME",
+      "toLocation": "TURBINE BOX^LEFT RAIL^JB70",
+      "toPageZone": "4.A5",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "UA1520:+24",
+      "wireType": "WC4749",
+      "wireNo": "UA15201",
+      "wireId": "RED",
+      "gaugeSize": "20",
+      "fromLocation": "",
+      "fromPageZone": "38.A5",
+      "toDeviceId": "AF0450:05",
+      "toLocation": "TURBINE PANEL B",
+      "toPageZone": "38.A7",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-2",
+      "fromDeviceId": "UA1520:OUT",
+      "wireType": "WC4749",
+      "wireNo": "UA15202",
+      "wireId": "CLR",
+      "gaugeSize": "20",
+      "fromLocation": "",
+      "fromPageZone": "38.A5",
+      "toDeviceId": "AF0450:06",
+      "toLocation": "TURBINE PANEL B",
+      "toPageZone": "38.A7",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-3",
+      "fromDeviceId": "UA1520:COM",
+      "wireType": "WC4749",
+      "wireNo": "UA15203",
+      "wireId": "BLK",
+      "gaugeSize": "20",
+      "fromLocation": "",
+      "fromPageZone": "38.A5",
+      "toDeviceId": "AF0450:08",
+      "toLocation": "TURBINE PANEL B",
+      "toPageZone": "38.A7",
+      "location": ""
+    },
+    {
+      "__rowIndex": 14,
+      "__rowId": "row-4",
+      "fromDeviceId": "XT1521:1",
+      "wireType": "WC4749",
+      "wireNo": "PE1520S",
+      "wireId": "SH",
+      "gaugeSize": "20",
+      "fromLocation": "",
+      "fromPageZone": "38.A5",
+      "toDeviceId": "AF0450:23",
+      "toLocation": "TURBINE PANEL B",
+      "toPageZone": "38.A7",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1101",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "4.A5",
+      "Location": "TURBINE BOX^LEFT RAIL^JB70"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "AF0450:05",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC4749",
+      "Wire No.": "UA15201",
+      "Wire ID": "RED",
+      "Gauge/Size": "20",
+      "Page/Zone": "38.A7",
+      "Location": "TURBINE PANEL B"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "AF0450:06",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC4749",
+      "Wire No.": "UA15202",
+      "Wire ID": "CLR",
+      "Gauge/Size": "20",
+      "Page/Zone": "38.A7",
+      "Location": "TURBINE PANEL B"
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "AF0450:08",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC4749",
+      "Wire No.": "UA15203",
+      "Wire ID": "BLK",
+      "Gauge/Size": "20",
+      "Page/Zone": "38.A7",
+      "Location": "TURBINE PANEL B"
+    },
+    {
+      "__rowId": "raw-4",
+      "Device ID": "AF0450:23",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC4749",
+      "Wire No.": "PE1520S",
+      "Wire ID": "SH",
+      "Gauge/Size": "20",
+      "Page/Zone": "38.A7",
+      "Location": "TURBINE PANEL B"
+    }
+  ],
+  "rowCount": 5,
+  "metadata": {
+    "projectName": "TCE ALCES MC77301 CR",
+    "revision": "0.1",
+    "controlsDE": "A.GONZALEZ"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Rail in title with no Panel number"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:16:24.699Z"
+}

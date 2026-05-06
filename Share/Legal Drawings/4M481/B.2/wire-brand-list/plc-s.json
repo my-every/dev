@@ -1,0 +1,74 @@
+{
+  "sheetSlug": "plc-s",
+  "sheetName": "PLC_S",
+  "sourceSheetName": "PLC_S",
+  "metadata": {
+    "normalizedSheetName": "plc-s",
+    "bundleNames": [
+      "PLC",
+      "UV - A"
+    ]
+  },
+  "rows": [
+    {
+      "importedRowId": "plc-s-13",
+      "rowIndex": 13,
+      "matchKey": "AT0680:NEG|-0V|WHT|14|XT0680:2|PLC",
+      "fromDeviceId": "AT0680:NEG",
+      "wireNo": "-0V",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 60,
+      "toDeviceId": "XT0680:2",
+      "toLocation": "PLC",
+      "devicePrefix": "AT0680",
+      "bundleName": "PLC",
+      "bundleDisplay": "PLC"
+    },
+    {
+      "importedRowId": "plc-s-14",
+      "rowIndex": 14,
+      "matchKey": "AT0680:POS|AT0680POS|WHT|14|XT0680:1|PLC",
+      "fromDeviceId": "AT0680:POS",
+      "wireNo": "AT0680POS",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 60,
+      "toDeviceId": "XT0680:1",
+      "toLocation": "PLC",
+      "devicePrefix": "AT0680",
+      "bundleName": "PLC",
+      "bundleDisplay": "PLC"
+    },
+    {
+      "importedRowId": "plc-s-15",
+      "rowIndex": 15,
+      "matchKey": "FU0680:LD|AT0680POS|WHT|14|XT0680:1|PLC",
+      "fromDeviceId": "FU0680:LD",
+      "wireNo": "AT0680POS",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 60,
+      "toDeviceId": "XT0680:1",
+      "toLocation": "PLC",
+      "devicePrefix": "FU0680",
+      "bundleName": "PLC",
+      "bundleDisplay": "PLC"
+    },
+    {
+      "importedRowId": "plc-s-17",
+      "rowIndex": 17,
+      "matchKey": "UV0600:(-)|-0V|WHT|14|XT0003:4|CONTROL A",
+      "fromDeviceId": "UV0600:(-)",
+      "wireNo": "-0V",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 80,
+      "toDeviceId": "XT0003:4",
+      "toLocation": "CONTROL A",
+      "devicePrefix": "UV0600",
+      "bundleName": "UV - A",
+      "bundleDisplay": "UV - A"
+    }
+  ]
+}

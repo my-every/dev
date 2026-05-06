@@ -1,0 +1,92 @@
+{
+  "slug": "panel-errors",
+  "name": "Panel Errors",
+  "kind": "reference",
+  "sheetIndex": 13,
+  "headers": [
+    "Device ID",
+    "Location",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire ID",
+    "Wire No.",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location_1",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "XT0313:1",
+      "wireType": "WC8301",
+      "wireNo": "PMGS",
+      "wireId": "SH",
+      "gaugeSize": "12",
+      "fromLocation": "PANEL",
+      "fromPageZone": "69.A6",
+      "toDeviceId": "FLOATING",
+      "toLocation": "GENERATOR PANEL",
+      "toPageZone": "69.A6",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "IEG0060:",
+      "wireType": "SC",
+      "wireNo": "IEG0060",
+      "wireId": "GRN",
+      "gaugeSize": "14",
+      "fromLocation": "PANEL B",
+      "fromPageZone": "9.D5",
+      "toDeviceId": "IEG0230:9",
+      "toLocation": "PANEL",
+      "toPageZone": "9.D5",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FLOATING",
+      "Location": "PANEL",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC8301",
+      "Wire ID": "SH",
+      "Wire No.": "PMGS",
+      "Gauge/Size": "12",
+      "Page/Zone": "69.A6"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "IEG0230:9",
+      "Location": "PANEL B",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire ID": "GRN",
+      "Wire No.": "IEG0060",
+      "Gauge/Size": "14",
+      "Page/Zone": "9.D5"
+    }
+  ],
+  "rowCount": 2,
+  "metadata": {
+    "projectName": "ECOPETROL SA",
+    "revision": "A",
+    "controlsDE": "D.GRANT",
+    "controlsME": "M.CUNNINGHAM"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "BUILD_UP",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 0,
+    "detectedReasons": [],
+    "requiresWireSws": false,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:55:36.253Z"
+}

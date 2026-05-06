@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:38:33.338Z",
+  "mode": "branding-export",
+  "sheetSlug": "plc",
+  "sheetName": "PLC",
+  "totalRows": 2,
+  "header": {
+    "locationTitle": "PLC",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M582",
+    "projectName": "4M582",
+    "revision": "A.3_M.1",
+    "controlsDE": "TRINH, J.",
+    "controlsME": "S. LOZA"
+  },
+  "importHints": {
+    "canonicalSheetName": "PLC",
+    "normalizedSheetName": "plc",
+    "bundleNames": [
+      "BA - FU",
+      "FU - UV"
+    ],
+    "bundleDisplays": [
+      "BA - FU",
+      "FU - UV"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA - FU",
+          "toLocation": "PLC",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "BA0606:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0606",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0606:LD",
+              "toTerminal": "LD",
+              "toLocation": "PLC",
+              "bundleName": "BA - FU",
+              "bundleDisplay": "BA - FU",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - UV",
+          "toLocation": "PLC",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "FU0010:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0010",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UV0600:(+)",
+              "toTerminal": "(+)",
+              "toLocation": "PLC",
+              "bundleName": "FU - UV",
+              "bundleDisplay": "FU - UV",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "c326d15d67a0e451d3e1809fc3b720ba989d076d38fc94dce12bad0ab4868fa7"
+}

@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:15:58.226Z",
+  "mode": "branding-export",
+  "sheetSlug": "200-t1",
+  "sheetName": "200 T1",
+  "totalRows": 5,
+  "header": {
+    "locationTitle": "200 T1",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0980",
+    "projectName": "J0980",
+    "revision": "D.3"
+  },
+  "importHints": {
+    "canonicalSheetName": "200-T1",
+    "normalizedSheetName": "200-t1",
+    "bundleNames": [
+      "DS - S",
+      "DS - TS",
+      "S - TS",
+      "AH272"
+    ],
+    "bundleDisplays": [
+      "DS - S",
+      "DS - TS - 256 01",
+      "S - TS - 256 01",
+      "AH272 - 256 L2"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "DS",
+      "bundles": [
+        {
+          "bundleName": "DS - S",
+          "toLocation": "200-T1",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "DS273-1:1W",
+              "fromTerminal": "1W",
+              "fromTerminalOrder": null,
+              "wireNo": "S2731",
+              "wireId": "",
+              "gaugeSize": "16GA",
+              "length": null,
+              "toDeviceId": "S273-1:2",
+              "toTerminal": "2",
+              "toLocation": "200-T1",
+              "bundleName": "DS - S",
+              "bundleDisplay": "DS - S",
+              "devicePrefix": "DS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "DS",
+      "bundles": [
+        {
+          "bundleName": "DS - TS",
+          "toLocation": "256-01",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "DS273-1:1B",
+              "fromTerminal": "1B",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V73",
+              "wireId": "",
+              "gaugeSize": "12GA",
+              "length": null,
+              "toDeviceId": "TS256D:4",
+              "toTerminal": "4",
+              "toLocation": "256-01",
+              "bundleName": "DS - TS",
+              "bundleDisplay": "DS - TS - 256 01",
+              "devicePrefix": "DS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "S",
+      "bundles": [
+        {
+          "bundleName": "S - TS",
+          "toLocation": "256-01",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "S273-1:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "-24V73",
+              "wireId": "",
+              "gaugeSize": "16GA",
+              "length": null,
+              "toDeviceId": "TS256C:4",
+              "toTerminal": "4",
+              "toLocation": "256-01",
+              "bundleName": "S - TS",
+              "bundleDisplay": "S - TS - 256 01",
+              "devicePrefix": "S"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AH",
+      "bundles": [
+        {
+          "bundleName": "AH272",
+          "toLocation": "256-L2",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "AH272:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "AH272",
+              "wireId": "",
+              "gaugeSize": "16GA",
+              "length": null,
+              "toDeviceId": "ZF2201:10",
+              "toTerminal": "10",
+              "toLocation": "256-L2",
+              "bundleName": "AH272",
+              "bundleDisplay": "AH272 - 256 L2",
+              "devicePrefix": "AH"
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "AH272:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "AH272N",
+              "wireId": "",
+              "gaugeSize": "16GA",
+              "length": null,
+              "toDeviceId": "ZF2201:COM27",
+              "toTerminal": "COM27",
+              "toLocation": "256-L2",
+              "bundleName": "AH272",
+              "bundleDisplay": "",
+              "devicePrefix": "AH"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "9a56699651533800c89368a30a50673368d8218713b83e46190ddcdbc8bcd536"
+}

@@ -1,0 +1,53 @@
+{
+  "badge": "75242",
+  "shift": "1st",
+  "lastUpdated": "2026-05-05T21:45:41.956Z",
+  "roles": [],
+  "dashboardAccess": {
+    "projectSchedule": true,
+    "userAccess": false,
+    "catalogAccess": false,
+    "brandingAccess": false
+  },
+  "permissions": {
+    "canViewSkills": true,
+    "canEditSkills": true,
+    "canManageSkillDefinitions": false,
+    "canViewPermissions": true,
+    "canGrantPermissions": false,
+    "canDelegatePermissions": false,
+    "canViewUsers": true,
+    "canEditUsers": false,
+    "canCreateUsers": false,
+    "canDeactivateUsers": false,
+    "canViewProjects": true,
+    "canEditProjects": true,
+    "canCreateProjects": false,
+    "canArchiveProjects": false,
+    "canAssignUsers": true,
+    "canReassignTasks": true
+  },
+  "permissionGroupId": "lead",
+  "permissionAudit": [
+    {
+      "id": "74bd5a38-9a2e-4f12-81bd-56173a148e25",
+      "timestamp": "2026-04-18T03:27:29.158Z",
+      "performedBy": "75241",
+      "targetBadge": "75242",
+      "changeType": "grant",
+      "permissionKey": "canViewProjects",
+      "previousValue": false,
+      "newValue": true
+    },
+    {
+      "id": "db5eedde-475f-4ea8-aaf5-c76bbb8989b1",
+      "timestamp": "2026-04-18T03:27:30.656Z",
+      "performedBy": "75241",
+      "targetBadge": "75242",
+      "changeType": "revoke",
+      "permissionKey": "canViewProjects",
+      "previousValue": true,
+      "newValue": false
+    }
+  ]
+}

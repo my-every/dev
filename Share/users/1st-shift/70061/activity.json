@@ -1,0 +1,143 @@
+{
+  "badge": "70061",
+  "shift": "1st",
+  "lastUpdated": "2026-04-19T06:46:08.293Z",
+  "activities": [
+    {
+      "id": "act_1776581168292_ytj9j",
+      "timestamp": "2026-04-19T06:46:08.292Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "settingsAction": "update-access",
+        "key": "catalogAccess",
+        "enabled": true,
+        "description": "Enabled catalogAccess access",
+        "auditEntries": [
+          {
+            "id": "7fff9e2d-7ef6-446b-8c2b-ceb2698b6192",
+            "timestamp": "2026-04-19T06:46:08.291Z",
+            "performedBy": "75241",
+            "targetBadge": "70061",
+            "changeType": "grant",
+            "permissionKey": "catalogAccess",
+            "previousValue": false,
+            "newValue": true
+          }
+        ]
+      },
+      "comment": "Enabled catalogAccess access",
+      "targetBadge": "70061",
+      "result": "success"
+    },
+    {
+      "id": "act_1776470532057_u3yf2",
+      "timestamp": "2026-04-18T00:02:12.057Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "settingsAction": "apply-preset",
+        "presetId": "viewer",
+        "description": "Applied permission preset: viewer",
+        "auditEntries": [
+          {
+            "id": "b81c1d42-7aee-45c2-88cd-cb041866e608",
+            "timestamp": "2026-04-18T00:02:12.056Z",
+            "performedBy": "75241",
+            "targetBadge": "70061",
+            "changeType": "preset-apply",
+            "permissionKey": "viewer",
+            "previousValue": false,
+            "newValue": true,
+            "reason": "Applied permission preset: viewer"
+          }
+        ]
+      },
+      "comment": "Applied permission preset: viewer",
+      "targetBadge": "70061",
+      "result": "success"
+    },
+    {
+      "id": "act_1776470528719_u28mq",
+      "timestamp": "2026-04-18T00:02:08.719Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "settingsAction": "apply-preset",
+        "presetId": "lead",
+        "description": "Applied permission preset: lead",
+        "auditEntries": [
+          {
+            "id": "522b7e61-8cd3-4ce1-866f-83de6e6b2dca",
+            "timestamp": "2026-04-18T00:02:08.719Z",
+            "performedBy": "75241",
+            "targetBadge": "70061",
+            "changeType": "preset-apply",
+            "permissionKey": "lead",
+            "previousValue": false,
+            "newValue": true,
+            "reason": "Applied permission preset: lead"
+          }
+        ]
+      },
+      "comment": "Applied permission preset: lead",
+      "targetBadge": "70061",
+      "result": "success"
+    },
+    {
+      "id": "act_1776470513007_7w5cb",
+      "timestamp": "2026-04-18T00:01:53.007Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "settingsAction": "update-access",
+        "key": "catalogAccess",
+        "enabled": true,
+        "description": "Enabled catalogAccess access",
+        "auditEntries": [
+          {
+            "id": "513ad315-ff03-4f56-84d4-fa65a2fe0d2c",
+            "timestamp": "2026-04-18T00:01:53.007Z",
+            "performedBy": "75241",
+            "targetBadge": "70061",
+            "changeType": "grant",
+            "permissionKey": "catalogAccess",
+            "previousValue": false,
+            "newValue": true
+          }
+        ]
+      },
+      "comment": "Enabled catalogAccess access",
+      "targetBadge": "70061",
+      "result": "success"
+    },
+    {
+      "id": "act_1776170606016_7bqhb",
+      "timestamp": "2026-04-14T12:43:26.016Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "settingsAction": "update-role",
+        "role": "qa",
+        "enabled": true,
+        "description": "Granted Quality Assurance role"
+      },
+      "comment": "Granted Quality Assurance role",
+      "targetBadge": "70061",
+      "result": "success",
+      "comments": [
+        {
+          "id": "1776180717753-bfau8hhs4",
+          "text": "636",
+          "author": "70061",
+          "timestamp": "2026-04-14T15:31:57.753Z"
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "totalActions": 5,
+    "actionsToday": 1,
+    "lastActionTime": "2026-04-19T06:46:08.292Z"
+  }
+}

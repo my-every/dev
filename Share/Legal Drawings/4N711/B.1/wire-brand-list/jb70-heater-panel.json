@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:49:15.616Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb70-heater-panel",
+  "sheetName": "JB70 HEATER PANEL",
+  "totalRows": 4,
+  "header": {
+    "locationTitle": "JB70 HEATER PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4N711",
+    "projectName": "ONE-E1 - Unit 1",
+    "revision": "B.1",
+    "controlsDE": "D. KIM",
+    "controlsME": "A. PLVAN"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB70^HEATER PANEL",
+    "normalizedSheetName": "jb70-heater-panel",
+    "bundleNames": [
+      "FU9700 - RED",
+      "XT - XT"
+    ],
+    "bundleDisplays": [
+      "FU9700 - RED",
+      "XT - XT"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU9700 - RED",
+          "toLocation": "JB70^HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "FU9700:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU9700L1",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9701:1",
+              "toTerminal": "1",
+              "toLocation": "JB70^HEATER PANEL",
+              "bundleName": "FU9700 - RED",
+              "bundleDisplay": "FU9700 - RED",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "FU9700:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CCH9700L1",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9700:1",
+              "toTerminal": "1",
+              "toLocation": "JB70^HEATER PANEL",
+              "bundleName": "FU9700 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "JB70^HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "XT9700:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CCH9700L2",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9701:2",
+              "toTerminal": "2",
+              "toLocation": "JB70^HEATER PANEL",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "XT9701:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CCH9700L2",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9702:2",
+              "toTerminal": "2",
+              "toLocation": "JB70^HEATER PANEL",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "cf440583116cd7ad6c7111521df35738dac57459ac4ff88640ca52d98debbe81"
+}

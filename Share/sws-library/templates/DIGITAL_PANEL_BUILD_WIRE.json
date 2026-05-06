@@ -1,0 +1,400 @@
+{
+  "id": "PANEL_BUILD_WIRE",
+  "name": "Digital Panel Build Up/Wire",
+  "description": "Digital panel build up and wiring with time tracking columns",
+  "kind": "standard",
+  "status": "active",
+  "version": 12,
+  "versionLabel": "1.2",
+  "tags": [
+    "panel",
+    "build_up",
+    "wiring"
+  ],
+  "memberName": "SWS Registry",
+  "notes": "PANEL BUILD & WIRE",
+  "prerequisites": [],
+  "blockers": [],
+  "reviewRequirements": [],
+  "accessoryHardwareHints": [],
+  "reviewCadenceDays": 30,
+  "groups": [
+    {
+      "id": "obtain-parts",
+      "title": "Obtain the kitted parts from the rack. Verify the PD#. Review the Layout, check for discrepancies.",
+      "description": "WI 5.3.0.5-02",
+      "order": 0,
+      "tasks": [
+        {
+          "id": "obtain-parts-verify-revision",
+          "title": "Verify the latest Revision (check the cover sheet for any special requirements). Fill in the Project information above on this form. Stamp the layout drawing with the \"Working Copy\" stamp and fill in the information.",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        },
+        {
+          "id": "obtain-parts-verify-panel",
+          "title": "Verify the correct panel - attach the panel ID label and fill in the project information.(Do not install directly to the panel)",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        },
+        {
+          "id": "obtain-parts-notify-discrepancies",
+          "title": "Notify the Team Leader/Lead about discrepancies (Missing Parts, etc.). Follow the first unit on a multi-unit project.",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "prepare-build",
+      "title": "Prepare to build the panel",
+      "description": "QAS 500, EDM F11.2",
+      "order": 1,
+      "tasks": [
+        {
+          "id": "prepare-build-measure-cut-prelayout",
+          "title": "Measure, cut and pre-lay out rails, large components and pan duct to verify fit for both pre and non-pre drilled (template) panels.",
+          "description": "Verify no drill zones using the overall layout for non-pre-drilled panels. Unistruts are shown on overall layout for consoles. Mark any pan duct that covers a mounting hole through the under side of the panel. For all Products (OnSkid), ensure the center mounting holes are open (vertical panduct).",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "drill-bond",
+      "title": "Drill and Bond the Panel according to the layout (overall layout if off-skid) for Frame Ground.",
+      "description": "EDM F11.2",
+      "order": 2,
+      "tasks": [
+        {
+          "id": "drill-bond-drill-rails",
+          "title": "Using a vice, drill the rails, install nutcerts and end caps and bond the panel.",
+          "description": "Remove the painted surfaces for the installation of the frame grounds (bonding). Clean the debris from the panel. For the Panel Hanging Holes, or any 3/8\" hole, ensure nutcerts are properly seated. Get visual stamp in Auditor column.",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "panel-components",
+      "title": "Install all panel mounted components (i.e. PLC Chassis, Power Supply, Fan, Filter, Bus Bar, BUOS, CGCM, Shunt Relay, Pnl Mount Diode, etc.)",
+      "description": "NOTE: See Standard Work Book for details on part installation",
+      "order": 3,
+      "tasks": [
+        {
+          "id": "panel-components-install-panel-components",
+          "title": "Install all panel mounted components (ensure there is enough clearance between the Bus Bar and rail)",
+          "description": "Install short standoffs in the holes for the shock guard. Ensure ground checks are conducted if required. Secure the PLC keys to the chassis so they do not get lost",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "standoffs-rails",
+      "title": "Install the standoffs, din rails and ground wires per layout drawing",
+      "description": "QAS 500, EDM F11.2",
+      "order": 4,
+      "tasks": [
+        {
+          "id": "standoffs-rails-install-standoffs",
+          "title": "Install the standoffs, rails, frame grounds and ground hardware.",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "rail-components",
+      "title": "Install all rail mounted components per the layout drawing.",
+      "description": "QAS 500",
+      "order": 5,
+      "tasks": [
+        {
+          "id": "rail-components-install-rail-components",
+          "title": "Install rail mounted components per the layout drawing. All components start at the top of rails unless dimensioned otherwise or clearly shown starting from the bottom.",
+          "description": "Ensure I/O module base dials are set prior to installing the modules. Install the fuse, fuse amperage labels and terminal markers.",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        },
+        {
+          "id": "rail-components-1444-models",
+          "title": "For the 1444 Vibration models, ensure the base dials are set per layout drawing prior to installing the modules. Get visual stamp in Auditor column. Verify rail isolation then install component and verify component/rail isolation.",
+          "required": true,
+          "reviewRequirement": "1444",
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "blue-labels",
+      "title": "Install the blue component labels per layout.",
+      "description": "QAS 834",
+      "order": 6,
+      "tasks": [
+        {
+          "id": "blue-labels-install-blue-labels",
+          "title": "Install blue component labels using the label installation tool. Follow Shop floor examples (wall/shop aids). Verify labels will be visible after the pan duct is installed.",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "panduct",
+      "title": "Install and secure the panduct.",
+      "description": "QAS 503/505",
+      "order": 7,
+      "tasks": [
+        {
+          "id": "panduct-install-panduct",
+          "title": "Using the pan duct finger cutters, remove any fingers that will interfere with the wiring or wire routing.",
+          "description": "Install the pan duct. Ensure Labels are visible and it is not touching or is interfering with the operation of the components.",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "clean-complete-build",
+      "title": "Clean the debris and complete the panel",
+      "description": "WI 5.7.2-01",
+      "order": 8,
+      "tasks": [
+        {
+          "id": "clean-complete-build-label-shortages",
+          "title": "Label all part shortages with a sticker and document in the comment section to the right",
+          "description": "Look over panel and verify it is built to print. All discrepancies/deviations documented with an MRCA#. Stamp the Build Up portion of the Panel ID label Notify Team Leader/Lead of any shortages, issues and the panel is ready for visual inspection. (Team Leader/Lead will assign)",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "prepare-wire",
+      "title": "Prepare to wire the panel. Verify if it is a multi-unit project.",
+      "description": "NOTE: Highlight all wires or components (resistors, diodes, etc.) installed throughout the wiring process using the same color used to highlight your badge number. All wires leaving the panel are tagged with a destination individually or in a bundle.",
+      "order": 9,
+      "tasks": [
+        {
+          "id": "prepare-wire-fill-project-info",
+          "title": "Fill in the Project information above on this form.",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        },
+        {
+          "id": "prepare-wire-verify-auditor-stamp",
+          "title": "Ensure Auditor stamp is complete for Panel Build prior to starting the wiring. Notify Team Leader if not completed.",
+          "description": "Verify the latest revision. Note cover sheet for any special requirements. Stamp working copy of wire list and layout drawing. Highlight your badge number with the same color you will use on the wire list. For multi unit project, verify routing on the first unit. Notify Team Leader if incorrect. Wires will route under the rail first for any component that does not have pan duct next to it.",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "start-wiring",
+      "title": "Start wiring the panel",
+      "description": "Note: For OffSkid consoles, check overall layout to verify wire routing. Standard routing is Left to Right, Top to Bottom",
+      "order": 10,
+      "tasks": [
+        {
+          "id": "start-wiring-install-grounds",
+          "title": "Install all ground wires. Console - Bus Bar wires route to the bottom. Boxes - Bus Bar wires will route to the top. (Space permitting)",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        },
+        {
+          "id": "start-wiring-install-jumpers",
+          "title": "Install all jumpers, both mechanical and wires including thermistors as required, resistors and diodes (verify polarity).",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "wire-relays",
+      "title": "Wire the relays/timers",
+      "description": "QAS 500/503/505",
+      "order": 11,
+      "tasks": [
+        {
+          "id": "wire-relays-pull-test-required",
+          "title": "All wires being installed require a pull test to ensure they are tight and a visual for stray strands (bird caging)",
+          "required": true,
+          "reviewRequirement": "PULL_TEST",
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        },
+        {
+          "id": "wire-relays-wire-relays-timers",
+          "title": "Start wiring relays and timers. This will include 14/16ga. Use the correct hardware (short vs long ferrules, etc). Do not wire the Sync Check Relay (Red or Blue AC wires). Ensure all circuit numbers are visible",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "wire-buos",
+      "title": "Wire the BUOS/Continue with the smaller gauge wires",
+      "description": "QAS 500/503/505",
+      "order": 12,
+      "tasks": [
+        {
+          "id": "wire-buos-pull-test-required-2",
+          "title": "All wires being installed require a pull test to ensure they are tight and a visual for stray strands (bird caging)",
+          "required": true,
+          "reviewRequirement": "PULL_TEST",
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        },
+        {
+          "id": "wire-buos-wire-buos",
+          "title": "Wire and create harness for the Back Up Overspeed Module. Terminate as required.",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        },
+        {
+          "id": "wire-buos-aentr-pull-test",
+          "title": "Perform separate pull test on AENTR (or equiv) modules 0v and 24v leads. Provide IPV stamp when complete.",
+          "required": true,
+          "reviewRequirement": "AENTR",
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        },
+        {
+          "id": "wire-buos-remaining-wires",
+          "title": "Install the remaining wires starting with smaller wires (20ga) first and continuing progressing up in size until all white wires have been installed.",
+          "description": "Maintain IS (blue pan duct wiring) separation if required.",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "wire-diodes-ac",
+      "title": "Wire Flyback Diodes and Install AC wires",
+      "description": "QAS 500/503/505",
+      "order": 13,
+      "tasks": [
+        {
+          "id": "wire-diodes-ac-pull-test-required-3",
+          "title": "All wires being installed require a pull test to ensure they are tight and a visual for stray strands (bird caging)",
+          "required": true,
+          "reviewRequirement": "PULL_TEST",
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        },
+        {
+          "id": "wire-diodes-ac-wire-diodes",
+          "title": "Wire the Flyback Diodes per wire list. Ensure circuit numbers and polarity on the component is visible.",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        },
+        {
+          "id": "wire-diodes-ac-install-ac",
+          "title": "Install the AC (red/blue) wires starting from the DECS. Use expando sleeving for sharp edge protection or isolation. Maintain separation from the white wires use spiral wrap for white wires.",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "cables-comm",
+      "title": "Install Cables and Internal Communication Cables",
+      "description": "Note: Any wire or cable that deforms the pan duct must have the pan duct finger removed to allow the wire(s) to lay flat.",
+      "order": 14,
+      "tasks": [
+        {
+          "id": "cables-comm-install-cables",
+          "title": "Install all cables. Install smaller, then larger cables followed by all communication cables that will terminate within the panel. Apply labels per shop floor example.",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "clean-complete-wire",
+      "title": "Clean the debris and complete the panel",
+      "description": "WI 5.7.2-01",
+      "order": 15,
+      "tasks": [
+        {
+          "id": "clean-complete-wire-ensure-shortages-documented",
+          "title": "Ensure all shortages are documented",
+          "required": true,
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        },
+        {
+          "id": "clean-complete-wire-verify-wired",
+          "title": "Look over panel and verify it is completely wired per wire list. All discrepancies/deviations documented with an MRCA#",
+          "description": "Stamp the wiring portion of the Panel ID label Notify Team Leader/Lead of any shortages, issues and the panel is ready for visual inspection. (Team Leader/Lead will assign)",
+          "required": true,
+          "notes": "Verify that any wires going to large terminals are properly terminated with the correct strip length",
+          "children": [],
+          "partNumbers": [],
+          "stageIds": []
+        }
+      ]
+    },
+    {
+      "id": "stamp-complete",
+      "title": "Stamp as Complete",
+      "description": "WI 5.7.2-01",
+      "order": 16,
+      "tasks": []
+    }
+  ],
+  "createdAt": "2026-04-29T21:47:14.110Z",
+  "updatedAt": "2026-04-29T21:47:41.331Z",
+  "baseTemplateId": null
+}

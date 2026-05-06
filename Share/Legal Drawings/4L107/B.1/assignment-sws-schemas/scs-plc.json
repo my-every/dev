@@ -1,0 +1,518 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-06T04:55:04.044Z",
+  "project": {
+    "id": "legal-4l107-b-1",
+    "name": "4L107",
+    "pdNumber": "4L107",
+    "revision": "B.1"
+  },
+  "assignment": {
+    "sheetSlug": "scs-plc",
+    "sheetName": "SCS PLC",
+    "stage": "READY_TO_LAY",
+    "swsType": "CONSOLE",
+    "status": "NOT_STARTED",
+    "templateId": "CONSOLE_BUILD_UP_PANEL_HANG",
+    "unitType": "CONSOLE",
+    "panelNumber": "1634920-150",
+    "boxNumber": null
+  },
+  "worksheetMetadata": {
+    "pdNumber": "4L107",
+    "projectName": "4L107",
+    "unit": "CONSOLE",
+    "panel": "SCS PLC",
+    "date": "2026-05-06",
+    "revision": "B.1",
+    "swsIpvId": "SWS-IPV_D380_ASSY_CON BUILD UP-Pnl Hang_B.2",
+    "revLevel": "B.2",
+    "revDate": "10/16/2025"
+  },
+  "summary": {
+    "sections": 13,
+    "tasks": 30,
+    "subtasks": 10,
+    "partNumbers": 15,
+    "rails": 1,
+    "panducts": 1,
+    "whiteLabels": 3,
+    "blueLabels": 31
+  },
+  "groups": [
+    {
+      "id": "scs-plc-template-sections",
+      "title": "Console Build Checklist",
+      "description": "Generated from SWS-IPV_D380_ASSY_CON BUILD UP-Pnl Hang_B.2 for SCS PLC",
+      "order": 0,
+      "tasks": [
+        {
+          "id": "get-console",
+          "title": "Work Element 1",
+          "description": "Get The Console",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Part Numbers: 1043265-1, 1043265-3, 1043265-4, 1066730-7, 1089241-20, 1089241-28, 1089241-29, 1089241-35 (+7 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "get-console:ensure-spotter",
+              "title": "Ensure you have a spotter for transporting console.",
+              "required": true,
+              "completedByDefault": false,
+              "notes": "Key point",
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "get-console:verify-console",
+              "title": "Verify console part #, PD/CM# with the pick tag (look for obvious damage prior to moving inside, if damaged notify Team Leader immediately). Use proper transporting devices for the consoles.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "inspect-install-label",
+          "title": "Work Element 2",
+          "description": "Inspect and Install Identification Label",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Part Numbers: 1043265-1, 1043265-3, 1043265-4, 1066730-7, 1089241-20, 1089241-28, 1089241-29, 1089241-35 (+7 more)\nWhite Labels: IEG01301, IEG02307, UV0600G\nBlue Labels: UV0600, UV0700, AR0600, AR0700, AT0600, AP0601, AP0602, AP0603 (+23 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "inspect-install-label:verify-condition",
+              "title": "Verify and check the physical condition of the console (scratches, dents, rust, gaskets, door opening/closing, etc.).",
+              "description": "Verify latest revision, look for any special requirements or component installation, from the Working Copy Cover Sheet. Verify certification and put the Project Information Label on the console.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "inspect-install-label:verify-condition:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Verify latest revision, look for any special requirements or component installation, from the Working Copy Cover Sheet.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                },
+                {
+                  "id": "inspect-install-label:verify-condition:sub-2",
+                  "title": "Sub-step 2",
+                  "description": "Verify certification and put the Project Information Label on the console.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "overhead-components",
+          "title": "Work Element 3",
+          "description": "Install overhead components/Apply torque paint",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 1634920-150\nPart Numbers: 1043265-1, 1043265-3, 1043265-4, 1066730-7, 1089241-20, 1089241-28, 1089241-29, 1089241-35 (+7 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "overhead-components:install-horn",
+              "title": "Horn",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "overhead-components:install-light",
+              "title": "Light/Bracket - Install wires between lights for 3 or 4 Bay Consoles (see display).",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "overhead-components:install-switches",
+              "title": "Correct Door Switch(s)",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "door-panels",
+          "title": "Work Element 4",
+          "description": "Install Door Panels including longer screws for inside door panels.",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 1634920-150\nPart Numbers: 1043265-1, 1043265-3, 1043265-4, 1066730-7, 1089241-20, 1089241-28, 1089241-29, 1089241-35 (+7 more)\nWhite Labels: IEG01301, IEG02307, UV0600G\nBlue Labels: UV0600, UV0700, AR0600, AR0700, AT0600, AP0601, AP0602, AP0603 (+23 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "door-panels:install-door-panels",
+              "title": "Install door panels starting left to right and bottom to top per the layout drawing (use a flat tip screwdriver as a pry bar to decrease gaps between the panels). Install the black plastic washers on every other set of screws, ensuring one is installed at each corner of the door and corners of the HMI and other components.",
+              "description": "Complete installation of shield bars, door ground straps and vinyl caps on exposed ground or Meter/Switch studs. Do not cover any component or ID labels.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "door-panels:install-door-panels:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Complete installation of shield bars, door ground straps and vinyl caps on exposed ground or Meter/Switch studs. Do not cover any component or ID labels.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "install-tcp",
+          "title": "Work Element 5",
+          "description": "Install TCP",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Part Numbers: 1043265-1, 1043265-3, 1043265-4, 1066730-7, 1089241-20, 1089241-28, 1089241-29, 1089241-35 (+7 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "install-tcp:verify-tcp-visual",
+              "title": "Before installing the TCP, ensure the TCP visual checklist is stamped off. (check with Team Leader/Lead)",
+              "required": true,
+              "completedByDefault": false,
+              "notes": "Key point",
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "install-display",
+          "title": "Work Element 6",
+          "description": "Install Display (HMI)",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Part Numbers: 1043265-1, 1043265-3, 1043265-4, 1066730-7, 1089241-20, 1089241-28, 1089241-29, 1089241-35 (+7 more)\nWhite Labels: IEG01301, IEG02307, UV0600G\nBlue Labels: UV0600, UV0700, AR0600, AR0700, AT0600, AP0601, AP0602, AP0603 (+23 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "install-display:install-hmi",
+              "title": "Install HMI using the hardware provided by the vendor. Center HMI to minimize gaps. Ensure the hardware is tightened properly (double check once installed)",
+              "description": "Condense all software/extra hardware into one box. Label box with Project Name, PD/CM # and Unit # and store the box.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "install-display:install-hmi:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Condense all software/extra hardware into one box. Label box with Project Name, PD/CM # and Unit # and store the box.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "keyboard-tray",
+          "title": "Work Element 7",
+          "description": "Install Keyboard Tray. Do not install Keyboard Tray if the -30(x) Display is used",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Part Numbers: 1043265-1, 1043265-3, 1043265-4, 1066730-7, 1089241-20, 1089241-28, 1089241-29, 1089241-35 (+7 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "keyboard-tray:skip-if-30x",
+              "title": "If the -30(X)Display is being used, skip this step.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "keyboard-tray:install-tray",
+              "title": "Install Keyboard tray. Put keyboard inside tray and route the USB cord to the HMI. Install padding for the tray.",
+              "description": "Ensure inside tray slides back and forth with no binding and locks in the open position.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "keyboard-tray:install-tray:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Ensure inside tray slides back and forth with no binding and locks in the open position.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "inside-door-labels",
+          "title": "Work Element 8",
+          "description": "Install inside door panels and blue component labels",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Part Numbers: 1043265-1, 1043265-3, 1043265-4, 1066730-7, 1089241-20, 1089241-28, 1089241-29, 1089241-35 (+7 more)\nRails: 21.25\" Rail\nWhite Labels: IEG01301, IEG02307, UV0600G\nBlue Labels: UV0600, UV0700, AR0600, AR0700, AT0600, AP0601, AP0602, AP0603 (+23 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "inside-door-labels:install-blue-labels",
+              "title": "Install blue labels per print ensuring they are visible. See Team Leader/Lead or Display Console for label placement",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "inside-door-labels:door-spacers",
+              "title": "Use the correct spacers for panels that are hung on the inside doors (power rail, fires system, transformer, heater, etc.). No torque paint required",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "external-labels",
+          "title": "Work Element 9",
+          "description": "Install external labels and placards.",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Part Numbers: 1043265-1, 1043265-3, 1043265-4, 1066730-7, 1089241-20, 1089241-28, 1089241-29, 1089241-35 (+7 more)\nWhite Labels: IEG01301, IEG02307, UV0600G\nBlue Labels: UV0600, UV0700, AR0600, AR0700, AT0600, AP0601, AP0602, AP0603 (+23 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "external-labels:verify-label-type",
+              "title": "Verify the label type (metal, phenolic), language and if it is single or dual language (cover sheet).",
+              "description": "Use templates to install labels and placards (warning, Turbotronic/Data plates, etc).",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "external-labels:verify-label-type:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Use templates to install labels and placards (warning, Turbotronic/Data plates, etc).",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hang-panels",
+          "title": "Work Element 10",
+          "description": "Hang Panels in Console per the Layout Drawing using the crane and panel lift tool.",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 1634920-150\nPart Numbers: 1043265-1, 1043265-3, 1043265-4, 1066730-7, 1089241-20, 1089241-28, 1089241-29, 1089241-35 (+7 more)\nPanducts: 2x4x44",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "hang-panels:apply-lubricant",
+              "title": "Apply lubricant to all bonded mounting holes on the panels. Ensure the A and B panels are as close as possible and the gap is even from the unistrut to the boss.",
+              "description": "Install a grn/yel 8ga. ground wire when hanging the A panel. Ensure lug is facing horizontally to the right. Install special panduct for wiring per layout drawing, if required. Tighten all bolts for the panels and apply torque paint on 3/8 hardware only (tight plus 1/4 turn).",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "hang-panels:apply-lubricant:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Install a grn/yel 8ga. ground wire when hanging the A panel. Ensure lug is facing horizontally to the right. Install special panduct for wiring per layout drawing, if required.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                },
+                {
+                  "id": "hang-panels:apply-lubricant:sub-2",
+                  "title": "Sub-step 2",
+                  "description": "Tighten all bolts for the panels and apply torque paint on 3/8 hardware only (tight plus 1/4 turn).",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "special-components",
+          "title": "Work Element 11",
+          "description": "Install special components per layout (BN3500, HIMA, Beckwidth, etc)",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 1634920-150\nPart Numbers: 1043265-1, 1043265-3, 1043265-4, 1066730-7, 1089241-20, 1089241-28, 1089241-29, 1089241-35 (+7 more)\nWhite Labels: IEG01301, IEG02307, UV0600G\nBlue Labels: UV0600, UV0700, AR0600, AR0700, AT0600, AP0601, AP0602, AP0603 (+23 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "special-components:check-special-mounting",
+              "title": "Check for special mounting brackets and hardware. Check grounding/isolation of the components as needed. Install blue labels as required.",
+              "description": "Check clearance to ensure component will not interfere with the door closing, or hit panels, harnesses or components inside the console.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "special-components:check-special-mounting:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Check clearance to ensure component will not interfere with the door closing, or hit panels, harnesses or components inside the console.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "clean-submit",
+          "title": "Work Element 12",
+          "description": "Clean debris from Console. Submit for build up visual",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 1634920-150",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "clean-submit:document-discrepancies",
+              "title": "All discrepancies/deviations documented with an MRCA#",
+              "description": "Notify Team Leader/Lead of any shortages, issues and the console is ready for visual inspection. Team Leader/Lead will assign.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "clean-submit:document-discrepancies:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Notify Team Leader/Lead of any shortages, issues and the console is ready for visual inspection. Team Leader/Lead will assign.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "stamp-complete",
+          "title": "Work Element 13",
+          "description": "Stamp as Complete",
+          "required": true,
+          "completedByDefault": false,
+          "reviewRequirement": "Auditor: The Visual is Completed. Tally Discrepancies below. Give this sheet to Team Leader",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": []
+        }
+      ]
+    }
+  ]
+}

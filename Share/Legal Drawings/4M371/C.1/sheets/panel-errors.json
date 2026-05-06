@@ -1,0 +1,117 @@
+{
+  "slug": "panel-errors",
+  "name": "Panel Errors",
+  "kind": "reference",
+  "sheetIndex": 21,
+  "headers": [
+    "Device ID",
+    "Location",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire ID",
+    "Wire No.",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location_1",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "XT0786:1",
+      "wireType": "SC",
+      "wireNo": "XT07861",
+      "wireId": "",
+      "gaugeSize": "",
+      "fromLocation": "PANEL",
+      "fromPageZone": "158.C5",
+      "toDeviceId": "TWISTWIREBW:",
+      "toLocation": "GEN CTRL",
+      "toPageZone": "158.C5",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "XT0786:2",
+      "wireType": "SC",
+      "wireNo": "XT07862",
+      "wireId": "",
+      "gaugeSize": "",
+      "fromLocation": "PANEL",
+      "fromPageZone": "158.C5",
+      "toDeviceId": "TWISTWIREBW:",
+      "toLocation": "GEN CTRL",
+      "toPageZone": "158.C5",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-2",
+      "fromDeviceId": "TWISTWIREBW:",
+      "wireType": "SC",
+      "wireNo": "XT07863",
+      "wireId": "",
+      "gaugeSize": "",
+      "fromLocation": "GEN CTRL",
+      "fromPageZone": "158.C5",
+      "toDeviceId": "XT0786:3",
+      "toLocation": "PANEL",
+      "toPageZone": "158.C5",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "TWISTWIREBW:",
+      "Location": "PANEL",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire ID": null,
+      "Wire No.": "XT07861",
+      "Gauge/Size": null,
+      "Page/Zone": "158.C5"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "TWISTWIREBW:",
+      "Location": "PANEL",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire ID": null,
+      "Wire No.": "XT07862",
+      "Gauge/Size": null,
+      "Page/Zone": "158.C5"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "XT0786:3",
+      "Location": "GEN CTRL",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire ID": null,
+      "Wire No.": "XT07863",
+      "Gauge/Size": null,
+      "Page/Zone": "158.C5"
+    }
+  ],
+  "rowCount": 3,
+  "metadata": {
+    "projectName": "SOLARIS ENERGY INFRASTRUCTURE",
+    "revision": "C",
+    "controlsDE": "J. PECACHE",
+    "controlsME": "S. LOZA"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "BUILD_UP",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 0,
+    "detectedReasons": [],
+    "requiresWireSws": false,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:31:15.235Z"
+}

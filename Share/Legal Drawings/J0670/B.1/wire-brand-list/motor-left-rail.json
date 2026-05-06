@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:11:15.684Z",
+  "mode": "branding-export",
+  "sheetSlug": "motor-left-rail",
+  "sheetName": "MOTOR LEFT RAIL",
+  "totalRows": 3,
+  "header": {
+    "locationTitle": "MOTOR LEFT RAIL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0670",
+    "projectName": "J0670",
+    "revision": "B.1",
+    "controlsDE": "M.WERLING",
+    "controlsME": "N. CARPENTER"
+  },
+  "importHints": {
+    "canonicalSheetName": "MOTOR LEFT RAIL",
+    "normalizedSheetName": "motor-left-rail",
+    "bundleNames": [
+      "FU - UV",
+      "FU - XT",
+      "UV - XT"
+    ],
+    "bundleDisplays": [
+      "FU - UV",
+      "FU - XT - A - PANEL",
+      "UV - XT - A - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - UV",
+          "toLocation": "MOTOR LEFT RAIL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "FU0765:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV0760P",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "UV0760:8+",
+              "toTerminal": "8+",
+              "toLocation": "MOTOR LEFT RAIL",
+              "bundleName": "FU - UV",
+              "bundleDisplay": "FU - UV",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "A PANEL",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "FU0765:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0781",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0760:2",
+              "toTerminal": "2",
+              "toLocation": "A PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT - A - PANEL",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV - XT",
+          "toLocation": "A PANEL",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "UV0760:9-",
+              "fromTerminal": "9-",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V78",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0760:4",
+              "toTerminal": "4",
+              "toLocation": "A PANEL",
+              "bundleName": "UV - XT",
+              "bundleDisplay": "UV - XT - A - PANEL",
+              "devicePrefix": "UV"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "c63448522d3cc359fb19d8bb314d6b646ab0d1fccdbab278ca9e2958af325b36"
+}

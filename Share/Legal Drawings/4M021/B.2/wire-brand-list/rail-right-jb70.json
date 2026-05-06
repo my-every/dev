@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:24:40.407Z",
+  "mode": "branding-export",
+  "sheetSlug": "rail-right-jb70",
+  "sheetName": "RAIL RIGHT JB70",
+  "totalRows": 5,
+  "header": {
+    "locationTitle": "RAIL RIGHT JB70",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M021",
+    "projectName": "4M021",
+    "revision": "B.2",
+    "controlsDE": "J. UNGER"
+  },
+  "importHints": {
+    "canonicalSheetName": "RAIL,RIGHT,JB70",
+    "normalizedSheetName": "rail-right-jb70",
+    "bundleNames": [
+      "FU - KA",
+      "FU - XT",
+      "KA9020 - RED"
+    ],
+    "bundleDisplays": [
+      "FU - KA",
+      "FU - XT",
+      "KA9020 - RED"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - KA",
+          "toLocation": "RAIL,RIGHT,JB70",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "FU9020:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU9020LD",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "KA9020:11",
+              "toTerminal": "11",
+              "toLocation": "RAIL,RIGHT,JB70",
+              "bundleName": "FU - KA",
+              "bundleDisplay": "FU - KA",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "RAIL,RIGHT,JB70",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "FU1100:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0111:21",
+              "toTerminal": "21",
+              "toLocation": "RAIL,RIGHT,JB70",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "KA",
+      "bundles": [
+        {
+          "bundleName": "KA9020 - RED",
+          "toLocation": "RAIL,RIGHT,JB70",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "KA9020:12",
+              "fromTerminal": "12",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "H9020L1",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9020:4",
+              "toTerminal": "4",
+              "toLocation": "RAIL,RIGHT,JB70",
+              "bundleName": "KA9020 - RED",
+              "bundleDisplay": "KA9020 - RED",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "KA9020:21",
+              "fromTerminal": "21",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CC90202",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9020:2",
+              "toTerminal": "2",
+              "toLocation": "RAIL,RIGHT,JB70",
+              "bundleName": "KA9020 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "KA9020:22",
+              "fromTerminal": "22",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "H9020L2",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9020:5",
+              "toTerminal": "5",
+              "toLocation": "RAIL,RIGHT,JB70",
+              "bundleName": "KA9020 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "c609585c0b527a8abbb528ca90836d751e1ec75e81048ef6bdd310381758582b"
+}

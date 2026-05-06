@@ -1,0 +1,273 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:08:44.620Z",
+  "mode": "branding-export",
+  "sheetSlug": "power-panel",
+  "sheetName": "POWER PANEL",
+  "totalRows": 10,
+  "header": {
+    "locationTitle": "POWER PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0080",
+    "projectName": "J0080",
+    "revision": "A.6",
+    "controlsDE": "D.GRANT",
+    "controlsME": "G.CATO"
+  },
+  "importHints": {
+    "canonicalSheetName": "POWER PANEL",
+    "normalizedSheetName": "power-panel",
+    "bundleNames": [
+      "EA1420",
+      "EA1440",
+      "EA2130",
+      "UJ0131"
+    ],
+    "bundleDisplays": [
+      "EA1420",
+      "EA1440",
+      "EA2130",
+      "UJ0131 - A - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "EA",
+      "bundles": [
+        {
+          "bundleName": "EA1420",
+          "toLocation": "POWER PANEL",
+          "rows": [
+            {
+              "rowId": "row-9",
+              "rowIndex": 20,
+              "fromDeviceId": "EA1420:P:L",
+              "fromTerminal": "P",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0014",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "FU0014:LD",
+              "toTerminal": "LD",
+              "toLocation": "POWER PANEL",
+              "bundleName": "EA1420",
+              "bundleDisplay": "EA1420",
+              "devicePrefix": "EA"
+            },
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "EA1420:P:N",
+              "fromTerminal": "P",
+              "fromTerminalOrder": null,
+              "wireNo": "-523NEG",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0011:9",
+              "toTerminal": "9",
+              "toLocation": "POWER PANEL",
+              "bundleName": "EA1420",
+              "bundleDisplay": "",
+              "devicePrefix": "EA"
+            }
+          ]
+        },
+        {
+          "bundleName": "EA1440",
+          "toLocation": "POWER PANEL",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 22,
+              "fromDeviceId": "EA1440:P:L",
+              "fromTerminal": "P",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0015",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "FU0015:LD",
+              "toTerminal": "LD",
+              "toLocation": "POWER PANEL",
+              "bundleName": "EA1440",
+              "bundleDisplay": "EA1440",
+              "devicePrefix": "EA"
+            },
+            {
+              "rowId": "row-12",
+              "rowIndex": 23,
+              "fromDeviceId": "EA1440:P:N",
+              "fromTerminal": "P",
+              "fromTerminalOrder": null,
+              "wireNo": "-523NEG",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0011:10",
+              "toTerminal": "10",
+              "toLocation": "POWER PANEL",
+              "bundleName": "EA1440",
+              "bundleDisplay": "",
+              "devicePrefix": "EA"
+            }
+          ]
+        },
+        {
+          "bundleName": "EA2130",
+          "toLocation": "POWER PANEL",
+          "rows": [
+            {
+              "rowId": "row-13",
+              "rowIndex": 24,
+              "fromDeviceId": "EA2130:P:L",
+              "fromTerminal": "P",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0012",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "FU0012:LD",
+              "toTerminal": "LD",
+              "toLocation": "POWER PANEL",
+              "bundleName": "EA2130",
+              "bundleDisplay": "EA2130",
+              "devicePrefix": "EA"
+            },
+            {
+              "rowId": "row-14",
+              "rowIndex": 25,
+              "fromDeviceId": "EA2130:P:N",
+              "fromTerminal": "P",
+              "fromTerminalOrder": null,
+              "wireNo": "-523NEG",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0011:7",
+              "toTerminal": "7",
+              "toLocation": "POWER PANEL",
+              "bundleName": "EA2130",
+              "bundleDisplay": "",
+              "devicePrefix": "EA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UJ",
+      "bundles": [
+        {
+          "bundleName": "UJ0131",
+          "toLocation": "A PANEL",
+          "rows": [
+            {
+              "rowId": "row-27",
+              "rowIndex": 38,
+              "fromDeviceId": "UJ0131:IOUT",
+              "fromTerminal": "IOUT",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0131IOUT",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0094:06",
+              "toTerminal": "06",
+              "toLocation": "A PANEL",
+              "bundleName": "UJ0131",
+              "bundleDisplay": "UJ0131 - A - PANEL",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-28",
+              "rowIndex": 39,
+              "fromDeviceId": "UJ0131:OK1",
+              "fromTerminal": "OK1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0131OK1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:41",
+              "toTerminal": "41",
+              "toLocation": "A PANEL",
+              "bundleName": "UJ0131",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-29",
+              "rowIndex": 40,
+              "fromDeviceId": "UJ0131:OK2",
+              "fromTerminal": "OK2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0131OK2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:09",
+              "toTerminal": "09",
+              "toLocation": "A PANEL",
+              "bundleName": "UJ0131",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-32",
+              "rowIndex": 43,
+              "fromDeviceId": "UJ0131:VIN",
+              "fromTerminal": "VIN",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0131VIN",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0094:04",
+              "toTerminal": "04",
+              "toLocation": "A PANEL",
+              "bundleName": "UJ0131",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "e64b079701bb316bb9672a045973de7f2f7a0279ce5a0adb90a5be1f9f31bb0a"
+}

@@ -1,0 +1,414 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:30:03.314Z",
+  "mode": "branding-export",
+  "sheetSlug": "console-meter-panel",
+  "sheetName": "CONSOLE METER PANEL",
+  "totalRows": 17,
+  "header": {
+    "locationTitle": "CONSOLE METER PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M181",
+    "projectName": "4M181",
+    "revision": "B.5_M.4",
+    "controlsDE": "J. SHORTER",
+    "controlsME": "S. LOZA"
+  },
+  "importHints": {
+    "canonicalSheetName": "CONSOLE METER PANEL",
+    "normalizedSheetName": "console-meter-panel",
+    "bundleNames": [
+      "PA - PA",
+      "PA - XT",
+      "PA0771 - BLU",
+      "PA0771 - RED",
+      "PF - KA",
+      "SA0710 - RED",
+      "SA0740 - BLU",
+      "SA0770 - RED"
+    ],
+    "bundleDisplays": [
+      "PA - PA",
+      "PA - XT - CONSOLE GEN - PANEL",
+      "PA0771 - BLU - CONSOLE GEN - PANEL",
+      "PA0771 - RED - CONSOLE GEN - PANEL",
+      "PF - KA - CONSOLE GEN - PANEL",
+      "SA0710 - RED - CONSOLE SWITCH - PANEL",
+      "SA0740 - BLU - CONSOLE SWITCH - PANEL",
+      "SA0770 - RED - CONSOLE SWITCH - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "PA",
+      "bundles": [
+        {
+          "bundleName": "PA - PA",
+          "toLocation": "CONSOLE METER PANEL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "PA0703:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "PA07716",
+              "wireId": "BLU",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "PA0771:6",
+              "toTerminal": "6",
+              "toLocation": "CONSOLE METER PANEL",
+              "bundleName": "PA - PA",
+              "bundleDisplay": "PA - PA",
+              "devicePrefix": "PA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "PA",
+      "bundles": [
+        {
+          "bundleName": "PA - XT",
+          "toLocation": "CONSOLE GEN PANEL",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "PA0703:5",
+              "fromTerminal": "5",
+              "fromTerminalOrder": null,
+              "wireNo": "PA07035",
+              "wireId": "BLU",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0348:1",
+              "toTerminal": "1",
+              "toLocation": "CONSOLE GEN PANEL",
+              "bundleName": "PA - XT",
+              "bundleDisplay": "PA - XT - CONSOLE GEN - PANEL",
+              "devicePrefix": "PA"
+            }
+          ]
+        },
+        {
+          "bundleName": "PA0771 - BLU",
+          "toLocation": "CONSOLE GEN PANEL",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "PA0771:4",
+              "fromTerminal": "4",
+              "fromTerminalOrder": null,
+              "wireNo": "PA07714",
+              "wireId": "BLU",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0348:4",
+              "toTerminal": "4",
+              "toLocation": "CONSOLE GEN PANEL",
+              "bundleName": "PA0771 - BLU",
+              "bundleDisplay": "PA0771 - BLU - CONSOLE GEN - PANEL",
+              "devicePrefix": "PA"
+            }
+          ]
+        },
+        {
+          "bundleName": "PA0771 - RED",
+          "toLocation": "CONSOLE GEN PANEL",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "PA0771:7",
+              "fromTerminal": "7",
+              "fromTerminalOrder": null,
+              "wireNo": "VGENC",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0347:6",
+              "toTerminal": "6",
+              "toLocation": "CONSOLE GEN PANEL",
+              "bundleName": "PA0771 - RED",
+              "bundleDisplay": "PA0771 - RED - CONSOLE GEN - PANEL",
+              "devicePrefix": "PA"
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "PA0771:8",
+              "fromTerminal": "8",
+              "fromTerminalOrder": null,
+              "wireNo": "VGENB",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0347:4",
+              "toTerminal": "4",
+              "toLocation": "CONSOLE GEN PANEL",
+              "bundleName": "PA0771 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "PA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "PF",
+      "bundles": [
+        {
+          "bundleName": "PF - KA",
+          "toLocation": "CONSOLE GEN PANEL",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "PF0701:7",
+              "fromTerminal": "7",
+              "fromTerminalOrder": null,
+              "wireNo": "PF07017",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "KA0180:14",
+              "toTerminal": "14",
+              "toLocation": "CONSOLE GEN PANEL",
+              "bundleName": "PF - KA",
+              "bundleDisplay": "PF - KA - CONSOLE GEN - PANEL",
+              "devicePrefix": "PF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "SA",
+      "bundles": [
+        {
+          "bundleName": "SA0710 - RED",
+          "toLocation": "CONSOLE SWITCH PANEL",
+          "rows": [
+            {
+              "rowId": "row-21",
+              "rowIndex": 32,
+              "fromDeviceId": "SA0710:11",
+              "fromTerminal": "11",
+              "fromTerminalOrder": null,
+              "wireNo": "PV07007",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "PV0700:7",
+              "toTerminal": "7",
+              "toLocation": "CONSOLE SWITCH PANEL",
+              "bundleName": "SA0710 - RED",
+              "bundleDisplay": "SA0710 - RED - CONSOLE SWITCH - PANEL",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-22",
+              "rowIndex": 33,
+              "fromDeviceId": "SA0710:21",
+              "fromTerminal": "21",
+              "fromTerminalOrder": null,
+              "wireNo": "PV07008",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "PV0700:8",
+              "toTerminal": "8",
+              "toLocation": "CONSOLE SWITCH PANEL",
+              "bundleName": "SA0710 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            }
+          ]
+        },
+        {
+          "bundleName": "SA0740 - BLU",
+          "toLocation": "CONSOLE SWITCH PANEL",
+          "rows": [
+            {
+              "rowId": "row-12",
+              "rowIndex": 23,
+              "fromDeviceId": "SA0740:11",
+              "fromTerminal": "11",
+              "fromTerminalOrder": null,
+              "wireNo": "PA07007",
+              "wireId": "BLU",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "PA0700:7",
+              "toTerminal": "7",
+              "toLocation": "CONSOLE SWITCH PANEL",
+              "bundleName": "SA0740 - BLU",
+              "bundleDisplay": "SA0740 - BLU - CONSOLE SWITCH - PANEL",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-15",
+              "rowIndex": 26,
+              "fromDeviceId": "SA0740:12",
+              "fromTerminal": "12",
+              "fromTerminalOrder": null,
+              "wireNo": "PA07033",
+              "wireId": "BLU",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "PA0703:3",
+              "toTerminal": "3",
+              "toLocation": "CONSOLE SWITCH PANEL",
+              "bundleName": "SA0740 - BLU",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-13",
+              "rowIndex": 24,
+              "fromDeviceId": "SA0740:21",
+              "fromTerminal": "21",
+              "fromTerminalOrder": null,
+              "wireNo": "MCTN",
+              "wireId": "BLU",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "PA0700:8",
+              "toTerminal": "8",
+              "toLocation": "CONSOLE SWITCH PANEL",
+              "bundleName": "SA0740 - BLU",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-18",
+              "rowIndex": 29,
+              "fromDeviceId": "SA0740:24",
+              "fromTerminal": "24",
+              "fromTerminalOrder": null,
+              "wireNo": "PA07037",
+              "wireId": "BLU",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "PA0703:7",
+              "toTerminal": "7",
+              "toLocation": "CONSOLE SWITCH PANEL",
+              "bundleName": "SA0740 - BLU",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            }
+          ]
+        },
+        {
+          "bundleName": "SA0770 - RED",
+          "toLocation": "CONSOLE SWITCH PANEL",
+          "rows": [
+            {
+              "rowId": "row-17",
+              "rowIndex": 28,
+              "fromDeviceId": "SA0770:12",
+              "fromTerminal": "12",
+              "fromTerminalOrder": null,
+              "wireNo": "PA07036",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "PA0703:6",
+              "toTerminal": "6",
+              "toLocation": "CONSOLE SWITCH PANEL",
+              "bundleName": "SA0770 - RED",
+              "bundleDisplay": "SA0770 - RED - CONSOLE SWITCH - PANEL",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-19",
+              "rowIndex": 30,
+              "fromDeviceId": "SA0770:16",
+              "fromTerminal": "16",
+              "fromTerminalOrder": null,
+              "wireNo": "PA07038",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "PA0703:8",
+              "toTerminal": "8",
+              "toLocation": "CONSOLE SWITCH PANEL",
+              "bundleName": "SA0770 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-16",
+              "rowIndex": 27,
+              "fromDeviceId": "SA0770:22",
+              "fromTerminal": "22",
+              "fromTerminalOrder": null,
+              "wireNo": "PA07034",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "PA0703:4",
+              "toTerminal": "4",
+              "toLocation": "CONSOLE SWITCH PANEL",
+              "bundleName": "SA0770 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-14",
+              "rowIndex": 25,
+              "fromDeviceId": "SA0770:26",
+              "fromTerminal": "26",
+              "fromTerminalOrder": null,
+              "wireNo": "PA07032",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "PA0703:2",
+              "toTerminal": "2",
+              "toLocation": "CONSOLE SWITCH PANEL",
+              "bundleName": "SA0770 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-20",
+              "rowIndex": 31,
+              "fromDeviceId": "SA0770:28",
+              "fromTerminal": "28",
+              "fromTerminalOrder": null,
+              "wireNo": "VGENB",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "PF0701:8",
+              "toTerminal": "8",
+              "toLocation": "CONSOLE SWITCH PANEL",
+              "bundleName": "SA0770 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "d4122030f3fc4e487b66c3966e144e3b088f6447c346a51c22687cfb6ca8ec48"
+}

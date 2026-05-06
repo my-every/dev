@@ -1,0 +1,467 @@
+{
+  "generatedAt": "2026-05-05T14:09:03.667Z",
+  "sheetName": "BUOS BOX",
+  "mode": "standardize",
+  "totalPages": 3,
+  "totalRows": 14,
+  "settings": {
+    "showEstTime": false,
+    "showFromCheckbox": true,
+    "showToCheckbox": true,
+    "showIPV": true,
+    "showComments": true,
+    "showLength": false,
+    "showCoverPage": true,
+    "showTableOfContents": true,
+    "showIPVCodes": false,
+    "showFeedbackSection": false,
+    "showDeviceSubheaders": false,
+    "enableBlueDeviceIDColumns": false,
+    "sectionColumnVisibility": {},
+    "feedbackRenderMode": "BLANK",
+    "feedbackSections": [
+      "Header",
+      "Accuracy & Usability",
+      "Termination Clarity",
+      "Routing & Layout Alignment",
+      "Build Sequence & Efficiency",
+      "Hardware & Materials",
+      "Quality & Rework",
+      "Time & Effort",
+      "Safety & Compliance",
+      "Documentation Quality",
+      "Automation Checks",
+      "Final Sign-Off",
+      "Footer"
+    ],
+    "customQuestions": [
+      "accuracyBlueLabelsClear",
+      "accuracySequenceMatchedLayout",
+      "accuracyMissingDuplicateIncorrectEntries",
+      "accuracyLocationColumnCorrect",
+      "terminationTypesClear",
+      "terminationLengthsAccurate",
+      "terminationReworkDueToInstructionClarity",
+      "terminationJumperRulesEasyToFollow",
+      "routingAlignedWithLayout",
+      "routingLengthFit",
+      "routingConflictsPanduct",
+      "routingConflictsRails",
+      "routingConflictsAdjacentDevices",
+      "routingEfficientOrder",
+      "buildOrderHelpful",
+      "buildRequiredDeviation",
+      "buildDeviationReason",
+      "buildCausedDelays",
+      "materialsFerrulesAvailable",
+      "materialsLugsAvailable",
+      "materialsJumpersAvailable",
+      "materialsWireTypesAvailable",
+      "materialsIssuesNotes",
+      "qualityErrorsCaughtDuringWiring",
+      "qualityReterminatedWires",
+      "qualityReroutedWires",
+      "qualityReplacedWires",
+      "qualityCommonIssues",
+      "estimatedWiringTimeHours",
+      "actualWiringTimeHours",
+      "timeVarianceReason",
+      "safetyGroundsClearlyIdentified",
+      "safetyTerminationsCompliant",
+      "safetyConcernsNotes",
+      "documentationDifficulty",
+      "documentationImprovementAreas",
+      "documentationOtherImprovementArea",
+      "documentationSpecificSuggestions",
+      "automationJumperPredictionCorrect",
+      "automationBlueLabelSequencesCorrect",
+      "automationKtRulesCorrect",
+      "automationReusableTemplateCandidate",
+      "finalQualityRating",
+      "finalComments"
+    ],
+    "crossWireSections": [],
+    "hiddenRows": [],
+    "hiddenSections": [],
+    "brandingSortMode": "device-prefix",
+    "wireListSortMode": "device-prefix"
+  },
+  "pages": [
+    {
+      "pageType": "cover",
+      "pageNumber": 1,
+      "projectInfo": {
+        "projectNumber": "J0090",
+        "projectName": "J0090",
+        "revision": "A.7",
+        "pdNumber": "J0090",
+        "unitNumber": "",
+        "preparedBy": "",
+        "badgeNumber": "",
+        "date": "",
+        "time": "",
+        "personnel": [
+          {
+            "id": "1",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "2",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "3",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "4",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "5",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "6",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          }
+        ]
+      },
+      "sheetTitle": "BUOS BOX"
+    },
+    {
+      "pageType": "toc",
+      "pageNumber": 2,
+      "locationGroups": [
+        {
+          "location": "BUOS BOX",
+          "isExternal": false,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Grounds",
+              "rowCount": 2,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 2,
+              "label": "Single Connections",
+              "rowCount": 9,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "UA1200",
+                  "rowCount": 9
+                }
+              ]
+            },
+            {
+              "index": 3,
+              "label": "Cables",
+              "rowCount": 3,
+              "estimatedPage": 3,
+              "subEntries": []
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "locations": 1,
+        "sections": 4,
+        "rows": 14,
+        "pages": 3
+      }
+    },
+    {
+      "pageType": "wire-list",
+      "pageNumber": 3,
+      "locationGroups": [
+        {
+          "location": "BUOS BOX",
+          "isExternal": false,
+          "totalRows": 14,
+          "subsections": [
+            {
+              "label": "Grounds",
+              "sectionKind": "grounds",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-10",
+                  "rowIndex": 21,
+                  "fromDeviceId": "UA1200:J3-4",
+                  "toDeviceId": "XT8042:12",
+                  "wireType": "SC",
+                  "wireNo": "UA1200G",
+                  "wireId": "GRN",
+                  "gaugeSize": "16",
+                  "fromLocation": "BUOS BOX",
+                  "toLocation": "BUOS BOX",
+                  "fromPageZone": "19.B3",
+                  "toPageZone": "19.D4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-0",
+                  "rowIndex": 11,
+                  "fromDeviceId": "GR8042",
+                  "toDeviceId": "FG1421:1",
+                  "wireType": "SC",
+                  "wireNo": "GR8042",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "14",
+                  "fromLocation": "BUOS BOX",
+                  "toLocation": "BUOS BOX",
+                  "fromPageZone": "19.D1",
+                  "toPageZone": "19.D1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 9,
+              "rows": [
+                {
+                  "rowId": "row-2",
+                  "rowIndex": 13,
+                  "fromDeviceId": "UA1200:J1-4",
+                  "toDeviceId": "XT8042:4",
+                  "wireType": "SC",
+                  "wireNo": "UA1200J14",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "BUOS BOX",
+                  "toLocation": "BUOS BOX",
+                  "fromPageZone": "19.B3",
+                  "toPageZone": "19.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-3",
+                  "rowIndex": 14,
+                  "fromDeviceId": "UA1200:J1-5",
+                  "toDeviceId": "XT8042:5",
+                  "wireType": "SC",
+                  "wireNo": "UA1200J15",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "BUOS BOX",
+                  "toLocation": "BUOS BOX",
+                  "fromPageZone": "19.B3",
+                  "toPageZone": "19.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-4",
+                  "rowIndex": 15,
+                  "fromDeviceId": "UA1200:J1-8",
+                  "toDeviceId": "UA1200:J3-5",
+                  "wireType": "SC",
+                  "wireNo": "UA1200J",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "BUOS BOX",
+                  "toLocation": "BUOS BOX",
+                  "fromPageZone": "52.B6",
+                  "toPageZone": "52.B6",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-1",
+                  "rowIndex": 12,
+                  "fromDeviceId": "UA1200:J1-10",
+                  "toDeviceId": "XT8042:10",
+                  "wireType": "SC",
+                  "wireNo": "FU0212",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "BUOS BOX",
+                  "toLocation": "BUOS BOX",
+                  "fromPageZone": "19.B3",
+                  "toPageZone": "19.D4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-6",
+                  "rowIndex": 17,
+                  "fromDeviceId": "UA1200:J2-1",
+                  "toDeviceId": "XT8042:8",
+                  "wireType": "SC",
+                  "wireNo": "UA1200J21",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "BUOS BOX",
+                  "toLocation": "BUOS BOX",
+                  "fromPageZone": "19.B3",
+                  "toPageZone": "19.D4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-7",
+                  "rowIndex": 18,
+                  "fromDeviceId": "UA1200:J2-2",
+                  "toDeviceId": "XT8042:9",
+                  "wireType": "SC",
+                  "wireNo": "FU0212",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "BUOS BOX",
+                  "toLocation": "BUOS BOX",
+                  "fromPageZone": "19.B3",
+                  "toPageZone": "19.D4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-8",
+                  "rowIndex": 19,
+                  "fromDeviceId": "UA1200:J2-6",
+                  "toDeviceId": "XT8042:6",
+                  "wireType": "SC",
+                  "wireNo": "UA1200J26",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "BUOS BOX",
+                  "toLocation": "BUOS BOX",
+                  "fromPageZone": "19.B3",
+                  "toPageZone": "19.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-9",
+                  "rowIndex": 20,
+                  "fromDeviceId": "UA1200:J2-7",
+                  "toDeviceId": "XT8042:7",
+                  "wireType": "SC",
+                  "wireNo": "UA1200J27",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "BUOS BOX",
+                  "toLocation": "BUOS BOX",
+                  "fromPageZone": "19.B3",
+                  "toPageZone": "19.D4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-5",
+                  "rowIndex": 16,
+                  "fromDeviceId": "UA1200:J1-9",
+                  "toDeviceId": "XT8042:11",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "BUOS BOX",
+                  "toLocation": "BUOS BOX",
+                  "fromPageZone": "19.B3",
+                  "toPageZone": "19.D4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "UA1200",
+                  "rowCount": 9
+                }
+              ]
+            },
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 3,
+              "rows": [
+                {
+                  "rowId": "row-11",
+                  "rowIndex": 22,
+                  "fromDeviceId": "UA1200:J1-3",
+                  "toDeviceId": "XT8042:1",
+                  "wireType": "WC4524",
+                  "wireNo": "UA1200J13",
+                  "wireId": "RED",
+                  "gaugeSize": "20",
+                  "fromLocation": "BUOS BOX",
+                  "toLocation": "BUOS BOX",
+                  "fromPageZone": "19.B3",
+                  "toPageZone": "19.B4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-12",
+                  "rowIndex": 23,
+                  "fromDeviceId": "UA1200:J1-1",
+                  "toDeviceId": "XT8042:2",
+                  "wireType": "WC4524",
+                  "wireNo": "UA1200J11",
+                  "wireId": "BLK",
+                  "gaugeSize": "20",
+                  "fromLocation": "BUOS BOX",
+                  "toLocation": "BUOS BOX",
+                  "fromPageZone": "19.B3",
+                  "toPageZone": "19.B4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-13",
+                  "rowIndex": 24,
+                  "fromDeviceId": "FLOATING",
+                  "toDeviceId": "XT8042:3",
+                  "wireType": "WC4524",
+                  "wireNo": "UA1200S",
+                  "wireId": "SH",
+                  "gaugeSize": "20",
+                  "fromLocation": "BUOS BOX",
+                  "toLocation": "BUOS BOX",
+                  "fromPageZone": "19.B3",
+                  "toPageZone": "19.B4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:34:00.670Z",
+  "mode": "branding-export",
+  "sheetSlug": "plc",
+  "sheetName": "PLC",
+  "totalRows": 3,
+  "header": {
+    "locationTitle": "PLC",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M481",
+    "projectName": "ET-TRI - Unit 2",
+    "revision": "B.2",
+    "controlsDE": "J. SHORTER"
+  },
+  "importHints": {
+    "canonicalSheetName": "PLC",
+    "normalizedSheetName": "plc",
+    "bundleNames": [
+      "AT0680",
+      "FU - XT"
+    ],
+    "bundleDisplays": [
+      "AT0680",
+      "FU - XT"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT0680",
+          "toLocation": "PLC",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "AT0680:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0680:2",
+              "toTerminal": "2",
+              "toLocation": "PLC",
+              "bundleName": "AT0680",
+              "bundleDisplay": "AT0680",
+              "devicePrefix": "AT",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "AT0680:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AT0680POS",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0680:1",
+              "toTerminal": "1",
+              "toLocation": "PLC",
+              "bundleName": "AT0680",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "PLC",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "FU0680:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AT0680POS",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0680:1",
+              "toTerminal": "1",
+              "toLocation": "PLC",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "a52991ad97752bc0dcf6ba32ff6af688ccf356d3cb8cc5c61342e7159b6e09e8"
+}

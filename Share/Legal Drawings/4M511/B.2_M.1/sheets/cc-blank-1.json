@@ -1,0 +1,142 @@
+{
+  "slug": "cc-blank-1",
+  "name": "CC BLANK #1",
+  "kind": "operational",
+  "sheetIndex": 4,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR0012:",
+      "wireType": "SC",
+      "wireNo": "GR0012",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "6.C4",
+      "toDeviceId": "FG1128:6",
+      "toLocation": "CC BLANK #1",
+      "toPageZone": "6.C3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "GR0673:",
+      "wireType": "SC",
+      "wireNo": "GR0673",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "6.C4",
+      "toDeviceId": "FG1128:3",
+      "toLocation": "CC BLANK #1",
+      "toPageZone": "6.C3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-2",
+      "fromDeviceId": "PEG0330:0",
+      "wireType": "SC",
+      "wireNo": "PEG0330G",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "8",
+      "fromLocation": "",
+      "fromPageZone": "6.C2",
+      "toDeviceId": "PEG0130:2",
+      "toLocation": "PANEL A",
+      "toPageZone": "6.C2",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-3",
+      "fromDeviceId": "IEG0430:0",
+      "wireType": "SC",
+      "wireNo": "IEG0430G",
+      "wireId": "GRN",
+      "gaugeSize": "8",
+      "fromLocation": "",
+      "fromPageZone": "6.C2",
+      "toDeviceId": "IEG0010:5",
+      "toLocation": "PANEL B",
+      "toPageZone": "6.C2",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FG1128:6",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0012",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "6.C3",
+      "Location": "CC BLANK #1"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "FG1128:3",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0673",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "6.C3",
+      "Location": "CC BLANK #1"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "PEG0130:2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "PEG0330G",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "8",
+      "Page/Zone": "6.C2",
+      "Location": "PANEL A"
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "IEG0010:5",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "IEG0430G",
+      "Wire ID": "GRN",
+      "Gauge/Size": "8",
+      "Page/Zone": "6.C2",
+      "Location": "PANEL B"
+    }
+  ],
+  "rowCount": 4,
+  "metadata": {
+    "projectName": "ENI - KUTEI NORTH HUB - FPSO",
+    "revision": "B.2",
+    "controlsDE": "BARRAZA, PAUL"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:34:10.754Z"
+}

@@ -1,0 +1,459 @@
+{
+  "generatedAt": "2026-05-05T13:49:50.711Z",
+  "sheetName": "JB70 HEATER PANEL",
+  "mode": "standardize",
+  "totalPages": 3,
+  "totalRows": 13,
+  "settings": {
+    "showEstTime": false,
+    "showFromCheckbox": true,
+    "showToCheckbox": true,
+    "showIPV": true,
+    "showComments": true,
+    "showLength": false,
+    "showCoverPage": true,
+    "showTableOfContents": true,
+    "showIPVCodes": false,
+    "showFeedbackSection": false,
+    "showDeviceSubheaders": false,
+    "enableBlueDeviceIDColumns": false,
+    "sectionColumnVisibility": {},
+    "feedbackRenderMode": "BLANK",
+    "feedbackSections": [
+      "Header",
+      "Accuracy & Usability",
+      "Termination Clarity",
+      "Routing & Layout Alignment",
+      "Build Sequence & Efficiency",
+      "Hardware & Materials",
+      "Quality & Rework",
+      "Time & Effort",
+      "Safety & Compliance",
+      "Documentation Quality",
+      "Automation Checks",
+      "Final Sign-Off",
+      "Footer"
+    ],
+    "customQuestions": [
+      "accuracyBlueLabelsClear",
+      "accuracySequenceMatchedLayout",
+      "accuracyMissingDuplicateIncorrectEntries",
+      "accuracyLocationColumnCorrect",
+      "terminationTypesClear",
+      "terminationLengthsAccurate",
+      "terminationReworkDueToInstructionClarity",
+      "terminationJumperRulesEasyToFollow",
+      "routingAlignedWithLayout",
+      "routingLengthFit",
+      "routingConflictsPanduct",
+      "routingConflictsRails",
+      "routingConflictsAdjacentDevices",
+      "routingEfficientOrder",
+      "buildOrderHelpful",
+      "buildRequiredDeviation",
+      "buildDeviationReason",
+      "buildCausedDelays",
+      "materialsFerrulesAvailable",
+      "materialsLugsAvailable",
+      "materialsJumpersAvailable",
+      "materialsWireTypesAvailable",
+      "materialsIssuesNotes",
+      "qualityErrorsCaughtDuringWiring",
+      "qualityReterminatedWires",
+      "qualityReroutedWires",
+      "qualityReplacedWires",
+      "qualityCommonIssues",
+      "estimatedWiringTimeHours",
+      "actualWiringTimeHours",
+      "timeVarianceReason",
+      "safetyGroundsClearlyIdentified",
+      "safetyTerminationsCompliant",
+      "safetyConcernsNotes",
+      "documentationDifficulty",
+      "documentationImprovementAreas",
+      "documentationOtherImprovementArea",
+      "documentationSpecificSuggestions",
+      "automationJumperPredictionCorrect",
+      "automationBlueLabelSequencesCorrect",
+      "automationKtRulesCorrect",
+      "automationReusableTemplateCandidate",
+      "finalQualityRating",
+      "finalComments"
+    ],
+    "crossWireSections": [],
+    "hiddenRows": [],
+    "hiddenSections": [],
+    "brandingSortMode": "device-prefix",
+    "wireListSortMode": "device-prefix"
+  },
+  "pages": [
+    {
+      "pageType": "cover",
+      "pageNumber": 1,
+      "projectInfo": {
+        "projectNumber": "4N712",
+        "projectName": "ONE-E2 - Unit 1",
+        "revision": "B.1",
+        "pdNumber": "4N712",
+        "unitNumber": "1",
+        "preparedBy": "",
+        "badgeNumber": "",
+        "date": "",
+        "time": "",
+        "personnel": [
+          {
+            "id": "1",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "2",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "3",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "4",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "5",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "6",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          }
+        ]
+      },
+      "sheetTitle": "JB70^HEATER PANEL"
+    },
+    {
+      "pageType": "toc",
+      "pageNumber": 2,
+      "locationGroups": [
+        {
+          "location": "JB70^HEATER PANEL",
+          "isExternal": false,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Grounds",
+              "rowCount": 5,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 2,
+              "label": "Single Connections",
+              "rowCount": 4,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "FU9700",
+                  "rowCount": 2
+                },
+                {
+                  "label": "XT - XT",
+                  "rowCount": 2
+                }
+              ]
+            },
+            {
+              "index": 3,
+              "label": "Cables",
+              "rowCount": 4,
+              "estimatedPage": 3,
+              "subEntries": []
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "locations": 1,
+        "sections": 5,
+        "rows": 13,
+        "pages": 3
+      }
+    },
+    {
+      "pageType": "wire-list",
+      "pageNumber": 3,
+      "locationGroups": [
+        {
+          "location": "JB70^HEATER PANEL",
+          "isExternal": false,
+          "totalRows": 13,
+          "subsections": [
+            {
+              "label": "Grounds",
+              "sectionKind": "grounds",
+              "rowCount": 5,
+              "rows": [
+                {
+                  "rowId": "row-9",
+                  "rowIndex": 19,
+                  "fromDeviceId": "H9700:GND",
+                  "toDeviceId": "XT9702:1",
+                  "wireType": "WCH9700",
+                  "wireNo": "CCH9700G",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "18",
+                  "fromLocation": "JB70^HEATER PANEL",
+                  "toLocation": "JB70^HEATER PANEL",
+                  "fromPageZone": "69.B7",
+                  "toPageZone": "69.B6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-4",
+                  "rowIndex": 14,
+                  "fromDeviceId": "XT9700:3",
+                  "toDeviceId": "XT9701:3",
+                  "wireType": "SC",
+                  "wireNo": "CCH9700G",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB70^HEATER PANEL",
+                  "toLocation": "JB70^HEATER PANEL",
+                  "fromPageZone": "69.B3",
+                  "toPageZone": "69.B5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-6",
+                  "rowIndex": 16,
+                  "fromDeviceId": "XT9701:3",
+                  "toDeviceId": "XT9702:1",
+                  "wireType": "SC",
+                  "wireNo": "CCH9700G",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB70^HEATER PANEL",
+                  "toLocation": "JB70^HEATER PANEL",
+                  "fromPageZone": "69.B5",
+                  "toPageZone": "69.B6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-2",
+                  "rowIndex": 12,
+                  "fromDeviceId": "GR1102",
+                  "toDeviceId": "FRAME",
+                  "wireType": "SC",
+                  "wireNo": "GR1102",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB70^HEATER PANEL",
+                  "toLocation": "JB70^HEATER PANEL",
+                  "fromPageZone": "2.C3",
+                  "toPageZone": "2.C3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-12",
+                  "rowIndex": 22,
+                  "fromDeviceId": "TS9700:GND",
+                  "toDeviceId": "XT9700G:1",
+                  "wireType": "WCTS9700",
+                  "wireNo": "TS9700G",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB70^HEATER PANEL",
+                  "toLocation": "JB70^HEATER PANEL",
+                  "fromPageZone": "69.A4",
+                  "toPageZone": "69.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 4,
+              "rows": [
+                {
+                  "rowId": "row-0",
+                  "rowIndex": 10,
+                  "fromDeviceId": "FU9700:LD",
+                  "toDeviceId": "XT9701:1",
+                  "wireType": "SC",
+                  "wireNo": "FU9700L1",
+                  "wireId": "RED",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB70^HEATER PANEL",
+                  "toLocation": "JB70^HEATER PANEL",
+                  "fromPageZone": "69.A3",
+                  "toPageZone": "69.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-1",
+                  "rowIndex": 11,
+                  "fromDeviceId": "FU9700:LI",
+                  "toDeviceId": "XT9700:1",
+                  "wireType": "SC",
+                  "wireNo": "CCH9700L1",
+                  "wireId": "RED",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB70^HEATER PANEL",
+                  "toLocation": "JB70^HEATER PANEL",
+                  "fromPageZone": "69.A3",
+                  "toPageZone": "69.A3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-3",
+                  "rowIndex": 13,
+                  "fromDeviceId": "XT9700:2",
+                  "toDeviceId": "XT9701:2",
+                  "wireType": "SC",
+                  "wireNo": "CCH9700L2",
+                  "wireId": "RED",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB70^HEATER PANEL",
+                  "toLocation": "JB70^HEATER PANEL",
+                  "fromPageZone": "69.A3",
+                  "toPageZone": "69.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-5",
+                  "rowIndex": 15,
+                  "fromDeviceId": "XT9701:2",
+                  "toDeviceId": "XT9702:2",
+                  "wireType": "SC",
+                  "wireNo": "CCH9700L2",
+                  "wireId": "RED",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB70^HEATER PANEL",
+                  "toLocation": "JB70^HEATER PANEL",
+                  "fromPageZone": "69.A5",
+                  "toPageZone": "69.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "FU9700",
+                  "rowCount": 2
+                },
+                {
+                  "label": "XT - XT",
+                  "rowCount": 2
+                }
+              ]
+            },
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 4,
+              "rows": [
+                {
+                  "rowId": "row-7",
+                  "rowIndex": 17,
+                  "fromDeviceId": "H9700:L1",
+                  "toDeviceId": "XT9702:2",
+                  "wireType": "WCH9700",
+                  "wireNo": "CCH9700L2",
+                  "wireId": "BLU",
+                  "gaugeSize": "18",
+                  "fromLocation": "JB70^HEATER PANEL",
+                  "toLocation": "JB70^HEATER PANEL",
+                  "fromPageZone": "69.B7",
+                  "toPageZone": "69.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-8",
+                  "rowIndex": 18,
+                  "fromDeviceId": "H9700:L2",
+                  "toDeviceId": "XT9702:3",
+                  "wireType": "WCH9700",
+                  "wireNo": "TS9700L1",
+                  "wireId": "BRN",
+                  "gaugeSize": "18",
+                  "fromLocation": "JB70^HEATER PANEL",
+                  "toLocation": "JB70^HEATER PANEL",
+                  "fromPageZone": "69.B7",
+                  "toPageZone": "69.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-10",
+                  "rowIndex": 20,
+                  "fromDeviceId": "TS9700:NC",
+                  "toDeviceId": "XT9701:1",
+                  "wireType": "WCTS9700",
+                  "wireNo": "FU9700L1",
+                  "wireId": "BLU",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB70^HEATER PANEL",
+                  "toLocation": "JB70^HEATER PANEL",
+                  "fromPageZone": "69.A4",
+                  "toPageZone": "69.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-11",
+                  "rowIndex": 21,
+                  "fromDeviceId": "TS9700:C",
+                  "toDeviceId": "XT9702:3",
+                  "wireType": "WCTS9700",
+                  "wireNo": "TS9700L1",
+                  "wireId": "BRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB70^HEATER PANEL",
+                  "toLocation": "JB70^HEATER PANEL",
+                  "fromPageZone": "69.A4",
+                  "toPageZone": "69.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

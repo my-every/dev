@@ -1,0 +1,118 @@
+{
+  "slug": "jb70-right-rail",
+  "name": "JB70 RIGHT RAIL",
+  "kind": "operational",
+  "sheetIndex": 11,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1100:",
+      "wireType": "SC",
+      "wireNo": "GR1100",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "5.A5",
+      "toDeviceId": "FRAME",
+      "toLocation": "JB70 RIGHT RAIL",
+      "toPageZone": "5.A4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "FU1100:LD",
+      "wireType": "SC",
+      "wireNo": "FU1100",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "36.D3",
+      "toDeviceId": "AT1100:POS",
+      "toLocation": "JB70",
+      "toPageZone": "36.D3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-2",
+      "fromDeviceId": "FU1100:LI",
+      "wireType": "SC",
+      "wireNo": "FU0136",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "36.D3",
+      "toDeviceId": "XT1100:1",
+      "toLocation": "JB70 PANEL A",
+      "toPageZone": "36.D5",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1100",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "5.A4",
+      "Location": "JB70 RIGHT RAIL"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "AT1100:POS",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "FU1100",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "36.D3",
+      "Location": "JB70"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "XT1100:1",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "FU0136",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "36.D5",
+      "Location": "JB70 PANEL A"
+    }
+  ],
+  "rowCount": 3,
+  "metadata": {
+    "projectName": "VOLTAGRID DATA CENTER^PROJECT",
+    "revision": "B",
+    "controlsDE": "J. SHORTER",
+    "controlsME": "N. LOPEZ"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Rail in title with no Panel number"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:42:10.241Z"
+}

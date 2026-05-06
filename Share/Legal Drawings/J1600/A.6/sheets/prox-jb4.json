@@ -1,0 +1,68 @@
+{
+  "slug": "prox-jb4",
+  "name": "PROX JB4",
+  "kind": "operational",
+  "sheetIndex": 7,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1101:",
+      "wireType": "SC",
+      "wireNo": "GR1101",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "3.B2",
+      "toDeviceId": "FRAME",
+      "toLocation": "PROX JB4",
+      "toPageZone": "3.B2",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1101",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "3.B2",
+      "Location": "PROX JB4"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "EMMC CONTROLS RETROFIT-PRU",
+    "revision": "A.6",
+    "controlsDE": "J. CARAMBAS",
+    "controlsME": "G. CATO"
+  },
+  "assignment": {
+    "swsType": "BLANK",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "BLANK",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Has Prox - Basic/Blank panel"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:17:01.345Z"
+}

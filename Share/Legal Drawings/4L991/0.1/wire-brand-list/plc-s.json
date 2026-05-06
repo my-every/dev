@@ -1,0 +1,44 @@
+{
+  "sheetSlug": "plc-s",
+  "sheetName": "PLC_S",
+  "sourceSheetName": "PLC_S",
+  "metadata": {
+    "normalizedSheetName": "plc-s",
+    "bundleNames": [
+      "UV",
+      "UV0600"
+    ]
+  },
+  "rows": [
+    {
+      "importedRowId": "plc-s-13",
+      "rowIndex": 13,
+      "matchKey": "UV0600:(+)|FU0010|WHT|16|FU0010:LD|PWR DST PNL",
+      "fromDeviceId": "UV0600:(+)",
+      "wireNo": "FU0010",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "length": 80,
+      "toDeviceId": "FU0010:LD",
+      "toLocation": "PWR DST PNL",
+      "devicePrefix": "UV0600",
+      "bundleName": "UV",
+      "bundleDisplay": "UV"
+    },
+    {
+      "importedRowId": "plc-s-15",
+      "rowIndex": 15,
+      "matchKey": "UV0600:(-)|-0V|WHT|14|XT0104:3|PWR DST PNL",
+      "fromDeviceId": "UV0600:(-)",
+      "wireNo": "-0V",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 80,
+      "toDeviceId": "XT0104:3",
+      "toLocation": "PWR DST PNL",
+      "devicePrefix": "UV0600",
+      "bundleName": "UV0600",
+      "bundleDisplay": "UV0600"
+    }
+  ]
+}

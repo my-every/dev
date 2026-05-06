@@ -1,0 +1,141 @@
+{
+  "slug": "control-jb70",
+  "name": "CONTROL,JB70",
+  "kind": "operational",
+  "sheetIndex": 5,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1000:",
+      "wireType": "SC",
+      "wireNo": "GR1000",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "31.B4",
+      "toDeviceId": "FRAME",
+      "toLocation": "CONTROL,JB70",
+      "toPageZone": "31.B4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "GR1100:",
+      "wireType": "SC",
+      "wireNo": "GR1100",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "31.B4",
+      "toDeviceId": "FRAME",
+      "toLocation": "CONTROL,JB70",
+      "toPageZone": "31.B4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-2",
+      "fromDeviceId": "HA0472:BLK-2",
+      "wireType": "WC5072",
+      "wireNo": "KA087511",
+      "wireId": "BLK",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "34.A1",
+      "toDeviceId": "XT0136:1",
+      "toLocation": "PNL A,SMT130",
+      "toPageZone": "34.A5",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-3",
+      "fromDeviceId": "HA0472:BLK-1",
+      "wireType": "WC5072",
+      "wireNo": "KA0875A2",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "34.A1",
+      "toDeviceId": "XT0136:2",
+      "toLocation": "PNL A,SMT130",
+      "toPageZone": "34.A5",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1000",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "31.B4",
+      "Location": "CONTROL,JB70"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1100",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "31.B4",
+      "Location": "CONTROL,JB70"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "XT0136:1",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC5072",
+      "Wire No.": "KA087511",
+      "Wire ID": "BLK",
+      "Gauge/Size": "16",
+      "Page/Zone": "34.A5",
+      "Location": "PNL A,SMT130"
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "XT0136:2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC5072",
+      "Wire No.": "KA0875A2",
+      "Wire ID": "WHT",
+      "Gauge/Size": "16",
+      "Page/Zone": "34.A5",
+      "Location": "PNL A,SMT130"
+    }
+  ],
+  "rowCount": 4,
+  "metadata": {
+    "projectName": "SMT130 Stock Units October 2024",
+    "revision": "0.1"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:23:26.915Z"
+}

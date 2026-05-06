@@ -1,0 +1,240 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:17:39.628Z",
+  "mode": "branding-export",
+  "sheetSlug": "turb-vib-panel",
+  "sheetName": "TURB VIB PANEL",
+  "totalRows": 7,
+  "header": {
+    "locationTitle": "TURB VIB PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J1640",
+    "projectName": "J1640",
+    "revision": "J1640",
+    "controlsDE": "D.JOHN",
+    "controlsME": "A.ABENGOZA"
+  },
+  "importHints": {
+    "canonicalSheetName": "TURB VIB^PANEL",
+    "normalizedSheetName": "turb-vib-panel",
+    "bundleNames": [
+      "AF0410",
+      "FU - XT",
+      "XT0110"
+    ],
+    "bundleDisplays": [
+      "AF0410",
+      "FU - XT",
+      "XT0110 - TURBINE - PANEL A"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AF",
+      "bundles": [
+        {
+          "bundleName": "AF0410",
+          "toLocation": "TURB VIB^PANEL",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "AF0410:53",
+              "fromTerminal": "53",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0110:2",
+              "toTerminal": "2",
+              "toLocation": "TURB VIB^PANEL",
+              "bundleName": "AF0410",
+              "bundleDisplay": "AF0410",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "AF0410:54",
+              "fromTerminal": "54",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AF0450N",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "AF0450:53",
+              "toTerminal": "53",
+              "toLocation": "TURB VIB^PANEL",
+              "bundleName": "AF0410",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "AF0410:55",
+              "fromTerminal": "55",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0113",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0113:LD",
+              "toTerminal": "LD",
+              "toLocation": "TURB VIB^PANEL",
+              "bundleName": "AF0410",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "AF0410:56",
+              "fromTerminal": "56",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AF0450P",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "AF0450:55",
+              "toTerminal": "55",
+              "toLocation": "TURB VIB^PANEL",
+              "bundleName": "AF0410",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "TURB VIB^PANEL",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 16,
+              "fromDeviceId": "FU0113:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0110:1",
+              "toTerminal": "1",
+              "toLocation": "TURB VIB^PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0110",
+          "toLocation": "TURBINE PANEL A",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 21,
+              "fromDeviceId": "XT0110:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 120,
+              "toDeviceId": "XT0138:4",
+              "toTerminal": "4",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "XT0110",
+              "bundleDisplay": "XT0110 - TURBINE - PANEL A",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT0110",
+          "toLocation": "TURBINE PANEL A",
+          "rows": [
+            {
+              "rowId": "row-12",
+              "rowIndex": 22,
+              "fromDeviceId": "XT0110:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0134:4",
+              "toTerminal": "4",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "XT0110",
+              "bundleDisplay": "XT0110 - TURBINE - PANEL A",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "90c73bda2a701d41bf315ac6e8244b98973a72b03f34d85b032eabb2c532a24e"
+}

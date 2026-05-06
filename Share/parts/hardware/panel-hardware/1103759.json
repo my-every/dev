@@ -1,0 +1,64 @@
+{
+  "partNumber": "1103759",
+  "description": "RACK CHASSIS, 1756-A10XT (10 SLOT)",
+  "category": "hardware",
+  "type": "panel-hardware",
+  "tags": [
+    "auto-ingest",
+    "hardware"
+  ],
+  "source": "workbook_ingest",
+  "lifecycle": {
+    "status": "new",
+    "needsTraining": true,
+    "needsImages": true,
+    "needsReviewByRole": "team_lead",
+    "discoveredFrom": {
+      "projectId": "4k001-tce-w1",
+      "sourceSheet": "PLC PANEL",
+      "sourceLocation": "PLC PANEL",
+      "discoveredAt": "2026-05-05T03:04:08.379Z"
+    }
+  },
+  "createdAt": "2026-05-05T03:04:08.380Z",
+  "updatedAt": "2026-05-05T04:30:02.662Z",
+  "terminalSchema": {
+    "negativePatterns": [
+      "-",
+      "0V",
+      "0VDC",
+      "COM",
+      "COMMON",
+      "DC-",
+      "NEG",
+      "NEGATIVE"
+    ],
+    "updatedAt": "2026-05-05T04:30:02.661Z",
+    "terminals": [
+      {
+        "name": "IE1",
+        "aliases": [],
+        "wireId": "GRN",
+        "size": "14",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "IE2",
+        "aliases": [],
+        "wireId": "GRN",
+        "size": "12",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      }
+    ]
+  }
+}

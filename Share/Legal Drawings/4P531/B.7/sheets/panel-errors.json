@@ -1,0 +1,92 @@
+{
+  "slug": "panel-errors",
+  "name": "Panel Errors",
+  "kind": "reference",
+  "sheetIndex": 20,
+  "headers": [
+    "Device ID",
+    "Location",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire ID",
+    "Wire No.",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location_1",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "XT0085:2",
+      "wireType": "SC",
+      "wireNo": "-007405",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "fromLocation": "PANEL",
+      "fromPageZone": "29.A2",
+      "toDeviceId": "RR0852: -1.0K OHM",
+      "toLocation": "PANEL B",
+      "toPageZone": "29.A2",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "RR0852: -1.0K OHM",
+      "wireType": "SC",
+      "wireNo": "-0V",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "fromLocation": "PANEL B",
+      "fromPageZone": "29.A2",
+      "toDeviceId": "XT0085:3",
+      "toLocation": "PANEL",
+      "toPageZone": "29.A2",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "RR0852: -1.0K OHM",
+      "Location": "PANEL",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire ID": "WHT",
+      "Wire No.": "007405",
+      "Gauge/Size": "20",
+      "Page/Zone": "29.A2"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "XT0085:3",
+      "Location": "PANEL B",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire ID": "WHT",
+      "Wire No.": "0V",
+      "Gauge/Size": "20",
+      "Page/Zone": "29.A2"
+    }
+  ],
+  "rowCount": 2,
+  "metadata": {
+    "projectName": "SHELL NIGERIA (SNEPCO)/MABU CONSORTIUM",
+    "revision": "B.8",
+    "controlsDE": "F. Partow Dezfouli",
+    "controlsME": "H. Medrano"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "BUILD_UP",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 0,
+    "detectedReasons": [],
+    "requiresWireSws": false,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:53:12.610Z"
+}

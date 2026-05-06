@@ -1,0 +1,88 @@
+{
+  "partNumber": "1483682-12",
+  "description": "LIGHTED PUSHBUTTON SWITCH, BACKUP SYSTEM ACTIVE/RESET, YELLOW",
+  "category": "devices",
+  "type": "control-modules",
+  "tags": [
+    "auto-ingest",
+    "devices"
+  ],
+  "source": "workbook_ingest",
+  "lifecycle": {
+    "status": "new",
+    "needsTraining": true,
+    "needsImages": true,
+    "needsReviewByRole": "team_lead",
+    "discoveredFrom": {
+      "projectId": "ang01-stock-9",
+      "sourceSheet": "JB71 B,DOOR OPR",
+      "sourceLocation": "JB71 B,DOOR OPR",
+      "discoveredAt": "2026-04-24T15:20:42.540Z"
+    }
+  },
+  "createdAt": "2026-04-24T15:20:42.547Z",
+  "updatedAt": "2026-05-05T04:31:08.990Z",
+  "terminalSchema": {
+    "negativePatterns": [
+      "-",
+      "0V",
+      "0VDC",
+      "COM",
+      "COMMON",
+      "DC-",
+      "NEG",
+      "NEGATIVE"
+    ],
+    "updatedAt": "2026-05-05T04:31:08.989Z",
+    "terminals": [
+      {
+        "name": "3",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "20",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "4",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "20",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "X1",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "20",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "X2",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "20",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      }
+    ]
+  }
+}

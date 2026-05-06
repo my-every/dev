@@ -1,0 +1,257 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:04:43.095Z",
+  "mode": "branding-export",
+  "sheetSlug": "257-01bop",
+  "sheetName": "257 01BOP",
+  "totalRows": 9,
+  "header": {
+    "locationTitle": "257 01BOP",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "H0220",
+    "projectName": "H0220",
+    "revision": "F.1"
+  },
+  "importHints": {
+    "canonicalSheetName": "257-01BOP",
+    "normalizedSheetName": "257-01bop",
+    "bundleNames": [
+      "IE",
+      "ZF - ZF",
+      "ZF2143",
+      "ZF2143 - RED"
+    ],
+    "bundleDisplays": [
+      "IE",
+      "ZF - ZF",
+      "ZF2143 - 257 01",
+      "ZF2143 - 500 05",
+      "ZF2143 - RED - 500 05"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "IE",
+      "bundles": [
+        {
+          "bundleName": "IE",
+          "toLocation": "257-01BOP",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "IE:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "*",
+              "wireId": "SH2",
+              "gaugeSize": "20GA",
+              "length": null,
+              "toDeviceId": "SHLD:2",
+              "toTerminal": "2",
+              "toLocation": "257-01BOP",
+              "bundleName": "IE",
+              "bundleDisplay": "IE",
+              "devicePrefix": "IE"
+            },
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "IE:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "*",
+              "wireId": "SH2",
+              "gaugeSize": "20GA",
+              "length": null,
+              "toDeviceId": "SHLD:2",
+              "toTerminal": "2",
+              "toLocation": "257-01BOP",
+              "bundleName": "IE",
+              "bundleDisplay": "",
+              "devicePrefix": "IE"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "ZF",
+      "bundles": [
+        {
+          "bundleName": "ZF - ZF",
+          "toLocation": "257-01BOP",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "ZF2143:05",
+              "fromTerminal": "05",
+              "fromTerminalOrder": null,
+              "wireNo": "J21431",
+              "wireId": "",
+              "gaugeSize": "20GA",
+              "length": null,
+              "toDeviceId": "ZF2143:COM21",
+              "toTerminal": "COM21",
+              "toLocation": "257-01BOP",
+              "bundleName": "ZF - ZF",
+              "bundleDisplay": "ZF - ZF",
+              "devicePrefix": "ZF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "ZF",
+      "bundles": [
+        {
+          "bundleName": "ZF2143",
+          "toLocation": "257-01",
+          "rows": [
+            {
+              "rowId": "row-7",
+              "rowIndex": 18,
+              "fromDeviceId": "ZF2143:16",
+              "fromTerminal": "16",
+              "fromTerminalOrder": null,
+              "wireNo": "ZF2143N",
+              "wireId": "",
+              "gaugeSize": "20GA",
+              "length": null,
+              "toDeviceId": "ZF2142:33",
+              "toTerminal": "33",
+              "toLocation": "257-01",
+              "bundleName": "ZF2143",
+              "bundleDisplay": "ZF2143 - 257 01",
+              "devicePrefix": "ZF"
+            },
+            {
+              "rowId": "row-8",
+              "rowIndex": 19,
+              "fromDeviceId": "ZF2143:34",
+              "fromTerminal": "34",
+              "fromTerminalOrder": null,
+              "wireNo": "ZF2143P",
+              "wireId": "",
+              "gaugeSize": "20GA",
+              "length": null,
+              "toDeviceId": "ZF2142:51",
+              "toTerminal": "51",
+              "toLocation": "257-01",
+              "bundleName": "ZF2143",
+              "bundleDisplay": "",
+              "devicePrefix": "ZF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "ZF",
+      "bundles": [
+        {
+          "bundleName": "ZF2143",
+          "toLocation": "500-05",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "ZF2143:09",
+              "fromTerminal": "09",
+              "fromTerminalOrder": null,
+              "wireNo": "L567N",
+              "wireId": "BLK",
+              "gaugeSize": "20GA",
+              "length": null,
+              "toDeviceId": "L567:-",
+              "toTerminal": "-",
+              "toLocation": "500-05",
+              "bundleName": "ZF2143",
+              "bundleDisplay": "ZF2143 - 500 05",
+              "devicePrefix": "ZF"
+            }
+          ]
+        },
+        {
+          "bundleName": "ZF2143 - RED",
+          "toLocation": "500-05",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "ZF2143:V39",
+              "fromTerminal": "V39",
+              "fromTerminalOrder": null,
+              "wireNo": "T5631P",
+              "wireId": "RED",
+              "gaugeSize": "20GA",
+              "length": null,
+              "toDeviceId": "T563-1:TB3+",
+              "toTerminal": "TB3+",
+              "toLocation": "500-05",
+              "bundleName": "ZF2143 - RED",
+              "bundleDisplay": "ZF2143 - RED - 500 05",
+              "devicePrefix": "ZF"
+            },
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "ZF2143:08",
+              "fromTerminal": "08",
+              "fromTerminalOrder": null,
+              "wireNo": "L567P",
+              "wireId": "RED",
+              "gaugeSize": "20GA",
+              "length": null,
+              "toDeviceId": "L567:+",
+              "toTerminal": "+",
+              "toLocation": "500-05",
+              "bundleName": "ZF2143 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "ZF"
+            }
+          ]
+        },
+        {
+          "bundleName": "ZF2143",
+          "toLocation": "500-05",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "ZF2143:04",
+              "fromTerminal": "04",
+              "fromTerminalOrder": null,
+              "wireNo": "T5631N",
+              "wireId": "WHT",
+              "gaugeSize": "20GA",
+              "length": null,
+              "toDeviceId": "T563-1:TB3-",
+              "toTerminal": "TB3-",
+              "toLocation": "500-05",
+              "bundleName": "ZF2143",
+              "bundleDisplay": "ZF2143 - 500 05",
+              "devicePrefix": "ZF"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "c3e667aaa2d4f68606159783842290fb26e967866cf3ce1f59449d7a5c21af9b"
+}

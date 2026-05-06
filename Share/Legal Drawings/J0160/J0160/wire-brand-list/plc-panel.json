@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:09:26.512Z",
+  "mode": "branding-export",
+  "sheetSlug": "plc-panel",
+  "sheetName": "PLC PANEL",
+  "totalRows": 4,
+  "header": {
+    "locationTitle": "PLC PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0160",
+    "projectName": "J0160",
+    "revision": "J0160",
+    "controlsDE": "R.BRAUNSTEIN",
+    "controlsME": "S. MARTINEZ"
+  },
+  "importHints": {
+    "canonicalSheetName": "PLC PANEL",
+    "normalizedSheetName": "plc-panel",
+    "bundleNames": [
+      "AT - FU",
+      "UV0600",
+      "AT - XT"
+    ],
+    "bundleDisplays": [
+      "AT - FU",
+      "UV0600 - TURBINE - PANEL A",
+      "AT - XT - TURBINE - PANEL B"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT - FU",
+          "toLocation": "PLC PANEL",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "AT0681:+",
+              "fromTerminal": "+",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0681",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0681:LD",
+              "toTerminal": "LD",
+              "toLocation": "PLC PANEL",
+              "bundleName": "AT - FU",
+              "bundleDisplay": "AT - FU",
+              "devicePrefix": "AT"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV0600",
+          "toLocation": "TURBINE PANEL A",
+          "rows": [
+            {
+              "rowId": "row-8",
+              "rowIndex": 18,
+              "fromDeviceId": "UV0600:(-)",
+              "fromTerminal": "(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0135:1",
+              "toTerminal": "1",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "UV0600",
+              "bundleDisplay": "UV0600 - TURBINE - PANEL A",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-9",
+              "rowIndex": 19,
+              "fromDeviceId": "UV0600:(+)",
+              "fromTerminal": "(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0010",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0010:LD",
+              "toTerminal": "LD",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "UV0600",
+              "bundleDisplay": "",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT - XT",
+          "toLocation": "TURBINE PANEL B",
+          "rows": [
+            {
+              "rowId": "row-12",
+              "rowIndex": 22,
+              "fromDeviceId": "AT0681:-",
+              "fromTerminal": "-",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0235:3",
+              "toTerminal": "3",
+              "toLocation": "TURBINE PANEL B",
+              "bundleName": "AT - XT",
+              "bundleDisplay": "AT - XT - TURBINE - PANEL B",
+              "devicePrefix": "AT",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "6035834e0efdcfe352dc990bb25a39d61f0b412432b529545ce5264cc8eaff9c"
+}

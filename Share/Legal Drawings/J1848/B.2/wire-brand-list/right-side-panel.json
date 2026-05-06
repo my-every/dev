@@ -1,0 +1,454 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:17:47.583Z",
+  "mode": "branding-export",
+  "sheetSlug": "right-side-panel",
+  "sheetName": "RIGHT SIDE PANEL",
+  "totalRows": 16,
+  "header": {
+    "locationTitle": "RIGHT SIDE PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J1848",
+    "projectName": "J1848",
+    "revision": "B.2",
+    "controlsDE": "B.HALBIG",
+    "controlsME": "N. CARPENTER"
+  },
+  "importHints": {
+    "canonicalSheetName": "RIGHT SIDE PANEL",
+    "normalizedSheetName": "right-side-panel",
+    "bundleNames": [
+      "AP - AP",
+      "AT0680",
+      "BA0606",
+      "BA0606DH+",
+      "BA0680",
+      "FU - UV",
+      "FU - XT"
+    ],
+    "bundleDisplays": [
+      "AP - AP",
+      "AT0680",
+      "BA0606",
+      "BA0606DH+",
+      "BA0680",
+      "FU - UV",
+      "FU - XT"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AP",
+      "bundles": [
+        {
+          "bundleName": "AP - AP",
+          "toLocation": "RIGHT SIDE PANEL",
+          "rows": [
+            {
+              "rowId": "row-25",
+              "rowIndex": 36,
+              "fromDeviceId": "AP0602:L2",
+              "fromTerminal": "L2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AP0702L1",
+              "wireId": "ENET",
+              "gaugeSize": "CABLE",
+              "length": 60,
+              "toDeviceId": "AP0702:L1",
+              "toTerminal": "L1",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "AP - AP",
+              "bundleDisplay": "AP - AP",
+              "devicePrefix": "AP",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT0680",
+          "toLocation": "RIGHT SIDE PANEL",
+          "rows": [
+            {
+              "rowId": "row-7",
+              "rowIndex": 18,
+              "fromDeviceId": "AT0680:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0681:1",
+              "toTerminal": "1",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "AT0680",
+              "bundleDisplay": "AT0680",
+              "devicePrefix": "AT",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-8",
+              "rowIndex": 19,
+              "fromDeviceId": "AT0680:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0680",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0680:LD",
+              "toTerminal": "LD",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "AT0680",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA0606",
+          "toLocation": "RIGHT SIDE PANEL",
+          "rows": [
+            {
+              "rowId": "row-9",
+              "rowIndex": 20,
+              "fromDeviceId": "BA0606:-",
+              "fromTerminal": "-",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0102:1",
+              "toTerminal": "1",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "BA0606",
+              "bundleDisplay": "BA0606",
+              "devicePrefix": "BA",
+              "isNegative": true
+            },
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "BA0606:+",
+              "fromTerminal": "+",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0606",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0606:LD",
+              "toTerminal": "LD",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "BA0606",
+              "bundleDisplay": "",
+              "devicePrefix": "BA"
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0606DH+",
+          "toLocation": "RIGHT SIDE PANEL",
+          "rows": [
+            {
+              "rowId": "row-12",
+              "rowIndex": 23,
+              "fromDeviceId": "BA0606DH+:+",
+              "fromTerminal": "+",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0606DH+",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "FU0606DH+:LD",
+              "toTerminal": "LD",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "BA0606DH+",
+              "bundleDisplay": "BA0606DH+",
+              "devicePrefix": "BA"
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0606DH+",
+          "toLocation": "RIGHT SIDE PANEL",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 22,
+              "fromDeviceId": "BA0606DH+:-",
+              "fromTerminal": "-",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0102:2",
+              "toTerminal": "2",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "BA0606DH+",
+              "bundleDisplay": "BA0606DH+",
+              "devicePrefix": "BA",
+              "isNegative": true
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0680",
+          "toLocation": "RIGHT SIDE PANEL",
+          "rows": [
+            {
+              "rowId": "row-14",
+              "rowIndex": 25,
+              "fromDeviceId": "BA0680:POS",
+              "fromTerminal": "POS",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0681",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "FU0681:LD",
+              "toTerminal": "LD",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "BA0680",
+              "bundleDisplay": "BA0680",
+              "devicePrefix": "BA"
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0680",
+          "toLocation": "RIGHT SIDE PANEL",
+          "rows": [
+            {
+              "rowId": "row-13",
+              "rowIndex": 24,
+              "fromDeviceId": "BA0680:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0681:2",
+              "toTerminal": "2",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "BA0680",
+              "bundleDisplay": "BA0680",
+              "devicePrefix": "BA",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - UV",
+          "toLocation": "RIGHT SIDE PANEL",
+          "rows": [
+            {
+              "rowId": "row-15",
+              "rowIndex": 26,
+              "fromDeviceId": "FU0600:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0600",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UV0600:(+)",
+              "toTerminal": "(+)",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "FU - UV",
+              "bundleDisplay": "FU - UV",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-20",
+              "rowIndex": 31,
+              "fromDeviceId": "FU0700:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0700",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UV0700:(+)",
+              "toTerminal": "(+)",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "FU - UV",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-21",
+              "rowIndex": 32,
+              "fromDeviceId": "FU0800:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0800",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UV0800:(+)",
+              "toTerminal": "(+)",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "FU - UV",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "RIGHT SIDE PANEL",
+          "rows": [
+            {
+              "rowId": "row-16",
+              "rowIndex": 27,
+              "fromDeviceId": "FU0606:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0137",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0101:1",
+              "toTerminal": "1",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-17",
+              "rowIndex": 28,
+              "fromDeviceId": "FU0606DH+:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0137",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0101:2",
+              "toTerminal": "2",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-18",
+              "rowIndex": 29,
+              "fromDeviceId": "FU0680:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0137",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0680:1",
+              "toTerminal": "1",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-19",
+              "rowIndex": 30,
+              "fromDeviceId": "FU0681:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0137",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0680:2",
+              "toTerminal": "2",
+              "toLocation": "RIGHT SIDE PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "a7635d6ecc26bad6546bb02bd18894c232bdf282914d38c26ab43e7ee49626b0"
+}

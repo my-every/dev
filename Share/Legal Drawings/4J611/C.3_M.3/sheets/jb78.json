@@ -1,0 +1,93 @@
+{
+  "slug": "jb78",
+  "name": "JB78",
+  "kind": "operational",
+  "sheetIndex": 18,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1321:",
+      "wireType": "SC",
+      "wireNo": "GR1321",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "104.D4",
+      "toDeviceId": "FG2:1",
+      "toLocation": "JB78",
+      "toPageZone": "104.D4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "GR1322:",
+      "wireType": "SC",
+      "wireNo": "GR1322",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "102.D3",
+      "toDeviceId": "FG1:1",
+      "toLocation": "JB78",
+      "toPageZone": "102.D3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FG2:1",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1321",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "104.D4",
+      "Location": "JB78"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "FG1:1",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1322",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "102.D3",
+      "Location": "JB78"
+    }
+  ],
+  "rowCount": 2,
+  "metadata": {
+    "projectName": "QATAR ENERGY",
+    "revision": "C.4",
+    "controlsDE": "C. CRAIG",
+    "controlsME": "H. MEDRANO"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:09:53.601Z"
+}

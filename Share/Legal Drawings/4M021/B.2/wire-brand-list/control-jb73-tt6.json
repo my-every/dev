@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:24:26.609Z",
+  "mode": "branding-export",
+  "sheetSlug": "control-jb73-tt6",
+  "sheetName": "CONTROL JB73 TT6",
+  "totalRows": 2,
+  "header": {
+    "locationTitle": "CONTROL JB73 TT6",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M021",
+    "projectName": "4M021",
+    "revision": "B.2",
+    "controlsDE": "J. UNGER"
+  },
+  "importHints": {
+    "canonicalSheetName": "CONTROL,JB73;TT6",
+    "normalizedSheetName": "control-jb73-tt6",
+    "bundleNames": [
+      "ZS7326"
+    ],
+    "bundleDisplays": [
+      "ZS7326 - HPC - CTRL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "ZS",
+      "bundles": [
+        {
+          "bundleName": "ZS7326",
+          "toLocation": "HPC CTRL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "ZS7326:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "EL7326B1",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT7326:1",
+              "toTerminal": "1",
+              "toLocation": "HPC CTRL",
+              "bundleName": "ZS7326",
+              "bundleDisplay": "ZS7326 - HPC - CTRL",
+              "devicePrefix": "ZS"
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "ZS7326:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0254",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "FU0254:LD",
+              "toTerminal": "LD",
+              "toLocation": "HPC CTRL",
+              "bundleName": "ZS7326",
+              "bundleDisplay": "",
+              "devicePrefix": "ZS"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "dc5a737017569027b7dbd699ae3a4806e00092f27538f73a775eac4ed4c2f716"
+}

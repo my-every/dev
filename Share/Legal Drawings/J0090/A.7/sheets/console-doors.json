@@ -1,0 +1,168 @@
+{
+  "slug": "console-doors",
+  "name": "CONSOLE DOORS",
+  "kind": "operational",
+  "sheetIndex": 7,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "AT0190:GND",
+      "wireType": "SC",
+      "wireNo": "AT0190G",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "11.B4",
+      "toDeviceId": "FRAME",
+      "toLocation": "CONSOLE DOORS",
+      "toPageZone": "11.C3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-1",
+      "fromDeviceId": "AT0190:USB1",
+      "wireType": "SC",
+      "wireNo": "AT0190K",
+      "wireId": "CABLE",
+      "gaugeSize": "USB",
+      "fromLocation": "",
+      "fromPageZone": "11.B4",
+      "toDeviceId": "AT0190K:KI",
+      "toLocation": "CONSOLE DOORS",
+      "toPageZone": "11.C5",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-2",
+      "fromDeviceId": "AT0190:NEG",
+      "wireType": "SC",
+      "wireNo": "-0V1",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "11.B4",
+      "toDeviceId": "XT0562:2",
+      "toLocation": "PWR RAIL",
+      "toPageZone": "11.B2",
+      "location": ""
+    },
+    {
+      "__rowIndex": 14,
+      "__rowId": "row-3",
+      "fromDeviceId": "AT0190:POS",
+      "wireType": "SC",
+      "wireNo": "FU0190",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "11.B4",
+      "toDeviceId": "FU0190:LD",
+      "toLocation": "PWR RAIL",
+      "toPageZone": "11.C3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 15,
+      "__rowId": "row-4",
+      "fromDeviceId": "AT0190:ENET",
+      "wireType": "WC0190",
+      "wireNo": "AT0190E",
+      "wireId": "ENET",
+      "gaugeSize": "CABLE",
+      "fromLocation": "",
+      "fromPageZone": "6.A6",
+      "toDeviceId": "AT0680:LAN2",
+      "toLocation": "PWR RAIL",
+      "toPageZone": "6.A2",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "AT0190G",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "11.C3",
+      "Location": "CONSOLE DOORS"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "AT0190K:KI",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "AT0190K",
+      "Wire ID": "CABLE",
+      "Gauge/Size": "USB",
+      "Page/Zone": "11.C5",
+      "Location": "CONSOLE DOORS"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "XT0562:2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "0V1",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "11.B2",
+      "Location": "PWR RAIL"
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "FU0190:LD",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "FU0190",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "11.C3",
+      "Location": "PWR RAIL"
+    },
+    {
+      "__rowId": "raw-4",
+      "Device ID": "AT0680:LAN2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC0190",
+      "Wire No.": "AT0190E",
+      "Wire ID": "ENET",
+      "Gauge/Size": "CABLE",
+      "Page/Zone": "6.A2",
+      "Location": "PWR RAIL"
+    }
+  ],
+  "rowCount": 5,
+  "metadata": {
+    "projectName": "NEPTUNE NL - L15",
+    "revision": "A.7",
+    "controlsDE": "R.BARRAZA",
+    "controlsME": "G.CATO"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:08:52.956Z"
+}

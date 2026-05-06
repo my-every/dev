@@ -1,0 +1,1992 @@
+{
+  "generatedAt": "2026-05-05T13:55:13.994Z",
+  "sheetName": "JB71 C LIQUID FUEL",
+  "mode": "standardize",
+  "totalPages": 5,
+  "totalRows": 84,
+  "settings": {
+    "showEstTime": false,
+    "showFromCheckbox": true,
+    "showToCheckbox": true,
+    "showIPV": true,
+    "showComments": true,
+    "showLength": false,
+    "showCoverPage": true,
+    "showTableOfContents": true,
+    "showIPVCodes": false,
+    "showFeedbackSection": false,
+    "showDeviceSubheaders": false,
+    "enableBlueDeviceIDColumns": false,
+    "sectionColumnVisibility": {},
+    "feedbackRenderMode": "BLANK",
+    "feedbackSections": [
+      "Header",
+      "Accuracy & Usability",
+      "Termination Clarity",
+      "Routing & Layout Alignment",
+      "Build Sequence & Efficiency",
+      "Hardware & Materials",
+      "Quality & Rework",
+      "Time & Effort",
+      "Safety & Compliance",
+      "Documentation Quality",
+      "Automation Checks",
+      "Final Sign-Off",
+      "Footer"
+    ],
+    "customQuestions": [
+      "accuracyBlueLabelsClear",
+      "accuracySequenceMatchedLayout",
+      "accuracyMissingDuplicateIncorrectEntries",
+      "accuracyLocationColumnCorrect",
+      "terminationTypesClear",
+      "terminationLengthsAccurate",
+      "terminationReworkDueToInstructionClarity",
+      "terminationJumperRulesEasyToFollow",
+      "routingAlignedWithLayout",
+      "routingLengthFit",
+      "routingConflictsPanduct",
+      "routingConflictsRails",
+      "routingConflictsAdjacentDevices",
+      "routingEfficientOrder",
+      "buildOrderHelpful",
+      "buildRequiredDeviation",
+      "buildDeviationReason",
+      "buildCausedDelays",
+      "materialsFerrulesAvailable",
+      "materialsLugsAvailable",
+      "materialsJumpersAvailable",
+      "materialsWireTypesAvailable",
+      "materialsIssuesNotes",
+      "qualityErrorsCaughtDuringWiring",
+      "qualityReterminatedWires",
+      "qualityReroutedWires",
+      "qualityReplacedWires",
+      "qualityCommonIssues",
+      "estimatedWiringTimeHours",
+      "actualWiringTimeHours",
+      "timeVarianceReason",
+      "safetyGroundsClearlyIdentified",
+      "safetyTerminationsCompliant",
+      "safetyConcernsNotes",
+      "documentationDifficulty",
+      "documentationImprovementAreas",
+      "documentationOtherImprovementArea",
+      "documentationSpecificSuggestions",
+      "automationJumperPredictionCorrect",
+      "automationBlueLabelSequencesCorrect",
+      "automationKtRulesCorrect",
+      "automationReusableTemplateCandidate",
+      "finalQualityRating",
+      "finalComments"
+    ],
+    "crossWireSections": [],
+    "hiddenRows": [],
+    "hiddenSections": [],
+    "brandingSortMode": "device-prefix",
+    "wireListSortMode": "device-prefix"
+  },
+  "pages": [
+    {
+      "pageType": "cover",
+      "pageNumber": 1,
+      "projectInfo": {
+        "projectNumber": "4P721",
+        "projectName": "4P721",
+        "revision": "0.2",
+        "pdNumber": "4P721",
+        "unitNumber": "",
+        "preparedBy": "",
+        "badgeNumber": "",
+        "date": "",
+        "time": "",
+        "personnel": [
+          {
+            "id": "1",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "2",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "3",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "4",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "5",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "6",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          }
+        ]
+      },
+      "sheetTitle": "JB71 C,LIQUID FUEL"
+    },
+    {
+      "pageType": "toc",
+      "pageNumber": 2,
+      "locationGroups": [
+        {
+          "location": "JB71 C,LIQUID FUEL",
+          "isExternal": false,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Grounds",
+              "rowCount": 3,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 2,
+              "label": "AF/AU Jumpers",
+              "rowCount": 2,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 3,
+              "label": "Clips",
+              "rowCount": 13,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 4,
+              "label": "KA Twin Ferrules",
+              "rowCount": 2,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "KA0381:13(+) / KA038113",
+                  "rowCount": 1
+                },
+                {
+                  "label": "KA0381:14(-) / KA038114",
+                  "rowCount": 1
+                }
+              ]
+            },
+            {
+              "index": 5,
+              "label": "FU Jumpers",
+              "rowCount": 7,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "FU0051-FU2611",
+                  "rowCount": 7
+                }
+              ]
+            },
+            {
+              "index": 6,
+              "label": "Single Connections",
+              "rowCount": 38,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "AF0051",
+                  "rowCount": 3
+                },
+                {
+                  "label": "AF0053",
+                  "rowCount": 4
+                },
+                {
+                  "label": "AF0351",
+                  "rowCount": 5
+                },
+                {
+                  "label": "AF0052",
+                  "rowCount": 2
+                },
+                {
+                  "label": "AF0352",
+                  "rowCount": 2
+                },
+                {
+                  "label": "AU0050",
+                  "rowCount": 2
+                },
+                {
+                  "label": "AU0350",
+                  "rowCount": 2
+                },
+                {
+                  "label": "FU - XT",
+                  "rowCount": 4
+                },
+                {
+                  "label": "FU - FU",
+                  "rowCount": 1
+                },
+                {
+                  "label": "KA0050",
+                  "rowCount": 8
+                },
+                {
+                  "label": "KA0051",
+                  "rowCount": 2
+                },
+                {
+                  "label": "KA - XT",
+                  "rowCount": 1
+                },
+                {
+                  "label": "KA2200",
+                  "rowCount": 2
+                }
+              ]
+            },
+            {
+              "index": 7,
+              "label": "Cables",
+              "rowCount": 1,
+              "estimatedPage": 5,
+              "subEntries": []
+            }
+          ]
+        },
+        {
+          "location": "JB71 B,PNL CTRL1",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Single Connections",
+              "rowCount": 6,
+              "estimatedPage": 5,
+              "subEntries": [
+                {
+                  "label": "AF0051",
+                  "rowCount": 4
+                },
+                {
+                  "label": "KA0071",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "JB71 B,PNL CTRL2",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "KA Twin Ferrules",
+              "rowCount": 2,
+              "estimatedPage": 5,
+              "subEntries": [
+                {
+                  "label": "KA0381:13(+) / KA038113",
+                  "rowCount": 1
+                },
+                {
+                  "label": "KA0381:14(-) / KA038114",
+                  "rowCount": 1
+                }
+              ]
+            },
+            {
+              "index": 2,
+              "label": "Single Connections",
+              "rowCount": 2,
+              "estimatedPage": 5,
+              "subEntries": [
+                {
+                  "label": "XT0059",
+                  "rowCount": 2
+                }
+              ]
+            },
+            {
+              "index": 3,
+              "label": "Cables",
+              "rowCount": 1,
+              "estimatedPage": 5,
+              "subEntries": []
+            }
+          ]
+        },
+        {
+          "location": "JB71 B,PNL DC PWR",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Grounds",
+              "rowCount": 4,
+              "estimatedPage": 5,
+              "subEntries": []
+            },
+            {
+              "index": 2,
+              "label": "Single Connections",
+              "rowCount": 2,
+              "estimatedPage": 5,
+              "subEntries": [
+                {
+                  "label": "FU - XT",
+                  "rowCount": 1
+                },
+                {
+                  "label": "XT - XT",
+                  "rowCount": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "JB71 B,PNL VIBRATION",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Cables",
+              "rowCount": 1,
+              "estimatedPage": 5,
+              "subEntries": []
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "locations": 5,
+        "sections": 37,
+        "rows": 84,
+        "pages": 5
+      }
+    },
+    {
+      "pageType": "wire-list",
+      "pageNumber": 3,
+      "locationGroups": [
+        {
+          "location": "JB71 C,LIQUID FUEL",
+          "isExternal": false,
+          "totalRows": 66,
+          "subsections": [
+            {
+              "label": "Grounds",
+              "sectionKind": "grounds",
+              "rowCount": 3,
+              "rows": [
+                {
+                  "rowId": "row-18",
+                  "rowIndex": 28,
+                  "fromDeviceId": "AF0052:SH",
+                  "toDeviceId": "AU0050:GND",
+                  "wireType": "SC",
+                  "wireNo": "AU0050G",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.B3",
+                  "toPageZone": "49.A2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-31",
+                  "rowIndex": 41,
+                  "fromDeviceId": "AF0352:SH",
+                  "toDeviceId": "AU0350:GND",
+                  "wireType": "SC",
+                  "wireNo": "AU0350G",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.C3",
+                  "toPageZone": "49.B2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-49",
+                  "rowIndex": 59,
+                  "fromDeviceId": "GR0051",
+                  "toDeviceId": "FRAME",
+                  "wireType": "SC",
+                  "wireNo": "GR0051",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.D5",
+                  "toPageZone": "49.D5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "AF/AU Jumpers",
+              "sectionKind": "af_jumpers",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-16",
+                  "rowIndex": 26,
+                  "fromDeviceId": "AF0052:COM",
+                  "toDeviceId": "AF0053:COM",
+                  "wireType": "SC",
+                  "wireNo": "AF0052N",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.B3",
+                  "toPageZone": "49.B3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-19",
+                  "rowIndex": 29,
+                  "fromDeviceId": "AF0052:V+",
+                  "toDeviceId": "AF0053:V+",
+                  "wireType": "SC",
+                  "wireNo": "AF0052P",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.B3",
+                  "toPageZone": "49.B3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Clips",
+              "sectionKind": "clips",
+              "rowCount": 13,
+              "rows": [
+                {
+                  "rowId": "row-0",
+                  "rowIndex": 10,
+                  "fromDeviceId": "XT0050:1",
+                  "toDeviceId": "XT0050:2",
+                  "wireType": "JC",
+                  "wireNo": "-0V",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.A1",
+                  "toPageZone": "49.B1",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-5",
+                  "rowIndex": 15,
+                  "fromDeviceId": "XT0050:2",
+                  "toDeviceId": "XT0050:3",
+                  "wireType": "JC",
+                  "wireNo": "-0V",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.B1",
+                  "toPageZone": "49.B1",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-6",
+                  "rowIndex": 16,
+                  "fromDeviceId": "XT0050:3",
+                  "toDeviceId": "XT0050:4",
+                  "wireType": "JC",
+                  "wireNo": "-0V",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.B1",
+                  "toPageZone": "49.C1",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-7",
+                  "rowIndex": 17,
+                  "fromDeviceId": "XT0050:4",
+                  "toDeviceId": "XT0050:5",
+                  "wireType": "JC",
+                  "wireNo": "-0V",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.C1",
+                  "toPageZone": "49.C1",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-8",
+                  "rowIndex": 18,
+                  "fromDeviceId": "XT0050:5",
+                  "toDeviceId": "XT0050:6",
+                  "wireType": "JC",
+                  "wireNo": "-0V",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.C1",
+                  "toPageZone": "49.C1",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-9",
+                  "rowIndex": 19,
+                  "fromDeviceId": "XT0050:6",
+                  "toDeviceId": "XT0050:7",
+                  "wireType": "JC",
+                  "wireNo": "-0V",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.C1",
+                  "toPageZone": "49.C1",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-10",
+                  "rowIndex": 20,
+                  "fromDeviceId": "XT0050:7",
+                  "toDeviceId": "XT0050:8",
+                  "wireType": "JC",
+                  "wireNo": "-0V",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.C1",
+                  "toPageZone": "49.D1",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-11",
+                  "rowIndex": 21,
+                  "fromDeviceId": "XT0050:8",
+                  "toDeviceId": "XT0050:9",
+                  "wireType": "JC",
+                  "wireNo": "-0V",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.D1",
+                  "toPageZone": "49.D1",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-12",
+                  "rowIndex": 22,
+                  "fromDeviceId": "XT0050:9",
+                  "toDeviceId": "XT0050:10",
+                  "wireType": "JC",
+                  "wireNo": "-0V",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.D1",
+                  "toPageZone": "49.D1",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-1",
+                  "rowIndex": 11,
+                  "fromDeviceId": "XT0050:10",
+                  "toDeviceId": "XT0050:11",
+                  "wireType": "JC",
+                  "wireNo": "-0V",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.D1",
+                  "toPageZone": "49.D1",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-2",
+                  "rowIndex": 12,
+                  "fromDeviceId": "XT0050:11",
+                  "toDeviceId": "XT0050:17",
+                  "wireType": "JC",
+                  "wireNo": "-0V",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.D1",
+                  "toPageZone": "49.D1",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-3",
+                  "rowIndex": 13,
+                  "fromDeviceId": "XT0050:12",
+                  "toDeviceId": "XT0050:13",
+                  "wireType": "JC",
+                  "wireNo": "FU0355",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.C3",
+                  "toPageZone": "49.D3",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-4",
+                  "rowIndex": 14,
+                  "fromDeviceId": "XT0050:14",
+                  "toDeviceId": "XT0050:15",
+                  "wireType": "JC",
+                  "wireNo": "FU2220",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.D2",
+                  "toPageZone": "49.D2",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "KA Twin Ferrules",
+              "sectionKind": "ka_twin_ferrules",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-60",
+                  "rowIndex": 70,
+                  "fromDeviceId": "KA0381:13(+)",
+                  "toDeviceId": "KA0383:A1",
+                  "wireType": "SC",
+                  "wireNo": "KA038113",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "51.B5",
+                  "toPageZone": "51.C5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-61",
+                  "rowIndex": 71,
+                  "fromDeviceId": "KA0381:14(-)",
+                  "toDeviceId": "KA0383:A2",
+                  "wireType": "SC",
+                  "wireNo": "KA038114",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "51.B5",
+                  "toPageZone": "51.C5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "KA0381:13(+) / KA038113",
+                  "rowCount": 1
+                },
+                {
+                  "label": "KA0381:14(-) / KA038114",
+                  "rowCount": 1
+                }
+              ]
+            },
+            {
+              "label": "FU Jumpers",
+              "sectionKind": "fu_jumpers",
+              "rowCount": 7,
+              "rows": [
+                {
+                  "rowId": "row-38",
+                  "rowIndex": 48,
+                  "fromDeviceId": "FU0051:LI",
+                  "toDeviceId": "FU0052:LI",
+                  "wireType": "SC",
+                  "wireNo": "FU0050",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.B1",
+                  "toPageZone": "49.B1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-39",
+                  "rowIndex": 49,
+                  "fromDeviceId": "FU0052:LI",
+                  "toDeviceId": "FU0350:LI",
+                  "wireType": "SC",
+                  "wireNo": "FU0050",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.B1",
+                  "toPageZone": "49.C1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-40",
+                  "rowIndex": 50,
+                  "fromDeviceId": "FU0350:LI",
+                  "toDeviceId": "FU0351:LI",
+                  "wireType": "SC",
+                  "wireNo": "FU0050",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.C1",
+                  "toPageZone": "49.C1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-41",
+                  "rowIndex": 51,
+                  "fromDeviceId": "FU0351:LI",
+                  "toDeviceId": "FU0355:LI",
+                  "wireType": "SC",
+                  "wireNo": "FU0050",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.C1",
+                  "toPageZone": "49.C1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-43",
+                  "rowIndex": 53,
+                  "fromDeviceId": "FU0355:LI",
+                  "toDeviceId": "FU2220:LI",
+                  "wireType": "SC",
+                  "wireNo": "FU0050",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.C1",
+                  "toPageZone": "49.D1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-45",
+                  "rowIndex": 55,
+                  "fromDeviceId": "FU2220:LI",
+                  "toDeviceId": "FU2228:LI",
+                  "wireType": "SC",
+                  "wireNo": "FU0050",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.D1",
+                  "toPageZone": "49.D1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-47",
+                  "rowIndex": 57,
+                  "fromDeviceId": "FU2228:LI",
+                  "toDeviceId": "FU2611:LI",
+                  "wireType": "SC",
+                  "wireNo": "FU0050",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.D1",
+                  "toPageZone": "49.D1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "FU0051-FU2611",
+                  "rowCount": 7
+                }
+              ]
+            },
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 38,
+              "rows": [
+                {
+                  "rowId": "row-13",
+                  "rowIndex": 23,
+                  "fromDeviceId": "AF0051:10",
+                  "toDeviceId": "KA0050:2",
+                  "wireType": "SC",
+                  "wireNo": "-005110",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "88.B7",
+                  "toPageZone": "88.B6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-23",
+                  "rowIndex": 33,
+                  "fromDeviceId": "AF0053:33",
+                  "toDeviceId": "XT0059:5",
+                  "wireType": "SC",
+                  "wireNo": "-005333",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "52.A7",
+                  "toPageZone": "52.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-21",
+                  "rowIndex": 31,
+                  "fromDeviceId": "AF0053:01",
+                  "toDeviceId": "XT0059:6",
+                  "wireType": "SC",
+                  "wireNo": "-005301",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "52.A7",
+                  "toPageZone": "52.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-27",
+                  "rowIndex": 37,
+                  "fromDeviceId": "AF0351:18",
+                  "toDeviceId": "KA2200:A2",
+                  "wireType": "SC",
+                  "wireNo": "-035118",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "50.A7",
+                  "toPageZone": "50.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-26",
+                  "rowIndex": 36,
+                  "fromDeviceId": "AF0351:02",
+                  "toDeviceId": "KA2200:A1",
+                  "wireType": "SC",
+                  "wireNo": "-035102",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "50.A7",
+                  "toPageZone": "50.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-25",
+                  "rowIndex": 35,
+                  "fromDeviceId": "AF0351:00",
+                  "toDeviceId": "KA0050:6",
+                  "wireType": "SC",
+                  "wireNo": "-035100",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "90.B7",
+                  "toPageZone": "90.B6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-50",
+                  "rowIndex": 60,
+                  "fromDeviceId": "KA0050:1",
+                  "toDeviceId": "KA0381:2",
+                  "wireType": "SC",
+                  "wireNo": "KA038102",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "88.B6",
+                  "toPageZone": "88.B5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-57",
+                  "rowIndex": 67,
+                  "fromDeviceId": "KA0050:5",
+                  "toDeviceId": "KA0071:2",
+                  "wireType": "SC",
+                  "wireNo": "KA007102",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "90.B6",
+                  "toPageZone": "90.B5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-51",
+                  "rowIndex": 61,
+                  "fromDeviceId": "KA0050:10(+)",
+                  "toDeviceId": "KA0051:A1",
+                  "wireType": "SC",
+                  "wireNo": "ESTOP",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "51.A6",
+                  "toPageZone": "51.B6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-52",
+                  "rowIndex": 62,
+                  "fromDeviceId": "KA0050:11(-)",
+                  "toDeviceId": "KA0050:16(-)",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "51.A6",
+                  "toPageZone": "51.A6",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-53",
+                  "rowIndex": 63,
+                  "fromDeviceId": "KA0050:12(-)",
+                  "toDeviceId": "KA0051:A2",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "51.A6",
+                  "toPageZone": "51.B6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-54",
+                  "rowIndex": 64,
+                  "fromDeviceId": "KA0050:13(+)",
+                  "toDeviceId": "XT0059:8",
+                  "wireType": "SC",
+                  "wireNo": "ESTOP",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "51.A6",
+                  "toPageZone": "51.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-55",
+                  "rowIndex": 65,
+                  "fromDeviceId": "KA0050:14(-)",
+                  "toDeviceId": "XT0059:7",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "51.A6",
+                  "toPageZone": "51.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-56",
+                  "rowIndex": 66,
+                  "fromDeviceId": "KA0050:15(+)",
+                  "toDeviceId": "KA0050:9(+)",
+                  "wireType": "SC",
+                  "wireNo": "ESTOP",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "51.A6",
+                  "toPageZone": "51.A6",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-58",
+                  "rowIndex": 68,
+                  "fromDeviceId": "KA0051:11",
+                  "toDeviceId": "KA0383:14",
+                  "wireType": "SC",
+                  "wireNo": "KA005111",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "51.A7",
+                  "toPageZone": "51.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-59",
+                  "rowIndex": 69,
+                  "fromDeviceId": "KA0051:14",
+                  "toDeviceId": "XT0059:9",
+                  "wireType": "SC",
+                  "wireNo": "UF22203",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "51.A7",
+                  "toPageZone": "51.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-62",
+                  "rowIndex": 72,
+                  "fromDeviceId": "KA0383:11",
+                  "toDeviceId": "XT0059:10",
+                  "wireType": "SC",
+                  "wireNo": "UF22204",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "51.A6",
+                  "toPageZone": "51.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-15",
+                  "rowIndex": 25,
+                  "fromDeviceId": "AF0051:V+",
+                  "toDeviceId": "FU0052:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0052",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.B2",
+                  "toPageZone": "49.B1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-14",
+                  "rowIndex": 24,
+                  "fromDeviceId": "AF0051:COM",
+                  "toDeviceId": "XT0050:3",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.B2",
+                  "toPageZone": "49.B1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-24",
+                  "rowIndex": 34,
+                  "fromDeviceId": "AF0053:35",
+                  "toDeviceId": "XT0059:11",
+                  "wireType": "SC",
+                  "wireNo": "KA26181",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "50.C7",
+                  "toPageZone": "50.C5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-22",
+                  "rowIndex": 32,
+                  "fromDeviceId": "AF0053:03",
+                  "toDeviceId": "XT0059:12",
+                  "wireType": "SC",
+                  "wireNo": "KA26182",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "50.C7",
+                  "toPageZone": "50.C5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-29",
+                  "rowIndex": 39,
+                  "fromDeviceId": "AF0351:V+",
+                  "toDeviceId": "FU0351:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0351",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.C2",
+                  "toPageZone": "49.C1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-28",
+                  "rowIndex": 38,
+                  "fromDeviceId": "AF0351:COM",
+                  "toDeviceId": "XT0050:5",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.C2",
+                  "toPageZone": "49.C1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-20",
+                  "rowIndex": 30,
+                  "fromDeviceId": "AF0052:V+",
+                  "toDeviceId": "AU0050:V+",
+                  "wireType": "SC",
+                  "wireNo": "AU0050P",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.B3",
+                  "toPageZone": "49.A2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-17",
+                  "rowIndex": 27,
+                  "fromDeviceId": "AF0052:COM",
+                  "toDeviceId": "AU0050:COM",
+                  "wireType": "SC",
+                  "wireNo": "AU0050N",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.B3",
+                  "toPageZone": "49.A2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-32",
+                  "rowIndex": 42,
+                  "fromDeviceId": "AF0352:V+",
+                  "toDeviceId": "AU0350:V+",
+                  "wireType": "SC",
+                  "wireNo": "AU0350P",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.C3",
+                  "toPageZone": "49.B2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-30",
+                  "rowIndex": 40,
+                  "fromDeviceId": "AF0352:COM",
+                  "toDeviceId": "AU0350:COM",
+                  "wireType": "SC",
+                  "wireNo": "AU0350N",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.C3",
+                  "toPageZone": "49.B2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-63",
+                  "rowIndex": 73,
+                  "fromDeviceId": "KA2200:11",
+                  "toDeviceId": "XT0059:4",
+                  "wireType": "SC",
+                  "wireNo": "KA220011",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "50.A5",
+                  "toPageZone": "50.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-64",
+                  "rowIndex": 74,
+                  "fromDeviceId": "KA2200:14",
+                  "toDeviceId": "XT0059:3",
+                  "wireType": "SC",
+                  "wireNo": "KA220014",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "50.A5",
+                  "toPageZone": "50.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-34",
+                  "rowIndex": 44,
+                  "fromDeviceId": "AU0050:V+",
+                  "toDeviceId": "FU0051:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0051",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.A2",
+                  "toPageZone": "49.B1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-36",
+                  "rowIndex": 46,
+                  "fromDeviceId": "AU0350:V+",
+                  "toDeviceId": "FU0350:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0350",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.B2",
+                  "toPageZone": "49.C1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-33",
+                  "rowIndex": 43,
+                  "fromDeviceId": "AU0050:COM",
+                  "toDeviceId": "XT0050:2",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.A2",
+                  "toPageZone": "49.B1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-35",
+                  "rowIndex": 45,
+                  "fromDeviceId": "AU0350:COM",
+                  "toDeviceId": "XT0050:4",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.B2",
+                  "toPageZone": "49.C1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-42",
+                  "rowIndex": 52,
+                  "fromDeviceId": "FU0355:LD",
+                  "toDeviceId": "XT0050:12",
+                  "wireType": "SC",
+                  "wireNo": "FU0355",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.C1",
+                  "toPageZone": "49.C3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-44",
+                  "rowIndex": 54,
+                  "fromDeviceId": "FU2220:LD",
+                  "toDeviceId": "XT0050:14",
+                  "wireType": "SC",
+                  "wireNo": "FU2220",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.D1",
+                  "toPageZone": "49.D2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-48",
+                  "rowIndex": 58,
+                  "fromDeviceId": "FU2611:LD",
+                  "toDeviceId": "XT0050:18",
+                  "wireType": "SC",
+                  "wireNo": "FU2611",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.D1",
+                  "toPageZone": "49.D2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-37",
+                  "rowIndex": 47,
+                  "fromDeviceId": "FU0051:LI",
+                  "toDeviceId": "FU0050:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0050",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.B1",
+                  "toPageZone": "49.A1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-46",
+                  "rowIndex": 56,
+                  "fromDeviceId": "FU2228:LD",
+                  "toDeviceId": "XT0050:16",
+                  "wireType": "SC",
+                  "wireNo": "FU2228",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.D1",
+                  "toPageZone": "49.D2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "AF0051",
+                  "rowCount": 3
+                },
+                {
+                  "label": "AF0053",
+                  "rowCount": 4
+                },
+                {
+                  "label": "AF0351",
+                  "rowCount": 5
+                },
+                {
+                  "label": "AF0052",
+                  "rowCount": 2
+                },
+                {
+                  "label": "AF0352",
+                  "rowCount": 2
+                },
+                {
+                  "label": "AU0050",
+                  "rowCount": 2
+                },
+                {
+                  "label": "AU0350",
+                  "rowCount": 2
+                },
+                {
+                  "label": "FU - XT",
+                  "rowCount": 4
+                },
+                {
+                  "label": "FU - FU",
+                  "rowCount": 1
+                },
+                {
+                  "label": "KA0050",
+                  "rowCount": 8
+                },
+                {
+                  "label": "KA0051",
+                  "rowCount": 2
+                },
+                {
+                  "label": "KA - XT",
+                  "rowCount": 1
+                },
+                {
+                  "label": "KA2200",
+                  "rowCount": 2
+                }
+              ]
+            },
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-65",
+                  "rowIndex": 75,
+                  "fromDeviceId": "AU0050:L2",
+                  "toDeviceId": "AU0350:L1",
+                  "wireType": "WC0005",
+                  "wireNo": "AU0050L2",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "JB71 C,LIQUID FUEL",
+                  "toLocation": "JB71 C,LIQUID FUEL",
+                  "fromPageZone": "49.A2",
+                  "toPageZone": "49.B2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        },
+        {
+          "location": "JB71 B,PNL CTRL1",
+          "isExternal": true,
+          "totalRows": 6,
+          "subsections": [
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 6,
+              "rows": [
+                {
+                  "rowId": "row-69",
+                  "rowIndex": 79,
+                  "fromDeviceId": "AF0051:44",
+                  "toDeviceId": "PC0471:+PWR",
+                  "wireType": "SC",
+                  "wireNo": "-005144",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 B,PNL CTRL1",
+                  "toLocation": "JB71 B,PNL CTRL1",
+                  "fromPageZone": "50.B7",
+                  "toPageZone": "50.B5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-68",
+                  "rowIndex": 78,
+                  "fromDeviceId": "AF0051:28",
+                  "toDeviceId": "PC0471:-PWR",
+                  "wireType": "SC",
+                  "wireNo": "-005128",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 B,PNL CTRL1",
+                  "toLocation": "JB71 B,PNL CTRL1",
+                  "fromPageZone": "50.B7",
+                  "toPageZone": "50.B5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-67",
+                  "rowIndex": 77,
+                  "fromDeviceId": "AF0051:14",
+                  "toDeviceId": "PC0471:INP_B",
+                  "wireType": "SC",
+                  "wireNo": "-005114",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 B,PNL CTRL1",
+                  "toLocation": "JB71 B,PNL CTRL1",
+                  "fromPageZone": "50.B7",
+                  "toPageZone": "50.B5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-66",
+                  "rowIndex": 76,
+                  "fromDeviceId": "AF0051:12",
+                  "toDeviceId": "PC0471:INP_A",
+                  "wireType": "SC",
+                  "wireNo": "-005112",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 B,PNL CTRL1",
+                  "toLocation": "JB71 B,PNL CTRL1",
+                  "fromPageZone": "50.B7",
+                  "toPageZone": "50.B5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-70",
+                  "rowIndex": 80,
+                  "fromDeviceId": "KA0071:13(+)",
+                  "toDeviceId": "AF0073:03",
+                  "wireType": "SC",
+                  "wireNo": "KA007113",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 B,PNL CTRL1",
+                  "toLocation": "JB71 B,PNL CTRL1",
+                  "fromPageZone": "51.C5",
+                  "toPageZone": "51.C6",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-71",
+                  "rowIndex": 81,
+                  "fromDeviceId": "KA0071:14(-)",
+                  "toDeviceId": "AF0073:19",
+                  "wireType": "SC",
+                  "wireNo": "KA007114",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 B,PNL CTRL1",
+                  "toLocation": "JB71 B,PNL CTRL1",
+                  "fromPageZone": "51.C5",
+                  "toPageZone": "51.C6",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "AF0051",
+                  "rowCount": 4
+                },
+                {
+                  "label": "KA0071",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "JB71 B,PNL CTRL2",
+          "isExternal": true,
+          "totalRows": 5,
+          "subsections": [
+            {
+              "label": "KA Twin Ferrules",
+              "sectionKind": "ka_twin_ferrules",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-72",
+                  "rowIndex": 82,
+                  "fromDeviceId": "KA0381:13(+)",
+                  "toDeviceId": "AF0383:11",
+                  "wireType": "SC",
+                  "wireNo": "KA038113",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 B,PNL CTRL2",
+                  "toLocation": "JB71 B,PNL CTRL2",
+                  "fromPageZone": "51.B5",
+                  "toPageZone": "51.B6",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-73",
+                  "rowIndex": 83,
+                  "fromDeviceId": "KA0381:14(-)",
+                  "toDeviceId": "AF0383:27",
+                  "wireType": "SC",
+                  "wireNo": "KA038114",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 B,PNL CTRL2",
+                  "toLocation": "JB71 B,PNL CTRL2",
+                  "fromPageZone": "51.B5",
+                  "toPageZone": "51.B6",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "KA0381:13(+) / KA038113",
+                  "rowCount": 1
+                },
+                {
+                  "label": "KA0381:14(-) / KA038114",
+                  "rowCount": 1
+                }
+              ]
+            },
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-75",
+                  "rowIndex": 85,
+                  "fromDeviceId": "XT0059:8",
+                  "toDeviceId": "XT0089:10",
+                  "wireType": "SC",
+                  "wireNo": "ESTOP",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB71 B,PNL CTRL2",
+                  "toLocation": "JB71 B,PNL CTRL2",
+                  "fromPageZone": "51.A5",
+                  "toPageZone": "14.D5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-74",
+                  "rowIndex": 84,
+                  "fromDeviceId": "XT0059:7",
+                  "toDeviceId": "XT0089:11",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB71 B,PNL CTRL2",
+                  "toLocation": "JB71 B,PNL CTRL2",
+                  "fromPageZone": "51.A5",
+                  "toPageZone": "14.D6",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "XT0059",
+                  "rowCount": 2
+                }
+              ]
+            },
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-76",
+                  "rowIndex": 86,
+                  "fromDeviceId": "AU0350:L2",
+                  "toDeviceId": "AU0060:L1",
+                  "wireType": "WC0035",
+                  "wireNo": "AU0350L2",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "JB71 B,PNL CTRL2",
+                  "toLocation": "JB71 B,PNL CTRL2",
+                  "fromPageZone": "49.B2",
+                  "toPageZone": "11.A2",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        },
+        {
+          "location": "JB71 B,PNL DC PWR",
+          "isExternal": true,
+          "totalRows": 6,
+          "subsections": [
+            {
+              "label": "Grounds",
+              "sectionKind": "grounds",
+              "rowCount": 4,
+              "rows": [
+                {
+                  "rowId": "row-77",
+                  "rowIndex": 87,
+                  "fromDeviceId": "AF0052:SH",
+                  "toDeviceId": "IEG0010:5",
+                  "wireType": "SC",
+                  "wireNo": "IEG00105",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 B,PNL DC PWR",
+                  "toLocation": "JB71 B,PNL DC PWR",
+                  "fromPageZone": "49.B3",
+                  "toPageZone": "49.B5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-78",
+                  "rowIndex": 88,
+                  "fromDeviceId": "AF0352:SH",
+                  "toDeviceId": "IEG0010:6",
+                  "wireType": "SC",
+                  "wireNo": "IEG00106",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 B,PNL DC PWR",
+                  "toLocation": "JB71 B,PNL DC PWR",
+                  "fromPageZone": "49.C3",
+                  "toPageZone": "49.C5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-80",
+                  "rowIndex": 90,
+                  "fromDeviceId": "GR0050",
+                  "toDeviceId": "IEG0010:13",
+                  "wireType": "SC",
+                  "wireNo": "GR0050",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 B,PNL DC PWR",
+                  "toLocation": "JB71 B,PNL DC PWR",
+                  "fromPageZone": "49.D6",
+                  "toPageZone": "49.D6",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-81",
+                  "rowIndex": 91,
+                  "fromDeviceId": "GR0350",
+                  "toDeviceId": "IEG0010:7",
+                  "wireType": "SC",
+                  "wireNo": "GR0350",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB71 B,PNL DC PWR",
+                  "toLocation": "JB71 B,PNL DC PWR",
+                  "fromPageZone": "49.D4",
+                  "toPageZone": "49.D5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-79",
+                  "rowIndex": 89,
+                  "fromDeviceId": "FU0050:LI",
+                  "toDeviceId": "XT0002:1",
+                  "wireType": "SC",
+                  "wireNo": "FU0136",
+                  "wireId": "WHT",
+                  "gaugeSize": "12",
+                  "fromLocation": "JB71 B,PNL DC PWR",
+                  "toLocation": "JB71 B,PNL DC PWR",
+                  "fromPageZone": "49.A1",
+                  "toPageZone": "3.A4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-82",
+                  "rowIndex": 92,
+                  "fromDeviceId": "XT0050:1",
+                  "toDeviceId": "XT0003:1",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "12",
+                  "fromLocation": "JB71 B,PNL DC PWR",
+                  "toLocation": "JB71 B,PNL DC PWR",
+                  "fromPageZone": "49.A1",
+                  "toPageZone": "3.A4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "FU - XT",
+                  "rowCount": 1
+                },
+                {
+                  "label": "XT - XT",
+                  "rowCount": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "JB71 B,PNL VIBRATION",
+          "isExternal": true,
+          "totalRows": 1,
+          "subsections": [
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-83",
+                  "rowIndex": 93,
+                  "fromDeviceId": "AU0050:L1",
+                  "toDeviceId": "AF0450:L2",
+                  "wireType": "WC0045",
+                  "wireNo": "AF0450L2",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "JB71 B,PNL VIBRATION",
+                  "toLocation": "JB71 B,PNL VIBRATION",
+                  "fromPageZone": "49.A2",
+                  "toPageZone": "20.B3",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

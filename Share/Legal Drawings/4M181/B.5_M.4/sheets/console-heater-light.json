@@ -1,0 +1,93 @@
+{
+  "slug": "console-heater-light",
+  "name": "CONSOLE HEATER LIGHT",
+  "kind": "operational",
+  "sheetIndex": 10,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "HL0950:1",
+      "wireType": "SC",
+      "wireNo": "TS0950NC",
+      "wireId": "RED",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "61.A6",
+      "toDeviceId": "XT0951:1",
+      "toLocation": "SPACE HEATER PANEL",
+      "toPageZone": "61.A6",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-1",
+      "fromDeviceId": "HL0950:2",
+      "wireType": "SC",
+      "wireNo": "QS0950LD3",
+      "wireId": "RED",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "61.A6",
+      "toDeviceId": "XT0951:3",
+      "toLocation": "SPACE HEATER PANEL",
+      "toPageZone": "61.A6",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "XT0951:1",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "TS0950NC",
+      "Wire ID": "RED",
+      "Gauge/Size": "16",
+      "Page/Zone": "61.A6",
+      "Location": "SPACE HEATER PANEL"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "XT0951:3",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "QS0950LD3",
+      "Wire ID": "RED",
+      "Gauge/Size": "16",
+      "Page/Zone": "61.A6",
+      "Location": "SPACE HEATER PANEL"
+    }
+  ],
+  "rowCount": 2,
+  "metadata": {
+    "projectName": "PIC PROJECT PHASE 4 DEVELOPMENT",
+    "revision": "B.6",
+    "controlsDE": "J. SHORTER",
+    "controlsME": "S. LOZA"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:28:58.221Z"
+}

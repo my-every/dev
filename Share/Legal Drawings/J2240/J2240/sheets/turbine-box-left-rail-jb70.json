@@ -1,0 +1,68 @@
+{
+  "slug": "turbine-box-left-rail-jb70",
+  "name": "TURBINE BOX^LEFT RAIL^JB70",
+  "kind": "operational",
+  "sheetIndex": 4,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1101:",
+      "wireType": "SC",
+      "wireNo": "GR1101",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "3.A6",
+      "toDeviceId": "FRAME",
+      "toLocation": "TURBINE BOX^LEFT RAIL^JB70",
+      "toPageZone": "3.A5",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1101",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "3.A5",
+      "Location": "TURBINE BOX^LEFT RAIL^JB70"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "TRUNKLINE CENTERVILLE U5 CR",
+    "revision": "0.1",
+    "controlsDE": "J.HSIEH",
+    "controlsME": "R.DURAN"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Rail in title with no Panel number"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:18:10.687Z"
+}

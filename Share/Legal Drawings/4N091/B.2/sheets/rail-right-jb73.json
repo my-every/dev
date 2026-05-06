@@ -1,0 +1,67 @@
+{
+  "slug": "rail-right-jb73",
+  "name": "RAIL,RIGHT,JB73",
+  "kind": "operational",
+  "sheetIndex": 14,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1163:",
+      "wireType": "SC",
+      "wireNo": "GR1163",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "11.A4",
+      "toDeviceId": "FRAME",
+      "toLocation": "RAIL,RIGHT,JB73",
+      "toPageZone": "11.A3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1163",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "11.A3",
+      "Location": "RAIL,RIGHT,JB73"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "revision": "B.2",
+    "controlsDE": "D. KIM",
+    "controlsME": "A. PLVAN"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Rail in title with no Panel number"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:43:01.412Z"
+}

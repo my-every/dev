@@ -1,0 +1,67 @@
+{
+  "slug": "right-side-rail-jb72",
+  "name": "RIGHT SIDE RAIL (JB72)",
+  "kind": "operational",
+  "sheetIndex": 15,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR0141:",
+      "wireType": "SC",
+      "wireNo": "GR0141",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "9.A4",
+      "toDeviceId": "FRAME",
+      "toLocation": "RIGHT SIDE RAIL (JB72)",
+      "toPageZone": "9.A5",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0141",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "9.A5",
+      "Location": "RIGHT SIDE RAIL (JB72)"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "Michigan State University",
+    "revision": "C.3",
+    "controlsDE": "J. UNGER"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Side Rail in title - Rail assembly"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:12:54.391Z"
+}

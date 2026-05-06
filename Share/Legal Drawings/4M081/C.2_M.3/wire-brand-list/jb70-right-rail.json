@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:27:06.337Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb70-right-rail",
+  "sheetName": "JB70 RIGHT RAIL",
+  "totalRows": 1,
+  "header": {
+    "locationTitle": "JB70 RIGHT RAIL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M081",
+    "projectName": "4M081",
+    "revision": "C.2_M.3",
+    "controlsDE": "J. UNGER",
+    "controlsME": "K. MURPHY"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB70 RIGHT RAIL",
+    "normalizedSheetName": "jb70-right-rail",
+    "bundleNames": [
+      "BA - FU"
+    ],
+    "bundleDisplays": [
+      "BA - FU"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA - FU",
+          "toLocation": "JB70 RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "BA0014:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU9114LD",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU9114:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB70 RIGHT RAIL",
+              "bundleName": "BA - FU",
+              "bundleDisplay": "BA - FU",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "f91c8d8ac362a5d10da90030bd7ba72d1e5cfd45eed03de64edf5e5108b11a51"
+}

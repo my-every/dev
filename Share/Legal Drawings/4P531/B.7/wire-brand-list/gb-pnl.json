@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:53:27.183Z",
+  "mode": "branding-export",
+  "sheetSlug": "gb-pnl",
+  "sheetName": "GB PNL",
+  "totalRows": 4,
+  "header": {
+    "locationTitle": "GB PNL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4P531",
+    "projectName": "WISON-S - Unit 1",
+    "revision": "B.7",
+    "controlsDE": "F. Partow Dezfouli",
+    "controlsME": "H. Medrano"
+  },
+  "importHints": {
+    "canonicalSheetName": "GB PNL",
+    "normalizedSheetName": "gb-pnl",
+    "bundleNames": [
+      "AU0320",
+      "FU - XT",
+      "XT - XT"
+    ],
+    "bundleDisplays": [
+      "AU0320",
+      "FU - XT - PUMP",
+      "XT - XT - PUMP"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AU",
+      "bundles": [
+        {
+          "bundleName": "AU0320",
+          "toLocation": "GB PNL",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "AU0320:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0320:1",
+              "toTerminal": "1",
+              "toLocation": "GB PNL",
+              "bundleName": "AU0320",
+              "bundleDisplay": "AU0320",
+              "devicePrefix": "AU",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "AU0320:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0320",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0320:LD",
+              "toTerminal": "LD",
+              "toLocation": "GB PNL",
+              "bundleName": "AU0320",
+              "bundleDisplay": "",
+              "devicePrefix": "AU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "PUMP",
+          "rows": [
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "FU0320:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0335:2",
+              "toTerminal": "2",
+              "toLocation": "PUMP",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT - PUMP",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "PUMP",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 22,
+              "fromDeviceId": "XT0320:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0336:2",
+              "toTerminal": "2",
+              "toLocation": "PUMP",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT - PUMP",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "5acfc87282f8f7e5a10f95bb82e5761c89d23fafc0ced7efa847ab84da35310f"
+}

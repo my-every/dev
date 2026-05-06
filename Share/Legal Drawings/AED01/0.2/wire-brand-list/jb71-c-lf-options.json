@@ -1,0 +1,1381 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:01:37.037Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb71-c-lf-options",
+  "sheetName": "JB71 C LF OPTIONS",
+  "totalRows": 52,
+  "header": {
+    "locationTitle": "JB71 C LF OPTIONS",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "AED01",
+    "projectName": "STKAE1 - Unit 1",
+    "revision": "0.2",
+    "controlsDE": "Poovarasan M"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB71 C,LF OPTIONS",
+    "normalizedSheetName": "jb71-c-lf-options",
+    "bundleNames": [
+      "KA0381",
+      "AF0052",
+      "AF0352",
+      "AF0051",
+      "AF0351",
+      "AF0053",
+      "AU0050",
+      "AU0350",
+      "FU - FU",
+      "FU - XT",
+      "KA0050",
+      "KA0051",
+      "KA - XT",
+      "KA2200",
+      "KA0071",
+      "XT0059",
+      "XT - XT"
+    ],
+    "bundleDisplays": [
+      "KA0381",
+      "AF0052",
+      "AF0352",
+      "AF0051",
+      "AF0351",
+      "AF0053",
+      "AU0050",
+      "AU0350",
+      "FU - FU",
+      "FU - XT",
+      "KA0050",
+      "KA0051",
+      "KA - XT",
+      "KA2200",
+      "KA0071 - B - PNL CTRL1",
+      "KA0381 - B - PNL CTRL2",
+      "XT0059 - B - PNL CTRL2",
+      "FU - XT - B - PNL DC PWR",
+      "XT - XT - B - PNL DC PWR"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "KA",
+      "bundles": [
+        {
+          "bundleName": "KA0381",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-67",
+              "rowIndex": 77,
+              "fromDeviceId": "KA0381:13(+)",
+              "fromTerminal": "13(+)",
+              "fromTerminalOrder": null,
+              "wireNo": "KA038113",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0383:A1",
+              "toTerminal": "A1",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "KA0381",
+              "bundleDisplay": "KA0381",
+              "devicePrefix": "KA"
+            },
+            {
+              "rowId": "row-68",
+              "rowIndex": 78,
+              "fromDeviceId": "KA0381:14(-)",
+              "fromTerminal": "14(-)",
+              "fromTerminalOrder": null,
+              "wireNo": "-KA038114",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0383:A2",
+              "toTerminal": "A2",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "KA0381",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AF",
+      "bundles": [
+        {
+          "bundleName": "AF0052",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-22",
+              "rowIndex": 32,
+              "fromDeviceId": "AF0052:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-AU0050N",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "AU0050:COM",
+              "toTerminal": "COM",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0052",
+              "bundleDisplay": "AF0052",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-26",
+              "rowIndex": 36,
+              "fromDeviceId": "AF0052:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AU0050P",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "AU0050:V+",
+              "toTerminal": "V+",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0052",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0352",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-37",
+              "rowIndex": 47,
+              "fromDeviceId": "AF0352:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-AU0350N",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "AU0350:COM",
+              "toTerminal": "COM",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0352",
+              "bundleDisplay": "AF0352",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-39",
+              "rowIndex": 49,
+              "fromDeviceId": "AF0352:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AU0350P",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "AU0350:V+",
+              "toTerminal": "V+",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0352",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0051",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-20",
+              "rowIndex": 30,
+              "fromDeviceId": "AF0051:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0052",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0052:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0051",
+              "bundleDisplay": "AF0051",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0051",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-13",
+              "rowIndex": 23,
+              "fromDeviceId": "AF0051:10",
+              "fromTerminal": "10",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-005110",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0050:2",
+              "toTerminal": "2",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0051",
+              "bundleDisplay": "AF0051",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0051",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-14",
+              "rowIndex": 24,
+              "fromDeviceId": "AF0051:12",
+              "fromTerminal": "12",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-005112",
+              "wireId": "GRY",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "PC0471:INP_A",
+              "toTerminal": "INP_A",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0051",
+              "bundleDisplay": "AF0051",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-15",
+              "rowIndex": 25,
+              "fromDeviceId": "AF0051:14",
+              "fromTerminal": "14",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-005114",
+              "wireId": "GRY",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "PC0471:INP_B",
+              "toTerminal": "INP_B",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0051",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-16",
+              "rowIndex": 26,
+              "fromDeviceId": "AF0051:28",
+              "fromTerminal": "28",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-005128",
+              "wireId": "GRY",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "PC0471:-PWR",
+              "toTerminal": "-PWR",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0051",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-17",
+              "rowIndex": 27,
+              "fromDeviceId": "AF0051:44",
+              "fromTerminal": "44",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-005144",
+              "wireId": "GRY",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "PC0471:+PWR",
+              "toTerminal": "+PWR",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0051",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0051",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-18",
+              "rowIndex": 28,
+              "fromDeviceId": "AF0051:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0050:3",
+              "toTerminal": "3",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0051",
+              "bundleDisplay": "AF0051",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0351",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-34",
+              "rowIndex": 44,
+              "fromDeviceId": "AF0351:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0050:5",
+              "toTerminal": "5",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0351",
+              "bundleDisplay": "AF0351",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-36",
+              "rowIndex": 46,
+              "fromDeviceId": "AF0351:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0351",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0351:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0351",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0351",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-31",
+              "rowIndex": 41,
+              "fromDeviceId": "AF0351:00",
+              "fromTerminal": "00",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-035100",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0050:6",
+              "toTerminal": "6",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0351",
+              "bundleDisplay": "AF0351",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-32",
+              "rowIndex": 42,
+              "fromDeviceId": "AF0351:02",
+              "fromTerminal": "02",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-035102",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA2200:A1",
+              "toTerminal": "A1",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0351",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-33",
+              "rowIndex": 43,
+              "fromDeviceId": "AF0351:18",
+              "fromTerminal": "18",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-035118",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA2200:A2",
+              "toTerminal": "A2",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0351",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0053",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-30",
+              "rowIndex": 40,
+              "fromDeviceId": "AF0053:35",
+              "fromTerminal": "35",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA26181",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0059:11",
+              "toTerminal": "11",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0053",
+              "bundleDisplay": "AF0053",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0053",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-27",
+              "rowIndex": 37,
+              "fromDeviceId": "AF0053:01",
+              "fromTerminal": "01",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-005301",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0059:6",
+              "toTerminal": "6",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0053",
+              "bundleDisplay": "AF0053",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-29",
+              "rowIndex": 39,
+              "fromDeviceId": "AF0053:33",
+              "fromTerminal": "33",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-005333",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0059:5",
+              "toTerminal": "5",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0053",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0053",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-28",
+              "rowIndex": 38,
+              "fromDeviceId": "AF0053:03",
+              "fromTerminal": "03",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA26182",
+              "wireId": "WHT",
+              "gaugeSize": "18",
+              "length": 60,
+              "toDeviceId": "XT0059:12",
+              "toTerminal": "12",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AF0053",
+              "bundleDisplay": "AF0053",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AU",
+      "bundles": [
+        {
+          "bundleName": "AU0050",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-41",
+              "rowIndex": 51,
+              "fromDeviceId": "AU0050:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0051",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0051:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AU0050",
+              "bundleDisplay": "AU0050",
+              "devicePrefix": "AU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AU0050",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-40",
+              "rowIndex": 50,
+              "fromDeviceId": "AU0050:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0050:2",
+              "toTerminal": "2",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AU0050",
+              "bundleDisplay": "AU0050",
+              "devicePrefix": "AU",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AU0350",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-43",
+              "rowIndex": 53,
+              "fromDeviceId": "AU0350:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0350",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0350:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AU0350",
+              "bundleDisplay": "AU0350",
+              "devicePrefix": "AU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AU0350",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-42",
+              "rowIndex": 52,
+              "fromDeviceId": "AU0350:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0050:4",
+              "toTerminal": "4",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "AU0350",
+              "bundleDisplay": "AU0350",
+              "devicePrefix": "AU",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - FU",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-44",
+              "rowIndex": 54,
+              "fromDeviceId": "FU0051:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0050",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0050:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "FU - FU",
+              "bundleDisplay": "FU - FU",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-49",
+              "rowIndex": 59,
+              "fromDeviceId": "FU0355:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0355",
+              "wireId": "WHT",
+              "gaugeSize": "",
+              "length": 60,
+              "toDeviceId": "XT0050:12",
+              "toTerminal": "12",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-51",
+              "rowIndex": 61,
+              "fromDeviceId": "FU2220:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU2220",
+              "wireId": "",
+              "gaugeSize": "",
+              "length": 60,
+              "toDeviceId": "XT0050:14",
+              "toTerminal": "14",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-55",
+              "rowIndex": 65,
+              "fromDeviceId": "FU2611:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU2611",
+              "wireId": "",
+              "gaugeSize": "",
+              "length": 60,
+              "toDeviceId": "XT0050:18",
+              "toTerminal": "18",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-53",
+              "rowIndex": 63,
+              "fromDeviceId": "FU2228:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU2228",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0050:16",
+              "toTerminal": "16",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "KA",
+      "bundles": [
+        {
+          "bundleName": "KA0050",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-57",
+              "rowIndex": 67,
+              "fromDeviceId": "KA0050:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "KA038102",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0381:2",
+              "toTerminal": "2",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "KA0050",
+              "bundleDisplay": "KA0050",
+              "devicePrefix": "KA"
+            },
+            {
+              "rowId": "row-58",
+              "rowIndex": 68,
+              "fromDeviceId": "KA0050:10(+)",
+              "fromTerminal": "10(+)",
+              "fromTerminalOrder": null,
+              "wireNo": "ESTOP",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0051:A1",
+              "toTerminal": "A1",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "KA0050",
+              "bundleDisplay": "",
+              "devicePrefix": "KA"
+            },
+            {
+              "rowId": "row-59",
+              "rowIndex": 69,
+              "fromDeviceId": "KA0050:11(-)",
+              "fromTerminal": "11(-)",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0050:16(-)",
+              "toTerminal": "16(-)",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "KA0050",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": true
+            },
+            {
+              "rowId": "row-60",
+              "rowIndex": 70,
+              "fromDeviceId": "KA0050:12(-)",
+              "fromTerminal": "12(-)",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0051:A2",
+              "toTerminal": "A2",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "KA0050",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": true
+            },
+            {
+              "rowId": "row-61",
+              "rowIndex": 71,
+              "fromDeviceId": "KA0050:13(+)",
+              "fromTerminal": "13(+)",
+              "fromTerminalOrder": null,
+              "wireNo": "ESTOP",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0059:8",
+              "toTerminal": "8",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "KA0050",
+              "bundleDisplay": "",
+              "devicePrefix": "KA"
+            },
+            {
+              "rowId": "row-62",
+              "rowIndex": 72,
+              "fromDeviceId": "KA0050:14(-)",
+              "fromTerminal": "14(-)",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0059:7",
+              "toTerminal": "7",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "KA0050",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": true
+            },
+            {
+              "rowId": "row-63",
+              "rowIndex": 73,
+              "fromDeviceId": "KA0050:15(+)",
+              "fromTerminal": "15(+)",
+              "fromTerminalOrder": null,
+              "wireNo": "ESTOP",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0050:9(+)",
+              "toTerminal": "9(+)",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "KA0050",
+              "bundleDisplay": "",
+              "devicePrefix": "KA"
+            },
+            {
+              "rowId": "row-64",
+              "rowIndex": 74,
+              "fromDeviceId": "KA0050:5",
+              "fromTerminal": "5",
+              "fromTerminalOrder": null,
+              "wireNo": "KA007102",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0071:2",
+              "toTerminal": "2",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "KA0050",
+              "bundleDisplay": "",
+              "devicePrefix": "KA"
+            }
+          ]
+        },
+        {
+          "bundleName": "KA0051",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-65",
+              "rowIndex": 75,
+              "fromDeviceId": "KA0051:11",
+              "fromTerminal": "11",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA005111",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0383:14",
+              "toTerminal": "14",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "KA0051",
+              "bundleDisplay": "KA0051",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-66",
+              "rowIndex": 76,
+              "fromDeviceId": "KA0051:14",
+              "fromTerminal": "14",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UF22203",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0059:9",
+              "toTerminal": "9",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "KA0051",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "KA - XT",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-69",
+              "rowIndex": 79,
+              "fromDeviceId": "KA0383:11",
+              "fromTerminal": "11",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UF22204",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0059:10",
+              "toTerminal": "10",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "KA - XT",
+              "bundleDisplay": "KA - XT",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "KA2200",
+          "toLocation": "JB71 C,LF OPTIONS",
+          "rows": [
+            {
+              "rowId": "row-70",
+              "rowIndex": 80,
+              "fromDeviceId": "KA2200:11",
+              "fromTerminal": "11",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA220011",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0059:4",
+              "toTerminal": "4",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "KA2200",
+              "bundleDisplay": "KA2200",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-71",
+              "rowIndex": 81,
+              "fromDeviceId": "KA2200:14",
+              "fromTerminal": "14",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA220014",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0059:3",
+              "toTerminal": "3",
+              "toLocation": "JB71 C,LF OPTIONS",
+              "bundleName": "KA2200",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "KA",
+      "bundles": [
+        {
+          "bundleName": "KA0071",
+          "toLocation": "JB71 B,PNL CTRL1",
+          "rows": [
+            {
+              "rowId": "row-73",
+              "rowIndex": 83,
+              "fromDeviceId": "KA0071:13(+)",
+              "fromTerminal": "13(+)",
+              "fromTerminalOrder": null,
+              "wireNo": "KA007113",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0073:03",
+              "toTerminal": "03",
+              "toLocation": "JB71 B,PNL CTRL1",
+              "bundleName": "KA0071",
+              "bundleDisplay": "KA0071 - B - PNL CTRL1",
+              "devicePrefix": "KA"
+            },
+            {
+              "rowId": "row-74",
+              "rowIndex": 84,
+              "fromDeviceId": "KA0071:14(-)",
+              "fromTerminal": "14(-)",
+              "fromTerminalOrder": null,
+              "wireNo": "-KA007114",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0073:19",
+              "toTerminal": "19",
+              "toLocation": "JB71 B,PNL CTRL1",
+              "bundleName": "KA0071",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": true
+            }
+          ]
+        },
+        {
+          "bundleName": "KA0381",
+          "toLocation": "JB71 B,PNL CTRL2",
+          "rows": [
+            {
+              "rowId": "row-75",
+              "rowIndex": 85,
+              "fromDeviceId": "KA0381:13(+)",
+              "fromTerminal": "13(+)",
+              "fromTerminalOrder": null,
+              "wireNo": "KA038113",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0383:11",
+              "toTerminal": "11",
+              "toLocation": "JB71 B,PNL CTRL2",
+              "bundleName": "KA0381",
+              "bundleDisplay": "KA0381 - B - PNL CTRL2",
+              "devicePrefix": "KA"
+            },
+            {
+              "rowId": "row-76",
+              "rowIndex": 86,
+              "fromDeviceId": "KA0381:14(-)",
+              "fromTerminal": "14(-)",
+              "fromTerminalOrder": null,
+              "wireNo": "-KA038114",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0383:27",
+              "toTerminal": "27",
+              "toLocation": "JB71 B,PNL CTRL2",
+              "bundleName": "KA0381",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0059",
+          "toLocation": "JB71 B,PNL CTRL2",
+          "rows": [
+            {
+              "rowId": "row-78",
+              "rowIndex": 88,
+              "fromDeviceId": "XT0059:8",
+              "fromTerminal": "8",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "ESTOP",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0089:10",
+              "toTerminal": "10",
+              "toLocation": "JB71 B,PNL CTRL2",
+              "bundleName": "XT0059",
+              "bundleDisplay": "XT0059 - B - PNL CTRL2",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT0059",
+          "toLocation": "JB71 B,PNL CTRL2",
+          "rows": [
+            {
+              "rowId": "row-77",
+              "rowIndex": 87,
+              "fromDeviceId": "XT0059:7",
+              "fromTerminal": "7",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0089:11",
+              "toTerminal": "11",
+              "toLocation": "JB71 B,PNL CTRL2",
+              "bundleName": "XT0059",
+              "bundleDisplay": "XT0059 - B - PNL CTRL2",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "JB71 B,PNL DC PWR",
+          "rows": [
+            {
+              "rowId": "row-82",
+              "rowIndex": 92,
+              "fromDeviceId": "FU0050:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0002:1",
+              "toTerminal": "1",
+              "toLocation": "JB71 B,PNL DC PWR",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT - B - PNL DC PWR",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "JB71 B,PNL DC PWR",
+          "rows": [
+            {
+              "rowId": "row-85",
+              "rowIndex": 95,
+              "fromDeviceId": "XT0050:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 120,
+              "toDeviceId": "XT0003:1",
+              "toTerminal": "1",
+              "toLocation": "JB71 B,PNL DC PWR",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT - B - PNL DC PWR",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "b178bc79e9788f5f7568d9913f1ce3397fa404b7059b41867e6de451cba03721"
+}

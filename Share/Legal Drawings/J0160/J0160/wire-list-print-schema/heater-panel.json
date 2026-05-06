@@ -1,0 +1,545 @@
+{
+  "generatedAt": "2026-05-05T14:09:25.849Z",
+  "sheetName": "HEATER PANEL",
+  "mode": "standardize",
+  "totalPages": 3,
+  "totalRows": 15,
+  "settings": {
+    "showEstTime": false,
+    "showFromCheckbox": true,
+    "showToCheckbox": true,
+    "showIPV": true,
+    "showComments": true,
+    "showLength": false,
+    "showCoverPage": true,
+    "showTableOfContents": true,
+    "showIPVCodes": false,
+    "showFeedbackSection": false,
+    "showDeviceSubheaders": false,
+    "enableBlueDeviceIDColumns": false,
+    "sectionColumnVisibility": {},
+    "feedbackRenderMode": "BLANK",
+    "feedbackSections": [
+      "Header",
+      "Accuracy & Usability",
+      "Termination Clarity",
+      "Routing & Layout Alignment",
+      "Build Sequence & Efficiency",
+      "Hardware & Materials",
+      "Quality & Rework",
+      "Time & Effort",
+      "Safety & Compliance",
+      "Documentation Quality",
+      "Automation Checks",
+      "Final Sign-Off",
+      "Footer"
+    ],
+    "customQuestions": [
+      "accuracyBlueLabelsClear",
+      "accuracySequenceMatchedLayout",
+      "accuracyMissingDuplicateIncorrectEntries",
+      "accuracyLocationColumnCorrect",
+      "terminationTypesClear",
+      "terminationLengthsAccurate",
+      "terminationReworkDueToInstructionClarity",
+      "terminationJumperRulesEasyToFollow",
+      "routingAlignedWithLayout",
+      "routingLengthFit",
+      "routingConflictsPanduct",
+      "routingConflictsRails",
+      "routingConflictsAdjacentDevices",
+      "routingEfficientOrder",
+      "buildOrderHelpful",
+      "buildRequiredDeviation",
+      "buildDeviationReason",
+      "buildCausedDelays",
+      "materialsFerrulesAvailable",
+      "materialsLugsAvailable",
+      "materialsJumpersAvailable",
+      "materialsWireTypesAvailable",
+      "materialsIssuesNotes",
+      "qualityErrorsCaughtDuringWiring",
+      "qualityReterminatedWires",
+      "qualityReroutedWires",
+      "qualityReplacedWires",
+      "qualityCommonIssues",
+      "estimatedWiringTimeHours",
+      "actualWiringTimeHours",
+      "timeVarianceReason",
+      "safetyGroundsClearlyIdentified",
+      "safetyTerminationsCompliant",
+      "safetyConcernsNotes",
+      "documentationDifficulty",
+      "documentationImprovementAreas",
+      "documentationOtherImprovementArea",
+      "documentationSpecificSuggestions",
+      "automationJumperPredictionCorrect",
+      "automationBlueLabelSequencesCorrect",
+      "automationKtRulesCorrect",
+      "automationReusableTemplateCandidate",
+      "finalQualityRating",
+      "finalComments"
+    ],
+    "crossWireSections": [],
+    "hiddenRows": [],
+    "hiddenSections": [],
+    "brandingSortMode": "device-prefix",
+    "wireListSortMode": "device-prefix"
+  },
+  "pages": [
+    {
+      "pageType": "cover",
+      "pageNumber": 1,
+      "projectInfo": {
+        "projectNumber": "J0160",
+        "projectName": "J0160",
+        "revision": "J0160",
+        "pdNumber": "J0160",
+        "unitNumber": "",
+        "preparedBy": "",
+        "badgeNumber": "",
+        "date": "",
+        "time": "",
+        "personnel": [
+          {
+            "id": "1",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "2",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "3",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "4",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "5",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "6",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          }
+        ]
+      },
+      "sheetTitle": "HEATER PANEL"
+    },
+    {
+      "pageType": "toc",
+      "pageNumber": 2,
+      "locationGroups": [
+        {
+          "location": "HEATER PANEL",
+          "isExternal": false,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Grounds",
+              "rowCount": 3,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 2,
+              "label": "Clips",
+              "rowCount": 3,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 3,
+              "label": "Single Connections",
+              "rowCount": 7,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "H02560",
+                  "rowCount": 2
+                },
+                {
+                  "label": "H02561",
+                  "rowCount": 2
+                },
+                {
+                  "label": "QS0256",
+                  "rowCount": 2
+                },
+                {
+                  "label": "TS - XT",
+                  "rowCount": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "SWITCH PANEL",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Single Connections",
+              "rowCount": 2,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "HL0256",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "locations": 2,
+        "sections": 9,
+        "rows": 15,
+        "pages": 3
+      }
+    },
+    {
+      "pageType": "wire-list",
+      "pageNumber": 3,
+      "locationGroups": [
+        {
+          "location": "HEATER PANEL",
+          "isExternal": false,
+          "totalRows": 13,
+          "subsections": [
+            {
+              "label": "Grounds",
+              "sectionKind": "grounds",
+              "rowCount": 3,
+              "rows": [
+                {
+                  "rowId": "row-3",
+                  "rowIndex": 14,
+                  "fromDeviceId": "GR02560",
+                  "toDeviceId": "FG0001:1",
+                  "wireType": "SC",
+                  "wireNo": "GR02560G",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "14",
+                  "fromLocation": "HEATER PANEL",
+                  "toLocation": "HEATER PANEL",
+                  "fromPageZone": "4.C6",
+                  "toPageZone": "4.C6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-4",
+                  "rowIndex": 15,
+                  "fromDeviceId": "GR02561",
+                  "toDeviceId": "FG0001:2",
+                  "wireType": "SC",
+                  "wireNo": "GR02561G",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "14",
+                  "fromLocation": "HEATER PANEL",
+                  "toLocation": "HEATER PANEL",
+                  "fromPageZone": "4.D6",
+                  "toPageZone": "4.D6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-12",
+                  "rowIndex": 23,
+                  "fromDeviceId": "XT0566:1",
+                  "toDeviceId": "XT02560:5",
+                  "wireType": "SC",
+                  "wireNo": "CCH0256G",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "12",
+                  "fromLocation": "HEATER PANEL",
+                  "toLocation": "HEATER PANEL",
+                  "fromPageZone": "4.C2",
+                  "toPageZone": "4.C5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Clips",
+              "sectionKind": "clips",
+              "rowCount": 3,
+              "rows": [
+                {
+                  "rowId": "row-0",
+                  "rowIndex": 11,
+                  "fromDeviceId": "XT02560:1",
+                  "toDeviceId": "XT02560:2",
+                  "wireType": "JC",
+                  "wireNo": "TS0256C",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "HEATER PANEL",
+                  "toLocation": "HEATER PANEL",
+                  "fromPageZone": "4.C6",
+                  "toPageZone": "4.C6",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-1",
+                  "rowIndex": 12,
+                  "fromDeviceId": "XT02560:3",
+                  "toDeviceId": "XT02560:4",
+                  "wireType": "JC",
+                  "wireNo": "EA0032PN",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "HEATER PANEL",
+                  "toLocation": "HEATER PANEL",
+                  "fromPageZone": "4.C6",
+                  "toPageZone": "4.D6",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-2",
+                  "rowIndex": 13,
+                  "fromDeviceId": "XT02560:5",
+                  "toDeviceId": "XT02560:6",
+                  "wireType": "JC",
+                  "wireNo": "CCH0256G",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "HEATER PANEL",
+                  "toLocation": "HEATER PANEL",
+                  "fromPageZone": "4.C5",
+                  "toPageZone": "4.D5",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 7,
+              "rows": [
+                {
+                  "rowId": "row-5",
+                  "rowIndex": 16,
+                  "fromDeviceId": "H02560:L",
+                  "toDeviceId": "XT02560:1",
+                  "wireType": "SC",
+                  "wireNo": "TS0256C",
+                  "wireId": "RED",
+                  "gaugeSize": "12",
+                  "fromLocation": "HEATER PANEL",
+                  "toLocation": "HEATER PANEL",
+                  "fromPageZone": "4.C6",
+                  "toPageZone": "4.C6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-6",
+                  "rowIndex": 17,
+                  "fromDeviceId": "H02560:N",
+                  "toDeviceId": "XT02560:3",
+                  "wireType": "SC",
+                  "wireNo": "EA0032PN",
+                  "wireId": "RED",
+                  "gaugeSize": "12",
+                  "fromLocation": "HEATER PANEL",
+                  "toLocation": "HEATER PANEL",
+                  "fromPageZone": "4.C6",
+                  "toPageZone": "4.C6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-7",
+                  "rowIndex": 18,
+                  "fromDeviceId": "H02561:L",
+                  "toDeviceId": "XT02560:2",
+                  "wireType": "SC",
+                  "wireNo": "TS0256C",
+                  "wireId": "RED",
+                  "gaugeSize": "12",
+                  "fromLocation": "HEATER PANEL",
+                  "toLocation": "HEATER PANEL",
+                  "fromPageZone": "4.D6",
+                  "toPageZone": "4.C6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-8",
+                  "rowIndex": 19,
+                  "fromDeviceId": "H02561:N",
+                  "toDeviceId": "XT02560:4",
+                  "wireType": "SC",
+                  "wireNo": "EA0032PN",
+                  "wireId": "RED",
+                  "gaugeSize": "12",
+                  "fromLocation": "HEATER PANEL",
+                  "toLocation": "HEATER PANEL",
+                  "fromPageZone": "4.D6",
+                  "toPageZone": "4.D6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-9",
+                  "rowIndex": 20,
+                  "fromDeviceId": "QS0256:LD-1",
+                  "toDeviceId": "TS0256:NC",
+                  "wireType": "SC",
+                  "wireNo": "TS0256NC",
+                  "wireId": "RED",
+                  "gaugeSize": "12",
+                  "fromLocation": "HEATER PANEL",
+                  "toLocation": "HEATER PANEL",
+                  "fromPageZone": "4.C2",
+                  "toPageZone": "4.B5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-10",
+                  "rowIndex": 21,
+                  "fromDeviceId": "QS0256:LD-3",
+                  "toDeviceId": "XT02560:3",
+                  "wireType": "SC",
+                  "wireNo": "EA0032PN",
+                  "wireId": "RED",
+                  "gaugeSize": "12",
+                  "fromLocation": "HEATER PANEL",
+                  "toLocation": "HEATER PANEL",
+                  "fromPageZone": "4.C2",
+                  "toPageZone": "4.C6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-11",
+                  "rowIndex": 22,
+                  "fromDeviceId": "TS0256:C",
+                  "toDeviceId": "XT02560:1",
+                  "wireType": "SC",
+                  "wireNo": "TS0256C",
+                  "wireId": "RED",
+                  "gaugeSize": "12",
+                  "fromLocation": "HEATER PANEL",
+                  "toLocation": "HEATER PANEL",
+                  "fromPageZone": "4.B5",
+                  "toPageZone": "4.C6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "H02560",
+                  "rowCount": 2
+                },
+                {
+                  "label": "H02561",
+                  "rowCount": 2
+                },
+                {
+                  "label": "QS0256",
+                  "rowCount": 2
+                },
+                {
+                  "label": "TS - XT",
+                  "rowCount": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "SWITCH PANEL",
+          "isExternal": true,
+          "totalRows": 2,
+          "subsections": [
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-13",
+                  "rowIndex": 24,
+                  "fromDeviceId": "HL0256:1",
+                  "toDeviceId": "XT02560:1",
+                  "wireType": "SC",
+                  "wireNo": "TS0256C",
+                  "wireId": "RED",
+                  "gaugeSize": "16",
+                  "fromLocation": "SWITCH PANEL",
+                  "toLocation": "SWITCH PANEL",
+                  "fromPageZone": "4.B6",
+                  "toPageZone": "4.C6",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-14",
+                  "rowIndex": 25,
+                  "fromDeviceId": "HL0256:2",
+                  "toDeviceId": "XT02560:3",
+                  "wireType": "SC",
+                  "wireNo": "EA0032PN",
+                  "wireId": "RED",
+                  "gaugeSize": "16",
+                  "fromLocation": "SWITCH PANEL",
+                  "toLocation": "SWITCH PANEL",
+                  "fromPageZone": "4.B6",
+                  "toPageZone": "4.C6",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "HL0256",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

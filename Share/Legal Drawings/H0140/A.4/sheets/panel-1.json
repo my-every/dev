@@ -1,0 +1,93 @@
+{
+  "slug": "panel-1",
+  "name": "PANEL #1",
+  "kind": "operational",
+  "sheetIndex": 8,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR0141:",
+      "wireType": "SC",
+      "wireNo": "GR0141",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "3.C4",
+      "toDeviceId": "FRAME",
+      "toLocation": "PANEL #1",
+      "toPageZone": "3.C4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-1",
+      "fromDeviceId": "GR0142:",
+      "wireType": "SC",
+      "wireNo": "GR0142",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "3.C5",
+      "toDeviceId": "FRAME",
+      "toLocation": "PANEL #1",
+      "toPageZone": "3.C5",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0141",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "3.C4",
+      "Location": "PANEL #1"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0142",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "3.C5",
+      "Location": "PANEL #1"
+    }
+  ],
+  "rowCount": 2,
+  "metadata": {
+    "projectName": "PIPECHINA SEBEI",
+    "revision": "A.4",
+    "controlsDE": "M. ZUNIGA",
+    "controlsME": "R. DURAN"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:03:48.801Z"
+}

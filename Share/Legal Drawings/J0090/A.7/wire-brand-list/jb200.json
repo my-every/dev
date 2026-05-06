@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:09:05.503Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb200",
+  "sheetName": "JB200",
+  "totalRows": 6,
+  "header": {
+    "locationTitle": "JB200",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0090",
+    "projectName": "J0090",
+    "revision": "A.7",
+    "controlsDE": "R.BARRAZA",
+    "controlsME": "G.CATO"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB200",
+    "normalizedSheetName": "jb200",
+    "bundleNames": [
+      "FU2000",
+      "FU2001",
+      "UJ - XT"
+    ],
+    "bundleDisplays": [
+      "FU2000",
+      "FU2001",
+      "UJ - XT"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU2000",
+          "toLocation": "JB200",
+          "rows": [
+            {
+              "rowId": "row-10",
+              "rowIndex": 20,
+              "fromDeviceId": "FU2000:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ2000P",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "UJ2000:+",
+              "toTerminal": "+",
+              "toLocation": "JB200",
+              "bundleName": "FU2000",
+              "bundleDisplay": "FU2000",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU2000",
+          "toLocation": "JB200",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 21,
+              "fromDeviceId": "FU2000:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "QS2000LI2",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT2000:1",
+              "toTerminal": "1",
+              "toLocation": "JB200",
+              "bundleName": "FU2000",
+              "bundleDisplay": "FU2000",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU2001",
+          "toLocation": "JB200",
+          "rows": [
+            {
+              "rowId": "row-12",
+              "rowIndex": 22,
+              "fromDeviceId": "FU2001:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ2001P",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "UJ2001:+",
+              "toTerminal": "+",
+              "toLocation": "JB200",
+              "bundleName": "FU2001",
+              "bundleDisplay": "FU2001",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU2001",
+          "toLocation": "JB200",
+          "rows": [
+            {
+              "rowId": "row-13",
+              "rowIndex": 23,
+              "fromDeviceId": "FU2001:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "QS2000LI2",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT2000:2",
+              "toTerminal": "2",
+              "toLocation": "JB200",
+              "bundleName": "FU2001",
+              "bundleDisplay": "FU2001",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UJ",
+      "bundles": [
+        {
+          "bundleName": "UJ - XT",
+          "toLocation": "JB200",
+          "rows": [
+            {
+              "rowId": "row-16",
+              "rowIndex": 26,
+              "fromDeviceId": "UJ2000:-",
+              "fromTerminal": "-",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-QS2000LI4",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT2000:3",
+              "toTerminal": "3",
+              "toLocation": "JB200",
+              "bundleName": "UJ - XT",
+              "bundleDisplay": "UJ - XT",
+              "devicePrefix": "UJ",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-19",
+              "rowIndex": 29,
+              "fromDeviceId": "UJ2001:-",
+              "fromTerminal": "-",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-QS2000LI4",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT2000:4",
+              "toTerminal": "4",
+              "toLocation": "JB200",
+              "bundleName": "UJ - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "aa2d9dd58417caa1b03b4b6be0571c39527dad83573124831c259c85c1630655"
+}

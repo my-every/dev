@@ -1,0 +1,302 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:03:42.402Z",
+  "mode": "branding-export",
+  "sheetSlug": "redundant-power-supply",
+  "sheetName": "REDUNDANT POWER SUPPLY",
+  "totalRows": 9,
+  "header": {
+    "locationTitle": "REDUNDANT POWER SUPPLY",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "G9920",
+    "projectName": "G9920",
+    "revision": "J.1",
+    "controlsDE": "J. FIGUEROA",
+    "controlsME": "J.Shih"
+  },
+  "importHints": {
+    "canonicalSheetName": "REDUNDANT POWER SUPPLY",
+    "normalizedSheetName": "redundant-power-supply",
+    "bundleNames": [
+      "FU0031",
+      "QS0031",
+      "UJ - XT",
+      "XT - XT",
+      "XT0031"
+    ],
+    "bundleDisplays": [
+      "FU0031",
+      "QS0031",
+      "UJ - XT",
+      "XT - XT",
+      "XT0031 - TURBINE - PANEL A"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU0031",
+          "toLocation": "REDUNDANT POWER SUPPLY",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "FU0031:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0031LD",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0031:2",
+              "toTerminal": "2",
+              "toLocation": "REDUNDANT POWER SUPPLY",
+              "bundleName": "FU0031",
+              "bundleDisplay": "FU0031",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "FU0031:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-24V2",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "UJ0031:OUT(+)",
+              "toTerminal": "OUT(+)",
+              "toLocation": "REDUNDANT POWER SUPPLY",
+              "bundleName": "FU0031",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "QS",
+      "bundles": [
+        {
+          "bundleName": "QS0031",
+          "toLocation": "REDUNDANT POWER SUPPLY",
+          "rows": [
+            {
+              "rowId": "row-12",
+              "rowIndex": 23,
+              "fromDeviceId": "QS0031:LD-1",
+              "fromTerminal": "LD-1",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0031H",
+              "wireId": "BLK",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "UJ0031:+",
+              "toTerminal": "+",
+              "toLocation": "REDUNDANT POWER SUPPLY",
+              "bundleName": "QS0031",
+              "bundleDisplay": "QS0031",
+              "devicePrefix": "QS"
+            }
+          ]
+        },
+        {
+          "bundleName": "QS0031",
+          "toLocation": "REDUNDANT POWER SUPPLY",
+          "rows": [
+            {
+              "rowId": "row-13",
+              "rowIndex": 24,
+              "fromDeviceId": "QS0031:LD-3",
+              "fromTerminal": "LD-3",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0031L",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "UJ0031:-",
+              "toTerminal": "-",
+              "toLocation": "REDUNDANT POWER SUPPLY",
+              "bundleName": "QS0031",
+              "bundleDisplay": "QS0031",
+              "devicePrefix": "QS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UJ",
+      "bundles": [
+        {
+          "bundleName": "UJ - XT",
+          "toLocation": "REDUNDANT POWER SUPPLY",
+          "rows": [
+            {
+              "rowId": "row-8",
+              "rowIndex": 19,
+              "fromDeviceId": "UJ0031:OUT(-)",
+              "fromTerminal": "OUT(-)",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0031:4",
+              "toTerminal": "4",
+              "toLocation": "REDUNDANT POWER SUPPLY",
+              "bundleName": "UJ - XT",
+              "bundleDisplay": "UJ - XT",
+              "devicePrefix": "UJ",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "REDUNDANT POWER SUPPLY",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 22,
+              "fromDeviceId": "XT0031:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0031:4",
+              "toTerminal": "4",
+              "toLocation": "REDUNDANT POWER SUPPLY",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0031",
+          "toLocation": "TURBINE PANEL A",
+          "rows": [
+            {
+              "rowId": "row-19",
+              "rowIndex": 30,
+              "fromDeviceId": "XT0031:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-008601",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0086:01",
+              "toTerminal": "01",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "XT0031",
+              "bundleDisplay": "XT0031 - TURBINE - PANEL A",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT0031",
+          "toLocation": "TURBINE PANEL A",
+          "rows": [
+            {
+              "rowId": "row-17",
+              "rowIndex": 28,
+              "fromDeviceId": "XT0031:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 120,
+              "toDeviceId": "XT0085:3",
+              "toTerminal": "3",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "XT0031",
+              "bundleDisplay": "XT0031 - TURBINE - PANEL A",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-18",
+              "rowIndex": 29,
+              "fromDeviceId": "XT0031:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 120,
+              "toDeviceId": "XT0134:1",
+              "toTerminal": "1",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "XT0031",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "4355b106daa06fc88b4c587abd373a8587cdf9a8388f0d109b98d936bb3f5bf7"
+}

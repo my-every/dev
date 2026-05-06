@@ -1,0 +1,352 @@
+{
+  "id": "legal-j2640-j2640",
+  "name": "J2640",
+  "filename": "J2640-UCPWiringList_0.2.xlsx",
+  "pdNumber": "J2640",
+  "revision": "J2640",
+  "createdAt": "2026-05-05T14:18:32.513Z",
+  "sheets": [
+    {
+      "slug": "blue-labels",
+      "name": "Blue Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/blue-labels.json",
+      "rowCount": 34,
+      "columnCount": 2,
+      "sheetIndex": 0,
+      "hasData": true
+    },
+    {
+      "slug": "white-labels",
+      "name": "White Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/white-labels.json",
+      "rowCount": 4,
+      "columnCount": 1,
+      "sheetIndex": 1,
+      "hasData": true
+    },
+    {
+      "slug": "heat-shrink-labels",
+      "name": "Heat Shrink Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/heat-shrink-labels.json",
+      "rowCount": 0,
+      "columnCount": 0,
+      "sheetIndex": 2,
+      "hasData": false
+    },
+    {
+      "slug": "intelligent-start-panel",
+      "name": "INTELLIGENT START PANEL",
+      "kind": "operational",
+      "sheetPath": "sheets/intelligent-start-panel.json",
+      "rowCount": 126,
+      "columnCount": 9,
+      "sheetIndex": 3,
+      "hasData": true
+    },
+    {
+      "slug": "jb175-door",
+      "name": "JB175 DOOR",
+      "kind": "operational",
+      "sheetPath": "sheets/jb175-door.json",
+      "rowCount": 11,
+      "columnCount": 9,
+      "sheetIndex": 4,
+      "hasData": true
+    },
+    {
+      "slug": "panel-errors",
+      "name": "Panel Errors",
+      "kind": "reference",
+      "sheetPath": "sheets/panel-errors.json",
+      "rowCount": 6,
+      "columnCount": 10,
+      "sheetIndex": 5,
+      "hasData": true
+    },
+    {
+      "slug": "cable-part-numbers",
+      "name": "Cable Part Numbers",
+      "kind": "reference",
+      "sheetPath": "sheets/cable-part-numbers.json",
+      "rowCount": 0,
+      "columnCount": 3,
+      "sheetIndex": 6,
+      "hasData": false
+    },
+    {
+      "slug": "part-number-list",
+      "name": "Part Number List",
+      "kind": "reference",
+      "sheetPath": "sheets/part-number-list.json",
+      "rowCount": 46,
+      "columnCount": 4,
+      "sheetIndex": 7,
+      "hasData": true
+    }
+  ],
+  "assignments": {
+    "intelligent-start-panel": {
+      "sheetSlug": "intelligent-start-panel",
+      "sheetName": "INTELLIGENT START PANEL",
+      "kind": "operational",
+      "sheetPath": "sheets/intelligent-start-panel.json",
+      "rowCount": 126,
+      "columnCount": 9,
+      "sheetIndex": 3,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [
+        "1X3X13",
+        "1X3X18",
+        "1X3X12"
+      ],
+      "rails": [],
+      "whiteLabels": [
+        "0V",
+        "AT0600G",
+        "GR0801",
+        "PEG02301"
+      ],
+      "blueLabels": [
+        "IEG0130",
+        "PEG0230",
+        "GR0801",
+        "XT0804",
+        "XT0805",
+        "XT0806",
+        "KT0146",
+        "GR0803",
+        "XT0807",
+        "KA0121",
+        "KA0122",
+        "KA0123",
+        "KA0124",
+        "KA0125",
+        "KA0126",
+        "KA0127",
+        "KA0128",
+        "KA0129",
+        "KA0141",
+        "KA0142",
+        "KA0235",
+        "KA0240",
+        "FU0015",
+        "FU0016",
+        "FU0017",
+        "GR0804",
+        "AT0600",
+        "AP0601",
+        "AP0602",
+        "AP0603",
+        "AP0604",
+        "AP0605",
+        "AP0606",
+        "F0001"
+      ],
+      "partNumbers": [
+        "1022716-1",
+        "1043265-3",
+        "1043265-4",
+        "1043265-5",
+        "1043265-6",
+        "1061979-1",
+        "1066730-16",
+        "1066730-5",
+        "1908163-1",
+        "1908163-21",
+        "1908163-23",
+        "1908163-26",
+        "1908163-5",
+        "1908163-6",
+        "1908163-7",
+        "1908163-8",
+        "1908163-9",
+        "232941-200",
+        "903849C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/intelligent-start-panel.json",
+        "brandListSchemaPath": "wire-brand-list/intelligent-start-panel.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 2,
+          "title": "INTELLIGENT START PANEL",
+          "normalizedTitle": "INTELLIGENT START PNL",
+          "panelNumber": "1053331-302",
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 215
+        },
+        "pages": []
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "2h 19m",
+      "wireListEstTime": "1h 35m",
+      "totalEstimatedMinutes": 234,
+      "remainingMinutes": 234,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb175-door": {
+      "sheetSlug": "jb175-door",
+      "sheetName": "JB175 DOOR",
+      "kind": "operational",
+      "sheetPath": "sheets/jb175-door.json",
+      "rowCount": 11,
+      "columnCount": 9,
+      "sheetIndex": 4,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [
+        "HL0411",
+        "HL0409",
+        "HL0401",
+        "SB0403",
+        "SB0404"
+      ],
+      "partNumbers": [
+        "2380746-1",
+        "2380746-7"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb175-door.json",
+        "brandListSchemaPath": "wire-brand-list/jb175-door.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "No high-confidence layout page matched JB175 DOOR."
+      },
+      "devices": {},
+      "unitType": "JB175",
+      "boxSide": "leftDoor",
+      "externalLocations": [],
+      "buildUpEstTime": "12m",
+      "wireListEstTime": "8m",
+      "totalEstimatedMinutes": 20,
+      "remainingMinutes": 20,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    }
+  },
+  "referenceSheets": {
+    "blue-labels": {
+      "sheetSlug": "blue-labels",
+      "sheetName": "Blue Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/blue-labels.json",
+      "rowCount": 34,
+      "columnCount": 2,
+      "sheetIndex": 0,
+      "hasData": true
+    },
+    "white-labels": {
+      "sheetSlug": "white-labels",
+      "sheetName": "White Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/white-labels.json",
+      "rowCount": 4,
+      "columnCount": 1,
+      "sheetIndex": 1,
+      "hasData": true
+    },
+    "heat-shrink-labels": {
+      "sheetSlug": "heat-shrink-labels",
+      "sheetName": "Heat Shrink Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/heat-shrink-labels.json",
+      "rowCount": 0,
+      "columnCount": 0,
+      "sheetIndex": 2,
+      "hasData": false
+    },
+    "panel-errors": {
+      "sheetSlug": "panel-errors",
+      "sheetName": "Panel Errors",
+      "kind": "reference",
+      "sheetPath": "sheets/panel-errors.json",
+      "rowCount": 6,
+      "columnCount": 10,
+      "sheetIndex": 5,
+      "hasData": true
+    },
+    "cable-part-numbers": {
+      "sheetSlug": "cable-part-numbers",
+      "sheetName": "Cable Part Numbers",
+      "kind": "reference",
+      "sheetPath": "sheets/cable-part-numbers.json",
+      "rowCount": 0,
+      "columnCount": 3,
+      "sheetIndex": 6,
+      "hasData": false
+    },
+    "part-number-list": {
+      "sheetSlug": "part-number-list",
+      "sheetName": "Part Number List",
+      "kind": "reference",
+      "sheetPath": "sheets/part-number-list.json",
+      "rowCount": 46,
+      "columnCount": 4,
+      "sheetIndex": 7,
+      "hasData": true
+    }
+  },
+  "unitType": "JB175",
+  "unitTypes": [
+    "JB175"
+  ],
+  "panducts": 3,
+  "aggregates": {
+    "totalAssignments": 2,
+    "completedAssignments": 0,
+    "inProgressAssignments": 0,
+    "blockedAssignments": 0,
+    "totalEstimatedMinutes": 254,
+    "totalRemainingMinutes": 254,
+    "totalActualMinutes": 0,
+    "overallProgress": 0,
+    "highestPriority": "low",
+    "priorityCounts": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 2
+    },
+    "stageCounts": {
+      "READY_TO_LAY": 2
+    }
+  },
+  "assignmentsByUnitType": {
+    "UNASSIGNED": [
+      "intelligent-start-panel"
+    ],
+    "JB175": [
+      "jb175-door"
+    ]
+  },
+  "projectName": "J2640"
+}

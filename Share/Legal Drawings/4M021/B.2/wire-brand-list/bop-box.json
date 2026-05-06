@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:24:01.889Z",
+  "mode": "branding-export",
+  "sheetSlug": "bop-box",
+  "sheetName": "BOP BOX",
+  "totalRows": 10,
+  "header": {
+    "locationTitle": "BOP BOX",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M021",
+    "projectName": "4M021",
+    "revision": "B.2",
+    "controlsDE": "J. UNGER"
+  },
+  "importHints": {
+    "canonicalSheetName": "BOP BOX",
+    "normalizedSheetName": "bop-box",
+    "bundleNames": [
+      "SA9021 - RED",
+      "FU - XT",
+      "KA9021 - RED",
+      "XT - XT",
+      "KA9021",
+      "ZS1020"
+    ],
+    "bundleDisplays": [
+      "SA9021 - RED",
+      "FU - XT",
+      "KA9021 - RED",
+      "XT - XT",
+      "KA9021 - BOP - CTRL",
+      "ZS1020 - BOP - CTRL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "SA",
+      "bundles": [
+        {
+          "bundleName": "SA9021 - RED",
+          "toLocation": "BOP BOX",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "SA9021:B1-13",
+              "fromTerminal": "B1-13",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU9021LI",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU9021:LI",
+              "toTerminal": "LI",
+              "toLocation": "BOP BOX",
+              "bundleName": "SA9021 - RED",
+              "bundleDisplay": "SA9021 - RED",
+              "devicePrefix": "SA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "SA9021:B1-14",
+              "fromTerminal": "B1-14",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CC90211",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9021:1",
+              "toTerminal": "1",
+              "toLocation": "BOP BOX",
+              "bundleName": "SA9021 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "SA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "BOP BOX",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "FU9021:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU9021LD",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9024:1",
+              "toTerminal": "1",
+              "toLocation": "BOP BOX",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "KA",
+      "bundles": [
+        {
+          "bundleName": "KA9021 - RED",
+          "toLocation": "BOP BOX",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "KA9021:11",
+              "fromTerminal": "11",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU9021LD",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9024:1",
+              "toTerminal": "1",
+              "toLocation": "BOP BOX",
+              "bundleName": "KA9021 - RED",
+              "bundleDisplay": "KA9021 - RED",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "KA9021:21",
+              "fromTerminal": "21",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CC90212",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9024:4",
+              "toTerminal": "4",
+              "toLocation": "BOP BOX",
+              "bundleName": "KA9021 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "BOP BOX",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 16,
+              "fromDeviceId": "XT9021:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CC90212",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9024:4",
+              "toTerminal": "4",
+              "toLocation": "BOP BOX",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "KA",
+      "bundles": [
+        {
+          "bundleName": "KA9021",
+          "toLocation": "BOP CTRL",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 21,
+              "fromDeviceId": "KA9021:A1",
+              "fromTerminal": "A1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-014614",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0146:14",
+              "toTerminal": "14",
+              "toLocation": "BOP CTRL",
+              "bundleName": "KA9021",
+              "bundleDisplay": "KA9021 - BOP - CTRL",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-12",
+              "rowIndex": 22,
+              "fromDeviceId": "KA9021:A2",
+              "fromTerminal": "A2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-014630",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0146:30",
+              "toTerminal": "30",
+              "toLocation": "BOP CTRL",
+              "bundleName": "KA9021",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "ZS",
+      "bundles": [
+        {
+          "bundleName": "ZS1020",
+          "toLocation": "BOP CTRL",
+          "rows": [
+            {
+              "rowId": "row-13",
+              "rowIndex": 23,
+              "fromDeviceId": "ZS1020:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "EL1020B1",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT1020:1",
+              "toTerminal": "1",
+              "toLocation": "BOP CTRL",
+              "bundleName": "ZS1020",
+              "bundleDisplay": "ZS1020 - BOP - CTRL",
+              "devicePrefix": "ZS"
+            },
+            {
+              "rowId": "row-14",
+              "rowIndex": 24,
+              "fromDeviceId": "ZS1020:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0144",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "FU0144:LD",
+              "toTerminal": "LD",
+              "toLocation": "BOP CTRL",
+              "bundleName": "ZS1020",
+              "bundleDisplay": "",
+              "devicePrefix": "ZS"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "180687179d98bdb16aa9ceb38ea52ee960a56812375bc2dff4a3d991228cd3fd"
+}

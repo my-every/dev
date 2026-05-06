@@ -1,0 +1,260 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:08:24.900Z",
+  "mode": "branding-export",
+  "sheetSlug": "left-wall-jb70",
+  "sheetName": "LEFT WALL JB70",
+  "totalRows": 7,
+  "header": {
+    "locationTitle": "LEFT WALL JB70",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "H3350",
+    "projectName": "H3350",
+    "revision": "A.2",
+    "controlsDE": "J.PASARIN",
+    "controlsME": "R.DURAN"
+  },
+  "importHints": {
+    "canonicalSheetName": "LEFT WALL JB70",
+    "normalizedSheetName": "left-wall-jb70",
+    "bundleNames": [
+      "BA1100",
+      "FU - UJ",
+      "FU - AT",
+      "FU - XT",
+      "UJ1100"
+    ],
+    "bundleDisplays": [
+      "BA1100",
+      "FU - UJ",
+      "FU - AT - JB70",
+      "FU - XT - TURBINE - PANEL",
+      "UJ1100 - TURBINE - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA1100",
+          "toLocation": "LEFT WALL JB70",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "BA1100:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-UJ1100N",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "UJ1100:OUT1(-)",
+              "toTerminal": "OUT1(-)",
+              "toLocation": "LEFT WALL JB70",
+              "bundleName": "BA1100",
+              "bundleDisplay": "BA1100",
+              "devicePrefix": "BA",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "BA1100:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1101",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU1101:LD",
+              "toTerminal": "LD",
+              "toLocation": "LEFT WALL JB70",
+              "bundleName": "BA1100",
+              "bundleDisplay": "",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - UJ",
+          "toLocation": "LEFT WALL JB70",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "FU1101:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ1100P",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "UJ1100:OUT1(+)",
+              "toTerminal": "OUT1(+)",
+              "toLocation": "LEFT WALL JB70",
+              "bundleName": "FU - UJ",
+              "bundleDisplay": "FU - UJ",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - AT",
+          "toLocation": "JB70",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "FU1100:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1100",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "AT1100:POS",
+              "toTerminal": "POS",
+              "toLocation": "JB70",
+              "bundleName": "FU - AT",
+              "bundleDisplay": "FU - AT - JB70",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "TURBINE PANEL",
+          "rows": [
+            {
+              "rowId": "row-7",
+              "rowIndex": 17,
+              "fromDeviceId": "FU1100:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0138:3",
+              "toTerminal": "3",
+              "toLocation": "TURBINE PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT - TURBINE - PANEL",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UJ",
+      "bundles": [
+        {
+          "bundleName": "UJ1100",
+          "toLocation": "TURBINE PANEL",
+          "rows": [
+            {
+              "rowId": "row-14",
+              "rowIndex": 24,
+              "fromDeviceId": "UJ1100:24V(-)",
+              "fromTerminal": "24V(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0135:2",
+              "toTerminal": "2",
+              "toLocation": "TURBINE PANEL",
+              "bundleName": "UJ1100",
+              "bundleDisplay": "UJ1100 - TURBINE - PANEL",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-15",
+              "rowIndex": 25,
+              "fromDeviceId": "UJ1100:24V(+)",
+              "fromTerminal": "24V(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0137",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0139:1",
+              "toTerminal": "1",
+              "toLocation": "TURBINE PANEL",
+              "bundleName": "UJ1100",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "86e3dfc74c9c29b17bee067182f7ef9bcd881c80722e614b9bb7e49d69f68f41"
+}

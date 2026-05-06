@@ -1,0 +1,76 @@
+{
+  "partNumber": "1105411-11",
+  "description": "SIGNAL CONVERTER, COMBUSTOR PRESSURE MONITOR",
+  "category": "devices",
+  "type": "control-modules",
+  "tags": [
+    "auto-ingest",
+    "devices"
+  ],
+  "source": "workbook_ingest",
+  "lifecycle": {
+    "status": "new",
+    "needsTraining": true,
+    "needsImages": true,
+    "needsReviewByRole": "team_lead",
+    "discoveredFrom": {
+      "projectId": "ang01-stock-9",
+      "sourceSheet": "JB71 B,PNL VIBRATION",
+      "sourceLocation": "JB71 B,PNL VIBRATION",
+      "discoveredAt": "2026-04-24T15:21:46.676Z"
+    }
+  },
+  "createdAt": "2026-04-24T15:21:46.695Z",
+  "updatedAt": "2026-05-05T04:31:29.172Z",
+  "terminalSchema": {
+    "negativePatterns": [
+      "-",
+      "0V",
+      "0VDC",
+      "COM",
+      "COMMON",
+      "DC-",
+      "NEG",
+      "NEGATIVE"
+    ],
+    "updatedAt": "2026-05-05T04:31:29.172Z",
+    "terminals": [
+      {
+        "name": "+24",
+        "aliases": [],
+        "wireId": "RED",
+        "size": "20",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "COM",
+        "aliases": [],
+        "wireId": "BLK",
+        "size": "20",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": true,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "OUT",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "20",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "slug": "pnl-jb5-probe-driver",
+  "name": "PNL,JB5 PROBE DRIVER",
+  "kind": "operational",
+  "sheetIndex": 13,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1110:",
+      "wireType": "SC",
+      "wireNo": "GR1110",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "51.D3",
+      "toDeviceId": "FRAME",
+      "toLocation": "PNL,JB5 PROBE DRIVER",
+      "toPageZone": "51.D3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1110",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "51.D3",
+      "Location": "PNL,JB5 PROBE DRIVER"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "SD KM TEST CELL 11 T130 GS UPGRADE",
+    "revision": "A.4",
+    "controlsDE": "D.GRANT"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:09:38.093Z"
+}

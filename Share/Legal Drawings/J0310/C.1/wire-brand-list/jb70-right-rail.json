@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:09:35.503Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb70-right-rail",
+  "sheetName": "JB70 RIGHT RAIL",
+  "totalRows": 5,
+  "header": {
+    "locationTitle": "JB70 RIGHT RAIL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0310",
+    "projectName": "J0310",
+    "revision": "C.1",
+    "controlsDE": "D.SANDOVAL",
+    "controlsME": "DAVE DURAN"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB70 RIGHT RAIL",
+    "normalizedSheetName": "jb70-right-rail",
+    "bundleNames": [
+      "BA - FU",
+      "EF0160 - BLU",
+      "EF0160 - RED",
+      "FU - UV",
+      "FU - XT"
+    ],
+    "bundleDisplays": [
+      "BA - FU",
+      "EF0160 - BLU",
+      "EF0160 - RED",
+      "FU - UV",
+      "FU - XT"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA - FU",
+          "toLocation": "JB70 RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "BA1100:POS",
+              "fromTerminal": "POS",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1101LD",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU1101:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB70 RIGHT RAIL",
+              "bundleName": "BA - FU",
+              "bundleDisplay": "BA - FU",
+              "devicePrefix": "BA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "EF",
+      "bundles": [
+        {
+          "bundleName": "EF0160 - BLU",
+          "toLocation": "JB70 RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "EF0160:",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "BLU",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0160:2",
+              "toTerminal": "2",
+              "toLocation": "JB70 RIGHT RAIL",
+              "bundleName": "EF0160 - BLU",
+              "bundleDisplay": "EF0160 - BLU",
+              "devicePrefix": "EF"
+            }
+          ]
+        },
+        {
+          "bundleName": "EF0160 - RED",
+          "toLocation": "JB70 RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "EF0160:",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0160LD",
+              "wireId": "RED",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0160:1",
+              "toTerminal": "1",
+              "toLocation": "JB70 RIGHT RAIL",
+              "bundleName": "EF0160 - RED",
+              "bundleDisplay": "EF0160 - RED",
+              "devicePrefix": "EF"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - UV",
+          "toLocation": "JB70 RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "FU0272:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0272",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UV0272:8+",
+              "toTerminal": "8+",
+              "toLocation": "JB70 RIGHT RAIL",
+              "bundleName": "FU - UV",
+              "bundleDisplay": "FU - UV",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "JB70 RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "FU0160:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0160LD",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0160:1",
+              "toTerminal": "1",
+              "toLocation": "JB70 RIGHT RAIL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "adaa5e8661a7dd9ca28820b54da2025fcfad1d8c4e60c70e8be7f31cedb692a0"
+}

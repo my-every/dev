@@ -1,0 +1,68 @@
+{
+  "slug": "jb-44",
+  "name": "JB 44",
+  "kind": "operational",
+  "sheetIndex": 10,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "UA1200:J1-8",
+      "wireType": "SC",
+      "wireNo": "UA1200J",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "fromLocation": "",
+      "fromPageZone": "31.B3",
+      "toDeviceId": "UA1200:J3-5",
+      "toLocation": "JB 44",
+      "toPageZone": "31.B3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "UA1200:J3-5",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "UA1200J",
+      "Wire ID": "WHT",
+      "Gauge/Size": "20",
+      "Page/Zone": "31.B3",
+      "Location": "JB 44"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "PC SOGT",
+    "revision": "J",
+    "controlsDE": "J. FIGUEROA",
+    "controlsME": "J.Shih"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:03:26.232Z"
+}

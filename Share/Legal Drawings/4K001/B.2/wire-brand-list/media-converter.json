@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:10:55.819Z",
+  "mode": "branding-export",
+  "sheetSlug": "media-converter",
+  "sheetName": "MEDIA CONVERTER",
+  "totalRows": 7,
+  "header": {
+    "locationTitle": "MEDIA CONVERTER",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4K001",
+    "projectName": "TCE-W1 - Unit 1",
+    "revision": "B.2",
+    "controlsDE": "M. GERSON",
+    "controlsME": "A. BELTRAN"
+  },
+  "importHints": {
+    "canonicalSheetName": "MEDIA CONVERTER",
+    "normalizedSheetName": "media-converter",
+    "bundleNames": [
+      "BA0005",
+      "BA0006",
+      "FU - XT",
+      "BA - BA"
+    ],
+    "bundleDisplays": [
+      "BA0005",
+      "BA0006",
+      "FU - XT",
+      "BA - BA - PLC - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA0005",
+          "toLocation": "MEDIA CONVERTER",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "BA0005:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CCDCPOWERN",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT1123:2",
+              "toTerminal": "2",
+              "toLocation": "MEDIA CONVERTER",
+              "bundleName": "BA0005",
+              "bundleDisplay": "BA0005",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "BA0005:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1123",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU1123:LD",
+              "toTerminal": "LD",
+              "toLocation": "MEDIA CONVERTER",
+              "bundleName": "BA0005",
+              "bundleDisplay": "",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0006",
+          "toLocation": "MEDIA CONVERTER",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "BA0006:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CCDCPOWERN",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT1123:2",
+              "toTerminal": "2",
+              "toLocation": "MEDIA CONVERTER",
+              "bundleName": "BA0006",
+              "bundleDisplay": "BA0006",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "BA0006:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1124",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU1124:LD",
+              "toTerminal": "LD",
+              "toLocation": "MEDIA CONVERTER",
+              "bundleName": "BA0006",
+              "bundleDisplay": "",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "MEDIA CONVERTER",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "FU1123:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CCDCPOWERP",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT1123:1",
+              "toTerminal": "1",
+              "toLocation": "MEDIA CONVERTER",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "FU1124:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CCDCPOWERP",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT1123:1",
+              "toTerminal": "1",
+              "toLocation": "MEDIA CONVERTER",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA - BA",
+          "toLocation": "PLC PANEL",
+          "rows": [
+            {
+              "rowId": "row-12",
+              "rowIndex": 23,
+              "fromDeviceId": "BA0014:TX-2",
+              "fromTerminal": "TX-2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "BA0005TX",
+              "wireId": "",
+              "gaugeSize": "",
+              "length": 120,
+              "toDeviceId": "BA0012:TX-1",
+              "toTerminal": "TX-1",
+              "toLocation": "PLC PANEL",
+              "bundleName": "BA - BA",
+              "bundleDisplay": "BA - BA - PLC - PANEL",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "bcdb3a7ad9341078c9e2f848743e5ad501acf466200437eab8953599d7ec3b1d"
+}

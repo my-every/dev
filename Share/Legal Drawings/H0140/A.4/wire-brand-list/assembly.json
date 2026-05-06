@@ -1,0 +1,209 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:04:13.289Z",
+  "mode": "branding-export",
+  "sheetSlug": "assembly",
+  "sheetName": "ASSEMBLY",
+  "totalRows": 7,
+  "header": {
+    "locationTitle": "ASSEMBLY",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "H0140",
+    "projectName": "H0140",
+    "revision": "A.4",
+    "controlsDE": "M. ZUNIGA",
+    "controlsME": "R. DURAN"
+  },
+  "importHints": {
+    "canonicalSheetName": "ASSEMBLY",
+    "normalizedSheetName": "assembly",
+    "bundleNames": [
+      "EL0271",
+      "EL - ZS",
+      "EL - XT",
+      "ZS - FU"
+    ],
+    "bundleDisplays": [
+      "EL0271",
+      "EL - ZS",
+      "EL - XT - POWER DISTRIBUTION - RAIL",
+      "ZS - FU - POWER DISTRIBUTION - RAIL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "EL",
+      "bundles": [
+        {
+          "bundleName": "EL0271",
+          "toLocation": "ASSEMBLY",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "EL0271:-",
+              "fromTerminal": "-",
+              "fromTerminalOrder": null,
+              "wireNo": "-EL0273W",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "EL0273:-",
+              "toTerminal": "-",
+              "toLocation": "ASSEMBLY",
+              "bundleName": "EL0271",
+              "bundleDisplay": "EL0271",
+              "devicePrefix": "EL",
+              "isNegative": true
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "EL0271:+",
+              "fromTerminal": "+",
+              "fromTerminalOrder": null,
+              "wireNo": "ZS0271",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "ZS0271:2",
+              "toTerminal": "2",
+              "toLocation": "ASSEMBLY",
+              "bundleName": "EL0271",
+              "bundleDisplay": "",
+              "devicePrefix": "EL"
+            },
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "EL0271:+",
+              "fromTerminal": "+",
+              "fromTerminalOrder": null,
+              "wireNo": "EL0273B",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "EL0273:+",
+              "toTerminal": "+",
+              "toLocation": "ASSEMBLY",
+              "bundleName": "EL0271",
+              "bundleDisplay": "",
+              "devicePrefix": "EL"
+            }
+          ]
+        },
+        {
+          "bundleName": "EL - ZS",
+          "toLocation": "ASSEMBLY",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "EL0273:+",
+              "fromTerminal": "+",
+              "fromTerminalOrder": null,
+              "wireNo": "ZS0273",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "ZS0273:2",
+              "toTerminal": "2",
+              "toLocation": "ASSEMBLY",
+              "bundleName": "EL - ZS",
+              "bundleDisplay": "EL - ZS",
+              "devicePrefix": "EL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "EL",
+      "bundles": [
+        {
+          "bundleName": "EL - XT",
+          "toLocation": "POWER DISTRIBUTION RAIL",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "EL0273:-",
+              "fromTerminal": "-",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0562:1",
+              "toTerminal": "1",
+              "toLocation": "POWER DISTRIBUTION RAIL",
+              "bundleName": "EL - XT",
+              "bundleDisplay": "EL - XT - POWER DISTRIBUTION - RAIL",
+              "devicePrefix": "EL",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "ZS",
+      "bundles": [
+        {
+          "bundleName": "ZS - FU",
+          "toLocation": "POWER DISTRIBUTION RAIL",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "ZS0271:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0273",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0273:LD",
+              "toTerminal": "LD",
+              "toLocation": "POWER DISTRIBUTION RAIL",
+              "bundleName": "ZS - FU",
+              "bundleDisplay": "ZS - FU - POWER DISTRIBUTION - RAIL",
+              "devicePrefix": "ZS"
+            },
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "ZS0273:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0273",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0273:LD",
+              "toTerminal": "LD",
+              "toLocation": "POWER DISTRIBUTION RAIL",
+              "bundleName": "ZS - FU",
+              "bundleDisplay": "",
+              "devicePrefix": "ZS"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "68cb26aa51425f783f3d610ac3849fc77d2a1264e7b185a842cbab4424e57549"
+}

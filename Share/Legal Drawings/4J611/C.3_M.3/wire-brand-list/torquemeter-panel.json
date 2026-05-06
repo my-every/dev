@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:10:31.431Z",
+  "mode": "branding-export",
+  "sheetSlug": "torquemeter-panel",
+  "sheetName": "TORQUEMETER PANEL",
+  "totalRows": 4,
+  "header": {
+    "locationTitle": "TORQUEMETER PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4J611",
+    "projectName": "4J611",
+    "revision": "C.3_M.3",
+    "controlsDE": "C. CRAIG",
+    "controlsME": "H. MEDRANO"
+  },
+  "importHints": {
+    "canonicalSheetName": "TORQUEMETER PANEL",
+    "normalizedSheetName": "torquemeter-panel",
+    "bundleNames": [
+      "XT0605F",
+      "XT0605"
+    ],
+    "bundleDisplays": [
+      "XT0605F",
+      "XT0605 - CONTROL A"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0605F",
+          "toLocation": "TORQUEMETER PANEL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "XT0605F:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0960",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0605:5",
+              "toTerminal": "5",
+              "toLocation": "TORQUEMETER PANEL",
+              "bundleName": "XT0605F",
+              "bundleDisplay": "XT0605F",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "XT0605F:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0605:6",
+              "toTerminal": "6",
+              "toLocation": "TORQUEMETER PANEL",
+              "bundleName": "XT0605F",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0605",
+          "toLocation": "CONTROL A",
+          "rows": [
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "XT0605:5",
+              "fromTerminal": "5",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0960",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0960:LD",
+              "toTerminal": "LD",
+              "toLocation": "CONTROL A",
+              "bundleName": "XT0605",
+              "bundleDisplay": "XT0605 - CONTROL A",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-11",
+              "rowIndex": 22,
+              "fromDeviceId": "XT0605:6",
+              "fromTerminal": "6",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0135:4",
+              "toTerminal": "4",
+              "toLocation": "CONTROL A",
+              "bundleName": "XT0605",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "774d60597b371df76e3bf6602d937684dd7afe68bedd8d1719e86a5cb81d99a9"
+}

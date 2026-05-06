@@ -1,0 +1,267 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/* Dark mode variant - targets .dark class on html element and all descendants */
+@custom-variant dark (&:is(.dark, .dark *));
+
+:root {
+  /* Light mode - Clean professional with Solar Turbines Yellow */
+  --background: oklch(100% 0.00011 271.152);
+  --foreground: oklch(0.15 0.01 285);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.01 285);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.01 285);
+  --primary: oklch(26.41% 0.0018 106.783);
+  /* Solar Turbines Yellow */
+  --primary-foreground: oklch(100% 0.00011 271.152);
+  --secondary: oklch(96.244% 0.00428 237.337);
+  --secondary-foreground: oklch(0.25 0.01 285);
+  --muted: oklch(91.583% 0.0001 271.152);
+  --muted-foreground: oklch(0.45 0.01 285);
+  --accent: oklch(95.129% 0.01017 238.847);
+  --accent-foreground: oklch(0.25 0.01 285);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.90 0.005 90);
+  --input: oklch(97.837% 0.0011 202.716);
+  --ring: oklch(83.253% 0.09542 219.969);
+  --chart-1: oklch(0.82 0.18 85);
+  --chart-2: oklch(0.6 0.15 200);
+  --chart-3: oklch(0.65 0.2 145);
+  --chart-4: oklch(0.65 0.18 280);
+  --chart-5: oklch(0.55 0.2 25);
+  --radius: 0.75rem;
+  --sidebar: oklch(0.97 0.005 90);
+  --sidebar-foreground: oklch(0.15 0.01 285);
+  --sidebar-primary: oklch(0.82 0.18 85);
+  --sidebar-primary-foreground: oklch(0.15 0.01 285);
+  --sidebar-accent: oklch(0.94 0.02 85);
+  --sidebar-accent-foreground: oklch(0.25 0.01 285);
+  --sidebar-border: oklch(0.90 0.005 90);
+  --sidebar-ring: oklch(0.82 0.18 85);
+
+  /* Custom tokens */
+  --success: oklch(0.65 0.2 145);
+  --warning: oklch(0.82 0.18 85);
+  --info: oklch(0.6 0.18 230);
+}
+
+.dark {
+  /* Dark mode - Modern dark with Solar Turbines Yellow */
+  --background: oklch(0.13 0.01 285);
+  --foreground: oklch(0.95 0 0);
+  --card: oklch(0.16 0.01 285);
+  --card-foreground: oklch(0.95 0 0);
+  --popover: oklch(0.16 0.01 285);
+  --popover-foreground: oklch(0.95 0 0);
+  --primary: oklch(0.82 0.18 85);
+  /* Solar Turbines Yellow */
+  --primary-foreground: oklch(0.13 0.01 285);
+  --secondary: oklch(0.22 0.01 285);
+  --secondary-foreground: oklch(0.95 0 0);
+  --muted: oklch(0.22 0.01 285);
+  --muted-foreground: oklch(0.65 0 0);
+  --accent: oklch(0.25 0.02 285);
+  --accent-foreground: oklch(0.95 0 0);
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: oklch(0.95 0 0);
+  --border: oklch(0.28 0.01 285);
+  --input: oklch(0.22 0.01 285);
+  --ring: oklch(0.82 0.18 85);
+  --chart-1: oklch(0.82 0.18 85);
+  --chart-2: oklch(0.6 0.15 200);
+  --chart-3: oklch(0.65 0.2 145);
+  --chart-4: oklch(0.65 0.18 280);
+  --chart-5: oklch(0.55 0.2 25);
+  --sidebar: oklch(0.11 0.01 285);
+  --sidebar-foreground: oklch(0.95 0 0);
+  --sidebar-primary: oklch(0.82 0.18 85);
+  --sidebar-primary-foreground: oklch(0.13 0.01 285);
+  --sidebar-accent: oklch(0.22 0.01 285);
+  --sidebar-accent-foreground: oklch(0.95 0 0);
+  --sidebar-border: oklch(0.28 0.01 285);
+  --sidebar-ring: oklch(0.82 0.18 85);
+}
+
+@theme inline {
+  --font-sans: 'Geist', 'Geist Fallback';
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+
+  /* Custom max-width for wide layouts */
+  --container-360: 90rem;
+
+  /* Custom min-height for tall containers */
+  --spacing-160: 40rem;
+  --spacing-105: 26.25rem;
+  --spacing-65: 16.25rem;
+  --spacing-57\.5: 14.375rem;
+  --spacing-55: 13.75rem;
+  --spacing-52\.5: 13.125rem;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Print Styles for Wire List */
+@media print {
+  @page {
+    margin: 0.4in 0.4in 0.7in 0.4in;
+  }
+
+  .print-content {
+    background: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .print-content table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .print-content th,
+  .print-content td {
+    border: 1px solid #e5e5e5;
+    padding: 3px 6px;
+  }
+
+  .print-content thead th {
+    background-color: #f5f5f5 !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.025em;
+    white-space: nowrap;
+  }
+
+  /* Personnel sign-off checkboxes */
+  .print-content .checkbox-cell {
+    text-align: center;
+  }
+
+  .print-content .checkbox-box {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #333;
+    border-radius: 2px;
+  }
+
+  .print-content .checkbox-box.checked {
+    background-color: #333;
+  }
+
+  /* Ensure borders print properly */
+  .print-content * {
+    border-color: #d4d4d4 !important;
+  }
+
+  /* Fixed footer on every printed page */
+  .print-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 6px 16px;
+    border-top: 1px solid #d4d4d4;
+    background: white;
+    font-size: 10px;
+  }
+
+  /* Hide the header page number in print (fixed footer handles it) */
+  .print-header .print-header-page-number {
+    display: none;
+  }
+
+  /* Page break control for continuous flow */
+  .print-page {
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .print-page:last-child {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  /* Allow sections to flow across pages to fill space */
+  .section-wrapper {
+    page-break-inside: auto;
+    break-inside: auto;
+  }
+
+  /* Allow breaks between location groups */
+  .location-group {
+    page-break-inside: auto;
+    break-inside: auto;
+  }
+
+  /* Keep section/location headers attached to following content */
+  .section-wrapper > :first-child,
+  .location-group > :first-child {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  /* Keep table headers with content */
+  thead {
+    display: table-header-group;
+  }
+
+  /* Avoid orphan rows */
+  tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Remove min-height so content fills pages continuously */
+  .print-page__inner {
+    min-height: 0 !important;
+  }
+}

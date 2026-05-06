@@ -1,0 +1,143 @@
+{
+  "slug": "jb74-left-rail",
+  "name": "JB74 LEFT RAIL",
+  "kind": "operational",
+  "sheetIndex": 9,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "BA1212:NEG",
+      "wireType": "SC",
+      "wireNo": "UJ0291P",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "20.B7",
+      "toDeviceId": "XT0292:2",
+      "toLocation": "JB74 LEFT RAIL",
+      "toPageZone": "20.A6",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-1",
+      "fromDeviceId": "BA1212:POS",
+      "wireType": "SC",
+      "wireNo": "FU1212",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "20.B7",
+      "toDeviceId": "FU1212:LD",
+      "toLocation": "JB74 LEFT RAIL",
+      "toPageZone": "20.B6",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-2",
+      "fromDeviceId": "FU1212:LI",
+      "wireType": "SC",
+      "wireNo": "UJ0291N",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "20.B6",
+      "toDeviceId": "XT0292:1",
+      "toLocation": "JB74 LEFT RAIL",
+      "toPageZone": "20.A6",
+      "location": ""
+    },
+    {
+      "__rowIndex": 14,
+      "__rowId": "row-3",
+      "fromDeviceId": "GR0141:",
+      "wireType": "SC",
+      "wireNo": "GR0141",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "4.B4",
+      "toDeviceId": "FG_UCP:13",
+      "toLocation": "JB74 LEFT RAIL",
+      "toPageZone": "4.B4",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "XT0292:2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "UJ0291P",
+      "Wire ID": "WHT",
+      "Gauge/Size": "16",
+      "Page/Zone": "20.A6",
+      "Location": "JB74 LEFT RAIL"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "FU1212:LD",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "FU1212",
+      "Wire ID": "WHT",
+      "Gauge/Size": "16",
+      "Page/Zone": "20.B6",
+      "Location": "JB74 LEFT RAIL"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "XT0292:1",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "UJ0291N",
+      "Wire ID": "WHT",
+      "Gauge/Size": "16",
+      "Page/Zone": "20.A6",
+      "Location": "JB74 LEFT RAIL"
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "FG_UCP:13",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0141",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "4.B4",
+      "Location": "JB74 LEFT RAIL"
+    }
+  ],
+  "rowCount": 4,
+  "metadata": {
+    "projectName": "HARMATTAN T70 CSR",
+    "revision": "A.2",
+    "controlsDE": "H.VOUNG",
+    "controlsME": "R. DURAN"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Rail in title with no Panel number"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:10:51.198Z"
+}

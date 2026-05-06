@@ -1,0 +1,467 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:34:01.987Z",
+  "mode": "branding-export",
+  "sheetSlug": "rail-right-jb70",
+  "sheetName": "RAIL RIGHT JB70",
+  "totalRows": 16,
+  "header": {
+    "locationTitle": "RAIL RIGHT JB70",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M481",
+    "projectName": "ET-TRI - Unit 2",
+    "revision": "B.2",
+    "controlsDE": "J. SHORTER"
+  },
+  "importHints": {
+    "canonicalSheetName": "RAIL,RIGHT,JB70",
+    "normalizedSheetName": "rail-right-jb70",
+    "bundleNames": [
+      "BA0001",
+      "BA0002",
+      "BA0009",
+      "FU - XT",
+      "XT0291",
+      "XT0111"
+    ],
+    "bundleDisplays": [
+      "BA0001",
+      "BA0002",
+      "BA0009",
+      "FU - XT",
+      "XT0291 - HMI S PWR",
+      "XT0111 - HMI S PWR"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA0001",
+          "toLocation": "RAIL,RIGHT,JB70",
+          "rows": [
+            {
+              "rowId": "row-12",
+              "rowIndex": 23,
+              "fromDeviceId": "BA0001:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0051:5",
+              "toTerminal": "5",
+              "toLocation": "RAIL,RIGHT,JB70",
+              "bundleName": "BA0001",
+              "bundleDisplay": "BA0001",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-13",
+              "rowIndex": 24,
+              "fromDeviceId": "BA0001:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0001",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0001:LD",
+              "toTerminal": "LD",
+              "toLocation": "RAIL,RIGHT,JB70",
+              "bundleName": "BA0001",
+              "bundleDisplay": "",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0002",
+          "toLocation": "RAIL,RIGHT,JB70",
+          "rows": [
+            {
+              "rowId": "row-14",
+              "rowIndex": 25,
+              "fromDeviceId": "BA0002:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0051:6",
+              "toTerminal": "6",
+              "toLocation": "RAIL,RIGHT,JB70",
+              "bundleName": "BA0002",
+              "bundleDisplay": "BA0002",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-15",
+              "rowIndex": 26,
+              "fromDeviceId": "BA0002:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0002",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0002:LD",
+              "toTerminal": "LD",
+              "toLocation": "RAIL,RIGHT,JB70",
+              "bundleName": "BA0002",
+              "bundleDisplay": "",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0009",
+          "toLocation": "RAIL,RIGHT,JB70",
+          "rows": [
+            {
+              "rowId": "row-16",
+              "rowIndex": 27,
+              "fromDeviceId": "BA0009:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0051:7",
+              "toTerminal": "7",
+              "toLocation": "RAIL,RIGHT,JB70",
+              "bundleName": "BA0009",
+              "bundleDisplay": "BA0009",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-17",
+              "rowIndex": 28,
+              "fromDeviceId": "BA0009:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0029",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0029:LD",
+              "toTerminal": "LD",
+              "toLocation": "RAIL,RIGHT,JB70",
+              "bundleName": "BA0009",
+              "bundleDisplay": "",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "RAIL,RIGHT,JB70",
+          "rows": [
+            {
+              "rowId": "row-18",
+              "rowIndex": 29,
+              "fromDeviceId": "FU0001:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0051:1",
+              "toTerminal": "1",
+              "toLocation": "RAIL,RIGHT,JB70",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-19",
+              "rowIndex": 30,
+              "fromDeviceId": "FU0002:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0051:2",
+              "toTerminal": "2",
+              "toLocation": "RAIL,RIGHT,JB70",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "RAIL,RIGHT,JB70",
+          "rows": [
+            {
+              "rowId": "row-20",
+              "rowIndex": 31,
+              "fromDeviceId": "FU0029:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0051:3",
+              "toTerminal": "3",
+              "toLocation": "RAIL,RIGHT,JB70",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0291",
+          "toLocation": "HMI-S PWR",
+          "rows": [
+            {
+              "rowId": "row-75",
+              "rowIndex": 86,
+              "fromDeviceId": "XT0291:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV0291,24V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "UV0291:OUT1(+)",
+              "toTerminal": "OUT1(+)",
+              "toLocation": "HMI-S PWR",
+              "bundleName": "XT0291",
+              "bundleDisplay": "XT0291 - HMI S PWR",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-76",
+              "rowIndex": 87,
+              "fromDeviceId": "XT0291:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV0291,24V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "FU1101:LI",
+              "toTerminal": "LI",
+              "toLocation": "HMI-S PWR",
+              "bundleName": "XT0291",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-77",
+              "rowIndex": 88,
+              "fromDeviceId": "XT0291:5",
+              "fromTerminal": "5",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV0291,0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "UV0291:OUT1(-)",
+              "toTerminal": "OUT1(-)",
+              "toLocation": "HMI-S PWR",
+              "bundleName": "XT0291",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-78",
+              "rowIndex": 89,
+              "fromDeviceId": "XT0291:7",
+              "fromTerminal": "7",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV0291,0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "BA1100:NEG",
+              "toTerminal": "NEG",
+              "toLocation": "HMI-S PWR",
+              "bundleName": "XT0291",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT0111",
+          "toLocation": "HMI-S PWR",
+          "rows": [
+            {
+              "rowId": "row-72",
+              "rowIndex": 83,
+              "fromDeviceId": "XT0111:21",
+              "fromTerminal": "21",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "FU1100:LI",
+              "toTerminal": "LI",
+              "toLocation": "HMI-S PWR",
+              "bundleName": "XT0111",
+              "bundleDisplay": "XT0111 - HMI S PWR",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-73",
+              "rowIndex": 84,
+              "fromDeviceId": "XT0111:21",
+              "fromTerminal": "21",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "FU0291:LI",
+              "toTerminal": "LI",
+              "toLocation": "HMI-S PWR",
+              "bundleName": "XT0111",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT0111",
+          "toLocation": "HMI-S PWR",
+          "rows": [
+            {
+              "rowId": "row-74",
+              "rowIndex": 85,
+              "fromDeviceId": "XT0111:22",
+              "fromTerminal": "22",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "UV0291:24V(-)",
+              "toTerminal": "24V(-)",
+              "toLocation": "HMI-S PWR",
+              "bundleName": "XT0111",
+              "bundleDisplay": "XT0111 - HMI S PWR",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "9b14dfc45429e3f1cd1ddd39d33a9bc55f62ad6c683d2c8fde94874a3ef8bd86"
+}

@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:16:17.069Z",
+  "mode": "branding-export",
+  "sheetSlug": "fire-system-controller-panel",
+  "sheetName": "FIRE SYSTEM CONTROLLER PANEL",
+  "totalRows": 8,
+  "header": {
+    "locationTitle": "FIRE SYSTEM CONTROLLER PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J1070",
+    "projectName": "J1070",
+    "revision": "A.1",
+    "controlsDE": "A. Jarque",
+    "controlsME": "A.GAMEZ"
+  },
+  "importHints": {
+    "canonicalSheetName": "FIRE SYSTEM^CONTROLLER PANEL",
+    "normalizedSheetName": "fire-system-controller-panel",
+    "bundleNames": [
+      "AT0170"
+    ],
+    "bundleDisplays": [
+      "AT0170",
+      "AT0170 - TURBINE - PANEL B"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT0170",
+          "toLocation": "FIRE SYSTEM^CONTROLLER PANEL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "AT0170:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV01705",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UV0170:5(+)",
+              "toTerminal": "5(+)",
+              "toLocation": "FIRE SYSTEM^CONTROLLER PANEL",
+              "bundleName": "AT0170",
+              "bundleDisplay": "AT0170",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "AT0170:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV01706",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UV0170:6(-)",
+              "toTerminal": "6(-)",
+              "toLocation": "FIRE SYSTEM^CONTROLLER PANEL",
+              "bundleName": "AT0170",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "AT0170:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV01707",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UV0170:7(+)",
+              "toTerminal": "7(+)",
+              "toLocation": "FIRE SYSTEM^CONTROLLER PANEL",
+              "bundleName": "AT0170",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "AT0170:4",
+              "fromTerminal": "4",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV01708",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UV0170:8(-)",
+              "toTerminal": "8(-)",
+              "toLocation": "FIRE SYSTEM^CONTROLLER PANEL",
+              "bundleName": "AT0170",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT0170",
+          "toLocation": "TURBINE PANEL B",
+          "rows": [
+            {
+              "rowId": "row-63",
+              "rowIndex": 73,
+              "fromDeviceId": "AT0170:24",
+              "fromTerminal": "24",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0139",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0240:12",
+              "toTerminal": "12",
+              "toLocation": "TURBINE PANEL B",
+              "bundleName": "AT0170",
+              "bundleDisplay": "AT0170 - TURBINE - PANEL B",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-64",
+              "rowIndex": 74,
+              "fromDeviceId": "AT0170:26",
+              "fromTerminal": "26",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA0243A1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0240:7",
+              "toTerminal": "7",
+              "toLocation": "TURBINE PANEL B",
+              "bundleName": "AT0170",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-65",
+              "rowIndex": 75,
+              "fromDeviceId": "AT0170:30",
+              "fromTerminal": "30",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0139",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0240:12",
+              "toTerminal": "12",
+              "toLocation": "TURBINE PANEL B",
+              "bundleName": "AT0170",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-66",
+              "rowIndex": 76,
+              "fromDeviceId": "AT0170:32",
+              "fromTerminal": "32",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA0245A1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0240:8",
+              "toTerminal": "8",
+              "toLocation": "TURBINE PANEL B",
+              "bundleName": "AT0170",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "af919f162d6aa3be2aac926aaafc45e99ad26e33107e59f283653c3fe78be0a9"
+}

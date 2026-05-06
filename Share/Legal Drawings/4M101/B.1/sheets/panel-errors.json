@@ -1,0 +1,141 @@
+{
+  "slug": "panel-errors",
+  "name": "Panel Errors",
+  "kind": "reference",
+  "sheetIndex": 16,
+  "headers": [
+    "Device ID",
+    "Location",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire ID",
+    "Wire No.",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location_1",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "XT0140:3",
+      "wireType": "WC8009",
+      "wireNo": "XT01403",
+      "wireId": "SH",
+      "gaugeSize": "16",
+      "fromLocation": "PANEL",
+      "fromPageZone": "25.D2",
+      "toDeviceId": "FWAT0140:3",
+      "toLocation": "JB71 B,PNL GEN CTRL",
+      "toPageZone": "25.D6",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "CCSPIN_RESERVE:1",
+      "wireType": "WC2411",
+      "wireNo": "-006504",
+      "wireId": "RED",
+      "gaugeSize": "20",
+      "fromLocation": "JB71 B,PNL CTRL2",
+      "fromPageZone": "95.C2",
+      "toDeviceId": "AF0065:04",
+      "toLocation": "PANEL",
+      "toPageZone": "95.C6",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-2",
+      "fromDeviceId": "CCSPIN_RESERVE:2",
+      "wireType": "WC2411",
+      "wireNo": "-006520",
+      "wireId": "BLK",
+      "gaugeSize": "20",
+      "fromLocation": "JB71 B,PNL CTRL2",
+      "fromPageZone": "95.C2",
+      "toDeviceId": "AF0065:20",
+      "toLocation": "PANEL",
+      "toPageZone": "95.C6",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-3",
+      "fromDeviceId": "FLOATING",
+      "wireType": "WC2411",
+      "wireNo": "-006552",
+      "wireId": "SH",
+      "gaugeSize": "20",
+      "fromLocation": "JB71 B,PNL CTRL2",
+      "fromPageZone": "95.C2",
+      "toDeviceId": "AF0065:52",
+      "toLocation": "PANEL",
+      "toPageZone": "95.C6",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FWAT0140:3",
+      "Location": "PANEL",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC8009",
+      "Wire ID": "SH",
+      "Wire No.": "XT01403",
+      "Gauge/Size": "16",
+      "Page/Zone": "25.D6"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "AF0065:04",
+      "Location": "JB71 B,PNL CTRL2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC2411",
+      "Wire ID": "RED",
+      "Wire No.": "006504",
+      "Gauge/Size": "20",
+      "Page/Zone": "95.C6"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "AF0065:20",
+      "Location": "JB71 B,PNL CTRL2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC2411",
+      "Wire ID": "BLK",
+      "Wire No.": "006520",
+      "Gauge/Size": "20",
+      "Page/Zone": "95.C6"
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "AF0065:52",
+      "Location": "JB71 B,PNL CTRL2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC2411",
+      "Wire ID": "SH",
+      "Wire No.": "006552",
+      "Gauge/Size": "20",
+      "Page/Zone": "95.C6"
+    }
+  ],
+  "rowCount": 4,
+  "metadata": {
+    "projectName": "Williams - New Albany, OH - 400MWs",
+    "revision": "B",
+    "controlsDE": "M Poovarasan"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "BUILD_UP",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 0,
+    "detectedReasons": [],
+    "requiresWireSws": false,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:27:38.032Z"
+}

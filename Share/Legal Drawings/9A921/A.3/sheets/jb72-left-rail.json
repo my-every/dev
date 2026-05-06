@@ -1,0 +1,68 @@
+{
+  "slug": "jb72-left-rail",
+  "name": "JB72 LEFT RAIL",
+  "kind": "operational",
+  "sheetIndex": 11,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR0140:",
+      "wireType": "SC",
+      "wireNo": "GR0140",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "5.B3",
+      "toDeviceId": "FRAME",
+      "toLocation": "JB72 LEFT RAIL",
+      "toPageZone": "5.B3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0140",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "5.B3",
+      "Location": "JB72 LEFT RAIL"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "SPACE EXPLORATION TECHNOLOGIES CORP",
+    "revision": "A.3",
+    "controlsDE": "J.HYDE",
+    "controlsME": "N. CARPENTER"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Rail in title with no Panel number"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:57:18.032Z"
+}

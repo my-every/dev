@@ -1,0 +1,68 @@
+{
+  "slug": "fwd-prox-jb350",
+  "name": "FWD PROX,JB350",
+  "kind": "operational",
+  "sheetIndex": 8,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1261:",
+      "wireType": "SC",
+      "wireNo": "GR1261",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "10.A6",
+      "toDeviceId": "FRAME",
+      "toLocation": "FWD PROX,JB350",
+      "toPageZone": "10.A6",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1261",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "10.A6",
+      "Location": "FWD PROX,JB350"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "SOLARIS ENERGY INFRASTRUCTURE",
+    "revision": "C",
+    "controlsDE": "J. PECACHE",
+    "controlsME": "S. LOZA"
+  },
+  "assignment": {
+    "swsType": "BLANK",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "BLANK",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Has Prox - Basic/Blank panel"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:31:15.235Z"
+}

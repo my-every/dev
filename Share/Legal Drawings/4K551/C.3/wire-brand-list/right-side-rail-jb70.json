@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:13:11.298Z",
+  "mode": "branding-export",
+  "sheetSlug": "right-side-rail-jb70",
+  "sheetName": "RIGHT SIDE RAIL JB70",
+  "totalRows": 1,
+  "header": {
+    "locationTitle": "RIGHT SIDE RAIL JB70",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4K551",
+    "projectName": "4K551",
+    "revision": "C.3",
+    "controlsDE": "J. UNGER"
+  },
+  "importHints": {
+    "canonicalSheetName": "RIGHT SIDE RAIL (JB70)",
+    "normalizedSheetName": "right-side-rail-jb70",
+    "bundleNames": [
+      "FU - XT"
+    ],
+    "bundleDisplays": [
+      "FU - XT"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "RIGHT SIDE RAIL (JB70)",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "FU1100:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-24V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0111:21",
+              "toTerminal": "21",
+              "toLocation": "RIGHT SIDE RAIL (JB70)",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "c29a46afb98b5a6bcc800f68bcb9085bd32c22563ed72c3daf330becb9428c7a"
+}

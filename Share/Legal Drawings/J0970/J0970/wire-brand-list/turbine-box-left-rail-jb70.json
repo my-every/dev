@@ -1,0 +1,370 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:13:14.459Z",
+  "mode": "branding-export",
+  "sheetSlug": "turbine-box-left-rail-jb70",
+  "sheetName": "TURBINE BOX LEFT RAIL JB70",
+  "totalRows": 11,
+  "header": {
+    "locationTitle": "TURBINE BOX LEFT RAIL JB70",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0970",
+    "projectName": "J0970",
+    "revision": "J0970",
+    "controlsDE": "R.BARRAZA",
+    "controlsME": "A. PUENTES"
+  },
+  "importHints": {
+    "canonicalSheetName": "TURBINE BOX^LEFT RAIL^JB70",
+    "normalizedSheetName": "turbine-box-left-rail-jb70",
+    "bundleNames": [
+      "AF1202",
+      "AF - FU",
+      "AU - FU",
+      "AF - KA",
+      "AF1201",
+      "AF1207",
+      "AU - XT"
+    ],
+    "bundleDisplays": [
+      "AF1202",
+      "AF - FU",
+      "AU - FU",
+      "AF - KA - TURBINE - PANEL A",
+      "AF1201 - TURBINE - PANEL B",
+      "AF1207 - TURBINE - PANEL B",
+      "AU - XT - TURBINE - PANEL B"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AF",
+      "bundles": [
+        {
+          "bundleName": "AF1202",
+          "toLocation": "TURBINE BOX^LEFT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "AF1202:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-AU1200N",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "AU1200:COM",
+              "toTerminal": "COM",
+              "toLocation": "TURBINE BOX^LEFT RAIL^JB70",
+              "bundleName": "AF1202",
+              "bundleDisplay": "AF1202",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-6",
+              "rowIndex": 16,
+              "fromDeviceId": "AF1202:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AU1200P",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "AU1200:V+",
+              "toTerminal": "V+",
+              "toLocation": "TURBINE BOX^LEFT RAIL^JB70",
+              "bundleName": "AF1202",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF - FU",
+          "toLocation": "TURBINE BOX^LEFT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "AF1201:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0121",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0121:LD",
+              "toTerminal": "LD",
+              "toLocation": "TURBINE BOX^LEFT RAIL^JB70",
+              "bundleName": "AF - FU",
+              "bundleDisplay": "AF - FU",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AU",
+      "bundles": [
+        {
+          "bundleName": "AU - FU",
+          "toLocation": "TURBINE BOX^LEFT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-27",
+              "rowIndex": 37,
+              "fromDeviceId": "AU1200:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0120",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0120:LD",
+              "toTerminal": "LD",
+              "toLocation": "TURBINE BOX^LEFT RAIL^JB70",
+              "bundleName": "AU - FU",
+              "bundleDisplay": "AU - FU",
+              "devicePrefix": "AU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AF",
+      "bundles": [
+        {
+          "bundleName": "AF - KA",
+          "toLocation": "TURBINE PANEL A",
+          "rows": [
+            {
+              "rowId": "row-29",
+              "rowIndex": 39,
+              "fromDeviceId": "AF1201:24",
+              "fromTerminal": "24",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-120124",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA0194:A2",
+              "toTerminal": "A2",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "AF - KA",
+              "bundleDisplay": "AF - KA - TURBINE - PANEL A",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AF",
+      "bundles": [
+        {
+          "bundleName": "AF1201",
+          "toLocation": "TURBINE PANEL B",
+          "rows": [
+            {
+              "rowId": "row-30",
+              "rowIndex": 40,
+              "fromDeviceId": "AF1201:08",
+              "fromTerminal": "08",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-120108",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA0193:14",
+              "toTerminal": "14",
+              "toLocation": "TURBINE PANEL B",
+              "bundleName": "AF1201",
+              "bundleDisplay": "AF1201 - TURBINE - PANEL B",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF1201",
+          "toLocation": "TURBINE PANEL B",
+          "rows": [
+            {
+              "rowId": "row-31",
+              "rowIndex": 41,
+              "fromDeviceId": "AF1201:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0130:3",
+              "toTerminal": "3",
+              "toLocation": "TURBINE PANEL B",
+              "bundleName": "AF1201",
+              "bundleDisplay": "AF1201 - TURBINE - PANEL B",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF1207",
+          "toLocation": "TURBINE PANEL B",
+          "rows": [
+            {
+              "rowId": "row-32",
+              "rowIndex": 42,
+              "fromDeviceId": "AF1207:02",
+              "fromTerminal": "02",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-120702",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA4401:14",
+              "toTerminal": "14",
+              "toLocation": "TURBINE PANEL B",
+              "bundleName": "AF1207",
+              "bundleDisplay": "AF1207 - TURBINE - PANEL B",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-33",
+              "rowIndex": 43,
+              "fromDeviceId": "AF1207:18",
+              "fromTerminal": "18",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-120718",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA4401:A2",
+              "toTerminal": "A2",
+              "toLocation": "TURBINE PANEL B",
+              "bundleName": "AF1207",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-34",
+              "rowIndex": 44,
+              "fromDeviceId": "AF1207:34",
+              "fromTerminal": "34",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "PS44012",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA4401:11",
+              "toTerminal": "11",
+              "toLocation": "TURBINE PANEL B",
+              "bundleName": "AF1207",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AU",
+      "bundles": [
+        {
+          "bundleName": "AU - XT",
+          "toLocation": "TURBINE PANEL B",
+          "rows": [
+            {
+              "rowId": "row-36",
+              "rowIndex": 46,
+              "fromDeviceId": "AU1200:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0130:4",
+              "toTerminal": "4",
+              "toLocation": "TURBINE PANEL B",
+              "bundleName": "AU - XT",
+              "bundleDisplay": "AU - XT - TURBINE - PANEL B",
+              "devicePrefix": "AU",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "3ab5d46228d5aaa834e574f1ba6e54b3da749e6132746bfa9f72260f2a5eeaef"
+}

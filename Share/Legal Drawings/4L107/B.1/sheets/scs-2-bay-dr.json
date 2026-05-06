@@ -1,0 +1,168 @@
+{
+  "slug": "scs-2-bay-dr",
+  "name": "SCS 2-BAY DR",
+  "kind": "operational",
+  "sheetIndex": 14,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "EL0275:B1",
+      "wireType": "SC",
+      "wireNo": "ZS0275",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "18.B6",
+      "toDeviceId": "ZS0275:2",
+      "toLocation": "SCS 2-BAY DR",
+      "toPageZone": "18.B5",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-1",
+      "fromDeviceId": "EL0275:W1",
+      "wireType": "SC",
+      "wireNo": "-0V",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "18.B6",
+      "toDeviceId": "XT0275:2",
+      "toLocation": "SCS MONITOR MEDIA",
+      "toPageZone": "18.C5",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-2",
+      "fromDeviceId": "ZS0275:1",
+      "wireType": "SC",
+      "wireNo": "FU0275",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "18.B5",
+      "toDeviceId": "XT0275:1",
+      "toLocation": "SCS MONITOR MEDIA",
+      "toPageZone": "18.B5",
+      "location": ""
+    },
+    {
+      "__rowIndex": 14,
+      "__rowId": "row-3",
+      "fromDeviceId": "HA0273:(+)",
+      "wireType": "WC5540",
+      "wireNo": "HA0273P",
+      "wireId": "BLK",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "30.A4",
+      "toDeviceId": "AF0023:21",
+      "toLocation": "SCS PNL 1",
+      "toPageZone": "30.A6",
+      "location": ""
+    },
+    {
+      "__rowIndex": 15,
+      "__rowId": "row-4",
+      "fromDeviceId": "HA0273:(-)",
+      "wireType": "WC5540",
+      "wireNo": "HA0273N",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "30.A4",
+      "toDeviceId": "AF0023:53",
+      "toLocation": "SCS PNL 1",
+      "toPageZone": "30.A6",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "ZS0275:2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "ZS0275",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "18.B5",
+      "Location": "SCS 2-BAY DR"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "XT0275:2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "0V",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "18.C5",
+      "Location": "SCS MONITOR MEDIA"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "XT0275:1",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "FU0275",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "18.B5",
+      "Location": "SCS MONITOR MEDIA"
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "AF0023:21",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC5540",
+      "Wire No.": "HA0273P",
+      "Wire ID": "BLK",
+      "Gauge/Size": "16",
+      "Page/Zone": "30.A6",
+      "Location": "SCS PNL 1"
+    },
+    {
+      "__rowId": "raw-4",
+      "Device ID": "AF0023:53",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC5540",
+      "Wire No.": "HA0273N",
+      "Wire ID": "WHT",
+      "Gauge/Size": "16",
+      "Page/Zone": "30.A6",
+      "Location": "SCS PNL 1"
+    }
+  ],
+  "rowCount": 5,
+  "metadata": {
+    "projectName": "WHITEWATER MIDSTREAM^BAYRUNNER PIPELINE",
+    "revision": "B",
+    "controlsDE": "ALEX. JEZEQUEL",
+    "controlsME": "HECTOR, MEDRANO"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:14:45.289Z"
+}

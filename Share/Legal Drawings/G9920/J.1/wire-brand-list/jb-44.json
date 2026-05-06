@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:03:39.839Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb-44",
+  "sheetName": "JB 44",
+  "totalRows": 1,
+  "header": {
+    "locationTitle": "JB 44",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "G9920",
+    "projectName": "G9920",
+    "revision": "J.1",
+    "controlsDE": "J. FIGUEROA",
+    "controlsME": "J.Shih"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB 44",
+    "normalizedSheetName": "jb-44",
+    "bundleNames": [
+      "UA - UA"
+    ],
+    "bundleDisplays": [
+      "UA - UA"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "UA",
+      "bundles": [
+        {
+          "bundleName": "UA - UA",
+          "toLocation": "JB 44",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "UA1200:J1-8",
+              "fromTerminal": "J1-8",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UA1200J",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UA1200:J3-5",
+              "toTerminal": "J3-5",
+              "toLocation": "JB 44",
+              "bundleName": "UA - UA",
+              "bundleDisplay": "UA - UA",
+              "devicePrefix": "UA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "3b37944793ca7e067e9330cc38148c8846fed5c72063192ac9b1a2912c210a0d"
+}

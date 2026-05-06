@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:03:17.791Z",
+  "mode": "branding-export",
+  "sheetSlug": "aux-console-door",
+  "sheetName": "AUX CONSOLE DOOR",
+  "totalRows": 8,
+  "header": {
+    "locationTitle": "AUX CONSOLE DOOR",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "G9300",
+    "projectName": "G9300",
+    "revision": "A.9",
+    "controlsDE": "G. MENDOZA",
+    "controlsME": "N. CARPENTER"
+  },
+  "importHints": {
+    "canonicalSheetName": "AUX CONSOLE DOOR",
+    "normalizedSheetName": "aux-console-door",
+    "bundleNames": [
+      "GD0521 - BLU",
+      "GD0521",
+      "GD0525"
+    ],
+    "bundleDisplays": [
+      "GD0521 - BLU - AUXILIARY - PANEL A",
+      "GD0521 - AUXILIARY - PANEL A",
+      "GD0521 - AUXILIARY - PANEL C",
+      "GD0525 - AUXILIARY - PANEL C"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "GD",
+      "bundles": [
+        {
+          "bundleName": "GD0521 - BLU",
+          "toLocation": "AUXILIARY PANEL A",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "GD0521:+",
+              "fromTerminal": "+",
+              "fromTerminalOrder": null,
+              "wireNo": "GD0521P, 21mm",
+              "wireId": "BLU",
+              "gaugeSize": "4",
+              "length": 120,
+              "toDeviceId": "XT0015:1",
+              "toTerminal": "1",
+              "toLocation": "AUXILIARY PANEL A",
+              "bundleName": "GD0521 - BLU",
+              "bundleDisplay": "GD0521 - BLU - AUXILIARY - PANEL A",
+              "devicePrefix": "GD"
+            }
+          ]
+        },
+        {
+          "bundleName": "GD0521",
+          "toLocation": "AUXILIARY PANEL A",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "GD0521:+",
+              "fromTerminal": "+",
+              "fromTerminalOrder": null,
+              "wireNo": "GD0521P, 21mm",
+              "wireId": "WHT",
+              "gaugeSize": "4",
+              "length": 120,
+              "toDeviceId": "XT0252:1",
+              "toTerminal": "1",
+              "toLocation": "AUXILIARY PANEL A",
+              "bundleName": "GD0521",
+              "bundleDisplay": "GD0521 - AUXILIARY - PANEL A",
+              "devicePrefix": "GD"
+            }
+          ]
+        },
+        {
+          "bundleName": "GD0521",
+          "toLocation": "AUXILIARY PANEL A",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "GD0521:-",
+              "fromTerminal": "-",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "6",
+              "length": 120,
+              "toDeviceId": "XT0013:1",
+              "toTerminal": "1",
+              "toLocation": "AUXILIARY PANEL A",
+              "bundleName": "GD0521",
+              "bundleDisplay": "GD0521 - AUXILIARY - PANEL A",
+              "devicePrefix": "GD",
+              "isNegative": true
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "GD0521:-",
+              "fromTerminal": "-",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "6",
+              "length": 120,
+              "toDeviceId": "XT0252:2",
+              "toTerminal": "2",
+              "toLocation": "AUXILIARY PANEL A",
+              "bundleName": "GD0521",
+              "bundleDisplay": "",
+              "devicePrefix": "GD",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "GD",
+      "bundles": [
+        {
+          "bundleName": "GD0521",
+          "toLocation": "AUXILIARY PANEL C",
+          "rows": [
+            {
+              "rowId": "row-8",
+              "rowIndex": 19,
+              "fromDeviceId": "GD0521:KA1 (C)",
+              "fromTerminal": "KA1 (C)",
+              "fromTerminalOrder": null,
+              "wireNo": "-008100",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0081:00",
+              "toTerminal": "00",
+              "toLocation": "AUXILIARY PANEL C",
+              "bundleName": "GD0521",
+              "bundleDisplay": "GD0521 - AUXILIARY - PANEL C",
+              "devicePrefix": "GD"
+            },
+            {
+              "rowId": "row-9",
+              "rowIndex": 20,
+              "fromDeviceId": "GD0521:KA1 (NO)",
+              "fromTerminal": "KA1 (NO)",
+              "fromTerminalOrder": null,
+              "wireNo": "-008132",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0081:32",
+              "toTerminal": "32",
+              "toLocation": "AUXILIARY PANEL C",
+              "bundleName": "GD0521",
+              "bundleDisplay": "",
+              "devicePrefix": "GD"
+            }
+          ]
+        },
+        {
+          "bundleName": "GD0525",
+          "toLocation": "AUXILIARY PANEL C",
+          "rows": [
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "GD0525:KA1 (C)",
+              "fromTerminal": "KA1 (C)",
+              "fromTerminalOrder": null,
+              "wireNo": "-008211",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0082:11",
+              "toTerminal": "11",
+              "toLocation": "AUXILIARY PANEL C",
+              "bundleName": "GD0525",
+              "bundleDisplay": "GD0525 - AUXILIARY - PANEL C",
+              "devicePrefix": "GD"
+            },
+            {
+              "rowId": "row-11",
+              "rowIndex": 22,
+              "fromDeviceId": "GD0525:KA1 (NO)",
+              "fromTerminal": "KA1 (NO)",
+              "fromTerminalOrder": null,
+              "wireNo": "-008243",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0082:43",
+              "toTerminal": "43",
+              "toLocation": "AUXILIARY PANEL C",
+              "bundleName": "GD0525",
+              "bundleDisplay": "",
+              "devicePrefix": "GD"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "9d79f86144709ab11816d42a3218e6884708ae67f6f7631260b3581affd01b9b"
+}

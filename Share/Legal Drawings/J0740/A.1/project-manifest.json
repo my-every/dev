@@ -1,0 +1,578 @@
+{
+  "id": "legal-j0740-a-1",
+  "name": "J0740",
+  "filename": "J0740-UCPWiringList_A.1.xlsx",
+  "pdNumber": "J0740",
+  "revision": "A.1",
+  "createdAt": "2026-05-05T14:11:17.540Z",
+  "sheets": [
+    {
+      "slug": "blue-labels",
+      "name": "Blue Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/blue-labels.json",
+      "rowCount": 80,
+      "columnCount": 3,
+      "sheetIndex": 0,
+      "hasData": true
+    },
+    {
+      "slug": "white-labels",
+      "name": "White Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/white-labels.json",
+      "rowCount": 4,
+      "columnCount": 5,
+      "sheetIndex": 1,
+      "hasData": true
+    },
+    {
+      "slug": "heat-shrink-labels",
+      "name": "Heat Shrink Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/heat-shrink-labels.json",
+      "rowCount": 7,
+      "columnCount": 2,
+      "sheetIndex": 2,
+      "hasData": true
+    },
+    {
+      "slug": "das-box",
+      "name": "DAS BOX",
+      "kind": "operational",
+      "sheetPath": "sheets/das-box.json",
+      "rowCount": 5,
+      "columnCount": 9,
+      "sheetIndex": 3,
+      "hasData": true
+    },
+    {
+      "slug": "jb1-panel",
+      "name": "JB1 PANEL",
+      "kind": "operational",
+      "sheetPath": "sheets/jb1-panel.json",
+      "rowCount": 444,
+      "columnCount": 9,
+      "sheetIndex": 4,
+      "hasData": true
+    },
+    {
+      "slug": "right-rail",
+      "name": "RIGHT RAIL",
+      "kind": "operational",
+      "sheetPath": "sheets/right-rail.json",
+      "rowCount": 80,
+      "columnCount": 9,
+      "sheetIndex": 5,
+      "hasData": true
+    },
+    {
+      "slug": "panel-errors",
+      "name": "Panel Errors",
+      "kind": "reference",
+      "sheetPath": "sheets/panel-errors.json",
+      "rowCount": 1159,
+      "columnCount": 10,
+      "sheetIndex": 6,
+      "hasData": true
+    },
+    {
+      "slug": "cable-part-numbers",
+      "name": "Cable Part Numbers",
+      "kind": "reference",
+      "sheetPath": "sheets/cable-part-numbers.json",
+      "rowCount": 119,
+      "columnCount": 3,
+      "sheetIndex": 7,
+      "hasData": true
+    },
+    {
+      "slug": "part-number-list",
+      "name": "Part Number List",
+      "kind": "reference",
+      "sheetPath": "sheets/part-number-list.json",
+      "rowCount": 583,
+      "columnCount": 4,
+      "sheetIndex": 8,
+      "hasData": true
+    }
+  ],
+  "assignments": {
+    "das-box": {
+      "sheetSlug": "das-box",
+      "sheetName": "DAS BOX",
+      "kind": "operational",
+      "sheetPath": "sheets/das-box.json",
+      "rowCount": 5,
+      "columnCount": 9,
+      "sheetIndex": 3,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [
+        "2x5x22.7",
+        "2X5X21.3",
+        "2X5X26.7"
+      ],
+      "rails": [
+        "RAIL 20\""
+      ],
+      "whiteLabels": [
+        "GR1250",
+        "IEG0110",
+        "GR1251",
+        "GR1252",
+        "IEG1120"
+      ],
+      "blueLabels": [
+        "UA1263",
+        "UA1211",
+        "UA1210",
+        "UA1221",
+        "UA1220",
+        "UA1231",
+        "UA1230",
+        "UA1262",
+        "UA1213",
+        "UA1212",
+        "UA1223",
+        "UA1222",
+        "UA1233",
+        "UA1232",
+        "UA1264",
+        "UA1273",
+        "GR1250",
+        "UA1241",
+        "UA1240",
+        "UA1251",
+        "UA1250",
+        "UA1272",
+        "UA1243",
+        "UA1242",
+        "UA1253",
+        "UA1252",
+        "UA1274",
+        "XT5",
+        "XT1221S",
+        "GR1251",
+        "IEG1150",
+        "XTT5MARS",
+        "XTT5TITANZ",
+        "XT1221",
+        "GR1252",
+        "IEG0110"
+      ],
+      "partNumbers": [
+        "1054025-301",
+        "1066730-7",
+        "1067996-33",
+        "190816-70",
+        "190817-14",
+        "190817-141",
+        "190817-91",
+        "232941-200",
+        "903849C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/das-box.json",
+        "brandListSchemaPath": "wire-brand-list/das-box.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 4,
+          "title": "DAS BOX JB4",
+          "normalizedTitle": "DAS BOX",
+          "unitType": "JB4",
+          "panelNumber": "1058112-503",
+          "boxNumber": "1067580-3",
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 181
+        },
+        "pages": []
+      },
+      "devices": {},
+      "unitType": "JB4",
+      "externalLocations": [],
+      "buildUpEstTime": "6m",
+      "wireListEstTime": "4m",
+      "totalEstimatedMinutes": 10,
+      "remainingMinutes": 10,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "jb1-panel": {
+      "sheetSlug": "jb1-panel",
+      "sheetName": "JB1 PANEL",
+      "kind": "operational",
+      "sheetPath": "sheets/jb1-panel.json",
+      "rowCount": 444,
+      "columnCount": 9,
+      "sheetIndex": 4,
+      "hasData": true,
+      "swsType": "PANEL",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [
+        "IEG0110",
+        "GR0260",
+        "IEG01003",
+        "IEG0260G",
+        "IEG01005",
+        "IEG0270G",
+        "IEG01006",
+        "IEG01008"
+      ],
+      "blueLabels": [
+        "AU0270",
+        "AF0270",
+        "AF0271",
+        "AF0272",
+        "AF0273",
+        "AF0274",
+        "AF0275",
+        "AF0276",
+        "AF0277",
+        "XT0237",
+        "XT0238",
+        "XT0578",
+        "XT1220S",
+        "XT1220",
+        "GR0270",
+        "FU0270",
+        "FU0272",
+        "FU0274",
+        "KA0130",
+        "KA0270",
+        "KA0271",
+        "KA0272",
+        "KA0300",
+        "KA0301",
+        "KA0302",
+        "KA0303",
+        "KA0304",
+        "KA0305",
+        "KA0306",
+        "KA0307",
+        "KA1020",
+        "KA2125",
+        "KA2126",
+        "KA2127",
+        "KA2145",
+        "KA2146",
+        "KA2621",
+        "KA26212",
+        "KA2622",
+        "KA26222",
+        "KA2623",
+        "KA26232",
+        "KA2624",
+        "KA26242",
+        "KA2625",
+        "KA26252",
+        "FU0260",
+        "FU0262",
+        "FU0263",
+        "FU0264",
+        "FU0266",
+        "XT0260",
+        "XT2038",
+        "AU0260",
+        "AF0260",
+        "AF0261",
+        "AF0262",
+        "AF0263",
+        "AF0264",
+        "AF0265",
+        "AF0266",
+        "AF0267",
+        "GR0260",
+        "XT0540",
+        "FU0540",
+        "FU0542",
+        "FU0543",
+        "FU1020",
+        "FU0160",
+        "XT0160",
+        "AF0167",
+        "AF0166",
+        "AF0165",
+        "AF0164",
+        "AF0163",
+        "AF0162",
+        "AF0161",
+        "AF0160"
+      ],
+      "partNumbers": [
+        "1043265-1",
+        "1043265-3",
+        "1043265-4",
+        "1043265-5",
+        "1043265-7",
+        "1051931-67",
+        "1051931-69",
+        "1051931-71",
+        "1054025-301",
+        "1061979-1",
+        "1066730-10",
+        "1066730-7",
+        "1066730-8",
+        "1066730-9",
+        "1067996-16",
+        "1067996-34",
+        "1067996-4",
+        "1089240-18",
+        "1089240-2",
+        "1089240-32",
+        "1089240-37",
+        "1089240-38",
+        "1089240-4",
+        "1089240-41",
+        "1089240-5",
+        "1089240-7",
+        "232941-110",
+        "903849C1",
+        "903861C1",
+        "PART OF 1089240-31"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/jb1-panel.json",
+        "brandListSchemaPath": "wire-brand-list/jb1-panel.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "Layout pages exist for JB1 PANEL, but none passed high-confidence structural matching."
+      },
+      "devices": {},
+      "unitType": "JB1",
+      "boxSide": "leftBackSide",
+      "externalLocations": [
+        {
+          "location": "JB70 DOOR",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "JB70 LEFT SIDE RAIL",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "JB70 VIBRATION PANEL",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "PANEL B JB70",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "PLC PANEL JB70",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "RIGHT SIDE RAIL JB70",
+          "wireListVisible": false,
+          "brandingVisible": false
+        }
+      ],
+      "buildUpEstTime": "12h 35m",
+      "wireListEstTime": "8h 8m",
+      "totalEstimatedMinutes": 1243,
+      "remainingMinutes": 1243,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "right-rail": {
+      "sheetSlug": "right-rail",
+      "sheetName": "RIGHT RAIL",
+      "kind": "operational",
+      "sheetPath": "sheets/right-rail.json",
+      "rowCount": 80,
+      "columnCount": 9,
+      "sheetIndex": 5,
+      "hasData": true,
+      "swsType": "RAIL",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [
+        "58.25\" RAIL"
+      ],
+      "whiteLabels": [
+        "IEG01003",
+        "GR0097",
+        "IEG01005",
+        "IEG01006",
+        "IEG01008"
+      ],
+      "blueLabels": [
+        "UA1100",
+        "UA1200",
+        "UA1300",
+        "UA1400",
+        "UA1500",
+        "GR0097"
+      ],
+      "partNumbers": [
+        "1053834-10",
+        "1053834-11",
+        "1053834-27",
+        "1053834-C6920A",
+        "1053834-C6920B",
+        "1053834-C6920C",
+        "903849C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/right-rail.json",
+        "brandListSchemaPath": "wire-brand-list/right-rail.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 2,
+          "title": "PACKAGE BOX RIGHT RAIL",
+          "normalizedTitle": "PACKAGE BOX RIGHT RAIL",
+          "panelNumber": null,
+          "boxNumber": null,
+          "confidence": "high",
+          "matchMethod": "title",
+          "score": 220
+        },
+        "pages": []
+      },
+      "devices": {},
+      "boxSide": "rightDoor",
+      "externalLocations": [],
+      "buildUpEstTime": "1h 28m",
+      "wireListEstTime": "1h",
+      "totalEstimatedMinutes": 148,
+      "remainingMinutes": 148,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    }
+  },
+  "referenceSheets": {
+    "blue-labels": {
+      "sheetSlug": "blue-labels",
+      "sheetName": "Blue Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/blue-labels.json",
+      "rowCount": 80,
+      "columnCount": 3,
+      "sheetIndex": 0,
+      "hasData": true
+    },
+    "white-labels": {
+      "sheetSlug": "white-labels",
+      "sheetName": "White Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/white-labels.json",
+      "rowCount": 4,
+      "columnCount": 5,
+      "sheetIndex": 1,
+      "hasData": true
+    },
+    "heat-shrink-labels": {
+      "sheetSlug": "heat-shrink-labels",
+      "sheetName": "Heat Shrink Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/heat-shrink-labels.json",
+      "rowCount": 7,
+      "columnCount": 2,
+      "sheetIndex": 2,
+      "hasData": true
+    },
+    "panel-errors": {
+      "sheetSlug": "panel-errors",
+      "sheetName": "Panel Errors",
+      "kind": "reference",
+      "sheetPath": "sheets/panel-errors.json",
+      "rowCount": 1159,
+      "columnCount": 10,
+      "sheetIndex": 6,
+      "hasData": true
+    },
+    "cable-part-numbers": {
+      "sheetSlug": "cable-part-numbers",
+      "sheetName": "Cable Part Numbers",
+      "kind": "reference",
+      "sheetPath": "sheets/cable-part-numbers.json",
+      "rowCount": 119,
+      "columnCount": 3,
+      "sheetIndex": 7,
+      "hasData": true
+    },
+    "part-number-list": {
+      "sheetSlug": "part-number-list",
+      "sheetName": "Part Number List",
+      "kind": "reference",
+      "sheetPath": "sheets/part-number-list.json",
+      "rowCount": 583,
+      "columnCount": 4,
+      "sheetIndex": 8,
+      "hasData": true
+    }
+  },
+  "unitType": "JB1",
+  "unitTypes": [
+    "JB1",
+    "JB4"
+  ],
+  "panducts": 3,
+  "rails": 2,
+  "aggregates": {
+    "totalAssignments": 3,
+    "completedAssignments": 0,
+    "inProgressAssignments": 0,
+    "blockedAssignments": 0,
+    "totalEstimatedMinutes": 1401,
+    "totalRemainingMinutes": 1401,
+    "totalActualMinutes": 0,
+    "overallProgress": 0,
+    "highestPriority": "low",
+    "priorityCounts": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 3
+    },
+    "stageCounts": {
+      "READY_TO_LAY": 3
+    }
+  },
+  "assignmentsByUnitType": {
+    "JB4": [
+      "das-box"
+    ],
+    "JB1": [
+      "jb1-panel"
+    ],
+    "UNASSIGNED": [
+      "right-rail"
+    ]
+  },
+  "projectName": "J0740"
+}

@@ -1,0 +1,290 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:30:24.425Z",
+  "mode": "branding-export",
+  "sheetSlug": "space-heater-panel",
+  "sheetName": "SPACE HEATER PANEL",
+  "totalRows": 11,
+  "header": {
+    "locationTitle": "SPACE HEATER PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M181",
+    "projectName": "4M181",
+    "revision": "B.5_M.4",
+    "controlsDE": "J. SHORTER",
+    "controlsME": "S. LOZA"
+  },
+  "importHints": {
+    "canonicalSheetName": "SPACE HEATER PANEL",
+    "normalizedSheetName": "space-heater-panel",
+    "bundleNames": [
+      "H0950 - RED",
+      "H0951 - RED",
+      "QS0950 - RED",
+      "TS - XT",
+      "HL0950 - RED"
+    ],
+    "bundleDisplays": [
+      "H0950 - RED",
+      "H0951 - RED",
+      "QS0950 - RED",
+      "TS - XT",
+      "HL0950 - RED - CONSOLE HEATER LIGHT"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "H",
+      "bundles": [
+        {
+          "bundleName": "H0950 - RED",
+          "toLocation": "SPACE HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "H0950:L",
+              "fromTerminal": "L",
+              "fromTerminalOrder": null,
+              "wireNo": "TS0950NC",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0951:1",
+              "toTerminal": "1",
+              "toLocation": "SPACE HEATER PANEL",
+              "bundleName": "H0950 - RED",
+              "bundleDisplay": "H0950 - RED",
+              "devicePrefix": "H"
+            },
+            {
+              "rowId": "row-7",
+              "rowIndex": 18,
+              "fromDeviceId": "H0950:N",
+              "fromTerminal": "N",
+              "fromTerminalOrder": null,
+              "wireNo": "-QS0950LD3",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0951:3",
+              "toTerminal": "3",
+              "toLocation": "SPACE HEATER PANEL",
+              "bundleName": "H0950 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "H",
+              "isNegative": true
+            }
+          ]
+        },
+        {
+          "bundleName": "H0951 - RED",
+          "toLocation": "SPACE HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-9",
+              "rowIndex": 20,
+              "fromDeviceId": "H0951:L",
+              "fromTerminal": "L",
+              "fromTerminalOrder": null,
+              "wireNo": "TS0950NC",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0951:2",
+              "toTerminal": "2",
+              "toLocation": "SPACE HEATER PANEL",
+              "bundleName": "H0951 - RED",
+              "bundleDisplay": "H0951 - RED",
+              "devicePrefix": "H"
+            },
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "H0951:N",
+              "fromTerminal": "N",
+              "fromTerminalOrder": null,
+              "wireNo": "-QS0950LD3",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0951:4",
+              "toTerminal": "4",
+              "toLocation": "SPACE HEATER PANEL",
+              "bundleName": "H0951 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "H",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "QS",
+      "bundles": [
+        {
+          "bundleName": "QS0950 - RED",
+          "toLocation": "SPACE HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 22,
+              "fromDeviceId": "QS0950:LD-1",
+              "fromTerminal": "LD-1",
+              "fromTerminalOrder": null,
+              "wireNo": "QS0950LD1",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "TS0950:C",
+              "toTerminal": "C",
+              "toLocation": "SPACE HEATER PANEL",
+              "bundleName": "QS0950 - RED",
+              "bundleDisplay": "QS0950 - RED",
+              "devicePrefix": "QS"
+            },
+            {
+              "rowId": "row-12",
+              "rowIndex": 23,
+              "fromDeviceId": "QS0950:LD-3",
+              "fromTerminal": "LD-3",
+              "fromTerminalOrder": null,
+              "wireNo": "QS0950LD3",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0951:3",
+              "toTerminal": "3",
+              "toLocation": "SPACE HEATER PANEL",
+              "bundleName": "QS0950 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "QS"
+            },
+            {
+              "rowId": "row-13",
+              "rowIndex": 24,
+              "fromDeviceId": "QS0950:LI-2",
+              "fromTerminal": "LI-2",
+              "fromTerminalOrder": null,
+              "wireNo": "H0950L1",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0950:1",
+              "toTerminal": "1",
+              "toLocation": "SPACE HEATER PANEL",
+              "bundleName": "QS0950 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "QS"
+            },
+            {
+              "rowId": "row-14",
+              "rowIndex": 25,
+              "fromDeviceId": "QS0950:LI-4",
+              "fromTerminal": "LI-4",
+              "fromTerminalOrder": null,
+              "wireNo": "H0950L2",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0950:2",
+              "toTerminal": "2",
+              "toLocation": "SPACE HEATER PANEL",
+              "bundleName": "QS0950 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "QS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "TS",
+      "bundles": [
+        {
+          "bundleName": "TS - XT",
+          "toLocation": "SPACE HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-15",
+              "rowIndex": 26,
+              "fromDeviceId": "TS0950:NC",
+              "fromTerminal": "NC",
+              "fromTerminalOrder": null,
+              "wireNo": "TS0950NC",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0951:1",
+              "toTerminal": "1",
+              "toLocation": "SPACE HEATER PANEL",
+              "bundleName": "TS - XT",
+              "bundleDisplay": "TS - XT",
+              "devicePrefix": "TS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "HL",
+      "bundles": [
+        {
+          "bundleName": "HL0950 - RED",
+          "toLocation": "CONSOLE HEATER LIGHT",
+          "rows": [
+            {
+              "rowId": "row-17",
+              "rowIndex": 28,
+              "fromDeviceId": "HL0950:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "TS0950NC",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0951:1",
+              "toTerminal": "1",
+              "toLocation": "CONSOLE HEATER LIGHT",
+              "bundleName": "HL0950 - RED",
+              "bundleDisplay": "HL0950 - RED - CONSOLE HEATER LIGHT",
+              "devicePrefix": "HL"
+            },
+            {
+              "rowId": "row-18",
+              "rowIndex": 29,
+              "fromDeviceId": "HL0950:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "QS0950LD3",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0951:3",
+              "toTerminal": "3",
+              "toLocation": "CONSOLE HEATER LIGHT",
+              "bundleName": "HL0950 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "HL"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "46f5b8e8fccbd0caad3967a3961e8dac630a201fc510821509063d66ce7d467d"
+}

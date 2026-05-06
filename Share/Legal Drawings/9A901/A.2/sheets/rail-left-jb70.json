@@ -1,0 +1,168 @@
+{
+  "slug": "rail-left-jb70",
+  "name": "RAIL,LEFT,JB70",
+  "kind": "operational",
+  "sheetIndex": 11,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1101:",
+      "wireType": "SC",
+      "wireNo": "GR1101",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "7.A5",
+      "toDeviceId": "FRAME",
+      "toLocation": "RAIL,LEFT,JB70",
+      "toPageZone": "7.A6",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "PC0470:INP_A",
+      "wireType": "SC",
+      "wireNo": "-009312",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "fromLocation": "",
+      "fromPageZone": "27.B5",
+      "toDeviceId": "PC0470:INP_B",
+      "toLocation": "RAIL,LEFT,JB70",
+      "toPageZone": "27.B5",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-2",
+      "fromDeviceId": "PC0470:+PWR",
+      "wireType": "SC",
+      "wireNo": "-009344",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "fromLocation": "",
+      "fromPageZone": "27.B5",
+      "toDeviceId": "AF0093:44",
+      "toLocation": "CONTROL A",
+      "toPageZone": "27.B7",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-3",
+      "fromDeviceId": "PC0470:INP_A",
+      "wireType": "SC",
+      "wireNo": "-009312",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "fromLocation": "",
+      "fromPageZone": "27.B5",
+      "toDeviceId": "AF0093:12",
+      "toLocation": "CONTROL A",
+      "toPageZone": "27.B7",
+      "location": ""
+    },
+    {
+      "__rowIndex": 14,
+      "__rowId": "row-4",
+      "fromDeviceId": "PC0470:-PWR",
+      "wireType": "SC",
+      "wireNo": "-009328",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "fromLocation": "",
+      "fromPageZone": "27.B5",
+      "toDeviceId": "AF0093:28",
+      "toLocation": "CONTROL A",
+      "toPageZone": "27.B7",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1101",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "7.A6",
+      "Location": "RAIL,LEFT,JB70"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "PC0470:INP_B",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "009312",
+      "Wire ID": "WHT",
+      "Gauge/Size": "20",
+      "Page/Zone": "27.B5",
+      "Location": "RAIL,LEFT,JB70"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "AF0093:44",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "009344",
+      "Wire ID": "WHT",
+      "Gauge/Size": "20",
+      "Page/Zone": "27.B7",
+      "Location": "CONTROL A"
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "AF0093:12",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "009312",
+      "Wire ID": "WHT",
+      "Gauge/Size": "20",
+      "Page/Zone": "27.B7",
+      "Location": "CONTROL A"
+    },
+    {
+      "__rowId": "raw-4",
+      "Device ID": "AF0093:28",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "009328",
+      "Wire ID": "WHT",
+      "Gauge/Size": "20",
+      "Page/Zone": "27.B7",
+      "Location": "CONTROL A"
+    }
+  ],
+  "rowCount": 5,
+  "metadata": {
+    "projectName": "Cheniere-Sinton",
+    "revision": "A.2",
+    "controlsDE": "J.HYDE",
+    "controlsME": "K.SIDES"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Rail in title with no Panel number"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:56:04.398Z"
+}

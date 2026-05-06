@@ -1,0 +1,117 @@
+{
+  "slug": "jb70-right-rail",
+  "name": "JB70 RIGHT RAIL",
+  "kind": "operational",
+  "sheetIndex": 8,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "FU1100:LD",
+      "wireType": "SC",
+      "wireNo": "FU1100",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "33.D3",
+      "toDeviceId": "AT1100:POS",
+      "toLocation": "JB70",
+      "toPageZone": "33.D3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-1",
+      "fromDeviceId": "FU1100:LI",
+      "wireType": "SC",
+      "wireNo": "FU0136",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "33.D3",
+      "toDeviceId": "XT0138:3",
+      "toLocation": "PANEL A",
+      "toPageZone": "20.A3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-2",
+      "fromDeviceId": "GR1100:",
+      "wireType": "SC",
+      "wireNo": "GR1100",
+      "wireId": "GRN",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "5.A5",
+      "toDeviceId": "IEG0230:14",
+      "toLocation": "PANEL B",
+      "toPageZone": "5.A4",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "AT1100:POS",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "FU1100",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "33.D3",
+      "Location": "JB70"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "XT0138:3",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "FU0136",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "20.A3",
+      "Location": "PANEL A"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "IEG0230:14",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1100",
+      "Wire ID": "GRN",
+      "Gauge/Size": "14",
+      "Page/Zone": "5.A4",
+      "Location": "PANEL B"
+    }
+  ],
+  "rowCount": 3,
+  "metadata": {
+    "projectName": "SHELL PERDIDO",
+    "revision": "A.2",
+    "controlsDE": "J.SENECA"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Rail in title with no Panel number"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:05:39.853Z"
+}

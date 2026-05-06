@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:09:08.426Z",
+  "mode": "branding-export",
+  "sheetSlug": "terminal-panel-1",
+  "sheetName": "TERMINAL PANEL 1",
+  "totalRows": 5,
+  "header": {
+    "locationTitle": "TERMINAL PANEL 1",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0090",
+    "projectName": "J0090",
+    "revision": "A.7",
+    "controlsDE": "R.BARRAZA",
+    "controlsME": "G.CATO"
+  },
+  "importHints": {
+    "canonicalSheetName": "TERMINAL PANEL #1",
+    "normalizedSheetName": "terminal-panel-1",
+    "bundleNames": [
+      "XT9008",
+      "XT9015",
+      "XT - KA"
+    ],
+    "bundleDisplays": [
+      "XT9008 - A - PANEL",
+      "XT9015 - A - PANEL",
+      "XT - KA - B - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT9008",
+          "toLocation": "A PANEL",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "XT9008:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "HA13002",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0095:00",
+              "toTerminal": "00",
+              "toLocation": "A PANEL",
+              "bundleName": "XT9008",
+              "bundleDisplay": "XT9008 - A - PANEL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "XT9008:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "HA13001",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0095:16",
+              "toTerminal": "16",
+              "toLocation": "A PANEL",
+              "bundleName": "XT9008",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT9015",
+          "toLocation": "A PANEL",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "XT9015:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SV66701",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0095:04",
+              "toTerminal": "04",
+              "toLocation": "A PANEL",
+              "bundleName": "XT9015",
+              "bundleDisplay": "XT9015 - A - PANEL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "XT9015:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SV66702",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0095:20",
+              "toTerminal": "20",
+              "toLocation": "A PANEL",
+              "bundleName": "XT9015",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT - KA",
+          "toLocation": "B PANEL",
+          "rows": [
+            {
+              "rowId": "row-9",
+              "rowIndex": 20,
+              "fromDeviceId": "XT9140:7",
+              "fromTerminal": "7",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SV21001",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA0238:11",
+              "toTerminal": "11",
+              "toLocation": "B PANEL",
+              "bundleName": "XT - KA",
+              "bundleDisplay": "XT - KA - B - PANEL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "dd8bed843fc1daa9876d99490218d5e7a562b89c8c24feb0d8e7aa2aea7d2531"
+}

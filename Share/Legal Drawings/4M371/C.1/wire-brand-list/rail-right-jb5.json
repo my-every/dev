@@ -1,0 +1,60 @@
+{
+  "sheetSlug": "rail-right-jb5",
+  "sheetName": "RAIL,RIGHT,JB5",
+  "sourceSheetName": "RAIL,RIGHT,JB5",
+  "metadata": {
+    "normalizedSheetName": "rail-right-jb5",
+    "bundleNames": [
+      "FU - XT",
+      "UV - XT",
+      "FU - UV"
+    ]
+  },
+  "rows": [
+    {
+      "importedRowId": "rail-right-jb5-15",
+      "rowIndex": 15,
+      "matchKey": "FU0111:LI|FU0400|WHT|12|XT0402:2|JB5",
+      "fromDeviceId": "FU0111:LI",
+      "wireNo": "FU0400",
+      "wireId": "WHT",
+      "gaugeSize": "12",
+      "length": 120,
+      "toDeviceId": "XT0402:2",
+      "toLocation": "JB5",
+      "devicePrefix": "FU0111",
+      "bundleName": "FU - XT",
+      "bundleDisplay": "FU - XT - JB5"
+    },
+    {
+      "importedRowId": "rail-right-jb5-19",
+      "rowIndex": 19,
+      "matchKey": "UV0110:9-|0V|WHT|16|XT0403:2|JB5",
+      "fromDeviceId": "UV0110:9-",
+      "wireNo": "0V",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "length": 120,
+      "toDeviceId": "XT0403:2",
+      "toLocation": "JB5",
+      "devicePrefix": "UV0110",
+      "bundleName": "UV - XT",
+      "bundleDisplay": "UV - XT - JB5"
+    },
+    {
+      "importedRowId": "rail-right-jb5-23",
+      "rowIndex": 23,
+      "matchKey": "FU0111:LD|UV0110P|WHT|14|UV0110:8+|RAIL,RIGHT,JB5",
+      "fromDeviceId": "FU0111:LD",
+      "wireNo": "UV0110P",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 60,
+      "toDeviceId": "UV0110:8+",
+      "toLocation": "RAIL,RIGHT,JB5",
+      "devicePrefix": "FU0111",
+      "bundleName": "FU - UV",
+      "bundleDisplay": "FU - UV"
+    }
+  ]
+}

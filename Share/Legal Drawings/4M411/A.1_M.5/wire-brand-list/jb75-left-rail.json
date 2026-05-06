@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:33:06.627Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb75-left-rail",
+  "sheetName": "JB75 LEFT RAIL",
+  "totalRows": 3,
+  "header": {
+    "locationTitle": "JB75 LEFT RAIL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M411",
+    "projectName": "4M411",
+    "revision": "A.1_M.5",
+    "controlsDE": "J. LI",
+    "controlsME": "test"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB75,LEFT RAIL",
+    "normalizedSheetName": "jb75-left-rail",
+    "bundleNames": [
+      "BA1213",
+      "FU - XT"
+    ],
+    "bundleDisplays": [
+      "BA1213",
+      "FU - XT"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA1213",
+          "toLocation": "JB75,LEFT RAIL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "BA1213:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-BA1100N",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0391:2",
+              "toTerminal": "2",
+              "toLocation": "JB75,LEFT RAIL",
+              "bundleName": "BA1213",
+              "bundleDisplay": "BA1213",
+              "devicePrefix": "BA",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "BA1213:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1213LD",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU1213:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB75,LEFT RAIL",
+              "bundleName": "BA1213",
+              "bundleDisplay": "",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "JB75,LEFT RAIL",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "FU1213:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "BA1100P",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0391:1",
+              "toTerminal": "1",
+              "toLocation": "JB75,LEFT RAIL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "0451ae0f970f0e7a4867ff8437548f616334075f679fae3e88618e7e0464cdac"
+}

@@ -1,0 +1,79 @@
+{
+  "partNumber": "1337728-12",
+  "description": "SWITCH, ETAP, DLR INTERFACE",
+  "category": "devices",
+  "type": "networking",
+  "images": {
+    "gallery": []
+  },
+  "details": {},
+  "tags": [
+    "Industrial Networking"
+  ],
+  "source": "migrated",
+  "createdAt": "2026-04-24T14:02:52.150Z",
+  "updatedAt": "2026-05-05T04:29:57.835Z",
+  "terminalSchema": {
+    "negativePatterns": [
+      "-",
+      "0V",
+      "0VDC",
+      "COM",
+      "COMMON",
+      "DC-",
+      "NEG",
+      "NEGATIVE"
+    ],
+    "updatedAt": "2026-05-05T04:29:57.834Z",
+    "terminals": [
+      {
+        "name": "L1",
+        "aliases": [],
+        "wireId": "ENET",
+        "size": "CABLE",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "L2",
+        "aliases": [],
+        "wireId": "ENET",
+        "size": "CABLE",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "NEG",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "16",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": true,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "POS",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "16",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      }
+    ]
+  }
+}

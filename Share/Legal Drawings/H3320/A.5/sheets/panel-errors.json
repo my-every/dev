@@ -1,0 +1,92 @@
+{
+  "slug": "panel-errors",
+  "name": "Panel Errors",
+  "kind": "reference",
+  "sheetIndex": 17,
+  "headers": [
+    "Device ID",
+    "Location",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire ID",
+    "Wire No.",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location_1",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "KA0182:A1",
+      "wireType": "SC",
+      "wireNo": "-007630",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "fromLocation": "JB70 DOOR",
+      "fromPageZone": "75.D5",
+      "toDeviceId": "AF0076:30",
+      "toLocation": "PANEL",
+      "toPageZone": "75.D7",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "KA0182:A2",
+      "wireType": "SC",
+      "wireNo": "-007614",
+      "wireId": "WHT",
+      "gaugeSize": "20",
+      "fromLocation": "JB70 DOOR",
+      "fromPageZone": "75.D5",
+      "toDeviceId": "AF0076:14",
+      "toLocation": "PANEL",
+      "toPageZone": "75.D7",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "AF0076:30",
+      "Location": "JB70 DOOR",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire ID": "WHT",
+      "Wire No.": "007630",
+      "Gauge/Size": "20",
+      "Page/Zone": "75.D7"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "AF0076:14",
+      "Location": "JB70 DOOR",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire ID": "WHT",
+      "Wire No.": "007614",
+      "Gauge/Size": "20",
+      "Page/Zone": "75.D7"
+    }
+  ],
+  "rowCount": 2,
+  "metadata": {
+    "projectName": "TALOS BULLWINKLE 703 704",
+    "revision": "A.5",
+    "controlsDE": "D.JOHN",
+    "controlsME": "G.CATO"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "BUILD_UP",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 0,
+    "detectedReasons": [],
+    "requiresWireSws": false,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:08:07.740Z"
+}

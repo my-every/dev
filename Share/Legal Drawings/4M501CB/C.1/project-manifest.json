@@ -1,0 +1,97 @@
+{
+  "id": "legal-4m501cb-c-1",
+  "name": "FPSO Gato do Mato CS",
+  "filename": "4M501CB-UCPWiringList_C.1.xlsx",
+  "pdNumber": "4M501CB",
+  "revision": "C.1",
+  "createdAt": "2026-05-05T13:34:04.628Z",
+  "sheets": [
+    {
+      "slug": "jb1123",
+      "name": "JB1123",
+      "kind": "operational",
+      "sheetPath": "sheets/jb1123.json",
+      "rowCount": 39,
+      "columnCount": 9,
+      "sheetIndex": 0,
+      "hasData": true
+    }
+  ],
+  "assignments": {
+    "jb1123": {
+      "sheetSlug": "jb1123",
+      "sheetName": "JB1123",
+      "kind": "operational",
+      "sheetPath": "sheets/jb1123.json",
+      "rowCount": 39,
+      "columnCount": 9,
+      "sheetIndex": 0,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [],
+      "partNumbers": [],
+      "files": {
+        "wireListSchemaPath": "sheets/jb1123.json",
+        "brandListSchemaPath": "wire-brand-list/jb1123.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "Layout pages exist for JB1123, but none passed high-confidence structural matching."
+      },
+      "devices": {},
+      "unitType": "JB1123",
+      "externalLocations": [],
+      "buildUpEstTime": "43m",
+      "wireListEstTime": "29m",
+      "totalEstimatedMinutes": 72,
+      "remainingMinutes": 72,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    }
+  },
+  "referenceSheets": {},
+  "unitType": "JB1123",
+  "unitTypes": [
+    "JB1123"
+  ],
+  "panducts": 2,
+  "rails": 1,
+  "aggregates": {
+    "totalAssignments": 1,
+    "completedAssignments": 0,
+    "inProgressAssignments": 0,
+    "blockedAssignments": 0,
+    "totalEstimatedMinutes": 72,
+    "totalRemainingMinutes": 72,
+    "totalActualMinutes": 0,
+    "overallProgress": 0,
+    "highestPriority": "low",
+    "priorityCounts": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 1
+    },
+    "stageCounts": {
+      "READY_TO_LAY": 1
+    }
+  },
+  "assignmentsByUnitType": {
+    "JB1123": [
+      "jb1123"
+    ]
+  },
+  "projectName": "SHL-GMN SHIP AHEAD",
+  "lwcType": "New"
+}

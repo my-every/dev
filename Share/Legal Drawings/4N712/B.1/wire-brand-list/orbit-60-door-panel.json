@@ -1,0 +1,408 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:49:52.585Z",
+  "mode": "branding-export",
+  "sheetSlug": "orbit-60-door-panel",
+  "sheetName": "ORBIT 60 DOOR PANEL",
+  "totalRows": 14,
+  "header": {
+    "locationTitle": "ORBIT 60 DOOR PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4N712",
+    "projectName": "ONE-E2 - Unit 1",
+    "revision": "B.1",
+    "controlsDE": "D. KIM",
+    "controlsME": "A. PLVAN"
+  },
+  "importHints": {
+    "canonicalSheetName": "ORBIT 60^DOOR PANEL",
+    "normalizedSheetName": "orbit-60-door-panel",
+    "bundleNames": [
+      "UV - FU",
+      "AP0612",
+      "UV - XT",
+      "AP0628"
+    ],
+    "bundleDisplays": [
+      "UV - FU - ISOLATOR - PANEL",
+      "AP0612 - LEFT SIDE - PANEL",
+      "UV - XT - LEFT SIDE - PANEL",
+      "AP0612 - PANEL A",
+      "AP0628 - PANEL A"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV - FU",
+          "toLocation": "ISOLATOR PANEL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "UV0610:+DC",
+              "fromTerminal": "+DC",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0411",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0411:LD",
+              "toTerminal": "LD",
+              "toLocation": "ISOLATOR PANEL",
+              "bundleName": "UV - FU",
+              "bundleDisplay": "UV - FU - ISOLATOR - PANEL",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "UV0611:+DC",
+              "fromTerminal": "+DC",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0412",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0412:LD",
+              "toTerminal": "LD",
+              "toLocation": "ISOLATOR PANEL",
+              "bundleName": "UV - FU",
+              "bundleDisplay": "",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AP",
+      "bundles": [
+        {
+          "bundleName": "AP0612",
+          "toLocation": "LEFT SIDE^PANEL",
+          "rows": [
+            {
+              "rowId": "row-56",
+              "rowIndex": 67,
+              "fromDeviceId": "AP0612:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-AP0612COM",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA0701:11",
+              "toTerminal": "11",
+              "toLocation": "LEFT SIDE^PANEL",
+              "bundleName": "AP0612",
+              "bundleDisplay": "AP0612 - LEFT SIDE - PANEL",
+              "devicePrefix": "AP",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-57",
+              "rowIndex": 68,
+              "fromDeviceId": "AP0612:TM",
+              "fromTerminal": "TM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AP0612TM",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA0701:14",
+              "toTerminal": "14",
+              "toLocation": "LEFT SIDE^PANEL",
+              "bundleName": "AP0612",
+              "bundleDisplay": "",
+              "devicePrefix": "AP",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV - XT",
+          "toLocation": "LEFT SIDE^PANEL",
+          "rows": [
+            {
+              "rowId": "row-58",
+              "rowIndex": 69,
+              "fromDeviceId": "UV0610:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0410:2",
+              "toTerminal": "2",
+              "toLocation": "LEFT SIDE^PANEL",
+              "bundleName": "UV - XT",
+              "bundleDisplay": "UV - XT - LEFT SIDE - PANEL",
+              "devicePrefix": "UV",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-59",
+              "rowIndex": 70,
+              "fromDeviceId": "UV0611:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0410:3",
+              "toTerminal": "3",
+              "toLocation": "LEFT SIDE^PANEL",
+              "bundleName": "UV - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "UV",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AP",
+      "bundles": [
+        {
+          "bundleName": "AP0612",
+          "toLocation": "PANEL A",
+          "rows": [
+            {
+              "rowId": "row-60",
+              "rowIndex": 71,
+              "fromDeviceId": "AP0612:ARM",
+              "fromTerminal": "ARM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AP0612ARM",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0082:32",
+              "toTerminal": "32",
+              "toLocation": "PANEL A",
+              "bundleName": "AP0612",
+              "bundleDisplay": "AP0612 - PANEL A",
+              "devicePrefix": "AP",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-61",
+              "rowIndex": 72,
+              "fromDeviceId": "AP0612:NO",
+              "fromTerminal": "NO",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AP0612NO",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0082:00",
+              "toTerminal": "00",
+              "toLocation": "PANEL A",
+              "bundleName": "AP0612",
+              "bundleDisplay": "",
+              "devicePrefix": "AP",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AP0628",
+          "toLocation": "PANEL A",
+          "rows": [
+            {
+              "rowId": "row-62",
+              "rowIndex": 73,
+              "fromDeviceId": "AP0628:ARM1",
+              "fromTerminal": "ARM1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AP0628ARM1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0082:33",
+              "toTerminal": "33",
+              "toLocation": "PANEL A",
+              "bundleName": "AP0628",
+              "bundleDisplay": "AP0628 - PANEL A",
+              "devicePrefix": "AP",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-63",
+              "rowIndex": 74,
+              "fromDeviceId": "AP0628:ARM2",
+              "fromTerminal": "ARM2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AP0628ARM2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0082:35",
+              "toTerminal": "35",
+              "toLocation": "PANEL A",
+              "bundleName": "AP0628",
+              "bundleDisplay": "",
+              "devicePrefix": "AP",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-64",
+              "rowIndex": 75,
+              "fromDeviceId": "AP0628:ARM3",
+              "fromTerminal": "ARM3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AP0628ARM3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0082:36",
+              "toTerminal": "36",
+              "toLocation": "PANEL A",
+              "bundleName": "AP0628",
+              "bundleDisplay": "",
+              "devicePrefix": "AP",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-65",
+              "rowIndex": 76,
+              "fromDeviceId": "AP0628:NC1",
+              "fromTerminal": "NC1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AP0628NC1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0082:01",
+              "toTerminal": "01",
+              "toLocation": "PANEL A",
+              "bundleName": "AP0628",
+              "bundleDisplay": "",
+              "devicePrefix": "AP",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-66",
+              "rowIndex": 77,
+              "fromDeviceId": "AP0628:NC2",
+              "fromTerminal": "NC2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AP0628NC2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0082:03",
+              "toTerminal": "03",
+              "toLocation": "PANEL A",
+              "bundleName": "AP0628",
+              "bundleDisplay": "",
+              "devicePrefix": "AP",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-67",
+              "rowIndex": 78,
+              "fromDeviceId": "AP0628:NC3",
+              "fromTerminal": "NC3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AP0628NC3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0082:04",
+              "toTerminal": "04",
+              "toLocation": "PANEL A",
+              "bundleName": "AP0628",
+              "bundleDisplay": "",
+              "devicePrefix": "AP",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "a40147f21724c04a649e1d34cab9493af5bef9b1facd5a8623c01d75a3777009"
+}

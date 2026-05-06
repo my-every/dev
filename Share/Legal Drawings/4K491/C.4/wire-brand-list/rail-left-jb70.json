@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:12:50.480Z",
+  "mode": "branding-export",
+  "sheetSlug": "rail-left-jb70",
+  "sheetName": "RAIL LEFT JB70",
+  "totalRows": 4,
+  "header": {
+    "locationTitle": "RAIL LEFT JB70",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4K491",
+    "projectName": "4K491",
+    "revision": "C.4"
+  },
+  "importHints": {
+    "canonicalSheetName": "RAIL,LEFT,JB70",
+    "normalizedSheetName": "rail-left-jb70",
+    "bundleNames": [
+      "FU - UV",
+      "UV - XT",
+      "FU - XT",
+      "XT - XT"
+    ],
+    "bundleDisplays": [
+      "FU - UV",
+      "UV - XT",
+      "FU - XT - CONTROL A",
+      "XT - XT - CONTROL A"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - UV",
+          "toLocation": "RAIL,LEFT,JB70",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "FU0630:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0630",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UV0630:8+",
+              "toTerminal": "8+",
+              "toLocation": "RAIL,LEFT,JB70",
+              "bundleName": "FU - UV",
+              "bundleDisplay": "FU - UV",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV - XT",
+          "toLocation": "RAIL,LEFT,JB70",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "UV0630:9-",
+              "fromTerminal": "9-",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0630:1",
+              "toTerminal": "1",
+              "toLocation": "RAIL,LEFT,JB70",
+              "bundleName": "UV - XT",
+              "bundleDisplay": "UV - XT",
+              "devicePrefix": "UV",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "CONTROL A",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "FU0630:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0002:3",
+              "toTerminal": "3",
+              "toLocation": "CONTROL A",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT - CONTROL A",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "CONTROL A",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "XT0630:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0003:3",
+              "toTerminal": "3",
+              "toLocation": "CONTROL A",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT - CONTROL A",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "9d4500596c529f03b6a6d01de0180818830c784515842775662aedac69e45bb7"
+}

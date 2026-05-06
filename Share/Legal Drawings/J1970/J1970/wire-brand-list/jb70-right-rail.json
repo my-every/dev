@@ -1,0 +1,267 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:18:04.214Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb70-right-rail",
+  "sheetName": "JB70 RIGHT RAIL",
+  "totalRows": 7,
+  "header": {
+    "locationTitle": "JB70 RIGHT RAIL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J1970",
+    "projectName": "J1970",
+    "revision": "J1970",
+    "controlsDE": "S.SANKAR"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB70 RIGHT RAIL",
+    "normalizedSheetName": "jb70-right-rail",
+    "bundleNames": [
+      "KA0130:A1 / -008135",
+      "BA - FU",
+      "KA - UA",
+      "PC - PC",
+      "UA - UA",
+      "FU1213"
+    ],
+    "bundleDisplays": [
+      "KA0130:A1 / -008135",
+      "BA - FU",
+      "KA - UA",
+      "PC - PC",
+      "UA - UA",
+      "FU1213 - CONS AUX 1BAY BACK - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "KA",
+      "bundles": [
+        {
+          "bundleName": "KA0130:A1 / -008135",
+          "toLocation": "JB70 RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "KA0130:A1",
+              "fromTerminal": "A1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-008135",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0130:11",
+              "toTerminal": "11",
+              "toLocation": "JB70 RIGHT RAIL",
+              "bundleName": "KA0130:A1 / -008135",
+              "bundleDisplay": "KA0130:A1 / -008135",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA - FU",
+          "toLocation": "JB70 RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "BA1100:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1101",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU1101:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB70 RIGHT RAIL",
+              "bundleName": "BA - FU",
+              "bundleDisplay": "BA - FU",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "KA",
+      "bundles": [
+        {
+          "bundleName": "KA - UA",
+          "toLocation": "JB70 RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "KA0130:A2",
+              "fromTerminal": "A2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UA1200J26",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UA1200:J2-6",
+              "toTerminal": "J2-6",
+              "toLocation": "JB70 RIGHT RAIL",
+              "bundleName": "KA - UA",
+              "bundleDisplay": "KA - UA",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "PC",
+      "bundles": [
+        {
+          "bundleName": "PC - PC",
+          "toLocation": "JB70 RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "PC0470:INP_A",
+              "fromTerminal": "INP_A",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009312",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "PC0470:INP_B",
+              "toTerminal": "INP_B",
+              "toLocation": "JB70 RIGHT RAIL",
+              "bundleName": "PC - PC",
+              "bundleDisplay": "PC - PC",
+              "devicePrefix": "PC",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UA",
+      "bundles": [
+        {
+          "bundleName": "UA - UA",
+          "toLocation": "JB70 RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "UA1200:J1-8",
+              "fromTerminal": "J1-8",
+              "fromTerminalOrder": null,
+              "wireNo": "UA1200J",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UA1200:J3-5",
+              "toTerminal": "J3-5",
+              "toLocation": "JB70 RIGHT RAIL",
+              "bundleName": "UA - UA",
+              "bundleDisplay": "UA - UA",
+              "devicePrefix": "UA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU1213",
+          "toLocation": "CONS,AUX,1BAY,^ BACK PANEL",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "FU1213:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1213LD",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "BA1213:POS",
+              "toTerminal": "POS",
+              "toLocation": "CONS,AUX,1BAY,^ BACK PANEL",
+              "bundleName": "FU1213",
+              "bundleDisplay": "FU1213 - CONS AUX 1BAY BACK - PANEL",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-7",
+              "rowIndex": 18,
+              "fromDeviceId": "FU1213:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV0291P",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0391:1",
+              "toTerminal": "1",
+              "toLocation": "CONS,AUX,1BAY,^ BACK PANEL",
+              "bundleName": "FU1213",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "c7ce41346aec36316cefcc787ec207edf3205fbb7eb5c31d931eeb33fe220173"
+}

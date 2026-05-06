@@ -1,0 +1,67 @@
+{
+  "slug": "prox-lpc",
+  "name": "PROX,LPC",
+  "kind": "operational",
+  "sheetIndex": 14,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR4560:",
+      "wireType": "SC",
+      "wireNo": "GR4560",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "11.A6",
+      "toDeviceId": "FRAME",
+      "toLocation": "PROX,LPC",
+      "toPageZone": "11.A6",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR4560",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "11.A6",
+      "Location": "PROX,LPC"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "NW NATURAL",
+    "revision": "B.2",
+    "controlsDE": "J. UNGER"
+  },
+  "assignment": {
+    "swsType": "BLANK",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "BLANK",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Has Prox - Basic/Blank panel"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:23:48.254Z"
+}

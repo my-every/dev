@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:35:42.771Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb70-plc-panel",
+  "sheetName": "JB70 PLC PANEL",
+  "totalRows": 2,
+  "header": {
+    "locationTitle": "JB70 PLC PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M575",
+    "projectName": "TRP-NAU - Unit 1",
+    "revision": "B.1_M.1",
+    "controlsDE": "MADDI, A."
+  },
+  "importHints": {
+    "canonicalSheetName": "JB70 PLC PANEL",
+    "normalizedSheetName": "jb70-plc-panel",
+    "bundleNames": [
+      "UV - XT",
+      "UV - FU"
+    ],
+    "bundleDisplays": [
+      "UV - XT - PANEL A",
+      "UV - FU - PANEL B"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV - XT",
+          "toLocation": "JB70 PANEL A",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "UV0600:(-)",
+              "fromTerminal": "(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0003:4",
+              "toTerminal": "4",
+              "toLocation": "JB70 PANEL A",
+              "bundleName": "UV - XT",
+              "bundleDisplay": "UV - XT - PANEL A",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV - FU",
+          "toLocation": "JB70 PANEL B",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "UV0600:(+)",
+              "fromTerminal": "(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0010",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0010:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB70 PANEL B",
+              "bundleName": "UV - FU",
+              "bundleDisplay": "UV - FU - PANEL B",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "ae77e4a51ad19a0719419161f917fe5dd9d3342de2412f66734ef39e4118c4ad"
+}

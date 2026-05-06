@@ -1,0 +1,93 @@
+{
+  "slug": "non-is-pnl-2",
+  "name": "NON-IS PNL 2",
+  "kind": "operational",
+  "sheetIndex": 20,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR0675:",
+      "wireType": "SC",
+      "wireNo": "GR0675",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "12.D5",
+      "toDeviceId": "FRAME",
+      "toLocation": "NON-IS PNL 2",
+      "toPageZone": "12.D4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-1",
+      "fromDeviceId": "GR0014:",
+      "wireType": "SC",
+      "wireNo": "IEG04303",
+      "wireId": "GRN",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "12.D4",
+      "toDeviceId": "IEG0430:3",
+      "toLocation": "CONTROL CONSOLE (IS #1)",
+      "toPageZone": "12.D3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0675",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "12.D4",
+      "Location": "NON-IS PNL 2"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "IEG0430:3",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "IEG04303",
+      "Wire ID": "GRN",
+      "Gauge/Size": "14",
+      "Page/Zone": "12.D3",
+      "Location": "CONTROL CONSOLE (IS #1)"
+    }
+  ],
+  "rowCount": 2,
+  "metadata": {
+    "projectName": "QATAR ENERGY",
+    "revision": "C.4",
+    "controlsDE": "C. CRAIG",
+    "controlsME": "H. MEDRANO"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:09:53.601Z"
+}

@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:24:31.250Z",
+  "mode": "branding-export",
+  "sheetSlug": "plc",
+  "sheetName": "PLC",
+  "totalRows": 4,
+  "header": {
+    "locationTitle": "PLC",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M021",
+    "projectName": "4M021",
+    "revision": "B.2",
+    "controlsDE": "J. UNGER"
+  },
+  "importHints": {
+    "canonicalSheetName": "PLC",
+    "normalizedSheetName": "plc",
+    "bundleNames": [
+      "AT0680",
+      "FU - XT",
+      "BA - BA"
+    ],
+    "bundleDisplays": [
+      "AT0680",
+      "FU - XT",
+      "BA - BA - FO CONV VFD"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT0680",
+          "toLocation": "PLC",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "AT0680:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0680:2",
+              "toTerminal": "2",
+              "toLocation": "PLC",
+              "bundleName": "AT0680",
+              "bundleDisplay": "AT0680",
+              "devicePrefix": "AT",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "AT0680:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AT0680POS",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0680:1",
+              "toTerminal": "1",
+              "toLocation": "PLC",
+              "bundleName": "AT0680",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "PLC",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "FU0680:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AT0680POS",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0680:1",
+              "toTerminal": "1",
+              "toLocation": "PLC",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA - BA",
+          "toLocation": "FO CONV,VFD",
+          "rows": [
+            {
+              "rowId": "row-24",
+              "rowIndex": 34,
+              "fromDeviceId": "BA0070:1-RX",
+              "fromTerminal": "1-RX",
+              "fromTerminalOrder": null,
+              "wireNo": "BA0005RX",
+              "wireId": "",
+              "gaugeSize": "",
+              "length": 120,
+              "toDeviceId": "BA0005:RX",
+              "toTerminal": "RX",
+              "toLocation": "FO CONV,VFD",
+              "bundleName": "BA - BA",
+              "bundleDisplay": "BA - BA - FO CONV VFD",
+              "devicePrefix": "BA"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "ca773178675bf7cbb04e2f5dfa3be57e5f4f9da9af4dc2946727ce1371d81507"
+}

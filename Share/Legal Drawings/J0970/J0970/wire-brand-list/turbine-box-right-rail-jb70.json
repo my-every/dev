@@ -1,0 +1,534 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:13:15.526Z",
+  "mode": "branding-export",
+  "sheetSlug": "turbine-box-right-rail-jb70",
+  "sheetName": "TURBINE BOX RIGHT RAIL JB70",
+  "totalRows": 17,
+  "header": {
+    "locationTitle": "TURBINE BOX RIGHT RAIL JB70",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0970",
+    "projectName": "J0970",
+    "revision": "J0970",
+    "controlsDE": "R.BARRAZA",
+    "controlsME": "A. PUENTES"
+  },
+  "importHints": {
+    "canonicalSheetName": "TURBINE BOX^RIGHT RAIL^JB70",
+    "normalizedSheetName": "turbine-box-right-rail-jb70",
+    "bundleNames": [
+      "AT0680",
+      "BA0001",
+      "BA0003",
+      "BA1100",
+      "FU - UV",
+      "FU - XT",
+      "PC - PC",
+      "UV0291"
+    ],
+    "bundleDisplays": [
+      "AT0680",
+      "BA0001",
+      "BA0003",
+      "BA1100",
+      "FU - UV",
+      "FU - XT",
+      "PC - PC",
+      "UV0291"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT0680",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "AT0680:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0680:2",
+              "toTerminal": "2",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "AT0680",
+              "bundleDisplay": "AT0680",
+              "devicePrefix": "AT",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AT0680",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "AT0680:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AT0680POS",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0680:1",
+              "toTerminal": "1",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "AT0680",
+              "bundleDisplay": "AT0680",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA0001",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-7",
+              "rowIndex": 17,
+              "fromDeviceId": "BA0001:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0001",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0001:LD",
+              "toTerminal": "LD",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "BA0001",
+              "bundleDisplay": "BA0001",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0001",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 16,
+              "fromDeviceId": "BA0001:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0001:3",
+              "toTerminal": "3",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "BA0001",
+              "bundleDisplay": "BA0001",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0003",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-9",
+              "rowIndex": 19,
+              "fromDeviceId": "BA0003:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0003",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0003:LD",
+              "toTerminal": "LD",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "BA0003",
+              "bundleDisplay": "BA0003",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0003",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-8",
+              "rowIndex": 18,
+              "fromDeviceId": "BA0003:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0001:4",
+              "toTerminal": "4",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "BA0003",
+              "bundleDisplay": "BA0003",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "BA1100",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-10",
+              "rowIndex": 20,
+              "fromDeviceId": "BA1100:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-UV0291N",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0291:3",
+              "toTerminal": "3",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "BA1100",
+              "bundleDisplay": "BA1100",
+              "devicePrefix": "BA",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-11",
+              "rowIndex": 21,
+              "fromDeviceId": "BA1100:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1101LD",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU1101:LD",
+              "toTerminal": "LD",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "BA1100",
+              "bundleDisplay": "",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - UV",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-14",
+              "rowIndex": 24,
+              "fromDeviceId": "FU0272:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV0271P",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UV0271:8+",
+              "toTerminal": "8+",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "FU - UV",
+              "bundleDisplay": "FU - UV",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - UV",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-15",
+              "rowIndex": 25,
+              "fromDeviceId": "FU0290:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0290",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "UV0291:24V(+)",
+              "toTerminal": "24V(+)",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "FU - UV",
+              "bundleDisplay": "FU - UV",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-12",
+              "rowIndex": 22,
+              "fromDeviceId": "FU0001:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0210",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0001:1",
+              "toTerminal": "1",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-13",
+              "rowIndex": 23,
+              "fromDeviceId": "FU0003:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0210",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0001:2",
+              "toTerminal": "2",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-17",
+              "rowIndex": 27,
+              "fromDeviceId": "FU1101:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV0291P",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0291:1",
+              "toTerminal": "1",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-16",
+              "rowIndex": 26,
+              "fromDeviceId": "FU0680:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AT0680POS",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0680:1",
+              "toTerminal": "1",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "PC",
+      "bundles": [
+        {
+          "bundleName": "PC - PC",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-19",
+              "rowIndex": 29,
+              "fromDeviceId": "PC0470:INP_A",
+              "fromTerminal": "INP_A",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009312",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "PC0470:INP_B",
+              "toTerminal": "INP_B",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "PC - PC",
+              "bundleDisplay": "PC - PC",
+              "devicePrefix": "PC",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV0291",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-20",
+              "rowIndex": 30,
+              "fromDeviceId": "UV0291:OUT1(-)",
+              "fromTerminal": "OUT1(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV0291N",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0291:3",
+              "toTerminal": "3",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "UV0291",
+              "bundleDisplay": "UV0291",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-21",
+              "rowIndex": 31,
+              "fromDeviceId": "UV0291:OUT1(+)",
+              "fromTerminal": "OUT1(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV0291P",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0291:1",
+              "toTerminal": "1",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "UV0291",
+              "bundleDisplay": "",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "bf73b6b214468d2a161ba7425eb917b7e33a6be84854df38584527d78408e736"
+}

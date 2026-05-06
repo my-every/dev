@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:46:07.967Z",
+  "mode": "branding-export",
+  "sheetSlug": "rail-right-jb73",
+  "sheetName": "RAIL RIGHT JB73",
+  "totalRows": 3,
+  "header": {
+    "locationTitle": "RAIL RIGHT JB73",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4N171CB",
+    "projectName": "4N171CB",
+    "revision": "B.1_M.2",
+    "controlsDE": "CAROLYN CRAIG",
+    "controlsME": "Hector Medrano"
+  },
+  "importHints": {
+    "canonicalSheetName": "RAIL,RIGHT,JB73",
+    "normalizedSheetName": "rail-right-jb73",
+    "bundleNames": [
+      "FU - XT",
+      "XT - FU",
+      "XT - XT"
+    ],
+    "bundleDisplays": [
+      "FU - XT",
+      "XT - FU - HPC - PNL",
+      "XT - XT - HPC - PNL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "RAIL,RIGHT,JB73",
+          "rows": [
+            {
+              "rowId": "row-18",
+              "rowIndex": 28,
+              "fromDeviceId": "FU0332:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0335:1",
+              "toTerminal": "1",
+              "toLocation": "RAIL,RIGHT,JB73",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT - FU",
+          "toLocation": "HPC PNL",
+          "rows": [
+            {
+              "rowId": "row-20",
+              "rowIndex": 30,
+              "fromDeviceId": "XT0335:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 120,
+              "toDeviceId": "FU0122:LI",
+              "toTerminal": "LI",
+              "toLocation": "HPC PNL",
+              "bundleName": "XT - FU",
+              "bundleDisplay": "XT - FU - HPC - PNL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "HPC PNL",
+          "rows": [
+            {
+              "rowId": "row-21",
+              "rowIndex": 31,
+              "fromDeviceId": "XT0336:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 120,
+              "toDeviceId": "XT0120:1",
+              "toTerminal": "1",
+              "toLocation": "HPC PNL",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT - HPC - PNL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "a30744a4aa0c588e6cda53f0fc5dce85adf4af69b89e69a174ca4065fd7ee357"
+}

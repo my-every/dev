@@ -1,0 +1,68 @@
+{
+  "slug": "prox-box",
+  "name": "PROX BOX",
+  "kind": "operational",
+  "sheetIndex": 9,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR0404:",
+      "wireType": "SC",
+      "wireNo": "GR0404",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "4.B3",
+      "toDeviceId": "FRAME",
+      "toLocation": "PROX BOX",
+      "toPageZone": "4.B2",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0404",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "4.B2",
+      "Location": "PROX BOX"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "BIOGEN",
+    "revision": "A.7",
+    "controlsDE": "A.DOMINGUEZ",
+    "controlsME": "A.GAMEZ"
+  },
+  "assignment": {
+    "swsType": "BLANK",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "BLANK",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Has Prox - Basic/Blank panel"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:09:45.004Z"
+}

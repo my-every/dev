@@ -1,0 +1,118 @@
+{
+  "slug": "right-side-rail-jb70",
+  "name": "RIGHT SIDE RAIL^JB70",
+  "kind": "operational",
+  "sheetIndex": 11,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1100:",
+      "wireType": "SC",
+      "wireNo": "GR1100",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "5.A5",
+      "toDeviceId": "FRAME",
+      "toLocation": "RIGHT SIDE RAIL^JB70",
+      "toPageZone": "5.A4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "FU1100:LD",
+      "wireType": "SC",
+      "wireNo": "FU1100",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "30.D3",
+      "toDeviceId": "AT1100:POS",
+      "toLocation": "CONTROL,JB70;TT6",
+      "toPageZone": "30.D3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-2",
+      "fromDeviceId": "FU1100:LI",
+      "wireType": "SC",
+      "wireNo": "FU0136",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "30.D3",
+      "toDeviceId": "XT0138:5",
+      "toLocation": "PANEL A",
+      "toPageZone": "13.B3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1100",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "5.A4",
+      "Location": "RIGHT SIDE RAIL^JB70"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "AT1100:POS",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "FU1100",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "30.D3",
+      "Location": "CONTROL,JB70;TT6"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "XT0138:5",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "FU0136",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "13.B3",
+      "Location": "PANEL A"
+    }
+  ],
+  "rowCount": 3,
+  "metadata": {
+    "projectName": "P66 IRON MESA TX PG",
+    "revision": "C.2",
+    "controlsDE": "J. TRINH",
+    "controlsME": "Z. WOITH"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Side Rail in title - Rail assembly"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:46:14.515Z"
+}

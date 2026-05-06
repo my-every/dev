@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:09:25.972Z",
+  "mode": "branding-export",
+  "sheetSlug": "heater-panel",
+  "sheetName": "HEATER PANEL",
+  "totalRows": 9,
+  "header": {
+    "locationTitle": "HEATER PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0160",
+    "projectName": "J0160",
+    "revision": "J0160",
+    "controlsDE": "R.BRAUNSTEIN",
+    "controlsME": "S. MARTINEZ"
+  },
+  "importHints": {
+    "canonicalSheetName": "HEATER PANEL",
+    "normalizedSheetName": "heater-panel",
+    "bundleNames": [
+      "H02560 - RED",
+      "H02561 - RED",
+      "QS0256 - RED",
+      "TS - XT",
+      "HL0256 - RED"
+    ],
+    "bundleDisplays": [
+      "H02560 - RED",
+      "H02561 - RED",
+      "QS0256 - RED",
+      "TS - XT",
+      "HL0256 - RED - SWITCH - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "H",
+      "bundles": [
+        {
+          "bundleName": "H02560 - RED",
+          "toLocation": "HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "H02560:L",
+              "fromTerminal": "L",
+              "fromTerminalOrder": null,
+              "wireNo": "TS0256C",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT02560:1",
+              "toTerminal": "1",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "H02560 - RED",
+              "bundleDisplay": "H02560 - RED",
+              "devicePrefix": "H"
+            },
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "H02560:N",
+              "fromTerminal": "N",
+              "fromTerminalOrder": null,
+              "wireNo": "-EA0032PN",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT02560:3",
+              "toTerminal": "3",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "H02560 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "H",
+              "isNegative": true
+            }
+          ]
+        },
+        {
+          "bundleName": "H02561 - RED",
+          "toLocation": "HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-7",
+              "rowIndex": 18,
+              "fromDeviceId": "H02561:L",
+              "fromTerminal": "L",
+              "fromTerminalOrder": null,
+              "wireNo": "TS0256C",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT02560:2",
+              "toTerminal": "2",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "H02561 - RED",
+              "bundleDisplay": "H02561 - RED",
+              "devicePrefix": "H"
+            },
+            {
+              "rowId": "row-8",
+              "rowIndex": 19,
+              "fromDeviceId": "H02561:N",
+              "fromTerminal": "N",
+              "fromTerminalOrder": null,
+              "wireNo": "-EA0032PN",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT02560:4",
+              "toTerminal": "4",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "H02561 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "H",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "QS",
+      "bundles": [
+        {
+          "bundleName": "QS0256 - RED",
+          "toLocation": "HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-9",
+              "rowIndex": 20,
+              "fromDeviceId": "QS0256:LD-1",
+              "fromTerminal": "LD-1",
+              "fromTerminalOrder": null,
+              "wireNo": "TS0256NC",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "TS0256:NC",
+              "toTerminal": "NC",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "QS0256 - RED",
+              "bundleDisplay": "QS0256 - RED",
+              "devicePrefix": "QS"
+            },
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "QS0256:LD-3",
+              "fromTerminal": "LD-3",
+              "fromTerminalOrder": null,
+              "wireNo": "EA0032PN",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT02560:3",
+              "toTerminal": "3",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "QS0256 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "QS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "TS",
+      "bundles": [
+        {
+          "bundleName": "TS - XT",
+          "toLocation": "HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 22,
+              "fromDeviceId": "TS0256:C",
+              "fromTerminal": "C",
+              "fromTerminalOrder": null,
+              "wireNo": "TS0256C",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT02560:1",
+              "toTerminal": "1",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "TS - XT",
+              "bundleDisplay": "TS - XT",
+              "devicePrefix": "TS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "HL",
+      "bundles": [
+        {
+          "bundleName": "HL0256 - RED",
+          "toLocation": "SWITCH PANEL",
+          "rows": [
+            {
+              "rowId": "row-13",
+              "rowIndex": 24,
+              "fromDeviceId": "HL0256:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "TS0256C",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT02560:1",
+              "toTerminal": "1",
+              "toLocation": "SWITCH PANEL",
+              "bundleName": "HL0256 - RED",
+              "bundleDisplay": "HL0256 - RED - SWITCH - PANEL",
+              "devicePrefix": "HL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-14",
+              "rowIndex": 25,
+              "fromDeviceId": "HL0256:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "EA0032PN",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT02560:3",
+              "toTerminal": "3",
+              "toLocation": "SWITCH PANEL",
+              "bundleName": "HL0256 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "HL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "4188d10cf2284194b68827837c0ae264106dca74e0321d450df8c5a56dd75c91"
+}

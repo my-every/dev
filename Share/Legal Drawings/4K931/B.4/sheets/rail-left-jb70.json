@@ -1,0 +1,68 @@
+{
+  "slug": "rail-left-jb70",
+  "name": "RAIL,LEFT,JB70",
+  "kind": "operational",
+  "sheetIndex": 13,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR0431:",
+      "wireType": "SC",
+      "wireNo": "GR0431",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "11.B2",
+      "toDeviceId": "FRAME",
+      "toLocation": "RAIL,LEFT,JB70",
+      "toPageZone": "11.B2",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0431",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "11.B2",
+      "Location": "RAIL,LEFT,JB70"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "NORTHERN NATURAL GAS COMPANY",
+    "revision": "B.4",
+    "controlsDE": "S. LOPEZ",
+    "controlsME": "H. MEDRANO"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Rail in title with no Panel number"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:13:45.662Z"
+}

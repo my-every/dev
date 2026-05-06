@@ -1,0 +1,589 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:08:04.389Z",
+  "mode": "branding-export",
+  "sheetSlug": "right-rail",
+  "sheetName": "RIGHT RAIL",
+  "totalRows": 20,
+  "header": {
+    "locationTitle": "RIGHT RAIL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "H0810",
+    "projectName": "H0810",
+    "revision": "A.11",
+    "controlsDE": "G.MENDOZA",
+    "controlsME": "S. MARTINEZ"
+  },
+  "importHints": {
+    "canonicalSheetName": "RIGHT RAIL",
+    "normalizedSheetName": "right-rail",
+    "bundleNames": [
+      "AF0091",
+      "AF0092",
+      "AF0093",
+      "AF0095",
+      "AU0090",
+      "SA0472",
+      "SH0470",
+      "SH0471"
+    ],
+    "bundleDisplays": [
+      "AF0091",
+      "AF0092",
+      "AF0093",
+      "AF0095",
+      "AU0090",
+      "SA0472 - TURBINE - BOX DOOR",
+      "SH0470 - TURBINE - BOX DOOR",
+      "SH0471 - TURBINE - BOX DOOR"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AF",
+      "bundles": [
+        {
+          "bundleName": "AF0091",
+          "toLocation": "RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "AF0091:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-AF0091N",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "AF0094:COM",
+              "toTerminal": "COM",
+              "toLocation": "RIGHT RAIL",
+              "bundleName": "AF0091",
+              "bundleDisplay": "AF0091",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "AF0091:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AF0091P",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "AF0094:V+",
+              "toTerminal": "V+",
+              "toLocation": "RIGHT RAIL",
+              "bundleName": "AF0091",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0092",
+          "toLocation": "RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "AF0092:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0091",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0091:LD",
+              "toTerminal": "LD",
+              "toLocation": "RIGHT RAIL",
+              "bundleName": "AF0092",
+              "bundleDisplay": "AF0092",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0092",
+          "toLocation": "RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "AF0092:12",
+              "fromTerminal": "12",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009212",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0875:A1",
+              "toTerminal": "A1",
+              "toLocation": "RIGHT RAIL",
+              "bundleName": "AF0092",
+              "bundleDisplay": "AF0092",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-7",
+              "rowIndex": 18,
+              "fromDeviceId": "AF0092:28",
+              "fromTerminal": "28",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009228",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0875:A2",
+              "toTerminal": "A2",
+              "toLocation": "RIGHT RAIL",
+              "bundleName": "AF0092",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0092",
+          "toLocation": "RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-8",
+              "rowIndex": 19,
+              "fromDeviceId": "AF0092:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0081:1",
+              "toTerminal": "1",
+              "toLocation": "RIGHT RAIL",
+              "bundleName": "AF0092",
+              "bundleDisplay": "AF0092",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0093",
+          "toLocation": "RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-13",
+              "rowIndex": 24,
+              "fromDeviceId": "AF0093:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0092",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0092:LD",
+              "toTerminal": "LD",
+              "toLocation": "RIGHT RAIL",
+              "bundleName": "AF0093",
+              "bundleDisplay": "AF0093",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0093",
+          "toLocation": "RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 22,
+              "fromDeviceId": "AF0093:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0081:2",
+              "toTerminal": "2",
+              "toLocation": "RIGHT RAIL",
+              "bundleName": "AF0093",
+              "bundleDisplay": "AF0093",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0095",
+          "toLocation": "RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-17",
+              "rowIndex": 28,
+              "fromDeviceId": "AF0095:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0093",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0093:LD",
+              "toTerminal": "LD",
+              "toLocation": "RIGHT RAIL",
+              "bundleName": "AF0095",
+              "bundleDisplay": "AF0095",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0095",
+          "toLocation": "RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-16",
+              "rowIndex": 27,
+              "fromDeviceId": "AF0095:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0081:2",
+              "toTerminal": "2",
+              "toLocation": "RIGHT RAIL",
+              "bundleName": "AF0095",
+              "bundleDisplay": "AF0095",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AU",
+      "bundles": [
+        {
+          "bundleName": "AU0090",
+          "toLocation": "RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-18",
+              "rowIndex": 29,
+              "fromDeviceId": "AU0090:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0081:1",
+              "toTerminal": "1",
+              "toLocation": "RIGHT RAIL",
+              "bundleName": "AU0090",
+              "bundleDisplay": "AU0090",
+              "devicePrefix": "AU",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-19",
+              "rowIndex": 30,
+              "fromDeviceId": "AU0090:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0090",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0090:LD",
+              "toTerminal": "LD",
+              "toLocation": "RIGHT RAIL",
+              "bundleName": "AU0090",
+              "bundleDisplay": "",
+              "devicePrefix": "AU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "SA",
+      "bundles": [
+        {
+          "bundleName": "SA0472",
+          "toLocation": "TURBINE BOX DOOR",
+          "rows": [
+            {
+              "rowId": "row-31",
+              "rowIndex": 42,
+              "fromDeviceId": "SA0472:B1-13",
+              "fromTerminal": "B1-13",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SA0472B113",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:47",
+              "toTerminal": "47",
+              "toLocation": "TURBINE BOX DOOR",
+              "bundleName": "SA0472",
+              "bundleDisplay": "SA0472 - TURBINE - BOX DOOR",
+              "devicePrefix": "SA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-29",
+              "rowIndex": 40,
+              "fromDeviceId": "SA0472:B1-14",
+              "fromTerminal": "B1-14",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SA0472B114",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:15",
+              "toTerminal": "15",
+              "toLocation": "TURBINE BOX DOOR",
+              "bundleName": "SA0472",
+              "bundleDisplay": "",
+              "devicePrefix": "SA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-30",
+              "rowIndex": 41,
+              "fromDeviceId": "SA0472:B2-13",
+              "fromTerminal": "B2-13",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SA0472B213",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:46",
+              "toTerminal": "46",
+              "toLocation": "TURBINE BOX DOOR",
+              "bundleName": "SA0472",
+              "bundleDisplay": "",
+              "devicePrefix": "SA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-28",
+              "rowIndex": 39,
+              "fromDeviceId": "SA0472:B2-14",
+              "fromTerminal": "B2-14",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SA0472B214",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:14",
+              "toTerminal": "14",
+              "toLocation": "TURBINE BOX DOOR",
+              "bundleName": "SA0472",
+              "bundleDisplay": "",
+              "devicePrefix": "SA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "SH",
+      "bundles": [
+        {
+          "bundleName": "SH0470",
+          "toLocation": "TURBINE BOX DOOR",
+          "rows": [
+            {
+              "rowId": "row-38",
+              "rowIndex": 49,
+              "fromDeviceId": "SH0470:X1",
+              "fromTerminal": "X1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SH0470X1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0093:22",
+              "toTerminal": "22",
+              "toLocation": "TURBINE BOX DOOR",
+              "bundleName": "SH0470",
+              "bundleDisplay": "SH0470 - TURBINE - BOX DOOR",
+              "devicePrefix": "SH",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-35",
+              "rowIndex": 46,
+              "fromDeviceId": "SH0470:X2",
+              "fromTerminal": "X2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SH0470X2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0093:06",
+              "toTerminal": "06",
+              "toLocation": "TURBINE BOX DOOR",
+              "bundleName": "SH0470",
+              "bundleDisplay": "",
+              "devicePrefix": "SH",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "SH0471",
+          "toLocation": "TURBINE BOX DOOR",
+          "rows": [
+            {
+              "rowId": "row-40",
+              "rowIndex": 51,
+              "fromDeviceId": "SH0471:X1",
+              "fromTerminal": "X1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SH0471X1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0093:31",
+              "toTerminal": "31",
+              "toLocation": "TURBINE BOX DOOR",
+              "bundleName": "SH0471",
+              "bundleDisplay": "SH0471 - TURBINE - BOX DOOR",
+              "devicePrefix": "SH",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-37",
+              "rowIndex": 48,
+              "fromDeviceId": "SH0471:X2",
+              "fromTerminal": "X2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SH0471X2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0093:15",
+              "toTerminal": "15",
+              "toLocation": "TURBINE BOX DOOR",
+              "bundleName": "SH0471",
+              "bundleDisplay": "",
+              "devicePrefix": "SH",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "3e1cd036a5df7644cd1f243dc07ab5a20004034a4be79d7dd68c66d264c69ccc"
+}

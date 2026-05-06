@@ -1,0 +1,67 @@
+{
+  "slug": "jb4-panel",
+  "name": "JB4 PANEL",
+  "kind": "operational",
+  "sheetIndex": 13,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1250:",
+      "wireType": "SC",
+      "wireNo": "GR1250",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "75.D3",
+      "toDeviceId": "FRAME",
+      "toLocation": "JB4 PANEL",
+      "toPageZone": "75.D3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1250",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "75.D3",
+      "Location": "JB4 PANEL"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "ENI - KUTEI NORTH HUB - FPSO",
+    "revision": "B.2",
+    "controlsDE": "BARRAZA, PAUL"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:34:10.754Z"
+}

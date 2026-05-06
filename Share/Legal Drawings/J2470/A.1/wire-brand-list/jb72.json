@@ -1,0 +1,591 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:18:20.486Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb72",
+  "sheetName": "JB72",
+  "totalRows": 20,
+  "header": {
+    "locationTitle": "JB72",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J2470",
+    "projectName": "J2470",
+    "revision": "A.1",
+    "controlsDE": "H.VOUNG",
+    "controlsME": "R.DURAN"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB72",
+    "normalizedSheetName": "jb72",
+    "bundleNames": [
+      "FU - FU",
+      "FU - AF",
+      "FU - AU",
+      "FU0010",
+      "FU - XT",
+      "FU0335",
+      "FU0680",
+      "PEG - XT"
+    ],
+    "bundleDisplays": [
+      "FU - FU",
+      "FU - AF - INSIDE - DOOR JB72",
+      "FU - AU - INSIDE - DOOR JB72",
+      "FU - AF - GEN - PANEL",
+      "FU0010 - GEN - PANEL",
+      "FU - XT - GEN - PANEL",
+      "FU0335 - GEN - PANEL",
+      "FU0680 - GEN - PANEL",
+      "PEG - XT - GEN - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - FU",
+          "toLocation": "JB72",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "FU0332:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0333:LI",
+              "toTerminal": "LI",
+              "toLocation": "JB72",
+              "bundleName": "FU - FU",
+              "bundleDisplay": "FU - FU",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "FU0010:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0113:LI",
+              "toTerminal": "LI",
+              "toLocation": "JB72",
+              "bundleName": "FU - FU",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - AF",
+          "toLocation": "INSIDE DOOR JB72",
+          "rows": [
+            {
+              "rowId": "row-10",
+              "rowIndex": 20,
+              "fromDeviceId": "FU0121:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0121",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "AF0121:V+",
+              "toTerminal": "V+",
+              "toLocation": "INSIDE DOOR JB72",
+              "bundleName": "FU - AF",
+              "bundleDisplay": "FU - AF - INSIDE - DOOR JB72",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - AF",
+          "toLocation": "INSIDE DOOR JB72",
+          "rows": [
+            {
+              "rowId": "row-12",
+              "rowIndex": 22,
+              "fromDeviceId": "FU0181:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0181",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "AF0181:V+",
+              "toTerminal": "V+",
+              "toLocation": "INSIDE DOOR JB72",
+              "bundleName": "FU - AF",
+              "bundleDisplay": "FU - AF - INSIDE - DOOR JB72",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-13",
+              "rowIndex": 23,
+              "fromDeviceId": "FU0182:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0182",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "AF0182:V+",
+              "toTerminal": "V+",
+              "toLocation": "INSIDE DOOR JB72",
+              "bundleName": "FU - AF",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - AU",
+          "toLocation": "INSIDE DOOR JB72",
+          "rows": [
+            {
+              "rowId": "row-9",
+              "rowIndex": 19,
+              "fromDeviceId": "FU0120:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0120",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "AU0120:V+",
+              "toTerminal": "V+",
+              "toLocation": "INSIDE DOOR JB72",
+              "bundleName": "FU - AU",
+              "bundleDisplay": "FU - AU - INSIDE - DOOR JB72",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - AU",
+          "toLocation": "INSIDE DOOR JB72",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 21,
+              "fromDeviceId": "FU0180:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0180",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "AU0180:V+",
+              "toTerminal": "V+",
+              "toLocation": "INSIDE DOOR JB72",
+              "bundleName": "FU - AU",
+              "bundleDisplay": "FU - AU - INSIDE - DOOR JB72",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - AF",
+          "toLocation": "JB72 GEN PANEL",
+          "rows": [
+            {
+              "rowId": "row-20",
+              "rowIndex": 30,
+              "fromDeviceId": "FU0113:LD",
+              "fromTerminal": "LD",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0113",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "AF0410:55",
+              "toTerminal": "55",
+              "toLocation": "JB72 GEN PANEL",
+              "bundleName": "FU - AF",
+              "bundleDisplay": "FU - AF - GEN - PANEL",
+              "devicePrefix": "FU"
+            }
+          ]
+        },
+        {
+          "bundleName": "FU0010",
+          "toLocation": "JB72 GEN PANEL",
+          "rows": [
+            {
+              "rowId": "row-18",
+              "rowIndex": 28,
+              "fromDeviceId": "FU0010:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0010",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "UV0600:(+)",
+              "toTerminal": "(+)",
+              "toLocation": "JB72 GEN PANEL",
+              "bundleName": "FU0010",
+              "bundleDisplay": "FU0010 - GEN - PANEL",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-19",
+              "rowIndex": 29,
+              "fromDeviceId": "FU0010:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0335:4",
+              "toTerminal": "4",
+              "toLocation": "JB72 GEN PANEL",
+              "bundleName": "FU0010",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "JB72 GEN PANEL",
+          "rows": [
+            {
+              "rowId": "row-27",
+              "rowIndex": 37,
+              "fromDeviceId": "FU0334:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0334",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0335:2",
+              "toTerminal": "2",
+              "toLocation": "JB72 GEN PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT - GEN - PANEL",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-21",
+              "rowIndex": 31,
+              "fromDeviceId": "FU0120:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0130:1",
+              "toTerminal": "1",
+              "toLocation": "JB72 GEN PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-22",
+              "rowIndex": 32,
+              "fromDeviceId": "FU0180:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0130:1",
+              "toTerminal": "1",
+              "toLocation": "JB72 GEN PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "JB72 GEN PANEL",
+          "rows": [
+            {
+              "rowId": "row-25",
+              "rowIndex": 35,
+              "fromDeviceId": "FU0332:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0330",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 120,
+              "toDeviceId": "XT0331:1",
+              "toTerminal": "1",
+              "toLocation": "JB72 GEN PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT - GEN - PANEL",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "JB72 GEN PANEL",
+          "rows": [
+            {
+              "rowId": "row-26",
+              "rowIndex": 36,
+              "fromDeviceId": "FU0333:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0333",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0335:1",
+              "toTerminal": "1",
+              "toLocation": "JB72 GEN PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT - GEN - PANEL",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU0335",
+          "toLocation": "JB72 GEN PANEL",
+          "rows": [
+            {
+              "rowId": "row-28",
+              "rowIndex": 38,
+              "fromDeviceId": "FU0335:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0335",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0335:3",
+              "toTerminal": "3",
+              "toLocation": "JB72 GEN PANEL",
+              "bundleName": "FU0335",
+              "bundleDisplay": "FU0335 - GEN - PANEL",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-29",
+              "rowIndex": 39,
+              "fromDeviceId": "FU0335:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0335:4",
+              "toTerminal": "4",
+              "toLocation": "JB72 GEN PANEL",
+              "bundleName": "FU0335",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU0680",
+          "toLocation": "JB72 GEN PANEL",
+          "rows": [
+            {
+              "rowId": "row-30",
+              "rowIndex": 40,
+              "fromDeviceId": "FU0680:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AT0680POS",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0680:1",
+              "toTerminal": "1",
+              "toLocation": "JB72 GEN PANEL",
+              "bundleName": "FU0680",
+              "bundleDisplay": "FU0680 - GEN - PANEL",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-31",
+              "rowIndex": 41,
+              "fromDeviceId": "FU0680:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0335:4",
+              "toTerminal": "4",
+              "toLocation": "JB72 GEN PANEL",
+              "bundleName": "FU0680",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "PEG",
+      "bundles": [
+        {
+          "bundleName": "PEG - XT",
+          "toLocation": "JB72 GEN PANEL",
+          "rows": [
+            {
+              "rowId": "row-35",
+              "rowIndex": 45,
+              "fromDeviceId": "PEG0140:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0336:5",
+              "toTerminal": "5",
+              "toLocation": "JB72 GEN PANEL",
+              "bundleName": "PEG - XT",
+              "bundleDisplay": "PEG - XT - GEN - PANEL",
+              "devicePrefix": "PEG",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "962dd6fef98fdf735b483b6728893b4102cbaea5f0629968930dafe8cab9a4c5"
+}

@@ -1,0 +1,482 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:08:44.276Z",
+  "mode": "branding-export",
+  "sheetSlug": "plc-panel",
+  "sheetName": "PLC PANEL",
+  "totalRows": 16,
+  "header": {
+    "locationTitle": "PLC PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0080",
+    "projectName": "J0080",
+    "revision": "A.6",
+    "controlsDE": "D.GRANT",
+    "controlsME": "G.CATO"
+  },
+  "importHints": {
+    "canonicalSheetName": "PLC PANEL",
+    "normalizedSheetName": "plc-panel",
+    "bundleNames": [
+      "AP0604",
+      "BA0001",
+      "BA0002",
+      "FU - XT",
+      "PC - PC",
+      "PC0470",
+      "UV0600",
+      "XT0001"
+    ],
+    "bundleDisplays": [
+      "AP0604",
+      "BA0001",
+      "BA0002",
+      "FU - XT",
+      "PC - PC",
+      "PC0470 - A - PANEL",
+      "UV0600 - A - PANEL",
+      "XT0001 - B - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AP",
+      "bundles": [
+        {
+          "bundleName": "AP0604",
+          "toLocation": "PLC PANEL",
+          "rows": [
+            {
+              "rowId": "row-13",
+              "rowIndex": 24,
+              "fromDeviceId": "AP0604:A",
+              "fromTerminal": "A",
+              "fromTerminalOrder": null,
+              "wireNo": "XY06040T",
+              "wireId": "COAX",
+              "gaugeSize": "RG6/U",
+              "length": 60,
+              "toDeviceId": "XY06040:T",
+              "toTerminal": "T",
+              "toLocation": "PLC PANEL",
+              "bundleName": "AP0604",
+              "bundleDisplay": "AP0604",
+              "devicePrefix": "AP"
+            },
+            {
+              "rowId": "row-14",
+              "rowIndex": 25,
+              "fromDeviceId": "AP0604:B",
+              "fromTerminal": "B",
+              "fromTerminalOrder": null,
+              "wireNo": "XY06041T",
+              "wireId": "COAX",
+              "gaugeSize": "RG6/U",
+              "length": 60,
+              "toDeviceId": "XY06041:T",
+              "toTerminal": "T",
+              "toLocation": "PLC PANEL",
+              "bundleName": "AP0604",
+              "bundleDisplay": "",
+              "devicePrefix": "AP"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA0001",
+          "toLocation": "PLC PANEL",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "BA0001:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0001:3",
+              "toTerminal": "3",
+              "toLocation": "PLC PANEL",
+              "bundleName": "BA0001",
+              "bundleDisplay": "BA0001",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "BA0001:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0001",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0001:LD",
+              "toTerminal": "LD",
+              "toLocation": "PLC PANEL",
+              "bundleName": "BA0001",
+              "bundleDisplay": "",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0002",
+          "toLocation": "PLC PANEL",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "BA0002:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0001:4",
+              "toTerminal": "4",
+              "toLocation": "PLC PANEL",
+              "bundleName": "BA0002",
+              "bundleDisplay": "BA0002",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "BA0002:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0002",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0002:LD",
+              "toTerminal": "LD",
+              "toLocation": "PLC PANEL",
+              "bundleName": "BA0002",
+              "bundleDisplay": "",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "PLC PANEL",
+          "rows": [
+            {
+              "rowId": "row-7",
+              "rowIndex": 18,
+              "fromDeviceId": "FU0001:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0210,WHT",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0001:1",
+              "toTerminal": "1",
+              "toLocation": "PLC PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-8",
+              "rowIndex": 19,
+              "fromDeviceId": "FU0002:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0210,WHT",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0001:2",
+              "toTerminal": "2",
+              "toLocation": "PLC PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "PC",
+      "bundles": [
+        {
+          "bundleName": "PC - PC",
+          "toLocation": "PLC PANEL",
+          "rows": [
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "PC0470:INP_A",
+              "fromTerminal": "INP_A",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009312",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "PC0470:INP_B",
+              "toTerminal": "INP_B",
+              "toLocation": "PLC PANEL",
+              "bundleName": "PC - PC",
+              "bundleDisplay": "PC - PC",
+              "devicePrefix": "PC",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "PC",
+      "bundles": [
+        {
+          "bundleName": "PC0470",
+          "toLocation": "A PANEL",
+          "rows": [
+            {
+              "rowId": "row-18",
+              "rowIndex": 29,
+              "fromDeviceId": "PC0470:-PWR",
+              "fromTerminal": "-PWR",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009328",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0093:28",
+              "toTerminal": "28",
+              "toLocation": "A PANEL",
+              "bundleName": "PC0470",
+              "bundleDisplay": "PC0470 - A - PANEL",
+              "devicePrefix": "PC",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-16",
+              "rowIndex": 27,
+              "fromDeviceId": "PC0470:+PWR",
+              "fromTerminal": "+PWR",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009344",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0093:44",
+              "toTerminal": "44",
+              "toLocation": "A PANEL",
+              "bundleName": "PC0470",
+              "bundleDisplay": "",
+              "devicePrefix": "PC",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-17",
+              "rowIndex": 28,
+              "fromDeviceId": "PC0470:INP_A",
+              "fromTerminal": "INP_A",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009312",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0093:12",
+              "toTerminal": "12",
+              "toLocation": "A PANEL",
+              "bundleName": "PC0470",
+              "bundleDisplay": "",
+              "devicePrefix": "PC",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV0600",
+          "toLocation": "A PANEL",
+          "rows": [
+            {
+              "rowId": "row-19",
+              "rowIndex": 30,
+              "fromDeviceId": "UV0600:(-)",
+              "fromTerminal": "(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0135:1",
+              "toTerminal": "1",
+              "toLocation": "A PANEL",
+              "bundleName": "UV0600",
+              "bundleDisplay": "UV0600 - A - PANEL",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-20",
+              "rowIndex": 31,
+              "fromDeviceId": "UV0600:(+)",
+              "fromTerminal": "(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0010",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0010:LD",
+              "toTerminal": "LD",
+              "toLocation": "A PANEL",
+              "bundleName": "UV0600",
+              "bundleDisplay": "",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0001",
+          "toLocation": "B PANEL",
+          "rows": [
+            {
+              "rowId": "row-23",
+              "rowIndex": 34,
+              "fromDeviceId": "XT0001:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0210,WHT",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0233:3",
+              "toTerminal": "3",
+              "toLocation": "B PANEL",
+              "bundleName": "XT0001",
+              "bundleDisplay": "XT0001 - B - PANEL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-24",
+              "rowIndex": 35,
+              "fromDeviceId": "XT0001:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0235:3",
+              "toTerminal": "3",
+              "toLocation": "B PANEL",
+              "bundleName": "XT0001",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "1396119f520c0f46ca8187ae055d63e6590bdfce053ce29f1e1fde1a6eda160e"
+}

@@ -1,0 +1,52 @@
+BIQ Checklist,,,,,,,,"Checklist
+Rev: V1.2",,,,
+DATE,PD #,UNIT #,UNIT NAME,BOX,Console,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+"Time
+Phase",ITEM #,Tier,CHECK,Category,IPV Codes,OKAY,"NOT
+OKAY",Onskid,Offskid,AM,PSO,"IPV
+Code"
+FIRST,1,S,"Verify layouts dwngs match the actual box/console build in terms of: panduct colors, components installed, rel. chgs completed & dwng revs noted. Clarify all differences.",Mission Critical,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+FIRST,2,S,Verify each box/console have their corresponding Data plate.,Guards/Labels,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+FIRST,3,S,"Door gaskets are intact, door handles are not loose, no visible dents or scratches on doors/box.",Box,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+FIRST,4,S,"Open box to verify content (mod bus cables, software, special keys, software & manuals, etc.) Visually check that all keys (two of each: console, back-up reset, PLC, unit control) are tie wrapped to the inside of the console/box.  ",Box,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+FIRST,5,S,When applicable secure the keyboard to the tray using the Velcro,Box,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+FIRST,6,S,"For EP boxes, verify all bolts are accounted for and secured with the box/console.  ",Box,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+FIRST,7,A,Ensure Door opening/closing stop bracket hardware is tight.,Box,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+FIRST,8,A,All unused holes are properly plugged on loose ship boxes.,Box,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+FIRST,9,D,All shortages are documented in the ATL.,BIQ Admin,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+FIRST,10,D,Verify required documentation is scanned into project folder,BIQ Admin,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,11,S,Verify all screws in use (with terminations) on the shield bus bars and power strips are tight.,Grounds,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,12,S,"Check for loose, exposed or damage Wires/Cables for power supplies, fuses and any other potentially higher energy components.",Wiring,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,13,A,Ensure horn is secure to the door.,Box,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,14,A,All unused studs are covered.,Box,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,15,A,"Check for loose, exposed or damage Wires/Cables. This includes ferrules and lugs (if required).",Wiring,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,16,A,Ensure panels are clean with no excess torque paint or Penetrox.,Clenliness,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,17,B,"All warning labels, outside control labels and Turbotronic plates should be installed.",Guards/Labels,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,18,B,"(TCP, Meter, Switches, etc.) and is the correct language.",Guards/Labels,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,19,B,Verify all push button and switches are tight and can operate properly.,Box,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,20,B,Verify all meter wiring is tightened.,Wiring,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,21,B,Ensure horn and counter wires are disconnected for new production equipment.,Wiring,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,22,B,Harnesses should be secured (clamped).,Wiring,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,23,B,"Ensure all components are placed reasonably and can operate properly.    (i.e. modules can be removed, components can be accessed, etc.)",Finals,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,24,B,Ensure communication cables (especially fiber optic) do not exceed the maximum bend radius and are secured with a proper harness (velcro.),Wiring,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,25,B,Verify all panels have torque paint applied to mounting bolts or nuts.,QAS,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,26,B,Ensure there is a pull wire/cord installed with a pilot tag on consoles (EP Frames).,Wiring,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,27,C,"For boxes, verify torque paint on drain plugs. Verify vent has been replaced with plug.",Box,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,28,C,Ensure Panduct covers are cut to the correct length.,Layout,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,29,C,"Each component has their corresponding blue label installed, legible and undamaged.",Guards/Labels,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,30,C,Bonded holes must have Penetrox.,QAS,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,31,C,Plexiglas cover is installed over high voltage components.,Guards/Labels,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,32,C,Grounding Collar Studs are intact.,Grounds,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,33,D,"Verify all grounding bus bars (large copper bars, 5, 8, & 14 designs, used and unused terminations) have all h/w installed and tight. Include: star, lock and std washers.",Grounds,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,34,D,Verify correct routing.,Wiring,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+SECOND,35,D,Labels should be installed in the correct orientation (left to right or bottom to top).,Guards/Labels,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+THIRD,36,S,Verify corrections have been made.,Mission Critical,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+THIRD,37,S,"Torque -0v, -24v and ground screw terminations to 3.5 in-lb on all AENTR (or equivalent) modules, then perform a pull test.",Mission Critical,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+THIRD,38,S,Enter discrepancy count into BIQ Completed Log.,BIQ Admin,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+THIRD,39,S,Scan and upload discrepancy layouts.,BIQ Admin,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+THIRD,40,B,"Photograph to ensure the SD card has been reinstalled in the PLC module. SD card cover should already be open (do not remove), close cover after pictures.",BIQ Admin,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+THIRD,41,B,Take and upload BIQ pictures.,BIQ Admin,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+THIRD,42,C,For Consoles ensure all access plates are installed and have the bolts in every hole on both the top and bottom plates.,Box,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-
+THIRD,43,D,Ensure bottom of the box/console is clean.  ,Clenliness,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,-

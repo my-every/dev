@@ -1,0 +1,32 @@
+import { NextRequest, NextResponse } from 'next/server'
+
+import { runLegalDrawingsMaintenance } from '@/lib/legal-drawings/admin'
+
+export const dynamic = 'force-dynamic'
+
+export async function POST(
+  request: NextRequest,
+  { params }: { params: Promise<{ pdNumber: string }> },
+) {
+  try {
+    const { pdNumber } = await params
+    const body = await request.json().catch(() => ({})) as { revision?: string | null; dryRun?: boolean }
+    const result = await runLegalDrawingsMaintenance({
+      command: 'restore-root-sources',
+      pdNumber,
+      revision: body.revision,
+      dryRun: body.dryRun,
+    })
+
+    if (result.projects.length === 0) {
+      return NextResponse.json({ error: 'Legal project not found' }, { status: 404 })
+    }
+
+    return NextResponse.json(result)
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Failed to restore legal root sources' },
+      { status: 500 },
+    )
+  }
+}

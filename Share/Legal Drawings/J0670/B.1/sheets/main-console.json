@@ -1,0 +1,193 @@
+{
+  "slug": "main-console",
+  "name": "MAIN CONSOLE",
+  "kind": "operational",
+  "sheetIndex": 10,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "EL0273:+",
+      "wireType": "SC",
+      "wireNo": "ZS0273",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "8.B4",
+      "toDeviceId": "ZS0273:2",
+      "toLocation": "MAIN CONSOLE",
+      "toPageZone": "8.B4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "HA0273:(+)",
+      "wireType": "WC5540",
+      "wireNo": "HA0273P",
+      "wireId": "BLK",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "11.A1",
+      "toDeviceId": "AF0202:23",
+      "toLocation": "CONTROL PANEL",
+      "toPageZone": "11.A3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-2",
+      "fromDeviceId": "HA0273:(-)",
+      "wireType": "WC5540",
+      "wireNo": "HA0273N",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "11.A1",
+      "toDeviceId": "AF0202:55",
+      "toLocation": "CONTROL PANEL",
+      "toPageZone": "11.A3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-3",
+      "fromDeviceId": "EL0273:-",
+      "wireType": "SC",
+      "wireNo": "-0V1",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "8.B4",
+      "toDeviceId": "AT0190:NEG",
+      "toLocation": "MAIN CONSOLE DOOR",
+      "toPageZone": "8.B4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 14,
+      "__rowId": "row-4",
+      "fromDeviceId": "EL0273:-",
+      "wireType": "SC",
+      "wireNo": "-0V1",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "8.B4",
+      "toDeviceId": "XT0562:2",
+      "toLocation": "PWR RAIL",
+      "toPageZone": "8.B2",
+      "location": ""
+    },
+    {
+      "__rowIndex": 15,
+      "__rowId": "row-5",
+      "fromDeviceId": "ZS0273:1",
+      "wireType": "SC",
+      "wireNo": "FU0273",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "8.B4",
+      "toDeviceId": "FU0273:LD",
+      "toLocation": "PWR RAIL",
+      "toPageZone": "8.B3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "ZS0273:2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "ZS0273",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "8.B4",
+      "Location": "MAIN CONSOLE"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "AF0202:23",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC5540",
+      "Wire No.": "HA0273P",
+      "Wire ID": "BLK",
+      "Gauge/Size": "16",
+      "Page/Zone": "11.A3",
+      "Location": "CONTROL PANEL"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "AF0202:55",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC5540",
+      "Wire No.": "HA0273N",
+      "Wire ID": "WHT",
+      "Gauge/Size": "16",
+      "Page/Zone": "11.A3",
+      "Location": "CONTROL PANEL"
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "AT0190:NEG",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "0V1",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "8.B4",
+      "Location": "MAIN CONSOLE DOOR"
+    },
+    {
+      "__rowId": "raw-4",
+      "Device ID": "XT0562:2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "0V1",
+      "Wire ID": "WHT",
+      "Gauge/Size": "16",
+      "Page/Zone": "8.B2",
+      "Location": "PWR RAIL"
+    },
+    {
+      "__rowId": "raw-5",
+      "Device ID": "FU0273:LD",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "FU0273",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "8.B3",
+      "Location": "PWR RAIL"
+    }
+  ],
+  "rowCount": 6,
+  "metadata": {
+    "projectName": "TE LAMBERTVILLE EMD CONTROLS-PRU",
+    "revision": "B",
+    "controlsDE": "M.WERLING",
+    "controlsME": "N. CARPENTER"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:11:09.050Z"
+}

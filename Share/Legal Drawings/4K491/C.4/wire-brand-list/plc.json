@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:12:49.070Z",
+  "mode": "branding-export",
+  "sheetSlug": "plc",
+  "sheetName": "PLC",
+  "totalRows": 1,
+  "header": {
+    "locationTitle": "PLC",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4K491",
+    "projectName": "4K491",
+    "revision": "C.4"
+  },
+  "importHints": {
+    "canonicalSheetName": "PLC",
+    "normalizedSheetName": "plc",
+    "bundleNames": [
+      "BA - BA"
+    ],
+    "bundleDisplays": [
+      "BA - BA - FO CONV VFD"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA - BA",
+          "toLocation": "FO CONV,VFD",
+          "rows": [
+            {
+              "rowId": "row-21",
+              "rowIndex": 31,
+              "fromDeviceId": "BA0001:RX",
+              "fromTerminal": "RX",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "BA0005TX",
+              "wireId": "",
+              "gaugeSize": "",
+              "length": 120,
+              "toDeviceId": "BA0005:TX",
+              "toTerminal": "TX",
+              "toLocation": "FO CONV,VFD",
+              "bundleName": "BA - BA",
+              "bundleDisplay": "BA - BA - FO CONV VFD",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "7d7189c67f358ea404694a08c95147844f58329326e5b037eec54a0a27761da3"
+}

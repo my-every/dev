@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:55:57.497Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb70-right-rail",
+  "sheetName": "JB70 RIGHT RAIL",
+  "totalRows": 1,
+  "header": {
+    "locationTitle": "JB70 RIGHT RAIL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "9A861",
+    "projectName": "9A861",
+    "revision": "A.1",
+    "controlsDE": "D.GRANT",
+    "controlsME": "M.CUNNINGHAM"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB70 RIGHT RAIL",
+    "normalizedSheetName": "jb70-right-rail",
+    "bundleNames": [
+      "PC - PC"
+    ],
+    "bundleDisplays": [
+      "PC - PC"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "PC",
+      "bundles": [
+        {
+          "bundleName": "PC - PC",
+          "toLocation": "JB70 RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "PC0470:INP_A",
+              "fromTerminal": "INP_A",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009312",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "PC0470:INP_B",
+              "toTerminal": "INP_B",
+              "toLocation": "JB70 RIGHT RAIL",
+              "bundleName": "PC - PC",
+              "bundleDisplay": "PC - PC",
+              "devicePrefix": "PC",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "51d722b4dbd00261a7b29c448d9cf15cee7c873f439a42a225bd15ccba9f1457"
+}

@@ -1,0 +1,209 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-06T04:55:04.043Z",
+  "project": {
+    "id": "legal-4l107-b-1",
+    "name": "4L107",
+    "pdNumber": "4L107",
+    "revision": "B.1"
+  },
+  "assignment": {
+    "sheetSlug": "scs-monitor-media",
+    "sheetName": "SCS MONITOR MEDIA",
+    "stage": "READY_TO_LAY",
+    "swsType": "BLANK",
+    "status": "NOT_STARTED",
+    "templateId": "BASIC_BLANK_PANEL"
+  },
+  "worksheetMetadata": {
+    "pdNumber": "4L107",
+    "projectName": "4L107",
+    "unit": "1",
+    "panel": "SCS MONITOR MEDIA",
+    "date": "2026-05-06",
+    "revision": "B.1",
+    "swsIpvId": "SWS-IPV_D380_ASSY_SMALL-BLANK PANEL_PILOT",
+    "revLevel": "A.1",
+    "revDate": "12/12/2024"
+  },
+  "summary": {
+    "sections": 5,
+    "tasks": 12,
+    "subtasks": 2,
+    "partNumbers": 10,
+    "rails": 0,
+    "panducts": 0,
+    "whiteLabels": 1,
+    "blueLabels": 28
+  },
+  "groups": [
+    {
+      "id": "scs-monitor-media-template-sections",
+      "title": "Blank Panel Checklist",
+      "description": "Generated from SWS-IPV_D380_ASSY_SMALL-BLANK PANEL_PILOT for SCS MONITOR MEDIA",
+      "order": 0,
+      "tasks": [
+        {
+          "id": "verify-drawings",
+          "title": "Work Element 1",
+          "description": "Verify Drawings and Parts",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Part Numbers: 1043265-1, 1043265-4, 1043265-7, 1066730-7, 1066730-8, 1067996-4, 1271449-1, 1948791-1 (+2 more)\nWhite Labels: IEG01305\nBlue Labels: GR0120, GR0121, FU0400, XT0130, FU0110, FU0112, FU0113, FU0114 (+20 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "verify-drawings:verify-revision",
+              "title": "Verify the latest Revision (check the cover sheet for any special requirements). Fill in the \"Working Copy\" stamp.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "verify-drawings:obtain-parts",
+              "title": "Obtain the kitted parts and verify the PD#. Install panel ID label. If a multiple unit project, follow previous unit.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "build-panel",
+          "title": "Work Element 2",
+          "description": "Build the Panel",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Part Numbers: 1043265-1, 1043265-4, 1043265-7, 1066730-7, 1066730-8, 1067996-4, 1271449-1, 1948791-1 (+2 more)\nWhite Labels: IEG01305\nBlue Labels: GR0120, GR0121, FU0400, XT0130, FU0110, FU0112, FU0113, FU0114 (+20 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "build-panel:measure-drill-bond",
+              "title": "Measure, drill and bond the panel per the layout dwg. Cut pan duct and rails if required.",
+              "description": "Install nutcerts, standoffs, din rails, bus bars and ground wires as required. Install components on the rails and apply blue labels. Install Pan Duct(if applicable). Stamp off the Build Up portion of the Panel ID label.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "build-panel:measure-drill-bond:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Install nutcerts, standoffs, din rails, bus bars and ground wires as required.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                },
+                {
+                  "id": "build-panel:measure-drill-bond:sub-2",
+                  "title": "Sub-step 2",
+                  "description": "Install components on the rails and apply blue labels. Install Pan Duct(if applicable). Stamp off the Build Up portion of the Panel ID label.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "wire-panel",
+          "title": "Work Element 3",
+          "description": "Wire the Panel",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Part Numbers: 1043265-1, 1043265-4, 1043265-7, 1066730-7, 1066730-8, 1067996-4, 1271449-1, 1948791-1 (+2 more)\nWhite Labels: IEG01305\nBlue Labels: GR0120, GR0121, FU0400, XT0130, FU0110, FU0112, FU0113, FU0114 (+20 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "wire-panel:pull-test",
+              "title": "All wires installed require a pull test to ensure tightness, a visual for stray strands and crimped insulation.",
+              "required": true,
+              "completedByDefault": false,
+              "notes": "Key point",
+              "reviewRequirement": "PULL_TEST",
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "wire-panel:wire-panel",
+              "title": "Wire the Panel if required per QAS 503/505. Stamp off the Wire portion of the Panel ID label.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "install-in-box",
+          "title": "Work Element 4",
+          "description": "Install Panel in the box (if applicable)",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Part Numbers: 1043265-1, 1043265-4, 1043265-7, 1066730-7, 1066730-8, 1067996-4, 1271449-1, 1948791-1 (+2 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "install-in-box:visual-panel",
+              "title": "Visual panel prior to dropping in the box (Get auditor stamp).",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "install-in-box:drop-assemble",
+              "title": "Drop panel and assemble the box. (Reference the Box Build Up SWS).",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "ipv",
+          "title": "Work Element 5",
+          "description": "In-Process Validation",
+          "required": true,
+          "completedByDefault": false,
+          "reviewRequirement": "Auditor: Verify that all the above items have been completed including a wire pull test and a visual for Bird Caging and Insulation Crimping. Stamp the IPV portion of the Panel ID Label.",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": []
+        }
+      ]
+    }
+  ]
+}

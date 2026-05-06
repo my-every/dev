@@ -1,0 +1,142 @@
+{
+  "slug": "panel-errors",
+  "name": "Panel Errors",
+  "kind": "reference",
+  "sheetIndex": 15,
+  "headers": [
+    "Device ID",
+    "Location",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire ID",
+    "Wire No.",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location_1",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "BA1100:NEG",
+      "wireType": "SC",
+      "wireNo": "BA1100N",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "PANEL",
+      "fromPageZone": "38.D1",
+      "toDeviceId": "UJ1100:OUT1(-)",
+      "toLocation": "PLC PANEL",
+      "toPageZone": "38.C3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "BA1100:POS",
+      "wireType": "SC",
+      "wireNo": "BA1100P",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "PANEL",
+      "fromPageZone": "38.D1",
+      "toDeviceId": "UJ1100:OUT1(+)",
+      "toLocation": "PLC PANEL",
+      "toPageZone": "38.C3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-2",
+      "fromDeviceId": "UJ1100:24V(+)",
+      "wireType": "SC",
+      "wireNo": "FU1101",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "PLC PANEL",
+      "fromPageZone": "38.C3",
+      "toDeviceId": "FU1101:LD",
+      "toLocation": "PANEL",
+      "toPageZone": "38.C4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-3",
+      "fromDeviceId": "UJ1100:24V(-)",
+      "wireType": "SC",
+      "wireNo": "-0V",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "JB70 RIGHT RAIL",
+      "fromPageZone": "38.C3",
+      "toDeviceId": "XT0111:22",
+      "toLocation": "PANEL",
+      "toPageZone": "38.D5",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "UJ1100:OUT1(-)",
+      "Location": "PANEL",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire ID": "WHT",
+      "Wire No.": "BA1100N",
+      "Gauge/Size": "16",
+      "Page/Zone": "38.C3"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "UJ1100:OUT1(+)",
+      "Location": "PANEL",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire ID": "WHT",
+      "Wire No.": "BA1100P",
+      "Gauge/Size": "16",
+      "Page/Zone": "38.C3"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "FU1101:LD",
+      "Location": "PLC PANEL",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire ID": "WHT",
+      "Wire No.": "FU1101",
+      "Gauge/Size": "16",
+      "Page/Zone": "38.C4"
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "XT0111:22",
+      "Location": "JB70 RIGHT RAIL",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire ID": "WHT",
+      "Wire No.": "0V",
+      "Gauge/Size": "16",
+      "Page/Zone": "38.D5"
+    }
+  ],
+  "rowCount": 4,
+  "metadata": {
+    "projectName": "ANR Heartland Project (AHP) - Woodstock",
+    "revision": "B.2",
+    "controlsDE": "M. GERSON",
+    "controlsME": "A. BELTRAN"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "BUILD_UP",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 0,
+    "detectedReasons": [],
+    "requiresWireSws": false,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:10:44.196Z"
+}

@@ -1,0 +1,93 @@
+{
+  "slug": "jb-5",
+  "name": "JB 5",
+  "kind": "operational",
+  "sheetIndex": 11,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1110:",
+      "wireType": "SC",
+      "wireNo": "GR1110",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "5.B6",
+      "toDeviceId": "FRAME",
+      "toLocation": "JB 5",
+      "toPageZone": "5.B7",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-1",
+      "fromDeviceId": "GR1150:",
+      "wireType": "SC",
+      "wireNo": "GR1150",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "5.B6",
+      "toDeviceId": "FRAME",
+      "toLocation": "JB 5",
+      "toPageZone": "5.B6",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1110",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "5.B7",
+      "Location": "JB 5"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1150",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "5.B6",
+      "Location": "JB 5"
+    }
+  ],
+  "rowCount": 2,
+  "metadata": {
+    "projectName": "PC SOGT",
+    "revision": "J",
+    "controlsDE": "J. FIGUEROA",
+    "controlsME": "J.Shih"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:03:26.232Z"
+}

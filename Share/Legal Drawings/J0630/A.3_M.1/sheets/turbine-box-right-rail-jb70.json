@@ -1,0 +1,67 @@
+{
+  "slug": "turbine-box-right-rail-jb70",
+  "name": "TURBINE BOX^RIGHT RAIL^JB70",
+  "kind": "operational",
+  "sheetIndex": 8,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1100:",
+      "wireType": "SC",
+      "wireNo": "IEG023014",
+      "wireId": "GRN",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "3.A5",
+      "toDeviceId": "IEG0230:14",
+      "toLocation": "TURBINE PANEL B JB70",
+      "toPageZone": "3.A4",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "IEG0230:14",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "IEG023014",
+      "Wire ID": "GRN",
+      "Gauge/Size": "14",
+      "Page/Zone": "3.A4",
+      "Location": "TURBINE PANEL B JB70"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "TC TUSCARORA SHOETREE CR",
+    "revision": "A.3",
+    "controlsDE": "G.JP"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Rail in title with no Panel number"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:11:03.663Z"
+}

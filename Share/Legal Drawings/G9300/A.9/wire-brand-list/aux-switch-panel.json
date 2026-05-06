@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:03:18.174Z",
+  "mode": "branding-export",
+  "sheetSlug": "aux-switch-panel",
+  "sheetName": "AUX SWITCH PANEL",
+  "totalRows": 19,
+  "header": {
+    "locationTitle": "AUX SWITCH PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "G9300",
+    "projectName": "G9300",
+    "revision": "A.9",
+    "controlsDE": "G. MENDOZA",
+    "controlsME": "N. CARPENTER"
+  },
+  "importHints": {
+    "canonicalSheetName": "AUX SWITCH PANEL",
+    "normalizedSheetName": "aux-switch-panel",
+    "bundleNames": [
+      "HL0171",
+      "HL0172",
+      "HA - HA",
+      "SA0170",
+      "SH6500",
+      "HA0170"
+    ],
+    "bundleDisplays": [
+      "HL0171",
+      "HL0172",
+      "HA - HA",
+      "SA0170 - AUXILIARY EQP POWER",
+      "HL0171 - AUXILIARY - PANEL B",
+      "HL0172 - AUXILIARY - PANEL B",
+      "SA0170 - AUXILIARY - PANEL B",
+      "SH6500 - AUXILIARY - PANEL B",
+      "HA0170 - AUXILIARY - PANEL B"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "HL",
+      "bundles": [
+        {
+          "bundleName": "HL0171",
+          "toLocation": "AUX SWITCH PANEL",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "HL0171:X1",
+              "fromTerminal": "X1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "HL0171X1",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "HL0171:X4(-)",
+              "toTerminal": "X4(-)",
+              "toLocation": "AUX SWITCH PANEL",
+              "bundleName": "HL0171",
+              "bundleDisplay": "HL0171",
+              "devicePrefix": "HL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "HL0172",
+          "toLocation": "AUX SWITCH PANEL",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "HL0172:X1",
+              "fromTerminal": "X1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "HL0172X1",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "HL0172:X4(-)",
+              "toTerminal": "X4(-)",
+              "toLocation": "AUX SWITCH PANEL",
+              "bundleName": "HL0172",
+              "bundleDisplay": "HL0172",
+              "devicePrefix": "HL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "HA",
+      "bundles": [
+        {
+          "bundleName": "HA - HA",
+          "toLocation": "AUX SWITCH PANEL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "HA0170:M1",
+              "fromTerminal": "M1",
+              "fromTerminalOrder": null,
+              "wireNo": "HA0170M2",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "HA0170:M2",
+              "toTerminal": "M2",
+              "toLocation": "AUX SWITCH PANEL",
+              "bundleName": "HA - HA",
+              "bundleDisplay": "HA - HA",
+              "devicePrefix": "HA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "SA",
+      "bundles": [
+        {
+          "bundleName": "SA0170",
+          "toLocation": "AUXILIARY EQP POWER",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "SA0170:13",
+              "fromTerminal": "13",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SA017013",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AT0170:11",
+              "toTerminal": "11",
+              "toLocation": "AUXILIARY EQP POWER",
+              "bundleName": "SA0170",
+              "bundleDisplay": "SA0170 - AUXILIARY EQP POWER",
+              "devicePrefix": "SA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "SA0170:14",
+              "fromTerminal": "14",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SA017014",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AT0170:12",
+              "toTerminal": "12",
+              "toLocation": "AUXILIARY EQP POWER",
+              "bundleName": "SA0170",
+              "bundleDisplay": "",
+              "devicePrefix": "SA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "HL",
+      "bundles": [
+        {
+          "bundleName": "HL0171",
+          "toLocation": "AUXILIARY PANEL B",
+          "rows": [
+            {
+              "rowId": "row-7",
+              "rowIndex": 18,
+              "fromDeviceId": "HL0171:X2",
+              "fromTerminal": "X2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "HL0171X2",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0172:11",
+              "toTerminal": "11",
+              "toLocation": "AUXILIARY PANEL B",
+              "bundleName": "HL0171",
+              "bundleDisplay": "HL0171 - AUXILIARY - PANEL B",
+              "devicePrefix": "HL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-8",
+              "rowIndex": 19,
+              "fromDeviceId": "HL0171:X3(+)",
+              "fromTerminal": "X3(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "HL0171X3",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0172:10",
+              "toTerminal": "10",
+              "toLocation": "AUXILIARY PANEL B",
+              "bundleName": "HL0171",
+              "bundleDisplay": "",
+              "devicePrefix": "HL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "HL0172",
+          "toLocation": "AUXILIARY PANEL B",
+          "rows": [
+            {
+              "rowId": "row-9",
+              "rowIndex": 20,
+              "fromDeviceId": "HL0172:X2",
+              "fromTerminal": "X2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "HL0172X2",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0172:13",
+              "toTerminal": "13",
+              "toLocation": "AUXILIARY PANEL B",
+              "bundleName": "HL0172",
+              "bundleDisplay": "HL0172 - AUXILIARY - PANEL B",
+              "devicePrefix": "HL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "HL0172:X3(+)",
+              "fromTerminal": "X3(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "HL0172X3",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0172:12",
+              "toTerminal": "12",
+              "toLocation": "AUXILIARY PANEL B",
+              "bundleName": "HL0172",
+              "bundleDisplay": "",
+              "devicePrefix": "HL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "SA",
+      "bundles": [
+        {
+          "bundleName": "SA0170",
+          "toLocation": "AUXILIARY PANEL B",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 22,
+              "fromDeviceId": "SA0170:21",
+              "fromTerminal": "21",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SA017011",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AT0175:11",
+              "toTerminal": "11",
+              "toLocation": "AUXILIARY PANEL B",
+              "bundleName": "SA0170",
+              "bundleDisplay": "SA0170 - AUXILIARY - PANEL B",
+              "devicePrefix": "SA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-12",
+              "rowIndex": 23,
+              "fromDeviceId": "SA0170:22",
+              "fromTerminal": "22",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "MV03111",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0172:30",
+              "toTerminal": "30",
+              "toLocation": "AUXILIARY PANEL B",
+              "bundleName": "SA0170",
+              "bundleDisplay": "",
+              "devicePrefix": "SA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-13",
+              "rowIndex": 24,
+              "fromDeviceId": "SA0170:31",
+              "fromTerminal": "31",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SA017017",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AT0176:17",
+              "toTerminal": "17",
+              "toLocation": "AUXILIARY PANEL B",
+              "bundleName": "SA0170",
+              "bundleDisplay": "",
+              "devicePrefix": "SA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-14",
+              "rowIndex": 25,
+              "fromDeviceId": "SA0170:32",
+              "fromTerminal": "32",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SV66121",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0172:32",
+              "toTerminal": "32",
+              "toLocation": "AUXILIARY PANEL B",
+              "bundleName": "SA0170",
+              "bundleDisplay": "",
+              "devicePrefix": "SA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "SH",
+      "bundles": [
+        {
+          "bundleName": "SH6500",
+          "toLocation": "AUXILIARY PANEL B",
+          "rows": [
+            {
+              "rowId": "row-15",
+              "rowIndex": 26,
+              "fromDeviceId": "SH6500:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0173",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "FU0173:LD",
+              "toTerminal": "LD",
+              "toLocation": "AUXILIARY PANEL B",
+              "bundleName": "SH6500",
+              "bundleDisplay": "SH6500 - AUXILIARY - PANEL B",
+              "devicePrefix": "SH",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "SH6500",
+          "toLocation": "AUXILIARY PANEL B",
+          "rows": [
+            {
+              "rowId": "row-16",
+              "rowIndex": 27,
+              "fromDeviceId": "SH6500:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SH65002",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0172:33",
+              "toTerminal": "33",
+              "toLocation": "AUXILIARY PANEL B",
+              "bundleName": "SH6500",
+              "bundleDisplay": "SH6500 - AUXILIARY - PANEL B",
+              "devicePrefix": "SH",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-17",
+              "rowIndex": 28,
+              "fromDeviceId": "SH6500:X1",
+              "fromTerminal": "X1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SH6500X1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0172:39",
+              "toTerminal": "39",
+              "toLocation": "AUXILIARY PANEL B",
+              "bundleName": "SH6500",
+              "bundleDisplay": "",
+              "devicePrefix": "SH",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-18",
+              "rowIndex": 29,
+              "fromDeviceId": "SH6500:X2",
+              "fromTerminal": "X2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SH6500X2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0172:40",
+              "toTerminal": "40",
+              "toLocation": "AUXILIARY PANEL B",
+              "bundleName": "SH6500",
+              "bundleDisplay": "",
+              "devicePrefix": "SH",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "HA",
+      "bundles": [
+        {
+          "bundleName": "HA0170",
+          "toLocation": "AUXILIARY PANEL B",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "HA0170:M1",
+              "fromTerminal": "M1",
+              "fromTerminalOrder": null,
+              "wireNo": "HA0170M2",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "KA0178:14",
+              "toTerminal": "14",
+              "toLocation": "AUXILIARY PANEL B",
+              "bundleName": "HA0170",
+              "bundleDisplay": "HA0170 - AUXILIARY - PANEL B",
+              "devicePrefix": "HA"
+            },
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "HA0170:M3",
+              "fromTerminal": "M3",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0170:3",
+              "toTerminal": "3",
+              "toLocation": "AUXILIARY PANEL B",
+              "bundleName": "HA0170",
+              "bundleDisplay": "",
+              "devicePrefix": "HA",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "6c058177eaabee6598b9db15bd71ea96679aa6c4503c88935d2e53f28d462e53"
+}

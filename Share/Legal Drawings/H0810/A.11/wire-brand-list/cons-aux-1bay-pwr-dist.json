@@ -1,0 +1,772 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:07:58.128Z",
+  "mode": "branding-export",
+  "sheetSlug": "cons-aux-1bay-pwr-dist",
+  "sheetName": "CONS AUX 1BAY PWR DIST",
+  "totalRows": 27,
+  "header": {
+    "locationTitle": "CONS AUX 1BAY PWR DIST",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "H0810",
+    "projectName": "H0810",
+    "revision": "A.11",
+    "controlsDE": "G.MENDOZA",
+    "controlsME": "S. MARTINEZ"
+  },
+  "importHints": {
+    "canonicalSheetName": "CONS,AUX,^1BAY PWR DIST",
+    "normalizedSheetName": "cons-aux-1bay-pwr-dist",
+    "bundleNames": [
+      "FU - XT",
+      "HL0410",
+      "SA0401",
+      "SB0400",
+      "SH0400",
+      "FU - AF",
+      "FU - AT",
+      "FU - AU",
+      "FU - ZS",
+      "XT0562",
+      "XT - XT",
+      "XT0561",
+      "HL0702",
+      "SA0701"
+    ],
+    "bundleDisplays": [
+      "FU - XT",
+      "HL0410 - CONSOLE",
+      "SA0401 - CONSOLE",
+      "SB0400 - CONSOLE",
+      "SH0400 - CONSOLE",
+      "FU - AF - CONSOLE",
+      "FU - AT - CONSOLE",
+      "FU - AU - CONSOLE",
+      "FU - ZS - CONSOLE",
+      "XT0562 - CONSOLE",
+      "XT - XT - CONSOLE",
+      "XT0561 - CONSOLE LEFT - PANEL",
+      "XT0562 - CONSOLE LEFT - PANEL",
+      "HL0702 - SWITCH - PANEL",
+      "SA0701 - SWITCH - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "CONS,AUX,^1BAY PWR DIST",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 16,
+              "fromDeviceId": "FU0200:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0200LI",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0561:1",
+              "toTerminal": "1",
+              "toLocation": "CONS,AUX,^1BAY PWR DIST",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "HL",
+      "bundles": [
+        {
+          "bundleName": "HL0410",
+          "toLocation": "CONSOLE",
+          "rows": [
+            {
+              "rowId": "row-20",
+              "rowIndex": 30,
+              "fromDeviceId": "HL0410:A",
+              "fromTerminal": "A",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0563:4",
+              "toTerminal": "4",
+              "toLocation": "CONSOLE",
+              "bundleName": "HL0410",
+              "bundleDisplay": "HL0410 - CONSOLE",
+              "devicePrefix": "HL",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "SA",
+      "bundles": [
+        {
+          "bundleName": "SA0401",
+          "toLocation": "CONSOLE",
+          "rows": [
+            {
+              "rowId": "row-21",
+              "rowIndex": 31,
+              "fromDeviceId": "SA0401:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "KA0241A1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0563:5",
+              "toTerminal": "5",
+              "toLocation": "CONSOLE",
+              "bundleName": "SA0401",
+              "bundleDisplay": "SA0401 - CONSOLE",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-22",
+              "rowIndex": 32,
+              "fromDeviceId": "SA0401:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0139",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0563:6",
+              "toTerminal": "6",
+              "toLocation": "CONSOLE",
+              "bundleName": "SA0401",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "SB",
+      "bundles": [
+        {
+          "bundleName": "SB0400",
+          "toLocation": "CONSOLE",
+          "rows": [
+            {
+              "rowId": "row-17",
+              "rowIndex": 27,
+              "fromDeviceId": "SB0400:11",
+              "fromTerminal": "11",
+              "fromTerminalOrder": null,
+              "wireNo": "ESTOPB",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0563:1",
+              "toTerminal": "1",
+              "toLocation": "CONSOLE",
+              "bundleName": "SB0400",
+              "bundleDisplay": "SB0400 - CONSOLE",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-18",
+              "rowIndex": 28,
+              "fromDeviceId": "SB0400:12",
+              "fromTerminal": "12",
+              "fromTerminalOrder": null,
+              "wireNo": "ESTOPA",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0563:2",
+              "toTerminal": "2",
+              "toLocation": "CONSOLE",
+              "bundleName": "SB0400",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-23",
+              "rowIndex": 33,
+              "fromDeviceId": "SB0400:21",
+              "fromTerminal": "21",
+              "fromTerminalOrder": null,
+              "wireNo": "TCP18B1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0563:8",
+              "toTerminal": "8",
+              "toLocation": "CONSOLE",
+              "bundleName": "SB0400",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            },
+            {
+              "rowId": "row-24",
+              "rowIndex": 34,
+              "fromDeviceId": "SB0400:22",
+              "fromTerminal": "22",
+              "fromTerminalOrder": null,
+              "wireNo": "TCP18B2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0563:9",
+              "toTerminal": "9",
+              "toLocation": "CONSOLE",
+              "bundleName": "SB0400",
+              "bundleDisplay": "",
+              "devicePrefix": "SB"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "SH",
+      "bundles": [
+        {
+          "bundleName": "SH0400",
+          "toLocation": "CONSOLE",
+          "rows": [
+            {
+              "rowId": "row-15",
+              "rowIndex": 25,
+              "fromDeviceId": "SH0400:B",
+              "fromTerminal": "B",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0562:3",
+              "toTerminal": "3",
+              "toLocation": "CONSOLE",
+              "bundleName": "SH0400",
+              "bundleDisplay": "SH0400 - CONSOLE",
+              "devicePrefix": "SH"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - AF",
+          "toLocation": "CONSOLE",
+          "rows": [
+            {
+              "rowId": "row-10",
+              "rowIndex": 20,
+              "fromDeviceId": "FU0201:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0201",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "AF0202:V+",
+              "toTerminal": "V+",
+              "toLocation": "CONSOLE",
+              "bundleName": "FU - AF",
+              "bundleDisplay": "FU - AF - CONSOLE",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - AT",
+          "toLocation": "CONSOLE",
+          "rows": [
+            {
+              "rowId": "row-8",
+              "rowIndex": 18,
+              "fromDeviceId": "FU0190:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0190",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "AT0190:POS",
+              "toTerminal": "POS",
+              "toLocation": "CONSOLE",
+              "bundleName": "FU - AT",
+              "bundleDisplay": "FU - AT - CONSOLE",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - AU",
+          "toLocation": "CONSOLE",
+          "rows": [
+            {
+              "rowId": "row-9",
+              "rowIndex": 19,
+              "fromDeviceId": "FU0200:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0200",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "AU0200:V+",
+              "toTerminal": "V+",
+              "toLocation": "CONSOLE",
+              "bundleName": "FU - AU",
+              "bundleDisplay": "FU - AU - CONSOLE",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - ZS",
+          "toLocation": "CONSOLE",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 21,
+              "fromDeviceId": "FU0273:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0273",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "ZS0273:1",
+              "toTerminal": "1",
+              "toLocation": "CONSOLE",
+              "bundleName": "FU - ZS",
+              "bundleDisplay": "FU - ZS - CONSOLE",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0562",
+          "toLocation": "CONSOLE",
+          "rows": [
+            {
+              "rowId": "row-12",
+              "rowIndex": 22,
+              "fromDeviceId": "XT0562:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "AF0202:COM",
+              "toTerminal": "COM",
+              "toLocation": "CONSOLE",
+              "bundleName": "XT0562",
+              "bundleDisplay": "XT0562 - CONSOLE",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-13",
+              "rowIndex": 23,
+              "fromDeviceId": "XT0562:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "AU0200:COM",
+              "toTerminal": "COM",
+              "toLocation": "CONSOLE",
+              "bundleName": "XT0562",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-14",
+              "rowIndex": 24,
+              "fromDeviceId": "XT0562:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "EL0273:-",
+              "toTerminal": "-",
+              "toLocation": "CONSOLE",
+              "bundleName": "XT0562",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-16",
+              "rowIndex": 26,
+              "fromDeviceId": "XT0562:4",
+              "fromTerminal": "4",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "AT0190:NEG",
+              "toTerminal": "NEG",
+              "toLocation": "CONSOLE",
+              "bundleName": "XT0562",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "CONSOLE",
+          "rows": [
+            {
+              "rowId": "row-19",
+              "rowIndex": 29,
+              "fromDeviceId": "XT0563:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA023612",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0564:1 B2",
+              "toTerminal": "1 B2",
+              "toLocation": "CONSOLE",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT - CONSOLE",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0561",
+          "toLocation": "CONSOLE^LEFT PANEL",
+          "rows": [
+            {
+              "rowId": "row-27",
+              "rowIndex": 37,
+              "fromDeviceId": "XT0561:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0200LI",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0292:LI",
+              "toTerminal": "LI",
+              "toLocation": "CONSOLE^LEFT PANEL",
+              "bundleName": "XT0561",
+              "bundleDisplay": "XT0561 - CONSOLE LEFT - PANEL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT0561",
+          "toLocation": "CONSOLE^LEFT PANEL",
+          "rows": [
+            {
+              "rowId": "row-26",
+              "rowIndex": 36,
+              "fromDeviceId": "XT0561:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0200LI",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 120,
+              "toDeviceId": "QS0560:LD-1",
+              "toTerminal": "LD-1",
+              "toLocation": "CONSOLE^LEFT PANEL",
+              "bundleName": "XT0561",
+              "bundleDisplay": "XT0561 - CONSOLE LEFT - PANEL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT0561",
+          "toLocation": "CONSOLE^LEFT PANEL",
+          "rows": [
+            {
+              "rowId": "row-28",
+              "rowIndex": 38,
+              "fromDeviceId": "XT0561:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0200LI",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0003:1",
+              "toTerminal": "1",
+              "toLocation": "CONSOLE^LEFT PANEL",
+              "bundleName": "XT0561",
+              "bundleDisplay": "XT0561 - CONSOLE LEFT - PANEL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT0562",
+          "toLocation": "CONSOLE^LEFT PANEL",
+          "rows": [
+            {
+              "rowId": "row-29",
+              "rowIndex": 39,
+              "fromDeviceId": "XT0562:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 120,
+              "toDeviceId": "QS0560:LD-3",
+              "toTerminal": "LD-3",
+              "toLocation": "CONSOLE^LEFT PANEL",
+              "bundleName": "XT0562",
+              "bundleDisplay": "XT0562 - CONSOLE LEFT - PANEL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT0562",
+          "toLocation": "CONSOLE^LEFT PANEL",
+          "rows": [
+            {
+              "rowId": "row-30",
+              "rowIndex": 40,
+              "fromDeviceId": "XT0562:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0180:1",
+              "toTerminal": "1",
+              "toLocation": "CONSOLE^LEFT PANEL",
+              "bundleName": "XT0562",
+              "bundleDisplay": "XT0562 - CONSOLE LEFT - PANEL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-31",
+              "rowIndex": 41,
+              "fromDeviceId": "XT0562:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "UV0292:24V(-)",
+              "toTerminal": "24V(-)",
+              "toLocation": "CONSOLE^LEFT PANEL",
+              "bundleName": "XT0562",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-32",
+              "rowIndex": 42,
+              "fromDeviceId": "XT0562:4",
+              "fromTerminal": "4",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0003:6",
+              "toTerminal": "6",
+              "toLocation": "CONSOLE^LEFT PANEL",
+              "bundleName": "XT0562",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "HL",
+      "bundles": [
+        {
+          "bundleName": "HL0702",
+          "toLocation": "SWITCH PANEL",
+          "rows": [
+            {
+              "rowId": "row-34",
+              "rowIndex": 44,
+              "fromDeviceId": "HL0702:",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0562:2",
+              "toTerminal": "2",
+              "toLocation": "SWITCH PANEL",
+              "bundleName": "HL0702",
+              "bundleDisplay": "HL0702 - SWITCH - PANEL",
+              "devicePrefix": "HL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "SA",
+      "bundles": [
+        {
+          "bundleName": "SA0701",
+          "toLocation": "SWITCH PANEL",
+          "rows": [
+            {
+              "rowId": "row-33",
+              "rowIndex": 43,
+              "fromDeviceId": "SA0701:14",
+              "fromTerminal": "14",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0200LI",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0561:2",
+              "toTerminal": "2",
+              "toLocation": "SWITCH PANEL",
+              "bundleName": "SA0701",
+              "bundleDisplay": "SA0701 - SWITCH - PANEL",
+              "devicePrefix": "SA"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "30d784a2b98b16678e1f10d419de87905537b2efd1cd4a2f714fbf701d39c25e"
+}

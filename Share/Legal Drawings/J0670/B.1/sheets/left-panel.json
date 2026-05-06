@@ -1,0 +1,93 @@
+{
+  "slug": "left-panel",
+  "name": "LEFT PANEL",
+  "kind": "operational",
+  "sheetIndex": 9,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR0131:",
+      "wireType": "SC",
+      "wireNo": "GR0131",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "3.A3",
+      "toDeviceId": "FRAME",
+      "toLocation": "LEFT PANEL",
+      "toPageZone": "3.A3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-1",
+      "fromDeviceId": "GR0132:",
+      "wireType": "SC",
+      "wireNo": "GR0132",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "3.A3",
+      "toDeviceId": "FRAME",
+      "toLocation": "LEFT PANEL",
+      "toPageZone": "3.A3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0131",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "3.A3",
+      "Location": "LEFT PANEL"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0132",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "3.A3",
+      "Location": "LEFT PANEL"
+    }
+  ],
+  "rowCount": 2,
+  "metadata": {
+    "projectName": "TE LAMBERTVILLE EMD CONTROLS-PRU",
+    "revision": "B",
+    "controlsDE": "M.WERLING",
+    "controlsME": "N. CARPENTER"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:11:09.050Z"
+}

@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:09:18.987Z",
+  "mode": "branding-export",
+  "sheetSlug": "assembly-console",
+  "sheetName": "ASSEMBLY CONSOLE",
+  "totalRows": 3,
+  "header": {
+    "locationTitle": "ASSEMBLY CONSOLE",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0160",
+    "projectName": "J0160",
+    "revision": "J0160",
+    "controlsDE": "R.BRAUNSTEIN",
+    "controlsME": "S. MARTINEZ"
+  },
+  "importHints": {
+    "canonicalSheetName": "ASSEMBLY CONSOLE",
+    "normalizedSheetName": "assembly-console",
+    "bundleNames": [
+      "EL - ZS",
+      "EL - XT",
+      "ZS - FU"
+    ],
+    "bundleDisplays": [
+      "EL - ZS",
+      "EL - XT - PWR DISTRIBUTION - RAIL LEFT DOOR",
+      "ZS - FU - PWR DISTRIBUTION - RAIL LEFT DOOR"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "EL",
+      "bundles": [
+        {
+          "bundleName": "EL - ZS",
+          "toLocation": "ASSEMBLY CONSOLE",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "EL0273:+",
+              "fromTerminal": "+",
+              "fromTerminalOrder": null,
+              "wireNo": "ZS0273",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "ZS0273:2",
+              "toTerminal": "2",
+              "toLocation": "ASSEMBLY CONSOLE",
+              "bundleName": "EL - ZS",
+              "bundleDisplay": "EL - ZS",
+              "devicePrefix": "EL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "EL",
+      "bundles": [
+        {
+          "bundleName": "EL - XT",
+          "toLocation": "PWR,DISTRIBUTION RAIL^LEFT DOOR",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "EL0273:+",
+              "fromTerminal": "+",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0562:1",
+              "toTerminal": "1",
+              "toLocation": "PWR,DISTRIBUTION RAIL^LEFT DOOR",
+              "bundleName": "EL - XT",
+              "bundleDisplay": "EL - XT - PWR DISTRIBUTION - RAIL LEFT DOOR",
+              "devicePrefix": "EL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "ZS",
+      "bundles": [
+        {
+          "bundleName": "ZS - FU",
+          "toLocation": "PWR,DISTRIBUTION RAIL^LEFT DOOR",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "ZS0273:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0273",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0273:LD",
+              "toTerminal": "LD",
+              "toLocation": "PWR,DISTRIBUTION RAIL^LEFT DOOR",
+              "bundleName": "ZS - FU",
+              "bundleDisplay": "ZS - FU - PWR DISTRIBUTION - RAIL LEFT DOOR",
+              "devicePrefix": "ZS"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "83f2889d77ef48905f5c380691f5da58047fa70ebf01ff2a0525f256c00a18e7"
+}

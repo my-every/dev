@@ -1,0 +1,417 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:10:04.833Z",
+  "mode": "branding-export",
+  "sheetSlug": "console",
+  "sheetName": "CONSOLE",
+  "totalRows": 16,
+  "header": {
+    "locationTitle": "CONSOLE",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4J611",
+    "projectName": "4J611",
+    "revision": "C.3_M.3",
+    "controlsDE": "C. CRAIG",
+    "controlsME": "H. MEDRANO"
+  },
+  "importHints": {
+    "canonicalSheetName": "CONSOLE",
+    "normalizedSheetName": "console",
+    "bundleNames": [
+      "EL0272",
+      "EL - ZS",
+      "AT0190",
+      "EL0274",
+      "EL - XT",
+      "ZS0271",
+      "ZS - FU"
+    ],
+    "bundleDisplays": [
+      "EL0272",
+      "EL - ZS",
+      "AT0190 - PWR DISTRIBUTION - RAIL",
+      "EL0272 - PWR DISTRIBUTION - RAIL",
+      "EL0274 - PWR DISTRIBUTION - RAIL",
+      "EL - XT - PWR DISTRIBUTION - RAIL",
+      "ZS0271 - PWR DISTRIBUTION - RAIL",
+      "ZS - FU - PWR DISTRIBUTION - RAIL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "EL",
+      "bundles": [
+        {
+          "bundleName": "EL0272",
+          "toLocation": "CONSOLE",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "EL0272:B1",
+              "fromTerminal": "B1",
+              "fromTerminalOrder": null,
+              "wireNo": "EL0273B",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "EL0273:B2",
+              "toTerminal": "B2",
+              "toLocation": "CONSOLE",
+              "bundleName": "EL0272",
+              "bundleDisplay": "EL0272",
+              "devicePrefix": "EL"
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "EL0272:W1",
+              "fromTerminal": "W1",
+              "fromTerminalOrder": null,
+              "wireNo": "EL0273W",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "EL0273:W2",
+              "toTerminal": "W2",
+              "toLocation": "CONSOLE",
+              "bundleName": "EL0272",
+              "bundleDisplay": "",
+              "devicePrefix": "EL"
+            }
+          ]
+        },
+        {
+          "bundleName": "EL - ZS",
+          "toLocation": "CONSOLE",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "EL0273:B1",
+              "fromTerminal": "B1",
+              "fromTerminalOrder": null,
+              "wireNo": "ZS0273",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "ZS0273:2",
+              "toTerminal": "2",
+              "toLocation": "CONSOLE",
+              "bundleName": "EL - ZS",
+              "bundleDisplay": "EL - ZS",
+              "devicePrefix": "EL"
+            },
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "EL0274:B1",
+              "fromTerminal": "B1",
+              "fromTerminalOrder": null,
+              "wireNo": "ZS02742",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "ZS0274:2",
+              "toTerminal": "2",
+              "toLocation": "CONSOLE",
+              "bundleName": "EL - ZS",
+              "bundleDisplay": "",
+              "devicePrefix": "EL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT0190",
+          "toLocation": "PWR DISTRIBUTION RAIL",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "AT0190:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0562:2",
+              "toTerminal": "2",
+              "toLocation": "PWR DISTRIBUTION RAIL",
+              "bundleName": "AT0190",
+              "bundleDisplay": "AT0190 - PWR DISTRIBUTION - RAIL",
+              "devicePrefix": "AT",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-7",
+              "rowIndex": 18,
+              "fromDeviceId": "AT0190:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0190",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0190:LD",
+              "toTerminal": "LD",
+              "toLocation": "PWR DISTRIBUTION RAIL",
+              "bundleName": "AT0190",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "EL",
+      "bundles": [
+        {
+          "bundleName": "EL0272",
+          "toLocation": "PWR DISTRIBUTION RAIL",
+          "rows": [
+            {
+              "rowId": "row-8",
+              "rowIndex": 19,
+              "fromDeviceId": "EL0272:B2",
+              "fromTerminal": "B2",
+              "fromTerminalOrder": null,
+              "wireNo": "EL0272B2",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0562:4",
+              "toTerminal": "4",
+              "toLocation": "PWR DISTRIBUTION RAIL",
+              "bundleName": "EL0272",
+              "bundleDisplay": "EL0272 - PWR DISTRIBUTION - RAIL",
+              "devicePrefix": "EL"
+            },
+            {
+              "rowId": "row-9",
+              "rowIndex": 20,
+              "fromDeviceId": "EL0272:W2",
+              "fromTerminal": "W2",
+              "fromTerminalOrder": null,
+              "wireNo": "EL0272W2",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "KA0271:A2",
+              "toTerminal": "A2",
+              "toLocation": "PWR DISTRIBUTION RAIL",
+              "bundleName": "EL0272",
+              "bundleDisplay": "",
+              "devicePrefix": "EL"
+            }
+          ]
+        },
+        {
+          "bundleName": "EL0274",
+          "toLocation": "PWR DISTRIBUTION RAIL",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 22,
+              "fromDeviceId": "EL0274:B2",
+              "fromTerminal": "B2",
+              "fromTerminalOrder": null,
+              "wireNo": "KA0274A1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA0274:A1",
+              "toTerminal": "A1",
+              "toLocation": "PWR DISTRIBUTION RAIL",
+              "bundleName": "EL0274",
+              "bundleDisplay": "EL0274 - PWR DISTRIBUTION - RAIL",
+              "devicePrefix": "EL"
+            },
+            {
+              "rowId": "row-13",
+              "rowIndex": 24,
+              "fromDeviceId": "EL0274:W2",
+              "fromTerminal": "W2",
+              "fromTerminalOrder": null,
+              "wireNo": "KA0274A2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA0274:A2",
+              "toTerminal": "A2",
+              "toLocation": "PWR DISTRIBUTION RAIL",
+              "bundleName": "EL0274",
+              "bundleDisplay": "",
+              "devicePrefix": "EL"
+            }
+          ]
+        },
+        {
+          "bundleName": "EL0274",
+          "toLocation": "PWR DISTRIBUTION RAIL",
+          "rows": [
+            {
+              "rowId": "row-12",
+              "rowIndex": 23,
+              "fromDeviceId": "EL0274:W1",
+              "fromTerminal": "W1",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0562:3",
+              "toTerminal": "3",
+              "toLocation": "PWR DISTRIBUTION RAIL",
+              "bundleName": "EL0274",
+              "bundleDisplay": "EL0274 - PWR DISTRIBUTION - RAIL",
+              "devicePrefix": "EL"
+            }
+          ]
+        },
+        {
+          "bundleName": "EL - XT",
+          "toLocation": "PWR DISTRIBUTION RAIL",
+          "rows": [
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "EL0273:W1",
+              "fromTerminal": "W1",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0562:1",
+              "toTerminal": "1",
+              "toLocation": "PWR DISTRIBUTION RAIL",
+              "bundleName": "EL - XT",
+              "bundleDisplay": "EL - XT - PWR DISTRIBUTION - RAIL",
+              "devicePrefix": "EL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "ZS",
+      "bundles": [
+        {
+          "bundleName": "ZS0271",
+          "toLocation": "PWR DISTRIBUTION RAIL",
+          "rows": [
+            {
+              "rowId": "row-14",
+              "rowIndex": 25,
+              "fromDeviceId": "ZS0271:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "ZS0271LD",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0273:LD",
+              "toTerminal": "LD",
+              "toLocation": "PWR DISTRIBUTION RAIL",
+              "bundleName": "ZS0271",
+              "bundleDisplay": "ZS0271 - PWR DISTRIBUTION - RAIL",
+              "devicePrefix": "ZS"
+            },
+            {
+              "rowId": "row-15",
+              "rowIndex": 26,
+              "fromDeviceId": "ZS0271:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "EL0272B2",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0562:4",
+              "toTerminal": "4",
+              "toLocation": "PWR DISTRIBUTION RAIL",
+              "bundleName": "ZS0271",
+              "bundleDisplay": "",
+              "devicePrefix": "ZS"
+            }
+          ]
+        },
+        {
+          "bundleName": "ZS - FU",
+          "toLocation": "PWR DISTRIBUTION RAIL",
+          "rows": [
+            {
+              "rowId": "row-16",
+              "rowIndex": 27,
+              "fromDeviceId": "ZS0273:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "ZS0271LD",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0273:LD",
+              "toTerminal": "LD",
+              "toLocation": "PWR DISTRIBUTION RAIL",
+              "bundleName": "ZS - FU",
+              "bundleDisplay": "ZS - FU - PWR DISTRIBUTION - RAIL",
+              "devicePrefix": "ZS"
+            },
+            {
+              "rowId": "row-17",
+              "rowIndex": 28,
+              "fromDeviceId": "ZS0274:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0274",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0274:LD",
+              "toTerminal": "LD",
+              "toLocation": "PWR DISTRIBUTION RAIL",
+              "bundleName": "ZS - FU",
+              "bundleDisplay": "",
+              "devicePrefix": "ZS",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "5e25f66d0aca7336800bd6683df576ca409415e7a9d2d493070863a318752dcc"
+}

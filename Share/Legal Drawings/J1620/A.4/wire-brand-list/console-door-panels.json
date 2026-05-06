@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:17:20.685Z",
+  "mode": "branding-export",
+  "sheetSlug": "console-door-panels",
+  "sheetName": "CONSOLE DOOR PANELS",
+  "totalRows": 2,
+  "header": {
+    "locationTitle": "CONSOLE DOOR PANELS",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J1620",
+    "projectName": "J1620",
+    "revision": "A.4",
+    "controlsDE": "M.ZUNIGA",
+    "controlsME": "S.MARTINEZ"
+  },
+  "importHints": {
+    "canonicalSheetName": "CONSOLE DOOR^PANELS",
+    "normalizedSheetName": "console-door-panels",
+    "bundleNames": [
+      "AT0190"
+    ],
+    "bundleDisplays": [
+      "AT0190 - PWR DISTRIBUTION - RAIL LEFT DOOR"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT0190",
+          "toLocation": "PWR DISTRIBUTION RAIL^LEFT DOOR",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "AT0190:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0562:2",
+              "toTerminal": "2",
+              "toLocation": "PWR DISTRIBUTION RAIL^LEFT DOOR",
+              "bundleName": "AT0190",
+              "bundleDisplay": "AT0190 - PWR DISTRIBUTION - RAIL LEFT DOOR",
+              "devicePrefix": "AT",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "AT0190:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0190",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0190:LD",
+              "toTerminal": "LD",
+              "toLocation": "PWR DISTRIBUTION RAIL^LEFT DOOR",
+              "bundleName": "AT0190",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "fa58974910d5611979c63dc85dc78f0857e6d70326fbe4d93aed60a872956820"
+}

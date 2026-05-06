@@ -1,0 +1,68 @@
+{
+  "slug": "jb70-left-rail",
+  "name": "JB70 LEFT RAIL",
+  "kind": "operational",
+  "sheetIndex": 9,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1101:",
+      "wireType": "SC",
+      "wireNo": "GR1101",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "12.A4",
+      "toDeviceId": "FRAME",
+      "toLocation": "JB70 LEFT RAIL",
+      "toPageZone": "12.A3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1101",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "12.A3",
+      "Location": "JB70 LEFT RAIL"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "SHELL NIGERIA (SNEPCO)/MABU CONSORTIUM",
+    "revision": "B.7",
+    "controlsDE": "F. Partow Dezfouli",
+    "controlsME": "H. Medrano"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Rail in title with no Panel number"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:53:12.610Z"
+}

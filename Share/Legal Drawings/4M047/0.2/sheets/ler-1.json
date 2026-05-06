@@ -1,0 +1,118 @@
+{
+  "slug": "ler-1",
+  "name": "LER 1",
+  "kind": "operational",
+  "sheetIndex": 3,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "EL0273:B1",
+      "wireType": "SC",
+      "wireNo": "ZS0273",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "5.C3",
+      "toDeviceId": "ZS0273:2",
+      "toLocation": "LER 1",
+      "toPageZone": "5.C2",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-1",
+      "fromDeviceId": "EL0273:W1",
+      "wireType": "SC",
+      "wireNo": "-0V1",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "5.C3",
+      "toDeviceId": "XT0262:4",
+      "toLocation": "LER,PNL,REAR",
+      "toPageZone": "5.C4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-2",
+      "fromDeviceId": "ZS0273:1",
+      "wireType": "SC",
+      "wireNo": "FU0273",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "5.C2",
+      "toDeviceId": "FU0273:LD",
+      "toLocation": "LER,PNL,REAR",
+      "toPageZone": "5.C2",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "ZS0273:2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "ZS0273",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "5.C2",
+      "Location": "LER 1"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "XT0262:4",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "0V1",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "5.C4",
+      "Location": "LER,PNL,REAR"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "FU0273:LD",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "FU0273",
+      "Wire ID": "WHT",
+      "Gauge/Size": "14",
+      "Page/Zone": "5.C2",
+      "Location": "LER,PNL,REAR"
+    }
+  ],
+  "rowCount": 3,
+  "metadata": {
+    "projectName": "Bayrunner Pipeline",
+    "revision": "0.2",
+    "controlsDE": "ALEX. JEZEQUEL",
+    "controlsME": "HECTOR, MEDRANO"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:25:16.413Z"
+}

@@ -1,0 +1,9 @@
+export { DetailsEditor } from "./details-editor";
+export { CoverImageEditor } from "./cover-image-editor";
+export { PhotosEditor } from "./photos-editor";
+export { ToolsEditor } from "./tools-editor";
+export { HardwareEditor } from "./hardware-editor";
+export { DosAndDontsEditor } from "./dos-donts-editor";
+export { RelatedDevicesEditor } from "./related-devices-editor";
+export { ChecklistEditor } from "./checklist-editor";
+export { CompetencyEditor } from "./competency-editor";

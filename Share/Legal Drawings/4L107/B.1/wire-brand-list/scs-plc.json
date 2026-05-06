@@ -1,0 +1,646 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:15:12.312Z",
+  "mode": "branding-export",
+  "sheetSlug": "scs-plc",
+  "sheetName": "SCS PLC",
+  "totalRows": 23,
+  "header": {
+    "locationTitle": "SCS PLC",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4L107",
+    "projectName": "4L107",
+    "revision": "B.1",
+    "controlsDE": "ALEX. JEZEQUEL",
+    "controlsME": "HECTOR, MEDRANO"
+  },
+  "importHints": {
+    "canonicalSheetName": "SCS PLC",
+    "normalizedSheetName": "scs-plc",
+    "bundleNames": [
+      "AT0680",
+      "BA - FU",
+      "FU - XT",
+      "BA0720",
+      "BA0721",
+      "BA - XT",
+      "UV0600",
+      "UV0700",
+      "XT - XT",
+      "BA0740",
+      "BA0741"
+    ],
+    "bundleDisplays": [
+      "AT0680",
+      "BA - FU",
+      "FU - XT",
+      "BA0720 - CNTRL A SCS",
+      "BA0721 - CNTRL A SCS",
+      "BA - XT - CNTRL A SCS",
+      "FU - XT - CNTRL A SCS",
+      "UV0600 - CNTRL A SCS",
+      "UV0700 - CNTRL A SCS",
+      "XT - XT - CNTRL A SCS",
+      "BA0740 - CNTRL B SCS",
+      "BA0741 - CNTRL B SCS"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT0680",
+          "toLocation": "SCS PLC",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "AT0680:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0680:2",
+              "toTerminal": "2",
+              "toLocation": "SCS PLC",
+              "bundleName": "AT0680",
+              "bundleDisplay": "AT0680",
+              "devicePrefix": "AT",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "AT0680:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AT0680POS",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0680:1",
+              "toTerminal": "1",
+              "toLocation": "SCS PLC",
+              "bundleName": "AT0680",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA - FU",
+          "toLocation": "SCS PLC",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "BA0606:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0606",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0606:LD",
+              "toTerminal": "LD",
+              "toLocation": "SCS PLC",
+              "bundleName": "BA - FU",
+              "bundleDisplay": "BA - FU",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "BA0706:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0706",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0706:LD",
+              "toTerminal": "LD",
+              "toLocation": "SCS PLC",
+              "bundleName": "BA - FU",
+              "bundleDisplay": "",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "SCS PLC",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "FU0680:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AT0680POS",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0680:1",
+              "toTerminal": "1",
+              "toLocation": "SCS PLC",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA0720",
+          "toLocation": "CNTRL A,SCS",
+          "rows": [
+            {
+              "rowId": "row-29",
+              "rowIndex": 40,
+              "fromDeviceId": "BA0720:0V",
+              "fromTerminal": "0V",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0131:7",
+              "toTerminal": "7",
+              "toLocation": "CNTRL A,SCS",
+              "bundleName": "BA0720",
+              "bundleDisplay": "BA0720 - CNTRL A SCS",
+              "devicePrefix": "BA",
+              "isNegative": true
+            },
+            {
+              "rowId": "row-30",
+              "rowIndex": 41,
+              "fromDeviceId": "BA0720:24V",
+              "fromTerminal": "24V",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0720",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "FU0720:LD",
+              "toTerminal": "LD",
+              "toLocation": "CNTRL A,SCS",
+              "bundleName": "BA0720",
+              "bundleDisplay": "",
+              "devicePrefix": "BA"
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0721",
+          "toLocation": "CNTRL A,SCS",
+          "rows": [
+            {
+              "rowId": "row-31",
+              "rowIndex": 42,
+              "fromDeviceId": "BA0721:0V",
+              "fromTerminal": "0V",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0131:7",
+              "toTerminal": "7",
+              "toLocation": "CNTRL A,SCS",
+              "bundleName": "BA0721",
+              "bundleDisplay": "BA0721 - CNTRL A SCS",
+              "devicePrefix": "BA",
+              "isNegative": true
+            },
+            {
+              "rowId": "row-32",
+              "rowIndex": 43,
+              "fromDeviceId": "BA0721:24V",
+              "fromTerminal": "24V",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0720",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "FU0720:LD",
+              "toTerminal": "LD",
+              "toLocation": "CNTRL A,SCS",
+              "bundleName": "BA0721",
+              "bundleDisplay": "",
+              "devicePrefix": "BA"
+            }
+          ]
+        },
+        {
+          "bundleName": "BA - XT",
+          "toLocation": "CNTRL A,SCS",
+          "rows": [
+            {
+              "rowId": "row-27",
+              "rowIndex": 38,
+              "fromDeviceId": "BA0606:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0134:3",
+              "toTerminal": "3",
+              "toLocation": "CNTRL A,SCS",
+              "bundleName": "BA - XT",
+              "bundleDisplay": "BA - XT - CNTRL A SCS",
+              "devicePrefix": "BA",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-28",
+              "rowIndex": 39,
+              "fromDeviceId": "BA0706:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0134:4",
+              "toTerminal": "4",
+              "toLocation": "CNTRL A,SCS",
+              "bundleName": "BA - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "BA",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "CNTRL A,SCS",
+          "rows": [
+            {
+              "rowId": "row-33",
+              "rowIndex": 44,
+              "fromDeviceId": "FU0606:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0135",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0139:5",
+              "toTerminal": "5",
+              "toLocation": "CNTRL A,SCS",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT - CNTRL A SCS",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-34",
+              "rowIndex": 45,
+              "fromDeviceId": "FU0680:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0135",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0139:2",
+              "toTerminal": "2",
+              "toLocation": "CNTRL A,SCS",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-35",
+              "rowIndex": 46,
+              "fromDeviceId": "FU0706:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0135",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0139:5",
+              "toTerminal": "5",
+              "toLocation": "CNTRL A,SCS",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV0600",
+          "toLocation": "CNTRL A,SCS",
+          "rows": [
+            {
+              "rowId": "row-36",
+              "rowIndex": 47,
+              "fromDeviceId": "UV0600:(-)",
+              "fromTerminal": "(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0135:2",
+              "toTerminal": "2",
+              "toLocation": "CNTRL A,SCS",
+              "bundleName": "UV0600",
+              "bundleDisplay": "UV0600 - CNTRL A SCS",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-37",
+              "rowIndex": 48,
+              "fromDeviceId": "UV0600:(+)",
+              "fromTerminal": "(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0600",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0600:LD",
+              "toTerminal": "LD",
+              "toLocation": "CNTRL A,SCS",
+              "bundleName": "UV0600",
+              "bundleDisplay": "",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "UV0700",
+          "toLocation": "CNTRL A,SCS",
+          "rows": [
+            {
+              "rowId": "row-38",
+              "rowIndex": 49,
+              "fromDeviceId": "UV0700:(-)",
+              "fromTerminal": "(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0135:4",
+              "toTerminal": "4",
+              "toLocation": "CNTRL A,SCS",
+              "bundleName": "UV0700",
+              "bundleDisplay": "UV0700 - CNTRL A SCS",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-39",
+              "rowIndex": 50,
+              "fromDeviceId": "UV0700:(+)",
+              "fromTerminal": "(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0700",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0700:LD",
+              "toTerminal": "LD",
+              "toLocation": "CNTRL A,SCS",
+              "bundleName": "UV0700",
+              "bundleDisplay": "",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "CNTRL A,SCS",
+          "rows": [
+            {
+              "rowId": "row-40",
+              "rowIndex": 51,
+              "fromDeviceId": "XT0680:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0135:3",
+              "toTerminal": "3",
+              "toLocation": "CNTRL A,SCS",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT - CNTRL A SCS",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA0740",
+          "toLocation": "CNTRL B,SCS",
+          "rows": [
+            {
+              "rowId": "row-59",
+              "rowIndex": 70,
+              "fromDeviceId": "BA0740:0V",
+              "fromTerminal": "0V",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0132:6",
+              "toTerminal": "6",
+              "toLocation": "CNTRL B,SCS",
+              "bundleName": "BA0740",
+              "bundleDisplay": "BA0740 - CNTRL B SCS",
+              "devicePrefix": "BA",
+              "isNegative": true
+            },
+            {
+              "rowId": "row-60",
+              "rowIndex": 71,
+              "fromDeviceId": "BA0740:24V",
+              "fromTerminal": "24V",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0741",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "FU0741:LD",
+              "toTerminal": "LD",
+              "toLocation": "CNTRL B,SCS",
+              "bundleName": "BA0740",
+              "bundleDisplay": "",
+              "devicePrefix": "BA"
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0741",
+          "toLocation": "CNTRL B,SCS",
+          "rows": [
+            {
+              "rowId": "row-61",
+              "rowIndex": 72,
+              "fromDeviceId": "BA0741:0V",
+              "fromTerminal": "0V",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0132:6",
+              "toTerminal": "6",
+              "toLocation": "CNTRL B,SCS",
+              "bundleName": "BA0741",
+              "bundleDisplay": "BA0741 - CNTRL B SCS",
+              "devicePrefix": "BA",
+              "isNegative": true
+            },
+            {
+              "rowId": "row-62",
+              "rowIndex": 73,
+              "fromDeviceId": "BA0741:24V",
+              "fromTerminal": "24V",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0741",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "FU0741:LD",
+              "toTerminal": "LD",
+              "toLocation": "CNTRL B,SCS",
+              "bundleName": "BA0741",
+              "bundleDisplay": "",
+              "devicePrefix": "BA"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "1f6db4165a3d75d9a65fe83b32da463543200b33b120a5d93a8a5edde5e1ccbe"
+}

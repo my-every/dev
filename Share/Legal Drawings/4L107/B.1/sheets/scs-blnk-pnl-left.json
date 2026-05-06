@@ -1,0 +1,118 @@
+{
+  "slug": "scs-blnk-pnl-left",
+  "name": "SCS BLNK PNL,LEFT",
+  "kind": "operational",
+  "sheetIndex": 15,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR0161:",
+      "wireType": "SC",
+      "wireNo": "GR0161",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "16.A6",
+      "toDeviceId": "FRAME",
+      "toLocation": "SCS BLNK PNL,LEFT",
+      "toPageZone": "16.A7",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-1",
+      "fromDeviceId": "GR0163:",
+      "wireType": "SC",
+      "wireNo": "GR0163",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "16.A6",
+      "toDeviceId": "FRAME",
+      "toLocation": "SCS BLNK PNL,LEFT",
+      "toPageZone": "16.A7",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-2",
+      "fromDeviceId": "GR0162:",
+      "wireType": "SC",
+      "wireNo": "IEG01304",
+      "wireId": "GRN",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "16.A6",
+      "toDeviceId": "IEG0130:4",
+      "toLocation": "CNTRL A,SCS",
+      "toPageZone": "16.A7",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0161",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "16.A7",
+      "Location": "SCS BLNK PNL,LEFT"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0163",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "16.A7",
+      "Location": "SCS BLNK PNL,LEFT"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "IEG0130:4",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "IEG01304",
+      "Wire ID": "GRN",
+      "Gauge/Size": "14",
+      "Page/Zone": "16.A7",
+      "Location": "CNTRL A,SCS"
+    }
+  ],
+  "rowCount": 3,
+  "metadata": {
+    "projectName": "WHITEWATER MIDSTREAM^BAYRUNNER PIPELINE",
+    "revision": "B",
+    "controlsDE": "ALEX. JEZEQUEL",
+    "controlsME": "HECTOR, MEDRANO"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:14:45.289Z"
+}

@@ -1,0 +1,576 @@
+{
+  "id": "legal-4m037-0-3",
+  "name": "WP-ADSC STA",
+  "filename": "4M037-UCPWiringList_0.3.xlsx",
+  "pdNumber": "4M037",
+  "revision": "0.3",
+  "createdAt": "2026-05-05T13:24:48.283Z",
+  "sheets": [
+    {
+      "slug": "blue-labels",
+      "name": "Blue Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/blue-labels.json",
+      "rowCount": 48,
+      "columnCount": 4,
+      "sheetIndex": 0,
+      "hasData": true
+    },
+    {
+      "slug": "white-labels",
+      "name": "White Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/white-labels.json",
+      "rowCount": 1,
+      "columnCount": 3,
+      "sheetIndex": 1,
+      "hasData": true
+    },
+    {
+      "slug": "heat-shrink-labels",
+      "name": "Heat Shrink Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/heat-shrink-labels.json",
+      "rowCount": 0,
+      "columnCount": 0,
+      "sheetIndex": 2,
+      "hasData": false
+    },
+    {
+      "slug": "ler-1",
+      "name": "LER 1",
+      "kind": "operational",
+      "sheetPath": "sheets/ler-1.json",
+      "rowCount": 3,
+      "columnCount": 9,
+      "sheetIndex": 3,
+      "hasData": true
+    },
+    {
+      "slug": "ler-1-estop",
+      "name": "LER 1 ESTOP",
+      "kind": "operational",
+      "sheetPath": "sheets/ler-1-estop.json",
+      "rowCount": 4,
+      "columnCount": 9,
+      "sheetIndex": 4,
+      "hasData": true
+    },
+    {
+      "slug": "ler-pnl-lft",
+      "name": "LER,PNL,LFT",
+      "kind": "operational",
+      "sheetPath": "sheets/ler-pnl-lft.json",
+      "rowCount": 245,
+      "columnCount": 9,
+      "sheetIndex": 5,
+      "hasData": true
+    },
+    {
+      "slug": "ler-pnl-rear",
+      "name": "LER,PNL,REAR",
+      "kind": "operational",
+      "sheetPath": "sheets/ler-pnl-rear.json",
+      "rowCount": 147,
+      "columnCount": 9,
+      "sheetIndex": 6,
+      "hasData": true
+    },
+    {
+      "slug": "panel-errors",
+      "name": "Panel Errors",
+      "kind": "reference",
+      "sheetPath": "sheets/panel-errors.json",
+      "rowCount": 6,
+      "columnCount": 10,
+      "sheetIndex": 7,
+      "hasData": true
+    },
+    {
+      "slug": "cable-part-numbers",
+      "name": "Cable Part Numbers",
+      "kind": "reference",
+      "sheetPath": "sheets/cable-part-numbers.json",
+      "rowCount": 4,
+      "columnCount": 3,
+      "sheetIndex": 8,
+      "hasData": true
+    },
+    {
+      "slug": "part-number-list",
+      "name": "Part Number List",
+      "kind": "reference",
+      "sheetPath": "sheets/part-number-list.json",
+      "rowCount": 123,
+      "columnCount": 4,
+      "sheetIndex": 9,
+      "hasData": true
+    }
+  ],
+  "assignments": {
+    "ler-1": {
+      "sheetSlug": "ler-1",
+      "sheetName": "LER 1",
+      "kind": "operational",
+      "sheetPath": "sheets/ler-1.json",
+      "rowCount": 3,
+      "columnCount": 9,
+      "sheetIndex": 3,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [
+        "EL0273",
+        "SB0500",
+        "ZS0273",
+        "FG0273"
+      ],
+      "partNumbers": [
+        "1015796",
+        "1022899",
+        "1024594-100",
+        "1113474-1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/ler-1.json",
+        "brandListSchemaPath": "wire-brand-list/ler-1.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "No high-confidence layout page matched LER 1."
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "3m",
+      "wireListEstTime": "2m",
+      "totalEstimatedMinutes": 5,
+      "remainingMinutes": 5,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "ler-1-estop": {
+      "sheetSlug": "ler-1-estop",
+      "sheetName": "LER 1 ESTOP",
+      "kind": "operational",
+      "sheetPath": "sheets/ler-1-estop.json",
+      "rowCount": 4,
+      "columnCount": 9,
+      "sheetIndex": 4,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [
+        "SB0500"
+      ],
+      "partNumbers": [
+        "2380746-4"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/ler-1-estop.json",
+        "brandListSchemaPath": "wire-brand-list/ler-1-estop.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "No high-confidence layout page matched LER 1 ESTOP."
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "4m",
+      "wireListEstTime": "3m",
+      "totalEstimatedMinutes": 7,
+      "remainingMinutes": 7,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "ler-pnl-lft": {
+      "sheetSlug": "ler-pnl-lft",
+      "sheetName": "LER,PNL,LFT",
+      "kind": "operational",
+      "sheetPath": "sheets/ler-pnl-lft.json",
+      "rowCount": 245,
+      "columnCount": 9,
+      "sheetIndex": 5,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [
+        "2x4x73",
+        "2x4x21",
+        "3x4x73"
+      ],
+      "rails": [
+        "RAIL 27.00\"",
+        "RAIL 71.00\""
+      ],
+      "whiteLabels": [
+        "AU0100",
+        "AF0109G"
+      ],
+      "blueLabels": [
+        "XT1036",
+        "XT0136",
+        "KA0210",
+        "KA0211",
+        "KA0212",
+        "KA0213",
+        "KA0215",
+        "KA0216",
+        "KA0217",
+        "KA0218",
+        "KA0600",
+        "KA0601",
+        "KA0602",
+        "KA0603",
+        "KA0604",
+        "KA0605",
+        "XT0536",
+        "XT0537",
+        "XT0538",
+        "KT0554",
+        "KT0555",
+        "KA0060",
+        "KA0061",
+        "GR1034",
+        "FU0100",
+        "FU0101",
+        "FU0102",
+        "XT0100",
+        "AU0500",
+        "AF0501",
+        "AF0502",
+        "AF0503",
+        "AF0504",
+        "AF0505",
+        "AF0506",
+        "AF0507",
+        "AF0508",
+        "AF0509",
+        "AF0510",
+        "AF0511",
+        "AF0512",
+        "AF0513",
+        "KA0270",
+        "KA0271",
+        "KA0607",
+        "KA0608",
+        "KA0610",
+        "KA0611"
+      ],
+      "partNumbers": [
+        "1043265-1",
+        "1043265-5",
+        "1061979-1",
+        "1066730-7",
+        "1066730-8",
+        "1067996-4",
+        "2651077-1",
+        "2684693-17",
+        "2684693-18",
+        "2684693-19",
+        "2684693-23",
+        "2684693-25",
+        "2684693-28",
+        "2684693-33",
+        "2684693-50",
+        "2684693-55",
+        "903849C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/ler-pnl-lft.json",
+        "brandListSchemaPath": "wire-brand-list/ler-pnl-lft.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 4,
+          "title": "LER 1 RIO CONSOLE LEFT SIDE PANEL",
+          "normalizedTitle": "LER 1 RIO CONSOLE LEFT SIDE PNL",
+          "panelNumber": "231490-4",
+          "boxNumber": null,
+          "confidence": "medium",
+          "matchMethod": "title",
+          "score": 77
+        },
+        "pages": [
+          {
+            "pageNumber": 4,
+            "title": "LER 1 RIO CONSOLE LEFT SIDE PANEL",
+            "normalizedTitle": "LER 1 RIO CONSOLE LEFT SIDE PNL",
+            "panelNumber": "231490-4",
+            "boxNumber": null,
+            "confidence": "medium",
+            "matchMethod": "title",
+            "score": 77
+          }
+        ]
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "4h 30m",
+      "wireListEstTime": "3h 4m",
+      "totalEstimatedMinutes": 454,
+      "remainingMinutes": 454,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "ler-pnl-rear": {
+      "sheetSlug": "ler-pnl-rear",
+      "sheetName": "LER,PNL,REAR",
+      "kind": "operational",
+      "sheetPath": "sheets/ler-pnl-rear.json",
+      "rowCount": 147,
+      "columnCount": 9,
+      "sheetIndex": 6,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [
+        "2x4x73",
+        "2x4x21",
+        "3x4x73"
+      ],
+      "rails": [
+        "RAIL 27.00\"",
+        "RAIL 71.00\""
+      ],
+      "whiteLabels": [
+        "AF0109G",
+        "IEG02601"
+      ],
+      "blueLabels": [
+        "FU7040",
+        "BA7040",
+        "BA7041",
+        "BA7042",
+        "BA7140",
+        "BA7141",
+        "FU0103",
+        "FU0104",
+        "FU0105",
+        "FU0106",
+        "XT0090",
+        "GR1033",
+        "KA0530",
+        "KA0531",
+        "KA0532",
+        "KA0533",
+        "KA0540",
+        "KA0541",
+        "KA0542",
+        "KA0543",
+        "FU0273",
+        "FU0190",
+        "FU0262",
+        "FU0263",
+        "FU0264",
+        "XT0262",
+        "XT0260",
+        "XT0261",
+        "FU0260",
+        "XT0025",
+        "FU1033",
+        "FU1032",
+        "XT1033",
+        "XT1032",
+        "GR1030",
+        "QS1032",
+        "GR1031",
+        "QS1033",
+        "GR1032",
+        "UJ1032",
+        "UJ1033",
+        "XT1011",
+        "IEG0260",
+        "PEG0260"
+      ],
+      "partNumbers": [
+        "1043265-1",
+        "1043265-3",
+        "1043265-4",
+        "1043265-5",
+        "1043265-7",
+        "1043265-9",
+        "1061979-1",
+        "1066730-16",
+        "1066730-17",
+        "1066730-18",
+        "1066730-7",
+        "1066730-8",
+        "1067996-4",
+        "1126803",
+        "1271449-1",
+        "1286570-1",
+        "1948791-1",
+        "232941-200",
+        "2504354-1",
+        "903849C1",
+        "981089C1",
+        "981090C1"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/ler-pnl-rear.json",
+        "brandListSchemaPath": "wire-brand-list/ler-pnl-rear.json"
+      },
+      "layout": {
+        "primaryPage": {
+          "pageNumber": 4,
+          "title": "LER 1 RIO CONSOLE LEFT SIDE PANEL",
+          "normalizedTitle": "LER 1 RIO CONSOLE LEFT SIDE PNL",
+          "panelNumber": "231490-4",
+          "boxNumber": null,
+          "confidence": "medium",
+          "matchMethod": "title",
+          "score": 76
+        },
+        "pages": [
+          {
+            "pageNumber": 4,
+            "title": "LER 1 RIO CONSOLE LEFT SIDE PANEL",
+            "normalizedTitle": "LER 1 RIO CONSOLE LEFT SIDE PNL",
+            "panelNumber": "231490-4",
+            "boxNumber": null,
+            "confidence": "medium",
+            "matchMethod": "title",
+            "score": 76
+          }
+        ]
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "2h 42m",
+      "wireListEstTime": "1h 50m",
+      "totalEstimatedMinutes": 272,
+      "remainingMinutes": 272,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    }
+  },
+  "referenceSheets": {
+    "blue-labels": {
+      "sheetSlug": "blue-labels",
+      "sheetName": "Blue Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/blue-labels.json",
+      "rowCount": 48,
+      "columnCount": 4,
+      "sheetIndex": 0,
+      "hasData": true
+    },
+    "white-labels": {
+      "sheetSlug": "white-labels",
+      "sheetName": "White Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/white-labels.json",
+      "rowCount": 1,
+      "columnCount": 3,
+      "sheetIndex": 1,
+      "hasData": true
+    },
+    "heat-shrink-labels": {
+      "sheetSlug": "heat-shrink-labels",
+      "sheetName": "Heat Shrink Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/heat-shrink-labels.json",
+      "rowCount": 0,
+      "columnCount": 0,
+      "sheetIndex": 2,
+      "hasData": false
+    },
+    "panel-errors": {
+      "sheetSlug": "panel-errors",
+      "sheetName": "Panel Errors",
+      "kind": "reference",
+      "sheetPath": "sheets/panel-errors.json",
+      "rowCount": 6,
+      "columnCount": 10,
+      "sheetIndex": 7,
+      "hasData": true
+    },
+    "cable-part-numbers": {
+      "sheetSlug": "cable-part-numbers",
+      "sheetName": "Cable Part Numbers",
+      "kind": "reference",
+      "sheetPath": "sheets/cable-part-numbers.json",
+      "rowCount": 4,
+      "columnCount": 3,
+      "sheetIndex": 8,
+      "hasData": true
+    },
+    "part-number-list": {
+      "sheetSlug": "part-number-list",
+      "sheetName": "Part Number List",
+      "kind": "reference",
+      "sheetPath": "sheets/part-number-list.json",
+      "rowCount": 123,
+      "columnCount": 4,
+      "sheetIndex": 9,
+      "hasData": true
+    }
+  },
+  "unitTypes": [],
+  "panducts": 3,
+  "rails": 2,
+  "aggregates": {
+    "totalAssignments": 4,
+    "completedAssignments": 0,
+    "inProgressAssignments": 0,
+    "blockedAssignments": 0,
+    "totalEstimatedMinutes": 738,
+    "totalRemainingMinutes": 738,
+    "totalActualMinutes": 0,
+    "overallProgress": 0,
+    "highestPriority": "low",
+    "priorityCounts": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 4
+    },
+    "stageCounts": {
+      "READY_TO_LAY": 4
+    }
+  },
+  "assignmentsByUnitType": {
+    "UNASSIGNED": [
+      "ler-1",
+      "ler-1-estop",
+      "ler-pnl-lft",
+      "ler-pnl-rear"
+    ]
+  },
+  "projectName": "WP-ADSC STA",
+  "lwcType": "Offskid"
+}

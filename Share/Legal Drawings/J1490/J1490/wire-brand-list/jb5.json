@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:16:28.759Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb5",
+  "sheetName": "JB5",
+  "totalRows": 4,
+  "header": {
+    "locationTitle": "JB5",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J1490",
+    "projectName": "J1490",
+    "revision": "J1490",
+    "controlsDE": "A.GONZALEZ"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB5",
+    "normalizedSheetName": "jb5",
+    "bundleNames": [
+      "FU - UV",
+      "UAI - UAI",
+      "FU - XT",
+      "UV - XT"
+    ],
+    "bundleDisplays": [
+      "FU - UV",
+      "UAI - UAI",
+      "FU - XT - TURBINE - PANEL B",
+      "UV - XT - TURBINE - PANEL B"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - UV",
+          "toLocation": "JB5",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "FU0271:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV0271P",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "UV0271:8+",
+              "toTerminal": "8+",
+              "toLocation": "JB5",
+              "bundleName": "FU - UV",
+              "bundleDisplay": "FU - UV",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UAI",
+      "bundles": [
+        {
+          "bundleName": "UAI - UAI",
+          "toLocation": "JB5",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "UAI1204:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "UAI12041",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAI1204:3",
+              "toTerminal": "3",
+              "toLocation": "JB5",
+              "bundleName": "UAI - UAI",
+              "bundleDisplay": "UAI - UAI",
+              "devicePrefix": "UAI"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "TURBINE PANEL B",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "FU0271:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0110:2",
+              "toTerminal": "2",
+              "toLocation": "TURBINE PANEL B",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT - TURBINE - PANEL B",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV - XT",
+          "toLocation": "TURBINE PANEL B",
+          "rows": [
+            {
+              "rowId": "row-7",
+              "rowIndex": 18,
+              "fromDeviceId": "UV0271:9-",
+              "fromTerminal": "9-",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0110:4",
+              "toTerminal": "4",
+              "toLocation": "TURBINE PANEL B",
+              "bundleName": "UV - XT",
+              "bundleDisplay": "UV - XT - TURBINE - PANEL B",
+              "devicePrefix": "UV",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "2fe8dfb0095700a8713bf76a7d777e9f21e18e297389c36c420eb889ee027eda"
+}

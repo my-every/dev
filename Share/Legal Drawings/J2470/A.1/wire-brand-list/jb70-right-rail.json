@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:18:20.290Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb70-right-rail",
+  "sheetName": "JB70 RIGHT RAIL",
+  "totalRows": 2,
+  "header": {
+    "locationTitle": "JB70 RIGHT RAIL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J2470",
+    "projectName": "J2470",
+    "revision": "A.1",
+    "controlsDE": "H.VOUNG",
+    "controlsME": "R.DURAN"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB70 RIGHT RAIL",
+    "normalizedSheetName": "jb70-right-rail",
+    "bundleNames": [
+      "UA - UA",
+      "UA - XT"
+    ],
+    "bundleDisplays": [
+      "UA - UA",
+      "UA - XT - DRIVER JB100"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "UA",
+      "bundles": [
+        {
+          "bundleName": "UA - UA",
+          "toLocation": "JB70 RIGHT RAIL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "UA1200:J1-8",
+              "fromTerminal": "J1-8",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UA1200J",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UA1200:J3-5",
+              "toTerminal": "J3-5",
+              "toLocation": "JB70 RIGHT RAIL",
+              "bundleName": "UA - UA",
+              "bundleDisplay": "UA - UA",
+              "devicePrefix": "UA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UA",
+      "bundles": [
+        {
+          "bundleName": "UA - XT",
+          "toLocation": "DRIVER JB100",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "UA1200:J2-1",
+              "fromTerminal": "J2-1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UA1200J21",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0060:3",
+              "toTerminal": "3",
+              "toLocation": "DRIVER JB100",
+              "bundleName": "UA - XT",
+              "bundleDisplay": "UA - XT - DRIVER JB100",
+              "devicePrefix": "UA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "36ccbd738aeafc9d8aeed81d2414f9850b5bd422635c3b8557e8077fb2d73a18"
+}

@@ -1,0 +1,68 @@
+{
+  "slug": "rail-right-jb73",
+  "name": "RAIL,RIGHT,JB73",
+  "kind": "operational",
+  "sheetIndex": 16,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1163:",
+      "wireType": "SC",
+      "wireNo": "GR1163",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "12.A6",
+      "toDeviceId": "FRAME",
+      "toLocation": "RAIL,RIGHT,JB73",
+      "toPageZone": "12.A5",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1163",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "12.A5",
+      "Location": "RAIL,RIGHT,JB73"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "ET-CAR",
+    "revision": "B.4",
+    "controlsDE": "D. KIM",
+    "controlsME": "A. BELTRAN"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Rail in title with no Panel number"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:21:10.486Z"
+}

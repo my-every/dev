@@ -1,0 +1,74 @@
+{
+  "slug": "white-labels",
+  "name": "White Labels",
+  "kind": "reference",
+  "sheetIndex": 1,
+  "headers": [
+    "(SHT 10) BLNK PNL,RIGHT - (SHT 8) CNTRL A,SCS",
+    "(SHT 8) CNTRL A,SCS - (SHT 9) CNTRL B,SCS",
+    "(SHT 8) CNTRL A,SCS - (SHT 5) SCS BLNK PNL,LEFT",
+    "(SHT 8) CNTRL A,SCS - (SHT 6) SCS MONITOR MEDIA",
+    "(SHT 8) CNTRL A,SCS - (SHT 7) SCS PLC",
+    "(SHT 8) CNTRL A,SCS - (SHT 2) SCS PNL 1",
+    "(SHT 9) CNTRL B,SCS",
+    "(SHT 9) CNTRL B,SCS - (SHT 3) SCS 2 PNL",
+    "(SHT 9) CNTRL B,SCS - (SHT 7) SCS PLC",
+    "(SHT 16) JB500 PANEL",
+    "(SHT 16) JB500 PANEL - (SHT 17) JB500,LFT RL",
+    "(SHT 17) JB500,LFT RL",
+    "(SHT 14) LER,PNL,LFT - (SHT 13) LER,PNL,REAR",
+    "(SHT 13) LER,PNL,REAR",
+    "(SHT 7) SCS PLC"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 1,
+      "__rowId": "row-0",
+      "fromDeviceId": "IEG01303",
+      "wireType": "GR0134",
+      "wireNo": "IEG01304",
+      "wireId": "IEG01305",
+      "gaugeSize": "IEG01301",
+      "fromLocation": "",
+      "fromPageZone": "IEG01307",
+      "toDeviceId": "IEG02301",
+      "toLocation": "IEG02305",
+      "toPageZone": "IEG02307",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "(SHT 10) BLNK PNL,RIGHT - (SHT 8) CNTRL A,SCS": "IEG01303",
+      "(SHT 8) CNTRL A,SCS - (SHT 9) CNTRL B,SCS": "GR0134",
+      "(SHT 8) CNTRL A,SCS - (SHT 5) SCS BLNK PNL,LEFT": "IEG01304",
+      "(SHT 8) CNTRL A,SCS - (SHT 6) SCS MONITOR MEDIA": "IEG01305",
+      "(SHT 8) CNTRL A,SCS - (SHT 7) SCS PLC": "IEG01301",
+      "(SHT 8) CNTRL A,SCS - (SHT 2) SCS PNL 1": "IEG01307",
+      "(SHT 9) CNTRL B,SCS": "IEG02301",
+      "(SHT 9) CNTRL B,SCS - (SHT 3) SCS 2 PNL": "IEG02305",
+      "(SHT 9) CNTRL B,SCS - (SHT 7) SCS PLC": "IEG02307",
+      "(SHT 16) JB500 PANEL": "AF0307G",
+      "(SHT 16) JB500 PANEL - (SHT 17) JB500,LFT RL": "IEG01504",
+      "(SHT 17) JB500,LFT RL": "AF0407G",
+      "(SHT 14) LER,PNL,LFT - (SHT 13) LER,PNL,REAR": "AF0109G",
+      "(SHT 13) LER,PNL,REAR": "IEG02601",
+      "(SHT 7) SCS PLC": "UV0600G"
+    }
+  ],
+  "rowCount": 1,
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "BUILD_UP",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 0,
+    "detectedReasons": [],
+    "requiresWireSws": false,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:14:45.289Z"
+}

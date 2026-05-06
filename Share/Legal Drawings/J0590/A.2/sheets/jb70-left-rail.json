@@ -1,0 +1,68 @@
+{
+  "slug": "jb70-left-rail",
+  "name": "JB70 LEFT RAIL",
+  "kind": "operational",
+  "sheetIndex": 6,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1101:",
+      "wireType": "SC",
+      "wireNo": "GR1101",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "4.A5",
+      "toDeviceId": "FG_UCP:8",
+      "toLocation": "JB70 LEFT RAIL",
+      "toPageZone": "4.A6",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FG_UCP:8",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1101",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "4.A6",
+      "Location": "JB70 LEFT RAIL"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "HARMATTAN T70 CSR",
+    "revision": "A.2",
+    "controlsDE": "H.VOUNG",
+    "controlsME": "R. DURAN"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Rail in title with no Panel number"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:10:51.198Z"
+}

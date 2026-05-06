@@ -1,0 +1,893 @@
+{
+  "generatedAt": "2026-05-05T13:32:36.276Z",
+  "sheetName": "PLC PANEL",
+  "mode": "standardize",
+  "totalPages": 3,
+  "totalRows": 27,
+  "settings": {
+    "showEstTime": false,
+    "showFromCheckbox": true,
+    "showToCheckbox": true,
+    "showIPV": true,
+    "showComments": true,
+    "showLength": false,
+    "showCoverPage": true,
+    "showTableOfContents": true,
+    "showIPVCodes": false,
+    "showFeedbackSection": false,
+    "showDeviceSubheaders": false,
+    "enableBlueDeviceIDColumns": false,
+    "sectionColumnVisibility": {},
+    "feedbackRenderMode": "BLANK",
+    "feedbackSections": [
+      "Header",
+      "Accuracy & Usability",
+      "Termination Clarity",
+      "Routing & Layout Alignment",
+      "Build Sequence & Efficiency",
+      "Hardware & Materials",
+      "Quality & Rework",
+      "Time & Effort",
+      "Safety & Compliance",
+      "Documentation Quality",
+      "Automation Checks",
+      "Final Sign-Off",
+      "Footer"
+    ],
+    "customQuestions": [
+      "accuracyBlueLabelsClear",
+      "accuracySequenceMatchedLayout",
+      "accuracyMissingDuplicateIncorrectEntries",
+      "accuracyLocationColumnCorrect",
+      "terminationTypesClear",
+      "terminationLengthsAccurate",
+      "terminationReworkDueToInstructionClarity",
+      "terminationJumperRulesEasyToFollow",
+      "routingAlignedWithLayout",
+      "routingLengthFit",
+      "routingConflictsPanduct",
+      "routingConflictsRails",
+      "routingConflictsAdjacentDevices",
+      "routingEfficientOrder",
+      "buildOrderHelpful",
+      "buildRequiredDeviation",
+      "buildDeviationReason",
+      "buildCausedDelays",
+      "materialsFerrulesAvailable",
+      "materialsLugsAvailable",
+      "materialsJumpersAvailable",
+      "materialsWireTypesAvailable",
+      "materialsIssuesNotes",
+      "qualityErrorsCaughtDuringWiring",
+      "qualityReterminatedWires",
+      "qualityReroutedWires",
+      "qualityReplacedWires",
+      "qualityCommonIssues",
+      "estimatedWiringTimeHours",
+      "actualWiringTimeHours",
+      "timeVarianceReason",
+      "safetyGroundsClearlyIdentified",
+      "safetyTerminationsCompliant",
+      "safetyConcernsNotes",
+      "documentationDifficulty",
+      "documentationImprovementAreas",
+      "documentationOtherImprovementArea",
+      "documentationSpecificSuggestions",
+      "automationJumperPredictionCorrect",
+      "automationBlueLabelSequencesCorrect",
+      "automationKtRulesCorrect",
+      "automationReusableTemplateCandidate",
+      "finalQualityRating",
+      "finalComments"
+    ],
+    "crossWireSections": [],
+    "hiddenRows": [],
+    "hiddenSections": [],
+    "brandingSortMode": "device-prefix",
+    "wireListSortMode": "device-prefix"
+  },
+  "pages": [
+    {
+      "pageType": "cover",
+      "pageNumber": 1,
+      "projectInfo": {
+        "projectNumber": "4M401",
+        "projectName": "SHL-GMG - Unit 3",
+        "revision": "C.3_M.2",
+        "pdNumber": "4M401",
+        "unitNumber": "3",
+        "preparedBy": "",
+        "badgeNumber": "",
+        "date": "",
+        "time": "",
+        "personnel": [
+          {
+            "id": "1",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "2",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "3",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "4",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "5",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "6",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          }
+        ]
+      },
+      "sheetTitle": "PLC PANEL"
+    },
+    {
+      "pageType": "toc",
+      "pageNumber": 2,
+      "locationGroups": [
+        {
+          "location": "PLC PANEL",
+          "isExternal": false,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Grounds",
+              "rowCount": 1,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 2,
+              "label": "Cables",
+              "rowCount": 5,
+              "estimatedPage": 3,
+              "subEntries": []
+            }
+          ]
+        },
+        {
+          "location": "ORBIT 60",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Cables",
+              "rowCount": 1,
+              "estimatedPage": 3,
+              "subEntries": []
+            }
+          ]
+        },
+        {
+          "location": "PANEL A",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Single Connections",
+              "rowCount": 8,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "BA1200",
+                  "rowCount": 2
+                },
+                {
+                  "label": "BA1201",
+                  "rowCount": 2
+                },
+                {
+                  "label": "BA1202",
+                  "rowCount": 2
+                },
+                {
+                  "label": "UV0600",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "PANEL B",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Grounds",
+              "rowCount": 2,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 2,
+              "label": "Single Connections",
+              "rowCount": 6,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "BA0003",
+                  "rowCount": 2
+                },
+                {
+                  "label": "BA0004",
+                  "rowCount": 2
+                },
+                {
+                  "label": "BA0011",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "PWR DISTRIBUTION RAIL",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Cables",
+              "rowCount": 2,
+              "estimatedPage": 3,
+              "subEntries": []
+            }
+          ]
+        },
+        {
+          "location": "TCP",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Cables",
+              "rowCount": 1,
+              "estimatedPage": 3,
+              "subEntries": []
+            }
+          ]
+        },
+        {
+          "location": "VIBRATION DOOR PANEL",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Cables",
+              "rowCount": 1,
+              "estimatedPage": 3,
+              "subEntries": []
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "locations": 7,
+        "sections": 16,
+        "rows": 27,
+        "pages": 3
+      }
+    },
+    {
+      "pageType": "wire-list",
+      "pageNumber": 3,
+      "locationGroups": [
+        {
+          "location": "PLC PANEL",
+          "isExternal": false,
+          "totalRows": 6,
+          "subsections": [
+            {
+              "label": "Grounds",
+              "sectionKind": "grounds",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-0",
+                  "rowIndex": 11,
+                  "fromDeviceId": "AR0600:IE1",
+                  "toDeviceId": "UV0600:GND",
+                  "wireType": "SC",
+                  "wireNo": "UV0600G",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "PLC PANEL",
+                  "toLocation": "PLC PANEL",
+                  "fromPageZone": "6.A1",
+                  "toPageZone": "6.B2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 5,
+              "rows": [
+                {
+                  "rowId": "row-1",
+                  "rowIndex": 12,
+                  "fromDeviceId": "AP0602:L2",
+                  "toDeviceId": "AP0603:L1",
+                  "wireType": "WC0001",
+                  "wireNo": "AP0602L2",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "PLC PANEL",
+                  "toLocation": "PLC PANEL",
+                  "fromPageZone": "6.A3",
+                  "toPageZone": "6.A3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-2",
+                  "rowIndex": 13,
+                  "fromDeviceId": "AP0607:ENET",
+                  "toDeviceId": "BA1200:RJ45",
+                  "wireType": "WC1200",
+                  "wireNo": "AP0607ENET",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "PLC PANEL",
+                  "toLocation": "PLC PANEL",
+                  "fromPageZone": "4.C6",
+                  "toPageZone": "4.C6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-3",
+                  "rowIndex": 14,
+                  "fromDeviceId": "AP0606:ENET",
+                  "toDeviceId": "BA1201:RJ45",
+                  "wireType": "WC1201",
+                  "wireNo": "AP0606ENET",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "PLC PANEL",
+                  "toLocation": "PLC PANEL",
+                  "fromPageZone": "4.C6",
+                  "toPageZone": "4.B6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-4",
+                  "rowIndex": 15,
+                  "fromDeviceId": "AP0604:ENET",
+                  "toDeviceId": "BA1202:RJ45",
+                  "wireType": "WC1202",
+                  "wireNo": "AP0604ENET",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "PLC PANEL",
+                  "toLocation": "PLC PANEL",
+                  "fromPageZone": "4.B6",
+                  "toPageZone": "4.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-5",
+                  "rowIndex": 16,
+                  "fromDeviceId": "AP0602:L1",
+                  "toDeviceId": "BA0003:RJ45",
+                  "wireType": "WC9003",
+                  "wireNo": "BA0003RJ45",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "PLC PANEL",
+                  "toLocation": "PLC PANEL",
+                  "fromPageZone": "6.A3",
+                  "toPageZone": "3.D6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        },
+        {
+          "location": "ORBIT 60",
+          "isExternal": true,
+          "totalRows": 1,
+          "subsections": [
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-6",
+                  "rowIndex": 17,
+                  "fromDeviceId": "AP0601:ENET",
+                  "toDeviceId": "AP0615:PORT A",
+                  "wireType": "WC0601",
+                  "wireNo": "AP0601ENET",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "ORBIT 60",
+                  "toLocation": "ORBIT 60",
+                  "fromPageZone": "24.A5",
+                  "toPageZone": "24.A1",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        },
+        {
+          "location": "PANEL A",
+          "isExternal": true,
+          "totalRows": 8,
+          "subsections": [
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 8,
+              "rows": [
+                {
+                  "rowId": "row-8",
+                  "rowIndex": 19,
+                  "fromDeviceId": "BA1200:V1(+)",
+                  "toDeviceId": "XT0139:4",
+                  "wireType": "SC",
+                  "wireNo": "FU0137",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "PANEL A",
+                  "toLocation": "PANEL A",
+                  "fromPageZone": "4.C6",
+                  "toPageZone": "18.A4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-9",
+                  "rowIndex": 20,
+                  "fromDeviceId": "BA1201:V1(-)",
+                  "toDeviceId": "XT0135:3",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "PANEL A",
+                  "toLocation": "PANEL A",
+                  "fromPageZone": "4.B6",
+                  "toPageZone": "18.B4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-10",
+                  "rowIndex": 21,
+                  "fromDeviceId": "BA1201:V1(+)",
+                  "toDeviceId": "XT0139:4",
+                  "wireType": "SC",
+                  "wireNo": "FU0137",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "PANEL A",
+                  "toLocation": "PANEL A",
+                  "fromPageZone": "4.B6",
+                  "toPageZone": "18.A4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-11",
+                  "rowIndex": 22,
+                  "fromDeviceId": "BA1202:V1(-)",
+                  "toDeviceId": "XT0135:4",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "PANEL A",
+                  "toLocation": "PANEL A",
+                  "fromPageZone": "4.A6",
+                  "toPageZone": "18.B4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-12",
+                  "rowIndex": 23,
+                  "fromDeviceId": "BA1202:V1(+)",
+                  "toDeviceId": "XT0139:4",
+                  "wireType": "SC",
+                  "wireNo": "FU0137",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "PANEL A",
+                  "toLocation": "PANEL A",
+                  "fromPageZone": "4.A6",
+                  "toPageZone": "18.A4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-7",
+                  "rowIndex": 18,
+                  "fromDeviceId": "BA1200:V1(-)",
+                  "toDeviceId": "XT0135:3",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "PANEL A",
+                  "toLocation": "PANEL A",
+                  "fromPageZone": "4.C6",
+                  "toPageZone": "18.B4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-14",
+                  "rowIndex": 25,
+                  "fromDeviceId": "UV0600:(+)",
+                  "toDeviceId": "FU0010:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0010",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "PANEL A",
+                  "toLocation": "PANEL A",
+                  "fromPageZone": "6.B2",
+                  "toPageZone": "18.A5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-13",
+                  "rowIndex": 24,
+                  "fromDeviceId": "UV0600:(-)",
+                  "toDeviceId": "XT0135:1",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "PANEL A",
+                  "toLocation": "PANEL A",
+                  "fromPageZone": "6.B2",
+                  "toPageZone": "18.B4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "BA1200",
+                  "rowCount": 2
+                },
+                {
+                  "label": "BA1201",
+                  "rowCount": 2
+                },
+                {
+                  "label": "BA1202",
+                  "rowCount": 2
+                },
+                {
+                  "label": "UV0600",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "PANEL B",
+          "isExternal": true,
+          "totalRows": 8,
+          "subsections": [
+            {
+              "label": "Grounds",
+              "sectionKind": "grounds",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-22",
+                  "rowIndex": 33,
+                  "fromDeviceId": "GR0234",
+                  "toDeviceId": "IEG0230:12",
+                  "wireType": "SC",
+                  "wireNo": "IEG023012",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "PANEL B",
+                  "toLocation": "PANEL B",
+                  "fromPageZone": "5.B4",
+                  "toPageZone": "5.B4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-15",
+                  "rowIndex": 26,
+                  "fromDeviceId": "AR0600:IE2",
+                  "toDeviceId": "IEG0230:1",
+                  "wireType": "SC",
+                  "wireNo": "IEG02301",
+                  "wireId": "GRN",
+                  "gaugeSize": "12",
+                  "fromLocation": "PANEL B",
+                  "toLocation": "PANEL B",
+                  "fromPageZone": "6.A1",
+                  "toPageZone": "6.B6",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 6,
+              "rows": [
+                {
+                  "rowId": "row-17",
+                  "rowIndex": 28,
+                  "fromDeviceId": "BA0003:V1(+)",
+                  "toDeviceId": "FU0003:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0003",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "PANEL B",
+                  "toLocation": "PANEL B",
+                  "fromPageZone": "3.D6",
+                  "toPageZone": "3.D5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-19",
+                  "rowIndex": 30,
+                  "fromDeviceId": "BA0004:V1(+)",
+                  "toDeviceId": "FU0004:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0004",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "PANEL B",
+                  "toLocation": "PANEL B",
+                  "fromPageZone": "3.C6",
+                  "toPageZone": "3.C5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-21",
+                  "rowIndex": 32,
+                  "fromDeviceId": "BA0011:V1(+)",
+                  "toDeviceId": "FU0101:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0101",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "PANEL B",
+                  "toLocation": "PANEL B",
+                  "fromPageZone": "4.B2",
+                  "toPageZone": "4.B3",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-16",
+                  "rowIndex": 27,
+                  "fromDeviceId": "BA0003:V1(-)",
+                  "toDeviceId": "XT0002:5",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "PANEL B",
+                  "toLocation": "PANEL B",
+                  "fromPageZone": "3.D6",
+                  "toPageZone": "3.D5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-18",
+                  "rowIndex": 29,
+                  "fromDeviceId": "BA0004:V1(-)",
+                  "toDeviceId": "XT0002:2",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "PANEL B",
+                  "toLocation": "PANEL B",
+                  "fromPageZone": "3.C6",
+                  "toPageZone": "3.C5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-20",
+                  "rowIndex": 31,
+                  "fromDeviceId": "BA0011:V1(-)",
+                  "toDeviceId": "XT0005:4",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "PANEL B",
+                  "toLocation": "PANEL B",
+                  "fromPageZone": "4.B2",
+                  "toPageZone": "4.B3",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "BA0003",
+                  "rowCount": 2
+                },
+                {
+                  "label": "BA0004",
+                  "rowCount": 2
+                },
+                {
+                  "label": "BA0011",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "PWR DISTRIBUTION RAIL",
+          "isExternal": true,
+          "totalRows": 2,
+          "subsections": [
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-23",
+                  "rowIndex": 34,
+                  "fromDeviceId": "AP0609:L1",
+                  "toDeviceId": "AT0680:LAN1",
+                  "wireType": "WC0680",
+                  "wireNo": "AT0680LAN1",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "PWR DISTRIBUTION RAIL",
+                  "toLocation": "PWR DISTRIBUTION RAIL",
+                  "fromPageZone": "6.A6",
+                  "toPageZone": "8.B4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-24",
+                  "rowIndex": 35,
+                  "fromDeviceId": "BA0011:RJ45",
+                  "toDeviceId": "AT0680:LAN3",
+                  "wireType": "WC9011",
+                  "wireNo": "BA0011RJ45",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "PWR DISTRIBUTION RAIL",
+                  "toLocation": "PWR DISTRIBUTION RAIL",
+                  "fromPageZone": "4.B2",
+                  "toPageZone": "8.B4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        },
+        {
+          "location": "TCP",
+          "isExternal": true,
+          "totalRows": 1,
+          "subsections": [
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-25",
+                  "rowIndex": 36,
+                  "fromDeviceId": "BA0004:RJ45",
+                  "toDeviceId": "AU0200:L2",
+                  "wireType": "WC0020",
+                  "wireNo": "AU0200L2",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "TCP",
+                  "toLocation": "TCP",
+                  "fromPageZone": "3.C6",
+                  "toPageZone": "13.A3",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        },
+        {
+          "location": "VIBRATION DOOR PANEL",
+          "isExternal": true,
+          "totalRows": 1,
+          "subsections": [
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-26",
+                  "rowIndex": 37,
+                  "fromDeviceId": "AP0603:L2",
+                  "toDeviceId": "AF0450:L1",
+                  "wireType": "WC0003",
+                  "wireNo": "AP0603L2",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "VIBRATION DOOR PANEL",
+                  "toLocation": "VIBRATION DOOR PANEL",
+                  "fromPageZone": "6.A3",
+                  "toPageZone": "26.C3",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

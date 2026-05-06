@@ -1,0 +1,830 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-06T04:55:04.042Z",
+  "project": {
+    "id": "legal-4l107-b-1",
+    "name": "4L107",
+    "pdNumber": "4L107",
+    "revision": "B.1"
+  },
+  "assignment": {
+    "sheetSlug": "ler-pnl-lft",
+    "sheetName": "LER,PNL,LFT",
+    "stage": "READY_TO_LAY",
+    "swsType": "UNDECIDED",
+    "status": "NOT_STARTED",
+    "templateId": "PANEL_BUILD_WIRE",
+    "panelNumber": "231490-4",
+    "boxNumber": null
+  },
+  "worksheetMetadata": {
+    "pdNumber": "4L107",
+    "projectName": "4L107",
+    "unit": "1",
+    "panel": "LER,PNL,LFT",
+    "date": "2026-05-06",
+    "revision": "B.1",
+    "swsIpvId": "SWS-IPV_D380_ASY_PNL BUILD-WIRE_1.2",
+    "revLevel": "1.2",
+    "revDate": "3/11/2026"
+  },
+  "summary": {
+    "sections": 17,
+    "tasks": 48,
+    "subtasks": 19,
+    "partNumbers": 17,
+    "rails": 2,
+    "panducts": 3,
+    "whiteLabels": 1,
+    "blueLabels": 58
+  },
+  "groups": [
+    {
+      "id": "ler-pnl-lft-template-sections",
+      "title": "Panel Checklist",
+      "description": "Generated from SWS-IPV_D380_ASY_PNL BUILD-WIRE_1.2 for LER,PNL,LFT",
+      "order": 0,
+      "tasks": [
+        {
+          "id": "obtain-parts",
+          "title": "Work Element 1",
+          "description": "Obtain the kitted parts from the rack. Verify the PD#. Review the Layout, check for discrepancies.",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)\nWhite Labels: AF0109G\nBlue Labels: XT1036, XT0136, KA0210, KA0211, KA0212, KA0213, KA0215, KA0216 (+50 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "obtain-parts:verify-revision",
+              "title": "Verify the latest Revision (check the cover sheet for any special requirements). Fill in the Project information above on this form. Stamp the layout drawing with the \"Working Copy\" stamp and fill in the information.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "obtain-parts:verify-panel",
+              "title": "Verify the correct panel - attach the panel ID label and fill in the project information.(Do not install directly to the panel)",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "obtain-parts:notify-discrepancies",
+              "title": "Notify the Team Leader/Lead about discrepancies (Missing Parts, etc.). Follow the first unit on a multi-unit project.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "prepare-build",
+          "title": "Work Element 2",
+          "description": "Prepare to build the panel",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)\nPanducts: 2x4x73, 2x4x21, 3x4x73",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "prepare-build:measure-cut-prelayout",
+              "title": "Measure, cut and pre-lay out rails, large components and pan duct to verify fit for both pre and non-pre drilled (template) panels.",
+              "description": "Verify no drill zones using the overall layout for non-pre-drilled panels. Unistruts are shown on overall layout for consoles. Mark any pan duct that covers a mounting hole through the under side of the panel. For all Products (OnSkid), ensure the center mounting holes are open (vertical panduct).",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "prepare-build:measure-cut-prelayout:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Verify no drill zones using the overall layout for non-pre-drilled panels. Unistruts are shown on overall layout for consoles.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                },
+                {
+                  "id": "prepare-build:measure-cut-prelayout:sub-2",
+                  "title": "Sub-step 2",
+                  "description": "Mark any pan duct that covers a mounting hole through the under side of the panel. For all Products (OnSkid), ensure the center mounting holes are open (vertical panduct).",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "drill-bond",
+          "title": "Work Element 3",
+          "description": "Drill and Bond the Panel according to the layout (overall layout if off-skid) for Frame Ground.",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)",
+          "reviewRequirement": "3/8\" Nutcert Verification",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "drill-bond:drill-rails",
+              "title": "Using a vice, drill the rails, install nutcerts and end caps and bond the panel.",
+              "description": "Remove the painted surfaces for the installation of the frame grounds (bonding). Clean the debris from the panel. For the Panel Hanging Holes, or any 3/8\" hole, ensure nutcerts are properly seated. Get visual stamp in Auditor column.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "drill-bond:drill-rails:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Remove the painted surfaces for the installation of the frame grounds (bonding). Clean the debris from the panel.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                },
+                {
+                  "id": "drill-bond:drill-rails:sub-2",
+                  "title": "Sub-step 2",
+                  "description": "For the Panel Hanging Holes, or any 3/8\" hole, ensure nutcerts are properly seated. Get visual stamp in Auditor column.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "drill-bond:checkpoint:nutcert-verification",
+              "title": "3/8\" Nutcert Verification",
+              "description": "For the Panel Hanging Holes, or any 3/8\" hole, ensure nutcerts are properly seated.",
+              "required": true,
+              "completedByDefault": false,
+              "notes": "Auditor stamp required",
+              "reviewRequirement": "3/8\" Nutcert Verification",
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "panel-components",
+          "title": "Work Element 4",
+          "description": "Install all panel mounted components (i.e. PLC Chassis, Power Supply, Fan, Filter, Bus Bar, BUOS, CGCM, Shunt Relay, Pnl Mount Diode, etc.)",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)\nRails: RAIL 27.00\", RAIL 71.00\"",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "panel-components:install-panel-components",
+              "title": "Install all panel mounted components (ensure there is enough clearance between the Bus Bar and rail)",
+              "description": "Install short standoffs in the holes for the shock guard. Ensure ground checks are conducted if required. Secure the PLC keys to the chassis so they do not get lost",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "panel-components:install-panel-components:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Install short standoffs in the holes for the shock guard.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                },
+                {
+                  "id": "panel-components:install-panel-components:sub-2",
+                  "title": "Sub-step 2",
+                  "description": "Ensure ground checks are conducted if required.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                },
+                {
+                  "id": "panel-components:install-panel-components:sub-3",
+                  "title": "Sub-step 3",
+                  "description": "Secure the PLC keys to the chassis so they do not get lost",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "standoffs-rails",
+          "title": "Work Element 5",
+          "description": "Install the standoffs, din rails and ground wires per layout drawing",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "standoffs-rails:install-standoffs",
+              "title": "Install the standoffs, rails, frame grounds and ground hardware.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "rail-components",
+          "title": "Work Element 6",
+          "description": "Install all rail mounted components per the layout drawing.",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)\nRails: RAIL 27.00\", RAIL 71.00\"\nWhite Labels: AF0109G\nBlue Labels: XT1036, XT0136, KA0210, KA0211, KA0212, KA0213, KA0215, KA0216 (+50 more)",
+          "reviewRequirement": "1444 Verification",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "rail-components:install-rail-components",
+              "title": "Install rail mounted components per the layout drawing. All components start at the top of rails unless dimensioned otherwise or clearly shown starting from the bottom.",
+              "description": "Ensure I/O module base dials are set prior to installing the modules. Install the fuse, fuse amperage labels and terminal markers.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "rail-components:install-rail-components:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Ensure I/O module base dials are set prior to installing the modules.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                },
+                {
+                  "id": "rail-components:install-rail-components:sub-2",
+                  "title": "Sub-step 2",
+                  "description": "Install the fuse, fuse amperage labels and terminal markers.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "rail-components:1444-models",
+              "title": "For the 1444 Vibration models, ensure the base dials are set per layout drawing prior to installing the modules. Get visual stamp in Auditor column. Verify rail isolation then install component and verify component/rail isolation.",
+              "required": true,
+              "completedByDefault": false,
+              "notes": "Key point",
+              "reviewRequirement": "1444",
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "rail-components:checkpoint:1444-verification",
+              "title": "1444 Verification",
+              "description": "For the 1444 Vibration models, ensure the base dials are set per layout drawing prior to installing the modules.",
+              "required": true,
+              "completedByDefault": false,
+              "notes": "Auditor stamp required",
+              "reviewRequirement": "1444 Verification",
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "blue-labels",
+          "title": "Work Element 7",
+          "description": "Install the blue component labels per layout.",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)\nPanducts: 2x4x73, 2x4x21, 3x4x73\nWhite Labels: AF0109G\nBlue Labels: XT1036, XT0136, KA0210, KA0211, KA0212, KA0213, KA0215, KA0216 (+50 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "blue-labels:install-blue-labels",
+              "title": "Install blue component labels using the label installation tool. Follow Shop floor examples (wall/shop aids). Verify labels will be visible after the pan duct is installed.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "panduct",
+          "title": "Work Element 8",
+          "description": "Install and secure the panduct.",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)\nPanducts: 2x4x73, 2x4x21, 3x4x73\nWhite Labels: AF0109G\nBlue Labels: XT1036, XT0136, KA0210, KA0211, KA0212, KA0213, KA0215, KA0216 (+50 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "panduct:install-panduct",
+              "title": "Using the pan duct finger cutters, remove any fingers that will interfere with the wiring or wire routing.",
+              "description": "Install the pan duct. Ensure Labels are visible and it is not touching or is interfering with the operation of the components.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "panduct:install-panduct:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Install the pan duct. Ensure Labels are visible and it is not touching or is interfering with the operation of the components.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "clean-complete-build",
+          "title": "Work Element 9",
+          "description": "Clean the debris and complete the panel",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)\nWhite Labels: AF0109G\nBlue Labels: XT1036, XT0136, KA0210, KA0211, KA0212, KA0213, KA0215, KA0216 (+50 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "clean-complete-build:label-shortages",
+              "title": "Label all part shortages with a sticker and document in the comment section to the right",
+              "description": "Look over panel and verify it is built to print. All discrepancies/deviations documented with an MRCA#. Stamp the Build Up portion of the Panel ID label Notify Team Leader/Lead of any shortages, issues and the panel is ready for visual inspection. (Team Leader/Lead will assign)",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "clean-complete-build:label-shortages:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Look over panel and verify it is built to print. All discrepancies/deviations documented with an MRCA#.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                },
+                {
+                  "id": "clean-complete-build:label-shortages:sub-2",
+                  "title": "Sub-step 2",
+                  "description": "Stamp the Build Up portion of the Panel ID label",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                },
+                {
+                  "id": "clean-complete-build:label-shortages:sub-3",
+                  "title": "Sub-step 3",
+                  "description": "Notify Team Leader/Lead of any shortages, issues and the panel is ready for visual inspection. (Team Leader/Lead will assign)",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "prepare-wire",
+          "title": "Work Element 10",
+          "description": "Prepare to wire the panel. Verify if it is a multi-unit project.",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)\nRails: RAIL 27.00\", RAIL 71.00\"\nPanducts: 2x4x73, 2x4x21, 3x4x73",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "prepare-wire:fill-project-info",
+              "title": "Fill in the Project information above on this form.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "prepare-wire:verify-auditor-stamp",
+              "title": "Ensure Auditor stamp is complete for Panel Build prior to starting the wiring. Notify Team Leader if not completed.",
+              "description": "Verify the latest revision. Note cover sheet for any special requirements. Stamp working copy of wire list and layout drawing. Highlight your badge number with the same color you will use on the wire list. For multi unit project, verify routing on the first unit. Notify Team Leader if incorrect. Wires will route under the rail first for any component that does not have pan duct next to it.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "prepare-wire:verify-auditor-stamp:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Verify the latest revision. Note cover sheet for any special requirements.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                },
+                {
+                  "id": "prepare-wire:verify-auditor-stamp:sub-2",
+                  "title": "Sub-step 2",
+                  "description": "Stamp working copy of wire list and layout drawing. Highlight your badge number with the same color you will use on the wire list.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                },
+                {
+                  "id": "prepare-wire:verify-auditor-stamp:sub-3",
+                  "title": "Sub-step 3",
+                  "description": "For multi unit project, verify routing on the first unit. Notify Team Leader if incorrect. Wires will route under the rail first for any component that does not have pan duct next to it.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "start-wiring",
+          "title": "Work Element 11",
+          "description": "Start wiring the panel",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "start-wiring:install-grounds",
+              "title": "Install all ground wires. Console - Bus Bar wires route to the bottom. Boxes - Bus Bar wires will route to the top. (Space permitting)",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "start-wiring:install-jumpers",
+              "title": "Install all jumpers, both mechanical and wires including thermistors as required, resistors and diodes (verify polarity).",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "wire-relays",
+          "title": "Work Element 12",
+          "description": "Wire the relays/timers",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "wire-relays:pull-test-required",
+              "title": "All wires being installed require a pull test to ensure they are tight and a visual for stray strands (bird caging)",
+              "required": true,
+              "completedByDefault": false,
+              "notes": "Key point",
+              "reviewRequirement": "PULL_TEST",
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "wire-relays:wire-relays-timers",
+              "title": "Start wiring relays and timers. This will include 14/16ga. Use the correct hardware (short vs long ferrules, etc). Do not wire the Sync Check Relay (Red or Blue AC wires). Ensure all circuit numbers are visible",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "wire-buos",
+          "title": "Work Element 13",
+          "description": "Wire the BUOS/Continue with the smaller gauge wires",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)\nPanducts: 2x4x73, 2x4x21, 3x4x73",
+          "reviewRequirement": "AENTR ONLY Pull Test, 0v & 24v",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "wire-buos:pull-test-required-2",
+              "title": "All wires being installed require a pull test to ensure they are tight and a visual for stray strands (bird caging)",
+              "required": true,
+              "completedByDefault": false,
+              "notes": "Key point",
+              "reviewRequirement": "PULL_TEST",
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "wire-buos:wire-buos",
+              "title": "Wire and create harness for the Back Up Overspeed Module. Terminate as required.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "wire-buos:aentr-pull-test",
+              "title": "Perform separate pull test on AENTR (or equiv) modules 0v and 24v leads. Provide IPV stamp when complete.",
+              "required": true,
+              "completedByDefault": false,
+              "notes": "Key point",
+              "reviewRequirement": "AENTR",
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "wire-buos:remaining-wires",
+              "title": "Install the remaining wires starting with smaller wires (20ga) first and continuing progressing up in size until all white wires have been installed.",
+              "description": "Maintain IS (blue pan duct wiring) separation if required.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "wire-buos:remaining-wires:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Maintain IS (blue pan duct wiring) separation if required.",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "wire-buos:checkpoint:aentr-pull-test",
+              "title": "AENTR Pull Test",
+              "description": "Perform separate pull test on AENTR (or equiv) modules 0v and 24v leads.",
+              "required": true,
+              "completedByDefault": false,
+              "notes": "Auditor stamp required",
+              "reviewRequirement": "AENTR ONLY Pull Test, 0v & 24v",
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "wire-diodes-ac",
+          "title": "Work Element 14",
+          "description": "Wire Flyback Diodes and Install AC wires",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "wire-diodes-ac:pull-test-required-3",
+              "title": "All wires being installed require a pull test to ensure they are tight and a visual for stray strands (bird caging)",
+              "required": true,
+              "completedByDefault": false,
+              "notes": "Key point",
+              "reviewRequirement": "PULL_TEST",
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "wire-diodes-ac:wire-diodes",
+              "title": "Wire the Flyback Diodes per wire list. Ensure circuit numbers and polarity on the component is visible.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "wire-diodes-ac:install-ac",
+              "title": "Install the AC (red/blue) wires starting from the DECS. Use expando sleeving for sharp edge protection or isolation. Maintain separation from the white wires use spiral wrap for white wires.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "cables-comm",
+          "title": "Work Element 15",
+          "description": "Install Cables and Internal Communication Cables",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)\nWhite Labels: AF0109G\nBlue Labels: XT1036, XT0136, KA0210, KA0211, KA0212, KA0213, KA0215, KA0216 (+50 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "cables-comm:install-cables",
+              "title": "Install all cables. Install smaller, then larger cables followed by all communication cables that will terminate within the panel. Apply labels per shop floor example.",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "clean-complete-wire",
+          "title": "Work Element 16",
+          "description": "Clean the debris and complete the panel",
+          "required": true,
+          "completedByDefault": false,
+          "notes": "Panel Number: 231490-4\nPart Numbers: 1043265-1, 1043265-5, 1061979-1, 1066730-7, 1066730-8, 1067996-4, 2651077-1, 2684693-17 (+9 more)\nWhite Labels: AF0109G\nBlue Labels: XT1036, XT0136, KA0210, KA0211, KA0212, KA0213, KA0215, KA0216 (+50 more)",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": [
+            {
+              "id": "clean-complete-wire:ensure-shortages-documented",
+              "title": "Ensure all shortages are documented",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": []
+            },
+            {
+              "id": "clean-complete-wire:verify-wired",
+              "title": "Look over panel and verify it is completely wired per wire list. All discrepancies/deviations documented with an MRCA#",
+              "description": "Stamp the wiring portion of the Panel ID label Notify Team Leader/Lead of any shortages, issues and the panel is ready for visual inspection. (Team Leader/Lead will assign)",
+              "required": true,
+              "completedByDefault": false,
+              "stageIds": [
+                "READY_TO_LAY"
+              ],
+              "children": [
+                {
+                  "id": "clean-complete-wire:verify-wired:sub-1",
+                  "title": "Sub-step 1",
+                  "description": "Stamp the wiring portion of the Panel ID label",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                },
+                {
+                  "id": "clean-complete-wire:verify-wired:sub-2",
+                  "title": "Sub-step 2",
+                  "description": "Notify Team Leader/Lead of any shortages, issues and the panel is ready for visual inspection. (Team Leader/Lead will assign)",
+                  "required": true,
+                  "completedByDefault": false,
+                  "stageIds": [
+                    "READY_TO_LAY"
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "stamp-complete",
+          "title": "Work Element 17",
+          "description": "Stamp as Complete",
+          "required": true,
+          "completedByDefault": false,
+          "reviewRequirement": "Auditor: Stamp the IPV portion of the panel ID label. Ensure a Pull Test was performed on all wires and a visual for bird caging and insulation crimping.",
+          "stageIds": [
+            "READY_TO_LAY"
+          ],
+          "children": []
+        }
+      ]
+    }
+  ]
+}

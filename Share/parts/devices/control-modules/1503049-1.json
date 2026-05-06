@@ -1,0 +1,136 @@
+{
+  "partNumber": "1503049-1",
+  "description": "RELAY, PMG INPUT #1",
+  "category": "devices",
+  "type": "control-modules",
+  "tags": [
+    "auto-ingest",
+    "devices"
+  ],
+  "source": "workbook_ingest",
+  "lifecycle": {
+    "status": "new",
+    "needsTraining": true,
+    "needsImages": true,
+    "needsReviewByRole": "team_lead",
+    "discoveredFrom": {
+      "projectId": "ang01-stock-9",
+      "sourceSheet": "JB71 B,PNL GEN CTRL",
+      "sourceLocation": "JB71 B,PNL GEN CTRL",
+      "discoveredAt": "2026-04-24T15:21:07.869Z"
+    }
+  },
+  "createdAt": "2026-04-24T15:21:07.877Z",
+  "updatedAt": "2026-05-05T04:31:12.712Z",
+  "terminalSchema": {
+    "negativePatterns": [
+      "-",
+      "0V",
+      "0VDC",
+      "COM",
+      "COMMON",
+      "DC-",
+      "NEG",
+      "NEGATIVE"
+    ],
+    "updatedAt": "2026-05-05T04:31:12.711Z",
+    "terminals": [
+      {
+        "name": "13",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "12",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "14",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "12",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "23",
+        "aliases": [],
+        "wireId": "BLK",
+        "size": "12",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "24",
+        "aliases": [],
+        "wireId": "BLK",
+        "size": "12",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "33",
+        "aliases": [],
+        "wireId": "RED",
+        "size": "12",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "34",
+        "aliases": [],
+        "wireId": "RED",
+        "size": "12",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "A1",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "20",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "A2",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "20",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      }
+    ]
+  }
+}

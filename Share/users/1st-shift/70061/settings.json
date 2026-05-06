@@ -1,0 +1,62 @@
+{
+  "badge": "70061",
+  "shift": "1st",
+  "lastUpdated": "2026-05-05T21:45:41.923Z",
+  "roles": [
+    {
+      "role": "qa",
+      "enabled": true,
+      "grantedBy": "75241",
+      "grantedAt": "2026-04-14T12:43:26.013Z"
+    }
+  ],
+  "dashboardAccess": {
+    "projectSchedule": true,
+    "userAccess": false,
+    "catalogAccess": false,
+    "brandingAccess": false
+  },
+  "permissions": {
+    "canViewSkills": true,
+    "canEditSkills": true,
+    "canManageSkillDefinitions": false,
+    "canViewPermissions": true,
+    "canGrantPermissions": false,
+    "canDelegatePermissions": false,
+    "canViewUsers": true,
+    "canEditUsers": false,
+    "canCreateUsers": false,
+    "canDeactivateUsers": false,
+    "canViewProjects": true,
+    "canEditProjects": true,
+    "canCreateProjects": false,
+    "canArchiveProjects": false,
+    "canAssignUsers": true,
+    "canReassignTasks": true
+  },
+  "permissionGroupId": "lead",
+  "permissionAudit": [
+    {
+      "id": "522b7e61-8cd3-4ce1-866f-83de6e6b2dca",
+      "timestamp": "2026-04-18T00:02:08.719Z",
+      "performedBy": "75241",
+      "targetBadge": "70061",
+      "changeType": "preset-apply",
+      "permissionKey": "lead",
+      "previousValue": false,
+      "newValue": true,
+      "reason": "Applied permission preset: lead"
+    },
+    {
+      "id": "b81c1d42-7aee-45c2-88cd-cb041866e608",
+      "timestamp": "2026-04-18T00:02:12.056Z",
+      "performedBy": "75241",
+      "targetBadge": "70061",
+      "changeType": "preset-apply",
+      "permissionKey": "viewer",
+      "previousValue": false,
+      "newValue": true,
+      "reason": "Applied permission preset: viewer"
+    }
+  ]
+}

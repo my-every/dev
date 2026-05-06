@@ -1,0 +1,111 @@
+{
+  "category": "hardware",
+  "version": 1,
+  "updatedAt": "2026-05-05T04:31:07.173Z",
+  "types": {
+    "din-rail": {
+      "count": 2,
+      "label": "Din Rail"
+    },
+    "panel-hardware": {
+      "count": 12,
+      "label": "Panel Hardware"
+    }
+  },
+  "schema": {
+    "version": 1,
+    "id": "hardware-details",
+    "name": "Hardware Details",
+    "description": "Detail fields for mounting hardware and mechanical parts",
+    "groups": [
+      {
+        "key": "physical",
+        "label": "Physical Specifications",
+        "order": 1
+      },
+      {
+        "key": "material",
+        "label": "Material & Finish",
+        "order": 2
+      },
+      {
+        "key": "mounting",
+        "label": "Mounting Info",
+        "order": 3
+      }
+    ],
+    "fields": [
+      {
+        "key": "dimensions",
+        "label": "Dimensions",
+        "type": "text",
+        "group": "physical",
+        "placeholder": "e.g., 35mm x 7.5mm"
+      },
+      {
+        "key": "material",
+        "label": "Material",
+        "type": "select",
+        "group": "material",
+        "options": [
+          {
+            "value": "steel",
+            "label": "Steel"
+          },
+          {
+            "value": "stainless",
+            "label": "Stainless Steel"
+          },
+          {
+            "value": "aluminum",
+            "label": "Aluminum"
+          },
+          {
+            "value": "plastic",
+            "label": "Plastic"
+          },
+          {
+            "value": "nylon",
+            "label": "Nylon"
+          }
+        ]
+      },
+      {
+        "key": "finish",
+        "label": "Finish",
+        "type": "select",
+        "group": "material",
+        "options": [
+          {
+            "value": "zinc",
+            "label": "Zinc Plated"
+          },
+          {
+            "value": "galvanized",
+            "label": "Galvanized"
+          },
+          {
+            "value": "passivated",
+            "label": "Passivated"
+          },
+          {
+            "value": "powder_coat",
+            "label": "Powder Coated"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "key": "mountingHoles",
+        "label": "Mounting Holes",
+        "type": "text",
+        "group": "mounting",
+        "placeholder": "e.g., 2x M4, 4x #10"
+      }
+    ]
+  },
+  "totalParts": 14
+}

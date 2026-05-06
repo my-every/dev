@@ -1,0 +1,212 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:20:44.048Z",
+  "mode": "branding-export",
+  "sheetSlug": "gear-box-panel",
+  "sheetName": "GEAR BOX PANEL",
+  "totalRows": 6,
+  "header": {
+    "locationTitle": "GEAR BOX PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4L541",
+    "projectName": "4L541",
+    "revision": "B.17",
+    "controlsDE": "A. CHEN",
+    "controlsME": "A. PLVAN"
+  },
+  "importHints": {
+    "canonicalSheetName": "GEAR BOX PANEL",
+    "normalizedSheetName": "gear-box-panel",
+    "bundleNames": [
+      "AF0322",
+      "AU0320",
+      "FU0310"
+    ],
+    "bundleDisplays": [
+      "AF0322",
+      "AU0320",
+      "FU0310"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AF",
+      "bundles": [
+        {
+          "bundleName": "AF0322",
+          "toLocation": "GEAR BOX PANEL",
+          "rows": [
+            {
+              "rowId": "row-8",
+              "rowIndex": 19,
+              "fromDeviceId": "AF0322:01",
+              "fromTerminal": "01",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "PDS82002",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT9078M:2",
+              "toTerminal": "2",
+              "toLocation": "GEAR BOX PANEL",
+              "bundleName": "AF0322",
+              "bundleDisplay": "AF0322",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-9",
+              "rowIndex": 20,
+              "fromDeviceId": "AF0322:33",
+              "fromTerminal": "33",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "PDS82001",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT9078M:1",
+              "toTerminal": "1",
+              "toLocation": "GEAR BOX PANEL",
+              "bundleName": "AF0322",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AU",
+      "bundles": [
+        {
+          "bundleName": "AU0320",
+          "toLocation": "GEAR BOX PANEL",
+          "rows": [
+            {
+              "rowId": "row-30",
+              "rowIndex": 41,
+              "fromDeviceId": "AU0320:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0310:3",
+              "toTerminal": "3",
+              "toLocation": "GEAR BOX PANEL",
+              "bundleName": "AU0320",
+              "bundleDisplay": "AU0320",
+              "devicePrefix": "AU",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-31",
+              "rowIndex": 42,
+              "fromDeviceId": "AU0320:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0320",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0320:LD",
+              "toTerminal": "LD",
+              "toLocation": "GEAR BOX PANEL",
+              "bundleName": "AU0320",
+              "bundleDisplay": "",
+              "devicePrefix": "AU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU0310",
+          "toLocation": "GEAR BOX PANEL",
+          "rows": [
+            {
+              "rowId": "row-32",
+              "rowIndex": 43,
+              "fromDeviceId": "FU0310:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0310",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0311:LI",
+              "toTerminal": "LI",
+              "toLocation": "GEAR BOX PANEL",
+              "bundleName": "FU0310",
+              "bundleDisplay": "FU0310",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-33",
+              "rowIndex": 44,
+              "fromDeviceId": "FU0310:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0310:1",
+              "toTerminal": "1",
+              "toLocation": "GEAR BOX PANEL",
+              "bundleName": "FU0310",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "c1b364434d1eceb4454d051f4798e24efb6ecbf333fc63e4d689f55270062344"
+}

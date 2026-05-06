@@ -1,0 +1,122 @@
+{
+  "sheetSlug": "hmi-s-pwr",
+  "sheetName": "HMI-S PWR",
+  "sourceSheetName": "HMI-S PWR",
+  "metadata": {
+    "normalizedSheetName": "hmi-s-pwr",
+    "bundleNames": [
+      "BA1100",
+      "FU - UJ",
+      "FU - AT",
+      "FU - XT",
+      "UJ - XT"
+    ]
+  },
+  "rows": [
+    {
+      "importedRowId": "hmi-s-pwr-15",
+      "rowIndex": 15,
+      "matchKey": "BA1100:NEG|BA1100(-)|WHT|14|UJ1100:OUT1(-)|HMI-S PWR",
+      "fromDeviceId": "BA1100:NEG",
+      "wireNo": "BA1100(-)",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 60,
+      "toDeviceId": "UJ1100:OUT1(-)",
+      "toLocation": "HMI-S PWR",
+      "devicePrefix": "BA1100",
+      "bundleName": "BA1100",
+      "bundleDisplay": "BA1100"
+    },
+    {
+      "importedRowId": "hmi-s-pwr-16",
+      "rowIndex": 16,
+      "matchKey": "BA1100:POS|BA1100(+)|WHT|14|UJ1100:OUT1(+)|HMI-S PWR",
+      "fromDeviceId": "BA1100:POS",
+      "wireNo": "BA1100(+)",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 60,
+      "toDeviceId": "UJ1100:OUT1(+)",
+      "toLocation": "HMI-S PWR",
+      "devicePrefix": "BA1100",
+      "bundleName": "BA1100",
+      "bundleDisplay": "BA1100"
+    },
+    {
+      "importedRowId": "hmi-s-pwr-20",
+      "rowIndex": 20,
+      "matchKey": "FU1101:LD|FU1101|WHT|16|UJ1100:24V(+)|HMI-S PWR",
+      "fromDeviceId": "FU1101:LD",
+      "wireNo": "FU1101",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "length": 60,
+      "toDeviceId": "UJ1100:24V(+)",
+      "toLocation": "HMI-S PWR",
+      "devicePrefix": "FU1101",
+      "bundleName": "FU - UJ",
+      "bundleDisplay": "FU - UJ"
+    },
+    {
+      "importedRowId": "hmi-s-pwr-24",
+      "rowIndex": 24,
+      "matchKey": "FU1100:LD|FU1100|WHT|14|AT1100:POS|CONTROL,JB70;TT6",
+      "fromDeviceId": "FU1100:LD",
+      "wireNo": "FU1100",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 120,
+      "toDeviceId": "AT1100:POS",
+      "toLocation": "CONTROL,JB70;TT6",
+      "devicePrefix": "FU1100",
+      "bundleName": "FU - AT",
+      "bundleDisplay": "FU - AT - CONTROL,JB70;TT6"
+    },
+    {
+      "importedRowId": "hmi-s-pwr-28",
+      "rowIndex": 28,
+      "matchKey": "FU1100:LI|FU0136|WHT|14|XT0111:21|RAIL,RIGHT,JB70",
+      "fromDeviceId": "FU1100:LI",
+      "wireNo": "FU0136",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 120,
+      "toDeviceId": "XT0111:21",
+      "toLocation": "RAIL,RIGHT,JB70",
+      "devicePrefix": "FU1100",
+      "bundleName": "FU - XT",
+      "bundleDisplay": "FU - XT - RAIL,RIGHT,JB70"
+    },
+    {
+      "importedRowId": "hmi-s-pwr-29",
+      "rowIndex": 29,
+      "matchKey": "FU1101:LI|FU0136|WHT|14|XT0111:21|RAIL,RIGHT,JB70",
+      "fromDeviceId": "FU1101:LI",
+      "wireNo": "FU0136",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 120,
+      "toDeviceId": "XT0111:21",
+      "toLocation": "RAIL,RIGHT,JB70",
+      "devicePrefix": "FU1101",
+      "bundleName": "FU - XT",
+      "bundleDisplay": "FU - XT - RAIL,RIGHT,JB70"
+    },
+    {
+      "importedRowId": "hmi-s-pwr-33",
+      "rowIndex": 33,
+      "matchKey": "UJ1100:24V(-)|0V|WHT|14|XT0111:22|RAIL,RIGHT,JB70",
+      "fromDeviceId": "UJ1100:24V(-)",
+      "wireNo": "0V",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 120,
+      "toDeviceId": "XT0111:22",
+      "toLocation": "RAIL,RIGHT,JB70",
+      "devicePrefix": "UJ1100",
+      "bundleName": "UJ - XT",
+      "bundleDisplay": "UJ - XT - RAIL,RIGHT,JB70"
+    }
+  ]
+}

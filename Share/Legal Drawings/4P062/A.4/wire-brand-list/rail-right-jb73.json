@@ -1,0 +1,452 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:51:13.869Z",
+  "mode": "branding-export",
+  "sheetSlug": "rail-right-jb73",
+  "sheetName": "RAIL RIGHT JB73",
+  "totalRows": 15,
+  "header": {
+    "locationTitle": "RAIL RIGHT JB73",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4P062",
+    "projectName": "PER-BAT - Unit 1",
+    "revision": "A.4"
+  },
+  "importHints": {
+    "canonicalSheetName": "RAIL,RIGHT,JB73",
+    "normalizedSheetName": "rail-right-jb73",
+    "bundleNames": [
+      "FU - UVJB",
+      "UAITE4411",
+      "UAITE4417",
+      "UAITE4418",
+      "UAITE4431",
+      "UAITE4437",
+      "UAITE4438",
+      "UAITE - UAITE",
+      "UVJB - XT"
+    ],
+    "bundleDisplays": [
+      "FU - UVJB",
+      "UAITE4411",
+      "UAITE4417",
+      "UAITE4418",
+      "UAITE4431",
+      "UAITE4437",
+      "UAITE4438",
+      "UAITE - UAITE",
+      "UVJB - XT - HPC - CTRL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - UVJB",
+          "toLocation": "RAIL,RIGHT,JB73",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "FU0123:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0123",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "UVJB73:8+",
+              "toTerminal": "8+",
+              "toLocation": "RAIL,RIGHT,JB73",
+              "bundleName": "FU - UVJB",
+              "bundleDisplay": "FU - UVJB",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UAITE",
+      "bundles": [
+        {
+          "bundleName": "UAITE4411",
+          "toLocation": "RAIL,RIGHT,JB73",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "UAITE4411:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "TE44112",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAITE4411:2",
+              "toTerminal": "2",
+              "toLocation": "RAIL,RIGHT,JB73",
+              "bundleName": "UAITE4411",
+              "bundleDisplay": "UAITE4411",
+              "devicePrefix": "UAITE",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "UAITE4411:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "TE44111",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAITE4411:4",
+              "toTerminal": "4",
+              "toLocation": "RAIL,RIGHT,JB73",
+              "bundleName": "UAITE4411",
+              "bundleDisplay": "",
+              "devicePrefix": "UAITE",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "UAITE4417",
+          "toLocation": "RAIL,RIGHT,JB73",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "UAITE4417:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "TE44172",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAITE4417:2",
+              "toTerminal": "2",
+              "toLocation": "RAIL,RIGHT,JB73",
+              "bundleName": "UAITE4417",
+              "bundleDisplay": "UAITE4417",
+              "devicePrefix": "UAITE",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "UAITE4417:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "TE44171",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAITE4417:4",
+              "toTerminal": "4",
+              "toLocation": "RAIL,RIGHT,JB73",
+              "bundleName": "UAITE4417",
+              "bundleDisplay": "",
+              "devicePrefix": "UAITE",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "UAITE4418",
+          "toLocation": "RAIL,RIGHT,JB73",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 16,
+              "fromDeviceId": "UAITE4418:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "TE44182",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAITE4418:2",
+              "toTerminal": "2",
+              "toLocation": "RAIL,RIGHT,JB73",
+              "bundleName": "UAITE4418",
+              "bundleDisplay": "UAITE4418",
+              "devicePrefix": "UAITE",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-7",
+              "rowIndex": 17,
+              "fromDeviceId": "UAITE4418:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "TE44181",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAITE4418:4",
+              "toTerminal": "4",
+              "toLocation": "RAIL,RIGHT,JB73",
+              "bundleName": "UAITE4418",
+              "bundleDisplay": "",
+              "devicePrefix": "UAITE",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "UAITE4431",
+          "toLocation": "RAIL,RIGHT,JB73",
+          "rows": [
+            {
+              "rowId": "row-8",
+              "rowIndex": 18,
+              "fromDeviceId": "UAITE4431:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "TE44312",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAITE4431:2",
+              "toTerminal": "2",
+              "toLocation": "RAIL,RIGHT,JB73",
+              "bundleName": "UAITE4431",
+              "bundleDisplay": "UAITE4431",
+              "devicePrefix": "UAITE",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-9",
+              "rowIndex": 19,
+              "fromDeviceId": "UAITE4431:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "TE44311",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAITE4431:4",
+              "toTerminal": "4",
+              "toLocation": "RAIL,RIGHT,JB73",
+              "bundleName": "UAITE4431",
+              "bundleDisplay": "",
+              "devicePrefix": "UAITE",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "UAITE4437",
+          "toLocation": "RAIL,RIGHT,JB73",
+          "rows": [
+            {
+              "rowId": "row-10",
+              "rowIndex": 20,
+              "fromDeviceId": "UAITE4437:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "TE44372",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAITE4437:2",
+              "toTerminal": "2",
+              "toLocation": "RAIL,RIGHT,JB73",
+              "bundleName": "UAITE4437",
+              "bundleDisplay": "UAITE4437",
+              "devicePrefix": "UAITE",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-11",
+              "rowIndex": 21,
+              "fromDeviceId": "UAITE4437:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "TE44371",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAITE4437:4",
+              "toTerminal": "4",
+              "toLocation": "RAIL,RIGHT,JB73",
+              "bundleName": "UAITE4437",
+              "bundleDisplay": "",
+              "devicePrefix": "UAITE",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "UAITE4438",
+          "toLocation": "RAIL,RIGHT,JB73",
+          "rows": [
+            {
+              "rowId": "row-12",
+              "rowIndex": 22,
+              "fromDeviceId": "UAITE4438:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "TE44382",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAITE4438:2",
+              "toTerminal": "2",
+              "toLocation": "RAIL,RIGHT,JB73",
+              "bundleName": "UAITE4438",
+              "bundleDisplay": "UAITE4438",
+              "devicePrefix": "UAITE",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-13",
+              "rowIndex": 23,
+              "fromDeviceId": "UAITE4438:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "TE44381",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAITE4438:4",
+              "toTerminal": "4",
+              "toLocation": "RAIL,RIGHT,JB73",
+              "bundleName": "UAITE4438",
+              "bundleDisplay": "",
+              "devicePrefix": "UAITE",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "UAITE - UAITE",
+          "toLocation": "RAIL,RIGHT,JB73",
+          "rows": [
+            {
+              "rowId": "row-14",
+              "rowIndex": 24,
+              "fromDeviceId": "UAITE5100:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "TE51003",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAITE5100:2",
+              "toTerminal": "2",
+              "toLocation": "RAIL,RIGHT,JB73",
+              "bundleName": "UAITE - UAITE",
+              "bundleDisplay": "UAITE - UAITE",
+              "devicePrefix": "UAITE",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UVJB",
+      "bundles": [
+        {
+          "bundleName": "UVJB - XT",
+          "toLocation": "HPC CTRL",
+          "rows": [
+            {
+              "rowId": "row-17",
+              "rowIndex": 27,
+              "fromDeviceId": "UVJB73:9-",
+              "fromTerminal": "9-",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0120:3",
+              "toTerminal": "3",
+              "toLocation": "HPC CTRL",
+              "bundleName": "UVJB - XT",
+              "bundleDisplay": "UVJB - XT - HPC - CTRL",
+              "devicePrefix": "UVJB",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "fb721b8354b99617b349dbfbb1c597e0e3653fd23cfc9f14039016761fb06a83"
+}

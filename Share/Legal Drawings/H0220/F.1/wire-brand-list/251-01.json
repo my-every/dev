@@ -1,0 +1,389 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:04:39.514Z",
+  "mode": "branding-export",
+  "sheetSlug": "251-01",
+  "sheetName": "251 01",
+  "totalRows": 13,
+  "header": {
+    "locationTitle": "251 01",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "H0220",
+    "projectName": "H0220",
+    "revision": "F.1"
+  },
+  "importHints": {
+    "canonicalSheetName": "251-01",
+    "normalizedSheetName": "251-01",
+    "bundleNames": [
+      "F251A",
+      "F251",
+      "FA251",
+      "FA251 - RED",
+      "TB - TS",
+      "TS - TS",
+      "TS - F",
+      "TS - AF"
+    ],
+    "bundleDisplays": [
+      "F251A",
+      "F251",
+      "FA251",
+      "FA251 - RED",
+      "TB - TS",
+      "TS - TS",
+      "TS - TS - 250 01",
+      "TB - TS - 252 01",
+      "TS - F - 300 00G5150",
+      "TS - AF - 300 00H0220"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "F",
+      "bundles": [
+        {
+          "bundleName": "F251A",
+          "toLocation": "251-01",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "F251A:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "F251A",
+              "wireId": "",
+              "gaugeSize": "20GA",
+              "length": null,
+              "toDeviceId": "TB251:1",
+              "toTerminal": "1",
+              "toLocation": "251-01",
+              "bundleName": "F251A",
+              "bundleDisplay": "F251A",
+              "devicePrefix": "F"
+            }
+          ]
+        },
+        {
+          "bundleName": "F251A",
+          "toLocation": "251-01",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "F251A:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "-24V51",
+              "wireId": "",
+              "gaugeSize": "16GA",
+              "length": null,
+              "toDeviceId": "TS251C:1",
+              "toTerminal": "1",
+              "toLocation": "251-01",
+              "bundleName": "F251A",
+              "bundleDisplay": "F251A",
+              "devicePrefix": "F"
+            }
+          ]
+        },
+        {
+          "bundleName": "F251",
+          "toLocation": "251-01",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "F251:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "-24V",
+              "wireId": "",
+              "gaugeSize": "12GA",
+              "length": null,
+              "toDeviceId": "TS251A:1",
+              "toTerminal": "1",
+              "toLocation": "251-01",
+              "bundleName": "F251",
+              "bundleDisplay": "F251",
+              "devicePrefix": "F"
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "F251:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "-24V51",
+              "wireId": "",
+              "gaugeSize": "12GA",
+              "length": null,
+              "toDeviceId": "TS251C:1",
+              "toTerminal": "1",
+              "toLocation": "251-01",
+              "bundleName": "F251",
+              "bundleDisplay": "",
+              "devicePrefix": "F"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FA",
+      "bundles": [
+        {
+          "bundleName": "FA251",
+          "toLocation": "251-01",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "FA251:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "BLK",
+              "gaugeSize": "22GA",
+              "length": null,
+              "toDeviceId": "TB251:2",
+              "toTerminal": "2",
+              "toLocation": "251-01",
+              "bundleName": "FA251",
+              "bundleDisplay": "FA251",
+              "devicePrefix": "FA",
+              "isNegative": true
+            }
+          ]
+        },
+        {
+          "bundleName": "FA251 - RED",
+          "toLocation": "251-01",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "FA251:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "F251A",
+              "wireId": "RED",
+              "gaugeSize": "22GA",
+              "length": null,
+              "toDeviceId": "TB251:1",
+              "toTerminal": "1",
+              "toLocation": "251-01",
+              "bundleName": "FA251 - RED",
+              "bundleDisplay": "FA251 - RED",
+              "devicePrefix": "FA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "TB",
+      "bundles": [
+        {
+          "bundleName": "TB - TS",
+          "toLocation": "251-01",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "TB251:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "",
+              "gaugeSize": "20GA",
+              "length": null,
+              "toDeviceId": "TS251D:1",
+              "toTerminal": "1",
+              "toLocation": "251-01",
+              "bundleName": "TB - TS",
+              "bundleDisplay": "TB - TS",
+              "devicePrefix": "TB",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "TS",
+      "bundles": [
+        {
+          "bundleName": "TS - TS",
+          "toLocation": "251-01",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 22,
+              "fromDeviceId": "TS251D:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "",
+              "gaugeSize": "12GA",
+              "length": null,
+              "toDeviceId": "TS251B:1",
+              "toTerminal": "1",
+              "toLocation": "251-01",
+              "bundleName": "TS - TS",
+              "bundleDisplay": "TS - TS",
+              "devicePrefix": "TS",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "TS",
+      "bundles": [
+        {
+          "bundleName": "TS - TS",
+          "toLocation": "250-01",
+          "rows": [
+            {
+              "rowId": "row-15",
+              "rowIndex": 26,
+              "fromDeviceId": "TS251A:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "-24V",
+              "wireId": "",
+              "gaugeSize": "12GA",
+              "length": null,
+              "toDeviceId": "TS250A:2",
+              "toTerminal": "2",
+              "toLocation": "250-01",
+              "bundleName": "TS - TS",
+              "bundleDisplay": "TS - TS - 250 01",
+              "devicePrefix": "TS"
+            },
+            {
+              "rowId": "row-16",
+              "rowIndex": 27,
+              "fromDeviceId": "TS251B:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "",
+              "gaugeSize": "12GA",
+              "length": null,
+              "toDeviceId": "TS250B:2",
+              "toTerminal": "2",
+              "toLocation": "250-01",
+              "bundleName": "TS - TS",
+              "bundleDisplay": "",
+              "devicePrefix": "TS",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "TB",
+      "bundles": [
+        {
+          "bundleName": "TB - TS",
+          "toLocation": "252-01",
+          "rows": [
+            {
+              "rowId": "row-17",
+              "rowIndex": 28,
+              "fromDeviceId": "TB251:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "",
+              "gaugeSize": "20GA",
+              "length": null,
+              "toDeviceId": "TS252D:1",
+              "toTerminal": "1",
+              "toLocation": "252-01",
+              "bundleName": "TB - TS",
+              "bundleDisplay": "TB - TS - 252 01",
+              "devicePrefix": "TB",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "TS",
+      "bundles": [
+        {
+          "bundleName": "TS - F",
+          "toLocation": "300-00G5150",
+          "rows": [
+            {
+              "rowId": "row-18",
+              "rowIndex": 29,
+              "fromDeviceId": "TS251C:3",
+              "fromTerminal": "3",
+              "fromTerminalOrder": null,
+              "wireNo": "-24V15",
+              "wireId": "WHT",
+              "gaugeSize": "14GA",
+              "length": null,
+              "toDeviceId": "F2050:LI",
+              "toTerminal": "LI",
+              "toLocation": "300-00G5150",
+              "bundleName": "TS - F",
+              "bundleDisplay": "TS - F - 300 00G5150",
+              "devicePrefix": "TS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "TS",
+      "bundles": [
+        {
+          "bundleName": "TS - AF",
+          "toLocation": "300-00H0220",
+          "rows": [
+            {
+              "rowId": "row-13",
+              "rowIndex": 24,
+              "fromDeviceId": "TS251D:3",
+              "fromTerminal": "3",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V15",
+              "wireId": "",
+              "gaugeSize": "",
+              "length": null,
+              "toDeviceId": "AF0410:53",
+              "toTerminal": "53",
+              "toLocation": "300-00H0220",
+              "bundleName": "TS - AF",
+              "bundleDisplay": "TS - AF - 300 00H0220",
+              "devicePrefix": "TS"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "806ae215ce3baab3b0d1549d2271e213f5a7ee32343329a98ed8ba34c56ab054"
+}

@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:17:29.599Z",
+  "mode": "branding-export",
+  "sheetSlug": "assembly-console",
+  "sheetName": "ASSEMBLY CONSOLE",
+  "totalRows": 5,
+  "header": {
+    "locationTitle": "ASSEMBLY CONSOLE",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J1630",
+    "projectName": "J1630",
+    "revision": "A.5",
+    "controlsDE": "H.VOUNG",
+    "controlsME": "P. Llamedo"
+  },
+  "importHints": {
+    "canonicalSheetName": "ASSEMBLY CONSOLE",
+    "normalizedSheetName": "assembly-console",
+    "bundleNames": [
+      "EL - ZS",
+      "HA0273",
+      "EL - XT",
+      "ZS - FU"
+    ],
+    "bundleDisplays": [
+      "EL - ZS",
+      "HA0273 - ASSEMBLY - CONTROL PANEL",
+      "EL - XT - PWR DISTRIBUTION - RAIL LEFT DOOR",
+      "ZS - FU - PWR DISTRIBUTION - RAIL LEFT DOOR"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "EL",
+      "bundles": [
+        {
+          "bundleName": "EL - ZS",
+          "toLocation": "ASSEMBLY CONSOLE",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "EL0273:+",
+              "fromTerminal": "+",
+              "fromTerminalOrder": null,
+              "wireNo": "ZS0273",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "ZS0273:2",
+              "toTerminal": "2",
+              "toLocation": "ASSEMBLY CONSOLE",
+              "bundleName": "EL - ZS",
+              "bundleDisplay": "EL - ZS",
+              "devicePrefix": "EL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "HA",
+      "bundles": [
+        {
+          "bundleName": "HA0273",
+          "toLocation": "ASSEMBLY^CONTROL PANEL",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "HA0273:(-)",
+              "fromTerminal": "(-)",
+              "fromTerminalOrder": null,
+              "wireNo": "-HA0273N",
+              "wireId": "WHT",
+              "gaugeSize": "18",
+              "length": 120,
+              "toDeviceId": "AF0202:55",
+              "toTerminal": "55",
+              "toLocation": "ASSEMBLY^CONTROL PANEL",
+              "bundleName": "HA0273",
+              "bundleDisplay": "HA0273 - ASSEMBLY - CONTROL PANEL",
+              "devicePrefix": "HA",
+              "isNegative": true
+            },
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "HA0273:(+)",
+              "fromTerminal": "(+)",
+              "fromTerminalOrder": null,
+              "wireNo": "HA0273P",
+              "wireId": "WHT",
+              "gaugeSize": "18",
+              "length": 120,
+              "toDeviceId": "AF0202:23",
+              "toTerminal": "23",
+              "toLocation": "ASSEMBLY^CONTROL PANEL",
+              "bundleName": "HA0273",
+              "bundleDisplay": "",
+              "devicePrefix": "HA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "EL",
+      "bundles": [
+        {
+          "bundleName": "EL - XT",
+          "toLocation": "PWR,DISTRIBUTION RAIL^LEFT DOOR",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "EL0273:-",
+              "fromTerminal": "-",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0562:1",
+              "toTerminal": "1",
+              "toLocation": "PWR,DISTRIBUTION RAIL^LEFT DOOR",
+              "bundleName": "EL - XT",
+              "bundleDisplay": "EL - XT - PWR DISTRIBUTION - RAIL LEFT DOOR",
+              "devicePrefix": "EL",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "ZS",
+      "bundles": [
+        {
+          "bundleName": "ZS - FU",
+          "toLocation": "PWR,DISTRIBUTION RAIL^LEFT DOOR",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "ZS0273:1",
+              "fromTerminal": "1",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0273",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0273:LD",
+              "toTerminal": "LD",
+              "toLocation": "PWR,DISTRIBUTION RAIL^LEFT DOOR",
+              "bundleName": "ZS - FU",
+              "bundleDisplay": "ZS - FU - PWR DISTRIBUTION - RAIL LEFT DOOR",
+              "devicePrefix": "ZS"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "f88a900c9d3a36e6ff70abd9ca8cedbd24f0067f34d68067d251c50db0ebaf13"
+}

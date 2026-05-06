@@ -1,0 +1,141 @@
+{
+  "slug": "turbine-control-jb70",
+  "name": "TURBINE CONTROL^JB70",
+  "kind": "operational",
+  "sheetIndex": 16,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR1000:",
+      "wireType": "SC",
+      "wireNo": "GR1000",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "22.B4",
+      "toDeviceId": "FRAME",
+      "toLocation": "TURBINE CONTROL^JB70",
+      "toPageZone": "22.B4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "GR1100:",
+      "wireType": "SC",
+      "wireNo": "GR1100",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "22.B4",
+      "toDeviceId": "FRAME",
+      "toLocation": "TURBINE CONTROL^JB70",
+      "toPageZone": "22.B4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-2",
+      "fromDeviceId": "HA0472:BLK-2",
+      "wireType": "WC5072",
+      "wireNo": "HA0472BLK-2",
+      "wireId": "BLK",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "28.A1",
+      "toDeviceId": "XT0235:5",
+      "toLocation": "PNL B,SMT130",
+      "toPageZone": "28.A5",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-3",
+      "fromDeviceId": "HA0472:BLK-1",
+      "wireType": "WC5072",
+      "wireNo": "-0V",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "28.A1",
+      "toDeviceId": "XT0235:6",
+      "toLocation": "PNL B,SMT130",
+      "toPageZone": "28.A5",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1000",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "22.B4",
+      "Location": "TURBINE CONTROL^JB70"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR1100",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "22.B4",
+      "Location": "TURBINE CONTROL^JB70"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "XT0235:5",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC5072",
+      "Wire No.": "HA0472BLK-2",
+      "Wire ID": "BLK",
+      "Gauge/Size": "16",
+      "Page/Zone": "28.A5",
+      "Location": "PNL B,SMT130"
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "XT0235:6",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC5072",
+      "Wire No.": "0V",
+      "Wire ID": "WHT",
+      "Gauge/Size": "16",
+      "Page/Zone": "28.A5",
+      "Location": "PNL B,SMT130"
+    }
+  ],
+  "rowCount": 4,
+  "metadata": {
+    "projectName": "Enterprise SMT130 M4 WTX",
+    "revision": "0.1"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:16:56.946Z"
+}

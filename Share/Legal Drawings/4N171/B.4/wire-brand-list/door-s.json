@@ -1,0 +1,59 @@
+{
+  "sheetSlug": "door-s",
+  "sheetName": "DOOR_S",
+  "sourceSheetName": "DOOR_S",
+  "metadata": {
+    "normalizedSheetName": "door-s",
+    "bundleNames": [
+      "EL",
+      "AT"
+    ]
+  },
+  "rows": [
+    {
+      "importedRowId": "door-s-13",
+      "rowIndex": 13,
+      "matchKey": "EL0273:W1|-0V1|WHT|16|XT0562:1|PWR DIST",
+      "fromDeviceId": "EL0273:W1",
+      "wireNo": "-0V1",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "length": 120,
+      "toDeviceId": "XT0562:1",
+      "toLocation": "PWR DIST",
+      "devicePrefix": "EL0273",
+      "bundleName": "EL",
+      "bundleDisplay": "EL- PWR DIST"
+    },
+    {
+      "importedRowId": "door-s-15",
+      "rowIndex": 15,
+      "matchKey": "AT0190:NEG|-0V1|WHT|14|XT0562:3|PWR DIST",
+      "fromDeviceId": "AT0190:NEG",
+      "wireNo": "-0V1",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 100,
+      "toDeviceId": "XT0562:3",
+      "toLocation": "PWR DIST",
+      "devicePrefix": "AT0190",
+      "bundleName": "AT",
+      "bundleDisplay": "AT-PWR DIST"
+    },
+    {
+      "importedRowId": "door-s-16",
+      "rowIndex": 16,
+      "matchKey": "AT0190:POS|FU0190|WHT|14|FU0190:LD|PWR DIST",
+      "fromDeviceId": "AT0190:POS",
+      "wireNo": "FU0190",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 100,
+      "toDeviceId": "FU0190:LD",
+      "toLocation": "PWR DIST",
+      "devicePrefix": "AT0190",
+      "bundleName": "AT",
+      "bundleDisplay": "AT-PWR DIST"
+    }
+  ]
+}

@@ -1,0 +1,382 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:04:24.114Z",
+  "mode": "branding-export",
+  "sheetSlug": "power-supply-panel",
+  "sheetName": "POWER SUPPLY PANEL",
+  "totalRows": 13,
+  "header": {
+    "locationTitle": "POWER SUPPLY PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "H0140",
+    "projectName": "H0140",
+    "revision": "A.4",
+    "controlsDE": "M. ZUNIGA",
+    "controlsME": "R. DURAN"
+  },
+  "importHints": {
+    "canonicalSheetName": "POWER SUPPLY PANEL",
+    "normalizedSheetName": "power-supply-panel",
+    "bundleNames": [
+      "QS0011",
+      "QS0012",
+      "UJ - UJ",
+      "UJ0031",
+      "UJ0131"
+    ],
+    "bundleDisplays": [
+      "QS0011",
+      "QS0012",
+      "UJ - UJ",
+      "UJ0031 - TURBINE - PANEL A",
+      "UJ0131 - TURBINE - PANEL A"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "QS",
+      "bundles": [
+        {
+          "bundleName": "QS0011",
+          "toLocation": "POWER SUPPLY PANEL",
+          "rows": [
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "QS0011:LD-1",
+              "fromTerminal": "LD-1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0131P",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "UJ0131:+",
+              "toTerminal": "+",
+              "toLocation": "POWER SUPPLY PANEL",
+              "bundleName": "QS0011",
+              "bundleDisplay": "QS0011",
+              "devicePrefix": "QS",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-11",
+              "rowIndex": 22,
+              "fromDeviceId": "QS0011:LD-3",
+              "fromTerminal": "LD-3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0131N",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "UJ0131:-",
+              "toTerminal": "-",
+              "toLocation": "POWER SUPPLY PANEL",
+              "bundleName": "QS0011",
+              "bundleDisplay": "",
+              "devicePrefix": "QS",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "QS0012",
+          "toLocation": "POWER SUPPLY PANEL",
+          "rows": [
+            {
+              "rowId": "row-12",
+              "rowIndex": 23,
+              "fromDeviceId": "QS0012:LD-1",
+              "fromTerminal": "LD-1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0031P",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "UJ0031:+",
+              "toTerminal": "+",
+              "toLocation": "POWER SUPPLY PANEL",
+              "bundleName": "QS0012",
+              "bundleDisplay": "QS0012",
+              "devicePrefix": "QS",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-13",
+              "rowIndex": 24,
+              "fromDeviceId": "QS0012:LD-3",
+              "fromTerminal": "LD-3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0031N",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "UJ0031:-",
+              "toTerminal": "-",
+              "toLocation": "POWER SUPPLY PANEL",
+              "bundleName": "QS0012",
+              "bundleDisplay": "",
+              "devicePrefix": "QS",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UJ",
+      "bundles": [
+        {
+          "bundleName": "UJ - UJ",
+          "toLocation": "POWER SUPPLY PANEL",
+          "rows": [
+            {
+              "rowId": "row-15",
+              "rowIndex": 26,
+              "fromDeviceId": "UJ0031:IS",
+              "fromTerminal": "IS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0131IS",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UJ0131:IS",
+              "toTerminal": "IS",
+              "toLocation": "POWER SUPPLY PANEL",
+              "bundleName": "UJ - UJ",
+              "bundleDisplay": "UJ - UJ",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UJ",
+      "bundles": [
+        {
+          "bundleName": "UJ0031",
+          "toLocation": "TURBINE PANEL A",
+          "rows": [
+            {
+              "rowId": "row-21",
+              "rowIndex": 32,
+              "fromDeviceId": "UJ0031:IOUT",
+              "fromTerminal": "IOUT",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0031IOUT",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0094:14",
+              "toTerminal": "14",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "UJ0031 - TURBINE - PANEL A",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-22",
+              "rowIndex": 33,
+              "fromDeviceId": "UJ0031:OK1",
+              "fromTerminal": "OK1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0031OK1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:42",
+              "toTerminal": "42",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-23",
+              "rowIndex": 34,
+              "fromDeviceId": "UJ0031:OK2",
+              "fromTerminal": "OK2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0031OK2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:10",
+              "toTerminal": "10",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-24",
+              "rowIndex": 35,
+              "fromDeviceId": "UJ0031:VIN",
+              "fromTerminal": "VIN",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0031VIN",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0094:12",
+              "toTerminal": "12",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "UJ0131",
+          "toLocation": "TURBINE PANEL A",
+          "rows": [
+            {
+              "rowId": "row-25",
+              "rowIndex": 36,
+              "fromDeviceId": "UJ0131:IOUT",
+              "fromTerminal": "IOUT",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0131IOUT",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0094:06",
+              "toTerminal": "06",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "UJ0131",
+              "bundleDisplay": "UJ0131 - TURBINE - PANEL A",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-26",
+              "rowIndex": 37,
+              "fromDeviceId": "UJ0131:OK1",
+              "fromTerminal": "OK1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0131OK1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:41",
+              "toTerminal": "41",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "UJ0131",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-27",
+              "rowIndex": 38,
+              "fromDeviceId": "UJ0131:OK2",
+              "fromTerminal": "OK2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0131OK2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:09",
+              "toTerminal": "09",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "UJ0131",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-28",
+              "rowIndex": 39,
+              "fromDeviceId": "UJ0131:VIN",
+              "fromTerminal": "VIN",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0131VIN",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0094:04",
+              "toTerminal": "04",
+              "toLocation": "TURBINE PANEL A",
+              "bundleName": "UJ0131",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "6a544c2a5922fc8b333f4838aede3dbbf075b9711f1c0e9413a4ca6caf9a2fed"
+}

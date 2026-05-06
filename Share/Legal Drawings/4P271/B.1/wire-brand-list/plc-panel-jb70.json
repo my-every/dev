@@ -1,0 +1,342 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:52:24.847Z",
+  "mode": "branding-export",
+  "sheetSlug": "plc-panel-jb70",
+  "sheetName": "PLC PANEL JB70",
+  "totalRows": 10,
+  "header": {
+    "locationTitle": "PLC PANEL JB70",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4P271",
+    "projectName": "VEST-B - Unit 1",
+    "revision": "B.1",
+    "controlsDE": "David Kim",
+    "controlsME": "Aaron Plvan"
+  },
+  "importHints": {
+    "canonicalSheetName": "PLC PANEL^JB70",
+    "normalizedSheetName": "plc-panel-jb70",
+    "bundleNames": [
+      "BA - FU",
+      "FU - UV",
+      "FU - XT",
+      "UV - XT",
+      "BA0001",
+      "BA0002",
+      "BA0009"
+    ],
+    "bundleDisplays": [
+      "BA - FU",
+      "FU - UV",
+      "FU - XT - PANEL A JB70",
+      "UV - XT - PANEL A JB70",
+      "BA0001 - PANEL B JB70",
+      "BA0002 - PANEL B JB70",
+      "BA0009 - PANEL B JB70"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA - FU",
+          "toLocation": "PLC PANEL^JB70",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "BA1100:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1101LD",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 90,
+              "toDeviceId": "FU1101:LD",
+              "toTerminal": "LD",
+              "toLocation": "PLC PANEL^JB70",
+              "bundleName": "BA - FU",
+              "bundleDisplay": "BA - FU",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - UV",
+          "toLocation": "PLC PANEL^JB70",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "FU0010:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0010",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UV0600:(+)",
+              "toTerminal": "(+)",
+              "toLocation": "PLC PANEL^JB70",
+              "bundleName": "FU - UV",
+              "bundleDisplay": "FU - UV",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "PANEL A^JB70",
+          "rows": [
+            {
+              "rowId": "row-8",
+              "rowIndex": 18,
+              "fromDeviceId": "FU0010:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0002:4",
+              "toTerminal": "4",
+              "toLocation": "PANEL A^JB70",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT - PANEL A JB70",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV - XT",
+          "toLocation": "PANEL A^JB70",
+          "rows": [
+            {
+              "rowId": "row-9",
+              "rowIndex": 19,
+              "fromDeviceId": "UV0600:(-)",
+              "fromTerminal": "(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0003:4",
+              "toTerminal": "4",
+              "toLocation": "PANEL A^JB70",
+              "bundleName": "UV - XT",
+              "bundleDisplay": "UV - XT - PANEL A JB70",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA0001",
+          "toLocation": "PANEL B^JB70",
+          "rows": [
+            {
+              "rowId": "row-12",
+              "rowIndex": 22,
+              "fromDeviceId": "BA0001:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 90,
+              "toDeviceId": "XT0051:5",
+              "toTerminal": "5",
+              "toLocation": "PANEL B^JB70",
+              "bundleName": "BA0001",
+              "bundleDisplay": "BA0001 - PANEL B JB70",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-13",
+              "rowIndex": 23,
+              "fromDeviceId": "BA0001:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0021",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 90,
+              "toDeviceId": "FU0021:LD",
+              "toTerminal": "LD",
+              "toLocation": "PANEL B^JB70",
+              "bundleName": "BA0001",
+              "bundleDisplay": "",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0002",
+          "toLocation": "PANEL B^JB70",
+          "rows": [
+            {
+              "rowId": "row-14",
+              "rowIndex": 24,
+              "fromDeviceId": "BA0002:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 90,
+              "toDeviceId": "XT0051:6",
+              "toTerminal": "6",
+              "toLocation": "PANEL B^JB70",
+              "bundleName": "BA0002",
+              "bundleDisplay": "BA0002 - PANEL B JB70",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-15",
+              "rowIndex": 25,
+              "fromDeviceId": "BA0002:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0022",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 90,
+              "toDeviceId": "FU0022:LD",
+              "toTerminal": "LD",
+              "toLocation": "PANEL B^JB70",
+              "bundleName": "BA0002",
+              "bundleDisplay": "",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "BA0009",
+          "toLocation": "PANEL B^JB70",
+          "rows": [
+            {
+              "rowId": "row-16",
+              "rowIndex": 26,
+              "fromDeviceId": "BA0009:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 90,
+              "toDeviceId": "XT0051:7",
+              "toTerminal": "7",
+              "toLocation": "PANEL B^JB70",
+              "bundleName": "BA0009",
+              "bundleDisplay": "BA0009 - PANEL B JB70",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-17",
+              "rowIndex": 27,
+              "fromDeviceId": "BA0009:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0029",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 90,
+              "toDeviceId": "FU0029:LD",
+              "toTerminal": "LD",
+              "toLocation": "PANEL B^JB70",
+              "bundleName": "BA0009",
+              "bundleDisplay": "",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "e992ce4c0a20e632625c350ae5a4fe7b7e26203c56a757640f07ac7bd353e73e"
+}

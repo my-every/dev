@@ -1,0 +1,210 @@
+{
+  "category": "terminals",
+  "version": 1,
+  "updatedAt": "2026-05-05T04:32:27.252Z",
+  "types": {
+    "busbars": {
+      "count": 26,
+      "label": "Busbars"
+    },
+    "fork-terminals": {
+      "count": 5,
+      "label": "Fork Terminals"
+    },
+    "ring-terminals": {
+      "count": 88,
+      "label": "Ring Terminals"
+    },
+    "terminal-blocks": {
+      "count": 27,
+      "label": "Terminal Blocks"
+    },
+    "wire-ferrules": {
+      "count": 37,
+      "label": "Wire Ferrules"
+    }
+  },
+  "schema": {
+    "version": 1,
+    "id": "terminal-details",
+    "name": "Terminal Details",
+    "description": "Detail fields for terminals and connectors",
+    "groups": [
+      {
+        "key": "electrical",
+        "label": "Electrical Specifications",
+        "order": 1
+      },
+      {
+        "key": "wire",
+        "label": "Wire Specifications",
+        "order": 2
+      },
+      {
+        "key": "physical",
+        "label": "Physical Specifications",
+        "order": 3
+      },
+      {
+        "key": "crimping",
+        "label": "Crimping Requirements",
+        "order": 4,
+        "collapsible": true
+      }
+    ],
+    "fields": [
+      {
+        "key": "voltageRating",
+        "label": "Voltage Rating",
+        "type": "text",
+        "group": "electrical",
+        "placeholder": "e.g., 24V DC, 120V AC"
+      },
+      {
+        "key": "currentRating",
+        "label": "Current Rating",
+        "type": "text",
+        "group": "electrical",
+        "placeholder": "e.g., 10A, 5mA"
+      },
+      {
+        "key": "operatingTemp",
+        "label": "Operating Temperature",
+        "type": "text",
+        "group": "environmental",
+        "placeholder": "e.g., -20C to +60C"
+      },
+      {
+        "key": "ipRating",
+        "label": "IP Rating",
+        "type": "text",
+        "group": "environmental",
+        "placeholder": "e.g., IP65, IP20"
+      },
+      {
+        "key": "wireGauges",
+        "label": "Wire Gauges (AWG)",
+        "type": "multi-select",
+        "group": "wire",
+        "options": [
+          {
+            "value": "22",
+            "label": "22 AWG"
+          },
+          {
+            "value": "20",
+            "label": "20 AWG"
+          },
+          {
+            "value": "18",
+            "label": "18 AWG"
+          },
+          {
+            "value": "16",
+            "label": "16 AWG"
+          },
+          {
+            "value": "14",
+            "label": "14 AWG"
+          },
+          {
+            "value": "12",
+            "label": "12 AWG"
+          },
+          {
+            "value": "10",
+            "label": "10 AWG"
+          },
+          {
+            "value": "8",
+            "label": "8 AWG"
+          },
+          {
+            "value": "6",
+            "label": "6 AWG"
+          },
+          {
+            "value": "4",
+            "label": "4 AWG"
+          },
+          {
+            "value": "2",
+            "label": "2 AWG"
+          },
+          {
+            "value": "1",
+            "label": "1 AWG"
+          },
+          {
+            "value": "1/0",
+            "label": "1/0 AWG"
+          }
+        ]
+      },
+      {
+        "key": "studSize",
+        "label": "Stud Size",
+        "type": "text",
+        "group": "physical",
+        "placeholder": "e.g., #10, 1/4\""
+      },
+      {
+        "key": "barrelType",
+        "label": "Barrel Type",
+        "type": "select",
+        "group": "physical",
+        "options": [
+          {
+            "value": "brazed",
+            "label": "Brazed Seam"
+          },
+          {
+            "value": "seamless",
+            "label": "Seamless"
+          },
+          {
+            "value": "flared",
+            "label": "Flared"
+          }
+        ]
+      },
+      {
+        "key": "insulationType",
+        "label": "Insulation Type",
+        "type": "select",
+        "group": "physical",
+        "options": [
+          {
+            "value": "none",
+            "label": "Non-Insulated"
+          },
+          {
+            "value": "vinyl",
+            "label": "Vinyl Insulated"
+          },
+          {
+            "value": "nylon",
+            "label": "Nylon Insulated"
+          },
+          {
+            "value": "heat_shrink",
+            "label": "Heat Shrink"
+          }
+        ]
+      },
+      {
+        "key": "crimpTool",
+        "label": "Recommended Crimp Tool",
+        "type": "text",
+        "group": "crimping"
+      },
+      {
+        "key": "crimpDie",
+        "label": "Crimp Die Size",
+        "type": "text",
+        "group": "crimping"
+      }
+    ]
+  },
+  "totalParts": 183
+}

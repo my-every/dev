@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:15:36.964Z",
+  "mode": "branding-export",
+  "sheetSlug": "gen-vib",
+  "sheetName": "GEN VIB",
+  "totalRows": 2,
+  "header": {
+    "locationTitle": "GEN VIB",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4L131",
+    "projectName": "4L131",
+    "revision": "B.3"
+  },
+  "importHints": {
+    "canonicalSheetName": "GEN VIB",
+    "normalizedSheetName": "gen-vib",
+    "bundleNames": [
+      "AF0510"
+    ],
+    "bundleDisplays": [
+      "AF0510"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AF",
+      "bundles": [
+        {
+          "bundleName": "AF0510",
+          "toLocation": "GEN VIB",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "AF0510:53",
+              "fromTerminal": "53",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0501:2",
+              "toTerminal": "2",
+              "toLocation": "GEN VIB",
+              "bundleName": "AF0510",
+              "bundleDisplay": "AF0510",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "AF0510:55",
+              "fromTerminal": "55",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0510",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0510:LD",
+              "toTerminal": "LD",
+              "toLocation": "GEN VIB",
+              "bundleName": "AF0510",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "aac92927d0201a75c8d1689d37d0ce615ba8b604a5d55d36c4a38de09ec0caae"
+}

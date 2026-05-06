@@ -1,0 +1,792 @@
+{
+  "generatedAt": "2026-05-05T13:44:31.555Z",
+  "sheetName": "AUXILIARY",
+  "mode": "standardize",
+  "totalPages": 3,
+  "totalRows": 23,
+  "settings": {
+    "showEstTime": false,
+    "showFromCheckbox": true,
+    "showToCheckbox": true,
+    "showIPV": true,
+    "showComments": true,
+    "showLength": false,
+    "showCoverPage": true,
+    "showTableOfContents": true,
+    "showIPVCodes": false,
+    "showFeedbackSection": false,
+    "showDeviceSubheaders": false,
+    "enableBlueDeviceIDColumns": false,
+    "sectionColumnVisibility": {},
+    "feedbackRenderMode": "BLANK",
+    "feedbackSections": [
+      "Header",
+      "Accuracy & Usability",
+      "Termination Clarity",
+      "Routing & Layout Alignment",
+      "Build Sequence & Efficiency",
+      "Hardware & Materials",
+      "Quality & Rework",
+      "Time & Effort",
+      "Safety & Compliance",
+      "Documentation Quality",
+      "Automation Checks",
+      "Final Sign-Off",
+      "Footer"
+    ],
+    "customQuestions": [
+      "accuracyBlueLabelsClear",
+      "accuracySequenceMatchedLayout",
+      "accuracyMissingDuplicateIncorrectEntries",
+      "accuracyLocationColumnCorrect",
+      "terminationTypesClear",
+      "terminationLengthsAccurate",
+      "terminationReworkDueToInstructionClarity",
+      "terminationJumperRulesEasyToFollow",
+      "routingAlignedWithLayout",
+      "routingLengthFit",
+      "routingConflictsPanduct",
+      "routingConflictsRails",
+      "routingConflictsAdjacentDevices",
+      "routingEfficientOrder",
+      "buildOrderHelpful",
+      "buildRequiredDeviation",
+      "buildDeviationReason",
+      "buildCausedDelays",
+      "materialsFerrulesAvailable",
+      "materialsLugsAvailable",
+      "materialsJumpersAvailable",
+      "materialsWireTypesAvailable",
+      "materialsIssuesNotes",
+      "qualityErrorsCaughtDuringWiring",
+      "qualityReterminatedWires",
+      "qualityReroutedWires",
+      "qualityReplacedWires",
+      "qualityCommonIssues",
+      "estimatedWiringTimeHours",
+      "actualWiringTimeHours",
+      "timeVarianceReason",
+      "safetyGroundsClearlyIdentified",
+      "safetyTerminationsCompliant",
+      "safetyConcernsNotes",
+      "documentationDifficulty",
+      "documentationImprovementAreas",
+      "documentationOtherImprovementArea",
+      "documentationSpecificSuggestions",
+      "automationJumperPredictionCorrect",
+      "automationBlueLabelSequencesCorrect",
+      "automationKtRulesCorrect",
+      "automationReusableTemplateCandidate",
+      "finalQualityRating",
+      "finalComments"
+    ],
+    "crossWireSections": [],
+    "hiddenRows": [],
+    "hiddenSections": [],
+    "brandingSortMode": "device-prefix",
+    "wireListSortMode": "device-prefix"
+  },
+  "pages": [
+    {
+      "pageType": "cover",
+      "pageNumber": 1,
+      "projectInfo": {
+        "projectNumber": "4N171CB",
+        "projectName": "4N171CB",
+        "revision": "B.1_M.2",
+        "pdNumber": "4N171CB",
+        "unitNumber": "",
+        "preparedBy": "",
+        "badgeNumber": "",
+        "date": "",
+        "time": "",
+        "personnel": [
+          {
+            "id": "1",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "2",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "3",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "4",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "5",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "6",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          }
+        ]
+      },
+      "sheetTitle": "AUXILIARY"
+    },
+    {
+      "pageType": "toc",
+      "pageNumber": 2,
+      "locationGroups": [
+        {
+          "location": "AUXILIARY",
+          "isExternal": false,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Grounds",
+              "rowCount": 2,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 2,
+              "label": "Clips",
+              "rowCount": 2,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 3,
+              "label": "FU Jumpers",
+              "rowCount": 1,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "FU0030-FU0033",
+                  "rowCount": 1
+                }
+              ]
+            },
+            {
+              "index": 4,
+              "label": "Single Connections",
+              "rowCount": 11,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "BA0010",
+                  "rowCount": 2
+                },
+                {
+                  "label": "BA0013",
+                  "rowCount": 2
+                },
+                {
+                  "label": "BA0014",
+                  "rowCount": 2
+                },
+                {
+                  "label": "BA1213",
+                  "rowCount": 2
+                },
+                {
+                  "label": "FU - XT",
+                  "rowCount": 3
+                }
+              ]
+            },
+            {
+              "index": 5,
+              "label": "Cables",
+              "rowCount": 1,
+              "estimatedPage": 3,
+              "subEntries": []
+            }
+          ]
+        },
+        {
+          "location": "DOOR",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Cables",
+              "rowCount": 1,
+              "estimatedPage": 3,
+              "subEntries": []
+            }
+          ]
+        },
+        {
+          "location": "PWR DIST",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Single Connections",
+              "rowCount": 2,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "XT0063",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "TCP, CSMD",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Grounds",
+              "rowCount": 1,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 2,
+              "label": "Cables",
+              "rowCount": 2,
+              "estimatedPage": 3,
+              "subEntries": []
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "locations": 4,
+        "sections": 16,
+        "rows": 23,
+        "pages": 3
+      }
+    },
+    {
+      "pageType": "wire-list",
+      "pageNumber": 3,
+      "locationGroups": [
+        {
+          "location": "AUXILIARY",
+          "isExternal": false,
+          "totalRows": 17,
+          "subsections": [
+            {
+              "label": "Grounds",
+              "sectionKind": "grounds",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-14",
+                  "rowIndex": 25,
+                  "fromDeviceId": "GR0355",
+                  "toDeviceId": "IEG0356:1",
+                  "wireType": "SC",
+                  "wireNo": "IEG03561",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "10.C4",
+                  "toPageZone": "10.C3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-15",
+                  "rowIndex": 26,
+                  "fromDeviceId": "GR0356",
+                  "toDeviceId": "FRAME",
+                  "wireType": "SC",
+                  "wireNo": "GR0356",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "14",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "10.C4",
+                  "toPageZone": "10.C3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Clips",
+              "sectionKind": "clips",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-0",
+                  "rowIndex": 11,
+                  "fromDeviceId": "XT0063:1",
+                  "toDeviceId": "XT0063:2",
+                  "wireType": "JC",
+                  "wireNo": "QS0560LD1",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "49.A5",
+                  "toPageZone": "49.B5",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-1",
+                  "rowIndex": 12,
+                  "fromDeviceId": "XT0063:3",
+                  "toDeviceId": "XT0063:4",
+                  "wireType": "JC",
+                  "wireNo": "-0V1",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "49.A5",
+                  "toPageZone": "49.B5",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "FU Jumpers",
+              "sectionKind": "fu_jumpers",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-10",
+                  "rowIndex": 21,
+                  "fromDeviceId": "FU0030:LI",
+                  "toDeviceId": "FU0033:LI",
+                  "wireType": "SC",
+                  "wireNo": "QS0560LD1",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "49.C3",
+                  "toPageZone": "49.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "FU0030-FU0033",
+                  "rowCount": 1
+                }
+              ]
+            },
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 11,
+              "rows": [
+                {
+                  "rowId": "row-2",
+                  "rowIndex": 13,
+                  "fromDeviceId": "BA0010:V1(-)",
+                  "toDeviceId": "BA0013:V1(-)",
+                  "wireType": "SC",
+                  "wireNo": "-0V1",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "49.C2",
+                  "toPageZone": "49.B2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-3",
+                  "rowIndex": 14,
+                  "fromDeviceId": "BA0010:V1(+)",
+                  "toDeviceId": "FU0030:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0030",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "49.C2",
+                  "toPageZone": "49.C3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-5",
+                  "rowIndex": 16,
+                  "fromDeviceId": "BA0013:V1(+)",
+                  "toDeviceId": "FU0033:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0033",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "49.B2",
+                  "toPageZone": "49.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-7",
+                  "rowIndex": 18,
+                  "fromDeviceId": "BA0014:V1(+)",
+                  "toDeviceId": "FU0034:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0034",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "49.B2",
+                  "toPageZone": "49.B4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-9",
+                  "rowIndex": 20,
+                  "fromDeviceId": "BA1213:POS",
+                  "toDeviceId": "FU1213:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU1213",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "49.A2",
+                  "toPageZone": "49.A4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-4",
+                  "rowIndex": 15,
+                  "fromDeviceId": "BA0013:V1(-)",
+                  "toDeviceId": "XT0063:4",
+                  "wireType": "SC",
+                  "wireNo": "-0V1",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "49.B2",
+                  "toPageZone": "49.B5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-6",
+                  "rowIndex": 17,
+                  "fromDeviceId": "BA0014:V1(-)",
+                  "toDeviceId": "XT0063:4",
+                  "wireType": "SC",
+                  "wireNo": "-0V1",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "49.B2",
+                  "toPageZone": "49.B5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-8",
+                  "rowIndex": 19,
+                  "fromDeviceId": "BA1213:NEG",
+                  "toDeviceId": "XT0063:3",
+                  "wireType": "SC",
+                  "wireNo": "-0V1",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "49.A2",
+                  "toPageZone": "49.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-11",
+                  "rowIndex": 22,
+                  "fromDeviceId": "FU0033:LI",
+                  "toDeviceId": "XT0063:2",
+                  "wireType": "SC",
+                  "wireNo": "QS0560LD1",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "49.C4",
+                  "toPageZone": "49.B5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-12",
+                  "rowIndex": 23,
+                  "fromDeviceId": "FU0034:LI",
+                  "toDeviceId": "XT0063:2",
+                  "wireType": "SC",
+                  "wireNo": "QS0560LD1",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "49.B4",
+                  "toPageZone": "49.B5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-13",
+                  "rowIndex": 24,
+                  "fromDeviceId": "FU1213:LI",
+                  "toDeviceId": "XT0063:1",
+                  "wireType": "SC",
+                  "wireNo": "QS0560LD1",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "49.A4",
+                  "toPageZone": "49.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "BA0010",
+                  "rowCount": 2
+                },
+                {
+                  "label": "BA0013",
+                  "rowCount": 2
+                },
+                {
+                  "label": "BA0014",
+                  "rowCount": 2
+                },
+                {
+                  "label": "BA1213",
+                  "rowCount": 2
+                },
+                {
+                  "label": "FU - XT",
+                  "rowCount": 3
+                }
+              ]
+            },
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-16",
+                  "rowIndex": 27,
+                  "fromDeviceId": "BA0013:RJ45",
+                  "toDeviceId": "BA1213:L1",
+                  "wireType": "WC9013",
+                  "wireNo": "BA0013RJ45",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "AUXILIARY",
+                  "toLocation": "AUXILIARY",
+                  "fromPageZone": "2.C2",
+                  "toPageZone": "2.C2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        },
+        {
+          "location": "DOOR",
+          "isExternal": true,
+          "totalRows": 1,
+          "subsections": [
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-17",
+                  "rowIndex": 28,
+                  "fromDeviceId": "BA0010:RJ45",
+                  "toDeviceId": "AT0190:ENET",
+                  "wireType": "WC9010",
+                  "wireNo": "BA0010RJ45",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "DOOR",
+                  "toLocation": "DOOR",
+                  "fromPageZone": "3.A5",
+                  "toPageZone": "3.A6",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        },
+        {
+          "location": "PWR DIST",
+          "isExternal": true,
+          "totalRows": 2,
+          "subsections": [
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-18",
+                  "rowIndex": 29,
+                  "fromDeviceId": "XT0063:1",
+                  "toDeviceId": "XT0560:1",
+                  "wireType": "SC",
+                  "wireNo": "QS0560LD1",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "PWR DIST",
+                  "toLocation": "PWR DIST",
+                  "fromPageZone": "49.A5",
+                  "toPageZone": "48.A3",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-19",
+                  "rowIndex": 30,
+                  "fromDeviceId": "XT0063:3",
+                  "toDeviceId": "XT0560:2",
+                  "wireType": "SC",
+                  "wireNo": "-0V1",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "PWR DIST",
+                  "toLocation": "PWR DIST",
+                  "fromPageZone": "49.A5",
+                  "toPageZone": "48.A2",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "XT0063",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "TCP, CSMD",
+          "isExternal": true,
+          "totalRows": 3,
+          "subsections": [
+            {
+              "label": "Grounds",
+              "sectionKind": "grounds",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-20",
+                  "rowIndex": 31,
+                  "fromDeviceId": "IEG0356:2",
+                  "toDeviceId": "GR0200",
+                  "wireType": "SC",
+                  "wireNo": "IEG03562",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "TCP, CSMD",
+                  "toLocation": "TCP, CSMD",
+                  "fromPageZone": "50.A3",
+                  "toPageZone": "50.A3",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-21",
+                  "rowIndex": 32,
+                  "fromDeviceId": "BA0014:RJ45",
+                  "toDeviceId": "AU0200:L2",
+                  "wireType": "WC0020",
+                  "wireNo": "AU0200L2",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "TCP, CSMD",
+                  "toLocation": "TCP, CSMD",
+                  "fromPageZone": "2.C4",
+                  "toPageZone": "2.C3",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-22",
+                  "rowIndex": 33,
+                  "fromDeviceId": "BA1213:L2",
+                  "toDeviceId": "AU0200:L1",
+                  "wireType": "WC9213",
+                  "wireNo": "BA1213L2",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "TCP, CSMD",
+                  "toLocation": "TCP, CSMD",
+                  "fromPageZone": "2.C2",
+                  "toPageZone": "2.C3",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

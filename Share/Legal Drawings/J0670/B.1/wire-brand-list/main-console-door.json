@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:11:14.267Z",
+  "mode": "branding-export",
+  "sheetSlug": "main-console-door",
+  "sheetName": "MAIN CONSOLE DOOR",
+  "totalRows": 2,
+  "header": {
+    "locationTitle": "MAIN CONSOLE DOOR",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0670",
+    "projectName": "J0670",
+    "revision": "B.1",
+    "controlsDE": "M.WERLING",
+    "controlsME": "N. CARPENTER"
+  },
+  "importHints": {
+    "canonicalSheetName": "MAIN CONSOLE DOOR",
+    "normalizedSheetName": "main-console-door",
+    "bundleNames": [
+      "AT - EL",
+      "AT - FU"
+    ],
+    "bundleDisplays": [
+      "AT - EL - MAIN CONSOLE",
+      "AT - FU - PWR - RAIL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT - EL",
+          "toLocation": "MAIN CONSOLE",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "AT0190:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V1",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "EL0273:-",
+              "toTerminal": "-",
+              "toLocation": "MAIN CONSOLE",
+              "bundleName": "AT - EL",
+              "bundleDisplay": "AT - EL - MAIN CONSOLE",
+              "devicePrefix": "AT",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT - FU",
+          "toLocation": "PWR RAIL",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "AT0190:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0190",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0190:LD",
+              "toTerminal": "LD",
+              "toLocation": "PWR RAIL",
+              "bundleName": "AT - FU",
+              "bundleDisplay": "AT - FU - PWR - RAIL",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "b9bb8ad6ad3bb21283d3f46f0e0b911652f5710a63216cdb1707f344c8c761b8"
+}

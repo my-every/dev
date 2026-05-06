@@ -1,0 +1,474 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:17:21.036Z",
+  "mode": "branding-export",
+  "sheetSlug": "console-isolator-panel",
+  "sheetName": "CONSOLE ISOLATOR PANEL",
+  "totalRows": 15,
+  "header": {
+    "locationTitle": "CONSOLE ISOLATOR PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J1620",
+    "projectName": "J1620",
+    "revision": "A.4",
+    "controlsDE": "M.ZUNIGA",
+    "controlsME": "S.MARTINEZ"
+  },
+  "importHints": {
+    "canonicalSheetName": "CONSOLE ISOLATOR^PANEL",
+    "normalizedSheetName": "console-isolator-panel",
+    "bundleNames": [
+      "AF1202",
+      "FU - UV",
+      "UAI - UAI",
+      "AF1201",
+      "AF1207",
+      "AU1200",
+      "FU - XT",
+      "UV - XT"
+    ],
+    "bundleDisplays": [
+      "AF1202",
+      "FU - UV",
+      "UAI - UAI",
+      "AF1201 - HP COMPRESSOR - PANEL",
+      "AF1207 - HP COMPRESSOR - PANEL",
+      "AU1200 - HP COMPRESSOR - PANEL",
+      "FU - XT - HP COMPRESSOR - PANEL",
+      "UV - XT - HP COMPRESSOR - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AF",
+      "bundles": [
+        {
+          "bundleName": "AF1202",
+          "toLocation": "CONSOLE ISOLATOR^PANEL",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "AF1202:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-AU1200N",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "AU1200:COM",
+              "toTerminal": "COM",
+              "toLocation": "CONSOLE ISOLATOR^PANEL",
+              "bundleName": "AF1202",
+              "bundleDisplay": "AF1202",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "AF1202:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AU1200P",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "AU1200:V+",
+              "toTerminal": "V+",
+              "toLocation": "CONSOLE ISOLATOR^PANEL",
+              "bundleName": "AF1202",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - UV",
+          "toLocation": "CONSOLE ISOLATOR^PANEL",
+          "rows": [
+            {
+              "rowId": "row-26",
+              "rowIndex": 37,
+              "fromDeviceId": "FU0272:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UV0271P",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "UV0271:8+",
+              "toTerminal": "8+",
+              "toLocation": "CONSOLE ISOLATOR^PANEL",
+              "bundleName": "FU - UV",
+              "bundleDisplay": "FU - UV",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UAI",
+      "bundles": [
+        {
+          "bundleName": "UAI - UAI",
+          "toLocation": "CONSOLE ISOLATOR^PANEL",
+          "rows": [
+            {
+              "rowId": "row-28",
+              "rowIndex": 39,
+              "fromDeviceId": "UAI1264:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "UAI12642",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAI1264:3",
+              "toTerminal": "3",
+              "toLocation": "CONSOLE ISOLATOR^PANEL",
+              "bundleName": "UAI - UAI",
+              "bundleDisplay": "UAI - UAI",
+              "devicePrefix": "UAI"
+            },
+            {
+              "rowId": "row-29",
+              "rowIndex": 40,
+              "fromDeviceId": "UAI1274:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "UAI12742",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UAI1274:3",
+              "toTerminal": "3",
+              "toLocation": "CONSOLE ISOLATOR^PANEL",
+              "bundleName": "UAI - UAI",
+              "bundleDisplay": "",
+              "devicePrefix": "UAI"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AF",
+      "bundles": [
+        {
+          "bundleName": "AF1201",
+          "toLocation": "HP COMPRESSOR^PANEL",
+          "rows": [
+            {
+              "rowId": "row-34",
+              "rowIndex": 45,
+              "fromDeviceId": "AF1201:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0121",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0121:LD",
+              "toTerminal": "LD",
+              "toLocation": "HP COMPRESSOR^PANEL",
+              "bundleName": "AF1201",
+              "bundleDisplay": "AF1201 - HP COMPRESSOR - PANEL",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF1201",
+          "toLocation": "HP COMPRESSOR^PANEL",
+          "rows": [
+            {
+              "rowId": "row-32",
+              "rowIndex": 43,
+              "fromDeviceId": "AF1201:06",
+              "fromTerminal": "06",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-120106",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA0193:14",
+              "toTerminal": "14",
+              "toLocation": "HP COMPRESSOR^PANEL",
+              "bundleName": "AF1201",
+              "bundleDisplay": "AF1201 - HP COMPRESSOR - PANEL",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF1201",
+          "toLocation": "HP COMPRESSOR^PANEL",
+          "rows": [
+            {
+              "rowId": "row-33",
+              "rowIndex": 44,
+              "fromDeviceId": "AF1201:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0130:3",
+              "toTerminal": "3",
+              "toLocation": "HP COMPRESSOR^PANEL",
+              "bundleName": "AF1201",
+              "bundleDisplay": "AF1201 - HP COMPRESSOR - PANEL",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF1207",
+          "toLocation": "HP COMPRESSOR^PANEL",
+          "rows": [
+            {
+              "rowId": "row-35",
+              "rowIndex": 46,
+              "fromDeviceId": "AF1207:02",
+              "fromTerminal": "02",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-120702",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA4401:14",
+              "toTerminal": "14",
+              "toLocation": "HP COMPRESSOR^PANEL",
+              "bundleName": "AF1207",
+              "bundleDisplay": "AF1207 - HP COMPRESSOR - PANEL",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-36",
+              "rowIndex": 47,
+              "fromDeviceId": "AF1207:18",
+              "fromTerminal": "18",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-120718",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA4401:A2",
+              "toTerminal": "A2",
+              "toLocation": "HP COMPRESSOR^PANEL",
+              "bundleName": "AF1207",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-37",
+              "rowIndex": 48,
+              "fromDeviceId": "AF1207:34",
+              "fromTerminal": "34",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "PS44012",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA4401:11",
+              "toTerminal": "11",
+              "toLocation": "HP COMPRESSOR^PANEL",
+              "bundleName": "AF1207",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AU",
+      "bundles": [
+        {
+          "bundleName": "AU1200",
+          "toLocation": "HP COMPRESSOR^PANEL",
+          "rows": [
+            {
+              "rowId": "row-40",
+              "rowIndex": 51,
+              "fromDeviceId": "AU1200:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0120",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0120:LD",
+              "toTerminal": "LD",
+              "toLocation": "HP COMPRESSOR^PANEL",
+              "bundleName": "AU1200",
+              "bundleDisplay": "AU1200 - HP COMPRESSOR - PANEL",
+              "devicePrefix": "AU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AU1200",
+          "toLocation": "HP COMPRESSOR^PANEL",
+          "rows": [
+            {
+              "rowId": "row-39",
+              "rowIndex": 50,
+              "fromDeviceId": "AU1200:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0130:4",
+              "toTerminal": "4",
+              "toLocation": "HP COMPRESSOR^PANEL",
+              "bundleName": "AU1200",
+              "bundleDisplay": "AU1200 - HP COMPRESSOR - PANEL",
+              "devicePrefix": "AU",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "HP COMPRESSOR^PANEL",
+          "rows": [
+            {
+              "rowId": "row-41",
+              "rowIndex": 52,
+              "fromDeviceId": "FU0272:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0130:1",
+              "toTerminal": "1",
+              "toLocation": "HP COMPRESSOR^PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT - HP COMPRESSOR - PANEL",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV - XT",
+          "toLocation": "HP COMPRESSOR^PANEL",
+          "rows": [
+            {
+              "rowId": "row-44",
+              "rowIndex": 55,
+              "fromDeviceId": "UV0271:9-",
+              "fromTerminal": "9-",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0130:4",
+              "toTerminal": "4",
+              "toLocation": "HP COMPRESSOR^PANEL",
+              "bundleName": "UV - XT",
+              "bundleDisplay": "UV - XT - HP COMPRESSOR - PANEL",
+              "devicePrefix": "UV",
+              "isNegative": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "bb15ef5456ed8976dce71bf460cefdb527ded9baeb92bed2b82d68694e523785"
+}

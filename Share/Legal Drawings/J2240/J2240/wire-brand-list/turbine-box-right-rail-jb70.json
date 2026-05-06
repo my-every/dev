@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:18:12.462Z",
+  "mode": "branding-export",
+  "sheetSlug": "turbine-box-right-rail-jb70",
+  "sheetName": "TURBINE BOX RIGHT RAIL JB70",
+  "totalRows": 4,
+  "header": {
+    "locationTitle": "TURBINE BOX RIGHT RAIL JB70",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J2240",
+    "projectName": "J2240",
+    "revision": "J2240",
+    "controlsDE": "J.HSIEH",
+    "controlsME": "R.DURAN"
+  },
+  "importHints": {
+    "canonicalSheetName": "TURBINE BOX^RIGHT RAIL^JB70",
+    "normalizedSheetName": "turbine-box-right-rail-jb70",
+    "bundleNames": [
+      "BA - FU",
+      "FU - FU",
+      "UA - UA"
+    ],
+    "bundleDisplays": [
+      "BA - FU",
+      "FU - FU",
+      "UA - UA"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA - FU",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "BA1100:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1101LD",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU1101:LD",
+              "toTerminal": "LD",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "BA - FU",
+              "bundleDisplay": "BA - FU",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - FU",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "FU0110:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0110",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0113:LI",
+              "toTerminal": "LI",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "FU - FU",
+              "bundleDisplay": "FU - FU",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-6",
+              "rowIndex": 16,
+              "fromDeviceId": "FU0120:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0130",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0130:LD",
+              "toTerminal": "LD",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "FU - FU",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UA",
+      "bundles": [
+        {
+          "bundleName": "UA - UA",
+          "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+          "rows": [
+            {
+              "rowId": "row-9",
+              "rowIndex": 19,
+              "fromDeviceId": "UA1200:J1-8",
+              "fromTerminal": "J1-8",
+              "fromTerminalOrder": null,
+              "wireNo": "UA1200J",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UA1200:J3-5",
+              "toTerminal": "J3-5",
+              "toLocation": "TURBINE BOX^RIGHT RAIL^JB70",
+              "bundleName": "UA - UA",
+              "bundleDisplay": "UA - UA",
+              "devicePrefix": "UA"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "a37525b92bf2b8fcad96ccbc527d7a75bf9697e2209ba4e4194ddfd19fc846b6"
+}

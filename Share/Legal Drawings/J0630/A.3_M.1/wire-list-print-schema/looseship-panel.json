@@ -1,0 +1,651 @@
+{
+  "generatedAt": "2026-05-05T14:11:06.414Z",
+  "sheetName": "LOOSESHIP PANEL",
+  "mode": "standardize",
+  "totalPages": 3,
+  "totalRows": 22,
+  "settings": {
+    "showEstTime": false,
+    "showFromCheckbox": true,
+    "showToCheckbox": true,
+    "showIPV": true,
+    "showComments": true,
+    "showLength": false,
+    "showCoverPage": true,
+    "showTableOfContents": true,
+    "showIPVCodes": false,
+    "showFeedbackSection": false,
+    "showDeviceSubheaders": false,
+    "enableBlueDeviceIDColumns": false,
+    "sectionColumnVisibility": {},
+    "feedbackRenderMode": "BLANK",
+    "feedbackSections": [
+      "Header",
+      "Accuracy & Usability",
+      "Termination Clarity",
+      "Routing & Layout Alignment",
+      "Build Sequence & Efficiency",
+      "Hardware & Materials",
+      "Quality & Rework",
+      "Time & Effort",
+      "Safety & Compliance",
+      "Documentation Quality",
+      "Automation Checks",
+      "Final Sign-Off",
+      "Footer"
+    ],
+    "customQuestions": [
+      "accuracyBlueLabelsClear",
+      "accuracySequenceMatchedLayout",
+      "accuracyMissingDuplicateIncorrectEntries",
+      "accuracyLocationColumnCorrect",
+      "terminationTypesClear",
+      "terminationLengthsAccurate",
+      "terminationReworkDueToInstructionClarity",
+      "terminationJumperRulesEasyToFollow",
+      "routingAlignedWithLayout",
+      "routingLengthFit",
+      "routingConflictsPanduct",
+      "routingConflictsRails",
+      "routingConflictsAdjacentDevices",
+      "routingEfficientOrder",
+      "buildOrderHelpful",
+      "buildRequiredDeviation",
+      "buildDeviationReason",
+      "buildCausedDelays",
+      "materialsFerrulesAvailable",
+      "materialsLugsAvailable",
+      "materialsJumpersAvailable",
+      "materialsWireTypesAvailable",
+      "materialsIssuesNotes",
+      "qualityErrorsCaughtDuringWiring",
+      "qualityReterminatedWires",
+      "qualityReroutedWires",
+      "qualityReplacedWires",
+      "qualityCommonIssues",
+      "estimatedWiringTimeHours",
+      "actualWiringTimeHours",
+      "timeVarianceReason",
+      "safetyGroundsClearlyIdentified",
+      "safetyTerminationsCompliant",
+      "safetyConcernsNotes",
+      "documentationDifficulty",
+      "documentationImprovementAreas",
+      "documentationOtherImprovementArea",
+      "documentationSpecificSuggestions",
+      "automationJumperPredictionCorrect",
+      "automationBlueLabelSequencesCorrect",
+      "automationKtRulesCorrect",
+      "automationReusableTemplateCandidate",
+      "finalQualityRating",
+      "finalComments"
+    ],
+    "crossWireSections": [],
+    "hiddenRows": [],
+    "hiddenSections": [],
+    "brandingSortMode": "device-prefix",
+    "wireListSortMode": "device-prefix"
+  },
+  "pages": [
+    {
+      "pageType": "cover",
+      "pageNumber": 1,
+      "projectInfo": {
+        "projectNumber": "J0630",
+        "projectName": "J0630",
+        "revision": "A.3_M.1",
+        "pdNumber": "J0630",
+        "unitNumber": "",
+        "preparedBy": "",
+        "badgeNumber": "",
+        "date": "",
+        "time": "",
+        "personnel": [
+          {
+            "id": "1",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "2",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "3",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "4",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "5",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "6",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          }
+        ]
+      },
+      "sheetTitle": "LOOSESHIP PANEL"
+    },
+    {
+      "pageType": "toc",
+      "pageNumber": 2,
+      "locationGroups": [
+        {
+          "location": "LOOSESHIP PANEL",
+          "isExternal": false,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Grounds",
+              "rowCount": 3,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 2,
+              "label": "AF/AU Jumpers",
+              "rowCount": 4,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 3,
+              "label": "Clips",
+              "rowCount": 1,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 4,
+              "label": "FU Jumpers",
+              "rowCount": 2,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "FU0200-FU0273",
+                  "rowCount": 2
+                }
+              ]
+            },
+            {
+              "index": 5,
+              "label": "Single Connections",
+              "rowCount": 12,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "AF0202",
+                  "rowCount": 8
+                },
+                {
+                  "label": "AU0200",
+                  "rowCount": 2
+                },
+                {
+                  "label": "FU - XT",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "locations": 1,
+        "sections": 9,
+        "rows": 22,
+        "pages": 3
+      }
+    },
+    {
+      "pageType": "wire-list",
+      "pageNumber": 3,
+      "locationGroups": [
+        {
+          "location": "LOOSESHIP PANEL",
+          "isExternal": false,
+          "totalRows": 22,
+          "subsections": [
+            {
+              "label": "Grounds",
+              "sectionKind": "grounds",
+              "rowCount": 3,
+              "rows": [
+                {
+                  "rowId": "row-15",
+                  "rowIndex": 25,
+                  "fromDeviceId": "AU0200:GND",
+                  "toDeviceId": "XT0200:1",
+                  "wireType": "SC",
+                  "wireNo": "AU0200G",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "20.A3",
+                  "toPageZone": "20.B4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-21",
+                  "rowIndex": 31,
+                  "fromDeviceId": "GR0200",
+                  "toDeviceId": "IEG0200:2",
+                  "wireType": "SC",
+                  "wireNo": "IEG02002",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "4.B3",
+                  "toPageZone": "4.B3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-22",
+                  "rowIndex": 32,
+                  "fromDeviceId": "IEG0200:1",
+                  "toDeviceId": "XT0200:2",
+                  "wireType": "SC",
+                  "wireNo": "IEG02001",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "20.B5",
+                  "toPageZone": "20.B4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "AF/AU Jumpers",
+              "sectionKind": "af_jumpers",
+              "rowCount": 4,
+              "rows": [
+                {
+                  "rowId": "row-3",
+                  "rowIndex": 13,
+                  "fromDeviceId": "AF0201:SHLD",
+                  "toDeviceId": "AF0201:V+L",
+                  "wireType": "SC",
+                  "wireNo": "AF0201V+L",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "20.C5",
+                  "toPageZone": "20.C5",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-12",
+                  "rowIndex": 22,
+                  "fromDeviceId": "AF0202:COML",
+                  "toDeviceId": "AF0202:SHLD",
+                  "wireType": "SC",
+                  "wireNo": "AF0202COML",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "20.C6",
+                  "toPageZone": "20.C6",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-1",
+                  "rowIndex": 11,
+                  "fromDeviceId": "AF0201:COM",
+                  "toDeviceId": "AU0200:COM",
+                  "wireType": "SC",
+                  "wireNo": "AU0200N",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "20.A4",
+                  "toPageZone": "20.A3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-4",
+                  "rowIndex": 14,
+                  "fromDeviceId": "AF0201:V+",
+                  "toDeviceId": "AU0200:V+",
+                  "wireType": "SC",
+                  "wireNo": "AU0200P",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "20.A4",
+                  "toPageZone": "20.A3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Clips",
+              "sectionKind": "clips",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-0",
+                  "rowIndex": 10,
+                  "fromDeviceId": "XT0562:1",
+                  "toDeviceId": "XT0562:2",
+                  "wireType": "JC",
+                  "wireNo": "-0V",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "20.B2",
+                  "toPageZone": "20.C2",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "FU Jumpers",
+              "sectionKind": "fu_jumpers",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-18",
+                  "rowIndex": 28,
+                  "fromDeviceId": "FU0200:LI",
+                  "toDeviceId": "FU0201:LI",
+                  "wireType": "SC",
+                  "wireNo": "FU0560LD",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "20.A3",
+                  "toPageZone": "20.B3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-19",
+                  "rowIndex": 29,
+                  "fromDeviceId": "FU0201:LI",
+                  "toDeviceId": "FU0273:LI",
+                  "wireType": "SC",
+                  "wireNo": "FU0560LD",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "20.B3",
+                  "toPageZone": "20.C3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "FU0200-FU0273",
+                  "rowCount": 2
+                }
+              ]
+            },
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 12,
+              "rows": [
+                {
+                  "rowId": "row-10",
+                  "rowIndex": 20,
+                  "fromDeviceId": "AF0202:34",
+                  "toDeviceId": "KA3220:A2",
+                  "wireType": "SC",
+                  "wireNo": "KA32202",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "57.C7",
+                  "toPageZone": "57.C5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-9",
+                  "rowIndex": 19,
+                  "fromDeviceId": "AF0202:33",
+                  "toDeviceId": "KA3104:A2",
+                  "wireType": "SC",
+                  "wireNo": "-020233",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "59.C7",
+                  "toPageZone": "59.C5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-8",
+                  "rowIndex": 18,
+                  "fromDeviceId": "AF0202:32",
+                  "toDeviceId": "KA3103:A2",
+                  "wireType": "SC",
+                  "wireNo": "-020232",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "59.A7",
+                  "toPageZone": "59.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-7",
+                  "rowIndex": 17,
+                  "fromDeviceId": "AF0202:02",
+                  "toDeviceId": "KA3220:A1",
+                  "wireType": "SC",
+                  "wireNo": "KA32201",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "57.C7",
+                  "toPageZone": "57.C5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-6",
+                  "rowIndex": 16,
+                  "fromDeviceId": "AF0202:01",
+                  "toDeviceId": "KA3104:A1",
+                  "wireType": "SC",
+                  "wireNo": "-020201",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "59.C7",
+                  "toPageZone": "59.C5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-5",
+                  "rowIndex": 15,
+                  "fromDeviceId": "AF0202:00",
+                  "toDeviceId": "KA3103:A1",
+                  "wireType": "SC",
+                  "wireNo": "-020200",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "59.A7",
+                  "toPageZone": "59.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-13",
+                  "rowIndex": 23,
+                  "fromDeviceId": "AF0202:V+",
+                  "toDeviceId": "FU0201:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0201",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "20.A5",
+                  "toPageZone": "20.B3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-11",
+                  "rowIndex": 21,
+                  "fromDeviceId": "AF0202:COM",
+                  "toDeviceId": "XT0562:1",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "20.A5",
+                  "toPageZone": "20.B2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-16",
+                  "rowIndex": 26,
+                  "fromDeviceId": "AU0200:V+",
+                  "toDeviceId": "FU0200:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0200",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "20.A3",
+                  "toPageZone": "20.A3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-14",
+                  "rowIndex": 24,
+                  "fromDeviceId": "AU0200:COM",
+                  "toDeviceId": "XT0562:1",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "20.A3",
+                  "toPageZone": "20.B2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-17",
+                  "rowIndex": 27,
+                  "fromDeviceId": "FU0200:LI",
+                  "toDeviceId": "XT0561:1",
+                  "wireType": "SC",
+                  "wireNo": "FU0560LD",
+                  "wireId": "WHT",
+                  "gaugeSize": "12",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "20.A3",
+                  "toPageZone": "20.A2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-20",
+                  "rowIndex": 30,
+                  "fromDeviceId": "FU0560:LD",
+                  "toDeviceId": "XT0561:1",
+                  "wireType": "SC",
+                  "wireNo": "FU0560LD",
+                  "wireId": "WHT",
+                  "gaugeSize": "12",
+                  "fromLocation": "LOOSESHIP PANEL",
+                  "toLocation": "LOOSESHIP PANEL",
+                  "fromPageZone": "20.B2",
+                  "toPageZone": "20.A2",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "AF0202",
+                  "rowCount": 8
+                },
+                {
+                  "label": "AU0200",
+                  "rowCount": 2
+                },
+                {
+                  "label": "FU - XT",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

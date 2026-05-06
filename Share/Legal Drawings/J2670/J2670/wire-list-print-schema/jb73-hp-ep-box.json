@@ -1,0 +1,1850 @@
+{
+  "generatedAt": "2026-05-05T14:18:41.639Z",
+  "sheetName": "JB73 HP EP BOX",
+  "mode": "standardize",
+  "totalPages": 5,
+  "totalRows": 81,
+  "settings": {
+    "showEstTime": false,
+    "showFromCheckbox": true,
+    "showToCheckbox": true,
+    "showIPV": true,
+    "showComments": true,
+    "showLength": false,
+    "showCoverPage": true,
+    "showTableOfContents": true,
+    "showIPVCodes": false,
+    "showFeedbackSection": false,
+    "showDeviceSubheaders": false,
+    "enableBlueDeviceIDColumns": false,
+    "sectionColumnVisibility": {},
+    "feedbackRenderMode": "BLANK",
+    "feedbackSections": [
+      "Header",
+      "Accuracy & Usability",
+      "Termination Clarity",
+      "Routing & Layout Alignment",
+      "Build Sequence & Efficiency",
+      "Hardware & Materials",
+      "Quality & Rework",
+      "Time & Effort",
+      "Safety & Compliance",
+      "Documentation Quality",
+      "Automation Checks",
+      "Final Sign-Off",
+      "Footer"
+    ],
+    "customQuestions": [
+      "accuracyBlueLabelsClear",
+      "accuracySequenceMatchedLayout",
+      "accuracyMissingDuplicateIncorrectEntries",
+      "accuracyLocationColumnCorrect",
+      "terminationTypesClear",
+      "terminationLengthsAccurate",
+      "terminationReworkDueToInstructionClarity",
+      "terminationJumperRulesEasyToFollow",
+      "routingAlignedWithLayout",
+      "routingLengthFit",
+      "routingConflictsPanduct",
+      "routingConflictsRails",
+      "routingConflictsAdjacentDevices",
+      "routingEfficientOrder",
+      "buildOrderHelpful",
+      "buildRequiredDeviation",
+      "buildDeviationReason",
+      "buildCausedDelays",
+      "materialsFerrulesAvailable",
+      "materialsLugsAvailable",
+      "materialsJumpersAvailable",
+      "materialsWireTypesAvailable",
+      "materialsIssuesNotes",
+      "qualityErrorsCaughtDuringWiring",
+      "qualityReterminatedWires",
+      "qualityReroutedWires",
+      "qualityReplacedWires",
+      "qualityCommonIssues",
+      "estimatedWiringTimeHours",
+      "actualWiringTimeHours",
+      "timeVarianceReason",
+      "safetyGroundsClearlyIdentified",
+      "safetyTerminationsCompliant",
+      "safetyConcernsNotes",
+      "documentationDifficulty",
+      "documentationImprovementAreas",
+      "documentationOtherImprovementArea",
+      "documentationSpecificSuggestions",
+      "automationJumperPredictionCorrect",
+      "automationBlueLabelSequencesCorrect",
+      "automationKtRulesCorrect",
+      "automationReusableTemplateCandidate",
+      "finalQualityRating",
+      "finalComments"
+    ],
+    "crossWireSections": [],
+    "hiddenRows": [],
+    "hiddenSections": [],
+    "brandingSortMode": "device-prefix",
+    "wireListSortMode": "device-prefix"
+  },
+  "pages": [
+    {
+      "pageType": "cover",
+      "pageNumber": 1,
+      "projectInfo": {
+        "projectNumber": "J2670",
+        "projectName": "J2670",
+        "revision": "J2670",
+        "pdNumber": "J2670",
+        "unitNumber": "",
+        "preparedBy": "",
+        "badgeNumber": "",
+        "date": "",
+        "time": "",
+        "personnel": [
+          {
+            "id": "1",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "2",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "3",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "4",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "5",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "6",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          }
+        ]
+      },
+      "sheetTitle": "JB73 HP EP BOX"
+    },
+    {
+      "pageType": "toc",
+      "pageNumber": 2,
+      "locationGroups": [
+        {
+          "location": "JB73 HP EP BOX",
+          "isExternal": false,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Grounds",
+              "rowCount": 13,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 2,
+              "label": "AF/AU Jumpers",
+              "rowCount": 18,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 3,
+              "label": "Clips",
+              "rowCount": 2,
+              "estimatedPage": 4,
+              "subEntries": []
+            },
+            {
+              "index": 4,
+              "label": "Relay Mechanical Jumpers",
+              "rowCount": 6,
+              "estimatedPage": 4,
+              "subEntries": [
+                {
+                  "label": "A1: KA0190 -> KA0193",
+                  "rowCount": 3
+                },
+                {
+                  "label": "A2: KA0190 -> KA0193",
+                  "rowCount": 3
+                }
+              ]
+            },
+            {
+              "index": 5,
+              "label": "FU Jumpers",
+              "rowCount": 2,
+              "estimatedPage": 4,
+              "subEntries": [
+                {
+                  "label": "FU0120-FU0291",
+                  "rowCount": 2
+                }
+              ]
+            },
+            {
+              "index": 6,
+              "label": "Single Connections",
+              "rowCount": 32,
+              "estimatedPage": 4,
+              "subEntries": [
+                {
+                  "label": "AF1201",
+                  "rowCount": 5
+                },
+                {
+                  "label": "AF1202",
+                  "rowCount": 2
+                },
+                {
+                  "label": "AF1207",
+                  "rowCount": 3
+                },
+                {
+                  "label": "AU1200",
+                  "rowCount": 2
+                },
+                {
+                  "label": "FU - FU",
+                  "rowCount": 1
+                },
+                {
+                  "label": "FU - XT",
+                  "rowCount": 2
+                },
+                {
+                  "label": "KA0190",
+                  "rowCount": 4
+                },
+                {
+                  "label": "KA4401",
+                  "rowCount": 4
+                },
+                {
+                  "label": "KA0120",
+                  "rowCount": 2
+                },
+                {
+                  "label": "KA0193",
+                  "rowCount": 2
+                },
+                {
+                  "label": "KA - XT",
+                  "rowCount": 1
+                },
+                {
+                  "label": "XT0130",
+                  "rowCount": 3
+                },
+                {
+                  "label": "XT - XT",
+                  "rowCount": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "JB75",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Single Connections",
+              "rowCount": 2,
+              "estimatedPage": 5,
+              "subEntries": [
+                {
+                  "label": "XT0121",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "JB128 BOX 1",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Single Connections",
+              "rowCount": 2,
+              "estimatedPage": 5,
+              "subEntries": [
+                {
+                  "label": "XT0190",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "JB129 BOX 2",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Single Connections",
+              "rowCount": 3,
+              "estimatedPage": 5,
+              "subEntries": [
+                {
+                  "label": "XT0130",
+                  "rowCount": 3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "JB129 BOX 2 COVER",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Cables",
+              "rowCount": 1,
+              "estimatedPage": 5,
+              "subEntries": []
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "locations": 5,
+        "sections": 29,
+        "rows": 81,
+        "pages": 5
+      }
+    },
+    {
+      "pageType": "wire-list",
+      "pageNumber": 3,
+      "locationGroups": [
+        {
+          "location": "JB73 HP EP BOX",
+          "isExternal": false,
+          "totalRows": 73,
+          "subsections": [
+            {
+              "label": "Grounds",
+              "sectionKind": "grounds",
+              "rowCount": 13,
+              "rows": [
+                {
+                  "rowId": "row-17",
+                  "rowIndex": 27,
+                  "fromDeviceId": "AF1203:SH",
+                  "toDeviceId": "AU1200:GND",
+                  "wireType": "SC",
+                  "wireNo": "AU1200G",
+                  "wireId": "GRN",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D3",
+                  "toPageZone": "18.C1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-48",
+                  "rowIndex": 58,
+                  "fromDeviceId": "AF1211:SH",
+                  "toDeviceId": "IEG0130:3",
+                  "wireType": "SC",
+                  "wireNo": "IEG01303",
+                  "wireId": "GRN",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C5",
+                  "toPageZone": "18.C6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-16",
+                  "rowIndex": 26,
+                  "fromDeviceId": "AF1203:SH",
+                  "toDeviceId": "AF1204:SH",
+                  "wireType": "SC",
+                  "wireNo": "AF1203G",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D3",
+                  "toPageZone": "18.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-21",
+                  "rowIndex": 31,
+                  "fromDeviceId": "AF1204:SH",
+                  "toDeviceId": "AF1205:SH",
+                  "wireType": "SC",
+                  "wireNo": "AF1204G",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C4",
+                  "toPageZone": "18.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-25",
+                  "rowIndex": 35,
+                  "fromDeviceId": "AF1205:SH",
+                  "toDeviceId": "AF1206:SH",
+                  "wireType": "SC",
+                  "wireNo": "AF1205G",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C4",
+                  "toPageZone": "18.D5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-29",
+                  "rowIndex": 39,
+                  "fromDeviceId": "AF1206:SH",
+                  "toDeviceId": "AF1208:SH",
+                  "wireType": "SC",
+                  "wireNo": "AF1206G",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D5",
+                  "toPageZone": "18.D6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-38",
+                  "rowIndex": 48,
+                  "fromDeviceId": "AF1208:SH",
+                  "toDeviceId": "AF1209:SH",
+                  "wireType": "SC",
+                  "wireNo": "AF1208G",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D6",
+                  "toPageZone": "18.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-42",
+                  "rowIndex": 52,
+                  "fromDeviceId": "AF1209:SH",
+                  "toDeviceId": "AF1210:SH",
+                  "wireType": "SC",
+                  "wireNo": "AF1209G",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C4",
+                  "toPageZone": "18.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-46",
+                  "rowIndex": 56,
+                  "fromDeviceId": "AF1210:SH",
+                  "toDeviceId": "AF1211:SH",
+                  "wireType": "SC",
+                  "wireNo": "AF1210G",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C4",
+                  "toPageZone": "18.C5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-56",
+                  "rowIndex": 66,
+                  "fromDeviceId": "GR0120",
+                  "toDeviceId": "IEG0130:1",
+                  "wireType": "SC",
+                  "wireNo": "IEG01301",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "6.A3",
+                  "toPageZone": "6.A3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-57",
+                  "rowIndex": 67,
+                  "fromDeviceId": "GR0121",
+                  "toDeviceId": "IEG0130:2",
+                  "wireType": "SC",
+                  "wireNo": "IEG01302",
+                  "wireId": "GRN",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "6.A3",
+                  "toPageZone": "6.A3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-58",
+                  "rowIndex": 68,
+                  "fromDeviceId": "GR0122",
+                  "toDeviceId": "FRAME",
+                  "wireType": "SC",
+                  "wireNo": "GR0122",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "6.A4",
+                  "toPageZone": "6.A3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-59",
+                  "rowIndex": 69,
+                  "fromDeviceId": "GR0123",
+                  "toDeviceId": "FRAME",
+                  "wireType": "SC",
+                  "wireNo": "GR0123",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "6.A4",
+                  "toPageZone": "6.A3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "AF/AU Jumpers",
+              "sectionKind": "af_jumpers",
+              "rowCount": 18,
+              "rows": [
+                {
+                  "rowId": "row-9",
+                  "rowIndex": 19,
+                  "fromDeviceId": "AF1202:COM",
+                  "toDeviceId": "AF1203:COM",
+                  "wireType": "SC",
+                  "wireNo": "AF1202N",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D3",
+                  "toPageZone": "18.D3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-12",
+                  "rowIndex": 22,
+                  "fromDeviceId": "AF1202:V+",
+                  "toDeviceId": "AF1203:V+",
+                  "wireType": "SC",
+                  "wireNo": "AF1202P",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D3",
+                  "toPageZone": "18.D3",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-14",
+                  "rowIndex": 24,
+                  "fromDeviceId": "AF1203:COM",
+                  "toDeviceId": "AF1204:COM",
+                  "wireType": "SC",
+                  "wireNo": "AF1203N",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D3",
+                  "toPageZone": "18.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-18",
+                  "rowIndex": 28,
+                  "fromDeviceId": "AF1203:V+",
+                  "toDeviceId": "AF1204:V+",
+                  "wireType": "SC",
+                  "wireNo": "AF1203P",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D3",
+                  "toPageZone": "18.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-19",
+                  "rowIndex": 29,
+                  "fromDeviceId": "AF1204:COM",
+                  "toDeviceId": "AF1205:COM",
+                  "wireType": "SC",
+                  "wireNo": "AF1204N",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C4",
+                  "toPageZone": "18.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-22",
+                  "rowIndex": 32,
+                  "fromDeviceId": "AF1204:V+",
+                  "toDeviceId": "AF1205:V+",
+                  "wireType": "SC",
+                  "wireNo": "AF1204P",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C4",
+                  "toPageZone": "18.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-23",
+                  "rowIndex": 33,
+                  "fromDeviceId": "AF1205:COM",
+                  "toDeviceId": "AF1206:COM",
+                  "wireType": "SC",
+                  "wireNo": "AF1205N",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C4",
+                  "toPageZone": "18.D5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-26",
+                  "rowIndex": 36,
+                  "fromDeviceId": "AF1205:V+",
+                  "toDeviceId": "AF1206:V+",
+                  "wireType": "SC",
+                  "wireNo": "AF1205P",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C4",
+                  "toPageZone": "18.D5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-27",
+                  "rowIndex": 37,
+                  "fromDeviceId": "AF1206:COM",
+                  "toDeviceId": "AF1207:COM",
+                  "wireType": "SC",
+                  "wireNo": "AF1206N",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D5",
+                  "toPageZone": "18.C6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-30",
+                  "rowIndex": 40,
+                  "fromDeviceId": "AF1206:V+",
+                  "toDeviceId": "AF1207:V+",
+                  "wireType": "SC",
+                  "wireNo": "AF1206P",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D5",
+                  "toPageZone": "18.C6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-34",
+                  "rowIndex": 44,
+                  "fromDeviceId": "AF1207:COM",
+                  "toDeviceId": "AF1208:COM",
+                  "wireType": "SC",
+                  "wireNo": "AF1207N",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C6",
+                  "toPageZone": "18.D6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-36",
+                  "rowIndex": 46,
+                  "fromDeviceId": "AF1207:V+",
+                  "toDeviceId": "AF1208:V+",
+                  "wireType": "SC",
+                  "wireNo": "AF1207P",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C6",
+                  "toPageZone": "18.D6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-37",
+                  "rowIndex": 47,
+                  "fromDeviceId": "AF1208:COM",
+                  "toDeviceId": "AF1209:COM",
+                  "wireType": "SC",
+                  "wireNo": "AF1208N",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D6",
+                  "toPageZone": "18.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-39",
+                  "rowIndex": 49,
+                  "fromDeviceId": "AF1208:V+",
+                  "toDeviceId": "AF1209:V+",
+                  "wireType": "SC",
+                  "wireNo": "AF1208P",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D6",
+                  "toPageZone": "18.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-40",
+                  "rowIndex": 50,
+                  "fromDeviceId": "AF1209:COM",
+                  "toDeviceId": "AF1210:COM",
+                  "wireType": "SC",
+                  "wireNo": "AF1209N",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C4",
+                  "toPageZone": "18.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-43",
+                  "rowIndex": 53,
+                  "fromDeviceId": "AF1209:V+",
+                  "toDeviceId": "AF1210:V+",
+                  "wireType": "SC",
+                  "wireNo": "AF1209P",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C4",
+                  "toPageZone": "18.C4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-44",
+                  "rowIndex": 54,
+                  "fromDeviceId": "AF1210:COM",
+                  "toDeviceId": "AF1211:COM",
+                  "wireType": "SC",
+                  "wireNo": "AF1210N",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C4",
+                  "toPageZone": "18.C5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-47",
+                  "rowIndex": 57,
+                  "fromDeviceId": "AF1210:V+",
+                  "toDeviceId": "AF1211:V+",
+                  "wireType": "SC",
+                  "wireNo": "AF1210P",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C4",
+                  "toPageZone": "18.C5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Clips",
+              "sectionKind": "clips",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-0",
+                  "rowIndex": 10,
+                  "fromDeviceId": "XT0130:3",
+                  "toDeviceId": "XT0130:2",
+                  "wireType": "JC",
+                  "wireNo": "-0V",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.A5",
+                  "toPageZone": "18.A5",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-1",
+                  "rowIndex": 11,
+                  "fromDeviceId": "XT0130:4",
+                  "toDeviceId": "XT0130:3",
+                  "wireType": "JC",
+                  "wireNo": "-0V",
+                  "wireId": "CLIP",
+                  "gaugeSize": "---",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.A5",
+                  "toPageZone": "18.A5",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Relay Mechanical Jumpers",
+              "sectionKind": "ka_relay_plugin_jumpers",
+              "rowCount": 6,
+              "rows": [
+                {
+                  "rowId": "row-64",
+                  "rowIndex": 74,
+                  "fromDeviceId": "KA0190:A1",
+                  "toDeviceId": "KA0191:A1",
+                  "wireType": "SC",
+                  "wireNo": "KA0231A1",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.A7",
+                  "toPageZone": "18.A7",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-69",
+                  "rowIndex": 79,
+                  "fromDeviceId": "KA0191:A1",
+                  "toDeviceId": "KA0192:A1",
+                  "wireType": "SC",
+                  "wireNo": "KA0231A1",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.A7",
+                  "toPageZone": "18.A7",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-71",
+                  "rowIndex": 81,
+                  "fromDeviceId": "KA0192:A1",
+                  "toDeviceId": "KA0193:A1",
+                  "wireType": "SC",
+                  "wireNo": "KA0231A1",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.A7",
+                  "toPageZone": "18.A7",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-66",
+                  "rowIndex": 76,
+                  "fromDeviceId": "KA0190:A2",
+                  "toDeviceId": "KA0191:A2",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.A7",
+                  "toPageZone": "18.A7",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-70",
+                  "rowIndex": 80,
+                  "fromDeviceId": "KA0191:A2",
+                  "toDeviceId": "KA0192:A2",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.A7",
+                  "toPageZone": "18.A7",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-72",
+                  "rowIndex": 82,
+                  "fromDeviceId": "KA0192:A2",
+                  "toDeviceId": "KA0193:A2",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.A7",
+                  "toPageZone": "18.A7",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "A1: KA0190 -> KA0193",
+                  "rowCount": 3
+                },
+                {
+                  "label": "A2: KA0190 -> KA0193",
+                  "rowCount": 3
+                }
+              ]
+            },
+            {
+              "label": "FU Jumpers",
+              "sectionKind": "fu_jumpers",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-52",
+                  "rowIndex": 62,
+                  "fromDeviceId": "FU0120:LI",
+                  "toDeviceId": "FU0121:LI",
+                  "wireType": "SC",
+                  "wireNo": "FU0130",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D1",
+                  "toPageZone": "18.D1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-53",
+                  "rowIndex": 63,
+                  "fromDeviceId": "FU0121:LI",
+                  "toDeviceId": "FU0291:LI",
+                  "wireType": "SC",
+                  "wireNo": "FU0130",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D1",
+                  "toPageZone": "51.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "FU0120-FU0291",
+                  "rowCount": 2
+                }
+              ]
+            },
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 32,
+              "rows": [
+                {
+                  "rowId": "row-4",
+                  "rowIndex": 14,
+                  "fromDeviceId": "AF1201:24",
+                  "toDeviceId": "KA0194:A2",
+                  "wireType": "SC",
+                  "wireNo": "-120124",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "49.A7",
+                  "toPageZone": "49.B6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-3",
+                  "rowIndex": 13,
+                  "fromDeviceId": "AF1201:10",
+                  "toDeviceId": "KA0191:14",
+                  "wireType": "SC",
+                  "wireNo": "-120110",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "51.D7",
+                  "toPageZone": "51.D5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-2",
+                  "rowIndex": 12,
+                  "fromDeviceId": "AF1201:08",
+                  "toDeviceId": "KA0193:14",
+                  "wireType": "SC",
+                  "wireNo": "-120108",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "49.A7",
+                  "toPageZone": "49.B6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-13",
+                  "rowIndex": 23,
+                  "fromDeviceId": "AF1202:V+",
+                  "toDeviceId": "AU1200:V+",
+                  "wireType": "SC",
+                  "wireNo": "AU1200P",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D3",
+                  "toPageZone": "18.C1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-10",
+                  "rowIndex": 20,
+                  "fromDeviceId": "AF1202:COM",
+                  "toDeviceId": "AU1200:COM",
+                  "wireType": "SC",
+                  "wireNo": "AU1200N",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D3",
+                  "toPageZone": "18.C1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-33",
+                  "rowIndex": 43,
+                  "fromDeviceId": "AF1207:34",
+                  "toDeviceId": "KA4401:11",
+                  "wireType": "SC",
+                  "wireNo": "PS44012",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "47.A7",
+                  "toPageZone": "47.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-32",
+                  "rowIndex": 42,
+                  "fromDeviceId": "AF1207:18",
+                  "toDeviceId": "KA4401:A2",
+                  "wireType": "SC",
+                  "wireNo": "-120718",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "47.A7",
+                  "toPageZone": "47.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-31",
+                  "rowIndex": 41,
+                  "fromDeviceId": "AF1207:02",
+                  "toDeviceId": "KA4401:14",
+                  "wireType": "SC",
+                  "wireNo": "-120702",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "47.A7",
+                  "toPageZone": "47.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-62",
+                  "rowIndex": 72,
+                  "fromDeviceId": "KA0190:12",
+                  "toDeviceId": "XT0190:1",
+                  "wireType": "SC",
+                  "wireNo": "-019012",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "51.C5",
+                  "toPageZone": "51.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-63",
+                  "rowIndex": 73,
+                  "fromDeviceId": "KA0190:14",
+                  "toDeviceId": "XT0190:4",
+                  "wireType": "SC",
+                  "wireNo": "-009508",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "51.C5",
+                  "toPageZone": "51.C6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-65",
+                  "rowIndex": 75,
+                  "fromDeviceId": "KA0190:A1",
+                  "toDeviceId": "XT0130:6",
+                  "wireType": "SC",
+                  "wireNo": "KA0231A1",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.A7",
+                  "toPageZone": "18.B5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-67",
+                  "rowIndex": 77,
+                  "fromDeviceId": "KA0190:A2",
+                  "toDeviceId": "XT0130:7",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.A7",
+                  "toPageZone": "18.B5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-75",
+                  "rowIndex": 85,
+                  "fromDeviceId": "KA4401:11",
+                  "toDeviceId": "XT0121:1",
+                  "wireType": "SC",
+                  "wireNo": "PS44012",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "47.A6",
+                  "toPageZone": "47.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-77",
+                  "rowIndex": 87,
+                  "fromDeviceId": "KA4401:24",
+                  "toDeviceId": "XT0190:1",
+                  "wireType": "SC",
+                  "wireNo": "-019012",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "51.A5",
+                  "toPageZone": "51.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-78",
+                  "rowIndex": 88,
+                  "fromDeviceId": "KA4401:A1",
+                  "toDeviceId": "XT0121:2",
+                  "wireType": "SC",
+                  "wireNo": "PS44013",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "47.A6",
+                  "toPageZone": "47.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-80",
+                  "rowIndex": 90,
+                  "fromDeviceId": "XT0130:3",
+                  "toDeviceId": "XT0130:7",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.A5",
+                  "toPageZone": "18.B5",
+                  "lengthDisplay": "20 in",
+                  "lengthInches": 20
+                },
+                {
+                  "rowId": "row-60",
+                  "rowIndex": 70,
+                  "fromDeviceId": "KA0120:A1",
+                  "toDeviceId": "XT0130:6",
+                  "wireType": "SC",
+                  "wireNo": "KA0231A1",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.B5",
+                  "toPageZone": "18.B5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-49",
+                  "rowIndex": 59,
+                  "fromDeviceId": "AU1200:COM",
+                  "toDeviceId": "XT0130:4",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C1",
+                  "toPageZone": "18.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-73",
+                  "rowIndex": 83,
+                  "fromDeviceId": "KA0193:11",
+                  "toDeviceId": "KA0194:A1",
+                  "wireType": "SC",
+                  "wireNo": "-019311",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "49.B6",
+                  "toPageZone": "49.B6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-74",
+                  "rowIndex": 84,
+                  "fromDeviceId": "KA0193:12",
+                  "toDeviceId": "KA4401:22",
+                  "wireType": "SC",
+                  "wireNo": "-019312",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "49.A6",
+                  "toPageZone": "51.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-68",
+                  "rowIndex": 78,
+                  "fromDeviceId": "KA0191:12",
+                  "toDeviceId": "XT0190:1",
+                  "wireType": "SC",
+                  "wireNo": "-019012",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "51.D5",
+                  "toPageZone": "51.A6",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-8",
+                  "rowIndex": 18,
+                  "fromDeviceId": "AF1201:V+",
+                  "toDeviceId": "FU0121:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0121",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D2",
+                  "toPageZone": "18.D1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-76",
+                  "rowIndex": 86,
+                  "fromDeviceId": "KA4401:21",
+                  "toDeviceId": "XT0190:3",
+                  "wireType": "SC",
+                  "wireNo": "FU0291",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "51.A5",
+                  "toPageZone": "51.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-79",
+                  "rowIndex": 89,
+                  "fromDeviceId": "XT0130:1",
+                  "toDeviceId": "XT0520:1",
+                  "wireType": "SC",
+                  "wireNo": "FU0136",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.A5",
+                  "toPageZone": "18.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-5",
+                  "rowIndex": 15,
+                  "fromDeviceId": "AF1201:COM",
+                  "toDeviceId": "XT0130:3",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D2",
+                  "toPageZone": "18.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-81",
+                  "rowIndex": 91,
+                  "fromDeviceId": "XT0130:4",
+                  "toDeviceId": "XT0520:2",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.A5",
+                  "toPageZone": "18.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-61",
+                  "rowIndex": 71,
+                  "fromDeviceId": "KA0120:A2",
+                  "toDeviceId": "XT0130:7",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.B5",
+                  "toPageZone": "18.B5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-50",
+                  "rowIndex": 60,
+                  "fromDeviceId": "AU1200:V+",
+                  "toDeviceId": "FU0120:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0120",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.C1",
+                  "toPageZone": "18.D1",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-51",
+                  "rowIndex": 61,
+                  "fromDeviceId": "FU0120:LI",
+                  "toDeviceId": "FU0130:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0130",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.D1",
+                  "toPageZone": "18.A4",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-54",
+                  "rowIndex": 64,
+                  "fromDeviceId": "FU0130:LI",
+                  "toDeviceId": "XT0130:1",
+                  "wireType": "SC",
+                  "wireNo": "FU0136",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.A4",
+                  "toPageZone": "18.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-55",
+                  "rowIndex": 65,
+                  "fromDeviceId": "FU0291:LD",
+                  "toDeviceId": "XT0190:3",
+                  "wireType": "SC",
+                  "wireNo": "FU0291",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "51.A5",
+                  "toPageZone": "51.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                },
+                {
+                  "rowId": "row-83",
+                  "rowIndex": 93,
+                  "fromDeviceId": "XT0520:3",
+                  "toDeviceId": "XT0130:5",
+                  "wireType": "SC",
+                  "wireNo": "KA0231A1",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "JB73 HP EP BOX",
+                  "toLocation": "JB73 HP EP BOX",
+                  "fromPageZone": "18.B5",
+                  "toPageZone": "18.A5",
+                  "lengthDisplay": "60 in",
+                  "lengthInches": 60
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "AF1201",
+                  "rowCount": 5
+                },
+                {
+                  "label": "AF1202",
+                  "rowCount": 2
+                },
+                {
+                  "label": "AF1207",
+                  "rowCount": 3
+                },
+                {
+                  "label": "AU1200",
+                  "rowCount": 2
+                },
+                {
+                  "label": "FU - FU",
+                  "rowCount": 1
+                },
+                {
+                  "label": "FU - XT",
+                  "rowCount": 2
+                },
+                {
+                  "label": "KA0190",
+                  "rowCount": 4
+                },
+                {
+                  "label": "KA4401",
+                  "rowCount": 4
+                },
+                {
+                  "label": "KA0120",
+                  "rowCount": 2
+                },
+                {
+                  "label": "KA0193",
+                  "rowCount": 2
+                },
+                {
+                  "label": "KA - XT",
+                  "rowCount": 1
+                },
+                {
+                  "label": "XT0130",
+                  "rowCount": 3
+                },
+                {
+                  "label": "XT - XT",
+                  "rowCount": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "JB75",
+          "isExternal": true,
+          "totalRows": 2,
+          "subsections": [
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-85",
+                  "rowIndex": 95,
+                  "fromDeviceId": "XT0121:1",
+                  "toDeviceId": "XT4875:2",
+                  "wireType": "SC",
+                  "wireNo": "PS44012",
+                  "wireId": "WHT",
+                  "gaugeSize": "18",
+                  "fromLocation": "JB75",
+                  "toLocation": "JB75",
+                  "fromPageZone": "47.A5",
+                  "toPageZone": "47.A2",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-86",
+                  "rowIndex": 96,
+                  "fromDeviceId": "XT0121:2",
+                  "toDeviceId": "XT4875:3",
+                  "wireType": "SC",
+                  "wireNo": "PS44013",
+                  "wireId": "WHT",
+                  "gaugeSize": "18",
+                  "fromLocation": "JB75",
+                  "toLocation": "JB75",
+                  "fromPageZone": "47.A5",
+                  "toPageZone": "47.A2",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "XT0121",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "JB128 BOX 1",
+          "isExternal": true,
+          "totalRows": 2,
+          "subsections": [
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-87",
+                  "rowIndex": 97,
+                  "fromDeviceId": "XT0190:4",
+                  "toDeviceId": "AF0095:08",
+                  "wireType": "SC",
+                  "wireNo": "-009508",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB128 BOX 1",
+                  "toLocation": "JB128 BOX 1",
+                  "fromPageZone": "51.C6",
+                  "toPageZone": "51.C7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-88",
+                  "rowIndex": 98,
+                  "fromDeviceId": "XT0190:5",
+                  "toDeviceId": "AF0095:24",
+                  "wireType": "SC",
+                  "wireNo": "SV54302",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB128 BOX 1",
+                  "toLocation": "JB128 BOX 1",
+                  "fromPageZone": "51.C6",
+                  "toPageZone": "51.C7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "XT0190",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "JB129 BOX 2",
+          "isExternal": true,
+          "totalRows": 3,
+          "subsections": [
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 3,
+              "rows": [
+                {
+                  "rowId": "row-91",
+                  "rowIndex": 101,
+                  "fromDeviceId": "XT0130:5",
+                  "toDeviceId": "XT0110:3",
+                  "wireType": "SC",
+                  "wireNo": "KA0231A1",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "JB129 BOX 2",
+                  "toLocation": "JB129 BOX 2",
+                  "fromPageZone": "18.A5",
+                  "toPageZone": "17.B5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-89",
+                  "rowIndex": 99,
+                  "fromDeviceId": "XT0130:1",
+                  "toDeviceId": "XT0110:1",
+                  "wireType": "SC",
+                  "wireNo": "FU0136",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "JB129 BOX 2",
+                  "toLocation": "JB129 BOX 2",
+                  "fromPageZone": "18.A5",
+                  "toPageZone": "17.A5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-90",
+                  "rowIndex": 100,
+                  "fromDeviceId": "XT0130:2",
+                  "toDeviceId": "XT0110:2",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "12",
+                  "fromLocation": "JB129 BOX 2",
+                  "toLocation": "JB129 BOX 2",
+                  "fromPageZone": "18.A5",
+                  "toPageZone": "17.A5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "XT0130",
+                  "rowCount": 3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "JB129 BOX 2 COVER",
+          "isExternal": true,
+          "totalRows": 1,
+          "subsections": [
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-92",
+                  "rowIndex": 102,
+                  "fromDeviceId": "AU1200:L1",
+                  "toDeviceId": "AF0410:L2",
+                  "wireType": "WC0041",
+                  "wireNo": "AF0410L2",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "JB129 BOX 2 COVER",
+                  "toLocation": "JB129 BOX 2 COVER",
+                  "fromPageZone": "2.B1",
+                  "toPageZone": "2.A6",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

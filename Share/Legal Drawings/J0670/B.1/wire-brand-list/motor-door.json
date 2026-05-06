@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:11:15.442Z",
+  "mode": "branding-export",
+  "sheetSlug": "motor-door",
+  "sheetName": "MOTOR DOOR",
+  "totalRows": 4,
+  "header": {
+    "locationTitle": "MOTOR DOOR",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0670",
+    "projectName": "J0670",
+    "revision": "B.1",
+    "controlsDE": "M.WERLING",
+    "controlsME": "N. CARPENTER"
+  },
+  "importHints": {
+    "canonicalSheetName": "MOTOR DOOR",
+    "normalizedSheetName": "motor-door",
+    "bundleNames": [
+      "SB0372"
+    ],
+    "bundleDisplays": [
+      "SB0372 - A - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "SB",
+      "bundles": [
+        {
+          "bundleName": "SB0372",
+          "toLocation": "A PANEL",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "SB0372:B2-11",
+              "fromTerminal": "B2-11",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0372B211",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0764:33",
+              "toTerminal": "33",
+              "toLocation": "A PANEL",
+              "bundleName": "SB0372",
+              "bundleDisplay": "SB0372 - A - PANEL",
+              "devicePrefix": "SB",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "SB0372:B2-12",
+              "fromTerminal": "B2-12",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0372B212",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0764:01",
+              "toTerminal": "01",
+              "toLocation": "A PANEL",
+              "bundleName": "SB0372",
+              "bundleDisplay": "",
+              "devicePrefix": "SB",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "SB0372",
+          "toLocation": "A PANEL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "SB0372:B1-11",
+              "fromTerminal": "B1-11",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "ESTOPC",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0320:1",
+              "toTerminal": "1",
+              "toLocation": "A PANEL",
+              "bundleName": "SB0372",
+              "bundleDisplay": "SB0372 - A - PANEL",
+              "devicePrefix": "SB",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "SB0372:B1-12",
+              "fromTerminal": "B1-12",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "ESTOPD",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0320:2",
+              "toTerminal": "2",
+              "toLocation": "A PANEL",
+              "bundleName": "SB0372",
+              "bundleDisplay": "",
+              "devicePrefix": "SB",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "fba74974944585ad304faf58884d88ac403ea87e74916574f09bc44b843f5d65"
+}

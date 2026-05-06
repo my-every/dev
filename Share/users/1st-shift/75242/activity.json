@@ -1,0 +1,66 @@
+{
+  "badge": "75242",
+  "shift": "1st",
+  "lastUpdated": "2026-04-18T03:27:30.656Z",
+  "activities": [
+    {
+      "id": "act_1776482850656_3cdht",
+      "timestamp": "2026-04-18T03:27:30.656Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "settingsAction": "update-permission",
+        "key": "canViewProjects",
+        "enabled": false,
+        "description": "Revoked View Projects",
+        "auditEntries": [
+          {
+            "id": "db5eedde-475f-4ea8-aaf5-c76bbb8989b1",
+            "timestamp": "2026-04-18T03:27:30.656Z",
+            "performedBy": "75241",
+            "targetBadge": "75242",
+            "changeType": "revoke",
+            "permissionKey": "canViewProjects",
+            "previousValue": true,
+            "newValue": false
+          }
+        ]
+      },
+      "comment": "Revoked View Projects",
+      "targetBadge": "75242",
+      "result": "success"
+    },
+    {
+      "id": "act_1776482849160_eiule",
+      "timestamp": "2026-04-18T03:27:29.160Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "settingsAction": "update-permission",
+        "key": "canViewProjects",
+        "enabled": true,
+        "description": "Granted View Projects",
+        "auditEntries": [
+          {
+            "id": "74bd5a38-9a2e-4f12-81bd-56173a148e25",
+            "timestamp": "2026-04-18T03:27:29.158Z",
+            "performedBy": "75241",
+            "targetBadge": "75242",
+            "changeType": "grant",
+            "permissionKey": "canViewProjects",
+            "previousValue": false,
+            "newValue": true
+          }
+        ]
+      },
+      "comment": "Granted View Projects",
+      "targetBadge": "75242",
+      "result": "success"
+    }
+  ],
+  "stats": {
+    "totalActions": 2,
+    "actionsToday": 2,
+    "lastActionTime": "2026-04-18T03:27:30.656Z"
+  }
+}

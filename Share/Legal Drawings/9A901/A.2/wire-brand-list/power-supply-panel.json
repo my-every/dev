@@ -1,0 +1,527 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:57:12.732Z",
+  "mode": "branding-export",
+  "sheetSlug": "power-supply-panel",
+  "sheetName": "POWER SUPPLY PANEL",
+  "totalRows": 17,
+  "header": {
+    "locationTitle": "POWER SUPPLY PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "9A901",
+    "projectName": "9A901",
+    "revision": "A.2",
+    "controlsDE": "J.HYDE",
+    "controlsME": "K.SIDES"
+  },
+  "importHints": {
+    "canonicalSheetName": "POWER SUPPLY PANEL",
+    "normalizedSheetName": "power-supply-panel",
+    "bundleNames": [
+      "FU - UJ",
+      "UJ0031",
+      "UJ - XT",
+      "FU0008",
+      "FU - XT",
+      "UJ0131",
+      "XT - XT",
+      "FU - UV"
+    ],
+    "bundleDisplays": [
+      "FU - UJ",
+      "UJ0031",
+      "UJ - XT",
+      "FU0008 - BOP - CTRL JB74",
+      "FU - XT - CONTROL A",
+      "UJ0031 - CONTROL A",
+      "UJ0131 - CONTROL A",
+      "XT - XT - CONTROL A",
+      "FU - UV - PLC"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - UJ",
+          "toLocation": "POWER SUPPLY PANEL",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "FU0011:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0011",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "UJ0131:+",
+              "toTerminal": "+",
+              "toLocation": "POWER SUPPLY PANEL",
+              "bundleName": "FU - UJ",
+              "bundleDisplay": "FU - UJ",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UJ",
+      "bundles": [
+        {
+          "bundleName": "UJ0031",
+          "toLocation": "POWER SUPPLY PANEL",
+          "rows": [
+            {
+              "rowId": "row-23",
+              "rowIndex": 34,
+              "fromDeviceId": "UJ0031:IS",
+              "fromTerminal": "IS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "UJ0031IS",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "UJ0131:IS",
+              "toTerminal": "IS",
+              "toLocation": "POWER SUPPLY PANEL",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "UJ0031",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "UJ0031",
+          "toLocation": "POWER SUPPLY PANEL",
+          "rows": [
+            {
+              "rowId": "row-21",
+              "rowIndex": 32,
+              "fromDeviceId": "UJ0031:-",
+              "fromTerminal": "-",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-UJ0031N",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0030:1",
+              "toTerminal": "1",
+              "toLocation": "POWER SUPPLY PANEL",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "UJ0031",
+              "devicePrefix": "UJ",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "UJ - XT",
+          "toLocation": "POWER SUPPLY PANEL",
+          "rows": [
+            {
+              "rowId": "row-25",
+              "rowIndex": 36,
+              "fromDeviceId": "UJ0131:-",
+              "fromTerminal": "-",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-521NEG",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0011:1",
+              "toTerminal": "1",
+              "toLocation": "POWER SUPPLY PANEL",
+              "bundleName": "UJ - XT",
+              "bundleDisplay": "UJ - XT",
+              "devicePrefix": "UJ",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU0008",
+          "toLocation": "BOP CTRL, JB74",
+          "rows": [
+            {
+              "rowId": "row-28",
+              "rowIndex": 39,
+              "fromDeviceId": "FU0008:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0008",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "BA0008:V1(+)",
+              "toTerminal": "V1(+)",
+              "toLocation": "BOP CTRL, JB74",
+              "bundleName": "FU0008",
+              "bundleDisplay": "FU0008 - BOP - CTRL JB74",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-29",
+              "rowIndex": 40,
+              "fromDeviceId": "FU0008:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0210",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0004:2",
+              "toTerminal": "2",
+              "toLocation": "BOP CTRL, JB74",
+              "bundleName": "FU0008",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "CONTROL A",
+          "rows": [
+            {
+              "rowId": "row-31",
+              "rowIndex": 42,
+              "fromDeviceId": "FU0010:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0137",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0139:1",
+              "toTerminal": "1",
+              "toLocation": "CONTROL A",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT - CONTROL A",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UJ",
+      "bundles": [
+        {
+          "bundleName": "UJ0031",
+          "toLocation": "CONTROL A",
+          "rows": [
+            {
+              "rowId": "row-33",
+              "rowIndex": 44,
+              "fromDeviceId": "UJ0031:IOUT",
+              "fromTerminal": "IOUT",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009414",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0094:14",
+              "toTerminal": "14",
+              "toLocation": "CONTROL A",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "UJ0031 - CONTROL A",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-34",
+              "rowIndex": 45,
+              "fromDeviceId": "UJ0031:OK1",
+              "fromTerminal": "OK1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009140",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:40",
+              "toTerminal": "40",
+              "toLocation": "CONTROL A",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-35",
+              "rowIndex": 46,
+              "fromDeviceId": "UJ0031:OK2",
+              "fromTerminal": "OK2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009108",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:08",
+              "toTerminal": "08",
+              "toLocation": "CONTROL A",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-36",
+              "rowIndex": 47,
+              "fromDeviceId": "UJ0031:VIN",
+              "fromTerminal": "VIN",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009412",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0094:12",
+              "toTerminal": "12",
+              "toLocation": "CONTROL A",
+              "bundleName": "UJ0031",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "UJ0131",
+          "toLocation": "CONTROL A",
+          "rows": [
+            {
+              "rowId": "row-37",
+              "rowIndex": 48,
+              "fromDeviceId": "UJ0131:IOUT",
+              "fromTerminal": "IOUT",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009406",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0094:06",
+              "toTerminal": "06",
+              "toLocation": "CONTROL A",
+              "bundleName": "UJ0131",
+              "bundleDisplay": "UJ0131 - CONTROL A",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-38",
+              "rowIndex": 49,
+              "fromDeviceId": "UJ0131:OK1",
+              "fromTerminal": "OK1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009141",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:41",
+              "toTerminal": "41",
+              "toLocation": "CONTROL A",
+              "bundleName": "UJ0131",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-39",
+              "rowIndex": 50,
+              "fromDeviceId": "UJ0131:OK2",
+              "fromTerminal": "OK2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009109",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:09",
+              "toTerminal": "09",
+              "toLocation": "CONTROL A",
+              "bundleName": "UJ0131",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-40",
+              "rowIndex": 51,
+              "fromDeviceId": "UJ0131:VIN",
+              "fromTerminal": "VIN",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009404",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0094:04",
+              "toTerminal": "04",
+              "toLocation": "CONTROL A",
+              "bundleName": "UJ0131",
+              "bundleDisplay": "",
+              "devicePrefix": "UJ",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "CONTROL A",
+          "rows": [
+            {
+              "rowId": "row-41",
+              "rowIndex": 52,
+              "fromDeviceId": "XT0131:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0134:1",
+              "toTerminal": "1",
+              "toLocation": "CONTROL A",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT - CONTROL A",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - UV",
+          "toLocation": "PLC",
+          "rows": [
+            {
+              "rowId": "row-42",
+              "rowIndex": 53,
+              "fromDeviceId": "FU0010:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0010",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "UV0600:(+)",
+              "toTerminal": "(+)",
+              "toLocation": "PLC",
+              "bundleName": "FU - UV",
+              "bundleDisplay": "FU - UV - PLC",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "d2cfda1656cde6f520d9090045b7b4332720757f0f56375000a61e2366c3e4b0"
+}

@@ -1,0 +1,257 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:29:19.683Z",
+  "mode": "branding-export",
+  "sheetSlug": "console-gen-interlock-key",
+  "sheetName": "CONSOLE GEN INTERLOCK KEY",
+  "totalRows": 10,
+  "header": {
+    "locationTitle": "CONSOLE GEN INTERLOCK KEY",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M181",
+    "projectName": "4M181",
+    "revision": "B.5_M.4",
+    "controlsDE": "J. SHORTER",
+    "controlsME": "S. LOZA"
+  },
+  "importHints": {
+    "canonicalSheetName": "CONSOLE GEN INTERLOCK KEY",
+    "normalizedSheetName": "console-gen-interlock-key",
+    "bundleNames": [
+      "SL0166",
+      "XT0166"
+    ],
+    "bundleDisplays": [
+      "SL0166",
+      "XT0166 - CONSOLE - PANEL A"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "SL",
+      "bundles": [
+        {
+          "bundleName": "SL0166",
+          "toLocation": "CONSOLE GEN INTERLOCK KEY",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "SL0166:2",
+              "fromTerminal": "2",
+              "fromTerminalOrder": null,
+              "wireNo": "-009132",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0166:1",
+              "toTerminal": "1",
+              "toLocation": "CONSOLE GEN INTERLOCK KEY",
+              "bundleName": "SL0166",
+              "bundleDisplay": "SL0166",
+              "devicePrefix": "SL"
+            },
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "SL0166:3",
+              "fromTerminal": "3",
+              "fromTerminalOrder": null,
+              "wireNo": "-009100",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0166:2",
+              "toTerminal": "2",
+              "toLocation": "CONSOLE GEN INTERLOCK KEY",
+              "bundleName": "SL0166",
+              "bundleDisplay": "",
+              "devicePrefix": "SL"
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "SL0166:4",
+              "fromTerminal": "4",
+              "fromTerminalOrder": null,
+              "wireNo": "-009203",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0166:3",
+              "toTerminal": "3",
+              "toLocation": "CONSOLE GEN INTERLOCK KEY",
+              "bundleName": "SL0166",
+              "bundleDisplay": "",
+              "devicePrefix": "SL"
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "SL0166:5",
+              "fromTerminal": "5",
+              "fromTerminalOrder": null,
+              "wireNo": "-009219",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0166:4",
+              "toTerminal": "4",
+              "toLocation": "CONSOLE GEN INTERLOCK KEY",
+              "bundleName": "SL0166",
+              "bundleDisplay": "",
+              "devicePrefix": "SL"
+            },
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "SL0166:X1",
+              "fromTerminal": "X1",
+              "fromTerminalOrder": null,
+              "wireNo": "-009203",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0166:3",
+              "toTerminal": "3",
+              "toLocation": "CONSOLE GEN INTERLOCK KEY",
+              "bundleName": "SL0166",
+              "bundleDisplay": "",
+              "devicePrefix": "SL"
+            },
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "SL0166:X2",
+              "fromTerminal": "X2",
+              "fromTerminalOrder": null,
+              "wireNo": "-009219",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0166:4",
+              "toTerminal": "4",
+              "toLocation": "CONSOLE GEN INTERLOCK KEY",
+              "bundleName": "SL0166",
+              "bundleDisplay": "",
+              "devicePrefix": "SL"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0166",
+          "toLocation": "CONSOLE PANEL A",
+          "rows": [
+            {
+              "rowId": "row-9",
+              "rowIndex": 20,
+              "fromDeviceId": "XT0166:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009132",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:32",
+              "toTerminal": "32",
+              "toLocation": "CONSOLE PANEL A",
+              "bundleName": "XT0166",
+              "bundleDisplay": "XT0166 - CONSOLE - PANEL A",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "XT0166:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009100",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0091:00",
+              "toTerminal": "00",
+              "toLocation": "CONSOLE PANEL A",
+              "bundleName": "XT0166",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-11",
+              "rowIndex": 22,
+              "fromDeviceId": "XT0166:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009203",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0092:03",
+              "toTerminal": "03",
+              "toLocation": "CONSOLE PANEL A",
+              "bundleName": "XT0166",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-12",
+              "rowIndex": 23,
+              "fromDeviceId": "XT0166:4",
+              "fromTerminal": "4",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009219",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0092:19",
+              "toTerminal": "19",
+              "toLocation": "CONSOLE PANEL A",
+              "bundleName": "XT0166",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "c8fa8c9ec3fe9940c8e710d9e0baa039802fccb8c488dfa9f35346fd76562f8e"
+}

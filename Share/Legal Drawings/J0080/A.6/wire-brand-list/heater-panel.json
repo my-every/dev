@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:08:43.936Z",
+  "mode": "branding-export",
+  "sheetSlug": "heater-panel",
+  "sheetName": "HEATER PANEL",
+  "totalRows": 9,
+  "header": {
+    "locationTitle": "HEATER PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0080",
+    "projectName": "J0080",
+    "revision": "A.6",
+    "controlsDE": "D.GRANT",
+    "controlsME": "G.CATO"
+  },
+  "importHints": {
+    "canonicalSheetName": "HEATER PANEL",
+    "normalizedSheetName": "heater-panel",
+    "bundleNames": [
+      "H0950 - RED",
+      "H0951 - RED",
+      "QS0950 - RED",
+      "TS - XT"
+    ],
+    "bundleDisplays": [
+      "H0950 - RED",
+      "H0951 - RED",
+      "QS0950 - RED",
+      "TS - XT"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "H",
+      "bundles": [
+        {
+          "bundleName": "H0950 - RED",
+          "toLocation": "HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 17,
+              "fromDeviceId": "H0950:L1",
+              "fromTerminal": "L1",
+              "fromTerminalOrder": null,
+              "wireNo": "TS0950-L1",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT09500:1",
+              "toTerminal": "1",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "H0950 - RED",
+              "bundleDisplay": "H0950 - RED",
+              "devicePrefix": "H"
+            },
+            {
+              "rowId": "row-7",
+              "rowIndex": 18,
+              "fromDeviceId": "H0950:L2",
+              "fromTerminal": "L2",
+              "fromTerminalOrder": null,
+              "wireNo": "QS0950-L2",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT09500:3",
+              "toTerminal": "3",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "H0950 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "H"
+            }
+          ]
+        },
+        {
+          "bundleName": "H0951 - RED",
+          "toLocation": "HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-9",
+              "rowIndex": 20,
+              "fromDeviceId": "H0951:L1",
+              "fromTerminal": "L1",
+              "fromTerminalOrder": null,
+              "wireNo": "TS0950-L1",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT09500:2",
+              "toTerminal": "2",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "H0951 - RED",
+              "bundleDisplay": "H0951 - RED",
+              "devicePrefix": "H"
+            },
+            {
+              "rowId": "row-10",
+              "rowIndex": 21,
+              "fromDeviceId": "H0951:L2",
+              "fromTerminal": "L2",
+              "fromTerminalOrder": null,
+              "wireNo": "QS0950-L2",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT09500:4",
+              "toTerminal": "4",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "H0951 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "H"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "QS",
+      "bundles": [
+        {
+          "bundleName": "QS0950 - RED",
+          "toLocation": "HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-11",
+              "rowIndex": 22,
+              "fromDeviceId": "QS0950:LD-1",
+              "fromTerminal": "LD-1",
+              "fromTerminalOrder": null,
+              "wireNo": "QS0950-L1",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "TS0950:C",
+              "toTerminal": "C",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "QS0950 - RED",
+              "bundleDisplay": "QS0950 - RED",
+              "devicePrefix": "QS"
+            },
+            {
+              "rowId": "row-12",
+              "rowIndex": 23,
+              "fromDeviceId": "QS0950:LD-3",
+              "fromTerminal": "LD-3",
+              "fromTerminalOrder": null,
+              "wireNo": "QS0950-L2",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT09500:3",
+              "toTerminal": "3",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "QS0950 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "QS"
+            },
+            {
+              "rowId": "row-13",
+              "rowIndex": 24,
+              "fromDeviceId": "QS0950:LI-2",
+              "fromTerminal": "LI-2",
+              "fromTerminalOrder": null,
+              "wireNo": "H0950L1",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0950:1",
+              "toTerminal": "1",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "QS0950 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "QS"
+            },
+            {
+              "rowId": "row-14",
+              "rowIndex": 25,
+              "fromDeviceId": "QS0950:LI-4",
+              "fromTerminal": "LI-4",
+              "fromTerminalOrder": null,
+              "wireNo": "H0950L2",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT0950:2",
+              "toTerminal": "2",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "QS0950 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "QS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "TS",
+      "bundles": [
+        {
+          "bundleName": "TS - XT",
+          "toLocation": "HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-15",
+              "rowIndex": 26,
+              "fromDeviceId": "TS0950:NC",
+              "fromTerminal": "NC",
+              "fromTerminalOrder": null,
+              "wireNo": "TS0950-L1",
+              "wireId": "RED",
+              "gaugeSize": "12",
+              "length": 60,
+              "toDeviceId": "XT09500:1",
+              "toTerminal": "1",
+              "toLocation": "HEATER PANEL",
+              "bundleName": "TS - XT",
+              "bundleDisplay": "TS - XT",
+              "devicePrefix": "TS"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "ca68dcbdeea739efd952b1ed51039735485c8c4e177b28816653553e2a7336f4"
+}

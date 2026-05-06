@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:30:22.654Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb70-left-rail",
+  "sheetName": "JB70 LEFT RAIL",
+  "totalRows": 5,
+  "header": {
+    "locationTitle": "JB70 LEFT RAIL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M181",
+    "projectName": "4M181",
+    "revision": "B.5_M.4",
+    "controlsDE": "J. SHORTER",
+    "controlsME": "S. LOZA"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB70 LEFT RAIL",
+    "normalizedSheetName": "jb70-left-rail",
+    "bundleNames": [
+      "FU7000 - RED",
+      "KA - XT",
+      "KA7000 - RED"
+    ],
+    "bundleDisplays": [
+      "FU7000 - RED",
+      "KA - XT",
+      "KA7000 - RED - DOOR HEATER - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU7000 - RED",
+          "toLocation": "JB70 LEFT RAIL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "FU7000:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU7000",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "KA7000:11",
+              "toTerminal": "11",
+              "toLocation": "JB70 LEFT RAIL",
+              "bundleName": "FU7000 - RED",
+              "bundleDisplay": "FU7000 - RED",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "FU7000:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CCH7000L1",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT7000:1",
+              "toTerminal": "1",
+              "toLocation": "JB70 LEFT RAIL",
+              "bundleName": "FU7000 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "KA",
+      "bundles": [
+        {
+          "bundleName": "KA - XT",
+          "toLocation": "JB70 LEFT RAIL",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "KA7000:21",
+              "fromTerminal": "21",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CCH7000L2",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT7000:2",
+              "toTerminal": "2",
+              "toLocation": "JB70 LEFT RAIL",
+              "bundleName": "KA - XT",
+              "bundleDisplay": "KA - XT",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "KA",
+      "bundles": [
+        {
+          "bundleName": "KA7000 - RED",
+          "toLocation": "JB70 DOOR HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "KA7000:12",
+              "fromTerminal": "12",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA700012",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT7001:1",
+              "toTerminal": "1",
+              "toLocation": "JB70 DOOR HEATER PANEL",
+              "bundleName": "KA7000 - RED",
+              "bundleDisplay": "KA7000 - RED - DOOR HEATER - PANEL",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-5",
+              "rowIndex": 16,
+              "fromDeviceId": "KA7000:22",
+              "fromTerminal": "22",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA700022",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT7001:2",
+              "toTerminal": "2",
+              "toLocation": "JB70 DOOR HEATER PANEL",
+              "bundleName": "KA7000 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "b30e39b7ae105531a2ce0856305ad6a6d06c2a34b2d670c7220348f62323dc03"
+}

@@ -1,0 +1,93 @@
+{
+  "slug": "blank-panel-1",
+  "name": "BLANK^PANEL 1",
+  "kind": "operational",
+  "sheetIndex": 6,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR0276:",
+      "wireType": "SC",
+      "wireNo": "GR0276",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "4.D5",
+      "toDeviceId": "FG_UCP:34",
+      "toLocation": "BLANK^PANEL 1",
+      "toPageZone": "4.D5",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "GR0277:",
+      "wireType": "SC",
+      "wireNo": "GR0277",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "4.D5",
+      "toDeviceId": "FG_UCP:33",
+      "toLocation": "BLANK^PANEL 1",
+      "toPageZone": "4.D5",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FG_UCP:34",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0276",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "4.D5",
+      "Location": "BLANK^PANEL 1"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "FG_UCP:33",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0277",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "4.D5",
+      "Location": "BLANK^PANEL 1"
+    }
+  ],
+  "rowCount": 2,
+  "metadata": {
+    "projectName": "LEE WAGPCO",
+    "revision": "B",
+    "controlsDE": "H.VOUNG",
+    "controlsME": "A. PUENTES"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:02:54.756Z"
+}

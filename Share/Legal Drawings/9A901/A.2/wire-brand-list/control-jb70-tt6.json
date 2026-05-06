@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:56:46.237Z",
+  "mode": "branding-export",
+  "sheetSlug": "control-jb70-tt6",
+  "sheetName": "CONTROL JB70 TT6",
+  "totalRows": 6,
+  "header": {
+    "locationTitle": "CONTROL JB70 TT6",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "9A901",
+    "projectName": "9A901",
+    "revision": "A.2",
+    "controlsDE": "J.HYDE",
+    "controlsME": "K.SIDES"
+  },
+  "importHints": {
+    "canonicalSheetName": "CONTROL,JB70;TT6",
+    "normalizedSheetName": "control-jb70-tt6",
+    "bundleNames": [
+      "SA0473"
+    ],
+    "bundleDisplays": [
+      "SA0473 - CONTROL A",
+      "SA0473 - CONTROL B"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "SA",
+      "bundles": [
+        {
+          "bundleName": "SA0473",
+          "toLocation": "CONTROL A",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "SA0473:B-B1",
+              "fromTerminal": "B-B1",
+              "fromTerminalOrder": null,
+              "wireNo": "SA0473B-B1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0087:06",
+              "toTerminal": "06",
+              "toLocation": "CONTROL A",
+              "bundleName": "SA0473",
+              "bundleDisplay": "SA0473 - CONTROL A",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "SA0473:B-B2",
+              "fromTerminal": "B-B2",
+              "fromTerminalOrder": null,
+              "wireNo": "SA0473B-B2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0087:38",
+              "toTerminal": "38",
+              "toLocation": "CONTROL A",
+              "bundleName": "SA0473",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "SA0473:W-B1",
+              "fromTerminal": "W-B1",
+              "fromTerminalOrder": null,
+              "wireNo": "SA0473W-B1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0087:05",
+              "toTerminal": "05",
+              "toLocation": "CONTROL A",
+              "bundleName": "SA0473",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "SA0473:W-B2",
+              "fromTerminal": "W-B2",
+              "fromTerminalOrder": null,
+              "wireNo": "SA0473W-B2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0087:37",
+              "toTerminal": "37",
+              "toLocation": "CONTROL A",
+              "bundleName": "SA0473",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "SA",
+      "bundles": [
+        {
+          "bundleName": "SA0473",
+          "toLocation": "CONTROL B",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 16,
+              "fromDeviceId": "SA0473:B-A3",
+              "fromTerminal": "B-A3",
+              "fromTerminalOrder": null,
+              "wireNo": "SA0473B-A3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0063:08",
+              "toTerminal": "08",
+              "toLocation": "CONTROL B",
+              "bundleName": "SA0473",
+              "bundleDisplay": "SA0473 - CONTROL B",
+              "devicePrefix": "SA"
+            },
+            {
+              "rowId": "row-7",
+              "rowIndex": 17,
+              "fromDeviceId": "SA0473:B-A4",
+              "fromTerminal": "B-A4",
+              "fromTerminalOrder": null,
+              "wireNo": "SA0473B-A4",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0063:40",
+              "toTerminal": "40",
+              "toLocation": "CONTROL B",
+              "bundleName": "SA0473",
+              "bundleDisplay": "",
+              "devicePrefix": "SA"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "dd957b2e9088ce85134326f199bf59a6d9f9b1783eb67b1c7afa04ce092ed2dd"
+}

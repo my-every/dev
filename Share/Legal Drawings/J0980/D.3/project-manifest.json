@@ -1,0 +1,782 @@
+{
+  "id": "legal-j0980-d-3",
+  "name": "TX GAS TRANS",
+  "filename": "75751-UCPWiringList_D.3.xlsx",
+  "pdNumber": "J0980",
+  "revision": "D.3",
+  "createdAt": "2026-05-05T14:15:47.268Z",
+  "sheets": [
+    {
+      "slug": "blue-labels",
+      "name": "Blue Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/blue-labels.json",
+      "rowCount": 0,
+      "columnCount": 0,
+      "sheetIndex": 0,
+      "hasData": false
+    },
+    {
+      "slug": "white-labels",
+      "name": "White Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/white-labels.json",
+      "rowCount": 9,
+      "columnCount": 7,
+      "sheetIndex": 1,
+      "hasData": true
+    },
+    {
+      "slug": "heat-shrink-labels",
+      "name": "Heat Shrink Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/heat-shrink-labels.json",
+      "rowCount": 0,
+      "columnCount": 0,
+      "sheetIndex": 2,
+      "hasData": false
+    },
+    {
+      "slug": "100-00",
+      "name": "100-00",
+      "kind": "operational",
+      "sheetPath": "sheets/100-00.json",
+      "rowCount": 14,
+      "columnCount": 9,
+      "sheetIndex": 3,
+      "hasData": true
+    },
+    {
+      "slug": "100-00j0980",
+      "name": "100-00J0980",
+      "kind": "operational",
+      "sheetPath": "sheets/100-00j0980.json",
+      "rowCount": 42,
+      "columnCount": 9,
+      "sheetIndex": 4,
+      "hasData": true
+    },
+    {
+      "slug": "200-t1",
+      "name": "200-T1",
+      "kind": "operational",
+      "sheetPath": "sheets/200-t1.json",
+      "rowCount": 5,
+      "columnCount": 9,
+      "sheetIndex": 5,
+      "hasData": true
+    },
+    {
+      "slug": "250-01",
+      "name": "250-01",
+      "kind": "operational",
+      "sheetPath": "sheets/250-01.json",
+      "rowCount": 660,
+      "columnCount": 9,
+      "sheetIndex": 6,
+      "hasData": true
+    },
+    {
+      "slug": "251-01",
+      "name": "251-01",
+      "kind": "operational",
+      "sheetPath": "sheets/251-01.json",
+      "rowCount": 50,
+      "columnCount": 9,
+      "sheetIndex": 7,
+      "hasData": true
+    },
+    {
+      "slug": "252-01",
+      "name": "252-01",
+      "kind": "operational",
+      "sheetPath": "sheets/252-01.json",
+      "rowCount": 167,
+      "columnCount": 9,
+      "sheetIndex": 8,
+      "hasData": true
+    },
+    {
+      "slug": "256-01",
+      "name": "256-01",
+      "kind": "operational",
+      "sheetPath": "sheets/256-01.json",
+      "rowCount": 35,
+      "columnCount": 9,
+      "sheetIndex": 9,
+      "hasData": true
+    },
+    {
+      "slug": "256-02",
+      "name": "256-02",
+      "kind": "operational",
+      "sheetPath": "sheets/256-02.json",
+      "rowCount": 54,
+      "columnCount": 9,
+      "sheetIndex": 10,
+      "hasData": true
+    },
+    {
+      "slug": "256-03",
+      "name": "256-03",
+      "kind": "operational",
+      "sheetPath": "sheets/256-03.json",
+      "rowCount": 4,
+      "columnCount": 9,
+      "sheetIndex": 11,
+      "hasData": true
+    },
+    {
+      "slug": "256-l2",
+      "name": "256-L2",
+      "kind": "operational",
+      "sheetPath": "sheets/256-l2.json",
+      "rowCount": 153,
+      "columnCount": 9,
+      "sheetIndex": 12,
+      "hasData": true
+    },
+    {
+      "slug": "257-01",
+      "name": "257-01",
+      "kind": "operational",
+      "sheetPath": "sheets/257-01.json",
+      "rowCount": 335,
+      "columnCount": 9,
+      "sheetIndex": 13,
+      "hasData": true
+    },
+    {
+      "slug": "panel-errors",
+      "name": "Panel Errors",
+      "kind": "reference",
+      "sheetPath": "sheets/panel-errors.json",
+      "rowCount": 8,
+      "columnCount": 10,
+      "sheetIndex": 14,
+      "hasData": true
+    },
+    {
+      "slug": "cable-part-numbers",
+      "name": "Cable Part Numbers",
+      "kind": "reference",
+      "sheetPath": "sheets/cable-part-numbers.json",
+      "rowCount": 78,
+      "columnCount": 3,
+      "sheetIndex": 15,
+      "hasData": true
+    },
+    {
+      "slug": "part-number-list",
+      "name": "Part Number List",
+      "kind": "reference",
+      "sheetPath": "sheets/part-number-list.json",
+      "rowCount": 395,
+      "columnCount": 4,
+      "sheetIndex": 16,
+      "hasData": true
+    }
+  ],
+  "assignments": {
+    "100-00": {
+      "sheetSlug": "100-00",
+      "sheetName": "100-00",
+      "kind": "operational",
+      "sheetPath": "sheets/100-00.json",
+      "rowCount": 14,
+      "columnCount": 9,
+      "sheetIndex": 3,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [],
+      "partNumbers": [
+        "IDA NOT DEFINED"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/100-00.json",
+        "brandListSchemaPath": "wire-brand-list/100-00.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "No layout pages were available during manifest regeneration."
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "15m",
+      "wireListEstTime": "11m",
+      "totalEstimatedMinutes": 26,
+      "remainingMinutes": 26,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "100-00j0980": {
+      "sheetSlug": "100-00j0980",
+      "sheetName": "100-00J0980",
+      "kind": "operational",
+      "sheetPath": "sheets/100-00j0980.json",
+      "rowCount": 42,
+      "columnCount": 9,
+      "sheetIndex": 4,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [],
+      "partNumbers": [
+        "2380746-1",
+        "2380746-4",
+        "2380746-6",
+        "2380746-9"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/100-00j0980.json",
+        "brandListSchemaPath": "wire-brand-list/100-00j0980.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "No layout pages were available during manifest regeneration."
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "46m",
+      "wireListEstTime": "32m",
+      "totalEstimatedMinutes": 78,
+      "remainingMinutes": 78,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "200-t1": {
+      "sheetSlug": "200-t1",
+      "sheetName": "200-T1",
+      "kind": "operational",
+      "sheetPath": "sheets/200-t1.json",
+      "rowCount": 5,
+      "columnCount": 9,
+      "sheetIndex": 5,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [],
+      "partNumbers": [
+        "1022899",
+        "IDA NOT DEFINED"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/200-t1.json",
+        "brandListSchemaPath": "wire-brand-list/200-t1.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "No layout pages were available during manifest regeneration."
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "6m",
+      "wireListEstTime": "4m",
+      "totalEstimatedMinutes": 10,
+      "remainingMinutes": 10,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "250-01": {
+      "sheetSlug": "250-01",
+      "sheetName": "250-01",
+      "kind": "operational",
+      "sheetPath": "sheets/250-01.json",
+      "rowCount": 660,
+      "columnCount": 9,
+      "sheetIndex": 6,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [],
+      "partNumbers": [
+        "1014529-2",
+        "1020213",
+        "1021207-1",
+        "1046415-42",
+        "1051931-16",
+        "1051931-18",
+        "1051931-20",
+        "1051931-25",
+        "1053832",
+        "701707C1",
+        "EXISTING",
+        "IDA NOT DEFINED"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/250-01.json",
+        "brandListSchemaPath": "wire-brand-list/250-01.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "No layout pages were available during manifest regeneration."
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "12h 6m",
+      "wireListEstTime": "8h 15m",
+      "totalEstimatedMinutes": 1221,
+      "remainingMinutes": 1221,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "251-01": {
+      "sheetSlug": "251-01",
+      "sheetName": "251-01",
+      "kind": "operational",
+      "sheetPath": "sheets/251-01.json",
+      "rowCount": 50,
+      "columnCount": 9,
+      "sheetIndex": 7,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [],
+      "partNumbers": [
+        "1020213",
+        "1034549",
+        "1051931-25",
+        "701707C1",
+        "IDA NOT DEFINED"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/251-01.json",
+        "brandListSchemaPath": "wire-brand-list/251-01.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "No layout pages were available during manifest regeneration."
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "55m",
+      "wireListEstTime": "38m",
+      "totalEstimatedMinutes": 93,
+      "remainingMinutes": 93,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "252-01": {
+      "sheetSlug": "252-01",
+      "sheetName": "252-01",
+      "kind": "operational",
+      "sheetPath": "sheets/252-01.json",
+      "rowCount": 167,
+      "columnCount": 9,
+      "sheetIndex": 8,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [],
+      "partNumbers": [
+        "1020213",
+        "1034549",
+        "1051931-16",
+        "1051931-20",
+        "1051931-25",
+        "701707C1",
+        "IDA NOT DEFINED"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/252-01.json",
+        "brandListSchemaPath": "wire-brand-list/252-01.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "No layout pages were available during manifest regeneration."
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "3h 4m",
+      "wireListEstTime": "2h 5m",
+      "totalEstimatedMinutes": 309,
+      "remainingMinutes": 309,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "256-01": {
+      "sheetSlug": "256-01",
+      "sheetName": "256-01",
+      "kind": "operational",
+      "sheetPath": "sheets/256-01.json",
+      "rowCount": 35,
+      "columnCount": 9,
+      "sheetIndex": 9,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [],
+      "partNumbers": [
+        "1020213",
+        "701707C1",
+        "IDA NOT DEFINED"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/256-01.json",
+        "brandListSchemaPath": "wire-brand-list/256-01.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "No layout pages were available during manifest regeneration."
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "39m",
+      "wireListEstTime": "26m",
+      "totalEstimatedMinutes": 65,
+      "remainingMinutes": 65,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "256-02": {
+      "sheetSlug": "256-02",
+      "sheetName": "256-02",
+      "kind": "operational",
+      "sheetPath": "sheets/256-02.json",
+      "rowCount": 54,
+      "columnCount": 9,
+      "sheetIndex": 10,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [],
+      "partNumbers": [
+        "1020213",
+        "1025156",
+        "1051931-16",
+        "1051931-20",
+        "1051931-25",
+        "701707C1",
+        "IDA NOT DEFINED"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/256-02.json",
+        "brandListSchemaPath": "wire-brand-list/256-02.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "No layout pages were available during manifest regeneration."
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "59m",
+      "wireListEstTime": "41m",
+      "totalEstimatedMinutes": 100,
+      "remainingMinutes": 100,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "256-03": {
+      "sheetSlug": "256-03",
+      "sheetName": "256-03",
+      "kind": "operational",
+      "sheetPath": "sheets/256-03.json",
+      "rowCount": 4,
+      "columnCount": 9,
+      "sheetIndex": 11,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [],
+      "partNumbers": [
+        "IDA NOT DEFINED"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/256-03.json",
+        "brandListSchemaPath": "wire-brand-list/256-03.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "No layout pages were available during manifest regeneration."
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "4m",
+      "wireListEstTime": "3m",
+      "totalEstimatedMinutes": 7,
+      "remainingMinutes": 7,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "256-l2": {
+      "sheetSlug": "256-l2",
+      "sheetName": "256-L2",
+      "kind": "operational",
+      "sheetPath": "sheets/256-l2.json",
+      "rowCount": 153,
+      "columnCount": 9,
+      "sheetIndex": 12,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [],
+      "partNumbers": [
+        "1051931-16",
+        "1051931-25",
+        "IDA NOT DEFINED"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/256-l2.json",
+        "brandListSchemaPath": "wire-brand-list/256-l2.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "No layout pages were available during manifest regeneration."
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "2h 48m",
+      "wireListEstTime": "1h 55m",
+      "totalEstimatedMinutes": 283,
+      "remainingMinutes": 283,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    },
+    "257-01": {
+      "sheetSlug": "257-01",
+      "sheetName": "257-01",
+      "kind": "operational",
+      "sheetPath": "sheets/257-01.json",
+      "rowCount": 335,
+      "columnCount": 9,
+      "sheetIndex": 13,
+      "hasData": true,
+      "swsType": "UNDECIDED",
+      "stage": "READY_TO_LAY",
+      "status": "NOT_STARTED",
+      "panducts": [],
+      "rails": [],
+      "whiteLabels": [],
+      "blueLabels": [],
+      "partNumbers": [
+        "1020213",
+        "1051931-16",
+        "1051931-25",
+        "701707C1",
+        "IDA NOT DEFINED"
+      ],
+      "files": {
+        "wireListSchemaPath": "sheets/257-01.json",
+        "brandListSchemaPath": "wire-brand-list/257-01.json"
+      },
+      "layout": {
+        "pages": [],
+        "unmappedReason": "No layout pages were available during manifest regeneration."
+      },
+      "devices": {},
+      "externalLocations": [],
+      "buildUpEstTime": "6h 9m",
+      "wireListEstTime": "4h 11m",
+      "totalEstimatedMinutes": 620,
+      "remainingMinutes": 620,
+      "priority": {
+        "score": null,
+        "level": "low",
+        "remainingMinutes": null,
+        "deadlineMultiplier": 1,
+        "stageWeight": 1.1,
+        "reason": "Low priority: NaNh NaNm remaining - READY_TO_LAY"
+      }
+    }
+  },
+  "referenceSheets": {
+    "blue-labels": {
+      "sheetSlug": "blue-labels",
+      "sheetName": "Blue Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/blue-labels.json",
+      "rowCount": 0,
+      "columnCount": 0,
+      "sheetIndex": 0,
+      "hasData": false
+    },
+    "white-labels": {
+      "sheetSlug": "white-labels",
+      "sheetName": "White Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/white-labels.json",
+      "rowCount": 9,
+      "columnCount": 7,
+      "sheetIndex": 1,
+      "hasData": true
+    },
+    "heat-shrink-labels": {
+      "sheetSlug": "heat-shrink-labels",
+      "sheetName": "Heat Shrink Labels",
+      "kind": "reference",
+      "sheetPath": "sheets/heat-shrink-labels.json",
+      "rowCount": 0,
+      "columnCount": 0,
+      "sheetIndex": 2,
+      "hasData": false
+    },
+    "panel-errors": {
+      "sheetSlug": "panel-errors",
+      "sheetName": "Panel Errors",
+      "kind": "reference",
+      "sheetPath": "sheets/panel-errors.json",
+      "rowCount": 8,
+      "columnCount": 10,
+      "sheetIndex": 14,
+      "hasData": true
+    },
+    "cable-part-numbers": {
+      "sheetSlug": "cable-part-numbers",
+      "sheetName": "Cable Part Numbers",
+      "kind": "reference",
+      "sheetPath": "sheets/cable-part-numbers.json",
+      "rowCount": 78,
+      "columnCount": 3,
+      "sheetIndex": 15,
+      "hasData": true
+    },
+    "part-number-list": {
+      "sheetSlug": "part-number-list",
+      "sheetName": "Part Number List",
+      "kind": "reference",
+      "sheetPath": "sheets/part-number-list.json",
+      "rowCount": 395,
+      "columnCount": 4,
+      "sheetIndex": 16,
+      "hasData": true
+    }
+  },
+  "aggregates": {
+    "totalAssignments": 11,
+    "completedAssignments": 0,
+    "inProgressAssignments": 0,
+    "blockedAssignments": 0,
+    "totalEstimatedMinutes": 2812,
+    "totalRemainingMinutes": 2812,
+    "totalActualMinutes": 0,
+    "overallProgress": 0,
+    "highestPriority": "low",
+    "priorityCounts": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 11
+    },
+    "stageCounts": {
+      "READY_TO_LAY": 11
+    }
+  },
+  "assignmentsByUnitType": {
+    "UNASSIGNED": [
+      "100-00",
+      "100-00j0980",
+      "200-t1",
+      "250-01",
+      "251-01",
+      "252-01",
+      "256-01",
+      "256-02",
+      "256-03",
+      "256-l2",
+      "257-01"
+    ]
+  },
+  "projectName": "TX GAS TRANS",
+  "lwcType": "New"
+}

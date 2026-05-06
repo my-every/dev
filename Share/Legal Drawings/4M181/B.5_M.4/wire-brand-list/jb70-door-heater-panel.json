@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:30:19.776Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb70-door-heater-panel",
+  "sheetName": "JB70 DOOR HEATER PANEL",
+  "totalRows": 6,
+  "header": {
+    "locationTitle": "JB70 DOOR HEATER PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M181",
+    "projectName": "4M181",
+    "revision": "B.5_M.4",
+    "controlsDE": "J. SHORTER",
+    "controlsME": "S. LOZA"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB70 DOOR HEATER PANEL",
+    "normalizedSheetName": "jb70-door-heater-panel",
+    "bundleNames": [
+      "H7000",
+      "H7000 - BLU",
+      "TS7000 - BLU",
+      "TS7000",
+      "XT7001 - RED"
+    ],
+    "bundleDisplays": [
+      "H7000",
+      "H7000 - BLU",
+      "TS7000 - BLU",
+      "TS7000",
+      "XT7001 - RED - LEFT - RAIL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "H",
+      "bundles": [
+        {
+          "bundleName": "H7000",
+          "toLocation": "JB70 DOOR HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "H7000:L1",
+              "fromTerminal": "L1",
+              "fromTerminalOrder": null,
+              "wireNo": "H7000L1",
+              "wireId": "BRN",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT7001:4",
+              "toTerminal": "4",
+              "toLocation": "JB70 DOOR HEATER PANEL",
+              "bundleName": "H7000",
+              "bundleDisplay": "H7000",
+              "devicePrefix": "H"
+            }
+          ]
+        },
+        {
+          "bundleName": "H7000 - BLU",
+          "toLocation": "JB70 DOOR HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "H7000:L2",
+              "fromTerminal": "L2",
+              "fromTerminalOrder": null,
+              "wireNo": "KA700022",
+              "wireId": "BLU",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT7001:2",
+              "toTerminal": "2",
+              "toLocation": "JB70 DOOR HEATER PANEL",
+              "bundleName": "H7000 - BLU",
+              "bundleDisplay": "H7000 - BLU",
+              "devicePrefix": "H"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "TS",
+      "bundles": [
+        {
+          "bundleName": "TS7000 - BLU",
+          "toLocation": "JB70 DOOR HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "TS7000:NC",
+              "fromTerminal": "NC",
+              "fromTerminalOrder": null,
+              "wireNo": "H7000L1",
+              "wireId": "BLU",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT7001:4",
+              "toTerminal": "4",
+              "toLocation": "JB70 DOOR HEATER PANEL",
+              "bundleName": "TS7000 - BLU",
+              "bundleDisplay": "TS7000 - BLU",
+              "devicePrefix": "TS"
+            }
+          ]
+        },
+        {
+          "bundleName": "TS7000",
+          "toLocation": "JB70 DOOR HEATER PANEL",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 16,
+              "fromDeviceId": "TS7000:C",
+              "fromTerminal": "C",
+              "fromTerminalOrder": null,
+              "wireNo": "KA700012",
+              "wireId": "BRN",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT7001:1",
+              "toTerminal": "1",
+              "toLocation": "JB70 DOOR HEATER PANEL",
+              "bundleName": "TS7000",
+              "bundleDisplay": "TS7000",
+              "devicePrefix": "TS"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT7001 - RED",
+          "toLocation": "JB70 LEFT RAIL",
+          "rows": [
+            {
+              "rowId": "row-8",
+              "rowIndex": 18,
+              "fromDeviceId": "XT7001:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA700012",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "KA7000:12",
+              "toTerminal": "12",
+              "toLocation": "JB70 LEFT RAIL",
+              "bundleName": "XT7001 - RED",
+              "bundleDisplay": "XT7001 - RED - LEFT - RAIL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-9",
+              "rowIndex": 19,
+              "fromDeviceId": "XT7001:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA700022",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "KA7000:22",
+              "toTerminal": "22",
+              "toLocation": "JB70 LEFT RAIL",
+              "bundleName": "XT7001 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "79ffb6f78543e9935cce6d91e6373b5a3dedc79e56151035d248378791b7ab4a"
+}

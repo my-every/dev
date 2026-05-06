@@ -1,0 +1,112 @@
+{
+  "partNumber": "1065422-1",
+  "description": "RELAY, PMG INPUT #1",
+  "category": "devices",
+  "type": "control-modules",
+  "tags": [
+    "auto-ingest",
+    "devices"
+  ],
+  "source": "workbook_ingest",
+  "lifecycle": {
+    "status": "new",
+    "needsTraining": true,
+    "needsImages": true,
+    "needsReviewByRole": "team_lead",
+    "discoveredFrom": {
+      "projectId": "proj_1777095355103_76neyf",
+      "sourceSheet": "GEN CTRL",
+      "sourceLocation": "GEN CTRL",
+      "discoveredAt": "2026-04-25T05:37:11.201Z"
+    }
+  },
+  "createdAt": "2026-04-25T05:37:11.201Z",
+  "updatedAt": "2026-05-05T04:29:01.514Z",
+  "terminalSchema": {
+    "negativePatterns": [
+      "-",
+      "0V",
+      "0VDC",
+      "COM",
+      "COMMON",
+      "DC-",
+      "NEG",
+      "NEGATIVE"
+    ],
+    "updatedAt": "2026-05-05T04:29:01.514Z",
+    "terminals": [
+      {
+        "name": "11",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "12",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "14",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "12",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "21",
+        "aliases": [],
+        "wireId": "BLK",
+        "size": "12",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "24",
+        "aliases": [],
+        "wireId": "BLK",
+        "size": "12",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "A1",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "20",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "A2",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "20",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      }
+    ]
+  }
+}

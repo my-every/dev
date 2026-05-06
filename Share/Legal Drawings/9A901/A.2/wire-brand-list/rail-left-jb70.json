@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:57:13.628Z",
+  "mode": "branding-export",
+  "sheetSlug": "rail-left-jb70",
+  "sheetName": "RAIL LEFT JB70",
+  "totalRows": 4,
+  "header": {
+    "locationTitle": "RAIL LEFT JB70",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "9A901",
+    "projectName": "9A901",
+    "revision": "A.2",
+    "controlsDE": "J.HYDE",
+    "controlsME": "K.SIDES"
+  },
+  "importHints": {
+    "canonicalSheetName": "RAIL,LEFT,JB70",
+    "normalizedSheetName": "rail-left-jb70",
+    "bundleNames": [
+      "PC - PC",
+      "PC0470"
+    ],
+    "bundleDisplays": [
+      "PC - PC",
+      "PC0470 - CONTROL A"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "PC",
+      "bundles": [
+        {
+          "bundleName": "PC - PC",
+          "toLocation": "RAIL,LEFT,JB70",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "PC0470:INP_A",
+              "fromTerminal": "INP_A",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009312",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "PC0470:INP_B",
+              "toTerminal": "INP_B",
+              "toLocation": "RAIL,LEFT,JB70",
+              "bundleName": "PC - PC",
+              "bundleDisplay": "PC - PC",
+              "devicePrefix": "PC",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "PC",
+      "bundles": [
+        {
+          "bundleName": "PC0470",
+          "toLocation": "CONTROL A",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "PC0470:-PWR",
+              "fromTerminal": "-PWR",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009328",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0093:28",
+              "toTerminal": "28",
+              "toLocation": "CONTROL A",
+              "bundleName": "PC0470",
+              "bundleDisplay": "PC0470 - CONTROL A",
+              "devicePrefix": "PC",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "PC0470:+PWR",
+              "fromTerminal": "+PWR",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009344",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0093:44",
+              "toTerminal": "44",
+              "toLocation": "CONTROL A",
+              "bundleName": "PC0470",
+              "bundleDisplay": "",
+              "devicePrefix": "PC",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "PC0470:INP_A",
+              "fromTerminal": "INP_A",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009312",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0093:12",
+              "toTerminal": "12",
+              "toLocation": "CONTROL A",
+              "bundleName": "PC0470",
+              "bundleDisplay": "",
+              "devicePrefix": "PC",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "a30a02a17e6debd30a89e19309e5bf935440056d0f9f556163b3b461dcf6fab5"
+}

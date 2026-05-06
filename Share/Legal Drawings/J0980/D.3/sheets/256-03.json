@@ -1,0 +1,140 @@
+{
+  "slug": "256-03",
+  "name": "256-03",
+  "kind": "operational",
+  "sheetIndex": 11,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "HY2190A/B:BNC-A2",
+      "wireType": "SC",
+      "wireNo": "WA1909",
+      "wireId": "",
+      "gaugeSize": "CNET",
+      "fromLocation": "",
+      "fromPageZone": "5.H4",
+      "toDeviceId": "HY2290A/B:BNC-A1",
+      "toLocation": "256-01",
+      "toPageZone": "5.H3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-1",
+      "fromDeviceId": "HY2190A/B:BNC-B2",
+      "wireType": "SC",
+      "wireNo": "WB1909",
+      "wireId": "",
+      "gaugeSize": "CNET",
+      "fromLocation": "",
+      "fromPageZone": "5.H4",
+      "toDeviceId": "HY2290A/B:BNC-B1",
+      "toLocation": "256-01",
+      "toPageZone": "5.H3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-2",
+      "fromDeviceId": "HY2190A/B:BNC-A1",
+      "wireType": "SC",
+      "wireNo": "WA2019",
+      "wireId": "",
+      "gaugeSize": "CNET",
+      "fromLocation": "",
+      "fromPageZone": "5.H4",
+      "toDeviceId": "HY2200A/B:BNC-A2",
+      "toLocation": "256-L2",
+      "toPageZone": "5.H4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 14,
+      "__rowId": "row-3",
+      "fromDeviceId": "HY2190A/B:BNC-B1",
+      "wireType": "SC",
+      "wireNo": "WB2019",
+      "wireId": "",
+      "gaugeSize": "CNET",
+      "fromLocation": "",
+      "fromPageZone": "5.H4",
+      "toDeviceId": "HY2200A/B:BNC-B2",
+      "toLocation": "256-L2",
+      "toPageZone": "5.H4",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "HY2290A/B:BNC-A1",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "WA1909",
+      "Wire ID": null,
+      "Gauge/Size": "CNET",
+      "Page/Zone": "5.H3",
+      "Location": "256-01 "
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "HY2290A/B:BNC-B1",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "WB1909",
+      "Wire ID": null,
+      "Gauge/Size": "CNET",
+      "Page/Zone": "5.H3",
+      "Location": "256-01 "
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "HY2200A/B:BNC-A2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "WA2019",
+      "Wire ID": null,
+      "Gauge/Size": "CNET",
+      "Page/Zone": "5.H4",
+      "Location": "256-L2 "
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "HY2200A/B:BNC-B2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "WB2019",
+      "Wire ID": null,
+      "Gauge/Size": "CNET",
+      "Page/Zone": "5.H4",
+      "Location": "256-L2 "
+    }
+  ],
+  "rowCount": 4,
+  "metadata": {
+    "revision": "D.3"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:15:50.492Z"
+}

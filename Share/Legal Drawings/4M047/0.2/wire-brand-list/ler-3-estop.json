@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:25:19.779Z",
+  "mode": "branding-export",
+  "sheetSlug": "ler-3-estop",
+  "sheetName": "LER 3 ESTOP",
+  "totalRows": 4,
+  "header": {
+    "locationTitle": "LER 3 ESTOP",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M047",
+    "projectName": "4M047",
+    "revision": "0.2",
+    "controlsDE": "ALEX. JEZEQUEL",
+    "controlsME": "HECTOR, MEDRANO"
+  },
+  "importHints": {
+    "canonicalSheetName": "LER 3 ESTOP",
+    "normalizedSheetName": "ler-3-estop",
+    "bundleNames": [
+      "SB0500"
+    ],
+    "bundleDisplays": [
+      "SB0500 - LER - PNL LFT"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "SB",
+      "bundles": [
+        {
+          "bundleName": "SB0500",
+          "toLocation": "LER,PNL,LFT",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "SB0500:B1-11",
+              "fromTerminal": "B1-11",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0500B111",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT1036:3",
+              "toTerminal": "3",
+              "toLocation": "LER,PNL,LFT",
+              "bundleName": "SB0500",
+              "bundleDisplay": "SB0500 - LER - PNL LFT",
+              "devicePrefix": "SB",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "SB0500:B1-12",
+              "fromTerminal": "B1-12",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SB0500B112",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT1036:4",
+              "toTerminal": "4",
+              "toLocation": "LER,PNL,LFT",
+              "bundleName": "SB0500",
+              "bundleDisplay": "",
+              "devicePrefix": "SB",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "SB0500:B2-11",
+              "fromTerminal": "B2-11",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "ESTOP2",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT1036:1",
+              "toTerminal": "1",
+              "toLocation": "LER,PNL,LFT",
+              "bundleName": "SB0500",
+              "bundleDisplay": "",
+              "devicePrefix": "SB",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 14,
+              "fromDeviceId": "SB0500:B2-12",
+              "fromTerminal": "B2-12",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "ESTOP3",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT1036:2",
+              "toTerminal": "2",
+              "toLocation": "LER,PNL,LFT",
+              "bundleName": "SB0500",
+              "bundleDisplay": "",
+              "devicePrefix": "SB",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "4557a3c8532fed7386bc100a1c04d8f8e509ec8c1417eef53c91888f82468b5c"
+}

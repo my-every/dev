@@ -1,0 +1,68 @@
+{
+  "slug": "prox-hpc",
+  "name": "PROX,HPC",
+  "kind": "operational",
+  "sheetIndex": 13,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR4460:",
+      "wireType": "SC",
+      "wireNo": "GR4460",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "97.D3",
+      "toDeviceId": "FG1:1",
+      "toLocation": "PROX,HPC",
+      "toPageZone": "97.D3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FG1:1",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR4460",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "97.D3",
+      "Location": "PROX,HPC"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "projectName": "ET-CAR",
+    "revision": "B.4",
+    "controlsDE": "D. KIM",
+    "controlsME": "A. BELTRAN"
+  },
+  "assignment": {
+    "swsType": "BLANK",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "BLANK",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Has Prox - Basic/Blank panel"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:21:10.486Z"
+}

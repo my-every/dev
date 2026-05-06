@@ -1,0 +1,528 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:17:38.677Z",
+  "mode": "branding-export",
+  "sheetSlug": "generator-vib-panel",
+  "sheetName": "GENERATOR VIB PANEL",
+  "totalRows": 18,
+  "header": {
+    "locationTitle": "GENERATOR VIB PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J1640",
+    "projectName": "J1640",
+    "revision": "J1640",
+    "controlsDE": "D.JOHN",
+    "controlsME": "A.ABENGOZA"
+  },
+  "importHints": {
+    "canonicalSheetName": "GENERATOR VIB^PANEL",
+    "normalizedSheetName": "generator-vib-panel",
+    "bundleNames": [
+      "AF0182",
+      "AF0181",
+      "AU0180",
+      "FU - XT",
+      "XT - XT",
+      "XT0130"
+    ],
+    "bundleDisplays": [
+      "AF0182",
+      "AF0181",
+      "AU0180",
+      "FU - XT",
+      "XT - XT",
+      "AF0181 - GENERATOR DECS250 - PANEL",
+      "XT0130 - GENERATOR DECS250 - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AF",
+      "bundles": [
+        {
+          "bundleName": "AF0182",
+          "toLocation": "GENERATOR VIB^PANEL",
+          "rows": [
+            {
+              "rowId": "row-8",
+              "rowIndex": 18,
+              "fromDeviceId": "AF0182:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-AU0180N",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "AU0180:COM",
+              "toTerminal": "COM",
+              "toLocation": "GENERATOR VIB^PANEL",
+              "bundleName": "AF0182",
+              "bundleDisplay": "AF0182",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-10",
+              "rowIndex": 20,
+              "fromDeviceId": "AF0182:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AU0180P",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "AU0180:V+",
+              "toTerminal": "V+",
+              "toLocation": "GENERATOR VIB^PANEL",
+              "bundleName": "AF0182",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0181",
+          "toLocation": "GENERATOR VIB^PANEL",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "AF0181:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0180:2",
+              "toTerminal": "2",
+              "toLocation": "GENERATOR VIB^PANEL",
+              "bundleName": "AF0181",
+              "bundleDisplay": "AF0181",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-6",
+              "rowIndex": 16,
+              "fromDeviceId": "AF0181:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0181",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0181:LD",
+              "toTerminal": "LD",
+              "toLocation": "GENERATOR VIB^PANEL",
+              "bundleName": "AF0181",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0181",
+          "toLocation": "GENERATOR VIB^PANEL",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "AF0181:02",
+              "fromTerminal": "02",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-018102",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0182:A1",
+              "toTerminal": "A1",
+              "toLocation": "GENERATOR VIB^PANEL",
+              "bundleName": "AF0181",
+              "bundleDisplay": "AF0181",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "AF0181:18",
+              "fromTerminal": "18",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-018118",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0182:A2",
+              "toTerminal": "A2",
+              "toLocation": "GENERATOR VIB^PANEL",
+              "bundleName": "AF0181",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AU",
+      "bundles": [
+        {
+          "bundleName": "AU0180",
+          "toLocation": "GENERATOR VIB^PANEL",
+          "rows": [
+            {
+              "rowId": "row-17",
+              "rowIndex": 27,
+              "fromDeviceId": "AU0180:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0180:1",
+              "toTerminal": "1",
+              "toLocation": "GENERATOR VIB^PANEL",
+              "bundleName": "AU0180",
+              "bundleDisplay": "AU0180",
+              "devicePrefix": "AU",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-18",
+              "rowIndex": 28,
+              "fromDeviceId": "AU0180:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0180",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0180:LD",
+              "toTerminal": "LD",
+              "toLocation": "GENERATOR VIB^PANEL",
+              "bundleName": "AU0180",
+              "bundleDisplay": "",
+              "devicePrefix": "AU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "GENERATOR VIB^PANEL",
+          "rows": [
+            {
+              "rowId": "row-20",
+              "rowIndex": 30,
+              "fromDeviceId": "FU0180:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0130:1",
+              "toTerminal": "1",
+              "toLocation": "GENERATOR VIB^PANEL",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "GENERATOR VIB^PANEL",
+          "rows": [
+            {
+              "rowId": "row-23",
+              "rowIndex": 33,
+              "fromDeviceId": "XT0130:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0180:1",
+              "toTerminal": "1",
+              "toLocation": "GENERATOR VIB^PANEL",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AF",
+      "bundles": [
+        {
+          "bundleName": "AF0181",
+          "toLocation": "GENERATOR DECS250^PANEL",
+          "rows": [
+            {
+              "rowId": "row-25",
+              "rowIndex": 35,
+              "fromDeviceId": "AF0181:00",
+              "fromTerminal": "00",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-018100",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA0180:A1",
+              "toTerminal": "A1",
+              "toLocation": "GENERATOR DECS250^PANEL",
+              "bundleName": "AF0181",
+              "bundleDisplay": "AF0181 - GENERATOR DECS250 - PANEL",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-26",
+              "rowIndex": 36,
+              "fromDeviceId": "AF0181:10",
+              "fromTerminal": "10",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-018110",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA0185:A1",
+              "toTerminal": "A1",
+              "toLocation": "GENERATOR DECS250^PANEL",
+              "bundleName": "AF0181",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-27",
+              "rowIndex": 37,
+              "fromDeviceId": "AF0181:16",
+              "fromTerminal": "16",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-018116",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA0180:A2",
+              "toTerminal": "A2",
+              "toLocation": "GENERATOR DECS250^PANEL",
+              "bundleName": "AF0181",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-28",
+              "rowIndex": 38,
+              "fromDeviceId": "AF0181:26",
+              "fromTerminal": "26",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-018126",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "KA0364:14",
+              "toTerminal": "14",
+              "toLocation": "GENERATOR DECS250^PANEL",
+              "bundleName": "AF0181",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0130",
+          "toLocation": "GENERATOR DECS250^PANEL",
+          "rows": [
+            {
+              "rowId": "row-31",
+              "rowIndex": 41,
+              "fromDeviceId": "XT0130:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0120:LI",
+              "toTerminal": "LI",
+              "toLocation": "GENERATOR DECS250^PANEL",
+              "bundleName": "XT0130",
+              "bundleDisplay": "XT0130 - GENERATOR DECS250 - PANEL",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-32",
+              "rowIndex": 42,
+              "fromDeviceId": "XT0130:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0332",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0333:1",
+              "toTerminal": "1",
+              "toLocation": "GENERATOR DECS250^PANEL",
+              "bundleName": "XT0130",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-33",
+              "rowIndex": 43,
+              "fromDeviceId": "XT0130:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0336:3",
+              "toTerminal": "3",
+              "toLocation": "GENERATOR DECS250^PANEL",
+              "bundleName": "XT0130",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-34",
+              "rowIndex": 44,
+              "fromDeviceId": "XT0130:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0120:1",
+              "toTerminal": "1",
+              "toLocation": "GENERATOR DECS250^PANEL",
+              "bundleName": "XT0130",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "76bd35f012427e5da6a8e5ca057af8fef308d7cf1a784f328ecb2aa75c2188ef"
+}

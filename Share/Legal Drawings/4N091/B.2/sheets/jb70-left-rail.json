@@ -1,0 +1,67 @@
+{
+  "slug": "jb70-left-rail",
+  "name": "JB70 LEFT RAIL",
+  "kind": "operational",
+  "sheetIndex": 5,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR0431:",
+      "wireType": "SC",
+      "wireNo": "GR0431",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "10.B4",
+      "toDeviceId": "FRAME",
+      "toLocation": "JB70 LEFT RAIL",
+      "toPageZone": "10.B3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0431",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "10.B3",
+      "Location": "JB70 LEFT RAIL"
+    }
+  ],
+  "rowCount": 1,
+  "metadata": {
+    "revision": "B.2",
+    "controlsDE": "D. KIM",
+    "controlsME": "A. PLVAN"
+  },
+  "assignment": {
+    "swsType": "RAIL",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "RAIL",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Rail in title with no Panel number"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:43:01.412Z"
+}

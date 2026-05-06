@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:32:39.801Z",
+  "mode": "branding-export",
+  "sheetSlug": "vibration-door-panel",
+  "sheetName": "VIBRATION DOOR PANEL",
+  "totalRows": 2,
+  "header": {
+    "locationTitle": "VIBRATION DOOR PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4M401",
+    "projectName": "SHL-GMG - Unit 3",
+    "revision": "C.3_M.2",
+    "controlsDE": "J. SHORTER"
+  },
+  "importHints": {
+    "canonicalSheetName": "VIBRATION DOOR PANEL",
+    "normalizedSheetName": "vibration-door-panel",
+    "bundleNames": [
+      "AF0450"
+    ],
+    "bundleDisplays": [
+      "AF0450 - GENERATOR VIBRATION - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AF",
+      "bundles": [
+        {
+          "bundleName": "AF0450",
+          "toLocation": "GENERATOR VIBRATION PANEL",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "AF0450:55",
+              "fromTerminal": "55",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0113",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0110:2",
+              "toTerminal": "2",
+              "toLocation": "GENERATOR VIBRATION PANEL",
+              "bundleName": "AF0450",
+              "bundleDisplay": "AF0450 - GENERATOR VIBRATION - PANEL",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF0450",
+          "toLocation": "GENERATOR VIBRATION PANEL",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "AF0450:53",
+              "fromTerminal": "53",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0110:3",
+              "toTerminal": "3",
+              "toLocation": "GENERATOR VIBRATION PANEL",
+              "bundleName": "AF0450",
+              "bundleDisplay": "AF0450 - GENERATOR VIBRATION - PANEL",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "cc21f93ea25bc4fc4e185bcbae68bcaa3346046c4e29265f3f2b30392c62d5fc"
+}

@@ -1,0 +1,136 @@
+{
+  "partNumber": "1577354-4502",
+  "description": "WORKSTATION, VERSA VIEW 1200H",
+  "category": "devices",
+  "type": "control-modules",
+  "tags": [
+    "auto-ingest",
+    "devices"
+  ],
+  "source": "workbook_ingest",
+  "lifecycle": {
+    "status": "new",
+    "needsTraining": true,
+    "needsImages": true,
+    "needsReviewByRole": "team_lead",
+    "discoveredFrom": {
+      "projectId": "proj_1777095355103_76neyf",
+      "sourceSheet": "CONTROL,JB70",
+      "sourceLocation": "CONTROL,JB70",
+      "discoveredAt": "2026-04-25T05:37:11.125Z"
+    }
+  },
+  "createdAt": "2026-04-25T05:37:11.125Z",
+  "updatedAt": "2026-05-05T04:29:58.995Z",
+  "terminalSchema": {
+    "negativePatterns": [
+      "-",
+      "0V",
+      "0VDC",
+      "COM",
+      "COMMON",
+      "DC-",
+      "NEG",
+      "NEGATIVE"
+    ],
+    "updatedAt": "2026-05-05T04:29:58.994Z",
+    "terminals": [
+      {
+        "name": "GND",
+        "aliases": [],
+        "wireId": "GRN/YEL",
+        "size": "14",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "L1",
+        "aliases": [],
+        "wireId": "ENET",
+        "size": "CABLE",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "NEG",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "14",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": true,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "POS",
+        "aliases": [],
+        "wireId": "WHT",
+        "size": "14",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "USB1",
+        "aliases": [],
+        "wireId": "USB",
+        "size": "",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "USB2",
+        "aliases": [],
+        "wireId": "USB",
+        "size": "",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "USB3",
+        "aliases": [],
+        "wireId": "USB",
+        "size": "",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      },
+      {
+        "name": "USB4",
+        "aliases": [],
+        "wireId": "USB",
+        "size": "",
+        "side": "unknown",
+        "tier": "",
+        "order": null,
+        "isNegative": false,
+        "hardware": {},
+        "instructions": []
+      }
+    ]
+  }
+}

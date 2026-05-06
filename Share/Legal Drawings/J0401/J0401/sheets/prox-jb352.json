@@ -1,0 +1,93 @@
+{
+  "slug": "prox-jb352",
+  "name": "PROX JB352",
+  "kind": "operational",
+  "sheetIndex": 8,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR4460:",
+      "wireType": "SC",
+      "wireNo": "GR4460",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "63.D3",
+      "toDeviceId": "FRAME",
+      "toLocation": "PROX JB352",
+      "toPageZone": "63.D3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-1",
+      "fromDeviceId": "GR4461:",
+      "wireType": "SC",
+      "wireNo": "GR4461",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "63.D3",
+      "toDeviceId": "FRAME",
+      "toLocation": "PROX JB352",
+      "toPageZone": "63.D3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR4460",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "63.D3",
+      "Location": "PROX JB352"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "FRAME",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR4461",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "63.D3",
+      "Location": "PROX JB352"
+    }
+  ],
+  "rowCount": 2,
+  "metadata": {
+    "projectName": "NOC ASABB-C-4401",
+    "revision": "0.6",
+    "controlsDE": "N.GONZALEZ",
+    "controlsME": "R.DURAN"
+  },
+  "assignment": {
+    "swsType": "BLANK",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "BLANK",
+    "detectedConfidence": 95,
+    "detectedReasons": [
+      "Has Prox - Basic/Blank panel"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:10:06.807Z"
+}

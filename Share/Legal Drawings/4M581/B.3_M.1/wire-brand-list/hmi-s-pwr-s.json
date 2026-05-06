@@ -1,0 +1,74 @@
+{
+  "sheetSlug": "hmi-s-pwr-s",
+  "sheetName": "HMI-S PWR_S",
+  "sourceSheetName": "HMI-S PWR_S",
+  "metadata": {
+    "normalizedSheetName": "hmi-s-pwr-s",
+    "bundleNames": [
+      "BA/FU",
+      "UV/FU"
+    ]
+  },
+  "rows": [
+    {
+      "importedRowId": "hmi-s-pwr-s-13",
+      "rowIndex": 13,
+      "matchKey": "FU0291:LD|FU0291|WHT|16|UV0291:24V(+)|HMI-S",
+      "fromDeviceId": "FU0291:LD",
+      "wireNo": "FU0291",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "length": 60,
+      "toDeviceId": "UV0291:24V(+)",
+      "toLocation": "HMI-S",
+      "devicePrefix": "FU0291",
+      "bundleName": "BA/FU",
+      "bundleDisplay": "BA/FU"
+    },
+    {
+      "importedRowId": "hmi-s-pwr-s-14",
+      "rowIndex": 14,
+      "matchKey": "BA1100:POS|FU1101LD|WHT|16|FU1101:LD|HMI-S",
+      "fromDeviceId": "BA1100:POS",
+      "wireNo": "FU1101LD",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "length": 60,
+      "toDeviceId": "FU1101:LD",
+      "toLocation": "HMI-S",
+      "devicePrefix": "BA1100",
+      "bundleName": "BA/FU",
+      "bundleDisplay": "BA/FU"
+    },
+    {
+      "importedRowId": "hmi-s-pwr-s-16",
+      "rowIndex": 16,
+      "matchKey": "UV0291:24V(-)|-0V|WHT|14|XT0003:6|A",
+      "fromDeviceId": "UV0291:24V(-)",
+      "wireNo": "-0V",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 220,
+      "toDeviceId": "XT0003:6",
+      "toLocation": "A",
+      "devicePrefix": "UV0291",
+      "bundleName": "UV/FU",
+      "bundleDisplay": "UV/FU-A"
+    },
+    {
+      "importedRowId": "hmi-s-pwr-s-17",
+      "rowIndex": 17,
+      "matchKey": "FU0291:LI|FU0136|WHT|14|XT0002:6|A",
+      "fromDeviceId": "FU0291:LI",
+      "wireNo": "FU0136",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "length": 220,
+      "toDeviceId": "XT0002:6",
+      "toLocation": "A",
+      "devicePrefix": "FU0291",
+      "bundleName": "UV/FU",
+      "bundleDisplay": "UV/FU-A"
+    }
+  ]
+}

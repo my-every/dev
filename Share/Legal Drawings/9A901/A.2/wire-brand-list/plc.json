@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:57:11.736Z",
+  "mode": "branding-export",
+  "sheetSlug": "plc",
+  "sheetName": "PLC",
+  "totalRows": 2,
+  "header": {
+    "locationTitle": "PLC",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "9A901",
+    "projectName": "9A901",
+    "revision": "A.2",
+    "controlsDE": "J.HYDE",
+    "controlsME": "K.SIDES"
+  },
+  "importHints": {
+    "canonicalSheetName": "PLC",
+    "normalizedSheetName": "plc",
+    "bundleNames": [
+      "AP - BA",
+      "UV - FU"
+    ],
+    "bundleDisplays": [
+      "AP - BA",
+      "UV - FU - POWER SUPPLY - PANEL"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AP",
+      "bundles": [
+        {
+          "bundleName": "AP - BA",
+          "toLocation": "PLC",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "AP0609:L2",
+              "fromTerminal": "L2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AP0609L2",
+              "wireId": "",
+              "gaugeSize": "",
+              "length": 60,
+              "toDeviceId": "BA0601:RJ45",
+              "toTerminal": "RJ45",
+              "toLocation": "PLC",
+              "bundleName": "AP - BA",
+              "bundleDisplay": "AP - BA",
+              "devicePrefix": "AP",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "UV",
+      "bundles": [
+        {
+          "bundleName": "UV - FU",
+          "toLocation": "POWER SUPPLY PANEL",
+          "rows": [
+            {
+              "rowId": "row-31",
+              "rowIndex": 41,
+              "fromDeviceId": "UV0600:(+)",
+              "fromTerminal": "(+)",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0010",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU0010:LD",
+              "toTerminal": "LD",
+              "toLocation": "POWER SUPPLY PANEL",
+              "bundleName": "UV - FU",
+              "bundleDisplay": "UV - FU - POWER SUPPLY - PANEL",
+              "devicePrefix": "UV",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "4fb5703fd9efc77591dfdddc7d30a9357ef6afbe426770d26042230be406bd00"
+}

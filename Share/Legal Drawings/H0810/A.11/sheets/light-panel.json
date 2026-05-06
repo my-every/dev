@@ -1,0 +1,143 @@
+{
+  "slug": "light-panel",
+  "name": "LIGHT PANEL",
+  "kind": "operational",
+  "sheetIndex": 13,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-0",
+      "fromDeviceId": "HL0568:X1",
+      "wireType": "SC",
+      "wireNo": "DS568-125DC",
+      "wireId": "RED",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "23.D5",
+      "toDeviceId": "XT0341:18",
+      "toLocation": "CONSOLE^LEFT PANEL",
+      "toPageZone": "23.D4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-1",
+      "fromDeviceId": "HL0568:X2",
+      "wireType": "SC",
+      "wireNo": "COM-125DC",
+      "wireId": "RED",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "23.D5",
+      "toDeviceId": "XT0341:19",
+      "toLocation": "CONSOLE^LEFT PANEL",
+      "toPageZone": "23.D4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-2",
+      "fromDeviceId": "HL0569:X1",
+      "wireType": "SC",
+      "wireNo": "DS569-125DC",
+      "wireId": "RED",
+      "gaugeSize": "156",
+      "fromLocation": "",
+      "fromPageZone": "23.D5",
+      "toDeviceId": "XT0341:20",
+      "toLocation": "CONSOLE^LEFT PANEL",
+      "toPageZone": "23.D4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 14,
+      "__rowId": "row-3",
+      "fromDeviceId": "HL0569:X2",
+      "wireType": "SC",
+      "wireNo": "COM-125DC",
+      "wireId": "RED",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "23.D5",
+      "toDeviceId": "XT0341:19",
+      "toLocation": "CONSOLE^LEFT PANEL",
+      "toPageZone": "23.D4",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "XT0341:18",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "DS568-125DC",
+      "Wire ID": "RED",
+      "Gauge/Size": "16",
+      "Page/Zone": "23.D4",
+      "Location": "CONSOLE^LEFT PANEL"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "XT0341:19",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "COM-125DC",
+      "Wire ID": "RED",
+      "Gauge/Size": "16",
+      "Page/Zone": "23.D4",
+      "Location": "CONSOLE^LEFT PANEL"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "XT0341:20",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "DS569-125DC",
+      "Wire ID": "RED",
+      "Gauge/Size": "156",
+      "Page/Zone": "23.D4",
+      "Location": "CONSOLE^LEFT PANEL"
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "XT0341:19",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "COM-125DC",
+      "Wire ID": "RED",
+      "Gauge/Size": "16",
+      "Page/Zone": "23.D4",
+      "Location": "CONSOLE^LEFT PANEL"
+    }
+  ],
+  "rowCount": 4,
+  "metadata": {
+    "projectName": "NC-181 NEWTON CREEK",
+    "revision": "A.11",
+    "controlsDE": "G.MENDOZA",
+    "controlsME": "S. MARTINEZ"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:07:53.976Z"
+}

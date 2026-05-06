@@ -1,0 +1,92 @@
+{
+  "slug": "panel-errors",
+  "name": "Panel Errors",
+  "kind": "reference",
+  "sheetIndex": 7,
+  "headers": [
+    "Device ID",
+    "Location",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire ID",
+    "Wire No.",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location_1",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "AF0201:SHLD",
+      "wireType": "SC",
+      "wireNo": "AF0201V+L",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "PANEL",
+      "fromPageZone": "9.D5",
+      "toDeviceId": "AF0201:V+L",
+      "toLocation": "PANEL",
+      "toPageZone": "9.D5",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "AF0202:COML",
+      "wireType": "SC",
+      "wireNo": "AF0202COM-L",
+      "wireId": "WHT",
+      "gaugeSize": "14",
+      "fromLocation": "PANEL",
+      "fromPageZone": "9.D6",
+      "toDeviceId": "AF0202:SHLD",
+      "toLocation": "PANEL",
+      "toPageZone": "9.D6",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "AF0201:V+L",
+      "Location": "PANEL",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire ID": "WHT",
+      "Wire No.": "AF0201V+L",
+      "Gauge/Size": "14",
+      "Page/Zone": "9.D5"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "AF0202:SHLD",
+      "Location": "PANEL",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire ID": "WHT",
+      "Wire No.": "AF0202COM-L",
+      "Gauge/Size": "14",
+      "Page/Zone": "9.D6"
+    }
+  ],
+  "rowCount": 2,
+  "metadata": {
+    "projectName": "WQ1 6th additional generator",
+    "revision": "A.2M2",
+    "controlsDE": "Keith Nyberg",
+    "controlsME": "Dennis Figueroa"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "BUILD_UP",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 0,
+    "detectedReasons": [],
+    "requiresWireSws": false,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:16:48.371Z"
+}

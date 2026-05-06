@@ -1,0 +1,1120 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:18:41.762Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb73-hp-ep-box",
+  "sheetName": "JB73 HP EP BOX",
+  "totalRows": 39,
+  "header": {
+    "locationTitle": "JB73 HP EP BOX",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J2670",
+    "projectName": "J2670",
+    "revision": "J2670",
+    "controlsDE": "M. Ramirez",
+    "controlsME": "R. Duran"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB73 HP EP BOX",
+    "normalizedSheetName": "jb73-hp-ep-box",
+    "bundleNames": [
+      "AF1202",
+      "AF1201",
+      "AF1207",
+      "AU1200",
+      "FU - FU",
+      "FU - XT",
+      "KA0193",
+      "KA0120",
+      "KA0190",
+      "KA - XT",
+      "KA4401",
+      "XT0130",
+      "XT - XT",
+      "XT0121",
+      "XT0190"
+    ],
+    "bundleDisplays": [
+      "AF1202",
+      "AF1201",
+      "AF1207",
+      "AU1200",
+      "FU - FU",
+      "FU - XT",
+      "KA0193",
+      "KA0120",
+      "KA0190",
+      "KA - XT",
+      "KA4401",
+      "XT0130",
+      "XT - XT",
+      "XT0121 - JB75",
+      "XT0190 - BOX 1",
+      "XT0130 - BOX 2"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AF",
+      "bundles": [
+        {
+          "bundleName": "AF1202",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-10",
+              "rowIndex": 20,
+              "fromDeviceId": "AF1202:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-AU1200N",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "AU1200:COM",
+              "toTerminal": "COM",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "AF1202",
+              "bundleDisplay": "AF1202",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-13",
+              "rowIndex": 23,
+              "fromDeviceId": "AF1202:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "AU1200P",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "AU1200:V+",
+              "toTerminal": "V+",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "AF1202",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF1201",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-8",
+              "rowIndex": 18,
+              "fromDeviceId": "AF1201:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0121",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU0121:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "AF1201",
+              "bundleDisplay": "AF1201",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF1201",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "AF1201:08",
+              "fromTerminal": "08",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-120108",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0193:14",
+              "toTerminal": "14",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "AF1201",
+              "bundleDisplay": "AF1201",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "AF1201:10",
+              "fromTerminal": "10",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-120110",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0191:14",
+              "toTerminal": "14",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "AF1201",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "AF1201:24",
+              "fromTerminal": "24",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-120124",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0194:A2",
+              "toTerminal": "A2",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "AF1201",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF1201",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "AF1201:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0130:3",
+              "toTerminal": "3",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "AF1201",
+              "bundleDisplay": "AF1201",
+              "devicePrefix": "AF",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AF1207",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-31",
+              "rowIndex": 41,
+              "fromDeviceId": "AF1207:02",
+              "fromTerminal": "02",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-120702",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA4401:14",
+              "toTerminal": "14",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "AF1207",
+              "bundleDisplay": "AF1207",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-32",
+              "rowIndex": 42,
+              "fromDeviceId": "AF1207:18",
+              "fromTerminal": "18",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-120718",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA4401:A2",
+              "toTerminal": "A2",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "AF1207",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-33",
+              "rowIndex": 43,
+              "fromDeviceId": "AF1207:34",
+              "fromTerminal": "34",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "PS44012",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA4401:11",
+              "toTerminal": "11",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "AF1207",
+              "bundleDisplay": "",
+              "devicePrefix": "AF",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "AU",
+      "bundles": [
+        {
+          "bundleName": "AU1200",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-50",
+              "rowIndex": 60,
+              "fromDeviceId": "AU1200:V+",
+              "fromTerminal": "V+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0120",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0120:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "AU1200",
+              "bundleDisplay": "AU1200",
+              "devicePrefix": "AU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "AU1200",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-49",
+              "rowIndex": 59,
+              "fromDeviceId": "AU1200:COM",
+              "fromTerminal": "COM",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0130:4",
+              "toTerminal": "4",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "AU1200",
+              "bundleDisplay": "AU1200",
+              "devicePrefix": "AU",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - FU",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-51",
+              "rowIndex": 61,
+              "fromDeviceId": "FU0120:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0130",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FU0130:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "FU - FU",
+              "bundleDisplay": "FU - FU",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-55",
+              "rowIndex": 65,
+              "fromDeviceId": "FU0291:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0291",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0190:3",
+              "toTerminal": "3",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-54",
+              "rowIndex": 64,
+              "fromDeviceId": "FU0130:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0130:1",
+              "toTerminal": "1",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "KA",
+      "bundles": [
+        {
+          "bundleName": "KA0193",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-73",
+              "rowIndex": 83,
+              "fromDeviceId": "KA0193:11",
+              "fromTerminal": "11",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-019311",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA0194:A1",
+              "toTerminal": "A1",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "KA0193",
+              "bundleDisplay": "KA0193",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-74",
+              "rowIndex": 84,
+              "fromDeviceId": "KA0193:12",
+              "fromTerminal": "12",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-019312",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "KA4401:22",
+              "toTerminal": "22",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "KA0193",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "KA0120",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-61",
+              "rowIndex": 71,
+              "fromDeviceId": "KA0120:A2",
+              "fromTerminal": "A2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0130:7",
+              "toTerminal": "7",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "KA0120",
+              "bundleDisplay": "KA0120",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "KA0120",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-60",
+              "rowIndex": 70,
+              "fromDeviceId": "KA0120:A1",
+              "fromTerminal": "A1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA0231A1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0130:6",
+              "toTerminal": "6",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "KA0120",
+              "bundleDisplay": "KA0120",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "KA0190",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-62",
+              "rowIndex": 72,
+              "fromDeviceId": "KA0190:12",
+              "fromTerminal": "12",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-019012",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0190:1",
+              "toTerminal": "1",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "KA0190",
+              "bundleDisplay": "KA0190",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-63",
+              "rowIndex": 73,
+              "fromDeviceId": "KA0190:14",
+              "fromTerminal": "14",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009508",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0190:4",
+              "toTerminal": "4",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "KA0190",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-65",
+              "rowIndex": 75,
+              "fromDeviceId": "KA0190:A1",
+              "fromTerminal": "A1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA0231A1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0130:6",
+              "toTerminal": "6",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "KA0190",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-67",
+              "rowIndex": 77,
+              "fromDeviceId": "KA0190:A2",
+              "fromTerminal": "A2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0130:7",
+              "toTerminal": "7",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "KA0190",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "KA - XT",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-68",
+              "rowIndex": 78,
+              "fromDeviceId": "KA0191:12",
+              "fromTerminal": "12",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-019012",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0190:1",
+              "toTerminal": "1",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "KA - XT",
+              "bundleDisplay": "KA - XT",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "KA4401",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-76",
+              "rowIndex": 86,
+              "fromDeviceId": "KA4401:21",
+              "fromTerminal": "21",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0291",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0190:3",
+              "toTerminal": "3",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "KA4401",
+              "bundleDisplay": "KA4401",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "KA4401",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-75",
+              "rowIndex": 85,
+              "fromDeviceId": "KA4401:11",
+              "fromTerminal": "11",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "PS44012",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0121:1",
+              "toTerminal": "1",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "KA4401",
+              "bundleDisplay": "KA4401",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-77",
+              "rowIndex": 87,
+              "fromDeviceId": "KA4401:24",
+              "fromTerminal": "24",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-019012",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0190:1",
+              "toTerminal": "1",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "KA4401",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-78",
+              "rowIndex": 88,
+              "fromDeviceId": "KA4401:A1",
+              "fromTerminal": "A1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "PS44013",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0121:2",
+              "toTerminal": "2",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "KA4401",
+              "bundleDisplay": "",
+              "devicePrefix": "KA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0130",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-81",
+              "rowIndex": 91,
+              "fromDeviceId": "XT0130:4",
+              "fromTerminal": "4",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0520:2",
+              "toTerminal": "2",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "XT0130",
+              "bundleDisplay": "XT0130",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT0130",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-79",
+              "rowIndex": 89,
+              "fromDeviceId": "XT0130:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0520:1",
+              "toTerminal": "1",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "XT0130",
+              "bundleDisplay": "XT0130",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT0130",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-80",
+              "rowIndex": 90,
+              "fromDeviceId": "XT0130:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 60,
+              "toDeviceId": "XT0130:7",
+              "toTerminal": "7",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "XT0130",
+              "bundleDisplay": "XT0130",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "JB73 HP EP BOX",
+          "rows": [
+            {
+              "rowId": "row-83",
+              "rowIndex": 93,
+              "fromDeviceId": "XT0520:3",
+              "fromTerminal": "3",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA0231A1",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "XT0130:5",
+              "toTerminal": "5",
+              "toLocation": "JB73 HP EP BOX",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0121",
+          "toLocation": "JB75",
+          "rows": [
+            {
+              "rowId": "row-85",
+              "rowIndex": 95,
+              "fromDeviceId": "XT0121:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "PS44012",
+              "wireId": "WHT",
+              "gaugeSize": "18",
+              "length": 120,
+              "toDeviceId": "XT4875:2",
+              "toTerminal": "2",
+              "toLocation": "JB75",
+              "bundleName": "XT0121",
+              "bundleDisplay": "XT0121 - JB75",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-86",
+              "rowIndex": 96,
+              "fromDeviceId": "XT0121:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "PS44013",
+              "wireId": "WHT",
+              "gaugeSize": "18",
+              "length": 120,
+              "toDeviceId": "XT4875:3",
+              "toTerminal": "3",
+              "toLocation": "JB75",
+              "bundleName": "XT0121",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0190",
+          "toLocation": "JB128 BOX 1",
+          "rows": [
+            {
+              "rowId": "row-87",
+              "rowIndex": 97,
+              "fromDeviceId": "XT0190:4",
+              "fromTerminal": "4",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-009508",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0095:08",
+              "toTerminal": "08",
+              "toLocation": "JB128 BOX 1",
+              "bundleName": "XT0190",
+              "bundleDisplay": "XT0190 - BOX 1",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-88",
+              "rowIndex": 98,
+              "fromDeviceId": "XT0190:5",
+              "fromTerminal": "5",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "SV54302",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "AF0095:24",
+              "toTerminal": "24",
+              "toLocation": "JB128 BOX 1",
+              "bundleName": "XT0190",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT0130",
+          "toLocation": "JB129 BOX 2",
+          "rows": [
+            {
+              "rowId": "row-90",
+              "rowIndex": 100,
+              "fromDeviceId": "XT0130:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "12",
+              "length": 120,
+              "toDeviceId": "XT0110:2",
+              "toTerminal": "2",
+              "toLocation": "JB129 BOX 2",
+              "bundleName": "XT0130",
+              "bundleDisplay": "XT0130 - BOX 2",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT0130",
+          "toLocation": "JB129 BOX 2",
+          "rows": [
+            {
+              "rowId": "row-89",
+              "rowIndex": 99,
+              "fromDeviceId": "XT0130:1",
+              "fromTerminal": "1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0136",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0110:1",
+              "toTerminal": "1",
+              "toLocation": "JB129 BOX 2",
+              "bundleName": "XT0130",
+              "bundleDisplay": "XT0130 - BOX 2",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "XT0130",
+          "toLocation": "JB129 BOX 2",
+          "rows": [
+            {
+              "rowId": "row-91",
+              "rowIndex": 101,
+              "fromDeviceId": "XT0130:5",
+              "fromTerminal": "5",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "KA0231A1",
+              "wireId": "WHT",
+              "gaugeSize": "20",
+              "length": 120,
+              "toDeviceId": "XT0110:3",
+              "toTerminal": "3",
+              "toLocation": "JB129 BOX 2",
+              "bundleName": "XT0130",
+              "bundleDisplay": "XT0130 - BOX 2",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "a449a956ddc0709ce1ea9414589735ef1a0dc9e7fb4ed90ea5586cff4253f0a1"
+}

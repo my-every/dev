@@ -1,0 +1,167 @@
+{
+  "slug": "control-jb73-tt6",
+  "name": "CONTROL,JB73;TT6",
+  "kind": "operational",
+  "sheetIndex": 8,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "ZS7326:1",
+      "wireType": "SC",
+      "wireNo": "EL7326B1",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "20.B5",
+      "toDeviceId": "XT7326:1",
+      "toLocation": "HPC CTRL",
+      "toPageZone": "20.B3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "ZS7326:2",
+      "wireType": "SC",
+      "wireNo": "FU0254",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "20.B5",
+      "toDeviceId": "FU0254:LD",
+      "toLocation": "HPC CTRL",
+      "toPageZone": "28.B4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-2",
+      "fromDeviceId": "EL7326:B1",
+      "wireType": "WC7326",
+      "wireNo": "EL7326B1",
+      "wireId": "WHT",
+      "gaugeSize": "16GA",
+      "fromLocation": "",
+      "fromPageZone": "20.B2",
+      "toDeviceId": "XT7326:1",
+      "toLocation": "HPC CTRL",
+      "toPageZone": "20.B3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-3",
+      "fromDeviceId": "EL7326:W1",
+      "wireType": "WC7326",
+      "wireNo": "-0V",
+      "wireId": "BLK",
+      "gaugeSize": "16GA",
+      "fromLocation": "",
+      "fromPageZone": "20.B2",
+      "toDeviceId": "XT7326:2",
+      "toLocation": "HPC CTRL",
+      "toPageZone": "20.C3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 14,
+      "__rowId": "row-4",
+      "fromDeviceId": "EL7326:W2",
+      "wireType": "WC7326",
+      "wireNo": "EL7326GRD",
+      "wireId": "GRN",
+      "gaugeSize": "16GA",
+      "fromLocation": "",
+      "fromPageZone": "20.B2",
+      "toDeviceId": "XT7326:3",
+      "toLocation": "HPC CTRL",
+      "toPageZone": "20.C3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "XT7326:1",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "EL7326B1",
+      "Wire ID": "WHT",
+      "Gauge/Size": "16",
+      "Page/Zone": "20.B3",
+      "Location": "HPC CTRL"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "FU0254:LD",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "FU0254",
+      "Wire ID": "WHT",
+      "Gauge/Size": "16",
+      "Page/Zone": "28.B4",
+      "Location": "HPC CTRL"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "XT7326:1",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC7326",
+      "Wire No.": "EL7326B1",
+      "Wire ID": "WHT",
+      "Gauge/Size": "16GA",
+      "Page/Zone": "20.B3",
+      "Location": "HPC CTRL"
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "XT7326:2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC7326",
+      "Wire No.": "0V",
+      "Wire ID": "BLK",
+      "Gauge/Size": "16GA",
+      "Page/Zone": "20.C3",
+      "Location": "HPC CTRL"
+    },
+    {
+      "__rowId": "raw-4",
+      "Device ID": "XT7326:3",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "WC7326",
+      "Wire No.": "EL7326GRD",
+      "Wire ID": "GRN",
+      "Gauge/Size": "16GA",
+      "Page/Zone": "20.C3",
+      "Location": "HPC CTRL"
+    }
+  ],
+  "rowCount": 5,
+  "metadata": {
+    "projectName": "NW NATURAL",
+    "revision": "B.2",
+    "controlsDE": "J. UNGER"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:23:48.254Z"
+}

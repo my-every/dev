@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T13:49:45.577Z",
+  "mode": "branding-export",
+  "sheetSlug": "gear-box-panel",
+  "sheetName": "GEAR BOX PANEL",
+  "totalRows": 4,
+  "header": {
+    "locationTitle": "GEAR BOX PANEL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "4N712",
+    "projectName": "ONE-E2 - Unit 1",
+    "revision": "B.1",
+    "controlsDE": "D. KIM",
+    "controlsME": "A. PLVAN"
+  },
+  "importHints": {
+    "canonicalSheetName": "GEAR BOX PANEL",
+    "normalizedSheetName": "gear-box-panel",
+    "bundleNames": [
+      "FU9780 - RED",
+      "XT - XT"
+    ],
+    "bundleDisplays": [
+      "FU9780 - RED",
+      "XT - XT"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU9780 - RED",
+          "toLocation": "GEAR BOX PANEL",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 11,
+              "fromDeviceId": "FU9780:LD",
+              "fromTerminal": "LD",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU9780L1",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9781:1",
+              "toTerminal": "1",
+              "toLocation": "GEAR BOX PANEL",
+              "bundleName": "FU9780 - RED",
+              "bundleDisplay": "FU9780 - RED",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 12,
+              "fromDeviceId": "FU9780:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CCH9780L1",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9780:1",
+              "toTerminal": "1",
+              "toLocation": "GEAR BOX PANEL",
+              "bundleName": "FU9780 - RED",
+              "bundleDisplay": "",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "XT",
+      "bundles": [
+        {
+          "bundleName": "XT - XT",
+          "toLocation": "GEAR BOX PANEL",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 13,
+              "fromDeviceId": "XT9780:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CCH9780L2",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9781:2",
+              "toTerminal": "2",
+              "toLocation": "GEAR BOX PANEL",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "XT - XT",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-4",
+              "rowIndex": 15,
+              "fromDeviceId": "XT9781:2",
+              "fromTerminal": "2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "CCH9780L2",
+              "wireId": "RED",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT9782:2",
+              "toTerminal": "2",
+              "toLocation": "GEAR BOX PANEL",
+              "bundleName": "XT - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "XT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "d28b423c789adbde6e9266e02fd97413c15fe8070890fcecaa8168c1fad9cf3a"
+}

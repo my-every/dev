@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-05T14:09:34.075Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb1123-media-converter-box",
+  "sheetName": "JB1123 MEDIA CONVERTER BOX",
+  "totalRows": 6,
+  "header": {
+    "locationTitle": "JB1123 MEDIA CONVERTER BOX",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "J0310",
+    "projectName": "J0310",
+    "revision": "C.1",
+    "controlsDE": "D.SANDOVAL",
+    "controlsME": "DAVE DURAN"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB1123 MEDIA CONVERTER BOX",
+    "normalizedSheetName": "jb1123-media-converter-box",
+    "bundleNames": [
+      "BA1302",
+      "BA1303",
+      "FU - XT"
+    ],
+    "bundleDisplays": [
+      "BA1302",
+      "BA1303",
+      "FU - XT"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "BA1302",
+          "toLocation": "JB1123 MEDIA CONVERTER BOX",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "BA1302:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1300",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU1300:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB1123 MEDIA CONVERTER BOX",
+              "bundleName": "BA1302",
+              "bundleDisplay": "BA1302",
+              "devicePrefix": "BA"
+            }
+          ]
+        },
+        {
+          "bundleName": "BA1302",
+          "toLocation": "JB1123 MEDIA CONVERTER BOX",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "BA1302:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalOrder": null,
+              "wireNo": "BA0V",
+              "wireId": "",
+              "gaugeSize": "",
+              "length": 60,
+              "toDeviceId": "XT0003:3",
+              "toTerminal": "3",
+              "toLocation": "JB1123 MEDIA CONVERTER BOX",
+              "bundleName": "BA1302",
+              "bundleDisplay": "BA1302",
+              "devicePrefix": "BA"
+            }
+          ]
+        },
+        {
+          "bundleName": "BA1303",
+          "toLocation": "JB1123 MEDIA CONVERTER BOX",
+          "rows": [
+            {
+              "rowId": "row-4",
+              "rowIndex": 14,
+              "fromDeviceId": "BA1303:V1(-)",
+              "fromTerminal": "V1(-)",
+              "fromTerminalOrder": null,
+              "wireNo": "BA0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0003:4",
+              "toTerminal": "4",
+              "toLocation": "JB1123 MEDIA CONVERTER BOX",
+              "bundleName": "BA1303",
+              "bundleDisplay": "BA1303",
+              "devicePrefix": "BA"
+            },
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "BA1303:V1(+)",
+              "fromTerminal": "V1(+)",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1303",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "FU1303:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB1123 MEDIA CONVERTER BOX",
+              "bundleName": "BA1303",
+              "bundleDisplay": "",
+              "devicePrefix": "BA"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "FU",
+      "bundles": [
+        {
+          "bundleName": "FU - XT",
+          "toLocation": "JB1123 MEDIA CONVERTER BOX",
+          "rows": [
+            {
+              "rowId": "row-6",
+              "rowIndex": 16,
+              "fromDeviceId": "FU1300:LI",
+              "fromTerminal": "LI",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "BA24V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0003:1",
+              "toTerminal": "1",
+              "toLocation": "JB1123 MEDIA CONVERTER BOX",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "FU - XT",
+              "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-7",
+              "rowIndex": 17,
+              "fromDeviceId": "FU1303:LI",
+              "fromTerminal": "LI",
+              "fromTerminalOrder": null,
+              "wireNo": "BA24V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 60,
+              "toDeviceId": "XT0003:2",
+              "toTerminal": "2",
+              "toLocation": "JB1123 MEDIA CONVERTER BOX",
+              "bundleName": "FU - XT",
+              "bundleDisplay": "",
+              "devicePrefix": "FU"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "83081f0f333de9597877fc37fedb20db756a5f12ede72ce0ad68b4deb5e06ef9"
+}

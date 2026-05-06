@@ -1,0 +1,427 @@
+{
+  "generatedAt": "2026-05-05T14:15:55.191Z",
+  "sheetName": "100 00",
+  "mode": "standardize",
+  "totalPages": 3,
+  "totalRows": 14,
+  "settings": {
+    "showEstTime": false,
+    "showFromCheckbox": true,
+    "showToCheckbox": true,
+    "showIPV": true,
+    "showComments": true,
+    "showLength": false,
+    "showCoverPage": true,
+    "showTableOfContents": true,
+    "showIPVCodes": false,
+    "showFeedbackSection": false,
+    "showDeviceSubheaders": false,
+    "enableBlueDeviceIDColumns": false,
+    "sectionColumnVisibility": {},
+    "feedbackRenderMode": "BLANK",
+    "feedbackSections": [
+      "Header",
+      "Accuracy & Usability",
+      "Termination Clarity",
+      "Routing & Layout Alignment",
+      "Build Sequence & Efficiency",
+      "Hardware & Materials",
+      "Quality & Rework",
+      "Time & Effort",
+      "Safety & Compliance",
+      "Documentation Quality",
+      "Automation Checks",
+      "Final Sign-Off",
+      "Footer"
+    ],
+    "customQuestions": [
+      "accuracyBlueLabelsClear",
+      "accuracySequenceMatchedLayout",
+      "accuracyMissingDuplicateIncorrectEntries",
+      "accuracyLocationColumnCorrect",
+      "terminationTypesClear",
+      "terminationLengthsAccurate",
+      "terminationReworkDueToInstructionClarity",
+      "terminationJumperRulesEasyToFollow",
+      "routingAlignedWithLayout",
+      "routingLengthFit",
+      "routingConflictsPanduct",
+      "routingConflictsRails",
+      "routingConflictsAdjacentDevices",
+      "routingEfficientOrder",
+      "buildOrderHelpful",
+      "buildRequiredDeviation",
+      "buildDeviationReason",
+      "buildCausedDelays",
+      "materialsFerrulesAvailable",
+      "materialsLugsAvailable",
+      "materialsJumpersAvailable",
+      "materialsWireTypesAvailable",
+      "materialsIssuesNotes",
+      "qualityErrorsCaughtDuringWiring",
+      "qualityReterminatedWires",
+      "qualityReroutedWires",
+      "qualityReplacedWires",
+      "qualityCommonIssues",
+      "estimatedWiringTimeHours",
+      "actualWiringTimeHours",
+      "timeVarianceReason",
+      "safetyGroundsClearlyIdentified",
+      "safetyTerminationsCompliant",
+      "safetyConcernsNotes",
+      "documentationDifficulty",
+      "documentationImprovementAreas",
+      "documentationOtherImprovementArea",
+      "documentationSpecificSuggestions",
+      "automationJumperPredictionCorrect",
+      "automationBlueLabelSequencesCorrect",
+      "automationKtRulesCorrect",
+      "automationReusableTemplateCandidate",
+      "finalQualityRating",
+      "finalComments"
+    ],
+    "crossWireSections": [],
+    "hiddenRows": [],
+    "hiddenSections": [],
+    "brandingSortMode": "device-prefix",
+    "wireListSortMode": "device-prefix"
+  },
+  "pages": [
+    {
+      "pageType": "cover",
+      "pageNumber": 1,
+      "projectInfo": {
+        "projectNumber": "J0980",
+        "projectName": "J0980",
+        "revision": "D.3",
+        "pdNumber": "J0980",
+        "unitNumber": "",
+        "preparedBy": "",
+        "badgeNumber": "",
+        "date": "",
+        "time": "",
+        "personnel": [
+          {
+            "id": "1",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "2",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "3",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "4",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "5",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "6",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          }
+        ]
+      },
+      "sheetTitle": "100-00"
+    },
+    {
+      "pageType": "toc",
+      "pageNumber": 2,
+      "locationGroups": [
+        {
+          "location": "257-01",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Resistors",
+              "rowCount": 10,
+              "estimatedPage": 3,
+              "subEntries": []
+            }
+          ]
+        },
+        {
+          "location": "301-05",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Resistors",
+              "rowCount": 4,
+              "estimatedPage": 3,
+              "subEntries": []
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "locations": 2,
+        "sections": 2,
+        "rows": 14,
+        "pages": 3
+      }
+    },
+    {
+      "pageType": "wire-list",
+      "pageNumber": 3,
+      "locationGroups": [
+        {
+          "location": "257-01",
+          "isExternal": true,
+          "totalRows": 10,
+          "subsections": [
+            {
+              "label": "Resistors",
+              "sectionKind": "resistors",
+              "rowCount": 10,
+              "rows": [
+                {
+                  "rowId": "row-4",
+                  "rowIndex": 15,
+                  "fromDeviceId": "CR293A:-",
+                  "toDeviceId": "TS293C:5",
+                  "wireType": "SC",
+                  "wireNo": "K2931A11",
+                  "wireId": "LEAD",
+                  "gaugeSize": "---",
+                  "fromLocation": "257-01",
+                  "toLocation": "257-01",
+                  "fromPageZone": "53.G4",
+                  "toPageZone": "53.G4"
+                },
+                {
+                  "rowId": "row-5",
+                  "rowIndex": 16,
+                  "fromDeviceId": "CR293A:+",
+                  "toDeviceId": "TS293C:4",
+                  "wireType": "SC",
+                  "wireNo": "K29302",
+                  "wireId": "LEAD",
+                  "gaugeSize": "---",
+                  "fromLocation": "257-01",
+                  "toLocation": "257-01",
+                  "fromPageZone": "53.G4",
+                  "toPageZone": "53.G5"
+                },
+                {
+                  "rowId": "row-9",
+                  "rowIndex": 20,
+                  "fromDeviceId": "CR293C5:+",
+                  "toDeviceId": "TS293C:7",
+                  "wireType": "SC",
+                  "wireNo": "K29302",
+                  "wireId": "LEAD",
+                  "gaugeSize": "---",
+                  "fromLocation": "257-01",
+                  "toLocation": "257-01",
+                  "fromPageZone": "53.F4",
+                  "toPageZone": "53.F5"
+                },
+                {
+                  "rowId": "row-11",
+                  "rowIndex": 22,
+                  "fromDeviceId": "CR293C7:+",
+                  "toDeviceId": "TS293C:10",
+                  "wireType": "SC",
+                  "wireNo": "K29302",
+                  "wireId": "LEAD",
+                  "gaugeSize": "---",
+                  "fromLocation": "257-01",
+                  "toLocation": "257-01",
+                  "fromPageZone": "53.F4",
+                  "toPageZone": "53.F5"
+                },
+                {
+                  "rowId": "row-13",
+                  "rowIndex": 24,
+                  "fromDeviceId": "CR293C9:+",
+                  "toDeviceId": "TS293C:13",
+                  "wireType": "SC",
+                  "wireNo": "K29302",
+                  "wireId": "LEAD",
+                  "gaugeSize": "---",
+                  "fromLocation": "257-01",
+                  "toLocation": "257-01",
+                  "fromPageZone": "53.E4",
+                  "toPageZone": "53.E5"
+                },
+                {
+                  "rowId": "row-7",
+                  "rowIndex": 18,
+                  "fromDeviceId": "CR293C11:+",
+                  "toDeviceId": "TS293C:21",
+                  "wireType": "SC",
+                  "wireNo": "K29302B",
+                  "wireId": "LEAD",
+                  "gaugeSize": "---",
+                  "fromLocation": "257-01",
+                  "toLocation": "257-01",
+                  "fromPageZone": "53.F7",
+                  "toPageZone": "53.F8"
+                },
+                {
+                  "rowId": "row-8",
+                  "rowIndex": 19,
+                  "fromDeviceId": "CR293C5:-",
+                  "toDeviceId": "TS293C:8",
+                  "wireType": "SC",
+                  "wireNo": "K29302B21",
+                  "wireId": "LEAD",
+                  "gaugeSize": "---",
+                  "fromLocation": "257-01",
+                  "toLocation": "257-01",
+                  "fromPageZone": "53.F4",
+                  "toPageZone": "53.F4"
+                },
+                {
+                  "rowId": "row-12",
+                  "rowIndex": 23,
+                  "fromDeviceId": "CR293C9:-",
+                  "toDeviceId": "TS293C:14",
+                  "wireType": "SC",
+                  "wireNo": "L5612P",
+                  "wireId": "LEAD",
+                  "gaugeSize": "---",
+                  "fromLocation": "257-01",
+                  "toLocation": "257-01",
+                  "fromPageZone": "53.E4",
+                  "toPageZone": "53.E4"
+                },
+                {
+                  "rowId": "row-6",
+                  "rowIndex": 17,
+                  "fromDeviceId": "CR293C11:-",
+                  "toDeviceId": "TS293C:22",
+                  "wireType": "SC",
+                  "wireNo": "L5622P",
+                  "wireId": "LEAD",
+                  "gaugeSize": "---",
+                  "fromLocation": "257-01",
+                  "toLocation": "257-01",
+                  "fromPageZone": "53.F7",
+                  "toPageZone": "53.F7"
+                },
+                {
+                  "rowId": "row-10",
+                  "rowIndex": 21,
+                  "fromDeviceId": "CR293C7:-",
+                  "toDeviceId": "TS293C:11",
+                  "wireType": "SC",
+                  "wireNo": "L5642P",
+                  "wireId": "LEAD",
+                  "gaugeSize": "---",
+                  "fromLocation": "257-01",
+                  "toLocation": "257-01",
+                  "fromPageZone": "53.F4",
+                  "toPageZone": "53.F4"
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        },
+        {
+          "location": "301-05",
+          "isExternal": true,
+          "totalRows": 4,
+          "subsections": [
+            {
+              "label": "Resistors",
+              "sectionKind": "resistors",
+              "rowCount": 4,
+              "rows": [
+                {
+                  "rowId": "row-1",
+                  "rowIndex": 12,
+                  "fromDeviceId": "CR341-1:+",
+                  "toDeviceId": "TS311:3",
+                  "wireType": "SC",
+                  "wireNo": "-3411",
+                  "wireId": "LEAD",
+                  "gaugeSize": "---",
+                  "fromLocation": "301-05",
+                  "toLocation": "301-05",
+                  "fromPageZone": "16.C7",
+                  "toPageZone": "16.C7"
+                },
+                {
+                  "rowId": "row-3",
+                  "rowIndex": 14,
+                  "fromDeviceId": "CR342-1:+",
+                  "toDeviceId": "TS311:20",
+                  "wireType": "SC",
+                  "wireNo": "-3421",
+                  "wireId": "LEAD",
+                  "gaugeSize": "---",
+                  "fromLocation": "301-05",
+                  "toLocation": "301-05",
+                  "fromPageZone": "17.E7",
+                  "toPageZone": "17.E7"
+                },
+                {
+                  "rowId": "row-0",
+                  "rowIndex": 11,
+                  "fromDeviceId": "CR341-1:-",
+                  "toDeviceId": "TS311:2",
+                  "wireType": "SC",
+                  "wireNo": "L3411",
+                  "wireId": "LEAD",
+                  "gaugeSize": "---",
+                  "fromLocation": "301-05",
+                  "toLocation": "301-05",
+                  "fromPageZone": "16.C7",
+                  "toPageZone": "16.C7"
+                },
+                {
+                  "rowId": "row-2",
+                  "rowIndex": 13,
+                  "fromDeviceId": "CR342-1:-",
+                  "toDeviceId": "TS311:19",
+                  "wireType": "SC",
+                  "wireNo": "L3421",
+                  "wireId": "LEAD",
+                  "gaugeSize": "---",
+                  "fromLocation": "301-05",
+                  "toLocation": "301-05",
+                  "fromPageZone": "17.E7",
+                  "toPageZone": "17.E7"
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

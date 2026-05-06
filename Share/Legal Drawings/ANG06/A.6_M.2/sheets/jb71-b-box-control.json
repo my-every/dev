@@ -1,0 +1,142 @@
+{
+  "slug": "jb71-b-box-control",
+  "name": "JB71 B,BOX CONTROL",
+  "kind": "operational",
+  "sheetIndex": 3,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "EL0100:1+",
+      "wireType": "SC",
+      "wireNo": "FU0005",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "3.C1",
+      "toDeviceId": "XT0005:2",
+      "toLocation": "JB71 B,PNL DC PWR",
+      "toPageZone": "3.C3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "EL0100:2-",
+      "wireType": "SC",
+      "wireNo": "-0V",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "3.C1",
+      "toDeviceId": "XT0005:4",
+      "toLocation": "JB71 B,PNL DC PWR",
+      "toPageZone": "3.C3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 12,
+      "__rowId": "row-2",
+      "fromDeviceId": "EL0101:1+",
+      "wireType": "SC",
+      "wireNo": "FU0005",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "3.C1",
+      "toDeviceId": "XT0005:1",
+      "toLocation": "JB71 B,PNL DC PWR",
+      "toPageZone": "3.C3",
+      "location": ""
+    },
+    {
+      "__rowIndex": 13,
+      "__rowId": "row-3",
+      "fromDeviceId": "EL0101:2-",
+      "wireType": "SC",
+      "wireNo": "-0V",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "fromLocation": "",
+      "fromPageZone": "3.C1",
+      "toDeviceId": "XT0005:3",
+      "toLocation": "JB71 B,PNL DC PWR",
+      "toPageZone": "3.C3",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "XT0005:2",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "FU0005",
+      "Wire ID": "WHT",
+      "Gauge/Size": "16",
+      "Page/Zone": "3.C3",
+      "Location": "JB71 B,PNL DC PWR"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "XT0005:4",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "0V",
+      "Wire ID": "WHT",
+      "Gauge/Size": "16",
+      "Page/Zone": "3.C3",
+      "Location": "JB71 B,PNL DC PWR"
+    },
+    {
+      "__rowId": "raw-2",
+      "Device ID": "XT0005:1",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "FU0005",
+      "Wire ID": "WHT",
+      "Gauge/Size": "16",
+      "Page/Zone": "3.C3",
+      "Location": "JB71 B,PNL DC PWR"
+    },
+    {
+      "__rowId": "raw-3",
+      "Device ID": "XT0005:3",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "0V",
+      "Wire ID": "WHT",
+      "Gauge/Size": "16",
+      "Page/Zone": "3.C3",
+      "Location": "JB71 B,PNL DC PWR"
+    }
+  ],
+  "rowCount": 4,
+  "metadata": {
+    "projectName": "PGMATO3",
+    "revision": "A.6",
+    "controlsDE": "Poovarasan M"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T14:02:33.142Z"
+}

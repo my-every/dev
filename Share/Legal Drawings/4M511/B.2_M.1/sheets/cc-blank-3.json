@@ -1,0 +1,92 @@
+{
+  "slug": "cc-blank-3",
+  "name": "CC BLANK #3",
+  "kind": "operational",
+  "sheetIndex": 6,
+  "headers": [
+    "Device ID",
+    "Cable (W) Conductor (SC) Jumper Clip (JC)",
+    "Wire No.",
+    "Wire ID",
+    "Gauge/Size",
+    "Page/Zone",
+    "Device ID_1",
+    "Location",
+    "Page/Zone_1"
+  ],
+  "rows": [
+    {
+      "__rowIndex": 10,
+      "__rowId": "row-0",
+      "fromDeviceId": "GR0014:",
+      "wireType": "SC",
+      "wireNo": "GR0014",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "6.C5",
+      "toDeviceId": "FG1128:8",
+      "toLocation": "CC BLANK #3",
+      "toPageZone": "6.C4",
+      "location": ""
+    },
+    {
+      "__rowIndex": 11,
+      "__rowId": "row-1",
+      "fromDeviceId": "GR0675:",
+      "wireType": "SC",
+      "wireNo": "GR0675",
+      "wireId": "GRN/YEL",
+      "gaugeSize": "14",
+      "fromLocation": "",
+      "fromPageZone": "6.C5",
+      "toDeviceId": "FG1128:5",
+      "toLocation": "CC BLANK #3",
+      "toPageZone": "6.C4",
+      "location": ""
+    }
+  ],
+  "rawRows": [
+    {
+      "__rowId": "raw-0",
+      "Device ID": "FG1128:8",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0014",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "6.C4",
+      "Location": "CC BLANK #3"
+    },
+    {
+      "__rowId": "raw-1",
+      "Device ID": "FG1128:5",
+      "Cable (W) Conductor (SC) Jumper Clip (JC)": "SC",
+      "Wire No.": "GR0675",
+      "Wire ID": "GRN/YEL",
+      "Gauge/Size": "14",
+      "Page/Zone": "6.C4",
+      "Location": "CC BLANK #3"
+    }
+  ],
+  "rowCount": 2,
+  "metadata": {
+    "projectName": "ENI - KUTEI NORTH HUB - FPSO",
+    "revision": "B.2",
+    "controlsDE": "BARRAZA, PAUL"
+  },
+  "assignment": {
+    "swsType": "UNDECIDED",
+    "stage": "READY_TO_LAY",
+    "status": "NOT_STARTED",
+    "isOverride": false,
+    "overrideReason": "",
+    "detectedSwsType": "UNDECIDED",
+    "detectedConfidence": 50,
+    "detectedReasons": [
+      "Has sheet rows but no clear type - Team Lead should decide"
+    ],
+    "requiresWireSws": true,
+    "requiresCrossWireSws": false
+  },
+  "generatedAt": "2026-05-05T13:34:10.754Z"
+}
