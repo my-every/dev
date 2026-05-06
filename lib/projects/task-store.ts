@@ -152,6 +152,8 @@ export async function createProjectTask(input: CreateProjectTaskInput): Promise<
     notes: input.notes?.trim() || null,
     status: "open",
     scope: input.scope,
+    operation: input.operation?.trim() || null,
+    action: input.action?.trim() || null,
     projectId: input.projectId?.trim() || null,
     pdNumber: input.pdNumber?.trim().toUpperCase() || null,
     legalRevision: input.legalRevision?.trim() || null,

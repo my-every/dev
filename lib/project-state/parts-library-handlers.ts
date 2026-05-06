@@ -152,7 +152,7 @@ export async function getTypeManifest(category: PartCategory, type: string): Pro
 async function updateRootManifest(): Promise<void> {
     const rootManifest = await getRootManifest();
     
-    // Scan all categories
+    // Scan All Categories
     let totalParts = 0;
     const categories: PartsRootManifest['categories'] = {};
     
@@ -259,7 +259,7 @@ export async function getPart(
 }
 
 export async function getPartByNumber(partNumber: string): Promise<PartRecord | null> {
-    // Search through all categories and types
+    // Search through All Categories and types
     const rootManifest = await getRootManifest();
     
     for (const [category, info] of Object.entries(rootManifest.categories)) {

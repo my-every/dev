@@ -4,10 +4,9 @@ import { useCallback, useEffect, useState } from "react";
 
 import { useProjectContext } from "@/contexts/project-context";
 import type { ProjectManifest } from "@/types/project-manifest";
-import { hasUploadedLegals, getDashboardProjectStatus } from "@/lib/projects/dashboard-status";
+import { getDashboardProjectStatus } from "@/lib/projects/dashboard-status";
 import { ProjectDetailsShell } from "@/components/projects/project-details-shell";
 import {
-  ProjectAssignmentsTab,
   ProjectBiqTab,
   ProjectFilesTab,
   ProjectLegalsTab,
@@ -26,7 +25,6 @@ const TABS = [
   { id: "files", label: "Files" },
   { id: "parts", label: "Part Numbers" },
   { id: "sws", label: "SWS" },
-  { id: "assignments", label: "Assignments" },
   { id: "biq", label: "BIQ" },
   { id: "team", label: "Team" },
   { id: "settings", label: "Settings" },
@@ -53,7 +51,6 @@ export function ProjectDetailsTabsContent({
 
   const model = liveProject;
   const projectColor = model.color || "#ffcc61";
-  const hasLegals = hasUploadedLegals(model);
   const derivedStatus = getDashboardProjectStatus(model);
 
   useEffect(() => {
@@ -133,15 +130,6 @@ export function ProjectDetailsTabsContent({
           <ProjectSwsTab
             project={model}
             projectColor={projectColor}
-            onProjectRefresh={refreshProjectState}
-            onNavigateToTab={setActiveTab}
-          />
-        ) : null}
-        {activeTab === "assignments" ? (
-          <ProjectAssignmentsTab
-            project={model}
-            projectColor={projectColor}
-            hasLegals={hasLegals}
             onProjectRefresh={refreshProjectState}
             onNavigateToTab={setActiveTab}
           />

@@ -69,9 +69,7 @@ function extractBadgeNumber(pathname: string): string | null {
 }
 
 function resolveActiveRoot(pathname: string): string {
-    if (pathname.includes("/schedule")) {
-        return "schedule";
-    }
+  
     if (pathname.includes("/parts")) {
         return "parts";
     }
@@ -101,13 +99,7 @@ function getNavItems(badgeNumber: string | null): PermissionedNavItem[] {
     }
 
     return [
-        {
-            id: "schedule",
-            href: `/${badgeNumber}/schedule`,
-            label: "Schedule",
-            icon: Calendar,
-            alwaysVisible: true,
-        },
+     
         {
             id: "projects",
             href: `/${badgeNumber}/projects`,
@@ -132,7 +124,7 @@ function filterNavItemsByAccess(
     userRole: string | null
 ): RootNavItem[] {
     // Elevated roles always see all nav items
-    const elevatedRoles = ["DEVELOPER", "MANAGER", "SUPERVISOR", "TEAM_LEAD"];
+    const elevatedRoles = ["DEVELOPER", "TEAM_LEAD"];
     const hasElevatedRole = userRole && elevatedRoles.includes(userRole);
     
     // Basic roles (ASSEMBLER, etc.) only see Home and Projects by default
@@ -227,7 +219,7 @@ export default function WorkspaceLayout({ children }: WorkspaceLayoutProps) {
 
         // Fall back to role-based defaults
         if (user?.role) {
-            const elevatedRoles = ["DEVELOPER", "MANAGER", "SUPERVISOR"];
+            const elevatedRoles = ["DEVELOPER", "TEAM_LEAD"];
             if (elevatedRoles.includes(user.role)) {
                 return {
                     projectSchedule: true,
@@ -246,14 +238,7 @@ export default function WorkspaceLayout({ children }: WorkspaceLayoutProps) {
                 };
             }
             
-            if (user.role === "BRANDER") {
-                return {
-                    projectSchedule: false,
-                    userAccess: false,
-                    catalogAccess: false,
-                    brandingAccess: true,
-                };
-            }
+        
         }
 
         return DEFAULT_DASHBOARD_ACCESS;
@@ -274,7 +259,7 @@ export default function WorkspaceLayout({ children }: WorkspaceLayoutProps) {
         badgeNumber,
         hasAccess: (key: keyof DashboardAccess) => {
             // Elevated roles always have access
-            const elevatedRoles = ["DEVELOPER", "MANAGER", "SUPERVISOR"];
+            const elevatedRoles = ["DEVELOPER", "TEAM_LEAD"];
             if (user?.role && elevatedRoles.includes(user.role)) {
                 return true;
             }

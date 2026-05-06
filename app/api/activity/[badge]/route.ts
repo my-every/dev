@@ -32,8 +32,14 @@ function parseCsv(value: string | null): string[] | undefined {
 function parseFilters(url: URL): ActivityTimelineFilterOptions {
     const actionTypes = parseCsv(url.searchParams.get('actionTypes')) as ActivityAction[] | undefined
     const targetBadges = parseCsv(url.searchParams.get('targetBadges'))
+    const performedByBadges = parseCsv(url.searchParams.get('performedByBadges'))
     const assignmentIds = parseCsv(url.searchParams.get('assignmentIds'))
     const projectIds = parseCsv(url.searchParams.get('projectIds'))
+    const operations = parseCsv(url.searchParams.get('operations'))
+    const scopes = parseCsv(url.searchParams.get('scopes'))
+    const stages = parseCsv(url.searchParams.get('stages'))
+    const milestones = parseCsv(url.searchParams.get('milestones'))
+    const lwcSections = parseCsv(url.searchParams.get('lwcSections'))
     const resultStatus = parseCsv(url.searchParams.get('resultStatus')) as Array<'success' | 'failure' | 'pending'> | undefined
 
     const dateFrom = url.searchParams.get('dateFrom') ?? undefined
@@ -51,8 +57,14 @@ function parseFilters(url: URL): ActivityTimelineFilterOptions {
     return {
         actionTypes,
         targetBadges,
+        performedByBadges,
         assignmentIds,
         projectIds,
+        operations,
+        scopes,
+        stages,
+        milestones,
+        lwcSections,
         resultStatus,
         dateFrom,
         dateTo,

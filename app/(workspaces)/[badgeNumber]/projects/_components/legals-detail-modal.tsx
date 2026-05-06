@@ -38,7 +38,6 @@ import {
   type ProjectInstanceItem,
 } from "./project-config-collapsible";
 import { ProjectIcon } from "./project-icon";
-import { ProjectWorklogWidget } from "@/components/projects/project-worklog-widget";
 
 // ============================================================================
 // Types
@@ -657,25 +656,7 @@ export function LegalsDetailModal({
                         showRemove={false}
                       />
 
-                      {user?.badge ? (
-                        <div className="rounded-xl border border-border bg-background/40 p-3">
-                          <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                            Related Tasks
-                          </div>
-                          <ProjectWorklogWidget
-                            badge={user.badge}
-                            shift={user.currentShift || "1st"}
-                            showActivityTab={false}
-                            initialTab="tasks"
-                            scopeContext={{
-                              scope: "legal",
-                              pdNumber: project.pdNumber,
-                              legalRevision: record?.latestRevision || project.revision || null,
-                            }}
-                            className="min-w-0 max-w-none"
-                          />
-                        </div>
-                      ) : null}
+                      {/* Worklog widget temporarily hidden */}
                     </div>
                   </section>
 

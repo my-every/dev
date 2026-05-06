@@ -917,14 +917,14 @@ export function UsersView({ onSelectMember = NOOP_SELECT_MEMBER, selectedBadge, 
                 <div className="flex flex-wrap items-center gap-2 shrink-0">
                     {filterOptions.roles.length > 1 && (
                         <Select
-                            value={filters.role ?? "__all__"}
-                            onValueChange={v => setFilters(f => ({ ...f, role: v === "__all__" ? null : v }))}
+                            value={filters.role ?? "All"}
+                            onValueChange={v => setFilters(f => ({ ...f, role: v === "All" ? null : v }))}
                         >
                             <SelectTrigger className="h-7 w-auto min-w-[110px] text-xs gap-1">
                                 <SelectValue placeholder="All Roles" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="__all__">All Roles</SelectItem>
+                                <SelectItem value="All">All Roles</SelectItem>
                                 {filterOptions.roles.map(r => (
                                     <SelectItem key={r} value={r}>{normalize(r)}</SelectItem>
                                 ))}
@@ -933,14 +933,14 @@ export function UsersView({ onSelectMember = NOOP_SELECT_MEMBER, selectedBadge, 
                     )}
                     {filterOptions.departments.length > 1 && (
                         <Select
-                            value={filters.department ?? "__all__"}
-                            onValueChange={v => setFilters(f => ({ ...f, department: v === "__all__" ? null : v }))}
+                            value={filters.department ?? "All"}
+                            onValueChange={v => setFilters(f => ({ ...f, department: v === "All" ? null : v }))}
                         >
                             <SelectTrigger className="h-7 w-auto min-w-[130px] text-xs gap-1">
                                 <SelectValue placeholder="All Departments" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="__all__">All Departments</SelectItem>
+                                <SelectItem value="All">All Departments</SelectItem>
                                 {filterOptions.departments.map(d => (
                                     <SelectItem key={d} value={d}>{normalize(d)}</SelectItem>
                                 ))}
@@ -949,14 +949,14 @@ export function UsersView({ onSelectMember = NOOP_SELECT_MEMBER, selectedBadge, 
                     )}
                     {filterOptions.lwcs.length > 1 && (
                         <Select
-                            value={filters.lwc ?? "__all__"}
-                            onValueChange={v => setFilters(f => ({ ...f, lwc: v === "__all__" ? null : v }))}
+                            value={filters.lwc ?? "All"}
+                            onValueChange={v => setFilters(f => ({ ...f, lwc: v === "All" ? null : v }))}
                         >
                             <SelectTrigger className="h-7 w-auto min-w-[110px] text-xs gap-1">
                                 <SelectValue placeholder="All LWCs" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="__all__">All LWCs</SelectItem>
+                                <SelectItem value="All">All LWCs</SelectItem>
                                 {filterOptions.lwcs.map(l => (
                                     <SelectItem key={l} value={l}>{normalize(l)}</SelectItem>
                                 ))}

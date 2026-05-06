@@ -14,10 +14,10 @@ import type {
   LegalProjectRecord,
 } from "@/types/legal-drawings";
 import type { ProjectManifest } from "@/types/project-manifest";
-import { useSession } from "@/hooks/use-session";
 import type { UserSettings } from "@/types/user-settings";
+import { useSession } from "@/hooks/use-session";
 
-import { ProjectWorklogWidget } from "@/components/projects/project-worklog-widget";
+import { Label } from "@/components/ui/label";
 
 import {
   ProjectsCollection,
@@ -395,14 +395,7 @@ export default function ProjectsWorkspacePage({
             />
           </div>
 
-          {/* Worklog widget — Tasks + Activity, hidden on small viewports */}
-          <div className="hidden shrink-0 xl:block">
-            <ProjectWorklogWidget
-              badge={params.badgeNumber}
-              shift={user?.currentShift || "1st"}
-              className="sticky top-4"
-            />
-          </div>
+          {/* Worklog widget temporarily hidden */}
         </div>
       </div>
     </PageContent>

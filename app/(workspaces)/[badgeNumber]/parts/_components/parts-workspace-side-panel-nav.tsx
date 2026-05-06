@@ -30,7 +30,7 @@ type PartsWorkspaceSidePanelNavData = {
 
 type PartsWorkspaceSidePanelNavProps = BaseStatefulProps<PartsWorkspaceSidePanelNavData>;
 
-const ALL_CATEGORIES = "__all__";
+const ALL_CATEGORIES = "All";
 
 export function PartsWorkspaceSidePanelNav({
     mode = "default",
@@ -116,11 +116,11 @@ export function PartsWorkspaceSidePanelNav({
                         {/* Category dropdown */}
                         <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                             <SelectTrigger className="h-9 w-full rounded-xl border-border bg-card text-xs">
-                                <SelectValue placeholder="All categories" />
+                                <SelectValue placeholder="All Categories" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem key={ALL_CATEGORIES} value={ALL_CATEGORIES}>
-                                    All categories
+                                    All Categories
                                 </SelectItem>
                                 {categories.map((cat) => (
                                     <SelectItem key={cat} value={cat}>

@@ -6,7 +6,6 @@ import { LogIn } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { UserAvatarMenu } from '@/components/layout/user-avatar-menu'
-import { DeveloperRoleSwitcherSection } from '@/components/layout/developer-role-switcher'
 import { LoginPopup } from '@/components/dialog/login-popup'
 import { PinChangeDialog } from '@/components/profile/pin-change-dialog'
 import { useSession } from '@/hooks/use-session'
@@ -16,8 +15,7 @@ import { USER_ROLE_LABELS } from '@/types/d380-user-session'
 /**
  * Session-aware avatar menu.
  *
- * - Authenticated → renders the full `UserAvatarMenu` with user data,
- *   profile/settings/sign-out actions.
+ * - Authenticated → renders `UserAvatarMenu` with user data and sign-out.
  * - Not authenticated → renders a "Sign In" button that opens the
  *   `LoginPopup` modal. After successful login:
  *     • if `requiresPinChange` → shows `PinChangeDialog` first
@@ -50,19 +48,6 @@ export function SessionAvatarMenu({
             setPinChangeOpen(true)
         }
     }, [isAuthenticated, user, pinChangeOpen])
-
-    const handleProfile = useCallback(() => {
-        if (user?.badge) {
-            showLoader('profile-transition')
-            router.push(`/${user.badge}`)
-        }
-    }, [router, user, showLoader])
-
-    const handleSettings = useCallback(() => {
-        if (user?.badge) {
-            router.push(`/${user.badge}?tab=settings`)
-        }
-    }, [router, user])
 
     const handleSignOut = useCallback(async () => {
         await signOut()
@@ -126,10 +111,7 @@ export function SessionAvatarMenu({
                 presence="online"
                 showName={showName}
                 className={className}
-                onProfileSelect={handleProfile}
-                onSettingsSelect={handleSettings}
                 onSignOutSelect={handleSignOut}
-                roleSwitcherSlot={<DeveloperRoleSwitcherSection />}
             />
 
             {pinChangeBadge && (

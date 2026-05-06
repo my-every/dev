@@ -1218,7 +1218,8 @@ export function ProjectUploadFlow({
   }
 
   const content = (
-    <div className="flex flex-col gap-6">
+    <div className="w-full max-w-3xl">
+      <div className="flex max-h-[calc(92vh-13rem)] flex-col gap-6 overflow-y-auto pr-1">
       {!isRevisionMode && (
         <div className="flex flex-col gap-2">
           <h1 className="text-2xl font-bold tracking-tight text-foreground">Upload Project</h1>
@@ -1552,6 +1553,7 @@ export function ProjectUploadFlow({
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
     </div>
   );
 

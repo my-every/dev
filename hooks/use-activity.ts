@@ -85,16 +85,36 @@ export function useActivity({
         }
     }, [])
 
+    const resolveShiftFromFilters = useCallback((selectedShift: string | undefined): string | undefined => {
+        if (!selectedShift) return undefined
+        const normalized = selectedShift.trim().toLowerCase()
+        if (!normalized || normalized === 'all') return undefined
+        if (normalized.startsWith('1')) return '1st'
+        if (normalized.startsWith('2')) return '2nd'
+        return selectedShift
+    }, [])
+
     const refresh = useCallback(async () => {
         try {
             setLoading(true)
             setError(null)
 
+            const requestedShift = resolveShiftFromFilters(filters?.shiftLabels?.[0]) ?? shift
+
             if (aggregateAcrossUsers) {
-                const params = new URLSearchParams({ shift })
+                const params = new URLSearchParams()
+                if (requestedShift) {
+                    params.set('shift', requestedShift)
+                }
                 appendCsv(params, 'actionTypes', filters?.actionTypes)
                 appendCsv(params, 'targetBadges', filters?.targetBadges)
+                appendCsv(params, 'performedByBadges', filters?.performedByBadges)
                 appendCsv(params, 'assignmentIds', filters?.assignmentIds)
+                appendCsv(params, 'operations', filters?.operations)
+                appendCsv(params, 'scopes', filters?.scopes)
+                appendCsv(params, 'stages', filters?.stages)
+                appendCsv(params, 'milestones', filters?.milestones)
+                appendCsv(params, 'lwcSections', filters?.lwcSections)
                 appendCsv(params, 'resultStatus', filters?.resultStatus)
 
                 if (filters?.dateFrom) params.set('dateFrom', filters.dateFrom)
@@ -131,8 +151,8 @@ export function useActivity({
             }
 
             const [activityList, activityStats] = await Promise.all([
-                activityService.getActivity(badge, shift, filters),
-                activityService.getActivityStats(badge, shift),
+                activityService.getActivity(badge, requestedShift, filters),
+                activityService.getActivityStats(badge, requestedShift),
             ])
             setActivities(activityList)
             setStats(activityStats)
@@ -141,7 +161,7 @@ export function useActivity({
         } finally {
             setLoading(false)
         }
-    }, [badge, shift, filters, aggregateAcrossUsers, projectId, appendCsv, buildStats])
+    }, [badge, shift, filters, aggregateAcrossUsers, projectId, appendCsv, buildStats, resolveShiftFromFilters])
 
     const addComment = useCallback(
         async (comment: string, targetBadge?: string, assignmentId?: string) => {

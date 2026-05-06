@@ -20,6 +20,7 @@ interface MultiSheetReviewHeaderBarProps {
   onSetStandardViewMode?: (mode: "wire-list" | "layout") => void;
   onBackToCover?: () => void;
   onOpenTutorial: () => void;
+  onSaveAndContinueLater?: () => void;
   onClose: () => void;
 }
 
@@ -37,6 +38,7 @@ export function MultiSheetReviewHeaderBar({
   onSetStandardViewMode,
   onBackToCover,
   onOpenTutorial,
+  onSaveAndContinueLater,
   onClose,
 }: MultiSheetReviewHeaderBarProps) {
   const isReviewSurface = surface === "review";
@@ -67,6 +69,17 @@ export function MultiSheetReviewHeaderBar({
           >
             <ChevronLeft className="h-4 w-4" />
             Back to Cover
+          </Button>
+        ) : null}
+        {surface !== "cover" && onSaveAndContinueLater ? (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="h-9"
+            onClick={onSaveAndContinueLater}
+          >
+            Save & Continue Later
           </Button>
         ) : null}
         {isReviewSurface ? (

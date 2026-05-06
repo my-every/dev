@@ -16,6 +16,8 @@ export interface ProjectTask {
   notes?: string | null;
   status: ProjectTaskStatus;
   scope: ProjectTaskScope;
+  operation?: string | null;
+  action?: string | null;
   projectId?: string | null;
   pdNumber?: string | null;
   legalRevision?: string | null;
@@ -42,6 +44,8 @@ export interface CreateProjectTaskInput {
   title: string;
   notes?: string;
   scope: ProjectTaskScope;
+  operation?: string;
+  action?: string;
   projectId?: string;
   pdNumber?: string;
   legalRevision?: string;

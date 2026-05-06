@@ -70,9 +70,9 @@ export function ProjectPickerWithContext({
         name={project.name}
         color={project.color}
         interactive={false}
-        className="h-8 w-8 shrink-0"
+        size="sm"
       />
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 py-0">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium truncate text-foreground">
             {project.name}
@@ -104,8 +104,8 @@ export function ProjectPickerWithContext({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          aria-label="Select project context"
-          className={cn("h-9 w-full justify-between px-3", className)}
+          aria-label="Select Project"
+          className={cn(" w-full py-2.5 justify-between px-3", className)}
           disabled={loading}
         >
           <div className="min-w-0 flex-1 text-left">

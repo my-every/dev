@@ -101,6 +101,32 @@ export function BrandListEditorTable({
     rowIndex: number;
     rowId: string;
   } | null>(null);
+  const measurementTargets = useMemo(
+    () =>
+      schema.prefixGroups.flatMap((prefixGroup, prefixIndex) =>
+        prefixGroup.bundles.flatMap((bundle, bundleIndex) =>
+          bundle.rows.map((row, rowIndex) => ({
+            prefixIndex,
+            bundleIndex,
+            rowIndex,
+            rowId: row.rowId,
+          })),
+        ),
+      ),
+    [schema.prefixGroups],
+  );
+  const measurementTargetIndex = useMemo(() => {
+    if (!measurementTarget) {
+      return -1;
+    }
+
+    return measurementTargets.findIndex(
+      (target) =>
+        target.prefixIndex === measurementTarget.prefixIndex &&
+        target.bundleIndex === measurementTarget.bundleIndex &&
+        target.rowIndex === measurementTarget.rowIndex,
+    );
+  }, [measurementTarget, measurementTargets]);
   const measurementRow = useMemo(() => {
     if (!measurementTarget) {
       return null;
@@ -117,6 +143,7 @@ export function BrandListEditorTable({
       toDeviceId: row.toDeviceId,
       toLocation: row.toLocation,
       wireNo: row.wireNo,
+      wireId: row.wireId,
       bundleDisplay: row.bundleDisplay,
     };
   }, [measurementTarget, schema.prefixGroups]);
@@ -337,6 +364,34 @@ export function BrandListEditorTable({
         initialPageNumber={initialLayoutPageNumber}
         sheetName={schema.sheetName}
         targetRow={measurementRow}
+        rowPosition={
+          measurementTargetIndex >= 0
+            ? {
+                current: measurementTargetIndex + 1,
+                total: measurementTargets.length,
+              }
+            : null
+        }
+        canGoPreviousRow={measurementTargetIndex > 0}
+        canGoNextRow={
+          measurementTargetIndex >= 0 &&
+          measurementTargetIndex < measurementTargets.length - 1
+        }
+        onGoToPreviousRow={() => {
+          if (measurementTargetIndex <= 0) {
+            return;
+          }
+          setMeasurementTarget(measurementTargets[measurementTargetIndex - 1]);
+        }}
+        onGoToNextRow={() => {
+          if (
+            measurementTargetIndex < 0 ||
+            measurementTargetIndex >= measurementTargets.length - 1
+          ) {
+            return;
+          }
+          setMeasurementTarget(measurementTargets[measurementTargetIndex + 1]);
+        }}
         onOpenChange={(open) => {
           if (!open) {
             setMeasurementTarget(null);

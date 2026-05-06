@@ -35,14 +35,17 @@ import {
   type PhotoGalleryItem,
 } from "@/components/activity/photo-upload-gallery";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import type {
   ActivityEntry,
   ActivityAction,
@@ -59,12 +62,12 @@ import {
   Zap,
   User,
   Filter,
-  Layers3,
   Search,
-  ChevronDown,
   ChevronRight,
   Reply,
   Send,
+  Plus,
+  Minus,
   Heart,
   ThumbsUp,
   Trash2,
@@ -91,6 +94,74 @@ const BRAND_LIST_ACTIONS: ActivityAction[] = [
 
 type FilterMode = ActivityAction | "all" | "brand_list";
 
+const OPERATION_OPTIONS = [
+  "Build",
+  "Wire",
+  "Cross Wire",
+  "Test",
+  "Review",
+  "Train",
+  "Task",
+  "IPV",
+  "Meeting",
+] as const;
+
+const ACTION_OPTIONS = [
+  "Initiated",
+  "Created",
+  "Started",
+  "Paused",
+  "Assigned",
+  "Re-Assigned",
+  "Updated",
+  "Resumed",
+  "Completed",
+] as const;
+
+const SCOPE_OPTIONS = [
+  "Project",
+  "Assignment",
+  "Legal",
+  "Brand List",
+  "Branding",
+  "Green Change",
+  "Team",
+  "Global",
+] as const;
+
+const STAGE_OPTIONS = [
+  "Kitting",
+  "Build Up",
+  "Wiring",
+  "Box Build",
+  "Cross Wire",
+  "Test",
+  "BIQ",
+] as const;
+
+const MILESTONE_OPTIONS = [
+  "Ready To Lay",
+  "Ready To Wire",
+  "Ready for Visual",
+  "Ready to Hang",
+  "Ready to Test",
+  "Ready To Ship",
+] as const;
+
+const SHIFT_FILTER_OPTIONS = ["1st", "2nd"] as const;
+
+const ACTION_FILTER_MAP: Record<string, ActivityAction[]> = {
+  initiated: ["STARTED"],
+  created: ["PROJECT_CREATED"],
+  started: ["STARTED"],
+  paused: ["BLOCKED"],
+  assigned: ["ASSIGNED"],
+  "re-assigned": ["REASSIGNED"],
+  updated: ["SETTINGS_CHANGED", "STAGE_CHANGED"],
+  resumed: ["UNBLOCKED", "REOPENED"],
+  completed: ["COMPLETED"],
+};
+
 interface ActivityTimelineProps {
   activities: ActivityEntry[];
   loading?: boolean;
@@ -114,6 +185,7 @@ interface ActivityTimelineProps {
   onCommentAdd?: (activityId: string, comment: string) => Promise<void>;
   onCommentDelete?: (activityId: string, commentId: string) => Promise<void>;
   currentBadge?: string;
+  aggregateAcrossUsers?: boolean;
   /** Pass the project ID so the timeline can scope its own fetches if needed */
   projectId?: string;
   className?: string;
@@ -889,6 +961,7 @@ export function ActivityTimeline({
   onCommentAdd,
   onCommentDelete,
   currentBadge,
+  aggregateAcrossUsers = false,
   projectId: _projectId,
   className,
   containerClassName,
@@ -897,6 +970,29 @@ export function ActivityTimeline({
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filterMode, setFilterMode] = useState<FilterMode>(initialFilterMode);
+  const [selectedActors, setSelectedActors] = useState<string[]>([]);
+  const [selectedAssignments, setSelectedAssignments] = useState<string[]>([]);
+  const [selectedShifts, setSelectedShifts] = useState<string[]>([]);
+  const [selectedLwcs, setSelectedLwcs] = useState<string[]>([]);
+  const [selectedOperations, setSelectedOperations] = useState<string[]>([]);
+  const [selectedActionBuckets, setSelectedActionBuckets] = useState<string[]>(
+    [],
+  );
+  const [selectedScopes, setSelectedScopes] = useState<string[]>([]);
+  const [selectedStages, setSelectedStages] = useState<string[]>([]);
+  const [selectedMilestones, setSelectedMilestones] = useState<string[]>([]);
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
+    user: true,
+    shift: false,
+    assignment: false,
+    operation: false,
+    action: true,
+    scope: false,
+    stage: false,
+    milestone: false,
+    lwc: false,
+  });
+  const [filterPopoverOpen, setFilterPopoverOpen] = useState(false);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [expandedActivities, setExpandedActivities] = useState<Set<string>>(
     new Set(),
@@ -1028,6 +1124,13 @@ export function ActivityTimeline({
     if (!cleaned) return undefined;
     return cleaned.replace(/\b\w/g, (char) => char.toUpperCase());
   }, []);
+
+  const pushFilterPatch = useCallback(
+    (patch: ActivityTimelineFilterOptions) => {
+      onFilterChange?.(patch);
+    },
+    [onFilterChange],
+  );
 
   const toggleActivityExpanded = useCallback((activityId: string) => {
     setExpandedActivities((prev) => {
@@ -1227,6 +1330,81 @@ export function ActivityTimeline({
     return Array.from(types).sort();
   }, [activities]);
 
+  const actorOptions = useMemo(() => {
+    const badges = Array.from(
+      new Set(
+        activities
+          .map((entry) => entry.performedBy)
+          .filter((badge): badge is string => Boolean(badge)),
+      ),
+    ).sort();
+
+    if (currentBadge && !badges.includes(currentBadge)) {
+      badges.unshift(currentBadge);
+    }
+
+    return badges;
+  }, [activities, currentBadge]);
+
+  const assignmentOptions = useMemo(() => {
+    return Array.from(
+      new Set(
+        activities
+          .map((entry) => entry.assignmentId)
+          .filter((id): id is string => Boolean(id && id.trim())),
+      ),
+    ).sort();
+  }, [activities]);
+
+  const lwcOptions = useMemo(() => {
+    return Array.from(
+      new Set(
+        activities
+          .flatMap((entry) => {
+            const metadata = (entry.metadata ?? {}) as Record<string, unknown>;
+            const values: string[] = [];
+            if (typeof metadata.lwc === "string" && metadata.lwc.trim()) {
+              values.push(metadata.lwc.trim());
+            }
+            if (
+              typeof metadata.lwcSection === "string" &&
+              metadata.lwcSection.trim()
+            ) {
+              values.push(metadata.lwcSection.trim());
+            }
+            return values;
+          })
+          .filter(Boolean),
+      ),
+    ).sort((a, b) => a.localeCompare(b));
+  }, [activities]);
+
+  const hasAdvancedFilters =
+    selectedActors.length > 0 ||
+    selectedAssignments.length > 0 ||
+    selectedShifts.length > 0 ||
+    selectedLwcs.length > 0 ||
+    selectedOperations.length > 0 ||
+    selectedActionBuckets.length > 0 ||
+    selectedScopes.length > 0 ||
+    selectedStages.length > 0 ||
+    selectedMilestones.length > 0;
+
+  const toggleMultiValue = useCallback(
+    (selected: string[], value: string) =>
+      selected.includes(value)
+        ? selected.filter((item) => item !== value)
+        : [...selected, value],
+    [],
+  );
+
+  const toggleSection = useCallback((section: string) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  }, []);
+
   if (!mounted) {
     return null;
   }
@@ -1277,85 +1455,330 @@ export function ActivityTimeline({
                 <Input
                   placeholder="Search activities..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSearchTerm(value);
+                    pushFilterPatch({
+                      searchText: value.trim() ? value : undefined,
+                    });
+                  }}
                   className="h-9 pl-9 text-sm"
                 />
               </div>
             )}
 
             {allowFiltering && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
+              <Popover
+                open={filterPopoverOpen}
+                onOpenChange={setFilterPopoverOpen}
+              >
+                <PopoverTrigger asChild>
                   <Button
-                    variant="outline"
+                    variant={hasAdvancedFilters ? "secondary" : "outline"}
                     size="sm"
                     className="h-9 gap-1.5 px-3 text-sm shrink-0"
                   >
                     <Filter className="h-3.5 w-3.5" />
-                    {filterMode === "all"
-                      ? "All"
-                      : filterMode === "brand_list"
-                        ? "Brand List"
-                        : getActionLabel(filterMode as ActivityAction)}
-                    <ChevronDown className="h-3.5 w-3.5 opacity-50" />
+                    Filters
+                    {hasAdvancedFilters ? (
+                      <span className="rounded-full bg-primary/20 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
+                        Active
+                      </span>
+                    ) : null}
                   </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start">
-                  <DropdownMenuLabel className="text-sm">
-                    Filter by action
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setFilterMode("all");
-                      onFilterChange?.({ actionTypes: undefined });
-                    }}
-                    className={cn(
-                      "text-sm",
-                      filterMode === "all" && "bg-background",
-                    )}
-                  >
-                    All Actions
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setFilterMode("brand_list");
-                      onFilterChange?.({ actionTypes: BRAND_LIST_ACTIONS });
-                    }}
-                    className={cn(
-                      "text-sm gap-2",
-                      filterMode === "brand_list" && "bg-background",
-                    )}
-                  >
-                    <Layers3 className="h-3.5 w-3.5 text-sky-500" />
-                    Brand List
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  {actionTypes.map((type) => {
-                    const { icon: TypeIcon, color } = getActivityIcon(
-                      type as ActivityAction,
-                    );
-                    return (
-                      <DropdownMenuItem
-                        key={type}
-                        onClick={() => {
-                          setFilterMode(type as ActivityAction);
-                          onFilterChange?.({
-                            actionTypes: [type as ActivityAction],
-                          });
-                        }}
-                        className={cn(
-                          "text-sm gap-2",
-                          filterMode === type && "bg-background",
-                        )}
-                      >
-                        <TypeIcon className={cn("h-3.5 w-3.5", color)} />
-                        {getActionLabel(type as ActivityAction)}
-                      </DropdownMenuItem>
-                    );
-                  })}
-                </DropdownMenuContent>
-              </DropdownMenu>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="max-w-60 p-0">
+                  <div className="max-h-[70vh] space-y-2 overflow-y-auto p-3">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                      Activity Filters
+                    </div>
+
+                    <Collapsible
+                      open={openSections.user}
+                      onOpenChange={() => toggleSection("user")}
+                    >
+                      <CollapsibleTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-8 w-full gap-2 justify-between px-2 text-xs">
+                          User
+                          {openSections.user ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="space-y-2 px-2 pb-2">
+                        {actorOptions.map((badge) => (
+                          <label key={badge} className="flex items-center gap-2 text-xs">
+                            <Checkbox
+                              checked={selectedActors.includes(badge)}
+                              onCheckedChange={() => {
+                                const next = toggleMultiValue(selectedActors, badge);
+                                setSelectedActors(next);
+                                pushFilterPatch({
+                                  performedByBadges: next.length ? next : undefined,
+                                });
+                              }}
+                            />
+                            <span>Badge {badge}</span>
+                          </label>
+                        ))}
+                      </CollapsibleContent>
+                    </Collapsible>
+
+                    <Collapsible
+                      open={openSections.shift}
+                      onOpenChange={() => toggleSection("shift")}
+                    >
+                      <CollapsibleTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-8 w-full justify-between px-2 text-xs">
+                          Shift
+                          {openSections.shift ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="space-y-2 px-2 pb-2">
+                        {SHIFT_FILTER_OPTIONS.map((option) => {
+                          const value = option.toLowerCase();
+                          return (
+                            <label key={option} className="flex items-center gap-2 text-xs">
+                              <Checkbox
+                                checked={selectedShifts.includes(value)}
+                                onCheckedChange={() => {
+                                  const next = toggleMultiValue(selectedShifts, value);
+                                  setSelectedShifts(next);
+                                  pushFilterPatch({
+                                    shiftLabels: next.length ? next : undefined,
+                                  });
+                                }}
+                              />
+                              <span>{option}</span>
+                            </label>
+                          );
+                        })}
+                      </CollapsibleContent>
+                    </Collapsible>
+
+                    <Collapsible
+                      open={openSections.assignment}
+                      onOpenChange={() => toggleSection("assignment")}
+                    >
+                      <CollapsibleTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-8 w-full justify-between px-2 text-xs">
+                          Assignment
+                          {openSections.assignment ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="space-y-2 px-2 pb-2">
+                        {assignmentOptions.map((assignmentId) => (
+                          <label key={assignmentId} className="flex items-center gap-2 text-xs">
+                            <Checkbox
+                              checked={selectedAssignments.includes(assignmentId)}
+                              onCheckedChange={() => {
+                                const next = toggleMultiValue(selectedAssignments, assignmentId);
+                                setSelectedAssignments(next);
+                                pushFilterPatch({
+                                  assignmentIds: next.length ? next : undefined,
+                                });
+                              }}
+                            />
+                            <span>{assignmentId}</span>
+                          </label>
+                        ))}
+                      </CollapsibleContent>
+                    </Collapsible>
+
+                    <Collapsible
+                      open={openSections.operation}
+                      onOpenChange={() => toggleSection("operation")}
+                    >
+                      <CollapsibleTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-8 w-full justify-between px-2 text-xs">
+                          Operation
+                          {openSections.operation ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="space-y-2 px-2 pb-2">
+                        {OPERATION_OPTIONS.map((option) => {
+                          const value = option.toLowerCase().replace(/\s+/g, "-");
+                          return (
+                            <label key={option} className="flex items-center gap-2 text-xs">
+                              <Checkbox
+                                checked={selectedOperations.includes(value)}
+                                onCheckedChange={() => {
+                                  const next = toggleMultiValue(selectedOperations, value);
+                                  setSelectedOperations(next);
+                                  pushFilterPatch({
+                                    operations: next.length ? next : undefined,
+                                  });
+                                }}
+                              />
+                              <span>{option}</span>
+                            </label>
+                          );
+                        })}
+                      </CollapsibleContent>
+                    </Collapsible>
+
+                    <Collapsible
+                      open={openSections.action}
+                      onOpenChange={() => toggleSection("action")}
+                    >
+                      <CollapsibleTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-8 w-full justify-between px-2 text-xs">
+                          Action
+                          {openSections.action ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="space-y-2 px-2 pb-2">
+                        {ACTION_OPTIONS.map((option) => {
+                          const value = option.toLowerCase();
+                          return (
+                            <label key={option} className="flex items-center gap-2 text-xs">
+                              <Checkbox
+                                checked={selectedActionBuckets.includes(value)}
+                                onCheckedChange={() => {
+                                  const next = toggleMultiValue(selectedActionBuckets, value);
+                                  setSelectedActionBuckets(next);
+                                  const mapped = Array.from(new Set(next.flatMap((bucket) => ACTION_FILTER_MAP[bucket] ?? [])));
+                                  setFilterMode("all");
+                                  pushFilterPatch({
+                                    actionTypes: mapped.length ? mapped : undefined,
+                                  });
+                                }}
+                              />
+                              <span>{option}</span>
+                            </label>
+                          );
+                        })}
+                      </CollapsibleContent>
+                    </Collapsible>
+
+                    <Collapsible
+                      open={openSections.scope}
+                      onOpenChange={() => toggleSection("scope")}
+                    >
+                      <CollapsibleTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-8 w-full justify-between px-2 text-xs">
+                          Scope
+                          {openSections.scope ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="space-y-2 px-2 pb-2">
+                        {SCOPE_OPTIONS.map((option) => {
+                          const value = option.toLowerCase().replace(/\s+/g, "-");
+                          return (
+                            <label key={option} className="flex items-center gap-2 text-xs">
+                              <Checkbox
+                                checked={selectedScopes.includes(value)}
+                                onCheckedChange={() => {
+                                  const next = toggleMultiValue(selectedScopes, value);
+                                  setSelectedScopes(next);
+                                  pushFilterPatch({
+                                    scopes: next.length ? next : undefined,
+                                  });
+                                }}
+                              />
+                              <span>{option}</span>
+                            </label>
+                          );
+                        })}
+                      </CollapsibleContent>
+                    </Collapsible>
+
+                    <Collapsible
+                      open={openSections.stage}
+                      onOpenChange={() => toggleSection("stage")}
+                    >
+                      <CollapsibleTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-8 w-full justify-between px-2 text-xs">
+                          Stage
+                          {openSections.stage ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="space-y-2 px-2 pb-2">
+                        {STAGE_OPTIONS.map((option) => {
+                          const value = option.toLowerCase().replace(/\s+/g, "-");
+                          return (
+                            <label key={option} className="flex items-center gap-2 text-xs">
+                              <Checkbox
+                                checked={selectedStages.includes(value)}
+                                onCheckedChange={() => {
+                                  const next = toggleMultiValue(selectedStages, value);
+                                  setSelectedStages(next);
+                                  pushFilterPatch({
+                                    stages: next.length ? next : undefined,
+                                  });
+                                }}
+                              />
+                              <span>{option}</span>
+                            </label>
+                          );
+                        })}
+                      </CollapsibleContent>
+                    </Collapsible>
+
+                    <Collapsible
+                      open={openSections.milestone}
+                      onOpenChange={() => toggleSection("milestone")}
+                    >
+                      <CollapsibleTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-8 w-full justify-between px-2 text-xs">
+                          Milestone
+                          {openSections.milestone ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="space-y-2 px-2 pb-2">
+                        {MILESTONE_OPTIONS.map((option) => {
+                          const value = option.toLowerCase().replace(/\s+/g, "-");
+                          return (
+                            <label key={option} className="flex items-center gap-2 text-xs">
+                              <Checkbox
+                                checked={selectedMilestones.includes(value)}
+                                onCheckedChange={() => {
+                                  const next = toggleMultiValue(selectedMilestones, value);
+                                  setSelectedMilestones(next);
+                                  pushFilterPatch({
+                                    milestones: next.length ? next : undefined,
+                                  });
+                                }}
+                              />
+                              <span>{option}</span>
+                            </label>
+                          );
+                        })}
+                      </CollapsibleContent>
+                    </Collapsible>
+
+                    <Collapsible
+                      open={openSections.lwc}
+                      onOpenChange={() => toggleSection("lwc")}
+                    >
+                      <CollapsibleTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-8 w-full justify-between px-2 text-xs">
+                          LWC
+                          {openSections.lwc ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="space-y-2 px-2 pb-2">
+                        {lwcOptions.map((option) => {
+                          const value = option.toLowerCase().replace(/\s+/g, "-");
+                          return (
+                            <label key={option} className="flex items-center gap-2 text-xs">
+                              <Checkbox
+                                checked={selectedLwcs.includes(value)}
+                                onCheckedChange={() => {
+                                  const next = toggleMultiValue(selectedLwcs, value);
+                                  setSelectedLwcs(next);
+                                  pushFilterPatch({
+                                    lwcSections: next.length ? next : undefined,
+                                  });
+                                }}
+                              />
+                              <span>{option}</span>
+                            </label>
+                          );
+                        })}
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </div>
+                </PopoverContent>
+              </Popover>
             )}
 
             <ToggleGroup
@@ -1391,14 +1814,14 @@ export function ActivityTimeline({
       {!loading && filteredActivities.length === 0 && (
         <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
           <div className="rounded-full bg-muted/60 p-4 mb-4">
-            {searchTerm || filterMode !== "all" ? (
+            {searchTerm || filterMode !== "all" || hasAdvancedFilters ? (
               <Search className="h-6 w-6 text-muted-foreground/60" />
             ) : (
               <Clock className="h-6 w-6 text-muted-foreground/60" />
             )}
           </div>
           <h4 className="text-sm font-medium text-foreground mb-1">
-            {searchTerm || filterMode !== "all"
+            {searchTerm || filterMode !== "all" || hasAdvancedFilters
               ? "No matching activities"
               : "No activity yet"}
           </h4>
@@ -1409,9 +1832,11 @@ export function ActivityTimeline({
                 ? "No brand list activities found."
                 : filterMode !== "all"
                   ? `No ${getActionLabel(filterMode as ActivityAction).toLowerCase()} activities found.`
+                  : hasAdvancedFilters
+                    ? "No activities match the selected filter combination."
                   : "Activities will appear here as actions are performed."}
           </p>
-          {(searchTerm || filterMode !== "all") && (
+          {(searchTerm || filterMode !== "all" || hasAdvancedFilters) && (
             <Button
               variant="ghost"
               size="sm"
@@ -1419,7 +1844,27 @@ export function ActivityTimeline({
               onClick={() => {
                 setSearchTerm("");
                 setFilterMode("all");
-                onFilterChange?.({ actionTypes: undefined });
+                setSelectedActors([]);
+                setSelectedAssignments([]);
+                setSelectedShifts([]);
+                setSelectedLwcs([]);
+                setSelectedOperations([]);
+                setSelectedActionBuckets([]);
+                setSelectedScopes([]);
+                setSelectedStages([]);
+                setSelectedMilestones([]);
+                pushFilterPatch({
+                  actionTypes: undefined,
+                  performedByBadges: undefined,
+                  assignmentIds: undefined,
+                  shiftLabels: undefined,
+                  lwcSections: undefined,
+                  operations: undefined,
+                  scopes: undefined,
+                  stages: undefined,
+                  milestones: undefined,
+                  searchText: undefined,
+                });
               }}
             >
               Clear filters

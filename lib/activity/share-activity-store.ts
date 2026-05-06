@@ -510,6 +510,12 @@ export function applyActivityFilters(
 ): ActivityEntry[] {
     if (!filters) return activities
 
+    const normalizeToken = (value: string): string =>
+        value
+            .trim()
+            .toLowerCase()
+            .replace(/[\s_-]+/g, '-')
+
     let output = [...activities]
 
     if (filters.actionTypes?.length) {
@@ -520,12 +526,68 @@ export function applyActivityFilters(
         output = output.filter((x) => x.targetBadge && filters.targetBadges!.includes(x.targetBadge))
     }
 
+    if (filters.performedByBadges?.length) {
+        const requested = new Set(filters.performedByBadges.map((badge) => badge.trim()).filter(Boolean))
+        output = output.filter((x) => requested.has(x.performedBy))
+    }
+
     if (filters.assignmentIds?.length) {
         output = output.filter((x) => x.assignmentId && filters.assignmentIds!.includes(x.assignmentId))
     }
 
     if (filters.projectIds?.length) {
         output = output.filter((x) => x.projectId && filters.projectIds!.includes(x.projectId))
+    }
+
+    if (filters.operations?.length) {
+        const requested = new Set(filters.operations.map((value) => normalizeToken(value)).filter(Boolean))
+        output = output.filter((x) => {
+            const metadata = (x.metadata ?? {}) as Record<string, unknown>
+            const operation = typeof metadata.operation === 'string' ? normalizeToken(metadata.operation) : ''
+            return operation ? requested.has(operation) : false
+        })
+    }
+
+    if (filters.scopes?.length) {
+        const requested = new Set(filters.scopes.map((value) => normalizeToken(value)).filter(Boolean))
+        output = output.filter((x) => {
+            const metadata = (x.metadata ?? {}) as Record<string, unknown>
+            const scope = typeof metadata.scope === 'string' ? normalizeToken(metadata.scope) : ''
+            const workflow = typeof metadata.workflow === 'string' ? normalizeToken(metadata.workflow) : ''
+            if (scope && requested.has(scope)) return true
+            if (workflow && requested.has(workflow)) return true
+            return false
+        })
+    }
+
+    if (filters.stages?.length) {
+        const requested = new Set(filters.stages.map((value) => normalizeToken(value)).filter(Boolean))
+        output = output.filter((x) => {
+            const metadata = (x.metadata ?? {}) as Record<string, unknown>
+            const direct = typeof x.stage === 'string' ? normalizeToken(x.stage) : ''
+            const fromStage = typeof metadata.fromStage === 'string' ? normalizeToken(metadata.fromStage) : ''
+            const toStage = typeof metadata.toStage === 'string' ? normalizeToken(metadata.toStage) : ''
+            return (direct && requested.has(direct)) || (fromStage && requested.has(fromStage)) || (toStage && requested.has(toStage))
+        })
+    }
+
+    if (filters.milestones?.length) {
+        const requested = new Set(filters.milestones.map((value) => normalizeToken(value)).filter(Boolean))
+        output = output.filter((x) => {
+            const metadata = (x.metadata ?? {}) as Record<string, unknown>
+            const milestone = typeof metadata.milestone === 'string' ? normalizeToken(metadata.milestone) : ''
+            return milestone ? requested.has(milestone) : false
+        })
+    }
+
+    if (filters.lwcSections?.length) {
+        const requested = new Set(filters.lwcSections.map((value) => normalizeToken(value)).filter(Boolean))
+        output = output.filter((x) => {
+            const metadata = (x.metadata ?? {}) as Record<string, unknown>
+            const lwc = typeof metadata.lwc === 'string' ? normalizeToken(metadata.lwc) : ''
+            const lwcSection = typeof metadata.lwcSection === 'string' ? normalizeToken(metadata.lwcSection) : ''
+            return (lwc && requested.has(lwc)) || (lwcSection && requested.has(lwcSection))
+        })
     }
 
     if (filters.resultStatus?.length) {

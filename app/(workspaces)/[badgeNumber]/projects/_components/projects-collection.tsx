@@ -79,7 +79,7 @@ export function ProjectsCollection({
                     name={project.name}
                     color={project.color ?? undefined}
                     interactive={false}
-                    className="h-9 w-10 shrink-0"
+                    size="sm"
                 />
             ),
             title: project.name,

@@ -23,7 +23,7 @@ export interface LocationSummary {
 /**
  * All locations tab constant.
  */
-export const ALL_LOCATIONS_TAB = "__all__";
+export const ALL_LOCATIONS_TAB = "All";
 
 // ============================================================================
 // Functions

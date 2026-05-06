@@ -520,7 +520,7 @@ export function MultiSheetReviewModal({
   }, [logBrandingWorkflowActivity, setIsOpen]);
 
   const handleCloseModalWithActivity = useCallback(() => {
-    void logBrandingWorkflowActivity("brandlist", "close", "COMPLETED");
+    void logBrandingWorkflowActivity("brandlist", "save-later", "COMPLETED");
     setIsOpen(false);
   }, [logBrandingWorkflowActivity, setIsOpen]);
 
@@ -649,7 +649,7 @@ export function MultiSheetReviewModal({
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
-              onClick={handleCloseModalWithActivity}
+              onClick={handleSaveAndContinueLater}
             />
             <motion.div
               initial={{ opacity: 0, scale: 0.97, y: 16 }}
@@ -673,7 +673,8 @@ export function MultiSheetReviewModal({
                   onSetStandardViewMode={setStandardViewMode}
                   onBackToCover={() => setModalSurface("cover")}
                   onOpenTutorial={() => setTutorialOpen(true)}
-                  onClose={handleCloseModalWithActivity}
+                  onSaveAndContinueLater={handleSaveAndContinueLater}
+                  onClose={handleSaveAndContinueLater}
                 />
 
                 {modalSurface === "cover" ? (

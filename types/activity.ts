@@ -143,11 +143,32 @@ export interface ActivityTimelineFilterOptions {
     /** Filter by target badge (e.g., show comments on a specific user) */
     targetBadges?: string[]
 
+    /** Filter by actor badge (performedBy) */
+    performedByBadges?: string[]
+
     /** Filter by assignment ID */
     assignmentIds?: string[]
 
     /** Filter by project ID */
     projectIds?: string[]
+
+    /** Filter by metadata.operation */
+    operations?: string[]
+
+    /** Filter by scope labels from metadata.scope/workflow */
+    scopes?: string[]
+
+    /** Filter by stage values from entry.stage / metadata.fromStage / metadata.toStage */
+    stages?: string[]
+
+    /** Filter by metadata.milestone */
+    milestones?: string[]
+
+    /** Filter by metadata.lwc / metadata.lwcSection */
+    lwcSections?: string[]
+
+    /** Optional shift selection from UI (used by query builder) */
+    shiftLabels?: string[]
 
     /** Filter by result status */
     resultStatus?: Array<'success' | 'failure' | 'pending'>

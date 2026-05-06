@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { LogOut, Settings, User } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -21,11 +21,7 @@ export type UserAvatarMenuProps = {
     showName?: boolean;
     interactive?: boolean;
     className?: string;
-    onProfileSelect?: () => void;
-    onSettingsSelect?: () => void;
     onSignOutSelect?: () => void;
-    /** Optional slot rendered inside the popover above the sign-out row (e.g. developer workspace switcher). */
-    roleSwitcherSlot?: React.ReactNode;
 };
 
 const SPRING = {
@@ -77,10 +73,7 @@ export function UserAvatarMenu({
     showName = true,
     interactive = true,
     className,
-    onProfileSelect,
-    onSettingsSelect,
     onSignOutSelect,
-    roleSwitcherSlot,
 }: UserAvatarMenuProps) {
     const derivedInitials = initials ?? getInitials(fullName);
     const [open, setOpen] = useState(false);
@@ -172,34 +165,6 @@ export function UserAvatarMenu({
                                 </Status>
 
                             </div>
-
-                            <div className="border-t border-border p-1.5">
-                                <button
-                                    type="button"
-                                    className="flex w-full items-center gap-2 rounded-xl px-2.5 py-2 text-left text-sm transition-colors hover:bg-accent"
-                                    onClick={() => {
-                                        onProfileSelect?.();
-                                        setOpen(false);
-                                    }}
-                                >
-                                    <User className="h-4 w-4" />
-                                    <span>Profile</span>
-                                </button>
-                                <button
-                                    type="button"
-                                    className="flex w-full items-center gap-2 rounded-xl px-2.5 py-2 text-left text-sm transition-colors hover:bg-accent"
-                                    onClick={() => {
-                                        onSettingsSelect?.();
-                                        setOpen(false);
-                                    }}
-                                >
-                                    <Settings className="h-4 w-4" />
-                                    <span>Settings</span>
-                                </button>
-                            </div>
-
-                            {/* Developer workspace role switcher — conditionally rendered */}
-                            {roleSwitcherSlot}
 
                             <div className="border-t border-border p-1.5">
                                 <button

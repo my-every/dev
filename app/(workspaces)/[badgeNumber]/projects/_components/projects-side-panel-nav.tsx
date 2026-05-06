@@ -6,9 +6,6 @@ import {
   ArrowUp,
   Calendar,
   Check,
-  CheckCircle2,
-  CircleDot,
-  Clock3,
   Loader2,
   Pencil,
   Search,
@@ -177,14 +174,10 @@ export type DueProjectNavItem = {
   href?: string | null;
 };
 
-const PROJECT_TAB_OPTIONS: Array<{
-  id: ProjectTab;
-  label: string;
-  icon: typeof CircleDot;
-}> = [
-  { id: "active", label: "Active", icon: CircleDot },
-  { id: "pending", label: "Pending", icon: Clock3 },
-  { id: "complete", label: "Complete", icon: CheckCircle2 },
+const PROJECT_TAB_OPTIONS: Array<{ id: ProjectTab; label: string }> = [
+  { id: "active", label: "Active" },
+  { id: "pending", label: "Pending" },
+  { id: "complete", label: "Complete" },
 ];
 
 export function ProjectsSidePanelNav({
@@ -287,6 +280,15 @@ export function ProjectsSidePanelNav({
     () => applyManualPriorityOrder(computedPriorityProjects, manualPriorityOrder),
     [computedPriorityProjects, manualPriorityOrder],
   );
+
+  const showPriorityQueueControls =
+    sidePanelTab === "priority" && lwcFilter === "all" && orderedPriorityProjects.length > 1;
+
+  useEffect(() => {
+    if (!showPriorityQueueControls && priorityEditMode) {
+      setPriorityEditMode(false);
+    }
+  }, [showPriorityQueueControls, priorityEditMode]);
 
   // ── Priority data pipeline ────────────────────────────────────────────────
 
@@ -490,7 +492,7 @@ export function ProjectsSidePanelNav({
             </Tabs>
 
             {/* Priority: queue order bar */}
-            {sidePanelTab === "priority" && (
+            {showPriorityQueueControls && (
               <div className="flex items-center justify-between rounded-xl border border-border/70 bg-muted/30 px-2.5 py-1.5">
                 <div className="text-[11px] text-muted-foreground">
                   Queue order:{" "}
@@ -541,45 +543,54 @@ export function ProjectsSidePanelNav({
                 placeholder="Search..."
                 className={cn(
                   "h-11 w-full rounded-2xl border-border bg-card pl-9",
-                  sidePanelTab === "legals" ? "pr-22" : "pr-4",
+                  sidePanelTab === "priority" ? "pr-28" : "pr-4",
                 )}
               />
-              {sidePanelTab === "legals" && (
-                <LegalsStatusDropdown
-                  activeTab={activeTab}
-                  setActiveTab={setActiveTab}
-                  buckets={legalsProjectBuckets}
-                />
+
+              {sidePanelTab === "priority" && (
+                <div className="absolute right-1 top-1/2 z-10 -translate-y-1/2">
+                  <Select value={lwcFilter} onValueChange={(value) => setLwcFilter(value as LwcFilter)}>
+                    <SelectTrigger className="h-8 w-20 rounded-lg border bg-background px-2 text-xs">
+                      <SelectValue placeholder="All" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {LWC_FILTER_OPTIONS.map((opt, index) => (
+                        <SelectItem key={opt.id} value={opt.id} index={index}>
+                          {opt.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               )}
             </div>
 
-            {/* Priority: LWC filter pills */}
-            {sidePanelTab === "priority" && (
-              <div className="flex flex-wrap gap-1.5">
-                {LWC_FILTER_OPTIONS.map((opt) => {
-                  const isActive = lwcFilter === opt.id;
-                  return (
-                    <button
-                      key={opt.id}
-                      type="button"
-                      onClick={() => setLwcFilter(opt.id)}
-                      className={cn(
-                        "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-medium transition-colors",
-                        isActive
-                          ? "bg-foreground text-background"
-                          : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground",
-                      )}
-                    >
-                      {opt.dotColor && !isActive && (
-                        <span
-                          className="h-1.5 w-1.5 shrink-0 rounded-full"
-                          style={{ backgroundColor: opt.dotColor }}
-                        />
-                      )}
-                      {opt.label}
-                    </button>
-                  );
-                })}
+            {/* Legals: clean status tabs */}
+            {sidePanelTab === "legals" && (
+              <div className="rounded-xl border border-border bg-muted/30 p-1">
+                <div className="grid grid-cols-3 gap-1">
+                  {PROJECT_TAB_OPTIONS.map((opt) => {
+                    const isActive = activeTab === opt.id;
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setActiveTab(opt.id)}
+                        className={cn(
+                          "inline-flex h-8 items-center justify-center gap-1.5 rounded-lg px-2 text-xs font-medium transition-colors",
+                          isActive
+                            ? "bg-foreground text-background"
+                            : "text-muted-foreground hover:bg-background hover:text-foreground",
+                        )}
+                      >
+                        <span>{opt.label}</span>
+                        <span className={cn("tabular-nums", isActive ? "text-background/70" : "text-muted-foreground/60")}>
+                          {legalsProjectBuckets[opt.id].length}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>
@@ -678,43 +689,6 @@ const LEGALS_GROUP_FILTERS: ProjectGroupFilter<DueProjectNavItem>[] = [
     match: (p) => p.status === "complete",
   },
 ];
-
-// Small dropdown for legals status filter — keeps LWCSplitDropdown out of priority
-function LegalsStatusDropdown({
-  activeTab,
-  setActiveTab,
-  buckets,
-}: {
-  activeTab: ProjectTab;
-  setActiveTab: (tab: ProjectTab) => void;
-  buckets: ReturnType<typeof bucketProjects>;
-}) {
-  return (
-    <div className="absolute right-1 top-1/2 z-10 -translate-y-1/2 flex items-center overflow-hidden rounded-lg border border-input bg-background">
-      {PROJECT_TAB_OPTIONS.map((opt) => (
-        <button
-          key={opt.id}
-          type="button"
-          onClick={() => setActiveTab(opt.id)}
-          className={cn(
-            "h-8 px-2.5 text-[10px] font-medium transition-colors",
-            activeTab === opt.id
-              ? "bg-foreground text-background"
-              : "text-muted-foreground hover:bg-muted hover:text-foreground",
-          )}
-        >
-          {opt.label}
-          <span className={cn(
-            "ml-1 tabular-nums",
-            activeTab === opt.id ? "text-background/70" : "text-muted-foreground/60",
-          )}>
-            {buckets[opt.id].length}
-          </span>
-        </button>
-      ))}
-    </div>
-  );
-}
 
 function bucketProjects(
   projects: DueProjectNavItem[],

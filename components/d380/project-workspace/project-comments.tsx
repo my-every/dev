@@ -842,7 +842,7 @@ export function ProjectComments({
                 onClick={() => setFilterCategory("ALL")}
                 className="text-xs"
               >
-                All categories
+                All Categories
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               {(Object.keys(CATEGORY_META) as ProjectCommentCategory[]).map((cat) => {

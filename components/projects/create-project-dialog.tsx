@@ -140,6 +140,15 @@ function getPreferredRevision(project: LegalProjectRecord | null): string {
     return project.latestRevision ?? project.revisions[project.revisions.length - 1]?.revision ?? "";
 }
 
+function getLegalProjectOptionLabel(project: LegalProjectRecord): string {
+    const pd = (project.pdNumber ?? "").trim();
+    const hint = (project.projectNameHint ?? "").trim();
+    if (!hint || hint.toUpperCase() === pd.toUpperCase()) {
+        return pd;
+    }
+    return `${pd} - ${hint}`;
+}
+
 // ============================================================================
 // Component
 // ============================================================================
@@ -159,8 +168,11 @@ export function CreateProjectDialog({
     const [internalOpen, setInternalOpen] = useState(false);
     const [form, setForm] = useState<CreateProjectForm>({ ...DEFAULT_FORM });
     const [creating, setCreating] = useState(false);
+    const [createError, setCreateError] = useState<string | null>(null);
     const [legalProjects, setLegalProjects] = useState<LegalProjectRecord[]>([]);
     const [loadingLegalProjects, setLoadingLegalProjects] = useState(false);
+    const [workbookFile, setWorkbookFile] = useState<File | null>(null);
+    const [layoutPdfFile, setLayoutPdfFile] = useState<File | null>(null);
     const { saveProject } = useProjectContext();
     const { user } = useSession();
     const isControlled = typeof controlledOpen === "boolean";
@@ -226,99 +238,161 @@ export function CreateProjectDialog({
 
     const selectedLegalProject = legalProjects.find(project => project.pdNumber === form.pdNumber) ?? null;
 
+    const uploadLegalFilesForProject = useCallback(async ({
+        projectId,
+        pdNumber,
+        revision,
+    }: {
+        projectId: string;
+        pdNumber: string;
+        revision: string;
+    }) => {
+        if (!workbookFile && !layoutPdfFile) {
+            return;
+        }
+
+        const formData = new FormData();
+        if (workbookFile) formData.append("workbook", workbookFile);
+        if (layoutPdfFile) formData.append("layout", layoutPdfFile);
+        formData.append("baseRevision", revision || "UPLOADED");
+        formData.append("pdNumber", pdNumber || "");
+
+        const uploadResponse = await fetch(`/api/projects/revisions/${encodeURIComponent(projectId)}/files`, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (!uploadResponse.ok) {
+            const payload = await uploadResponse.json().catch(() => ({})) as { error?: string };
+            throw new Error(payload.error || "Project created, but uploading workbook/PDF failed.");
+        }
+
+        const refreshedManifestResponse = await fetch(`/api/projects/${encodeURIComponent(projectId)}`, {
+            cache: "no-store",
+        });
+        if (refreshedManifestResponse.ok) {
+            const refreshedPayload = await refreshedManifestResponse.json() as { manifest?: ProjectManifest };
+            if (refreshedPayload.manifest) {
+                saveProject(refreshedPayload.manifest);
+            }
+        }
+    }, [layoutPdfFile, saveProject, workbookFile]);
+
     const handleCreate = useCallback(async () => {
         if (!isValid) return;
         setCreating(true);
+        setCreateError(null);
 
-        if (form.sourceMode === "legal-library" && form.pdNumber.trim() && form.legalRevision.trim()) {
-            const response = await fetch("/api/legal-drawings/instantiate", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    pdNumber: form.pdNumber.trim(),
-                    revision: form.legalRevision.trim(),
-                    name: form.name.trim(),
-                    unitNumber: form.unitNumber.trim() || null,
-                    lwcType: form.lwcType || null,
-                    dueDate: form.dueDate || null,
-                    planConlayDate: form.planConlayDate || null,
-                    planConassyDate: form.planConassyDate || null,
-                    shipDate: form.shipDate || null,
-                    color: form.color,
-                    actorBadge: user?.badge || null,
-                    actorShift: user?.currentShift || null,
-                }),
-            });
+        try {
+            if (form.sourceMode === "legal-library" && form.pdNumber.trim() && form.legalRevision.trim()) {
+                const response = await fetch("/api/legal-drawings/instantiate", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        pdNumber: form.pdNumber.trim(),
+                        revision: form.legalRevision.trim(),
+                        name: form.name.trim(),
+                        unitNumber: form.unitNumber.trim() || null,
+                        lwcType: form.lwcType || null,
+                        dueDate: form.dueDate || null,
+                        planConlayDate: form.planConlayDate || null,
+                        planConassyDate: form.planConassyDate || null,
+                        shipDate: form.shipDate || null,
+                        color: form.color,
+                        actorBadge: user?.badge || null,
+                        actorShift: user?.currentShift || null,
+                    }),
+                });
 
-            if (!response.ok) {
-                setCreating(false);
+                if (!response.ok) {
+                    throw new Error("Failed to create project from legal package.");
+                }
+
+                const payload = await response.json() as { manifest?: ProjectManifest };
+                if (!payload.manifest) {
+                    throw new Error("Project was created but response did not include a manifest.");
+                }
+
+                saveProject(payload.manifest);
+                await uploadLegalFilesForProject({
+                    projectId: payload.manifest.id,
+                    pdNumber: form.pdNumber.trim() || payload.manifest.pdNumber || "",
+                    revision: form.legalRevision.trim() || payload.manifest.revision || "UPLOADED",
+                });
+                onCreated?.(payload.manifest.id);
+
+                setForm({ ...DEFAULT_FORM });
+                setWorkbookFile(null);
+                setLayoutPdfFile(null);
+                setOpen(false);
                 return;
             }
 
-            const payload = await response.json() as { manifest?: ProjectManifest };
-            if (payload.manifest) {
-                saveProject(payload.manifest);
-                onCreated?.(payload.manifest.id);
+            // Build a minimal ProjectModel for a pre-legals project
+            const now = new Date();
+            const projectId = `proj_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+
+            const model: ProjectModel = {
+                id: projectId,
+                filename: `${form.name.trim()}.xlsx`,
+                name: form.name.trim(),
+                pdNumber: form.pdNumber.trim() || undefined,
+                unitNumber: form.unitNumber.trim() || undefined,
+                revision: form.revision.trim() || undefined,
+                lwcType: (form.lwcType as LwcType) || undefined,
+                dueDate: form.dueDate ? new Date(form.dueDate) : undefined,
+                planConlayDate: form.planConlayDate ? new Date(form.planConlayDate) : undefined,
+                planConassyDate: form.planConassyDate ? new Date(form.planConassyDate) : undefined,
+                shipDate: form.shipDate ? new Date(form.shipDate) : undefined,
+                color: form.color,
+                sheets: [],
+                sheetData: {},
+                createdAt: now,
+                warnings: [],
+                status: "legals_pending",
+                lifecycleGates: [
+                    { gateId: "LEGALS_READY", status: "LOCKED" },
+                    { gateId: "BRANDLIST_COMPLETE", status: "LOCKED" },
+                    { gateId: "BRANDING_READY", status: "LOCKED" },
+                    { gateId: "KITTING_READY", status: "LOCKED" },
+                ],
+            };
+
+            // Simulate slight delay for UX
+            await new Promise(r => setTimeout(r, 400));
+
+            const response = await fetch(`/api/projects/${encodeURIComponent(projectId)}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ projectModel: model }),
+            });
+            if (!response.ok) {
+                throw new Error("Failed to create manual placeholder project.");
             }
 
-            setCreating(false);
-            setForm({ ...DEFAULT_FORM });
-            setOpen(false);
-            return;
-        }
+            const payload = await response.json() as { manifest?: ProjectManifest };
+            if (!payload.manifest) {
+                throw new Error("Project was created but response did not include a manifest.");
+            }
 
-        // Build a minimal ProjectModel for a pre-legals project
-        const now = new Date();
-        const projectId = `proj_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-
-        const model: ProjectModel = {
-            id: projectId,
-            filename: `${form.name.trim()}.xlsx`,
-            name: form.name.trim(),
-            pdNumber: form.pdNumber.trim() || undefined,
-            unitNumber: form.unitNumber.trim() || undefined,
-            revision: form.revision.trim() || undefined,
-            lwcType: (form.lwcType as LwcType) || undefined,
-            dueDate: form.dueDate ? new Date(form.dueDate) : undefined,
-            planConlayDate: form.planConlayDate ? new Date(form.planConlayDate) : undefined,
-            planConassyDate: form.planConassyDate ? new Date(form.planConassyDate) : undefined,
-            shipDate: form.shipDate ? new Date(form.shipDate) : undefined,
-            color: form.color,
-            sheets: [],
-            sheetData: {},
-            createdAt: now,
-            warnings: [],
-            status: "legals_pending",
-            lifecycleGates: [
-                { gateId: "LEGALS_READY", status: "LOCKED" },
-                { gateId: "BRANDLIST_COMPLETE", status: "LOCKED" },
-                { gateId: "BRANDING_READY", status: "LOCKED" },
-                { gateId: "KITTING_READY", status: "LOCKED" },
-            ],
-        };
-
-        // Simulate slight delay for UX
-        await new Promise(r => setTimeout(r, 400));
-
-        const response = await fetch(`/api/projects/${encodeURIComponent(projectId)}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ projectModel: model }),
-        });
-        if (!response.ok) {
-            setCreating(false);
-            return;
-        }
-
-        const payload = await response.json() as { manifest?: ProjectManifest };
-        if (payload.manifest) {
             saveProject(payload.manifest);
+            await uploadLegalFilesForProject({
+                projectId: payload.manifest.id,
+                pdNumber: form.pdNumber.trim() || payload.manifest.pdNumber || "",
+                revision: form.revision.trim() || payload.manifest.revision || "UPLOADED",
+            });
             onCreated?.(payload.manifest.id);
+
+            setForm({ ...DEFAULT_FORM });
+            setWorkbookFile(null);
+            setLayoutPdfFile(null);
+            setOpen(false);
+        } catch (error) {
+            setCreateError(error instanceof Error ? error.message : "Unable to create project.");
+        } finally {
+            setCreating(false);
         }
-        setCreating(false);
-        setForm({ ...DEFAULT_FORM });
-        setOpen(false);
-    }, [form, isValid, onCreated, saveProject, user?.badge, user?.currentShift]);
+    }, [form, isValid, onCreated, saveProject, uploadLegalFilesForProject, user?.badge, user?.currentShift]);
 
     const handleOpenChange = useCallback((next: boolean) => {
         if (!isControlled) {
@@ -327,6 +401,9 @@ export function CreateProjectDialog({
         onOpenChange?.(next);
         if (!next) {
             setForm(buildDefaultForm());
+            setWorkbookFile(null);
+            setLayoutPdfFile(null);
+            setCreateError(null);
         }
     }, [buildDefaultForm, isControlled, onOpenChange]);
 
@@ -356,8 +433,8 @@ export function CreateProjectDialog({
                 </DialogTrigger>
             ) : null}
 
-            <DialogContent className="sm:max-w-lg">
-                <DialogHeader>
+            <DialogContent className="w-[calc(100vw-1.5rem)] max-w-3xl overflow-hidden p-0 sm:max-h-[92vh]">
+                <DialogHeader className="border-b border-border px-4 py-4 sm:px-6">
                     <DialogTitle className="flex items-center gap-2">
                         <FolderPlus className="h-5 w-5 text-muted-foreground" />
                         {dialogTitle}
@@ -367,7 +444,8 @@ export function CreateProjectDialog({
                     </DialogDescription>
                 </DialogHeader>
 
-                <div className="grid gap-4 py-2">
+                <div className="max-h-[calc(92vh-13rem)] overflow-y-auto px-4 py-3 sm:px-6 sm:py-4">
+                <div className="grid gap-4">
                     {/* Project Name */}
                     <div className="grid gap-1.5">
                         <Label className="text-xs font-medium">Source</Label>
@@ -386,7 +464,7 @@ export function CreateProjectDialog({
                     </div>
 
                     {form.sourceMode === "legal-library" ? (
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                             <div className="grid gap-1.5">
                                 <Label className="text-xs font-medium">PD Number</Label>
                                 <Select
@@ -406,7 +484,7 @@ export function CreateProjectDialog({
                                     <SelectContent>
                                         {legalProjects.map(project => (
                                             <SelectItem key={project.pdNumber} value={project.pdNumber}>
-                                                {project.pdNumber} {project.projectNameHint ? `- ${project.projectNameHint}` : ""}
+                                                {getLegalProjectOptionLabel(project)}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
@@ -449,7 +527,7 @@ export function CreateProjectDialog({
                     </div>
 
                     {/* PD Number + Unit + Revision (row) */}
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                         <div className="grid gap-1.5">
                             <Label htmlFor="pd-number" className="text-xs font-medium">PD Number</Label>
                             <Input
@@ -482,6 +560,43 @@ export function CreateProjectDialog({
                                 className="h-9 font-mono"
                                 disabled={form.sourceMode === "legal-library"}
                             />
+                        </div>
+                    </div>
+
+                    <Separator />
+
+                    <div className="grid gap-3">
+                        <Label className="text-xs font-medium flex items-center gap-1.5">
+                            <FileSpreadsheet className="h-3.5 w-3.5 text-muted-foreground" />
+                            Upload Sheet / Wire List (Optional)
+                        </Label>
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                            <div className="grid gap-1.5">
+                                <Label htmlFor="workbook-upload" className="text-xs font-medium">Workbook (.xlsx/.xls)</Label>
+                                <Input
+                                    id="workbook-upload"
+                                    type="file"
+                                    accept=".xlsx,.xls"
+                                    className="h-9"
+                                    onChange={e => setWorkbookFile(e.target.files?.[0] ?? null)}
+                                />
+                                <p className="text-[11px] text-muted-foreground truncate">
+                                    {workbookFile ? workbookFile.name : "No workbook selected"}
+                                </p>
+                            </div>
+                            <div className="grid gap-1.5">
+                                <Label htmlFor="layout-upload" className="text-xs font-medium">Wire List / Layout PDF (.pdf)</Label>
+                                <Input
+                                    id="layout-upload"
+                                    type="file"
+                                    accept=".pdf"
+                                    className="h-9"
+                                    onChange={e => setLayoutPdfFile(e.target.files?.[0] ?? null)}
+                                />
+                                <p className="text-[11px] text-muted-foreground truncate">
+                                    {layoutPdfFile ? layoutPdfFile.name : "No PDF selected"}
+                                </p>
+                            </div>
                         </div>
                     </div>
 
@@ -519,7 +634,7 @@ export function CreateProjectDialog({
                             <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
                             Planning Dates
                         </Label>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                             <DateField
                                 mode="create"
                                 label="Due Date"
@@ -572,17 +687,23 @@ export function CreateProjectDialog({
                             ))}
                         </div>
                     </div>
+                    {createError ? (
+                        <div className="mt-4 rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs text-destructive">
+                            {createError}
+                        </div>
+                    ) : null}
                 </div>
+                    </div>
 
-                <DialogFooter>
-                    <div className="flex items-center gap-2 w-full">
+                    <DialogFooter className="border-t border-border px-4 py-3 sm:px-6">
+                        <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center">
                         <Badge variant="outline" className="text-[10px] text-muted-foreground mr-auto">
                             Legals not required
                         </Badge>
-                        <Button variant="outline" onClick={() => handleOpenChange(false)} disabled={creating}>
+                            <Button variant="outline" onClick={() => handleOpenChange(false)} disabled={creating} className="w-full sm:w-auto">
                             Cancel
                         </Button>
-                        <Button onClick={handleCreate} disabled={!isValid || creating} className="gap-1.5">
+                            <Button onClick={handleCreate} disabled={!isValid || creating} className="w-full gap-1.5 sm:w-auto">
                             {creating ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
                             ) : (

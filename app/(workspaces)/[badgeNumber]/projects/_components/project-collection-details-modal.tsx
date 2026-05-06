@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Calendar,
@@ -21,7 +21,7 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -106,6 +106,42 @@ function formatList(values: string[] | undefined, emptyLabel: string): string {
   return values.join(", ");
 }
 
+function hasUploadedLegalArtifacts(project: ProjectManifest): boolean {
+  const hasOperationalSheets = (project.sheets ?? []).some(
+    (sheet) => sheet.kind === "operational" && sheet.hasData,
+  );
+  return hasOperationalSheets
+    || Boolean(project.activeWorkbookRevisionId)
+    || Boolean(project.activeLayoutRevisionId);
+}
+
+function normalizeManifestAfterLegalUpload(manifest: ProjectManifest): ProjectManifest {
+  if (!hasUploadedLegalArtifacts(manifest)) {
+    return manifest;
+  }
+
+  const normalizedStatus = manifest.status === "legals_pending" ? "brandlist" : manifest.status;
+  const normalizedLifecycleGates = manifest.lifecycleGates?.map((gate) => {
+    if (gate.gateId === "BRANDLIST_COMPLETE" && gate.status === "LOCKED") {
+      return {
+        ...gate,
+        status: "READY" as const,
+      };
+    }
+    return gate;
+  });
+
+  if (normalizedStatus === manifest.status && normalizedLifecycleGates === manifest.lifecycleGates) {
+    return manifest;
+  }
+
+  return {
+    ...manifest,
+    status: normalizedStatus,
+    lifecycleGates: normalizedLifecycleGates,
+  };
+}
+
 function DetailRow({
   icon: Icon,
   label,
@@ -185,6 +221,8 @@ export function ProjectCollectionDetailsModal({
 
   const [workbookFile, setWorkbookFile] = useState<File | null>(null);
   const [layoutFile, setLayoutFile] = useState<File | null>(null);
+  const workbookInputRef = useRef<HTMLInputElement | null>(null);
+  const layoutInputRef = useRef<HTMLInputElement | null>(null);
   const [uploadingLegals, setUploadingLegals] = useState(false);
   const [legalsMessage, setLegalsMessage] = useState<string | null>(null);
 
@@ -380,7 +418,12 @@ export function ProjectCollectionDetailsModal({
   };
 
   const handleUploadLegals = async () => {
-    if (!currentProject.id || (!workbookFile && !layoutFile)) {
+    if (!currentProject.id) {
+      return;
+    }
+
+    if (!workbookFile && !layoutFile) {
+      setLegalsMessage("Select a workbook or layout PDF first.");
       return;
     }
 
@@ -405,8 +448,29 @@ export function ProjectCollectionDetailsModal({
 
       setWorkbookFile(null);
       setLayoutFile(null);
+      if (workbookInputRef.current) workbookInputRef.current.value = "";
+      if (layoutInputRef.current) layoutInputRef.current.value = "";
+      const refreshedManifestResponse = await fetch(`/api/projects/${encodeURIComponent(currentProject.id)}`, {
+        cache: "no-store",
+      });
+      if (refreshedManifestResponse.ok) {
+        const refreshedPayload = (await refreshedManifestResponse.json()) as { manifest?: ProjectManifest };
+        if (refreshedPayload.manifest) {
+          const normalizedManifest = normalizeManifestAfterLegalUpload(refreshedPayload.manifest);
+          if (normalizedManifest !== refreshedPayload.manifest) {
+            await fetch(`/api/projects/${encodeURIComponent(currentProject.id)}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(normalizedManifest),
+            }).catch(() => null);
+          }
+          setProjectState(normalizedManifest);
+        }
+      }
       setLegalsMessage("Legal files uploaded and schemas regenerated.");
       void refreshLegalDetail();
+      void refreshBrandingExports();
+      void refreshWireExports();
     } finally {
       setUploadingLegals(false);
     }
@@ -479,7 +543,6 @@ export function ProjectCollectionDetailsModal({
     editable: boolean;
   }> = [
     { id: "details", label: "Details", icon: FileText, editable: true },
-    { id: "assignments", label: "Assignments", icon: GitBranch, editable: false },
     { id: "legals", label: "Legals", icon: Upload, editable: false },
     { id: "brand-lists", label: "Brand Lists", icon: FileSpreadsheet, editable: false },
     { id: "wire-lists", label: "Wire Lists", icon: Layers, editable: false },
@@ -497,17 +560,16 @@ export function ProjectCollectionDetailsModal({
         }}
       >
         <DialogContent className="max-w-[98vw]! h-[98vh] w-full max-h-[90vh] flex-col gap-0 overflow-hidden p-0">
-          <DialogDescription className="sr-only">
-            Project details for {currentProject.name} ({currentProject.pdNumber})
-          </DialogDescription>
-          <div className="flex items-center gap-4 border-b px-6 pb-4 pt-5">
-            <ProjectIcon
+    
+          <DialogHeader>
+          <ProjectIcon
               name={currentProject.name}
               color={currentProject.color ?? undefined}
               interactive={false}
               className="h-12 w-14 shrink-0"
             />
             <div className="min-w-0 flex-1">
+         
               <DialogTitle className="truncate text-lg font-semibold">{currentProject.name}</DialogTitle>
               <div className="mt-1 flex flex-wrap items-center gap-2">
                 <span className="font-mono text-xs text-muted-foreground">{currentProject.pdNumber}</span>
@@ -521,7 +583,9 @@ export function ProjectCollectionDetailsModal({
                 ) : null}
               </div>
             </div>
-
+            <DialogDescription className="sr-only">
+            Project details for {currentProject.name} ({currentProject.pdNumber})
+          </DialogDescription>
             {!loadingLegals ? (
               <div className="shrink-0">
                 {isEditing ? (
@@ -537,7 +601,7 @@ export function ProjectCollectionDetailsModal({
                 )}
               </div>
             ) : null}
-          </div>
+          </DialogHeader>
 
           <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as ProjectDetailsTab)} className="flex min-h-0 h-full flex-1">
             <div className="w-48 shrink-0 border-r bg-muted/30 p-3 ">
@@ -879,8 +943,12 @@ export function ProjectCollectionDetailsModal({
                   <label className="space-y-1.5">
                     <span className="text-xs text-muted-foreground">Workbook (.xlsx/.xls)</span>
                     <input
+                      ref={workbookInputRef}
                       type="file"
                       accept=".xlsx,.xls"
+                      onClick={(event) => {
+                        (event.currentTarget as HTMLInputElement).value = "";
+                      }}
                       onChange={(event) => setWorkbookFile(event.target.files?.[0] ?? null)}
                       className="block w-full text-xs"
                     />
@@ -888,8 +956,12 @@ export function ProjectCollectionDetailsModal({
                   <label className="space-y-1.5">
                     <span className="text-xs text-muted-foreground">Layout (.pdf)</span>
                     <input
+                      ref={layoutInputRef}
                       type="file"
                       accept=".pdf"
+                      onClick={(event) => {
+                        (event.currentTarget as HTMLInputElement).value = "";
+                      }}
                       onChange={(event) => setLayoutFile(event.target.files?.[0] ?? null)}
                       className="block w-full text-xs"
                     />
@@ -900,7 +972,7 @@ export function ProjectCollectionDetailsModal({
                       size="sm"
                       className="gap-1.5"
                       onClick={() => void handleUploadLegals()}
-                      disabled={uploadingLegals || (!workbookFile && !layoutFile)}
+                      disabled={uploadingLegals}
                     >
                       {uploadingLegals ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
                       Upload Legals
@@ -911,6 +983,9 @@ export function ProjectCollectionDetailsModal({
                     </Button>
                     {legalsMessage ? <span className="text-xs text-muted-foreground">{legalsMessage}</span> : null}
                   </div>
+                  <p className="sm:col-span-2 text-xs text-muted-foreground">
+                    Upload workbook and/or layout to enable revision refresh.
+                  </p>
                 </div>
 
                 <Separator />

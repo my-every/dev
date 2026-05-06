@@ -84,7 +84,23 @@ export function ActivityTimelineFilter({
     })
 
     const handleFilterChange = useCallback((newFilters: ActivityTimelineFilterOptions) => {
-        setFilters(newFilters)
+        setFilters((prev) => {
+            const merged = {
+                ...(prev ?? {}),
+                ...newFilters,
+            }
+
+            // Drop empty arrays / blank strings so query params stay clean.
+            const normalized = Object.fromEntries(
+                Object.entries(merged).filter(([, value]) => {
+                    if (Array.isArray(value)) return value.length > 0
+                    if (typeof value === 'string') return value.trim().length > 0
+                    return value !== undefined
+                }),
+            ) as ActivityTimelineFilterOptions
+
+            return normalized
+        })
     }, [])
 
     const handleCommentAdd = useCallback(async (activityId: string, comment: string) => {
@@ -155,6 +171,7 @@ export function ActivityTimelineFilter({
                 onCommentAdd={handleCommentAdd}
                 onCommentDelete={handleCommentDelete}
                 currentBadge={badge}
+                aggregateAcrossUsers={aggregateAcrossUsers}
             />
         </div>
     )

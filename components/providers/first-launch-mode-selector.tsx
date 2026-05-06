@@ -220,222 +220,6 @@ function FeatureComparisonTable({ selectedMode }: { selectedMode: AppLaunchMode 
 }
 
 // ============================================================================
-// Right-side workspace preview
-// ============================================================================
-
-/**
- * Mock app shell frame.
- * Intentionally uses a hardcoded dark palette (bg-[#0d0e12] etc.) so the
- * preview looks identical regardless of the active CSS theme.
- */
-function AppWindowFrame({ children, label }: { children: React.ReactNode; label: string }) {
-  return (
-    <div className='w-full overflow-hidden rounded-2xl border border-white/8 bg-[#0d0e12] shadow-[0_24px_64px_rgba(0,0,0,0.5)]'>
-      <div className='flex items-center gap-3 border-b border-white/8 bg-[#0a0b0e] px-4 py-2.5'>
-        <D380Logo size='sm' />
-        <span className='text-xs font-semibold text-white/70'>D380</span>
-        <span className='ml-1 rounded-full border border-white/8 bg-white/[0.04] px-2 py-0.5 text-[10px] text-white/35'>
-          {label}
-        </span>
-        <div className='ml-auto flex items-center gap-1.5'>
-          <div className='h-4 w-14 rounded-full bg-white/[0.04]' />
-          <div className='h-6 w-6 rounded-full bg-white/[0.04]' />
-        </div>
-      </div>
-      <div className='flex min-h-[300px]'>
-        <div className='flex w-10 shrink-0 flex-col gap-1.5 border-r border-white/8 bg-[#0a0b0e] px-1.5 py-3'>
-          {Array.from({ length: 7 }).map((_, i) => (
-            <div
-              key={i}
-              className={cn(
-                'h-7 rounded-lg transition-colors',
-                i === 0 ? 'bg-[#EDBA3A]/15' : i === 2 ? 'bg-white/[0.06]' : 'bg-white/[0.03]',
-              )}
-            />
-          ))}
-        </div>
-        <div className='flex-1 overflow-hidden p-3'>{children}</div>
-      </div>
-    </div>
-  )
-}
-
-function MockSubheader() {
-  return (
-    <div className='mb-3 flex items-center gap-2'>
-      <div className='h-6 w-6 rounded-lg bg-white/[0.05]' />
-      <div className='h-5 flex-1 rounded-lg bg-white/[0.04]' />
-      <div className='h-5 w-12 rounded-lg bg-[#EDBA3A]/10' />
-    </div>
-  )
-}
-
-function PreviewEntityRow() {
-  return (
-    <div className='flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] p-3'>
-      <div className='h-9 w-9 shrink-0 rounded-xl bg-white/[0.06]' />
-      <div className='min-w-0 flex-1 space-y-2'>
-        <div className='h-3 w-32 max-w-[70%] rounded-full bg-white/[0.08]' />
-        <div className='flex items-center gap-2'>
-          <div className='h-2.5 w-20 rounded-full bg-white/[0.05]' />
-          <div className='h-2.5 w-12 rounded-full bg-white/[0.05]' />
-        </div>
-      </div>
-      <div className='h-6 w-16 shrink-0 rounded-full bg-white/[0.06]' />
-    </div>
-  )
-}
-
-function PreviewMetricCard() {
-  return (
-    <div className='rounded-xl border border-white/[0.06] bg-white/[0.03] p-3'>
-      <div className='mb-2.5 h-3 w-16 rounded-full bg-white/[0.07]' />
-      <div className='mb-1.5 h-6 w-12 rounded-full bg-white/[0.09]' />
-      <div className='h-2 w-20 rounded-full bg-white/[0.05]' />
-    </div>
-  )
-}
-
-function WorkspacePreview({
-  mode,
-  step,
-  setupSource,
-}: {
-  mode: AppLaunchMode
-  step: LaunchStepId
-  setupSource: DepartmentSetupSource
-}) {
-  const modeConfig = MODE_OPTIONS.find((o) => o.mode === mode)
-  const previewKey = step === 'DEPARTMENT_SETUP' ? `dept-${setupSource}` : `mode-${mode}-${step}`
-
-  return (
-    <div className='relative flex h-full w-full items-center justify-center overflow-hidden p-4 sm:p-6 lg:p-8'>
-      <div className='pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_25%,rgba(237,186,58,0.07),transparent_55%),radial-gradient(ellipse_at_70%_75%,rgba(255,255,255,0.03),transparent_55%)]' />
-
-      <div className='w-full max-w-[560px]'>
-        <div className='mb-3 flex items-center gap-2'>
-          {modeConfig && step !== 'DEPARTMENT_SETUP' && (
-            <>
-              <div className='flex h-5 w-5 items-center justify-center rounded-md bg-primary/10'>
-                <modeConfig.icon className='size-3 text-primary' />
-              </div>
-              <span className='text-xs font-medium text-muted-foreground'>{modeConfig.title}</span>
-            </>
-          )}
-          {step === 'DEPARTMENT_SETUP' && (
-            <>
-              <div className='flex h-5 w-5 items-center justify-center rounded-md bg-primary/10'>
-                {setupSource === 'import-existing' ? (
-                  <Users className='size-3 text-primary' />
-                ) : (
-                  <UserPlus className='size-3 text-primary' />
-                )}
-              </div>
-              <span className='text-xs font-medium text-muted-foreground'>
-                {setupSource === 'import-existing' ? 'Import roster preview' : 'Seed admin preview'}
-              </span>
-            </>
-          )}
-          <div className='ml-auto h-1.5 w-1.5 animate-pulse rounded-full bg-chart-3' />
-          <span className='text-[10px] text-muted-foreground'>Live preview</span>
-        </div>
-
-        <AnimatePresence mode='wait'>
-          <motion.div
-            key={previewKey}
-            initial={{ opacity: 0, y: 14, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.98 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-          >
-            {step === 'DEPARTMENT_SETUP' && setupSource === 'import-existing' && (
-              <AppWindowFrame label='Roster Import'>
-                <MockSubheader />
-                <div className='mb-2.5 flex items-center gap-2 rounded-xl border border-emerald-500/15 bg-emerald-500/5 px-3 py-2'>
-                  <CheckCircle2 className='size-3.5 shrink-0 text-emerald-400/70' />
-                  <div className='h-2.5 flex-1 rounded-full bg-emerald-400/15' />
-                  <div className='h-2.5 w-16 rounded-full bg-emerald-400/10' />
-                </div>
-                <div className='space-y-2.5'>
-                  {Array.from({ length: 6 }).map((_, i) => <PreviewEntityRow key={i} />)}
-                </div>
-              </AppWindowFrame>
-            )}
-
-            {step === 'DEPARTMENT_SETUP' && setupSource === 'create-new' && (
-              <AppWindowFrame label='Seed Admin'>
-                <MockSubheader />
-                <div className='rounded-xl border border-white/8 bg-white/[0.03] p-3'>
-                  <div className='mb-3 flex items-center gap-2'>
-                    <div className='flex h-9 w-9 items-center justify-center rounded-xl bg-[#EDBA3A]/10'>
-                      <UserPlus className='size-4 text-[#EDBA3A]/70' />
-                    </div>
-                    <div className='space-y-1'>
-                      <div className='h-2.5 w-28 rounded-full bg-white/15' />
-                      <div className='h-2 w-20 rounded-full bg-white/8' />
-                    </div>
-                  </div>
-                  <div className='grid grid-cols-2 gap-2'>
-                    {Array.from({ length: 6 }).map((_, i) => (
-                      <div key={i} className='space-y-1'>
-                        <div className='h-1.5 w-12 rounded-full bg-white/10' />
-                        <div className='h-7 rounded-lg border border-white/8 bg-white/[0.03]' />
-                      </div>
-                    ))}
-                  </div>
-                  <div className='mt-3 flex justify-end'>
-                    <div className='h-7 w-24 rounded-lg bg-white/10' />
-                  </div>
-                </div>
-              </AppWindowFrame>
-            )}
-
-            {step !== 'DEPARTMENT_SETUP' && mode === 'DEPARTMENT' && (
-              <AppWindowFrame label='Department'>
-                <MockSubheader />
-                <div className='space-y-2.5'>
-                  {Array.from({ length: 5 }).map((_, i) => <PreviewEntityRow key={i} />)}
-                </div>
-              </AppWindowFrame>
-            )}
-
-            {step !== 'DEPARTMENT_SETUP' && mode === 'WORKSPACE' && (
-              <AppWindowFrame label='Workspace'>
-                <MockSubheader />
-                <div className='grid grid-cols-2 gap-2.5'>
-                  {Array.from({ length: 4 }).map((_, i) => <PreviewMetricCard key={i} />)}
-                </div>
-                <div className='mt-2.5 space-y-2.5'>
-                  {Array.from({ length: 3 }).map((_, i) => <PreviewEntityRow key={i} />)}
-                </div>
-              </AppWindowFrame>
-            )}
-
-            {step !== 'DEPARTMENT_SETUP' && mode === 'STANDALONE_TOOL' && (
-              <AppWindowFrame label='Standalone'>
-                <MockSubheader />
-                <div className='space-y-2.5'>
-                  {Array.from({ length: 6 }).map((_, i) => <PreviewEntityRow key={i} />)}
-                </div>
-              </AppWindowFrame>
-            )}
-          </motion.div>
-        </AnimatePresence>
-
-        {step !== 'DEPARTMENT_SETUP' && (
-          <div className='mt-3 flex items-center justify-center gap-2'>
-            <span className='text-[10px] text-muted-foreground'>Entry route</span>
-            <code className='rounded-md border border-border bg-muted px-2 py-0.5 text-[10px] text-muted-foreground'>
-              {getPostLaunchRouteForMode(mode)}
-            </code>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
-// ============================================================================
 // Review metric card
 // ============================================================================
 
@@ -507,7 +291,7 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
 
   if (showStartupTransition) {
     return (
-      <div className='fixed inset-0 z-[120]'>
+      <div className='fixed inset-0 z-120'>
         <StartUpLoader
           introPosition='end'
           d380Duration={3000}
@@ -583,11 +367,11 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
 
   return (
     <>
-      <div className='fixed inset-0 flex flex-col overflow-hidden bg-background text-foreground'>
+      <div className='fixed inset-0 overflow-y-auto bg-background text-foreground'>
 
         {/* ── Top bar ─────────────────────────────────────────────────── */}
-        <div className='shrink-0 border-b border-border'>
-          <div className='mx-auto flex max-w-[1280px] items-center gap-4 px-6 py-4 sm:px-8'>
+        <div className='border-b border-border'>
+          <div className='mx-auto flex max-w-4xl items-center gap-4 px-6 py-4 sm:px-8'>
             <div className='flex items-center gap-3'>
               <D380Logo size='sm' />
               <div>
@@ -603,18 +387,11 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
         </div>
 
         {/* ── Body ────────────────────────────────────────────────────── */}
-        <div className='flex min-h-0 flex-1 items-stretch justify-center overflow-hidden'>
-          <div className='flex w-full max-w-[1280px] min-h-0'>
-
-            {/* Left: step form */}
-            <div className={cn(
-              'flex w-full min-h-0 flex-col',
-              step.id !== 'REVIEW' && 'border-r border-border sm:max-w-[400px] lg:max-w-[440px] xl:max-w-[480px]',
-            )}>
-
-              {/* Progress + step header */}
-              <div className='shrink-0 px-6 pt-6 sm:px-8'>
-                <div className={cn(step.id === 'REVIEW' && 'mx-auto max-w-2xl')}>
+        <div className='mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 sm:py-8 lg:py-10'>
+          <div className='rounded-3xl border border-border bg-card shadow-sm'>
+            {/* Progress + step header */}
+            <div className='border-b border-border px-6 pt-6 pb-5 sm:px-8'>
+              <div className='mx-auto max-w-2xl'>
                   <ProgressPills currentIndex={stepIndex} total={steps.length} />
                   <AnimatePresence mode='wait'>
                     <motion.div
@@ -634,11 +411,12 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
                       <p className='mt-1.5 text-sm leading-6 text-muted-foreground'>{step.summary}</p>
                     </motion.div>
                   </AnimatePresence>
-                </div>
               </div>
+            </div>
 
-              {/* Step content — scrollable */}
-              <div className='flex-1 overflow-y-auto px-6 py-5 sm:px-8'>
+            {/* Step content */}
+            <div className='px-6 py-5 sm:px-8 sm:py-6'>
+              <div className='mx-auto max-w-2xl'>
                 <AnimatePresence mode='wait'>
                   <motion.div
                     key={step.id}
@@ -646,7 +424,7 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.22, ease: 'easeOut' }}
-                    className={cn('space-y-5', step.id === 'REVIEW' && 'mx-auto max-w-2xl')}
+                    className='space-y-5'
                   >
 
                     {/* ── MODE STEP ─────────────────────────────────────── */}
@@ -887,10 +665,11 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
                   </motion.div>
                 </AnimatePresence>
               </div>
+            </div>
 
-              {/* Nav footer */}
-              <div className='shrink-0 border-t border-border px-6 py-4 sm:px-8'>
-                <div className={cn('space-y-2', step.id === 'REVIEW' && 'mx-auto max-w-2xl')}>
+            {/* Nav footer */}
+            <div className='border-t border-border px-6 py-4 sm:px-8'>
+              <div className='mx-auto max-w-2xl space-y-2'>
                   {setupSuccessMessage && (
                     <div className='rounded-xl border border-chart-3/20 bg-chart-3/10 px-3 py-2 text-xs text-chart-3'>
                       {setupSuccessMessage}
@@ -938,20 +717,7 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
                     )}
                   </div>
                 </div>
-              </div>
             </div>
-
-            {/* Right: preview panel — hidden on REVIEW */}
-            {step.id !== 'REVIEW' && (
-              <div className='relative hidden min-h-0 flex-1 bg-background md:flex'>
-                <WorkspacePreview
-                  mode={selectedMode}
-                  step={step.id}
-                  setupSource={setupSource}
-                />
-              </div>
-            )}
-
           </div>
         </div>
       </div>
