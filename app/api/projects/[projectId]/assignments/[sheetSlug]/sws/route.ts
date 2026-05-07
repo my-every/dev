@@ -31,7 +31,7 @@ async function resolveSwsContext(projectId: string, sheetSlug: string) {
 
   return {
     manifest,
-    assignment,Y
+    assignment,
     hydrated,
   };
 }
