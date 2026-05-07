@@ -139,16 +139,17 @@ async function collectFilesRecursively(
   rootPath: string,
   options: FileCollectionOptions = {},
 ): Promise<ScannedFile[]> {
-  const stack: string[] = [rootPath]
-  const files: ScannedFile[] = []
-  const hasFromBound = Number.isFinite(options.fromTimeMs)
-  const hasToBound = Number.isFinite(options.toTimeMs)
-  const fromTimeMs = hasFromBound ? Number(options.fromTimeMs) : Number.NEGATIVE_INFINITY
-  const toTimeMs = hasToBound ? Number(options.toTimeMs) : Number.POSITIVE_INFINITY
+  const fromTimeMs = Number.isFinite(options.fromTimeMs) ? Number(options.fromTimeMs) : Number.NEGATIVE_INFINITY
+  const toTimeMs = Number.isFinite(options.toTimeMs) ? Number(options.toTimeMs) : Number.POSITIVE_INFINITY
 
-  while (stack.length > 0) {
-    const current = stack.pop()
-    if (!current) continue
+  // Collect directories breadth-first, then batch-stat all files per directory
+  // with Promise.all. This eliminates sequential round-trips on SMB/network drives
+  // where each individual stat() call can cost 5-50ms.
+  const dirQueue: string[] = [rootPath]
+  const files: ScannedFile[] = []
+
+  while (dirQueue.length > 0) {
+    const current = dirQueue.shift()!
 
     let entries: Awaited<ReturnType<typeof fs.readdir>>
     try {
@@ -157,36 +158,38 @@ async function collectFilesRecursively(
       continue
     }
 
+    const fileEntries: string[] = []
     for (const entry of entries) {
       const fullPath = path.join(current, entry.name)
       if (entry.isDirectory()) {
-        stack.push(fullPath)
-        continue
+        dirQueue.push(fullPath)
+      } else if (entry.isFile()) {
+        fileEntries.push(fullPath)
       }
+    }
 
-      if (!entry.isFile()) {
-        continue
-      }
+    // Stat all files in this directory concurrently — one network batch per dir
+    // instead of one round-trip per file.
+    const statResults = await Promise.all(
+      fileEntries.map(async (fullPath) => {
+        const stats = await safeStat(fullPath)
+        return { fullPath, stats }
+      }),
+    )
 
-      const stats = await safeStat(fullPath)
-      if (!stats?.isFile()) {
-        continue
-      }
+    for (const { fullPath, stats } of statResults) {
+      if (!stats?.isFile()) continue
+      if (stats.mtimeMs < fromTimeMs || stats.mtimeMs > toTimeMs) continue
 
-      // Apply the scan time window during traversal so large historical trees
-      // do not bloat memory and post-processing work.
-      if (stats.mtimeMs < fromTimeMs || stats.mtimeMs > toTimeMs) {
-        continue
-      }
-
-      const revisionInfo = parseRevisionFromFilename(entry.name)
+      const fileName = path.basename(fullPath)
+      const revisionInfo = parseRevisionFromFilename(fileName)
       files.push({
         absolutePath: fullPath,
-        fileName: entry.name,
-        extension: path.extname(entry.name).toLowerCase(),
+        fileName,
+        extension: path.extname(fileName).toLowerCase(),
         modifiedTimeMs: stats.mtimeMs,
         sizeBytes: stats.size,
-        fileTypeIndicator: inferFileTypeIndicator(entry.name),
+        fileTypeIndicator: inferFileTypeIndicator(fileName),
         revisionInfo,
       })
     }
