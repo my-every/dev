@@ -31,6 +31,7 @@ import type { ProjectRevisionTreeRow, RevisionScanRequest, RevisionScanScope } f
 interface RevisionScanWorkflowProps {
   defaultLegalSourceRoot?: string | null;
   defaultBrandSourceRoot?: string | null;
+  onOpenMultiSheetReview?: () => void;
 }
 
 interface RevisionScanApiResponse {
@@ -90,6 +91,7 @@ function isMissingDependencies(project: ProjectRevisionTreeRow): boolean {
 export function RevisionScanWorkflow({
   defaultLegalSourceRoot,
   defaultBrandSourceRoot,
+  onOpenMultiSheetReview,
 }: RevisionScanWorkflowProps) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
@@ -280,14 +282,41 @@ export function RevisionScanWorkflow({
     setSelectedProjectKeys(nextSelected ? new Set(filteredRows.map((row) => row.rootLabel)) : new Set());
   };
 
+  const getFileOpenUrl = (absolutePath: string, disposition: "inline" | "attachment" = "attachment") => {
+    return `/api/projects/revisions/file?path=${encodeURIComponent(absolutePath)}&disposition=${disposition}`;
+  };
+
   const downloadByAbsolutePath = (absolutePath: string) => {
-    const url = `/api/projects/revisions/file?path=${encodeURIComponent(absolutePath)}`;
+    const url = getFileOpenUrl(absolutePath, "attachment");
     const anchor = document.createElement("a");
     anchor.href = url;
     anchor.download = "";
     document.body.appendChild(anchor);
     anchor.click();
     anchor.remove();
+  };
+
+  const openByAbsolutePath = (absolutePath: string) => {
+    const lowerPath = absolutePath.toLowerCase();
+    const isPdf = lowerPath.endsWith(".pdf");
+    const isExcel = [".xlsx", ".xls", ".xlsm", ".xlsb"].some((extension) => lowerPath.endsWith(extension));
+
+    if (isPdf) {
+      window.open(getFileOpenUrl(absolutePath, "inline"), "_blank", "noopener,noreferrer");
+      return;
+    }
+
+    if (isExcel) {
+      const absoluteUrl = `${window.location.origin}${getFileOpenUrl(absolutePath, "attachment")}`;
+      const excelProtocolUrl = `ms-excel:ofe|u|${absoluteUrl}`;
+      const opened = window.open(excelProtocolUrl, "_self");
+      if (!opened) {
+        downloadByAbsolutePath(absolutePath);
+      }
+      return;
+    }
+
+    downloadByAbsolutePath(absolutePath);
   };
 
   const downloadLatestForType = (type: "wire-list" | "brand-list") => {
@@ -324,20 +353,11 @@ export function RevisionScanWorkflow({
     URL.revokeObjectURL(url);
   };
 
-  const openSourceFolders = () => {
-    for (const row of selectedRows) {
-      const firstPath = row.filesNewestFirst[0]?.absolutePath;
-      if (!firstPath) continue;
-      const folderPath = firstPath.split(/[/\\]/).slice(0, -1).join("/");
-      window.open(`file://${folderPath}`, "_blank");
-    }
-  };
-
   const openAbsolutePaths = () => {
     for (const row of selectedRows) {
       const firstPath = row.filesNewestFirst[0]?.absolutePath;
       if (!firstPath) continue;
-      window.open(`file://${firstPath}`, "_blank");
+      openByAbsolutePath(firstPath);
     }
   };
 
@@ -488,6 +508,7 @@ export function RevisionScanWorkflow({
 
             <RevisionFilesystemTreeTable
               rows={filteredRows}
+              isLoading={isScanning}
               expandedProjectKeys={expandedProjectKeys}
               selectedProjectKeys={selectedProjectKeys}
               onToggleExpand={toggleExpand}
@@ -527,10 +548,20 @@ export function RevisionScanWorkflow({
                   <DropdownMenuItem onClick={() => downloadLatestForType("wire-list")}>Download latest Wire List</DropdownMenuItem>
                   <DropdownMenuItem onClick={downloadAllGeneratedOutputs}>Download all generated outputs</DropdownMenuItem>
                   <DropdownMenuItem onClick={exportSelectedProjectManifests}>Export selected project manifests</DropdownMenuItem>
-                  <DropdownMenuItem onClick={openSourceFolders}>Open source folder actions</DropdownMenuItem>
-                  <DropdownMenuItem onClick={openAbsolutePaths}>Open absolute file path actions</DropdownMenuItem>
+                  <DropdownMenuItem onClick={openAbsolutePaths}>Open PDF in browser / Excel in desktop app</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+
+              {lastGeneration ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={onOpenMultiSheetReview}
+                  disabled={!onOpenMultiSheetReview}
+                >
+                  Open Multi-Sheet Review
+                </Button>
+              ) : null}
 
               <Badge variant="outline">{selectedProjectKeys.size} selected</Badge>
             </div>

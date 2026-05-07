@@ -5,11 +5,13 @@ import { ChevronDown, ChevronRight, FileText, Folder, FolderOpen } from "lucide-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import type { ProjectRevisionTreeRow, RevisionFilesystemNode } from "@/lib/revision/types";
 
 interface RevisionFilesystemTreeTableProps {
   rows: ProjectRevisionTreeRow[];
+  isLoading?: boolean;
   expandedProjectKeys: Set<string>;
   selectedProjectKeys: Set<string>;
   onToggleExpand: (projectKey: string) => void;
@@ -64,6 +66,7 @@ function ReadinessBadge({ readiness }: { readiness: ProjectRevisionTreeRow["read
 
 export function RevisionFilesystemTreeTable({
   rows,
+  isLoading = false,
   expandedProjectKeys,
   selectedProjectKeys,
   onToggleExpand,
@@ -91,11 +94,32 @@ export function RevisionFilesystemTreeTable({
       </div>
 
       <div className="max-h-105 overflow-auto">
-        {rows.length === 0 ? (
+        {isLoading ? (
+          <div className="space-y-2 px-3 py-3">
+            {[1, 2, 3, 4].map((index) => (
+              <div
+                key={index}
+                className="grid grid-cols-[42px_280px_1fr_180px_140px_170px_170px_120px_120px] items-center gap-2"
+              >
+                <Skeleton className="h-4 w-4" />
+                <Skeleton className="h-5 w-56" />
+                <Skeleton className="h-5 w-full" />
+                <Skeleton className="h-5 w-32" />
+                <Skeleton className="h-5 w-20" />
+                <Skeleton className="h-5 w-20" />
+                <Skeleton className="h-5 w-32" />
+                <Skeleton className="h-5 w-24" />
+                <Skeleton className="h-5 w-20" />
+              </div>
+            ))}
+          </div>
+        ) : null}
+
+        {!isLoading && rows.length === 0 ? (
           <div className="px-3 py-6 text-sm text-muted-foreground">No projects found for this scan.</div>
         ) : null}
 
-        {rows.map((project) => {
+        {!isLoading && rows.map((project) => {
           const isExpanded = expandedProjectKeys.has(project.rootLabel);
           const isSelected = selectedProjectKeys.has(project.rootLabel);
           const pairingLabel = project.validation.hasMatchingRevisionPairs

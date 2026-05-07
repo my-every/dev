@@ -16,6 +16,7 @@ import { FileCard } from "@/components/projects/file-card";
 import { RevisionScanWorkflow } from "@/components/revision/revision-scan-workflow";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { MultiSheetReviewModal } from "@/components/wire-list/multi-sheet-review-modal";
 import { EmptyTabState, StatItem } from "@/components/projects/tabs/project-tab-helpers";
 import type { ProjectTabProps } from "@/components/projects/tabs/project-tab-types";
 
@@ -61,6 +62,7 @@ function inferFileCardFormat(fileName: string): "pdf" | "xlsx" | "csv" | "json" 
 }
 
 export function ProjectFilesTab({ project, onNavigateToTab }: ProjectTabProps) {
+  const [multiSheetReviewOpen, setMultiSheetReviewOpen] = useState(false);
   const [history, setHistory] = useState<RevisionHistoryResponse | null>(null);
   const [brandingExports, setBrandingExports] = useState<ExportManifestResponse | null>(null);
   const [wireListExports, setWireListExports] = useState<ExportManifestResponse | null>(null);
@@ -127,9 +129,10 @@ export function ProjectFilesTab({ project, onNavigateToTab }: ProjectTabProps) {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <>
+      <div className="flex flex-col gap-3">
       <div className="flex items-center justify-end">
-        <RevisionScanWorkflow />
+        <RevisionScanWorkflow onOpenMultiSheetReview={() => setMultiSheetReviewOpen(true)} />
       </div>
 
       <div className="grid grid-cols-2 gap-2">
@@ -260,6 +263,14 @@ export function ProjectFilesTab({ project, onNavigateToTab }: ProjectTabProps) {
           </div>
         </div>
       ) : null}
-    </div>
+      </div>
+
+      <MultiSheetReviewModal
+        projectId={project.id}
+        open={multiSheetReviewOpen}
+        onOpenChange={setMultiSheetReviewOpen}
+        showTrigger={false}
+      />
+    </>
   );
 }

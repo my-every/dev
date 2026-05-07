@@ -120,6 +120,21 @@ function assertDirectory(directoryPath: string, label: string): void {
 	}
 }
 
+function resolveLegalProjectsRoot(sourceRoot: string): string {
+	const normalized = path.resolve(sourceRoot);
+	assertDirectory(normalized, "Source root");
+
+	const drawingsVariants = ["Drawings", "Drawing"];
+	for (const folderName of drawingsVariants) {
+		const candidatePath = path.join(normalized, folderName);
+		if (fs.existsSync(candidatePath) && fs.statSync(candidatePath).isDirectory()) {
+			return candidatePath;
+		}
+	}
+
+	return normalized;
+}
+
 function getProjectNumber(projectFolderName: string): string {
 	const [prefix] = projectFolderName.split("_");
 	return prefix?.trim() || projectFolderName;
@@ -203,14 +218,14 @@ function findLatestMatches(electricalPath: string, fromTimeMs: number): Candidat
 }
 
 function copyProjectFiles(options: CliOptions): ProjectResult[] {
-	assertDirectory(options.sourceRoot, "Source root");
+	const projectRoot = resolveLegalProjectsRoot(options.sourceRoot);
 
 	const projectDirectories = fs
-		.readdirSync(options.sourceRoot, { withFileTypes: true })
+		.readdirSync(projectRoot, { withFileTypes: true })
 		.filter(entry => entry.isDirectory())
 		.map(entry => ({
 			name: entry.name,
-			fullPath: path.join(options.sourceRoot, entry.name),
+			fullPath: path.join(projectRoot, entry.name),
 		}))
 		.sort((left, right) => left.name.localeCompare(right.name, undefined, { numeric: true, sensitivity: "base" }));
 

@@ -73,10 +73,13 @@ async function safeStat(targetPath: string) {
 }
 
 async function resolveLegalProjectsRoot(sourceRoot: string): Promise<string> {
-  const drawingsPath = path.join(sourceRoot, 'Drawings')
-  const drawingsStats = await safeStat(drawingsPath)
-  if (drawingsStats?.isDirectory()) {
-    return drawingsPath
+  const drawingsVariants = ['Drawings', 'Drawing']
+  for (const variant of drawingsVariants) {
+    const candidatePath = path.join(sourceRoot, variant)
+    const candidateStats = await safeStat(candidatePath)
+    if (candidateStats?.isDirectory()) {
+      return candidatePath
+    }
   }
 
   return sourceRoot

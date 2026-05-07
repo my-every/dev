@@ -7,5 +7,7 @@
 export { RevisionSidebar } from './revision-sidebar'
 export { RevisionComparisonModal } from './revision-comparison-modal'
 export { RevisionPanelWrapper } from './revision-panel-wrapper'
+export { RevisionFilesystemTreeTable } from './revision-filesystem-tree-table'
+export { RevisionScanWorkflow } from './revision-scan-workflow'
 export { useRevisionPanel } from './use-revision-panel'
 export type { UseRevisionPanelOptions, RevisionPanelState } from './use-revision-panel'
