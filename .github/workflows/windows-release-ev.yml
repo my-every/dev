@@ -1,4 +1,4 @@
-name: build-windows-release
+name: windows-release-ev
 
 on:
   workflow_dispatch:
@@ -10,22 +10,26 @@ permissions:
   contents: write
 
 concurrency:
-  group: windows-release-${{ github.ref }}
+  group: windows-release-ev-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build-sign-release:
-    runs-on: windows-latest
-    timeout-minutes: 45
+    # Self-hosted runner where EV token middleware is installed
+    runs-on: [self-hosted, windows, x64]
+    timeout-minutes: 60
     environment: release
-    # Skip the job entirely when signing secrets are not configured.
-    # The job will appear as "skipped" in the Actions UI rather than failing.
-    if: ${{ secrets.WINDOWS_CSC_LINK != '' && secrets.WINDOWS_CSC_KEY_PASSWORD != '' }}
+    # Skip the job entirely when no EV signing identity is configured.
+    # At least one of WINDOWS_CSC_NAME or WINDOWS_CSC_SHA1 must be set.
+    if: ${{ secrets.WINDOWS_CSC_NAME != '' || secrets.WINDOWS_CSC_SHA1 != '' }}
     env:
-      # Base64 PFX or file URL accepted by electron-builder
-      CSC_LINK: ${{ secrets.WINDOWS_CSC_LINK }}
-      CSC_KEY_PASSWORD: ${{ secrets.WINDOWS_CSC_KEY_PASSWORD }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Use cert from Windows cert store by subject name (set as secret to avoid hardcoding)
+      CSC_NAME: ${{ secrets.WINDOWS_CSC_NAME }}
+      # electron-builder expects CSC_KEY_PASSWORD for token/provider PIN when required
+      CSC_KEY_PASSWORD: ${{ secrets.WINDOWS_CSC_KEY_PASSWORD }}
+      # Optional thumbprint pinning if multiple certs exist in cert store
+      CSC_SHA1: ${{ secrets.WINDOWS_CSC_SHA1 }}
 
     steps:
       - name: Checkout
@@ -43,18 +47,18 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Validate signing secrets
+      - name: Validate signing identity
         shell: pwsh
         run: |
-          # These checks are belt-and-suspenders; the job-level `if` already
-          # skips the job when secrets are absent.
-          Write-Host "CSC_LINK length : $($env:CSC_LINK.Length)"
-          Write-Host "CSC_KEY_PASSWORD set: $(-not [string]::IsNullOrWhiteSpace($env:CSC_KEY_PASSWORD))"
+          # Belt-and-suspenders check; job-level `if` already gates on secrets.
+          Write-Host "CSC_NAME  : $env:CSC_NAME"
+          Write-Host "CSC_SHA1  : $env:CSC_SHA1"
+          Write-Host "PIN set   : $(-not [string]::IsNullOrWhiteSpace($env:CSC_KEY_PASSWORD))"
 
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      - name: Build and sign Windows installer
+      - name: Build and sign Windows installer (EV cert store)
         run: pnpm dist:win
 
       - name: Verify Authenticode signatures
@@ -71,7 +75,7 @@ jobs:
       - name: Upload release artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: windows-release
+          name: windows-release-ev
           path: |
             release/*.exe
             release/*.blockmap

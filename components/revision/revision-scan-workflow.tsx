@@ -107,6 +107,20 @@ export function RevisionScanWorkflow({
   const [toDateTime, setToDateTime] = useState(() => toInputDateTimeLocal(new Date()));
   const [legalSourceRoot, setLegalSourceRoot] = useState(defaultLegalSourceRoot ?? String.raw`S:\Legal Drawings`);
   const [brandSourceRoot, setBrandSourceRoot] = useState(defaultBrandSourceRoot ?? String.raw`S:\#Depts\380\6SIGMABRANDLIST\BRANDING\Projects Folder`);
+
+  // Sync path state when the parent loads saved settings asynchronously after mount.
+  // We only update if the user hasn't already started a scan (rows is empty).
+  useEffect(() => {
+    if (defaultLegalSourceRoot != null && rows.length === 0) {
+      setLegalSourceRoot(defaultLegalSourceRoot);
+    }
+  }, [defaultLegalSourceRoot]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (defaultBrandSourceRoot != null && rows.length === 0) {
+      setBrandSourceRoot(defaultBrandSourceRoot);
+    }
+  }, [defaultBrandSourceRoot]); // eslint-disable-line react-hooks/exhaustive-deps
   const [periodicEnabled, setPeriodicEnabled] = useState(false);
   const [periodicMinutes, setPeriodicMinutes] = useState("30");
   const [saveAsDefault, setSaveAsDefault] = useState(false);

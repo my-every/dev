@@ -22,6 +22,7 @@ export default function ProjectsRevisionPage() {
   const [multiSheetReviewOpen, setMultiSheetReviewOpen] = useState(false);
   const [reviewProjectId, setReviewProjectId] = useState<string | null>(null);
   const [savedPaths, setSavedPaths] = useState<SavedPaths>({ legalDrawingsPath: null, brandListPath: null });
+  const [savedPathsLoaded, setSavedPathsLoaded] = useState(false);
   const [hasScanned, setHasScanned] = useState(false);
 
   // Redirect unauthenticated users back to the login page
@@ -44,6 +45,8 @@ export default function ProjectsRevisionPage() {
         });
       } catch {
         // Use component defaults
+      } finally {
+        setSavedPathsLoaded(true);
       }
     };
     void load();
@@ -116,13 +119,15 @@ export default function ProjectsRevisionPage() {
           </p>
         </div>
 
-        <RevisionScanWorkflow
-          renderInline
-          defaultLegalSourceRoot={savedPaths.legalDrawingsPath}
-          defaultBrandSourceRoot={savedPaths.brandListPath}
-          onScanComplete={() => setHasScanned(true)}
-          onOpenMultiSheetReview={handleOpenMultiSheetReview}
-        />
+        {savedPathsLoaded && (
+          <RevisionScanWorkflow
+            renderInline
+            defaultLegalSourceRoot={savedPaths.legalDrawingsPath}
+            defaultBrandSourceRoot={savedPaths.brandListPath}
+            onScanComplete={() => setHasScanned(true)}
+            onOpenMultiSheetReview={handleOpenMultiSheetReview}
+          />
+        )}
 
         {/* Empty state – shown until the user has run at least one scan+generate */}
         {!hasScanned && (

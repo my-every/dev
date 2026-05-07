@@ -1,82 +1,37 @@
 appId: com.myevery.d380
 productName: D380
-executableName: D380
-directories:
-  output: release
-files:
-  - dist-electron/**
-  - package.json
-npmRebuild: false
-asar: true
-extraResources:
-  - from: .next/standalone
-    to: next-standalone
-    filter:
-      - "**/*"
-      - "node_modules/**"
-      - "node_modules/.pnpm/**"
-      - ".next/**"
-      - "!node_modules/electron"
-      - "!node_modules/electron/**"
-      - "!node_modules/.pnpm/electron@*"
-      - "!node_modules/.pnpm/electron@*/**"
-      - "!release"
-      - "!release/**"
-  - from: .next/standalone/node_modules
-    to: next-standalone/node_modules
-    filter:
-      - "**/*"
-      - ".pnpm/**"
-      - "!electron"
-      - "!electron/**"
-      - "!.pnpm/electron@*"
-      - "!.pnpm/electron@*/**"
-  - from: .next/static
-    to: next-standalone/.next/static
-  - from: public
-    to: next-standalone/public
-  - from: Share
-    to: next-standalone/Share
-    filter:
-      - "**/*"
-      - "!Legal Drawings/**"
-      - "!Legal/**"
-      - "!Brand List/**"
-      - "!**/Legal Drawings/**"
-      - "!**/Legal/**"
-      - "!**/Brand List/**"
+
+# Fails build if signing cannot be completed
+forceCodeSigning: true
+
 win:
-  icon: public/windows/icon.ico
-  requestedExecutionLevel: asInvoker
   target:
     - target: nsis
       arch:
         - x64
-        - arm64
+  requestedExecutionLevel: asInvoker
+  signingHashAlgorithms:
+    - sha256
+  verifyUpdateCodeSignature: true
   artifactName: ${productName}-Setup-${version}.${ext}
-mac:
-  icon: public/macos/icon.icns
-  category: public.app-category.productivity
-  target:
-    - target: dmg
-      arch:
-        - x64
-        - arm64
-    - target: zip
-      arch:
-        - x64
-        - arm64
-  artifactName: ${productName}-${version}-mac-${arch}.${ext}
-linux:
-  icon: public/linux/icons
-  target:
-    - AppImage
-    - deb
-  artifactName: ${productName}-${version}-linux-${arch}.${ext}
+
+  # Publisher display name shown in SmartScreen/UAC
+  # Must exactly match cert subject (or one of chain publisher names)
+  publisherName:
+    - MyEvery, Inc.
+
+  signtoolOptions:
+    # Legacy timestamp
+    timeStampServer: http://timestamp.digicert.com
+    # RFC3161 timestamp
+    rfc3161TimeStampServer: http://timestamp.digicert.com
+    # Optional hard pin if you use cert from Windows cert store
+    # certificateSha1: YOUR_CERT_THUMBPRINT
+
 nsis:
   oneClick: false
-  allowToChangeInstallationDirectory: true
   perMachine: false
+  allowToChangeInstallationDirectory: true
   createDesktopShortcut: always
   createStartMenuShortcut: true
   shortcutName: D380
