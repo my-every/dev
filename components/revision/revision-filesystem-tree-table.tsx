@@ -1,7 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronRight, FileText, Folder, FolderOpen, Settings2, Trash2 } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import {
+  AlertTriangle,
+  CheckCircle2,
+  ChevronDown,
+  ChevronRight,
+  Clock3,
+  FileSpreadsheet,
+  FileText,
+  Folder,
+  FolderOpen,
+  MinusCircle,
+  Settings2,
+  ShieldAlert,
+  ShieldCheck,
+  Trash2,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,11 +49,26 @@ interface RevisionFilesystemTreeTableProps {
   onDeleteProject?: (projectKey: string) => void;
 }
 
-function formatDate(value: string | null | undefined): string {
-  if (!value) return "-";
+function parseDate(value: string | null | undefined): Date | null {
+  if (!value) return null;
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return date.toLocaleString();
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function DateTimeCell({ value }: { value: string | null | undefined }) {
+  const date = parseDate(value);
+  if (!date) {
+    return <span className="text-xs text-muted-foreground">-</span>;
+  }
+
+  return (
+    <div className="min-w-0 leading-tight">
+      <div className="truncate text-xs font-medium">
+        {date.toLocaleDateString()} {date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+      </div>
+      <div className="truncate text-[10px] text-muted-foreground">{formatDistanceToNow(date, { addSuffix: true })}</div>
+    </div>
+  );
 }
 
 function formatSize(bytes: number | undefined): string {
@@ -48,6 +79,18 @@ function formatSize(bytes: number | undefined): string {
   return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
 }
 
+function FileTypeIcon({ node }: { node: RevisionFilesystemNode }) {
+  if (node.fileTypeIndicator === "wire-list" || node.fileTypeIndicator === "compare-wire-list" || node.fileTypeIndicator === "brand-list") {
+    return <FileSpreadsheet className="h-3.5 w-3.5 shrink-0 text-sky-600" />;
+  }
+
+  if (node.fileTypeIndicator === "layout-pdf") {
+    return <FileText className="h-3.5 w-3.5 shrink-0 text-rose-600" />;
+  }
+
+  return <FileText className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />;
+}
+
 function NodeTypeBadge({ node }: { node: RevisionFilesystemNode }) {
   const label = node.fileTypeIndicator ?? node.type;
   const variant = label === "layout-pdf"
@@ -56,26 +99,99 @@ function NodeTypeBadge({ node }: { node: RevisionFilesystemNode }) {
       ? "secondary"
       : "outline";
 
-  return <Badge variant={variant}>{label}</Badge>;
+  return (
+    <Badge variant={variant} className="inline-flex items-center gap-1">
+      <FileTypeIcon node={node} />
+      {label}
+    </Badge>
+  );
 }
 
 function ValidationBadge({ project }: { project: ProjectRevisionTreeRow }) {
   if (project.validation.missingRequiredLegalAssets) {
-    return <Badge variant="destructive">Missing Legal Assets</Badge>;
+    return (
+      <Badge variant="destructive" className="inline-flex items-center gap-1">
+        <AlertTriangle className="h-3.5 w-3.5" />
+        Missing Legal Assets
+      </Badge>
+    );
   }
   if (project.validation.brandListRevisionsIncomplete) {
-    return <Badge variant="secondary">Brand Incomplete</Badge>;
+    return (
+      <Badge variant="secondary" className="inline-flex items-center gap-1">
+        <ShieldAlert className="h-3.5 w-3.5" />
+        Brand Incomplete
+      </Badge>
+    );
   }
   if (project.validation.revisionMetadataStale) {
-    return <Badge variant="outline">Metadata Stale</Badge>;
+    return (
+      <Badge variant="outline" className="inline-flex items-center gap-1">
+        <Clock3 className="h-3.5 w-3.5" />
+        Metadata Stale
+      </Badge>
+    );
   }
-  return <Badge variant="default">Valid</Badge>;
+  return (
+    <Badge variant="default" className="inline-flex items-center gap-1">
+      <ShieldCheck className="h-3.5 w-3.5" />
+      Valid
+    </Badge>
+  );
 }
 
 function ReadinessBadge({ readiness }: { readiness: ProjectRevisionTreeRow["readiness"] }) {
-  if (readiness === "ready") return <Badge variant="default">Ready</Badge>;
-  if (readiness === "partial") return <Badge variant="secondary">Partial</Badge>;
-  return <Badge variant="destructive">Blocked</Badge>;
+  if (readiness === "ready") {
+    return (
+      <Badge variant="default" className="inline-flex items-center gap-1">
+        <CheckCircle2 className="h-3.5 w-3.5" />
+        Ready
+      </Badge>
+    );
+  }
+
+  if (readiness === "partial") {
+    return (
+      <Badge variant="secondary" className="inline-flex items-center gap-1">
+        <MinusCircle className="h-3.5 w-3.5" />
+        Partial
+      </Badge>
+    );
+  }
+
+  return (
+    <Badge variant="destructive" className="inline-flex items-center gap-1">
+      <AlertTriangle className="h-3.5 w-3.5" />
+      Blocked
+    </Badge>
+  );
+}
+
+function PairingBadge({ label }: { label: "Matched" | "Partial" | "Missing" }) {
+  if (label === "Matched") {
+    return (
+      <Badge variant="default" className="inline-flex items-center gap-1">
+        <CheckCircle2 className="h-3.5 w-3.5" />
+        Matched
+      </Badge>
+    );
+  }
+
+  if (label === "Partial") {
+    return (
+      <Badge variant="secondary" className="inline-flex items-center gap-1">
+        <MinusCircle className="h-3.5 w-3.5" />
+        Partial
+      </Badge>
+    );
+  }
+
+  return (
+    <Badge variant="outline" className="inline-flex items-center gap-1">
+      <AlertTriangle className="h-3.5 w-3.5" />
+      Missing
+    </Badge>
+  );
 }
 
 const COLOR_PRESETS = [
@@ -311,9 +427,9 @@ export function RevisionFilesystemTreeTable({
                 <span className="truncate text-xs text-muted-foreground">
                   {project.legalFolderName || project.brandFolderName || "-"}
                 </span>
-                <span className="text-xs">{formatDate(project.latestModifiedAt)}</span>
+                <DateTimeCell value={project.latestModifiedAt} />
                 <Badge variant="outline">project</Badge>
-                <Badge variant={project.validation.hasMatchingRevisionPairs ? "default" : "secondary"}>{pairingLabel}</Badge>
+                <PairingBadge label={pairingLabel as "Matched" | "Partial" | "Missing"} />
                 <span className="text-xs text-muted-foreground">
                   {project.revisionPairState.previousWireListRevision || "-"} → {project.revisionPairState.latestWireListRevision || "-"}
                 </span>
@@ -346,12 +462,12 @@ export function RevisionFilesystemTreeTable({
                         className="ml-1"
                       />
                       <div className="flex min-w-0 items-center gap-2 pl-6">
-                        <FileText className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                        <FileTypeIcon node={node} />
                         <span className="truncate">{node.name}</span>
                         <span className="text-[10px] text-muted-foreground">{formatSize(node.sizeBytes)}</span>
                       </div>
                       <span className="truncate text-muted-foreground">{node.absolutePath}</span>
-                      <span>{formatDate(node.modifiedAt)}</span>
+                      <DateTimeCell value={node.modifiedAt} />
                       <NodeTypeBadge node={node} />
                       <span>{node.revisionInfo?.displayVersion || "-"}</span>
                       <span>{node.revisionInfo?.revision || "-"}</span>
