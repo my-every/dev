@@ -23,10 +23,12 @@ interface RevisionFilesystemTreeTableProps {
   isLoading?: boolean;
   expandedProjectKeys: Set<string>;
   selectedProjectKeys: Set<string>;
+  selectedFileIds?: Set<string>;
   projectSettings?: Record<string, ProjectRowSettings>;
   onToggleExpand: (projectKey: string) => void;
   onToggleProjectSelection: (projectKey: string, nextSelected: boolean) => void;
   onToggleSelectAll: (nextSelected: boolean) => void;
+  onToggleFileSelection?: (fileId: string, nextSelected: boolean) => void;
   onUpdateProjectSettings?: (projectKey: string, settings: Partial<ProjectRowSettings>) => void;
   onDeleteProject?: (projectKey: string) => void;
 }
@@ -212,9 +214,11 @@ export function RevisionFilesystemTreeTable({
   isLoading = false,
   expandedProjectKeys,
   selectedProjectKeys,
+  selectedFileIds,
   onToggleExpand,
   onToggleProjectSelection,
   onToggleSelectAll,
+  onToggleFileSelection,
   projectSettings = {},
   onUpdateProjectSettings,
   onDeleteProject,
@@ -223,7 +227,7 @@ export function RevisionFilesystemTreeTable({
 
   return (
     <div className="rounded-lg border border-border">
-      <div className="grid grid-cols-[42px_280px_1fr_180px_140px_170px_170px_120px_120px_36px] items-center gap-2 border-b bg-muted/40 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+      <div className="grid grid-cols-[32px_minmax(140px,220px)_minmax(0,1fr)_150px_110px_140px_130px_110px_90px_28px] items-center gap-2 border-b bg-muted/40 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         <Checkbox
           checked={allSelected}
           onCheckedChange={(checked) => onToggleSelectAll(Boolean(checked))}
@@ -246,7 +250,7 @@ export function RevisionFilesystemTreeTable({
             {[1, 2, 3, 4].map((index) => (
               <div
                 key={index}
-                className="grid grid-cols-[42px_280px_1fr_180px_140px_170px_170px_120px_120px_36px] items-center gap-2"
+                  className="grid grid-cols-[32px_minmax(140px,220px)_minmax(0,1fr)_150px_110px_140px_130px_110px_90px_28px] items-center gap-2"
               >
                 <Skeleton className="h-4 w-4" />
                 <Skeleton className="h-5 w-56" />
@@ -280,7 +284,7 @@ export function RevisionFilesystemTreeTable({
 
           return (
             <div key={project.rootLabel} className="border-b last:border-b-0">
-              <div className="grid grid-cols-[42px_280px_1fr_180px_140px_170px_170px_120px_120px_36px] items-center gap-2 px-3 py-2 text-sm">
+              <div className="grid grid-cols-[32px_minmax(140px,220px)_minmax(0,1fr)_150px_110px_140px_130px_110px_90px_28px] items-center gap-2 px-3 py-2 text-sm">
                 <Checkbox
                   checked={isSelected}
                   onCheckedChange={(checked) => onToggleProjectSelection(project.rootLabel, Boolean(checked))}
@@ -330,12 +334,18 @@ export function RevisionFilesystemTreeTable({
                     <div
                       key={node.id}
                       className={cn(
-                        "grid grid-cols-[42px_280px_1fr_180px_140px_170px_170px_120px_120px_36px] items-center gap-2 rounded-md px-1 py-1 text-xs",
+                        "grid grid-cols-[32px_minmax(140px,220px)_minmax(0,1fr)_150px_110px_140px_130px_110px_90px_28px] items-center gap-2 rounded-md px-1 py-1 text-xs",
                         "hover:bg-muted/40",
+                        selectedFileIds?.has(node.id) && "bg-muted/50",
                       )}
                     >
-                      <span />
-                      <div className="flex min-w-0 items-center gap-2 pl-8">
+                      <Checkbox
+                        checked={selectedFileIds?.has(node.id) ?? false}
+                        onCheckedChange={(checked) => onToggleFileSelection?.(node.id, Boolean(checked))}
+                        aria-label={`Select file ${node.name}`}
+                        className="ml-1"
+                      />
+                      <div className="flex min-w-0 items-center gap-2 pl-6">
                         <FileText className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                         <span className="truncate">{node.name}</span>
                         <span className="text-[10px] text-muted-foreground">{formatSize(node.sizeBytes)}</span>

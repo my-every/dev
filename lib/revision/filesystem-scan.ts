@@ -159,12 +159,28 @@ async function collectFilesRecursively(
     }
 
     const fileEntries: string[] = []
+    const unknownEntries: string[] = []
     for (const entry of entries) {
       const fullPath = path.join(current, entry.name)
       if (entry.isDirectory()) {
         dirQueue.push(fullPath)
       } else if (entry.isFile()) {
         fileEntries.push(fullPath)
+      } else {
+        // On Windows SMB/UNC network shares, the server may not populate dirent
+        // type bits, causing isFile() and isDirectory() to both return false.
+        // Collect these and resolve via stat in a separate batch.
+        unknownEntries.push(fullPath)
+      }
+    }
+
+    // Resolve unknown-type entries in one parallel batch to avoid serial round-trips
+    if (unknownEntries.length > 0) {
+      const unknownStats = await Promise.all(unknownEntries.map(p => safeStat(p)))
+      for (let i = 0; i < unknownEntries.length; i++) {
+        const s = unknownStats[i]
+        if (s?.isDirectory()) dirQueue.push(unknownEntries[i]!)
+        else if (s?.isFile()) fileEntries.push(unknownEntries[i]!)
       }
     }
 

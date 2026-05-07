@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { CalendarClock, Check, ChevronDown, Filter, Loader2, RefreshCw, Settings2 } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { CalendarClock, Check, ChevronDown, Filter, Loader2, RefreshCw, Settings2, X } from "lucide-react";
 
 import { RevisionFilesystemTreeTable } from "@/components/revision/revision-filesystem-tree-table";
 import { Badge } from "@/components/ui/badge";
@@ -126,9 +126,11 @@ export function RevisionScanWorkflow({
   const [saveAsDefault, setSaveAsDefault] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const scanAbortRef = useRef<AbortController | null>(null);
   const [scanGeneratedAt, setScanGeneratedAt] = useState<string | null>(null);
   const [rows, setRows] = useState<ProjectRevisionTreeRow[]>([]);
   const [selectedProjectKeys, setSelectedProjectKeys] = useState<Set<string>>(new Set());
+  const [selectedFileIds, setSelectedFileIds] = useState<Set<string>>(new Set());
   const [expandedProjectKeys, setExpandedProjectKeys] = useState<Set<string>>(new Set());
   const [readinessFilter, setReadinessFilter] = useState<"all" | "ready" | "partial" | "blocked">("all");
   const [dependencyFilter, setDependencyFilter] = useState<"all" | "missing" | "changed">("all");
@@ -169,7 +171,13 @@ export function RevisionScanWorkflow({
     return rows.filter((row) => selected.has(row.rootLabel));
   }, [rows, selectedProjectKeys]);
 
+  const cancelScan = useCallback(() => {
+    scanAbortRef.current?.abort();
+  }, []);
+
   const runScan = useCallback(async () => {
+    const controller = new AbortController();
+    scanAbortRef.current = controller;
     setIsScanning(true);
     setLastGeneration(null);
 
@@ -178,6 +186,7 @@ export function RevisionScanWorkflow({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestPayload),
+        signal: controller.signal,
       });
 
       const payload = (await response.json().catch(() => ({}))) as RevisionScanApiResponse & { error?: string };
@@ -189,6 +198,7 @@ export function RevisionScanWorkflow({
       setScanGeneratedAt(payload.scan.generatedAt);
       setExpandedProjectKeys(new Set(payload.scan.projects.slice(0, 3).map((row) => row.rootLabel)));
       setSelectedProjectKeys(new Set());
+      setSelectedFileIds(new Set());
       onScanComplete?.(payload.scan.projects.length);
 
       if (saveAsDefault) {
@@ -208,12 +218,17 @@ export function RevisionScanWorkflow({
 
       toast({ title: "Revision scan complete", description: `${payload.scan.projects.length} project(s) discovered.` });
     } catch (error) {
-      toast({
-        title: "Revision scan failed",
-        description: error instanceof Error ? error.message : "Failed to scan revisions.",
-        variant: "destructive",
-      });
+      if (error instanceof Error && error.name === "AbortError") {
+        toast({ title: "Scan cancelled", description: "The revision scan was cancelled." });
+      } else {
+        toast({
+          title: "Revision scan failed",
+          description: error instanceof Error ? error.message : "Failed to scan revisions.",
+          variant: "destructive",
+        });
+      }
     } finally {
+      scanAbortRef.current = null;
       setIsScanning(false);
     }
   }, [
@@ -498,6 +513,13 @@ export function RevisionScanWorkflow({
                 {isScanning ? "Scanning..." : "Run Scan"}
               </Button>
 
+              {isScanning && (
+                <Button type="button" variant="outline" onClick={cancelScan} className="gap-2">
+                  <X className="h-4 w-4" />
+                  Cancel
+                </Button>
+              )}
+
               <Select value={readinessFilter} onValueChange={(value) => setReadinessFilter(value as typeof readinessFilter)}>
                 <SelectTrigger className="w-45">
                   <SelectValue placeholder="Readiness filter" />
@@ -532,10 +554,18 @@ export function RevisionScanWorkflow({
               isLoading={isScanning}
               expandedProjectKeys={expandedProjectKeys}
               selectedProjectKeys={selectedProjectKeys}
+              selectedFileIds={selectedFileIds}
               projectSettings={projectSettings}
               onToggleExpand={toggleExpand}
               onToggleProjectSelection={toggleProjectSelection}
               onToggleSelectAll={handleSelectAll}
+              onToggleFileSelection={(fileId, next) => {
+                setSelectedFileIds((prev) => {
+                  const s = new Set(prev);
+                  if (next) s.add(fileId); else s.delete(fileId);
+                  return s;
+                });
+              }}
               onUpdateProjectSettings={(key, patch) => {
                 setProjectSettings((prev) => ({ ...prev, [key]: { ...prev[key], ...patch } }));
               }}
