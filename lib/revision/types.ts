@@ -48,6 +48,8 @@ export interface RevisionScanRequest {
   projectFilter?: string | null
 }
 
+export type RevisionScanTransport = 'node-fs' | 'powershell-fallback' | 'powershell-forced' | 'mixed'
+
 export interface RevisionScanPreferences {
   fromTimeMs: number
   toTimeMs: number
@@ -114,6 +116,11 @@ export interface RevisionScanResult {
   toTimeMs: number
   legalSourceRoot: string | null
   brandSourceRoot: string | null
+  scanTransport: RevisionScanTransport
+  scanTransportStats: {
+    nodeTraversalCount: number
+    powerShellCount: number
+  }
   projects: ProjectRevisionTreeRow[]
 }
 

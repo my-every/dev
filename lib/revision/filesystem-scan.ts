@@ -20,6 +20,7 @@ import {
   type RevisionScanRequest,
   type RevisionScanResult,
   type RevisionScanScope,
+  type RevisionScanTransport,
   type RevisionValidationSummary,
   getLatestRevision,
   getPreviousRevision,
@@ -60,6 +61,13 @@ interface ScannedFile {
 interface FileCollectionOptions {
   fromTimeMs?: number
   toTimeMs?: number
+  telemetry?: ScanCollectionTelemetry
+}
+
+interface ScanCollectionTelemetry {
+  nodeTraversalCount: number
+  powerShellCount: number
+  powerShellForced: boolean
 }
 
 interface ProjectAggregate {
@@ -186,20 +194,8 @@ async function collectFilesWithPowerShell(
   const script = [
     "$ErrorActionPreference = 'Stop'",
     `$root = ${quotePowerShellLiteral(rootPath)}`,
-    `$from = ${Number.isFinite(fromTimeMs) ? fromTimeMs : -9e15}`,
-    `$to = ${Number.isFinite(toTimeMs) ? toTimeMs : 9e15}`,
     "if (-not (Test-Path -LiteralPath $root)) { Write-Output '[]'; exit 0 }",
-    "$epoch = [datetime]'1970-01-01T00:00:00Z'",
-    "$rows = Get-ChildItem -LiteralPath $root -Recurse -File -Force -ErrorAction SilentlyContinue | ForEach-Object {",
-    "  $mtimeMs = [math]::Round(($_.LastWriteTimeUtc - $epoch).TotalMilliseconds)",
-    "  if ($mtimeMs -lt $from -or $mtimeMs -gt $to) { return }",
-    "  [pscustomobject]@{",
-    "    FullName = $_.FullName",
-    "    Name = $_.Name",
-    "    Length = $_.Length",
-    "    MtimeMs = $mtimeMs",
-    "  }",
-    "}",
+    "$rows = Get-ChildItem -LiteralPath $root -Recurse -File -Force -ErrorAction SilentlyContinue | Select-Object FullName, Name, Length, LastWriteTimeUtc",
     "if ($null -eq $rows) { Write-Output '[]' } else { $rows | ConvertTo-Json -Compress }",
   ].join('; ')
 
@@ -216,18 +212,26 @@ async function collectFilesWithPowerShell(
     }
 
     const parsed = JSON.parse(raw) as
-      | { FullName?: string; Name?: string; Length?: number; MtimeMs?: number }
-      | Array<{ FullName?: string; Name?: string; Length?: number; MtimeMs?: number }>
+      | { FullName?: string; Name?: string; Length?: number; LastWriteTimeUtc?: string }
+      | Array<{ FullName?: string; Name?: string; Length?: number; LastWriteTimeUtc?: string }>
 
     const rows = Array.isArray(parsed) ? parsed : [parsed]
     const files = rows
       .filter((row) => Boolean(row?.FullName) && Boolean(row?.Name))
+      .map((row) => {
+        const parsedMs = row.LastWriteTimeUtc ? Date.parse(row.LastWriteTimeUtc) : 0
+        return {
+          row,
+          modifiedTimeMs: Number.isFinite(parsedMs) ? parsedMs : 0,
+        }
+      })
+      .filter(({ modifiedTimeMs }) => modifiedTimeMs >= fromTimeMs && modifiedTimeMs <= toTimeMs)
       .map((row) =>
         toScannedFileFromStats({
-          fullPath: String(row.FullName),
-          fileName: String(row.Name),
-          sizeBytes: Number(row.Length ?? 0),
-          modifiedTimeMs: Number(row.MtimeMs ?? 0),
+          fullPath: String(row.row.FullName),
+          fileName: String(row.row.Name),
+          sizeBytes: Number(row.row.Length ?? 0),
+          modifiedTimeMs: row.modifiedTimeMs,
         }),
       )
 
@@ -243,10 +247,17 @@ async function collectFilesRecursively(
   rootPath: string,
   options: FileCollectionOptions = {},
 ): Promise<ScannedFile[]> {
+  const telemetry = options.telemetry
   const forcePowerShell = process.env.REVISION_SCAN_USE_POWERSHELL === '1'
   if (forcePowerShell) {
+    if (telemetry) {
+      telemetry.powerShellForced = true
+    }
     const fromPowerShell = await collectFilesWithPowerShell(rootPath, options)
     if (fromPowerShell) {
+      if (telemetry) {
+        telemetry.powerShellCount += 1
+      }
       return fromPowerShell
     }
   }
@@ -324,12 +335,31 @@ async function collectFilesRecursively(
   if (files.length === 0 && shouldAttemptPowerShellFileListing()) {
     const fromPowerShell = await collectFilesWithPowerShell(rootPath, options)
     if (fromPowerShell) {
+      if (telemetry) {
+        telemetry.powerShellCount += 1
+      }
       return fromPowerShell
     }
   }
 
+  if (telemetry) {
+    telemetry.nodeTraversalCount += 1
+  }
+
   files.sort((left, right) => right.modifiedTimeMs - left.modifiedTimeMs)
   return files
+}
+
+function resolveScanTransport(telemetry: ScanCollectionTelemetry): RevisionScanTransport {
+  if (telemetry.powerShellCount <= 0) {
+    return 'node-fs'
+  }
+
+  if (telemetry.nodeTraversalCount <= 0) {
+    return telemetry.powerShellForced ? 'powershell-forced' : 'powershell-fallback'
+  }
+
+  return 'mixed'
 }
 
 function fileToRevision(file: ScannedFile): FileRevision {
@@ -599,6 +629,11 @@ export async function scanProjectRevisionsFromFilesystem(
   )
 
   const projectFilter = request.projectFilter?.trim().toUpperCase() || null
+  const collectionTelemetry: ScanCollectionTelemetry = {
+    nodeTraversalCount: 0,
+    powerShellCount: 0,
+    powerShellForced: false,
+  }
 
   const aggregates = new Map<string, ProjectAggregate>()
 
@@ -607,6 +642,7 @@ export async function scanProjectRevisionsFromFilesystem(
     const legalProjects = await discoverLegalProjects(sourceRoots.legalSourceRoot ?? '', {
       fromTimeMs,
       toTimeMs,
+      telemetry: collectionTelemetry,
     })
     for (const [pdNumber, aggregate] of legalProjects.entries()) {
       aggregates.set(pdNumber, aggregate)
@@ -626,6 +662,7 @@ export async function scanProjectRevisionsFromFilesystem(
     await mergeBrandProjects(aggregates, sourceRoots.brandSourceRoot ?? '', {
       fromTimeMs,
       toTimeMs,
+      telemetry: collectionTelemetry,
     })
     console.info(
       '[revision/filesystem-scan] Brand merge complete',
@@ -688,6 +725,11 @@ export async function scanProjectRevisionsFromFilesystem(
       aggregateCount: aggregates.size,
       projectCount: projects.length,
       hasProjectFilter: Boolean(projectFilter),
+      scanTransport: resolveScanTransport(collectionTelemetry),
+      scanTransportStats: {
+        nodeTraversalCount: collectionTelemetry.nodeTraversalCount,
+        powerShellCount: collectionTelemetry.powerShellCount,
+      },
     }),
   )
 
@@ -698,6 +740,11 @@ export async function scanProjectRevisionsFromFilesystem(
     toTimeMs,
     legalSourceRoot: sourceRoots.legalSourceRoot,
     brandSourceRoot: scope === 'legal' ? null : sourceRoots.brandSourceRoot,
+    scanTransport: resolveScanTransport(collectionTelemetry),
+    scanTransportStats: {
+      nodeTraversalCount: collectionTelemetry.nodeTraversalCount,
+      powerShellCount: collectionTelemetry.powerShellCount,
+    },
     projects,
   }
 }
