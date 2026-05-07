@@ -33,6 +33,11 @@ export async function GET(
         currentLayout: null,
         previousWireList: null,
         previousLayout: null,
+        sourceRoots: {
+          legal: null,
+          brand: null,
+        },
+        treeRow: null,
       })
     }
 

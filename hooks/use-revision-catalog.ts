@@ -32,7 +32,34 @@ export interface RevisionCatalogEntry {
 const fetcher = async (url: string): Promise<RevisionCatalogEntry[]> => {
     const res = await fetch(url)
     if (!res.ok) throw new Error('Failed to fetch revision catalog')
-    return res.json()
+        const payload = await res.json() as
+            | RevisionCatalogEntry[]
+            | { revisions?: Array<{ projectId: string; pdNumber: string; folderName: string; wireListRevisions?: Array<{ revisionInfo?: { displayVersion?: string } | null }>; layoutRevisions?: Array<{ revisionInfo?: { displayVersion?: string } | null }> }> }
+
+        if (Array.isArray(payload)) {
+            return payload
+        }
+
+        const revisions = payload.revisions ?? []
+        return revisions.map((entry) => {
+            const wireListRevisions = (entry.wireListRevisions ?? [])
+                .map((revision) => revision.revisionInfo?.displayVersion)
+                .filter((revision): revision is string => Boolean(revision))
+            const layoutRevisions = (entry.layoutRevisions ?? [])
+                .map((revision) => revision.revisionInfo?.displayVersion)
+                .filter((revision): revision is string => Boolean(revision))
+
+            const allRevisions = Array.from(new Set([...wireListRevisions, ...layoutRevisions]))
+
+            return {
+                projectId: entry.projectId,
+                pdNumber: entry.pdNumber,
+                folderName: entry.folderName,
+                wireListRevisions,
+                layoutRevisions,
+                allRevisions,
+            }
+        })
 }
 
 // ============================================================================

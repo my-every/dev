@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import { FileCard } from "@/components/projects/file-card";
+import { RevisionScanWorkflow } from "@/components/revision/revision-scan-workflow";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyTabState, StatItem } from "@/components/projects/tabs/project-tab-helpers";
@@ -127,6 +128,10 @@ export function ProjectFilesTab({ project, onNavigateToTab }: ProjectTabProps) {
 
   return (
     <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-end">
+        <RevisionScanWorkflow />
+      </div>
+
       <div className="grid grid-cols-2 gap-2">
         <StatItem icon={FolderOpen} label="Source Files" value={String(sourceFiles.length)} />
         <StatItem icon={Download} label="Exports" value={String(exportCount)} color={project.color} />

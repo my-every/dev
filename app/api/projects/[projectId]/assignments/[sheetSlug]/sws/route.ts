@@ -13,7 +13,7 @@ import { deriveSwsProgressSummary } from "@/lib/sws/progress";
 
 export const dynamic = "force-dynamic";
 
-const EDITOR_ROLES: Set<UserRole> = new Set(["TEAM_LEAD", "MANAGER", "SUPERVISOR", "DEVELOPER"]);
+const EDITOR_ROLES: Set<UserRole> = new Set(["TEAM_LEAD", "DEVELOPER"]);
 
 async function resolveSwsContext(projectId: string, sheetSlug: string) {
   const manifest = await readProjectManifest(projectId);
@@ -31,7 +31,7 @@ async function resolveSwsContext(projectId: string, sheetSlug: string) {
 
   return {
     manifest,
-    assignment,
+    assignment,Y
     hydrated,
   };
 }

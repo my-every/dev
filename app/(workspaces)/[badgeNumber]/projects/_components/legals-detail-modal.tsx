@@ -6,6 +6,7 @@ import {
   Check,
   ChevronRight,
   Clock,
+  ExternalLink,
   FolderOpen,
   GitBranch,
   Layers,
@@ -396,6 +397,25 @@ export function LegalsDetailModal({
               )}
             </div>
           </div>
+
+          {/* Cross Wire List */}
+          {!loading && !error && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() =>
+                window.open(
+                  `/print/project-context/${encodeURIComponent(project.pdNumber)}/cross-wire`,
+                  "_blank",
+                  "noreferrer",
+                )
+              }
+              className="h-8 px-3 shrink-0"
+            >
+              <ExternalLink className="h-3.5 w-3.5 mr-1.5" />
+              Cross Wire List
+            </Button>
+          )}
 
           {/* Edit toggle */}
           {!loading && !error && (

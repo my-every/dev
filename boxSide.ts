@@ -11,6 +11,18 @@ export const BoxSideConfig = {
             rightDoor: true,
         },
     },  
+    leftSide: {
+        name: 'Left Side',
+        description: 'The left side of the box.',
+        externalLocations: {
+            leftDoor: false,
+            rightBackSide: true,
+            backSide: true,
+            topBackSide: true,
+            rightSide: true,
+            rightDoor: false,
+        },
+    },
     leftBackSide: {
         name: 'Left Back Side',
         description: 'The left back side of the box.',

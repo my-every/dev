@@ -66,7 +66,7 @@ interface WireListExportResult {
   }>;
 }
 
-type ProjectDetailsTab = "details" | "assignments" | "legals" | "brand-lists" | "wire-lists";
+type ProjectDetailsTab = "details" | "assignments" | "legals" | "brand-lists" | "wire-lists" | "cross-wire";
 
 type EditableProjectFields = Pick<
   ProjectManifest,
@@ -546,6 +546,7 @@ export function ProjectCollectionDetailsModal({
     { id: "legals", label: "Legals", icon: Upload, editable: false },
     { id: "brand-lists", label: "Brand Lists", icon: FileSpreadsheet, editable: false },
     { id: "wire-lists", label: "Wire Lists", icon: Layers, editable: false },
+    { id: "cross-wire", label: "Cross Wire", icon: ExternalLink, editable: false },
   ];
 
   return (
@@ -1199,6 +1200,59 @@ export function ProjectCollectionDetailsModal({
                       ))}
                     </div>
                   )}
+                </div>
+              </TabsContent>
+
+              <TabsContent value="cross-wire" className="mt-0 space-y-4">
+                <SectionHeader
+                  icon={ExternalLink}
+                  title="Cross Wire List"
+                  description="Preview and print all external wiring connections grouped by unit type"
+                />
+
+                <div className="rounded-xl border border-border bg-background/40 p-4 space-y-3">
+                  <div>
+                    <div className="text-sm font-semibold">Print Preview</div>
+                    <p className="text-xs text-muted-foreground">
+                      Opens an interactive editor where you can configure, preview, and print the cross wire list for this project.
+                    </p>
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={() =>
+                      window.open(
+                        `/print/project-context/${encodeURIComponent(currentProject.id)}/cross-wire`,
+                        "_blank",
+                        "noreferrer",
+                      )
+                    }
+                    className="gap-1.5"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    Open Cross Wire List
+                  </Button>
+                </div>
+
+                <div className="rounded-xl border border-border bg-background/40 p-4 space-y-2">
+                  <div className="text-sm font-semibold">Generate Schema</div>
+                  <p className="text-xs text-muted-foreground">
+                    Rebuilds the cross wire schema from all assignment brand list schemas. Use this after updating wire data.
+                  </p>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="gap-1.5"
+                    onClick={() =>
+                      window.open(
+                        `/print/project-context/${encodeURIComponent(currentProject.id)}/cross-wire?generate=1`,
+                        "_blank",
+                        "noreferrer",
+                      )
+                    }
+                  >
+                    <GitBranch className="h-3.5 w-3.5" />
+                    Regenerate &amp; Open
+                  </Button>
                 </div>
               </TabsContent>
             </div>

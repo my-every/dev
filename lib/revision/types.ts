@@ -37,6 +37,86 @@ export interface FileRevision {
   fileSize?: number
 }
 
+export type RevisionScanScope = 'legal' | 'brand' | 'both'
+
+export interface RevisionScanRequest {
+  fromTimeMs?: number
+  toTimeMs?: number
+  scope?: RevisionScanScope
+  legalSourceRoot?: string | null
+  brandSourceRoot?: string | null
+  projectFilter?: string | null
+}
+
+export interface RevisionScanPreferences {
+  fromTimeMs: number
+  toTimeMs: number
+  scope: RevisionScanScope
+  periodicBackgroundChecksEnabled: boolean
+  periodicIntervalMinutes: number
+}
+
+export interface RevisionFilesystemNode {
+  id: string
+  name: string
+  type: 'file' | 'folder'
+  absolutePath: string
+  modifiedTimeMs: number
+  modifiedAt: string
+  sizeBytes?: number
+  extension?: string
+  fileTypeIndicator?: 'wire-list' | 'layout-pdf' | 'brand-list' | 'compare-wire-list' | 'other'
+  validationStatus?: 'valid' | 'missing' | 'warning'
+  readinessStatus?: 'ready' | 'incomplete' | 'stale'
+  revisionInfo?: RevisionInfo
+  children?: RevisionFilesystemNode[]
+}
+
+export interface RevisionValidationSummary {
+  hasCompareWireListSheet: boolean
+  hasUcpLayoutPdf: boolean
+  hasMatchingRevisionPairs: boolean
+  missingRequiredLegalAssets: boolean
+  brandListRevisionsIncomplete: boolean
+  revisionMetadataStale: boolean
+}
+
+export interface RevisionPairState {
+  latestWireListRevision: string | null
+  latestLayoutRevision: string | null
+  latestBrandListRevision: string | null
+  previousWireListRevision: string | null
+  previousLayoutRevision: string | null
+  previousBrandListRevision: string | null
+  comparisonState: 'ready' | 'partial' | 'missing'
+}
+
+export interface ProjectRevisionTreeRow {
+  projectId: string
+  pdNumber: string
+  projectName: string
+  rootLabel: string
+  legalFolderName?: string | null
+  brandFolderName?: string | null
+  revisionPairState: RevisionPairState
+  validation: RevisionValidationSummary
+  readiness: 'ready' | 'partial' | 'blocked'
+  filesNewestFirst: RevisionFilesystemNode[]
+  latestModifiedTimeMs: number
+  latestModifiedAt: string | null
+  discoveredFileCount: number
+}
+
+export interface RevisionScanResult {
+  generatedAt: string
+  scope: RevisionScanScope
+  fromTimeMs: number
+  toTimeMs: number
+  legalSourceRoot: string | null
+  brandSourceRoot: string | null
+  projects: ProjectRevisionTreeRow[]
+}
+
 export interface ProjectRevisionHistory {
   /** Project ID */
   projectId: string
@@ -56,6 +136,11 @@ export interface ProjectRevisionHistory {
   previousWireList: FileRevision | null
   /** Previous layout revision (for comparison) */
   previousLayout: FileRevision | null
+  sourceRoots?: {
+    legal: string | null
+    brand: string | null
+  }
+  treeRow?: ProjectRevisionTreeRow | null
 }
 
 // ============================================================================

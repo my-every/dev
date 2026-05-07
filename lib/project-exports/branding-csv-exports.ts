@@ -247,6 +247,25 @@ export async function generateBrandingCsvExports(projectId: string): Promise<Bra
 const HEADER_STYLE = {
   font: { bold: true },
   alignment: { wrapText: true, vertical: "center" as const },
+  fill: { fgColor: { rgb: "E2E8F0" } },
+};
+
+const TITLE_STYLE = {
+  font: { bold: true, sz: 13 },
+  alignment: { wrapText: true, vertical: "center" as const },
+  fill: { fgColor: { rgb: "F8FAFC" } },
+};
+
+const SUBHEADER_STYLE = {
+  font: { bold: true },
+  alignment: { wrapText: true, vertical: "center" as const },
+  fill: { fgColor: { rgb: "EEF2FF" } },
+};
+
+const PREFIX_GROUP_STYLE = {
+  font: { bold: true },
+  alignment: { wrapText: true, vertical: "center" as const },
+  fill: { fgColor: { rgb: "F8FAFC" } },
 };
 
 const BUNDLE_HEADER_STYLE = {
@@ -262,6 +281,18 @@ const DATA_CELL_STYLE = {
 const METADATA_BOLD_STYLE = {
   font: { bold: true },
 };
+
+function isPrefixGroupRow(row: string[]): boolean {
+  if (!row.length) return false;
+  const first = String(row[0] ?? "").trim();
+  if (!first) return false;
+  for (let i = 1; i < row.length; i += 1) {
+    if (String(row[i] ?? "").trim().length > 0) {
+      return false;
+    }
+  }
+  return true;
+}
 
 /**
  * Convert branding CSV content into an xlsx workbook with styling.
@@ -340,6 +371,10 @@ function applyBrandingStyles(worksheet: XLSX.WorkSheet, rows: string[][]): void 
 
   for (let r = range.s.r; r <= range.e.r; r++) {
     const row = rows[r] ?? [];
+    const isTitleRow = r === 0;
+    const isFromToRow = r === 11;
+    const isColumnHeaderRow = r === 12;
+    const isPrefixHeaderRow = r > 12 && isPrefixGroupRow(row);
     const isBundleHeaderRow = r > 12 && String(row[7] ?? "").trim().length > 0;
 
     for (let c = range.s.c; c <= range.e.c; c++) {
@@ -361,13 +396,22 @@ function applyBrandingStyles(worksheet: XLSX.WorkSheet, rows: string[][]): void 
       }
 
       // Apply styles based on row position
-      if (r < 11 && c === 0) {
+      if (isTitleRow) {
+        cell.s = TITLE_STYLE;
+      } else if (r < 11 && c === 0) {
         // Metadata labels (rows 1-11, column A) - bold
         cell.s = METADATA_BOLD_STYLE;
-      } else if (r === 12) {
+      } else if (isFromToRow) {
+        // From/To subheader row (row 12, 0-indexed as 11)
+        cell.s = SUBHEADER_STYLE;
+      } else if (isColumnHeaderRow) {
         // Column headers row (row 13, 0-indexed as 12) - bold + wrap
         cell.s = HEADER_STYLE;
+      } else if (isPrefixHeaderRow && c === 0) {
+        // Prefix category rows inside data section
+        cell.s = PREFIX_GROUP_STYLE;
       } else if (isBundleHeaderRow) {
+        // First row of each bundle section where bundle name is emitted
         cell.s = BUNDLE_HEADER_STYLE;
       } else if (r > 12) {
         // Data rows - text wrap

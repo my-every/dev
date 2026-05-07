@@ -79,7 +79,7 @@ function AppLauncherContent() {
 
   const signedInPanel = isAuthenticated && activeBadge ? (
     <div className="space-y-3">
-      <div className="rounded-2xl border border-border bg-muted p-4">
+      <div className="rounded-2xl border border-yellow-400 bg-muted/10 backdrop-blur-sm p-4">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent">
             <span className="text-sm font-bold text-accent-foreground">{user?.initials ?? "?"}</span>
@@ -96,7 +96,7 @@ function AppLauncherContent() {
         </div>
       </div>
 
-      <Button asChild className="w-full rounded-xl bg-background text-foreground hover:bg-background">
+      <Button asChild className="w-full rounded-xl bg-yellow-400 text-foreground hover:bg-yellow-500">
         <Link href={launchHref}>
           <LogIn className="mr-1.5 size-3.5" />
           Continue to {destination}

@@ -12,50 +12,15 @@ import path from 'node:path'
 import { resolveShareDirectory } from '@/lib/runtime/share-directory'
 import {
   extractProjectNumberFromLegalFolder,
-  resolveLegalProjectFilesDirectory,
 } from '@/lib/legal-drawings/discovery'
 import {
-  type FileRevision,
   type ProjectRevisionHistory,
-  parseRevisionFromFilename,
-  sortRevisions,
-  getLatestRevision,
-  getPreviousRevision,
-  isWireListFile,
-  isLayoutFile,
 } from './types'
+import { scanProjectRevisionsFromFilesystem, toProjectRevisionHistory } from './filesystem-scan'
 
 async function getLegalDrawingsRoot(): Promise<string> {
   const shareRoot = await resolveShareDirectory()
   return path.join(shareRoot, 'Legal Drawings')
-}
-
-// ============================================================================
-// File Discovery
-// ============================================================================
-
-/**
- * Build a FileRevision from a file path.
- */
-async function buildFileRevision(
-  filePath: string,
-  category: FileRevision['category']
-): Promise<FileRevision> {
-  const filename = path.basename(filePath)
-  const stats = await fs.stat(filePath)
-  
-  return {
-    filename,
-    filePath,
-    revisionInfo: parseRevisionFromFilename(filename),
-    category,
-    lastModified: stats.mtime.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    }),
-    fileSize: stats.size,
-  }
 }
 
 /**
@@ -65,47 +30,38 @@ export async function discoverProjectRevisions(
   projectId: string,
   folderName: string
 ): Promise<ProjectRevisionHistory> {
-  const legalDrawingsRoot = await getLegalDrawingsRoot()
-  const projectFilesPath = await resolveLegalProjectFilesDirectory(legalDrawingsRoot, folderName)
   const pdNumber = extractProjectNumberFromLegalFolder(folderName)
-  
-  const wireListRevisions: FileRevision[] = []
-  const layoutRevisions: FileRevision[] = []
-  
-  try {
-    const files = await fs.readdir(projectFilesPath)
-    
-    for (const file of files) {
-      const filePath = path.join(projectFilesPath, file)
-      const stats = await fs.stat(filePath)
-      
-      if (!stats.isFile()) continue
-      
-      // Categorize and build revision info
-      if (isWireListFile(file)) {
-        wireListRevisions.push(await buildFileRevision(filePath, 'WIRE_LIST'))
-      } else if (isLayoutFile(file)) {
-        layoutRevisions.push(await buildFileRevision(filePath, 'LAYOUT'))
-      }
+
+  const scan = await scanProjectRevisionsFromFilesystem({
+    scope: 'both',
+    projectFilter: pdNumber,
+  })
+
+  const row = scan.projects.find((project) => project.pdNumber.toUpperCase() === pdNumber.toUpperCase())
+  if (!row) {
+    return {
+      projectId,
+      folderName,
+      pdNumber,
+      wireListRevisions: [],
+      layoutRevisions: [],
+      currentWireList: null,
+      currentLayout: null,
+      previousWireList: null,
+      previousLayout: null,
+      sourceRoots: {
+        legal: scan.legalSourceRoot,
+        brand: scan.brandSourceRoot,
+      },
+      treeRow: null,
     }
-  } catch {
-    console.warn(`[RevisionDiscovery] Could not read ${projectFilesPath}`)
   }
-  
-  // Sort and identify current/previous
-  const sortedWireLists = sortRevisions(wireListRevisions)
-  const sortedLayouts = sortRevisions(layoutRevisions)
-  
+
+  const history = toProjectRevisionHistory(row)
   return {
+    ...history,
     projectId,
     folderName,
-    pdNumber,
-    wireListRevisions: sortedWireLists,
-    layoutRevisions: sortedLayouts,
-    currentWireList: getLatestRevision(wireListRevisions),
-    currentLayout: getLatestRevision(layoutRevisions),
-    previousWireList: getPreviousRevision(wireListRevisions),
-    previousLayout: getPreviousRevision(layoutRevisions),
   }
 }
 
@@ -113,25 +69,8 @@ export async function discoverProjectRevisions(
  * Discover revisions for all projects in Legal Drawings.
  */
 export async function discoverAllProjectRevisions(): Promise<ProjectRevisionHistory[]> {
-  const results: ProjectRevisionHistory[] = []
-  const legalDrawingsRoot = await getLegalDrawingsRoot()
-  
-  try {
-    const entries = await fs.readdir(legalDrawingsRoot, { withFileTypes: true })
-    const projectFolders = entries.filter(e => e.isDirectory())
-    
-    for (const folder of projectFolders) {
-      const pdNumber = extractProjectNumberFromLegalFolder(folder.name).toLowerCase()
-      const projectId = `pd-${pdNumber}`
-      
-      const history = await discoverProjectRevisions(projectId, folder.name)
-      results.push(history)
-    }
-  } catch {
-    console.warn('[RevisionDiscovery] Could not read Legal Drawings directory')
-  }
-  
-  return results
+  const scan = await scanProjectRevisionsFromFilesystem({ scope: 'both' })
+  return scan.projects.map(toProjectRevisionHistory)
 }
 
 /**
@@ -144,33 +83,20 @@ export async function getProjectRevisionHistory(
   pdNumberHint?: string | null,
 ): Promise<ProjectRevisionHistory | null> {
   try {
-    const legalDrawingsRoot = await getLegalDrawingsRoot()
-    const entries = await fs.readdir(legalDrawingsRoot, { withFileTypes: true })
-    const projectFolders = entries.filter(e => e.isDirectory())
-    
-    // Normalize search term
+    const scan = await scanProjectRevisionsFromFilesystem({ scope: 'both' })
     const searchTerm = projectIdOrPdNumber
       .replace(/^pd-/i, '')
       .toLowerCase()
-    
-    // Normalize pdNumber hint (most reliable match key)
+
     const pdHint = pdNumberHint?.trim().toLowerCase() || null
-    
-    // Find matching folder — prefer pdNumber hint, then fallback to searchTerm
-    const matchingFolder = projectFolders.find(folder => {
-      const folderPd = extractProjectNumberFromLegalFolder(folder.name).toLowerCase()
-      // Match on explicit PD number hint first
-      if (pdHint && folderPd === pdHint) return true
-      // Match on search term (works when projectId IS the PD number)
-      return folderPd === searchTerm || folder.name.toLowerCase().includes(searchTerm)
+
+    const row = scan.projects.find((project) => {
+      const rowPd = project.pdNumber.toLowerCase()
+      if (pdHint && rowPd === pdHint) return true
+      return rowPd === searchTerm || project.rootLabel.toLowerCase().includes(searchTerm)
     })
-    
-    if (!matchingFolder) return null
-    
-    const pdNumber = extractProjectNumberFromLegalFolder(matchingFolder.name).toLowerCase()
-    const projectId = `pd-${pdNumber}`
-    
-    return discoverProjectRevisions(projectId, matchingFolder.name)
+
+    return row ? toProjectRevisionHistory(row) : null
   } catch {
     return null
   }
