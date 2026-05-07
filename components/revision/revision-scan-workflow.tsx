@@ -22,7 +22,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
-import type { ProjectRevisionTreeRow, RevisionScanRequest, RevisionScanScope } from "@/lib/revision/types";
+import type { ProjectRevisionTreeRow, RevisionScanRequest, RevisionScanScope, RevisionScanTransport } from "@/lib/revision/types";
 
 export interface ProjectRowSettings {
   name?: string;
@@ -47,7 +47,20 @@ interface RevisionScanApiResponse {
     toTimeMs: number;
     legalSourceRoot: string | null;
     brandSourceRoot: string | null;
+    scanTransport: RevisionScanTransport;
+    scanTransportStats: {
+      nodeTraversalCount: number;
+      powerShellCount: number;
+    };
   };
+}
+
+function getScanTransportLabel(transport: RevisionScanTransport | null) {
+  if (transport === "node-fs") return "Engine: Node FS";
+  if (transport === "powershell-forced") return "Engine: PowerShell (forced)";
+  if (transport === "powershell-fallback") return "Engine: PowerShell fallback";
+  if (transport === "mixed") return "Engine: Mixed (Node + PowerShell)";
+  return "Engine: unknown";
 }
 
 interface GenerateApiResponse {
@@ -128,6 +141,8 @@ export function RevisionScanWorkflow({
   const [isGenerating, setIsGenerating] = useState(false);
   const scanAbortRef = useRef<AbortController | null>(null);
   const [scanGeneratedAt, setScanGeneratedAt] = useState<string | null>(null);
+  const [scanTransport, setScanTransport] = useState<RevisionScanTransport | null>(null);
+  const [scanTransportStats, setScanTransportStats] = useState<{ nodeTraversalCount: number; powerShellCount: number } | null>(null);
   const [rows, setRows] = useState<ProjectRevisionTreeRow[]>([]);
   const [selectedProjectKeys, setSelectedProjectKeys] = useState<Set<string>>(new Set());
   const [selectedFileIds, setSelectedFileIds] = useState<Set<string>>(new Set());
@@ -196,6 +211,8 @@ export function RevisionScanWorkflow({
 
       setRows(payload.scan.projects);
       setScanGeneratedAt(payload.scan.generatedAt);
+      setScanTransport(payload.scan.scanTransport);
+      setScanTransportStats(payload.scan.scanTransportStats);
       setExpandedProjectKeys(new Set(payload.scan.projects.slice(0, 3).map((row) => row.rootLabel)));
       setSelectedProjectKeys(new Set());
       setSelectedFileIds(new Set());
@@ -505,6 +522,12 @@ export function RevisionScanWorkflow({
                 <CalendarClock className="mr-1 h-3.5 w-3.5" />
                 {scanGeneratedAt ? `Scanned ${new Date(scanGeneratedAt).toLocaleString()}` : "No scan yet"}
               </Badge>
+
+              {scanTransport ? (
+                <Badge variant="secondary" title={scanTransportStats ? `node=${scanTransportStats.nodeTraversalCount}, powershell=${scanTransportStats.powerShellCount}` : undefined}>
+                  {getScanTransportLabel(scanTransport)}
+                </Badge>
+              ) : null}
             </div>
 
             <div className="flex flex-wrap items-center gap-2">

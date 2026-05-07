@@ -2,6 +2,7 @@ import 'server-only'
 
 import { execFile } from 'node:child_process'
 import { promises as fs } from 'node:fs'
+import os from 'node:os'
 import path from 'node:path'
 import { promisify } from 'node:util'
 
@@ -176,10 +177,6 @@ function shouldAttemptPowerShellFileListing() {
   return true
 }
 
-function quotePowerShellLiteral(value: string): string {
-  return `'${value.replace(/'/g, "''")}'`
-}
-
 async function collectFilesWithPowerShell(
   rootPath: string,
   options: FileCollectionOptions = {},
@@ -191,35 +188,67 @@ async function collectFilesWithPowerShell(
   const fromTimeMs = Number.isFinite(options.fromTimeMs) ? Number(options.fromTimeMs) : Number.NEGATIVE_INFINITY
   const toTimeMs = Number.isFinite(options.toTimeMs) ? Number(options.toTimeMs) : Number.POSITIVE_INFINITY
 
-  const script = [
-    "$ErrorActionPreference = 'Stop'",
-    `$root = ${quotePowerShellLiteral(rootPath)}`,
-    "if (-not (Test-Path -LiteralPath $root)) { Write-Output '[]'; exit 0 }",
-    "$rows = Get-ChildItem -LiteralPath $root -Recurse -File -Force -ErrorAction SilentlyContinue | Select-Object FullName, Name, Length, LastWriteTimeUtc",
-    "if ($null -eq $rows) { Write-Output '[]' } else { $rows | ConvertTo-Json -Compress }",
-  ].join('; ')
+  const scriptPath = path.join(process.cwd(), 'scripts', 'export-revision-files.ps1')
+  const boundedFromMs = Number.isFinite(fromTimeMs) ? fromTimeMs : new Date('2000-01-01T00:00:00.000Z').getTime()
+  const boundedToMs = Number.isFinite(toTimeMs) ? toTimeMs : Date.now()
+  const fromIso = new Date(boundedFromMs).toISOString()
+  const toIso = new Date(boundedToMs).toISOString()
+  const outputPath = path.join(
+    os.tmpdir(),
+    `revision-files-${Date.now()}-${Math.random().toString(36).slice(2, 10)}.json`,
+  )
 
   try {
-    const { stdout } = await execFileAsync(
+    await execFileAsync(
       'powershell.exe',
-      ['-NoLogo', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-Command', script],
+      [
+        '-NoLogo',
+        '-NoProfile',
+        '-NonInteractive',
+        '-ExecutionPolicy',
+        'Bypass',
+        '-File',
+        scriptPath,
+        '-ScanRoot',
+        rootPath,
+        '-SourceKind',
+        'legal',
+        '-FromDate',
+        fromIso,
+        '-ToDate',
+        toIso,
+        '-OutputPath',
+        outputPath,
+        '-Quiet',
+      ],
       { maxBuffer: 1024 * 1024 * 32 },
     )
 
-    const raw = String(stdout ?? '').trim()
-    if (!raw) {
+    const raw = await fs.readFile(outputPath, 'utf8').catch(() => '')
+    await fs.unlink(outputPath).catch(() => undefined)
+
+    const trimmed = String(raw ?? '').trim()
+    if (!trimmed) {
       return []
     }
 
-    const parsed = JSON.parse(raw) as
-      | { FullName?: string; Name?: string; Length?: number; LastWriteTimeUtc?: string }
-      | Array<{ FullName?: string; Name?: string; Length?: number; LastWriteTimeUtc?: string }>
+    const payload = JSON.parse(trimmed) as {
+      files?: Array<{
+        fullPath?: string
+        fileName?: string
+        sizeBytes?: number
+        lastWriteTimeUtc?: string
+        lastWriteTimeMs?: number
+      }>
+    }
 
-    const rows = Array.isArray(parsed) ? parsed : [parsed]
+    const rows = Array.isArray(payload.files) ? payload.files : []
     const files = rows
-      .filter((row) => Boolean(row?.FullName) && Boolean(row?.Name))
+      .filter((row) => Boolean(row?.fullPath) && Boolean(row?.fileName))
       .map((row) => {
-        const parsedMs = row.LastWriteTimeUtc ? Date.parse(row.LastWriteTimeUtc) : 0
+        const parsedMs = Number.isFinite(row.lastWriteTimeMs)
+          ? Number(row.lastWriteTimeMs)
+          : (row.lastWriteTimeUtc ? Date.parse(row.lastWriteTimeUtc) : 0)
         return {
           row,
           modifiedTimeMs: Number.isFinite(parsedMs) ? parsedMs : 0,
@@ -228,9 +257,9 @@ async function collectFilesWithPowerShell(
       .filter(({ modifiedTimeMs }) => modifiedTimeMs >= fromTimeMs && modifiedTimeMs <= toTimeMs)
       .map((row) =>
         toScannedFileFromStats({
-          fullPath: String(row.row.FullName),
-          fileName: String(row.row.Name),
-          sizeBytes: Number(row.row.Length ?? 0),
+          fullPath: String(row.row.fullPath),
+          fileName: String(row.row.fileName),
+          sizeBytes: Number(row.row.sizeBytes ?? 0),
           modifiedTimeMs: row.modifiedTimeMs,
         }),
       )
@@ -239,6 +268,7 @@ async function collectFilesWithPowerShell(
     return files
   } catch (error) {
     console.warn('[revision-scan] PowerShell fallback failed:', error)
+    await fs.unlink(outputPath).catch(() => undefined)
     return null
   }
 }
