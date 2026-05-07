@@ -31,6 +31,14 @@ const DEFAULT_LEGAL_SOURCE_ROOT = String.raw`S:\Legal Drawings`
 const DEFAULT_BRAND_SOURCE_ROOT = String.raw`S:\#Depts\380\6SIGMABRANDLIST\BRANDING\Projects Folder`
 const STALE_THRESHOLD_MS = 1000 * 60 * 60 * 24 * 30
 
+function nowMs() {
+  return Date.now()
+}
+
+function elapsedMs(startMs: number) {
+  return nowMs() - startMs
+}
+
 interface SourceRoots {
   legalSourceRoot: string | null
   brandSourceRoot: string | null
@@ -419,23 +427,54 @@ function normalizeRequestBounds(request: RevisionScanRequest): { fromTimeMs: num
 export async function scanProjectRevisionsFromFilesystem(
   request: RevisionScanRequest = {},
 ): Promise<RevisionScanResult> {
+  const startedAt = nowMs()
   const scope = normalizeScope(request.scope)
   const { fromTimeMs, toTimeMs } = normalizeRequestBounds(request)
   const sourceRoots = await resolveRevisionSourceRoots(request)
+
+  console.info(
+    '[revision/filesystem-scan] Start',
+    JSON.stringify({
+      scope,
+      fromTimeMs,
+      toTimeMs,
+      legalSourceRoot: sourceRoots.legalSourceRoot,
+      brandSourceRoot: sourceRoots.brandSourceRoot,
+      projectFilter: request.projectFilter?.trim() || null,
+    }),
+  )
 
   const projectFilter = request.projectFilter?.trim().toUpperCase() || null
 
   const aggregates = new Map<string, ProjectAggregate>()
 
   if (scope === 'legal' || scope === 'both') {
+    const legalScanStartedAt = nowMs()
     const legalProjects = await discoverLegalProjects(sourceRoots.legalSourceRoot ?? '')
     for (const [pdNumber, aggregate] of legalProjects.entries()) {
       aggregates.set(pdNumber, aggregate)
     }
+    console.info(
+      '[revision/filesystem-scan] Legal scan complete',
+      JSON.stringify({
+        durationMs: elapsedMs(legalScanStartedAt),
+        discoveredProjects: legalProjects.size,
+      }),
+    )
   }
 
   if (scope === 'brand' || scope === 'both') {
+    const brandScanStartedAt = nowMs()
+    const aggregateCountBefore = aggregates.size
     await mergeBrandProjects(aggregates, sourceRoots.brandSourceRoot ?? '')
+    console.info(
+      '[revision/filesystem-scan] Brand merge complete',
+      JSON.stringify({
+        durationMs: elapsedMs(brandScanStartedAt),
+        aggregateCountBefore,
+        aggregateCountAfter: aggregates.size,
+      }),
+    )
   }
 
   const nowMs = Date.now()
@@ -480,6 +519,17 @@ export async function scanProjectRevisionsFromFilesystem(
   }
 
   projects.sort((left, right) => right.latestModifiedTimeMs - left.latestModifiedTimeMs)
+
+  console.info(
+    '[revision/filesystem-scan] Complete',
+    JSON.stringify({
+      durationMs: elapsedMs(startedAt),
+      scope,
+      aggregateCount: aggregates.size,
+      projectCount: projects.length,
+      hasProjectFilter: Boolean(projectFilter),
+    }),
+  )
 
   return {
     generatedAt: new Date().toISOString(),
