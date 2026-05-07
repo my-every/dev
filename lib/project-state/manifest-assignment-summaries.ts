@@ -344,8 +344,21 @@ export async function buildManifestAssignmentSummaries(
     const resolvedSwsType = ubpEntry?.swsType || assignment.swsType
     const resolvedBoxSide = ubpEntry?.boxSide || assignment.boxSide
 
-    // Prefer the UBP reference config (has visibility flags); fall back to manifest strings.
-    // Normalize both string[] (legacy) and ExternalLocationConfig[] inputs.
+    // Build a lookup of user-saved visibility flags keyed by normalized location name.
+    // This is always consulted so that wireListVisible / brandingVisible edits survive enrichment.
+    const savedVisibilityByLocation = new Map<string, { wireListVisible: boolean; brandingVisible: boolean }>()
+    for (const item of Array.isArray(assignment.externalLocations) ? assignment.externalLocations : []) {
+      const entry = item as { location?: string; wireListVisible?: boolean; brandingVisible?: boolean }
+      const loc = normalize(entry?.location ?? '')
+      if (loc) {
+        savedVisibilityByLocation.set(loc.toUpperCase(), {
+          wireListVisible: entry.wireListVisible ?? true,
+          brandingVisible: entry.brandingVisible ?? true,
+        })
+      }
+    }
+
+    // Use UBP reference for location structure when available; otherwise keep manifest locations.
     const rawLocations: unknown[] = Array.isArray(ubpEntry?.externalLocations) && ubpEntry.externalLocations.length > 0
       ? ubpEntry.externalLocations
       : Array.isArray(assignment.externalLocations)
@@ -354,13 +367,15 @@ export async function buildManifestAssignmentSummaries(
     const seenLocations = new Set<string>()
     const resolvedExternalLocations = rawLocations
       .map((item) => {
-        if (typeof item === 'string') {
-          const loc = normalize(item)
-          return loc ? { location: loc, wireListVisible: true, brandingVisible: true } : null
+        const loc = normalize(typeof item === 'string' ? item : (item as { location?: string })?.location ?? '')
+        if (!loc) return null
+        const saved = savedVisibilityByLocation.get(loc.toUpperCase())
+        const ubpItem = typeof item === 'object' && item !== null ? item as { wireListVisible?: boolean; brandingVisible?: boolean } : null
+        return {
+          location: loc,
+          wireListVisible: saved?.wireListVisible ?? ubpItem?.wireListVisible ?? true,
+          brandingVisible: saved?.brandingVisible ?? ubpItem?.brandingVisible ?? true,
         }
-        const entry = item as { location?: string; wireListVisible?: boolean; brandingVisible?: boolean }
-        const loc = normalize(entry?.location ?? '')
-        return loc ? { location: loc, wireListVisible: entry.wireListVisible ?? true, brandingVisible: entry.brandingVisible ?? true } : null
       })
       .filter((item): item is NonNullable<typeof item> => {
         if (!item) return false

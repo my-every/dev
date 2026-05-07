@@ -12,6 +12,7 @@ import type {
 
 const MAX_ACTIVITY_ENTRIES = 2000
 const MAX_PROJECT_INDEX_ENTRIES = 2000
+const MAX_PROJECT_LEVEL_REFS = 5000
 const ACTIVITY_EVENTS_FILE = 'activity-events.jsonl'
 
 const SHIFT_DIRS = ['1st-shift', '2nd-shift'] as const
@@ -40,6 +41,12 @@ interface ProjectActivityIndex {
     shift: string
     lastUpdated: string
     activityIds: string[]
+}
+
+interface ProjectLevelActivityIndex {
+    projectId: string
+    lastUpdated: string
+    activityRefs: Array<{ badge: string; shift: string; activityId: string }>
 }
 
 export interface ActivityProjectIndexBackfillReport {
@@ -114,6 +121,57 @@ function resolveProjectIndexPath(badge: string, shift: string, projectId: string
     return path.join(userDir, 'activity-index', 'projects', `${toSafeFileSegment(projectId)}.json`)
 }
 
+function resolveProjectLevelIndexPath(projectId: string): string {
+    return path.join(
+        resolveShareDirectorySync(),
+        'activity-indexes',
+        'projects',
+        `${toSafeFileSegment(projectId)}.json`,
+    )
+}
+
+function readProjectLevelIndex(projectId: string): ProjectLevelActivityIndex | null {
+    const indexPath = resolveProjectLevelIndexPath(projectId)
+    if (!fs.existsSync(indexPath)) return null
+    try {
+        const raw = fs.readFileSync(indexPath, 'utf-8')
+        const parsed = JSON.parse(raw) as ProjectLevelActivityIndex
+        if (!Array.isArray(parsed.activityRefs)) return null
+        return parsed
+    } catch {
+        return null
+    }
+}
+
+function writeProjectLevelIndex(projectId: string, index: ProjectLevelActivityIndex): void {
+    const indexPath = resolveProjectLevelIndexPath(projectId)
+    fs.mkdirSync(path.dirname(indexPath), { recursive: true })
+    fs.writeFileSync(indexPath, JSON.stringify(index, null, 2) + '\n', 'utf-8')
+}
+
+function upsertProjectLevelIndexForAdd(projectId: string, badge: string, shift: string, activityId: string): void {
+    const existing = readProjectLevelIndex(projectId)
+    const refs = existing?.activityRefs ?? []
+    if (!refs.some((r) => r.activityId === activityId)) {
+        refs.unshift({ badge, shift, activityId })
+    }
+    writeProjectLevelIndex(projectId, {
+        projectId,
+        lastUpdated: new Date().toISOString(),
+        activityRefs: refs.slice(0, MAX_PROJECT_LEVEL_REFS),
+    })
+}
+
+function upsertProjectLevelIndexForDelete(projectId: string, activityId: string): void {
+    const existing = readProjectLevelIndex(projectId)
+    if (!existing) return
+    writeProjectLevelIndex(projectId, {
+        ...existing,
+        lastUpdated: new Date().toISOString(),
+        activityRefs: existing.activityRefs.filter((r) => r.activityId !== activityId),
+    })
+}
+
 function readProjectIndex(badge: string, shift: string, projectId: string): ProjectActivityIndex | null {
     const indexPath = resolveProjectIndexPath(badge, shift, projectId)
     if (!indexPath || !fs.existsSync(indexPath)) return null
@@ -163,17 +221,10 @@ function upsertProjectIndexForDelete(badge: string, shift: string, projectId: st
     writeProjectIndex(badge, shift, projectId, nextIds)
 }
 
-function buildProjectIndexFromDocument(
-    badge: string,
-    shift: string,
-    projectId: string,
-    doc: ActivityDocument,
-): string[] {
-    const ids = doc.activities
+function filterActivityIdsForProject(doc: ActivityDocument, projectId: string): string[] {
+    return doc.activities
         .filter((entry) => entry.projectId === projectId)
         .map((entry) => entry.id)
-    writeProjectIndex(badge, shift, projectId, ids)
-    return ids
 }
 
 function resolveShiftLabel(shiftDir: ShiftDir): string {
@@ -234,6 +285,22 @@ export async function backfillProjectIndexesForBadgeShift(
     let written = 0
     for (const [projectId, ids] of projectMap.entries()) {
         writeProjectIndex(badge, shift, projectId, ids)
+
+        // Merge into the project-level index (add any refs not already present)
+        const existing = readProjectLevelIndex(projectId)
+        const existingIds = new Set(existing?.activityRefs.map((r) => r.activityId) ?? [])
+        const newRefs = ids
+            .filter((id) => !existingIds.has(id))
+            .map((id) => ({ badge, shift, activityId: id }))
+        if (newRefs.length > 0) {
+            const merged = [...newRefs, ...(existing?.activityRefs ?? [])]
+            writeProjectLevelIndex(projectId, {
+                projectId,
+                lastUpdated: new Date().toISOString(),
+                activityRefs: merged.slice(0, MAX_PROJECT_LEVEL_REFS),
+            })
+        }
+
         written += 1
     }
 
@@ -457,6 +524,7 @@ export async function addActivityToShare(
         fs.writeFileSync(activityPath, JSON.stringify(doc, null, 2) + '\n', 'utf-8')
         if (entry.projectId) {
             upsertProjectIndexForAdd(badge, shift, entry.projectId, entry.id)
+            upsertProjectLevelIndexForAdd(entry.projectId, badge, shift, entry.id)
         }
         await appendActivityEventToShare(badge, shift, 'ENTRY_CREATED', {
             activityId: entry.id,
@@ -487,7 +555,7 @@ export async function getActivityEntriesFromShare(
     const activityIds = new Set<string>()
     for (const projectId of filters.projectIds) {
         const indexed = readProjectIndex(badge, shift, projectId)
-        const ids = indexed?.activityIds ?? buildProjectIndexFromDocument(badge, shift, projectId, doc)
+        const ids = indexed?.activityIds ?? filterActivityIdsForProject(doc, projectId)
         ids.forEach((id) => activityIds.add(id))
     }
 
@@ -630,7 +698,7 @@ export function applyActivityFilters(
 
 /**
  * Aggregate activity entries for a project across ALL badges and shifts.
- * Uses the per-user project index for efficient lookup.
+ * Uses the project-level activity index for efficient lookup without scanning all user directories.
  */
 export async function getProjectActivityAcrossAllBadges(
     projectId: string,
@@ -642,40 +710,50 @@ export async function getProjectActivityAcrossAllBadges(
         limit?: number
     },
 ): Promise<ActivityEntry[]> {
-    const targetShiftDirs: ShiftDir[] = options?.shift
-        ? (normalizeShiftDir(options.shift) ? [normalizeShiftDir(options.shift)!] : [])
-        : [...SHIFT_DIRS]
+    const projectIndex = readProjectLevelIndex(projectId)
+    if (!projectIndex || projectIndex.activityRefs.length === 0) return []
+
+    const targetShiftDir = options?.shift ? normalizeShiftDir(options.shift) : null
+
+    // Group activityIds by badge+shift so we load each user's file once
+    const byUser = new Map<string, { badge: string; shift: string; ids: Set<string> }>()
+    for (const ref of projectIndex.activityRefs) {
+        const refShiftDir = normalizeShiftDir(ref.shift)
+        if (!refShiftDir) continue
+        if (targetShiftDir && refShiftDir !== targetShiftDir) continue
+
+        const key = `${ref.shift}:${ref.badge}`
+        const existing = byUser.get(key)
+        if (existing) {
+            existing.ids.add(ref.activityId)
+        } else {
+            byUser.set(key, { badge: ref.badge, shift: ref.shift, ids: new Set([ref.activityId]) })
+        }
+    }
 
     const seen = new Set<string>()
     const merged: ActivityEntry[] = []
 
-    for (const shiftDir of targetShiftDirs) {
-        const shift = toApiShift(shiftDir)
-        const badges = listBadgesForShift(shiftDir)
-
-        for (const badge of badges) {
-            try {
-                const entries = await getActivityEntriesFromShare(badge, shift, {
-                    ...options?.filters,
-                    projectIds: [projectId],
-                })
-                for (const entry of entries) {
-                    if (!seen.has(entry.id)) {
-                        seen.add(entry.id)
-                        merged.push(entry)
-                    }
+    for (const { badge, shift, ids } of byUser.values()) {
+        try {
+            const doc = await readActivityDocumentFromShare(badge, shift)
+            if (!doc) continue
+            for (const entry of doc.activities) {
+                if (ids.has(entry.id) && !seen.has(entry.id)) {
+                    seen.add(entry.id)
+                    merged.push(entry)
                 }
-            } catch {
-                // Skip unreachable badge
             }
+        } catch {
+            // Skip unreachable badge
         }
     }
 
-    // Sort newest-first
     merged.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
 
+    const filtered = options?.filters ? applyActivityFilters(merged, options.filters) : merged
     const cap = options?.limit ?? 0
-    return cap > 0 ? merged.slice(0, cap) : merged
+    return cap > 0 ? filtered.slice(0, cap) : filtered
 }
 
 /**
@@ -770,6 +848,7 @@ export async function deleteActivityEntryFromShare(
         fs.writeFileSync(activityPath, JSON.stringify(doc, null, 2) + '\n', 'utf-8')
         if (deletedEntry.projectId) {
             upsertProjectIndexForDelete(badge, shift, deletedEntry.projectId, deletedEntry.id)
+            upsertProjectLevelIndexForDelete(deletedEntry.projectId, deletedEntry.id)
         }
         await appendActivityEventToShare(badge, shift, 'ENTRY_DELETED', {
             activityId: deletedEntry.id,

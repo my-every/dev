@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { WireListPrintDocument } from "@/components/wire-list/print-modal";
 import { buildProjectSheetPrintDocument } from "@/lib/wire-list-print/build-project-sheet-print-document";
 import { readProjectManifest } from "@/lib/project-state/share-project-state-handlers";
-import { buildPrintPreviewPageCount } from "@/lib/wire-list-print/model";
+import { buildPrintPreviewPageCount, buildVisiblePreviewSections } from "@/lib/wire-list-print/model";
 import type { WireListPrintDocumentData } from "@/lib/wire-list-sheet-document/types";
 import type { PartNumberLookupResult, CablePartNumberLookupResult } from "@/lib/part-number-list";
 
@@ -92,6 +92,16 @@ export default async function CrossWirePrintPage({
     const processedLocationGroups = Array.from(mergedGroupMap.values());
     if (processedLocationGroups.length === 0) continue;
 
+    const baseDoc = items[0].doc;
+
+    // Derive visible sections from the merged external groups so all sections render,
+    // not just the first assignment's sections that come from baseDoc.
+    const standardVisibleSections = buildVisiblePreviewSections(
+      processedLocationGroups,
+      new Set(), // no hidden sections — show all in cross-wire context
+      baseDoc.settings.sectionColumnVisibility ?? {},
+    );
+
     // Merge part number maps across all assignments in this unit type group
     const mergedPartNumbers = new Map<string, PartNumberLookupResult>();
     const mergedCablePartNumbers = new Map<string, CablePartNumberLookupResult>();
@@ -99,8 +109,6 @@ export default async function CrossWirePrintPage({
       for (const [k, v] of doc.partNumberEntries ?? []) mergedPartNumbers.set(k, v);
       for (const [k, v] of doc.cablePartNumberEntries ?? []) mergedCablePartNumbers.set(k, v);
     }
-
-    const baseDoc = items[0].doc;
 
     const previewPageCount = buildPrintPreviewPageCount({
       mode: baseDoc.settings.mode,
@@ -116,6 +124,7 @@ export default async function CrossWirePrintPage({
       sheetTitle: `${unitType} — Cross Wire List`,
       currentSheetName: unitType,
       processedLocationGroups,
+      standardVisibleSections,
       // Null out sheetDocument — it was built for the source assignment's
       // internal rows and would cause the wrong sections to render.
       sheetDocument: undefined,
