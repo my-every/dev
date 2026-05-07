@@ -1,10 +1,7 @@
 import 'server-only'
 
-import { execFile } from 'node:child_process'
 import { promises as fs } from 'node:fs'
-import os from 'node:os'
 import path from 'node:path'
-import { promisify } from 'node:util'
 
 import {
   extractProjectNumberFromLegalFolder,
@@ -34,7 +31,6 @@ import {
 const DEFAULT_LEGAL_SOURCE_ROOT = String.raw`S:\Legal Drawings`
 const DEFAULT_BRAND_SOURCE_ROOT = String.raw`S:\#Depts\380\6SIGMABRANDLIST\BRANDING\Projects Folder`
 const STALE_THRESHOLD_MS = 1000 * 60 * 60 * 24 * 30
-const execFileAsync = promisify(execFile)
 
 function nowMs() {
   return Date.now()
@@ -67,8 +63,6 @@ interface FileCollectionOptions {
 
 interface ScanCollectionTelemetry {
   nodeTraversalCount: number
-  powerShellCount: number
-  powerShellForced: boolean
 }
 
 interface ProjectAggregate {
@@ -165,132 +159,11 @@ function toScannedFileFromStats(input: {
   }
 }
 
-function shouldAttemptPowerShellFileListing() {
-  if (process.platform !== 'win32') {
-    return false
-  }
-
-  if (process.env.REVISION_SCAN_DISABLE_POWERSHELL === '1') {
-    return false
-  }
-
-  return true
-}
-
-async function collectFilesWithPowerShell(
-  rootPath: string,
-  options: FileCollectionOptions = {},
-): Promise<ScannedFile[] | null> {
-  if (!shouldAttemptPowerShellFileListing()) {
-    return null
-  }
-
-  const fromTimeMs = Number.isFinite(options.fromTimeMs) ? Number(options.fromTimeMs) : Number.NEGATIVE_INFINITY
-  const toTimeMs = Number.isFinite(options.toTimeMs) ? Number(options.toTimeMs) : Number.POSITIVE_INFINITY
-
-  const scriptPath = path.join(process.cwd(), 'scripts', 'export-revision-files.ps1')
-  const boundedFromMs = Number.isFinite(fromTimeMs) ? fromTimeMs : new Date('2000-01-01T00:00:00.000Z').getTime()
-  const boundedToMs = Number.isFinite(toTimeMs) ? toTimeMs : Date.now()
-  const fromIso = new Date(boundedFromMs).toISOString()
-  const toIso = new Date(boundedToMs).toISOString()
-  const outputPath = path.join(
-    os.tmpdir(),
-    `revision-files-${Date.now()}-${Math.random().toString(36).slice(2, 10)}.json`,
-  )
-
-  try {
-    await execFileAsync(
-      'powershell.exe',
-      [
-        '-NoLogo',
-        '-NoProfile',
-        '-NonInteractive',
-        '-ExecutionPolicy',
-        'Bypass',
-        '-File',
-        scriptPath,
-        '-ScanRoot',
-        rootPath,
-        '-SourceKind',
-        'legal',
-        '-FromDate',
-        fromIso,
-        '-ToDate',
-        toIso,
-        '-OutputPath',
-        outputPath,
-        '-Quiet',
-      ],
-      { maxBuffer: 1024 * 1024 * 32 },
-    )
-
-    const raw = await fs.readFile(outputPath, 'utf8').catch(() => '')
-    await fs.unlink(outputPath).catch(() => undefined)
-
-    const trimmed = String(raw ?? '').trim()
-    if (!trimmed) {
-      return []
-    }
-
-    const payload = JSON.parse(trimmed) as {
-      files?: Array<{
-        fullPath?: string
-        fileName?: string
-        sizeBytes?: number
-        lastWriteTimeUtc?: string
-        lastWriteTimeMs?: number
-      }>
-    }
-
-    const rows = Array.isArray(payload.files) ? payload.files : []
-    const files = rows
-      .filter((row) => Boolean(row?.fullPath) && Boolean(row?.fileName))
-      .map((row) => {
-        const parsedMs = Number.isFinite(row.lastWriteTimeMs)
-          ? Number(row.lastWriteTimeMs)
-          : (row.lastWriteTimeUtc ? Date.parse(row.lastWriteTimeUtc) : 0)
-        return {
-          row,
-          modifiedTimeMs: Number.isFinite(parsedMs) ? parsedMs : 0,
-        }
-      })
-      .filter(({ modifiedTimeMs }) => modifiedTimeMs >= fromTimeMs && modifiedTimeMs <= toTimeMs)
-      .map((row) =>
-        toScannedFileFromStats({
-          fullPath: String(row.row.fullPath),
-          fileName: String(row.row.fileName),
-          sizeBytes: Number(row.row.sizeBytes ?? 0),
-          modifiedTimeMs: row.modifiedTimeMs,
-        }),
-      )
-
-    files.sort((left, right) => right.modifiedTimeMs - left.modifiedTimeMs)
-    return files
-  } catch (error) {
-    console.warn('[revision-scan] PowerShell fallback failed:', error)
-    await fs.unlink(outputPath).catch(() => undefined)
-    return null
-  }
-}
-
 async function collectFilesRecursively(
   rootPath: string,
   options: FileCollectionOptions = {},
 ): Promise<ScannedFile[]> {
   const telemetry = options.telemetry
-  const forcePowerShell = process.env.REVISION_SCAN_USE_POWERSHELL === '1'
-  if (forcePowerShell) {
-    if (telemetry) {
-      telemetry.powerShellForced = true
-    }
-    const fromPowerShell = await collectFilesWithPowerShell(rootPath, options)
-    if (fromPowerShell) {
-      if (telemetry) {
-        telemetry.powerShellCount += 1
-      }
-      return fromPowerShell
-    }
-  }
 
   const fromTimeMs = Number.isFinite(options.fromTimeMs) ? Number(options.fromTimeMs) : Number.NEGATIVE_INFINITY
   const toTimeMs = Number.isFinite(options.toTimeMs) ? Number(options.toTimeMs) : Number.POSITIVE_INFINITY
@@ -362,16 +235,6 @@ async function collectFilesRecursively(
     }
   }
 
-  if (files.length === 0 && shouldAttemptPowerShellFileListing()) {
-    const fromPowerShell = await collectFilesWithPowerShell(rootPath, options)
-    if (fromPowerShell) {
-      if (telemetry) {
-        telemetry.powerShellCount += 1
-      }
-      return fromPowerShell
-    }
-  }
-
   if (telemetry) {
     telemetry.nodeTraversalCount += 1
   }
@@ -381,15 +244,8 @@ async function collectFilesRecursively(
 }
 
 function resolveScanTransport(telemetry: ScanCollectionTelemetry): RevisionScanTransport {
-  if (telemetry.powerShellCount <= 0) {
-    return 'node-fs'
-  }
-
-  if (telemetry.nodeTraversalCount <= 0) {
-    return telemetry.powerShellForced ? 'powershell-forced' : 'powershell-fallback'
-  }
-
-  return 'mixed'
+  void telemetry
+  return 'node-fs'
 }
 
 function fileToRevision(file: ScannedFile): FileRevision {
@@ -661,8 +517,6 @@ export async function scanProjectRevisionsFromFilesystem(
   const projectFilter = request.projectFilter?.trim().toUpperCase() || null
   const collectionTelemetry: ScanCollectionTelemetry = {
     nodeTraversalCount: 0,
-    powerShellCount: 0,
-    powerShellForced: false,
   }
 
   const aggregates = new Map<string, ProjectAggregate>()
@@ -758,7 +612,7 @@ export async function scanProjectRevisionsFromFilesystem(
       scanTransport: resolveScanTransport(collectionTelemetry),
       scanTransportStats: {
         nodeTraversalCount: collectionTelemetry.nodeTraversalCount,
-        powerShellCount: collectionTelemetry.powerShellCount,
+        powerShellCount: 0,
       },
     }),
   )
@@ -773,7 +627,7 @@ export async function scanProjectRevisionsFromFilesystem(
     scanTransport: resolveScanTransport(collectionTelemetry),
     scanTransportStats: {
       nodeTraversalCount: collectionTelemetry.nodeTraversalCount,
-      powerShellCount: collectionTelemetry.powerShellCount,
+      powerShellCount: 0,
     },
     projects,
   }

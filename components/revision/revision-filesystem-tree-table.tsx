@@ -49,6 +49,8 @@ interface RevisionFilesystemTreeTableProps {
   onDeleteProject?: (projectKey: string) => void;
 }
 
+const TABLE_GRID_CLASS = "grid min-w-[1320px] grid-cols-[32px_minmax(180px,1.6fr)_minmax(260px,2.2fr)_minmax(160px,1.2fr)_minmax(130px,1fr)_minmax(150px,1.1fr)_minmax(150px,1.1fr)_minmax(150px,1fr)_minmax(120px,0.9fr)_32px] items-center gap-2";
+
 function parseDate(value: string | null | undefined): Date | null {
   if (!value) return null;
   const date = new Date(value);
@@ -343,30 +345,31 @@ export function RevisionFilesystemTreeTable({
 
   return (
     <div className="rounded-lg border border-border">
-      <div className="grid grid-cols-[32px_minmax(140px,220px)_minmax(0,1fr)_150px_110px_140px_130px_110px_90px_28px] items-center gap-2 border-b bg-muted/40 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        <Checkbox
-          checked={allSelected}
-          onCheckedChange={(checked) => onToggleSelectAll(Boolean(checked))}
-          aria-label="Select all projects"
-        />
-        <span>Project / Node</span>
-        <span>Absolute Path</span>
-        <span>Last Modified</span>
-        <span>File Type</span>
-        <span>Revision Pairing</span>
-        <span>Prev vs Current</span>
-        <span>Validation</span>
-        <span>Readiness</span>
-        <span />
-      </div>
+      <div className="overflow-x-auto">
+        <div className={`${TABLE_GRID_CLASS} border-b bg-muted/40 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground`}>
+          <Checkbox
+            checked={allSelected}
+            onCheckedChange={(checked) => onToggleSelectAll(Boolean(checked))}
+            aria-label="Select all projects"
+          />
+          <span>Project / Node</span>
+          <span>Absolute Path</span>
+          <span>Last Modified</span>
+          <span>File Type</span>
+          <span>Revision Pairing</span>
+          <span>Prev vs Current</span>
+          <span>Validation</span>
+          <span>Readiness</span>
+          <span />
+        </div>
 
-      <div className="max-h-105 overflow-auto">
+        <div className="max-h-104 overflow-y-auto">
         {isLoading ? (
           <div className="space-y-2 px-3 py-3">
             {[1, 2, 3, 4].map((index) => (
               <div
                 key={index}
-                  className="grid grid-cols-[32px_minmax(140px,220px)_minmax(0,1fr)_150px_110px_140px_130px_110px_90px_28px] items-center gap-2"
+                className={TABLE_GRID_CLASS}
               >
                 <Skeleton className="h-4 w-4" />
                 <Skeleton className="h-5 w-56" />
@@ -400,7 +403,7 @@ export function RevisionFilesystemTreeTable({
 
           return (
             <div key={project.rootLabel} className="border-b last:border-b-0">
-              <div className="grid grid-cols-[32px_minmax(140px,220px)_minmax(0,1fr)_150px_110px_140px_130px_110px_90px_28px] items-center gap-2 px-3 py-2 text-sm">
+              <div className={`${TABLE_GRID_CLASS} px-3 py-2 text-sm`}>
                 <Checkbox
                   checked={isSelected}
                   onCheckedChange={(checked) => onToggleProjectSelection(project.rootLabel, Boolean(checked))}
@@ -430,7 +433,7 @@ export function RevisionFilesystemTreeTable({
                 <DateTimeCell value={project.latestModifiedAt} />
                 <Badge variant="outline">project</Badge>
                 <PairingBadge label={pairingLabel as "Matched" | "Partial" | "Missing"} />
-                <span className="text-xs text-muted-foreground">
+                <span className="truncate text-xs text-muted-foreground">
                   {project.revisionPairState.previousWireListRevision || "-"} → {project.revisionPairState.latestWireListRevision || "-"}
                 </span>
                 <ValidationBadge project={project} />
@@ -450,7 +453,7 @@ export function RevisionFilesystemTreeTable({
                     <div
                       key={node.id}
                       className={cn(
-                        "grid grid-cols-[32px_minmax(140px,220px)_minmax(0,1fr)_150px_110px_140px_130px_110px_90px_28px] items-center gap-2 rounded-md px-1 py-1 text-xs",
+                        `${TABLE_GRID_CLASS} rounded-md px-1 py-1 text-xs`,
                         "hover:bg-muted/40",
                         selectedFileIds?.has(node.id) && "bg-muted/50",
                       )}
@@ -485,6 +488,7 @@ export function RevisionFilesystemTreeTable({
             </div>
           );
         })}
+        </div>
       </div>
     </div>
   );
