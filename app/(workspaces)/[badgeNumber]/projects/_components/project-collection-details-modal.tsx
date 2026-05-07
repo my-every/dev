@@ -25,6 +25,7 @@ import {
   X,
 } from "lucide-react";
 
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -217,7 +218,7 @@ function DetailRow({
 }) {
   return (
     <div className="grid grid-cols-[180px_1fr] items-start gap-4">
-      <div className="flex items-center gap-2 py-1.5 text-sm text-muted-foreground">
+      <div className="flex items-center gap-2 py-1.5 text-sm text-card-foreground">
         <Icon className="h-4 w-4" />
         {label}
       </div>
@@ -230,19 +231,26 @@ function SectionHeader({
   icon: Icon,
   title,
   description,
+  actions,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   title: string;
   description: string;
+  actions: React.ReactNode[]
 }) {
   return (
     <div className="flex items-start gap-3 border-b pb-3">
-      <div className="rounded-lg bg-muted p-2">
-        <Icon className="h-4 w-4 text-muted-foreground" />
+    <div className="flex flex-wrap justify-start gap-2 flex-1">
+      <div className="rounded-lg bg-card p-2">
+        <Icon className="h-4 w-4 text-card-foreground" />
       </div>
-      <div>
+      <div className="flex flex-col gap-2">
         <h3 className="font-semibold text-foreground">{title}</h3>
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <p className="text-sm text-card-foreground">{description}</p>
+      </div>
+     </div>
+     <div className="flex max-w-max gap-2 items-center">
+      {actions}
       </div>
     </div>
   );
@@ -259,8 +267,8 @@ function EmptyStateCard({
 }) {
   return (
     <div className="rounded-xl border border-dashed border-border px-4 py-8 text-center">
-      <p className="text-sm text-muted-foreground">{title}</p>
-      <p className="mt-1 text-xs text-muted-foreground/70">{description}</p>
+      <p className="text-sm text-card-foreground">{title}</p>
+      <p className="mt-1 text-xs text-card-foreground/70">{description}</p>
       {action ? <div className="mt-3">{action}</div> : null}
     </div>
   );
@@ -323,7 +331,17 @@ export function ProjectCollectionDetailsModal({
   const [expandedAssignments, setExpandedAssignments] = useState<Set<string>>(
     new Set(),
   );
+  const [expandedBrandAssignments, setExpandedBrandAssignments] = useState<Set<string>>(
+    new Set(),
+  );
   const [selectedAssignmentSlug, setSelectedAssignmentSlug] = useState<
+    string | null
+  >(null);
+
+  const [brandListSettingsMatrix, setBrandListSettingsMatrix] =
+    useState<WireListSettingsMatrix>({});
+  const [savingBrandListSettings, setSavingBrandListSettings] = useState(false);
+  const [brandListSettingsMessage, setBrandListSettingsMessage] = useState<
     string | null
   >(null);
 
@@ -342,6 +360,7 @@ export function ProjectCollectionDetailsModal({
       setLayoutFile(null);
       setLegalsMessage(null);
       setExpandedAssignments(new Set());
+      setExpandedBrandAssignments(new Set());
       setSelectedAssignmentSlug(null);
       return;
     }
@@ -412,6 +431,34 @@ export function ProjectCollectionDetailsModal({
     }
 
     setWireListSettingsMatrix(nextMatrix);
+  }, [assignmentEntries, currentProject, schemaExternalLocations]);
+
+  useEffect(() => {
+    if (!currentProject) {
+      setBrandListSettingsMatrix({});
+      return;
+    }
+
+    const nextMatrix: WireListSettingsMatrix = {};
+    for (const assignment of assignmentEntries) {
+      const existingByKey = new Map(
+        (assignment.externalLocations ?? []).map((item) => [
+          String(item.location ?? "")
+            .trim()
+            .toUpperCase(),
+          item,
+        ]),
+      );
+      const row: Record<string, boolean> = {};
+      for (const location of schemaExternalLocations[assignment.sheetSlug] ??
+        []) {
+        const key = location.trim().toUpperCase();
+        if (key) row[key] = existingByKey.get(key)?.brandingVisible ?? true;
+      }
+      nextMatrix[assignment.sheetSlug] = row;
+    }
+
+    setBrandListSettingsMatrix(nextMatrix);
   }, [assignmentEntries, currentProject, schemaExternalLocations]);
 
   const refreshLegalDetail = useCallback(async () => {
@@ -711,7 +758,15 @@ export function ProjectCollectionDetailsModal({
         },
       };
       setProjectState(mergedManifest);
-      setWireListSettingsMessage("Wire list settings saved.");
+      setWireListSettingsMessage("Saved — regenerating wire lists…");
+      // Rebuild wire list exports so visibility changes take effect immediately
+      void fetch(
+        `/api/projects/${encodeURIComponent(currentProject.id)}/exports?kind=wire-lists`,
+        { method: "POST" },
+      )
+        .then(() => refreshWireExports())
+        .catch(() => refreshWireExports())
+        .then(() => setWireListSettingsMessage("Wire list settings saved."));
     } catch (error) {
       setWireListSettingsMessage(
         error instanceof Error
@@ -724,8 +779,128 @@ export function ProjectCollectionDetailsModal({
   }, [
     assignmentEntries,
     currentProject,
+    refreshWireExports,
     schemaExternalLocations,
     wireListSettingsMatrix,
+  ]);
+
+  const setBrandListLocationVisibility = useCallback(
+    (sheetSlug: string, location: string, visible: boolean) => {
+      setBrandListSettingsMatrix((prev) => ({
+        ...prev,
+        [sheetSlug]: {
+          ...(prev[sheetSlug] ?? {}),
+          [location]: visible,
+        },
+      }));
+    },
+    [],
+  );
+
+  const handleSaveBrandListSettings = useCallback(async () => {
+    if (!currentProject) return;
+
+    setSavingBrandListSettings(true);
+    setBrandListSettingsMessage(null);
+    try {
+      const nextAssignments = Object.fromEntries(
+        assignmentEntries.map((assignment) => {
+          const existingByKey = new Map(
+            (assignment.externalLocations ?? []).map((item) => [
+              String(item.location ?? "")
+                .trim()
+                .toUpperCase(),
+              item,
+            ]),
+          );
+
+          const schemaLocations =
+            schemaExternalLocations[assignment.sheetSlug] ?? [];
+          const schemaKeys = new Set(
+            schemaLocations.map((l) => l.trim().toUpperCase()),
+          );
+
+          const externalLocations = schemaLocations.map((location) => {
+            const key = location.trim().toUpperCase();
+            const existing = existingByKey.get(key);
+            return {
+              location,
+              wireListVisible: existing?.wireListVisible ?? true,
+              brandingVisible:
+                brandListSettingsMatrix[assignment.sheetSlug]?.[key] ??
+                existing?.brandingVisible ??
+                true,
+            };
+          });
+
+          for (const [key, existing] of existingByKey) {
+            if (!schemaKeys.has(key)) {
+              externalLocations.push({
+                location: String(existing.location ?? ""),
+                wireListVisible: existing.wireListVisible ?? true,
+                brandingVisible: existing.brandingVisible ?? true,
+              });
+            }
+          }
+
+          return [assignment.sheetSlug, { ...assignment, externalLocations }];
+        }),
+      );
+
+      const nextManifest: ProjectManifest = {
+        ...currentProject,
+        assignments: nextAssignments,
+      };
+
+      const response = await fetch(
+        `/api/projects/${encodeURIComponent(currentProject.id)}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(nextManifest),
+        },
+      );
+      const payload = (await response.json().catch(() => ({}))) as {
+        manifest?: ProjectManifest;
+        error?: string;
+      };
+      if (!response.ok) {
+        throw new Error(payload.error || "Failed to save brand list settings.");
+      }
+
+      const serverManifest = payload.manifest ?? nextManifest;
+      const mergedManifest: ProjectManifest = {
+        ...serverManifest,
+        assignments: {
+          ...serverManifest.assignments,
+          ...nextAssignments,
+        },
+      };
+      setProjectState(mergedManifest);
+      setBrandListSettingsMessage("Saved — regenerating brand lists…");
+      // Rebuild branding exports so visibility changes take effect immediately
+      void fetch(
+        `/api/projects/${encodeURIComponent(currentProject.id)}/exports?kind=branding`,
+        { method: "POST" },
+      )
+        .then(() => refreshBrandingExports())
+        .catch(() => refreshBrandingExports())
+        .then(() => setBrandListSettingsMessage("Brand list settings saved."));
+    } catch (error) {
+      setBrandListSettingsMessage(
+        error instanceof Error
+          ? error.message
+          : "Failed to save brand list settings.",
+      );
+    } finally {
+      setSavingBrandListSettings(false);
+    }
+  }, [
+    assignmentEntries,
+    brandListSettingsMatrix,
+    currentProject,
+    refreshBrandingExports,
+    schemaExternalLocations,
   ]);
 
   if (!currentProject) return null;
@@ -956,10 +1131,10 @@ export function ProjectCollectionDetailsModal({
                   {currentProject.name}
                 </DialogTitle>
                 <div className="mt-1 flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-xs text-muted-foreground">
+                  <span className="font-mono text-xs text-card-foreground">
                     {currentProject.pdNumber}
                   </span>
-                  <span className="text-muted-foreground/30">·</span>
+                  <span className="text-card-foreground/30">·</span>
                   <Badge
                     variant="outline"
                     className="h-5 text-[10px] font-mono"
@@ -990,7 +1165,7 @@ export function ProjectCollectionDetailsModal({
                     size="sm"
                     variant="ghost"
                     onClick={cancelEditing}
-                    className="h-8 px-3 text-muted-foreground"
+                    className="h-8 px-3 text-card-foreground"
                   >
                     <X className="mr-1.5 h-3.5 w-3.5" />
                     Cancel
@@ -1015,7 +1190,7 @@ export function ProjectCollectionDetailsModal({
             onValueChange={(value) => setActiveTab(value as ProjectDetailsTab)}
             className="flex h-full flex-1"
           >
-            <div className="w-48 shrink-0 border-r bg-muted/30 p-3 ">
+            <div className="w-48 shrink-0 border-r bg-card/30 p-3 ">
               <TabsList className="h-auto w-full flex-col gap-1 bg-transparent p-0">
                 {tabItems.map((tab) => {
                   const Icon = tab.icon;
@@ -1029,9 +1204,9 @@ export function ProjectCollectionDetailsModal({
                       className={cn(
                         "w-full justify-start gap-2 rounded-lg px-3 py-2 text-sm font-medium",
                         "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
-                        "text-muted-foreground hover:bg-background/50 hover:text-foreground",
+                        "text-card-foreground hover:bg-background/50 hover:text-foreground",
                         isDisabled &&
-                          "cursor-not-allowed opacity-45 hover:bg-transparent hover:text-muted-foreground",
+                          "cursor-not-allowed opacity-45 hover:bg-transparent hover:text-card-foreground",
                       )}
                     >
                       <Icon className="h-4 w-4 shrink-0" />
@@ -1058,7 +1233,7 @@ export function ProjectCollectionDetailsModal({
                     <div className="grid gap-1.5 md:col-span-2">
                       <Label
                         htmlFor="project-name"
-                        className="text-xs font-medium text-muted-foreground"
+                        className="text-xs font-medium text-card-foreground"
                       >
                         Project Name
                       </Label>
@@ -1155,7 +1330,7 @@ export function ProjectCollectionDetailsModal({
                     <div className="grid gap-1.5 md:col-span-2">
                       <Label
                         htmlFor="project-status"
-                        className="text-xs font-medium text-muted-foreground"
+                        className="text-xs font-medium text-card-foreground"
                       >
                         Status
                       </Label>
@@ -1222,7 +1397,7 @@ export function ProjectCollectionDetailsModal({
                 <Separator />
 
                 <div className="space-y-2">
-                  <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <div className="text-xs font-semibold uppercase tracking-wide text-card-foreground">
                     Project Color
                   </div>
                   {isEditing ? (
@@ -1251,7 +1426,7 @@ export function ProjectCollectionDetailsModal({
                           backgroundColor: currentProject.color || "#ffcc61",
                         }}
                       />
-                      <span className="font-mono text-xs text-muted-foreground">
+                      <span className="font-mono text-xs text-card-foreground">
                         {currentProject.color || "#ffcc61"}
                       </span>
                     </div>
@@ -1312,14 +1487,14 @@ export function ProjectCollectionDetailsModal({
                                   index={idx}
                                   className={cn(
                                     "cursor-pointer",
-                                    isExpanded && "bg-muted/20",
+                                    isExpanded && "bg-card/20",
                                   )}
                                   onClick={toggleExpand}
                                 >
                                   <TableCell className="px-3 py-2.5">
                                     <ChevronRight
                                       className={cn(
-                                        "h-3.5 w-3.5 text-muted-foreground transition-transform duration-150",
+                                        "h-3.5 w-3.5 text-card-foreground transition-transform duration-150",
                                         isExpanded && "rotate-90",
                                       )}
                                     />
@@ -1392,7 +1567,7 @@ export function ProjectCollectionDetailsModal({
                                   </TableCell>
                                 </TableRow>
                                 {isExpanded ? (
-                                  <tr className="bg-muted/15">
+                                  <tr className="bg-card/15">
                                     <td colSpan={10} className="px-4 py-3">
                                       <div className="h-18 rounded-lg border border-dashed border-border/60 bg-background/40" />
                                     </td>
@@ -1413,13 +1588,13 @@ export function ProjectCollectionDetailsModal({
                               <p className="text-sm font-semibold text-foreground">
                                 {selectedAssignment.sheetName}
                               </p>
-                              <p className="font-mono text-xs text-muted-foreground">
+                              <p className="font-mono text-xs text-card-foreground">
                                 {selectedAssignment.sheetSlug}
                               </p>
                             </div>
                             <div className="grid gap-2 text-xs">
                               <div className="flex items-center justify-between gap-2">
-                                <span className="text-muted-foreground">
+                                <span className="text-card-foreground">
                                   Stage
                                 </span>
                                 <span className="font-medium text-foreground">
@@ -1427,7 +1602,7 @@ export function ProjectCollectionDetailsModal({
                                 </span>
                               </div>
                               <div className="flex items-center justify-between gap-2">
-                                <span className="text-muted-foreground">
+                                <span className="text-card-foreground">
                                   Status
                                 </span>
                                 <span className="font-medium text-foreground">
@@ -1435,7 +1610,7 @@ export function ProjectCollectionDetailsModal({
                                 </span>
                               </div>
                               <div className="flex items-center justify-between gap-2">
-                                <span className="text-muted-foreground">
+                                <span className="text-card-foreground">
                                   SWS
                                 </span>
                                 <span className="font-medium text-foreground">
@@ -1443,7 +1618,7 @@ export function ProjectCollectionDetailsModal({
                                 </span>
                               </div>
                               <div className="flex items-center justify-between gap-2">
-                                <span className="text-muted-foreground">
+                                <span className="text-card-foreground">
                                   Parts
                                 </span>
                                 <span className="font-medium text-foreground">
@@ -1455,15 +1630,15 @@ export function ProjectCollectionDetailsModal({
                             <Separator />
 
                             <div className="space-y-2">
-                              <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                              <p className="text-[11px] font-semibold uppercase tracking-wide text-card-foreground">
                                 Reserved Detail Space
                               </p>
-                              <div className="h-32 rounded-lg border border-dashed border-border/70 bg-muted/20" />
+                              <div className="h-32 rounded-lg border border-dashed border-border/70 bg-card/20" />
                             </div>
                           </div>
                         ) : (
-                          <div className="flex h-40 items-center justify-center rounded-lg border border-dashed border-border/70 bg-muted/20 px-4 text-center">
-                            <p className="text-xs text-muted-foreground">
+                          <div className="flex h-40 items-center justify-center rounded-lg border border-dashed border-border/70 bg-card/20 px-4 text-center">
+                            <p className="text-xs text-card-foreground">
                               Select an assignment row to open inline details.
                             </p>
                           </div>
@@ -1483,7 +1658,7 @@ export function ProjectCollectionDetailsModal({
 
                 <div className="grid gap-3 rounded-xl border border-border bg-background/40 p-4 sm:grid-cols-2">
                   <label className="space-y-1.5">
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-xs text-card-foreground">
                       Workbook (.xlsx/.xls)
                     </span>
                     <input
@@ -1500,7 +1675,7 @@ export function ProjectCollectionDetailsModal({
                     />
                   </label>
                   <label className="space-y-1.5">
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-xs text-card-foreground">
                       Layout (.pdf)
                     </span>
                     <input
@@ -1541,12 +1716,12 @@ export function ProjectCollectionDetailsModal({
                       Open Layout Workspace
                     </Button>
                     {legalsMessage ? (
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs text-card-foreground">
                         {legalsMessage}
                       </span>
                     ) : null}
                   </div>
-                  <p className="sm:col-span-2 text-xs text-muted-foreground">
+                  <p className="sm:col-span-2 text-xs text-card-foreground">
                     Upload workbook and/or layout to enable revision refresh.
                   </p>
                 </div>
@@ -1554,11 +1729,11 @@ export function ProjectCollectionDetailsModal({
                 <Separator />
 
                 <div className="space-y-2">
-                  <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <div className="text-xs font-semibold uppercase tracking-wide text-card-foreground">
                     Revisions
                   </div>
                   {loadingLegals ? (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 text-sm text-card-foreground">
                       <Loader2 className="h-4 w-4 animate-spin" />
                       Loading legal revisions...
                     </div>
@@ -1593,7 +1768,7 @@ export function ProjectCollectionDetailsModal({
                                   Latest
                                 </Badge>
                               ) : null}
-                              <span className="ml-auto text-xs text-muted-foreground">
+                              <span className="ml-auto text-xs text-card-foreground">
                                 {presentCount}/{artifactValues.length} artifacts
                               </span>
                             </div>
@@ -1616,7 +1791,7 @@ export function ProjectCollectionDetailsModal({
                     <div className="text-sm font-semibold">
                       Brand List Exports
                     </div>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-card-foreground">
                       Review, approve, and export brand lists.
                     </p>
                   </div>
@@ -1669,7 +1844,7 @@ export function ProjectCollectionDetailsModal({
                             className="flex items-center gap-2 text-sm"
                           >
                             {state === "generating" ? (
-                              <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
+                              <Loader2 className="h-3.5 w-3.5 animate-spin text-card-foreground" />
                             ) : state === "done" ? (
                               <Check className="h-3.5 w-3.5 text-green-500" />
                             ) : (
@@ -1691,7 +1866,7 @@ export function ProjectCollectionDetailsModal({
                   ) : null}
 
                   {loadingBrandingExports ? (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 text-sm text-card-foreground">
                       <Loader2 className="h-4 w-4 animate-spin" />
                       Loading brand list exports…
                     </div>
@@ -1723,7 +1898,7 @@ export function ProjectCollectionDetailsModal({
                                 "Combined Brand Workbook"}
                             </span>
                           </div>
-                          <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
+                          <ExternalLink className="h-3.5 w-3.5 text-card-foreground" />
                         </a>
                       ) : null}
 
@@ -1734,12 +1909,149 @@ export function ProjectCollectionDetailsModal({
                             currentProject.id,
                             entry.relativePath,
                           )}
-                          className="flex items-center justify-between rounded-xl border border-border bg-background/40 px-3 py-2.5 text-sm hover:bg-muted/50"
+                          className="flex items-center justify-between rounded-xl border border-border bg-muted/40 px-3 py-2.5 text-sm hover:bg-card/50"
                         >
                           <span className="truncate">{entry.fileName}</span>
-                          <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
+                          <ExternalLink className="h-3.5 w-3.5 text-card-foreground" />
                         </a>
                       ))}
+                    </div>
+                  )}
+                </div>
+
+                <Separator />
+
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <h3 className="text-sm font-semibold">Brand List Visibility</h3>
+                      <p className="text-xs text-card-foreground mt-0.5">
+                        Show or hide external locations per sheet in brand list exports
+                      </p>
+                    </div>
+                    <Button
+                      size="sm"
+                      className="gap-1.5 shrink-0"
+                      onClick={() => void handleSaveBrandListSettings()}
+                      disabled={
+                        savingBrandListSettings ||
+                        assignmentEntries.length === 0 ||
+                        !anyAssignmentHasLocations
+                      }
+                    >
+                      {savingBrandListSettings ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <Check className="h-3.5 w-3.5" />
+                      )}
+                      Save
+                    </Button>
+                  </div>
+
+                  {brandListSettingsMessage && (
+                    <div className={cn(
+                      "text-xs px-3 py-2 rounded-lg",
+                      brandListSettingsMessage.includes("saved")
+                        ? "bg-green-500/10 text-green-700"
+                        : "bg-destructive/10 text-destructive",
+                    )}>
+                      {brandListSettingsMessage}
+                    </div>
+                  )}
+
+                  {assignmentEntries.length === 0 || !anyAssignmentHasLocations ? (
+                    <EmptyStateCard
+                      title="No external locations found."
+                      description="Generate brand lists to populate external location settings."
+                    />
+                  ) : loadingSchemaLocations ? (
+                    <div className="flex items-center justify-center gap-2 py-8 text-sm text-card-foreground">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Loading locations…
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {assignmentEntries.map((assignment) => {
+                        const locations = (schemaExternalLocations[assignment.sheetSlug] ?? [])
+                          .map((loc) => ({ label: loc, key: loc.trim().toUpperCase() }))
+                          .filter((loc) => loc.key);
+                        const visibleCount = locations.filter(
+                          (loc) => brandListSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true,
+                        ).length;
+                        const allVisible = visibleCount === locations.length;
+
+                        return (
+                          <div
+                            key={assignment.sheetSlug}
+                            className="rounded-lg border border-border/60 bg-card/30 overflow-hidden hover:border-border/80 transition-colors"
+                          >
+                            <button
+                              onClick={() => {
+                                const current = expandedBrandAssignments.has(assignment.sheetSlug);
+                                setExpandedBrandAssignments(
+                                  current
+                                    ? new Set()
+                                    : new Set([assignment.sheetSlug]),
+                                );
+                              }}
+                              className="w-full px-4 py-3 flex items-center justify-between hover:bg-card/40 transition-colors"
+                            >
+                              <div className="flex items-center gap-3 min-w-0 flex-1 text-left">
+                                <ChevronRight
+                                  className={cn(
+                                    "h-4 w-4 text-card-foreground shrink-0 transition-transform",
+                                    expandedBrandAssignments.has(assignment.sheetSlug) && "rotate-90",
+                                  )}
+                                />
+                                <div className="min-w-0 flex-1">
+                                  <div className="text-sm font-medium text-foreground">
+                                    {assignment.sheetName}
+                                  </div>
+                                  <div className="text-xs text-card-foreground font-mono">
+                                    {assignment.sheetSlug}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2 shrink-0">
+                                <Badge
+                                  variant={allVisible ? "secondary" : "outline"}
+                                  className="text-[10px] h-5"
+                                >
+                                  {visibleCount}/{locations.length}
+                                </Badge>
+                              </div>
+                            </button>
+
+                            {expandedBrandAssignments.has(assignment.sheetSlug) && locations.length > 0 && (
+                              <div className="border-t border-border/40 bg-background/40 p-3 space-y-2">
+                                {locations.map((loc) => (
+                                  <div
+                                    key={loc.key}
+                                    className="flex items-center gap-3 px-2 py-1.5 rounded hover:bg-card/40 cursor-pointer transition-colors group"
+                                    onClick={() => setBrandListLocationVisibility(
+                                      assignment.sheetSlug,
+                                      loc.key,
+                                      !(brandListSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true),
+                                    )}
+                                  >
+                                    <Switch
+                                      checked={brandListSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true}
+                                      onCheckedChange={(checked) =>
+                                        setBrandListLocationVisibility(assignment.sheetSlug, loc.key, checked)
+                                      }
+                                      onClick={(e) => e.stopPropagation()}
+                                      aria-label={`Toggle brand list visibility of ${loc.label}`}
+                                    />
+                                    <span className="text-sm text-foreground font-mono group-hover:text-foreground/80">
+                                      {loc.label}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -1757,7 +2069,7 @@ export function ProjectCollectionDetailsModal({
                     <div className="text-sm font-semibold">
                       Wire List Exports
                     </div>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-card-foreground">
                       Generate, review, and download wire list PDFs.
                     </p>
                   </div>
@@ -1793,7 +2105,7 @@ export function ProjectCollectionDetailsModal({
                             className="flex items-center gap-2 text-sm"
                           >
                             {state === "generating" ? (
-                              <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
+                              <Loader2 className="h-3.5 w-3.5 animate-spin text-card-foreground" />
                             ) : state === "done" ? (
                               <Check className="h-3.5 w-3.5 text-green-500" />
                             ) : (
@@ -1815,7 +2127,7 @@ export function ProjectCollectionDetailsModal({
                   ) : null}
 
                   {loadingWireExports ? (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 text-sm text-card-foreground">
                       <Loader2 className="h-4 w-4 animate-spin" />
                       Loading wire list exports…
                     </div>
@@ -1838,10 +2150,10 @@ export function ProjectCollectionDetailsModal({
                             currentProject.id,
                             entry.relativePath,
                           )}
-                          className="flex items-center justify-between rounded-xl border border-border bg-background/40 px-3 py-2.5 text-sm hover:bg-muted/50"
+                          className="flex items-center justify-between rounded-xl border border-border bg-background/40 px-3 py-2.5 text-sm hover:bg-card/50"
                         >
                           <span className="truncate">{entry.fileName}</span>
-                          <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
+                          <ExternalLink className="h-3.5 w-3.5 text-card-foreground" />
                         </a>
                       ))}
                     </div>
@@ -1850,20 +2162,17 @@ export function ProjectCollectionDetailsModal({
 
                 <Separator />
 
-                <div className="space-y-3 rounded-xl border border-border bg-background/40 p-4">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-3">
                     <div>
-                      <div className="text-sm font-semibold">
-                        Wire List Settings
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        Toggle external location visibility by sheet, then open
-                        View/Print to launch browser print directly.
+                      <h3 className="text-sm font-semibold">Wire List Visibility</h3>
+                      <p className="text-xs text-card-foreground mt-0.5">
+                        Show or hide external locations per sheet
                       </p>
                     </div>
                     <Button
                       size="sm"
-                      className="gap-1.5"
+                      className="gap-1.5 shrink-0"
                       onClick={() => void handleSaveWireListSettings()}
                       disabled={
                         savingWireListSettings ||
@@ -1876,120 +2185,120 @@ export function ProjectCollectionDetailsModal({
                       ) : (
                         <Check className="h-3.5 w-3.5" />
                       )}
-                      Save Settings
+                      Save
                     </Button>
                   </div>
 
-                  {wireListSettingsMessage ? (
-                    <p className="text-xs text-muted-foreground">
+                  {wireListSettingsMessage && (
+                    <div className={cn(
+                      "text-xs px-3 py-2 rounded-lg",
+                      wireListSettingsMessage.includes("saved") 
+                        ? "bg-green-500/10 text-green-700" 
+                        : "bg-blue-500/10 text-blue-700"
+                    )}>
                       {wireListSettingsMessage}
-                    </p>
-                  ) : null}
+                    </div>
+                  )}
 
-                  {assignmentEntries.length === 0 ||
-                  !anyAssignmentHasLocations ? (
+                  {assignmentEntries.length === 0 || !anyAssignmentHasLocations ? (
                     <EmptyStateCard
-                      title="No external locations found yet."
-                      description="Generate wire lists or sync assignment external locations to enable per-sheet visibility toggles."
+                      title="No external locations found."
+                      description="Generate wire lists to populate external location settings."
                     />
+                  ) : loadingSchemaLocations ? (
+                    <div className="flex items-center justify-center gap-2 py-8 text-sm text-card-foreground">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Loading locations…
+                    </div>
                   ) : (
-                    <div className="space-y-3">
+                    <div className="space-y-2">
                       {assignmentEntries.map((assignment) => {
-                        const locations = (
-                          schemaExternalLocations[assignment.sheetSlug] ?? []
-                        )
-                          .map((loc) => ({
-                            label: loc,
-                            key: loc.trim().toUpperCase(),
-                          }))
+                        const locations = (schemaExternalLocations[assignment.sheetSlug] ?? [])
+                          .map((loc) => ({ label: loc, key: loc.trim().toUpperCase() }))
                           .filter((loc) => loc.key);
+                        const visibleCount = locations.filter(
+                          (loc) => wireListSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true
+                        ).length;
+                        const allVisible = visibleCount === locations.length;
+
                         return (
                           <div
                             key={assignment.sheetSlug}
-                            className="rounded-lg border border-border overflow-hidden"
+                            className="rounded-lg border border-border/60 bg-card/30 overflow-hidden hover:border-border/80 transition-colors"
                           >
-                            <div className="flex items-center justify-between gap-3 bg-muted/40 px-3 py-2">
-                              <div>
-                                <span className="text-xs font-semibold text-foreground">
-                                  {assignment.sheetName}
-                                </span>
-                                <span className="ml-2 font-mono text-[10px] text-muted-foreground">
-                                  {assignment.sheetSlug}
-                                </span>
+                            <button
+                              onClick={() => {
+                                const current = expandedAssignments.has(assignment.sheetSlug);
+                                setExpandedAssignments(
+                                  current
+                                    ? new Set()
+                                    : new Set([assignment.sheetSlug])
+                                );
+                              }}
+                              className="w-full px-4 py-3 flex items-center justify-between hover:bg-card/40 transition-colors"
+                            >
+                              <div className="flex items-center gap-3 min-w-0 flex-1 text-left">
+                                <ChevronRight
+                                  className={cn(
+                                    "h-4 w-4 text-card-foreground shrink-0 transition-transform",
+                                    expandedAssignments.has(assignment.sheetSlug) && "rotate-90"
+                                  )}
+                                />
+                                <div className="min-w-0 flex-1">
+                                  <div className="text-sm font-medium text-foreground">
+                                    {assignment.sheetName}
+                                  </div>
+                                  <div className="text-xs text-card-foreground font-mono">
+                                    {assignment.sheetSlug}
+                                  </div>
+                                </div>
                               </div>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="h-7 px-2 text-xs"
-                                onClick={() =>
-                                  window.open(
-                                    buildWireListPrintHref(
-                                      currentProject.id,
+                              <div className="flex items-center gap-2 shrink-0">
+                                <Badge
+                                  variant={allVisible ? "secondary" : "outline"}
+                                  className="text-[10px] h-5"
+                                >
+                                  {visibleCount}/{locations.length}
+                                </Badge>
+                                <a
+                                  href={buildWireListPrintHref(currentProject.id, assignment.sheetSlug, true)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="inline-flex h-7 w-7 items-center justify-center rounded text-card-foreground hover:bg-background hover:text-foreground transition-colors"
+                                  title="View/Print this sheet"
+                                >
+                                  <ExternalLink className="h-3.5 w-3.5" />
+                                </a>
+                              </div>
+                            </button>
+
+                            {expandedAssignments.has(assignment.sheetSlug) && locations.length > 0 && (
+                              <div className="border-t border-border/40 bg-background/40 p-3 space-y-2">
+                                {locations.map((loc) => (
+                                  <div
+                                    key={loc.key}
+                                    className="flex items-center gap-3 px-2 py-1.5 rounded hover:bg-card/40 cursor-pointer transition-colors group"
+                                    onClick={() => setWireListLocationVisibility(
                                       assignment.sheetSlug,
-                                      true,
-                                    ),
-                                    "_blank",
-                                    "noopener,noreferrer",
-                                  )
-                                }
-                              >
-                                <ExternalLink className="mr-1 h-3 w-3" />
-                                View/Print
-                              </Button>
-                            </div>
-                            {loadingSchemaLocations ? (
-                              <p className="flex items-center gap-1.5 px-3 py-2 text-xs text-muted-foreground">
-                                <Loader2 className="h-3 w-3 animate-spin" />
-                                Loading schema locations…
-                              </p>
-                            ) : locations.length === 0 ? (
-                              <p className="px-3 py-2 text-xs text-muted-foreground">
-                                No external locations found in wire list schema.
-                              </p>
-                            ) : (
-                              <table className="min-w-full border-collapse text-xs">
-                                <thead>
-                                  <tr className="border-b border-border bg-muted/20">
-                                    <th className="px-3 py-1.5 text-left font-medium text-muted-foreground">
-                                      Location
-                                    </th>
-                                    <th className="px-3 py-1.5 text-center font-medium text-muted-foreground">
-                                      Wire List Visible
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {locations.map((loc) => (
-                                    <tr
-                                      key={loc.key}
-                                      className="border-t border-border"
-                                    >
-                                      <td className="px-3 py-2 font-mono font-medium text-foreground">
-                                        {loc.label}
-                                      </td>
-                                      <td className="px-3 py-2 text-center">
-                                        <div className="flex justify-center">
-                                          <Switch
-                                            checked={
-                                              wireListSettingsMatrix[
-                                                assignment.sheetSlug
-                                              ]?.[loc.key] ?? true
-                                            }
-                                            onCheckedChange={(checked) =>
-                                              setWireListLocationVisibility(
-                                                assignment.sheetSlug,
-                                                loc.key,
-                                                checked,
-                                              )
-                                            }
-                                            aria-label={`Toggle wire list visibility of ${loc.label} for ${assignment.sheetName}`}
-                                          />
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
+                                      loc.key,
+                                      !(wireListSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true),
+                                    )}
+                                  >
+                                    <Switch
+                                      checked={wireListSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true}
+                                      onCheckedChange={(checked) =>
+                                        setWireListLocationVisibility(assignment.sheetSlug, loc.key, checked)
+                                      }
+                                      onClick={(e) => e.stopPropagation()}
+                                      aria-label={`Toggle visibility of ${loc.label}`}
+                                    />
+                                    <span className="text-sm text-foreground font-mono group-hover:text-foreground/80">
+                                      {loc.label}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
                             )}
                           </div>
                         );
@@ -2009,7 +2318,7 @@ export function ProjectCollectionDetailsModal({
                 <div className="rounded-xl border border-border bg-background/40 p-4 space-y-3">
                   <div>
                     <div className="text-sm font-semibold">Print Preview</div>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-card-foreground">
                       Opens an interactive editor where you can configure,
                       preview, and print the cross wire list for this project.
                     </p>
@@ -2032,7 +2341,7 @@ export function ProjectCollectionDetailsModal({
 
                 <div className="rounded-xl border border-border bg-background/40 p-4 space-y-2">
                   <div className="text-sm font-semibold">Generate Schema</div>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-card-foreground">
                     Rebuilds the cross wire schema from all assignment brand
                     list schemas. Use this after updating wire data.
                   </p>

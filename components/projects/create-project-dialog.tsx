@@ -1,16 +1,6 @@
 "use client";
 
-/**
- * CreateProjectDialog
- *
- * Dialog for creating a new project without requiring legals upload.
- * Collects: project name, PD number, unit number, revision, LWC type,
- *           due date, plan ConLay date, plan ConAssy date, color.
- *
- * Optionally allows uploading UCP or layout PDF later.
- */
-
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import {
     Plus,
     Loader2,
@@ -18,6 +8,9 @@ import {
     Calendar,
     FileSpreadsheet,
     Palette,
+    Upload,
+    File,
+    X,
 } from "lucide-react";
 import { DateField } from "@/components/projects/fields";
 import {
@@ -53,9 +46,7 @@ import type { ProjectManifest } from "@/types/project-manifest";
 // ============================================================================
 
 export interface CreateProjectDialogProps {
-    /** Trigger element — if omitted, renders default button */
     trigger?: React.ReactNode;
-    /** Called after project is created */
     onCreated?: (projectId: string) => void;
     className?: string;
     open?: boolean;
@@ -143,10 +134,100 @@ function getPreferredRevision(project: LegalProjectRecord | null): string {
 function getLegalProjectOptionLabel(project: LegalProjectRecord): string {
     const pd = (project.pdNumber ?? "").trim();
     const hint = (project.projectNameHint ?? "").trim();
-    if (!hint || hint.toUpperCase() === pd.toUpperCase()) {
-        return pd;
-    }
+    if (!hint || hint.toUpperCase() === pd.toUpperCase()) return pd;
     return `${pd} - ${hint}`;
+}
+
+// ============================================================================
+// FileUploadInput
+// ============================================================================
+
+function FileUploadInput({
+    id,
+    label,
+    accept,
+    file,
+    onChange,
+}: {
+    id: string;
+    label: string;
+    accept: string;
+    file: File | null;
+    onChange: (file: File | null) => void;
+}) {
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    return (
+        <div className="grid gap-1.5">
+            <Label htmlFor={id} className="text-xs font-medium">{label}</Label>
+            <div
+                className={cn(
+                    "flex cursor-pointer items-center gap-2 rounded-lg border border-dashed px-3 py-2.5 text-sm transition-colors hover:bg-muted/40",
+                    file ? "border-border bg-muted/20" : "border-border text-muted-foreground",
+                )}
+                onClick={() => inputRef.current?.click()}
+            >
+                {file ? (
+                    <>
+                        <File className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                        <span className="min-w-0 flex-1 truncate text-xs font-medium text-foreground">
+                            {file.name}
+                        </span>
+                        <button
+                            type="button"
+                            className="ml-auto shrink-0 rounded p-0.5 hover:bg-muted"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onChange(null);
+                                if (inputRef.current) inputRef.current.value = "";
+                            }}
+                        >
+                            <X className="h-3 w-3 text-muted-foreground" />
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <Upload className="h-3.5 w-3.5 shrink-0" />
+                        <span className="text-xs">Choose file…</span>
+                    </>
+                )}
+            </div>
+            <input
+                ref={inputRef}
+                id={id}
+                type="file"
+                accept={accept}
+                className="sr-only"
+                onChange={e => onChange(e.target.files?.[0] ?? null)}
+            />
+        </div>
+    );
+}
+
+// ============================================================================
+// FormSection
+// ============================================================================
+
+function FormSection({
+    icon: Icon,
+    title,
+    children,
+}: {
+    icon: React.ComponentType<{ className?: string }>;
+    title: string;
+    children: React.ReactNode;
+}) {
+    return (
+        <div className="grid gap-3">
+            <div className="flex items-center gap-1.5">
+                <Icon className="h-3.5 w-3.5 text-muted-foreground" />
+                <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    {title}
+                </span>
+            </div>
+            {children}
+        </div>
+    );
 }
 
 // ============================================================================
@@ -159,8 +240,8 @@ export function CreateProjectDialog({
     className,
     open: controlledOpen,
     onOpenChange,
-    dialogTitle = "Create Project",
-    dialogDescription = "Create a project placeholder for scheduling and planning. Legals can be uploaded later when ready.",
+    dialogTitle = "Create Project Instance",
+    dialogDescription = "Create a new project instance from legal drawings or manual input.",
     requireUnitNumber = false,
     initialValues,
     initialLegalSource,
@@ -226,14 +307,10 @@ export function CreateProjectDialog({
                 }
             })
             .finally(() => {
-                if (!cancelled) {
-                    setLoadingLegalProjects(false);
-                }
+                if (!cancelled) setLoadingLegalProjects(false);
             });
 
-        return () => {
-            cancelled = true;
-        };
+        return () => { cancelled = true; };
     }, [open, form.pdNumber, initialLegalSource?.pdNumber, initialLegalSource?.revision]);
 
     const selectedLegalProject = legalProjects.find(project => project.pdNumber === form.pdNumber) ?? null;
@@ -247,9 +324,7 @@ export function CreateProjectDialog({
         pdNumber: string;
         revision: string;
     }) => {
-        if (!workbookFile && !layoutPdfFile) {
-            return;
-        }
+        if (!workbookFile && !layoutPdfFile) return;
 
         const formData = new FormData();
         if (workbookFile) formData.append("workbook", workbookFile);
@@ -272,9 +347,7 @@ export function CreateProjectDialog({
         });
         if (refreshedManifestResponse.ok) {
             const refreshedPayload = await refreshedManifestResponse.json() as { manifest?: ProjectManifest };
-            if (refreshedPayload.manifest) {
-                saveProject(refreshedPayload.manifest);
-            }
+            if (refreshedPayload.manifest) saveProject(refreshedPayload.manifest);
         }
     }, [layoutPdfFile, saveProject, workbookFile]);
 
@@ -304,14 +377,10 @@ export function CreateProjectDialog({
                     }),
                 });
 
-                if (!response.ok) {
-                    throw new Error("Failed to create project from legal package.");
-                }
+                if (!response.ok) throw new Error("Failed to create project from legal package.");
 
                 const payload = await response.json() as { manifest?: ProjectManifest };
-                if (!payload.manifest) {
-                    throw new Error("Project was created but response did not include a manifest.");
-                }
+                if (!payload.manifest) throw new Error("Project was created but response did not include a manifest.");
 
                 saveProject(payload.manifest);
                 await uploadLegalFilesForProject({
@@ -320,15 +389,13 @@ export function CreateProjectDialog({
                     revision: form.legalRevision.trim() || payload.manifest.revision || "UPLOADED",
                 });
                 onCreated?.(payload.manifest.id);
-
                 setForm({ ...DEFAULT_FORM });
                 setWorkbookFile(null);
                 setLayoutPdfFile(null);
-                setOpen(false);
+                handleOpenChange(false);
                 return;
             }
 
-            // Build a minimal ProjectModel for a pre-legals project
             const now = new Date();
             const projectId = `proj_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
@@ -358,7 +425,6 @@ export function CreateProjectDialog({
                 ],
             };
 
-            // Simulate slight delay for UX
             await new Promise(r => setTimeout(r, 400));
 
             const response = await fetch(`/api/projects/${encodeURIComponent(projectId)}`, {
@@ -366,14 +432,10 @@ export function CreateProjectDialog({
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ projectModel: model }),
             });
-            if (!response.ok) {
-                throw new Error("Failed to create manual placeholder project.");
-            }
+            if (!response.ok) throw new Error("Failed to create manual placeholder project.");
 
             const payload = await response.json() as { manifest?: ProjectManifest };
-            if (!payload.manifest) {
-                throw new Error("Project was created but response did not include a manifest.");
-            }
+            if (!payload.manifest) throw new Error("Project was created but response did not include a manifest.");
 
             saveProject(payload.manifest);
             await uploadLegalFilesForProject({
@@ -382,22 +444,20 @@ export function CreateProjectDialog({
                 revision: form.revision.trim() || payload.manifest.revision || "UPLOADED",
             });
             onCreated?.(payload.manifest.id);
-
             setForm({ ...DEFAULT_FORM });
             setWorkbookFile(null);
             setLayoutPdfFile(null);
-            setOpen(false);
+            handleOpenChange(false);
         } catch (error) {
             setCreateError(error instanceof Error ? error.message : "Unable to create project.");
         } finally {
             setCreating(false);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form, isValid, onCreated, saveProject, uploadLegalFilesForProject, user?.badge, user?.currentShift]);
 
     const handleOpenChange = useCallback((next: boolean) => {
-        if (!isControlled) {
-            setInternalOpen(next);
-        }
+        if (!isControlled) setInternalOpen(next);
         onOpenChange?.(next);
         if (!next) {
             setForm(buildDefaultForm());
@@ -408,10 +468,7 @@ export function CreateProjectDialog({
     }, [buildDefaultForm, isControlled, onOpenChange]);
 
     useEffect(() => {
-        if (!open) {
-            return;
-        }
-
+        if (!open) return;
         setForm(prev => ({
             ...prev,
             sourceMode: initialValues?.sourceMode ?? prev.sourceMode,
@@ -433,283 +490,293 @@ export function CreateProjectDialog({
                 </DialogTrigger>
             ) : null}
 
-            <DialogContent className="w-[calc(100vw-1.5rem)] max-w-3xl overflow-hidden p-0 sm:max-h-[92vh]">
-                <DialogHeader className="border-b border-border px-4 py-4 sm:px-6">
-                    <DialogTitle className="flex items-center gap-2">
-                        <FolderPlus className="h-5 w-5 text-muted-foreground" />
-                        {dialogTitle}
-                    </DialogTitle>
-                    <DialogDescription>
-                        {dialogDescription}
-                    </DialogDescription>
+            <DialogContent className="flex h-[90dvh] max-h-[720px] w-[calc(100vw-1.5rem)] max-w-lg flex-col gap-0 overflow-hidden p-0">
+                {/* Header */}
+                <DialogHeader className="shrink-0 border-b px-5 py-4">
+                    <div className="flex items-center gap-2.5">
+                        <div className="rounded-lg bg-muted p-1.5">
+                            <FolderPlus className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                        <div className="min-w-0">
+                            <DialogTitle className="text-sm font-semibold leading-tight">
+                                {dialogTitle}
+                            </DialogTitle>
+                            <DialogDescription className="mt-0.5 text-xs leading-snug">
+                                {dialogDescription}
+                            </DialogDescription>
+                        </div>
+                    </div>
                 </DialogHeader>
 
-                <div className="max-h-[calc(92vh-13rem)] overflow-y-auto px-4 py-3 sm:px-6 sm:py-4">
-                <div className="grid gap-4">
-                    {/* Project Name */}
-                    <div className="grid gap-1.5">
-                        <Label className="text-xs font-medium">Source</Label>
-                        <Select
-                            value={form.sourceMode}
-                            onValueChange={value => updateField("sourceMode", value as CreateProjectForm["sourceMode"])}
-                        >
-                            <SelectTrigger className="h-9">
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="legal-library">Create From Legal Package</SelectItem>
-                                <SelectItem value="manual">Create Manual Placeholder</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
+                {/* Scrollable body */}
+                <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
+                    <div className="grid gap-5">
 
-                    {form.sourceMode === "legal-library" ? (
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                        {/* Source + Legal selectors */}
+                        <div className="grid gap-3">
                             <div className="grid gap-1.5">
-                                <Label className="text-xs font-medium">PD Number</Label>
+                                <Label className="text-xs font-medium">Source</Label>
                                 <Select
-                                    value={form.pdNumber}
-                                    onValueChange={value => {
-                                        const nextProject = legalProjects.find(project => project.pdNumber === value) ?? null;
-                                        setForm(prev => ({
-                                            ...prev,
-                                            pdNumber: value,
-                                            legalRevision: getPreferredRevision(nextProject),
-                                        }));
-                                    }}
+                                    value={form.sourceMode}
+                                    onValueChange={value => updateField("sourceMode", value as CreateProjectForm["sourceMode"])}
                                 >
                                     <SelectTrigger className="h-9">
-                                        <SelectValue placeholder={loadingLegalProjects ? "Loading legal packages..." : "Select PD#"} />
+                                        <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {legalProjects.map(project => (
-                                            <SelectItem key={project.pdNumber} value={project.pdNumber}>
-                                                {getLegalProjectOptionLabel(project)}
-                                            </SelectItem>
-                                        ))}
+                                        <SelectItem value="legal-library">Create Project Unit</SelectItem>
+                                        <SelectItem value="manual">Create Upcoming Project</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
+
+                            {form.sourceMode === "legal-library" ? (
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div className="grid gap-1.5">
+                                        <Label className="text-xs font-medium">PD Number</Label>
+                                        <Select
+                                            value={form.pdNumber}
+                                            onValueChange={value => {
+                                                const nextProject = legalProjects.find(p => p.pdNumber === value) ?? null;
+                                                setForm(prev => ({
+                                                    ...prev,
+                                                    pdNumber: value,
+                                                    legalRevision: getPreferredRevision(nextProject),
+                                                }));
+                                            }}
+                                        >
+                                            <SelectTrigger className="h-9">
+                                                <SelectValue placeholder={loadingLegalProjects ? "Loading…" : "Select PD#"} />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {legalProjects.map(project => (
+                                                    <SelectItem key={project.pdNumber} value={project.pdNumber}>
+                                                        {getLegalProjectOptionLabel(project)}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="grid gap-1.5">
+                                        <Label className="text-xs font-medium">Revision</Label>
+                                        <Select
+                                            value={form.legalRevision}
+                                            onValueChange={value => updateField("legalRevision", value)}
+                                            disabled={!selectedLegalProject}
+                                        >
+                                            <SelectTrigger className="h-9">
+                                                <SelectValue placeholder="Select revision…" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {getManifestReadyRevisions(selectedLegalProject).map(revision => (
+                                                    <SelectItem key={revision} value={revision}>
+                                                        {revision}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                </div>
+                            ) : null}
+                        </div>
+
+                        <Separator />
+
+                        {/* Project identity */}
+                        <div className="grid gap-3">
                             <div className="grid gap-1.5">
-                                <Label className="text-xs font-medium">Revision</Label>
-                                <Select
-                                    value={form.legalRevision}
-                                    onValueChange={value => updateField("legalRevision", value)}
-                                    disabled={!selectedLegalProject}
-                                >
-                                    <SelectTrigger className="h-9">
-                                        <SelectValue placeholder="Select revision..." />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {getManifestReadyRevisions(selectedLegalProject).map(revision => (
-                                            <SelectItem key={revision} value={revision}>
-                                                {revision}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-                    ) : null}
-
-                    <div className="grid gap-1.5">
-                        <Label htmlFor="project-name" className="text-xs font-medium">
-                            Project Name <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                            id="project-name"
-                            placeholder="e.g. MER-SOL, TRP-NAU"
-                            value={form.name}
-                            onChange={e => updateField("name", e.target.value)}
-                            className="h-9"
-                            autoFocus
-                        />
-                    </div>
-
-                    {/* PD Number + Unit + Revision (row) */}
-                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                        <div className="grid gap-1.5">
-                            <Label htmlFor="pd-number" className="text-xs font-medium">PD Number</Label>
-                            <Input
-                                id="pd-number"
-                                placeholder="4M371"
-                                value={form.pdNumber}
-                                onChange={e => updateField("pdNumber", e.target.value.toUpperCase().slice(0, 5))}
-                                className="h-9 font-mono"
-                                maxLength={5}
-                                disabled={form.sourceMode === "legal-library"}
-                            />
-                        </div>
-                        <div className="grid gap-1.5">
-                            <Label htmlFor="unit-number" className="text-xs font-medium">Unit</Label>
-                            <Input
-                                id="unit-number"
-                                placeholder="1"
-                                value={form.unitNumber}
-                                onChange={e => updateField("unitNumber", e.target.value)}
-                                className="h-9"
-                            />
-                        </div>
-                        <div className="grid gap-1.5">
-                            <Label htmlFor="revision" className="text-xs font-medium">Revision</Label>
-                            <Input
-                                id="revision"
-                                placeholder="B.1"
-                                value={form.sourceMode === "legal-library" ? form.legalRevision : form.revision}
-                                onChange={e => updateField("revision", e.target.value)}
-                                className="h-9 font-mono"
-                                disabled={form.sourceMode === "legal-library"}
-                            />
-                        </div>
-                    </div>
-
-                    <Separator />
-
-                    <div className="grid gap-3">
-                        <Label className="text-xs font-medium flex items-center gap-1.5">
-                            <FileSpreadsheet className="h-3.5 w-3.5 text-muted-foreground" />
-                            Upload Sheet / Wire List (Optional)
-                        </Label>
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                            <div className="grid gap-1.5">
-                                <Label htmlFor="workbook-upload" className="text-xs font-medium">Workbook (.xlsx/.xls)</Label>
+                                <Label htmlFor="project-name" className="text-xs font-medium">
+                                    Project Name <span className="text-destructive">*</span>
+                                </Label>
                                 <Input
+                                    id="project-name"
+                                    placeholder="e.g. MER-SOL, TRP-NAU"
+                                    value={form.name}
+                                    onChange={e => updateField("name", e.target.value)}
+                                    className="h-9"
+                                    autoFocus
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-3">
+                                <div className="grid gap-1.5">
+                                    <Label htmlFor="pd-number" className="text-xs font-medium">PD Number</Label>
+                                    <Input
+                                        id="pd-number"
+                                        placeholder="4M371"
+                                        value={form.pdNumber}
+                                        onChange={e => updateField("pdNumber", e.target.value.toUpperCase().slice(0, 5))}
+                                        className="h-9 font-mono"
+                                        maxLength={5}
+                                        disabled={form.sourceMode === "legal-library"}
+                                    />
+                                </div>
+                                <div className="grid gap-1.5">
+                                    <Label htmlFor="unit-number" className="text-xs font-medium">Unit</Label>
+                                    <Input
+                                        id="unit-number"
+                                        placeholder="1"
+                                        value={form.unitNumber}
+                                        onChange={e => updateField("unitNumber", e.target.value)}
+                                        className="h-9"
+                                    />
+                                </div>
+                                <div className="grid gap-1.5">
+                                    <Label htmlFor="revision" className="text-xs font-medium">Revision</Label>
+                                    <Input
+                                        id="revision"
+                                        placeholder="B.1"
+                                        value={form.sourceMode === "legal-library" ? form.legalRevision : form.revision}
+                                        onChange={e => updateField("revision", e.target.value)}
+                                        className="h-9 font-mono"
+                                        disabled={form.sourceMode === "legal-library"}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <Separator />
+
+                        {/* Upload */}
+                        <FormSection icon={FileSpreadsheet} title="Upload Sheet / Wire List (Optional)">
+                            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                <FileUploadInput
                                     id="workbook-upload"
-                                    type="file"
+                                    label="Workbook (.xlsx / .xls)"
                                     accept=".xlsx,.xls"
-                                    className="h-9"
-                                    onChange={e => setWorkbookFile(e.target.files?.[0] ?? null)}
+                                    file={workbookFile}
+                                    onChange={setWorkbookFile}
                                 />
-                                <p className="text-[11px] text-muted-foreground truncate">
-                                    {workbookFile ? workbookFile.name : "No workbook selected"}
-                                </p>
-                            </div>
-                            <div className="grid gap-1.5">
-                                <Label htmlFor="layout-upload" className="text-xs font-medium">Wire List / Layout PDF (.pdf)</Label>
-                                <Input
+                                <FileUploadInput
                                     id="layout-upload"
-                                    type="file"
+                                    label="Wire List / Layout PDF (.pdf)"
                                     accept=".pdf"
-                                    className="h-9"
-                                    onChange={e => setLayoutPdfFile(e.target.files?.[0] ?? null)}
+                                    file={layoutPdfFile}
+                                    onChange={setLayoutPdfFile}
                                 />
-                                <p className="text-[11px] text-muted-foreground truncate">
-                                    {layoutPdfFile ? layoutPdfFile.name : "No PDF selected"}
-                                </p>
                             </div>
+                        </FormSection>
+
+                        <Separator />
+
+                        {/* LWC Type */}
+                        <div className="grid gap-1.5">
+                            <Label className="text-xs font-medium">LWC Type</Label>
+                            <Select
+                                value={form.lwcType}
+                                onValueChange={v => updateField("lwcType", v as LwcType)}
+                            >
+                                <SelectTrigger className="h-9">
+                                    <SelectValue placeholder="Select LWC type…" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {Object.values(LWC_TYPE_REGISTRY).map(lwc => (
+                                        <SelectItem key={lwc.id} value={lwc.id}>
+                                            <div className="flex items-center gap-2">
+                                                <div className="h-2 w-2 rounded-full" style={{ backgroundColor: lwc.dotColor }} />
+                                                {lwc.label}
+                                            </div>
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         </div>
-                    </div>
 
-                    {/* LWC Type */}
-                    <div className="grid gap-1.5">
-                        <Label className="text-xs font-medium">LWC Type</Label>
-                        <Select
-                            value={form.lwcType}
-                            onValueChange={v => updateField("lwcType", v as LwcType)}
-                        >
-                            <SelectTrigger className="h-9">
-                                <SelectValue placeholder="Select LWC type..." />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {Object.values(LWC_TYPE_REGISTRY).map(lwc => (
-                                    <SelectItem key={lwc.id} value={lwc.id}>
-                                        <div className="flex items-center gap-2">
-                                            <div
-                                                className="h-2 w-2 rounded-full"
-                                                style={{ backgroundColor: lwc.dotColor }}
-                                            />
-                                            {lwc.label}
-                                        </div>
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
+                        <Separator />
 
-                    <Separator />
-
-                    {/* Dates */}
-                    <div className="grid gap-3">
-                        <Label className="text-xs font-medium flex items-center gap-1.5">
-                            <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
-                            Planning Dates
-                        </Label>
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                            <DateField
-                                mode="create"
-                                label="Due Date"
-                                value={parseDateString(form.dueDate)}
-                                onChange={date => updateField("dueDate", formatDateToString(date))}
-                            />
-                            <DateField
-                                mode="create"
-                                label="Plan ConLay"
-                                value={parseDateString(form.planConlayDate)}
-                                onChange={date => updateField("planConlayDate", formatDateToString(date))}
-                            />
-                            <DateField
-                                mode="create"
-                                label="Plan ConAssy"
-                                value={parseDateString(form.planConassyDate)}
-                                onChange={date => updateField("planConassyDate", formatDateToString(date))}
-                            />
-                            <DateField
-                                mode="create"
-                                label="Ship Date"
-                                value={parseDateString(form.shipDate)}
-                                onChange={date => updateField("shipDate", formatDateToString(date))}
-                            />
-                        </div>
-                    </div>
-
-                    <Separator />
-
-                    {/* Color */}
-                    <div className="grid gap-1.5">
-                        <Label className="text-xs font-medium flex items-center gap-1.5">
-                            <Palette className="h-3.5 w-3.5 text-muted-foreground" />
-                            Project Color
-                        </Label>
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                            {COLOR_PRESETS.map(color => (
-                                <button
-                                    key={color}
-                                    type="button"
-                                    className={cn(
-                                        "h-6 w-6 rounded-full border-2 transition-all",
-                                        form.color === color
-                                            ? "border-foreground scale-110 shadow-sm"
-                                            : "border-transparent hover:border-muted-foreground/30",
-                                    )}
-                                    style={{ backgroundColor: color }}
-                                    onClick={() => updateField("color", color)}
+                        {/* Planning Dates */}
+                        <FormSection icon={Calendar} title="Planning Dates">
+                            <div className="grid grid-cols-2 gap-3">
+                                <DateField
+                                    mode="create"
+                                    label="Due Date"
+                                    value={parseDateString(form.dueDate)}
+                                    onChange={date => updateField("dueDate", formatDateToString(date))}
                                 />
-                            ))}
-                        </div>
-                    </div>
-                    {createError ? (
-                        <div className="mt-4 rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs text-destructive">
-                            {createError}
-                        </div>
-                    ) : null}
-                </div>
-                    </div>
+                                <DateField
+                                    mode="create"
+                                    label="Plan ConLay"
+                                    value={parseDateString(form.planConlayDate)}
+                                    onChange={date => updateField("planConlayDate", formatDateToString(date))}
+                                />
+                                <DateField
+                                    mode="create"
+                                    label="Plan ConAssy"
+                                    value={parseDateString(form.planConassyDate)}
+                                    onChange={date => updateField("planConassyDate", formatDateToString(date))}
+                                />
+                                <DateField
+                                    mode="create"
+                                    label="Ship Date"
+                                    value={parseDateString(form.shipDate)}
+                                    onChange={date => updateField("shipDate", formatDateToString(date))}
+                                />
+                            </div>
+                        </FormSection>
 
-                    <DialogFooter className="border-t border-border px-4 py-3 sm:px-6">
-                        <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center">
-                        <Badge variant="outline" className="text-[10px] text-muted-foreground mr-auto">
+                        <Separator />
+
+                        {/* Color */}
+                        <FormSection icon={Palette} title="Project Color">
+                            <div className="flex flex-wrap items-center gap-2">
+                                {COLOR_PRESETS.map(color => (
+                                    <button
+                                        key={color}
+                                        type="button"
+                                        className={cn(
+                                            "h-6 w-6 rounded-full border-2 transition-all",
+                                            form.color === color
+                                                ? "scale-110 border-foreground shadow-sm"
+                                                : "border-transparent hover:border-muted-foreground/30",
+                                        )}
+                                        style={{ backgroundColor: color }}
+                                        onClick={() => updateField("color", color)}
+                                    />
+                                ))}
+                                <input
+                                    type="color"
+                                    value={form.color}
+                                    onChange={e => updateField("color", e.target.value)}
+                                    className="h-6 w-6 cursor-pointer rounded-full border-2 border-transparent bg-transparent p-0"
+                                    title="Custom color"
+                                />
+                            </div>
+                        </FormSection>
+
+                        {createError ? (
+                            <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs text-destructive">
+                                {createError}
+                            </div>
+                        ) : null}
+                    </div>
+                </div>
+
+                {/* Footer */}
+                <DialogFooter className="shrink-0 border-t px-8 py-3 pb-8">
+                    <div className="flex w-full items-center gap-2">
+                        <Badge variant="outline" className="mr-auto text-[10px] text-muted-foreground">
                             Legals not required
                         </Badge>
-                            <Button variant="outline" onClick={() => handleOpenChange(false)} disabled={creating} className="w-full sm:w-auto">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleOpenChange(false)}
+                            disabled={creating}
+                        >
                             Cancel
                         </Button>
-                            <Button onClick={handleCreate} disabled={!isValid || creating} className="w-full gap-1.5 sm:w-auto">
+                        <Button
+                            size="sm"
+                            onClick={handleCreate}
+                            disabled={!isValid || creating}
+                            className="gap-1.5"
+                        >
                             {creating ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
                             ) : (
-                                <FolderPlus className="h-4 w-4" />
+                                <FolderPlus className="h-3.5 w-3.5" />
                             )}
-                            {creating ? "Creating..." : "Create Project"}
+                            {creating ? "Creating…" : "Create Project"}
                         </Button>
                     </div>
                 </DialogFooter>

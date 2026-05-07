@@ -120,7 +120,7 @@ const MODE_FEATURES: {
 type DepartmentSetupSource = 'import-existing' | 'create-new'
 
 const DEPARTMENT_ROLES: UserRole[] = [
-  'DEVELOPER', 'MANAGER', 'SUPERVISOR', 'TEAM_LEAD', 'QA', 'BRANDER', 'ASSEMBLER',
+  'DEVELOPER', 'TEAM_LEAD', 'ASSEMBLER',
 ]
 
 // ============================================================================

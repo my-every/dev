@@ -34,6 +34,23 @@ const DATA_CELL_STYLE = {
   alignment: { wrapText: true, vertical: "center" as const },
 };
 
+const CELL_BORDER = {
+  top: { style: "thin" as const, color: { rgb: "E2E8F0" } },
+  bottom: { style: "thin" as const, color: { rgb: "E2E8F0" } },
+  left: { style: "thin" as const, color: { rgb: "E2E8F0" } },
+  right: { style: "thin" as const, color: { rgb: "E2E8F0" } },
+};
+
+const BASE_CELL_STYLE = {
+  alignment: { wrapText: true, vertical: "center" as const },
+  border: CELL_BORDER,
+};
+
+const ROW_SPLIT_STYLE = {
+  ...BASE_CELL_STYLE,
+  fill: { fgColor: { rgb: "F8FAFC" } },
+};
+
 const METADATA_BOLD_STYLE = {
   font: { bold: true },
 };
@@ -48,6 +65,11 @@ function isPrefixGroupRow(row: string[]): boolean {
     }
   }
   return true;
+}
+
+function isBlankRow(row: string[]): boolean {
+  if (!row.length) return true;
+  return row.every((value) => String(value ?? "").trim().length === 0);
 }
 
 function parseSimpleCsvLine(line: string): string[] {
@@ -120,11 +142,17 @@ function applyBrandingStyles(worksheet: XLSX.WorkSheet, rows: string[][]): void 
     const isColumnHeaderRow = r === 12;
     const isPrefixHeaderRow = r > 12 && isPrefixGroupRow(row);
     const isBundleHeaderRow = r > 12 && String(row[7] ?? "").trim().length > 0;
+    const isSeparatorRow = r > 12 && isBlankRow(row);
 
     for (let c = range.s.c; c <= range.e.c; c += 1) {
       const addr = XLSX.utils.encode_cell({ r, c });
-      const cell = worksheet[addr];
-      if (!cell) continue;
+      let cell = worksheet[addr];
+      if (!cell) {
+        cell = { t: "s", v: "" } as XLSX.CellObject;
+        worksheet[addr] = cell;
+      }
+
+      cell.s = BASE_CELL_STYLE;
 
       if (typeof cell.v === "string") {
         cell.t = "s";
@@ -134,19 +162,21 @@ function applyBrandingStyles(worksheet: XLSX.WorkSheet, rows: string[][]): void 
       }
 
       if (isTitleRow) {
-        cell.s = TITLE_STYLE;
+        cell.s = { ...TITLE_STYLE, border: CELL_BORDER };
       } else if (r < 11 && c === 0) {
-        cell.s = METADATA_BOLD_STYLE;
+        cell.s = { ...BASE_CELL_STYLE, ...METADATA_BOLD_STYLE };
       } else if (isFromToRow) {
-        cell.s = SUBHEADER_STYLE;
+        cell.s = { ...SUBHEADER_STYLE, border: CELL_BORDER };
       } else if (isColumnHeaderRow) {
-        cell.s = HEADER_STYLE;
-      } else if (isPrefixHeaderRow && c === 0) {
-        cell.s = PREFIX_GROUP_STYLE;
+        cell.s = { ...HEADER_STYLE, border: CELL_BORDER };
+      } else if (isPrefixHeaderRow) {
+        cell.s = { ...PREFIX_GROUP_STYLE, border: CELL_BORDER };
       } else if (isBundleHeaderRow) {
-        cell.s = BUNDLE_HEADER_STYLE;
+        cell.s = { ...BUNDLE_HEADER_STYLE, border: CELL_BORDER };
+      } else if (isSeparatorRow) {
+        cell.s = ROW_SPLIT_STYLE;
       } else if (r > 12) {
-        cell.s = DATA_CELL_STYLE;
+        cell.s = { ...DATA_CELL_STYLE, border: CELL_BORDER };
       }
     }
   }
