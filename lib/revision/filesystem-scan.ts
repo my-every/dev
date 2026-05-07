@@ -54,6 +54,11 @@ interface ScannedFile {
   revisionInfo: RevisionInfo
 }
 
+interface FileCollectionOptions {
+  fromTimeMs?: number
+  toTimeMs?: number
+}
+
 interface ProjectAggregate {
   pdNumber: string
   projectName: string
@@ -130,9 +135,16 @@ function inferFileTypeIndicator(fileName: string): RevisionFilesystemNode['fileT
   return 'other'
 }
 
-async function collectFilesRecursively(rootPath: string): Promise<ScannedFile[]> {
+async function collectFilesRecursively(
+  rootPath: string,
+  options: FileCollectionOptions = {},
+): Promise<ScannedFile[]> {
   const stack: string[] = [rootPath]
   const files: ScannedFile[] = []
+  const hasFromBound = Number.isFinite(options.fromTimeMs)
+  const hasToBound = Number.isFinite(options.toTimeMs)
+  const fromTimeMs = hasFromBound ? Number(options.fromTimeMs) : Number.NEGATIVE_INFINITY
+  const toTimeMs = hasToBound ? Number(options.toTimeMs) : Number.POSITIVE_INFINITY
 
   while (stack.length > 0) {
     const current = stack.pop()
@@ -158,6 +170,12 @@ async function collectFilesRecursively(rootPath: string): Promise<ScannedFile[]>
 
       const stats = await safeStat(fullPath)
       if (!stats?.isFile()) {
+        continue
+      }
+
+      // Apply the scan time window during traversal so large historical trees
+      // do not bloat memory and post-processing work.
+      if (stats.mtimeMs < fromTimeMs || stats.mtimeMs > toTimeMs) {
         continue
       }
 
@@ -297,7 +315,10 @@ function fileToTreeNode(file: ScannedFile): RevisionFilesystemNode {
   }
 }
 
-async function discoverLegalProjects(sourceRoot: string): Promise<Map<string, ProjectAggregate>> {
+async function discoverLegalProjects(
+  sourceRoot: string,
+  options: FileCollectionOptions,
+): Promise<Map<string, ProjectAggregate>> {
   const map = new Map<string, ProjectAggregate>()
   const legalRoot = await resolveLegalProjectsRoot(sourceRoot)
   const stats = await safeStat(legalRoot)
@@ -312,7 +333,7 @@ async function discoverLegalProjects(sourceRoot: string): Promise<Map<string, Pr
     const pdNumber = extractProjectNumberFromLegalFolder(entry.name)
     const projectName = getProjectNameFromLegalFolder(entry.name)
     const rootPath = path.join(legalRoot, entry.name)
-    const files = await collectFilesRecursively(rootPath)
+    const files = await collectFilesRecursively(rootPath, options)
 
     map.set(pdNumber, {
       pdNumber,
@@ -346,6 +367,7 @@ function parseBrandProjectFolder(entryName: string): { pdNumber: string; project
 async function mergeBrandProjects(
   aggregates: Map<string, ProjectAggregate>,
   sourceRoot: string,
+  options: FileCollectionOptions,
 ): Promise<void> {
   const stats = await safeStat(sourceRoot)
   if (!stats?.isDirectory()) {
@@ -360,7 +382,7 @@ async function mergeBrandProjects(
     if (!parsed) continue
 
     const rootPath = path.join(sourceRoot, entry.name)
-    const files = await collectFilesRecursively(rootPath)
+    const files = await collectFilesRecursively(rootPath, options)
     const existing = aggregates.get(parsed.pdNumber)
 
     if (existing) {
@@ -381,10 +403,6 @@ async function mergeBrandProjects(
       files,
     })
   }
-}
-
-function filterByRange(files: ScannedFile[], fromTimeMs: number, toTimeMs: number): ScannedFile[] {
-  return files.filter((file) => file.modifiedTimeMs >= fromTimeMs && file.modifiedTimeMs <= toTimeMs)
 }
 
 function resolveReadiness(validation: RevisionValidationSummary): ProjectRevisionTreeRow['readiness'] {
@@ -450,7 +468,10 @@ export async function scanProjectRevisionsFromFilesystem(
 
   if (scope === 'legal' || scope === 'both') {
     const legalScanStartedAt = nowMs()
-    const legalProjects = await discoverLegalProjects(sourceRoots.legalSourceRoot ?? '')
+    const legalProjects = await discoverLegalProjects(sourceRoots.legalSourceRoot ?? '', {
+      fromTimeMs,
+      toTimeMs,
+    })
     for (const [pdNumber, aggregate] of legalProjects.entries()) {
       aggregates.set(pdNumber, aggregate)
     }
@@ -466,7 +487,10 @@ export async function scanProjectRevisionsFromFilesystem(
   if (scope === 'brand' || scope === 'both') {
     const brandScanStartedAt = nowMs()
     const aggregateCountBefore = aggregates.size
-    await mergeBrandProjects(aggregates, sourceRoots.brandSourceRoot ?? '')
+    await mergeBrandProjects(aggregates, sourceRoots.brandSourceRoot ?? '', {
+      fromTimeMs,
+      toTimeMs,
+    })
     console.info(
       '[revision/filesystem-scan] Brand merge complete',
       JSON.stringify({
@@ -488,8 +512,8 @@ export async function scanProjectRevisionsFromFilesystem(
       }
     }
 
-    const inRangeFiles = filterByRange(aggregate.files, fromTimeMs, toTimeMs)
-    const candidateFiles = inRangeFiles.length > 0 ? inRangeFiles : aggregate.files
+    // Files are already range-filtered during collection.
+    const candidateFiles = aggregate.files
 
     const revisionPairState = buildRevisionPairState(candidateFiles)
     const validation = buildValidationSummary(
