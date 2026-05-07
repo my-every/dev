@@ -1,7 +1,9 @@
 import 'server-only'
 
+import { execFile } from 'node:child_process'
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
+import { promisify } from 'node:util'
 
 import {
   extractProjectNumberFromLegalFolder,
@@ -30,6 +32,7 @@ import {
 const DEFAULT_LEGAL_SOURCE_ROOT = String.raw`S:\Legal Drawings`
 const DEFAULT_BRAND_SOURCE_ROOT = String.raw`S:\#Depts\380\6SIGMABRANDLIST\BRANDING\Projects Folder`
 const STALE_THRESHOLD_MS = 1000 * 60 * 60 * 24 * 30
+const execFileAsync = promisify(execFile)
 
 function nowMs() {
   return Date.now()
@@ -135,10 +138,119 @@ function inferFileTypeIndicator(fileName: string): RevisionFilesystemNode['fileT
   return 'other'
 }
 
+function toScannedFileFromStats(input: {
+  fullPath: string
+  fileName: string
+  sizeBytes: number
+  modifiedTimeMs: number
+}): ScannedFile {
+  const revisionInfo = parseRevisionFromFilename(input.fileName)
+  return {
+    absolutePath: input.fullPath,
+    fileName: input.fileName,
+    extension: path.extname(input.fileName).toLowerCase(),
+    modifiedTimeMs: input.modifiedTimeMs,
+    sizeBytes: input.sizeBytes,
+    fileTypeIndicator: inferFileTypeIndicator(input.fileName),
+    revisionInfo,
+  }
+}
+
+function shouldAttemptPowerShellFileListing() {
+  if (process.platform !== 'win32') {
+    return false
+  }
+
+  if (process.env.REVISION_SCAN_DISABLE_POWERSHELL === '1') {
+    return false
+  }
+
+  return true
+}
+
+function quotePowerShellLiteral(value: string): string {
+  return `'${value.replace(/'/g, "''")}'`
+}
+
+async function collectFilesWithPowerShell(
+  rootPath: string,
+  options: FileCollectionOptions = {},
+): Promise<ScannedFile[] | null> {
+  if (!shouldAttemptPowerShellFileListing()) {
+    return null
+  }
+
+  const fromTimeMs = Number.isFinite(options.fromTimeMs) ? Number(options.fromTimeMs) : Number.NEGATIVE_INFINITY
+  const toTimeMs = Number.isFinite(options.toTimeMs) ? Number(options.toTimeMs) : Number.POSITIVE_INFINITY
+
+  const script = [
+    "$ErrorActionPreference = 'Stop'",
+    `$root = ${quotePowerShellLiteral(rootPath)}`,
+    `$from = ${Number.isFinite(fromTimeMs) ? fromTimeMs : -9e15}`,
+    `$to = ${Number.isFinite(toTimeMs) ? toTimeMs : 9e15}`,
+    "if (-not (Test-Path -LiteralPath $root)) { Write-Output '[]'; exit 0 }",
+    "$epoch = [datetime]'1970-01-01T00:00:00Z'",
+    "$rows = Get-ChildItem -LiteralPath $root -Recurse -File -Force -ErrorAction SilentlyContinue | ForEach-Object {",
+    "  $mtimeMs = [math]::Round(($_.LastWriteTimeUtc - $epoch).TotalMilliseconds)",
+    "  if ($mtimeMs -lt $from -or $mtimeMs -gt $to) { return }",
+    "  [pscustomobject]@{",
+    "    FullName = $_.FullName",
+    "    Name = $_.Name",
+    "    Length = $_.Length",
+    "    MtimeMs = $mtimeMs",
+    "  }",
+    "}",
+    "if ($null -eq $rows) { Write-Output '[]' } else { $rows | ConvertTo-Json -Compress }",
+  ].join('; ')
+
+  try {
+    const { stdout } = await execFileAsync(
+      'powershell.exe',
+      ['-NoLogo', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-Command', script],
+      { maxBuffer: 1024 * 1024 * 32 },
+    )
+
+    const raw = String(stdout ?? '').trim()
+    if (!raw) {
+      return []
+    }
+
+    const parsed = JSON.parse(raw) as
+      | { FullName?: string; Name?: string; Length?: number; MtimeMs?: number }
+      | Array<{ FullName?: string; Name?: string; Length?: number; MtimeMs?: number }>
+
+    const rows = Array.isArray(parsed) ? parsed : [parsed]
+    const files = rows
+      .filter((row) => Boolean(row?.FullName) && Boolean(row?.Name))
+      .map((row) =>
+        toScannedFileFromStats({
+          fullPath: String(row.FullName),
+          fileName: String(row.Name),
+          sizeBytes: Number(row.Length ?? 0),
+          modifiedTimeMs: Number(row.MtimeMs ?? 0),
+        }),
+      )
+
+    files.sort((left, right) => right.modifiedTimeMs - left.modifiedTimeMs)
+    return files
+  } catch (error) {
+    console.warn('[revision-scan] PowerShell fallback failed:', error)
+    return null
+  }
+}
+
 async function collectFilesRecursively(
   rootPath: string,
   options: FileCollectionOptions = {},
 ): Promise<ScannedFile[]> {
+  const forcePowerShell = process.env.REVISION_SCAN_USE_POWERSHELL === '1'
+  if (forcePowerShell) {
+    const fromPowerShell = await collectFilesWithPowerShell(rootPath, options)
+    if (fromPowerShell) {
+      return fromPowerShell
+    }
+  }
+
   const fromTimeMs = Number.isFinite(options.fromTimeMs) ? Number(options.fromTimeMs) : Number.NEGATIVE_INFINITY
   const toTimeMs = Number.isFinite(options.toTimeMs) ? Number(options.toTimeMs) : Number.POSITIVE_INFINITY
 
@@ -198,16 +310,21 @@ async function collectFilesRecursively(
       if (stats.mtimeMs < fromTimeMs || stats.mtimeMs > toTimeMs) continue
 
       const fileName = path.basename(fullPath)
-      const revisionInfo = parseRevisionFromFilename(fileName)
-      files.push({
-        absolutePath: fullPath,
-        fileName,
-        extension: path.extname(fileName).toLowerCase(),
-        modifiedTimeMs: stats.mtimeMs,
-        sizeBytes: stats.size,
-        fileTypeIndicator: inferFileTypeIndicator(fileName),
-        revisionInfo,
-      })
+      files.push(
+        toScannedFileFromStats({
+          fullPath,
+          fileName,
+          sizeBytes: stats.size,
+          modifiedTimeMs: stats.mtimeMs,
+        }),
+      )
+    }
+  }
+
+  if (files.length === 0 && shouldAttemptPowerShellFileListing()) {
+    const fromPowerShell = await collectFilesWithPowerShell(rootPath, options)
+    if (fromPowerShell) {
+      return fromPowerShell
     }
   }
 
