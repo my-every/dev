@@ -19,6 +19,10 @@ import {
   sanitizeExportFileSegment,
 } from "@/lib/project-exports/project-exports-paths";
 import { appendBrandWorkbookSupportSheets } from "@/lib/project-exports/branding-workbook-helpers";
+import {
+  appendBrandingCsvSheetToWorkbook,
+  buildBrandingWorkbookFromCsv,
+} from "@/lib/project-exports/branding-xlsx-workbook";
 import { readWireBrandListSchema } from "@/lib/project-state/share-print-schema-handlers";
 import type { BrandListExportSchema } from "@/lib/wire-brand-list/schema";
 
@@ -184,7 +188,7 @@ export async function generateBrandingCsvExports(projectId: string): Promise<Bra
     const absoluteFilePath = path.join(brandingExportsDirectory, fileName);
     const relativePath = path.posix.join(EXPORTS_DIRECTORY, UNITS_DIRECTORY, sanitizedUnit, BRANDING_EXPORTS_DIRECTORY, fileName);
 
-    const workbook = buildBrandingXlsxWorkbook(csvContent);
+    const workbook = buildBrandingWorkbookFromCsv(csvContent, "Brandlist");
     const xlsxBuffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" }) as Uint8Array;
     await fs.writeFile(absoluteFilePath, Buffer.from(xlsxBuffer));
 
@@ -243,71 +247,6 @@ export async function generateBrandingCsvExports(projectId: string): Promise<Bra
   return result;
 }
 
-// Style definitions for xlsx-js-style
-const HEADER_STYLE = {
-  font: { bold: true },
-  alignment: { wrapText: true, vertical: "center" as const },
-  fill: { fgColor: { rgb: "E2E8F0" } },
-};
-
-const TITLE_STYLE = {
-  font: { bold: true, sz: 13 },
-  alignment: { wrapText: true, vertical: "center" as const },
-  fill: { fgColor: { rgb: "F8FAFC" } },
-};
-
-const SUBHEADER_STYLE = {
-  font: { bold: true },
-  alignment: { wrapText: true, vertical: "center" as const },
-  fill: { fgColor: { rgb: "EEF2FF" } },
-};
-
-const PREFIX_GROUP_STYLE = {
-  font: { bold: true },
-  alignment: { wrapText: true, vertical: "center" as const },
-  fill: { fgColor: { rgb: "F8FAFC" } },
-};
-
-const BUNDLE_HEADER_STYLE = {
-  font: { bold: true },
-  alignment: { wrapText: true, vertical: "center" as const },
-  fill: { fgColor: { rgb: "EEF2FF" } },
-};
-
-const DATA_CELL_STYLE = {
-  alignment: { wrapText: true, vertical: "center" as const },
-};
-
-const METADATA_BOLD_STYLE = {
-  font: { bold: true },
-};
-
-function isPrefixGroupRow(row: string[]): boolean {
-  if (!row.length) return false;
-  const first = String(row[0] ?? "").trim();
-  if (!first) return false;
-  for (let i = 1; i < row.length; i += 1) {
-    if (String(row[i] ?? "").trim().length > 0) {
-      return false;
-    }
-  }
-  return true;
-}
-
-/**
- * Convert branding CSV content into an xlsx workbook with styling.
- * Parses the CSV string and creates a worksheet preserving
- * the 13-row metadata header layout with bold headers and text wrap.
- */
-function buildBrandingXlsxWorkbook(csvContent: string): XLSX.WorkBook {
-  const rows = csvContent.split("\n").map((line) => parseSimpleCsvLine(line));
-  const worksheet = XLSX.utils.aoa_to_sheet(rows);
-  applyBrandingStyles(worksheet, rows);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Brandlist");
-  return workbook;
-}
-
 /**
  * Build a combined xlsx workbook with one worksheet per sheet.
  * Each worksheet tab is named after the sheet (truncated to 31 chars for Excel limits).
@@ -320,135 +259,8 @@ function buildCombinedBrandingXlsxWorkbook(
   const usedNames = new Set<string>();
 
   for (const { sheetName, csvContent } of sheets) {
-    const rows = csvContent.split("\n").map((line) => parseSimpleCsvLine(line));
-    const worksheet = XLSX.utils.aoa_to_sheet(rows);
-    applyBrandingStyles(worksheet, rows);
-
-    // Excel worksheet names: max 31 chars, no []:*?/\
-    let tabName = sheetName
-      .replace(/[[\]:*?/\\]/g, "")
-      .slice(0, 31)
-      .trim() || "Sheet";
-
-    // Deduplicate tab names
-    let dedupeIndex = 2;
-    const baseName = tabName;
-    while (usedNames.has(tabName)) {
-      const suffix = ` (${dedupeIndex++})`;
-      tabName = baseName.slice(0, 31 - suffix.length) + suffix;
-    }
-    usedNames.add(tabName);
-
-    XLSX.utils.book_append_sheet(workbook, worksheet, tabName);
+    appendBrandingCsvSheetToWorkbook(workbook, sheetName, csvContent, usedNames);
   }
 
   return appendBrandWorkbookSupportSheets(workbook, schemas);
-}
-
-/**
- * Apply styling to the branding worksheet:
- * - Bold and text wrap for column headers (row 13, 0-indexed row 12)
- * - Bold for metadata labels in column A (rows 1-11)
- * - Text wrap for all data cells
- * - Force text format for cells starting with -, =, +, @
- * - Set column widths
- */
-function applyBrandingStyles(worksheet: XLSX.WorkSheet, rows: string[][]): void {
-  const range = XLSX.utils.decode_range(worksheet["!ref"] || "A1");
-  
-  // Set column widths (in characters)
-  // Columns: Device ID (From), Wire No., Wire ID, Gauge/Size, Length, Device ID (To), To Location, Bundle Name
-  worksheet["!cols"] = [
-    { wch: 18 }, // A - Device ID (From)
-    { wch: 14 }, // B - Wire No.
-    { wch: 12 }, // C - Wire ID
-    { wch: 10 }, // D - Gauge/Size
-    { wch: 10 }, // E - Length
-    { wch: 18 }, // F - Device ID (To)
-    { wch: 20 }, // G - To Location
-    { wch: 25 }, // H - Bundle Name
-  ];
-
-  for (let r = range.s.r; r <= range.e.r; r++) {
-    const row = rows[r] ?? [];
-    const isTitleRow = r === 0;
-    const isFromToRow = r === 11;
-    const isColumnHeaderRow = r === 12;
-    const isPrefixHeaderRow = r > 12 && isPrefixGroupRow(row);
-    const isBundleHeaderRow = r > 12 && String(row[7] ?? "").trim().length > 0;
-
-    for (let c = range.s.c; c <= range.e.c; c++) {
-      const addr = XLSX.utils.encode_cell({ r, c });
-      const cell = worksheet[addr];
-      
-      if (!cell) continue;
-
-      // Force string type for all text cells
-      if (typeof cell.v === "string") {
-        cell.t = "s";
-        
-        // For values starting with special characters (like -0V),
-        // we need to ensure Excel treats them as text, not formulas
-        if (/^[-=+@]/.test(cell.v)) {
-          // Set number format to text (@) to prevent formula interpretation
-          cell.z = "@";
-        }
-      }
-
-      // Apply styles based on row position
-      if (isTitleRow) {
-        cell.s = TITLE_STYLE;
-      } else if (r < 11 && c === 0) {
-        // Metadata labels (rows 1-11, column A) - bold
-        cell.s = METADATA_BOLD_STYLE;
-      } else if (isFromToRow) {
-        // From/To subheader row (row 12, 0-indexed as 11)
-        cell.s = SUBHEADER_STYLE;
-      } else if (isColumnHeaderRow) {
-        // Column headers row (row 13, 0-indexed as 12) - bold + wrap
-        cell.s = HEADER_STYLE;
-      } else if (isPrefixHeaderRow && c === 0) {
-        // Prefix category rows inside data section
-        cell.s = PREFIX_GROUP_STYLE;
-      } else if (isBundleHeaderRow) {
-        // First row of each bundle section where bundle name is emitted
-        cell.s = BUNDLE_HEADER_STYLE;
-      } else if (r > 12) {
-        // Data rows - text wrap
-        cell.s = DATA_CELL_STYLE;
-      }
-    }
-  }
-}
-
-/** Minimal CSV line parser that handles quoted fields with commas/newlines. */
-function parseSimpleCsvLine(line: string): string[] {
-  const result: string[] = [];
-  let current = "";
-  let inQuotes = false;
-
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-    if (inQuotes) {
-      if (char === '"') {
-        if (i + 1 < line.length && line[i + 1] === '"') {
-          current += '"';
-          i++;
-        } else {
-          inQuotes = false;
-        }
-      } else {
-        current += char;
-      }
-    } else if (char === '"') {
-      inQuotes = true;
-    } else if (char === ",") {
-      result.push(current);
-      current = "";
-    } else {
-      current += char;
-    }
-  }
-  result.push(current);
-  return result;
 }

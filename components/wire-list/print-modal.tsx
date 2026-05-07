@@ -4906,62 +4906,11 @@ export function SingleSheetPrintWorkspace({
 
     if (!csvContent) return;
 
-    // Parse CSV lines into AOA for xlsx
-    const rows = csvContent.split("\n").map((line) => {
-      const cells: string[] = [];
-      let current = "";
-      let inQuotes = false;
-      for (let i = 0; i < line.length; i++) {
-        const ch = line[i];
-        if (inQuotes) {
-          if (ch === '"') {
-            if (i + 1 < line.length && line[i + 1] === '"') {
-              current += '"';
-              i++;
-            } else {
-              inQuotes = false;
-            }
-          } else {
-            current += ch;
-          }
-        } else if (ch === '"') {
-          inQuotes = true;
-        } else if (ch === ",") {
-          cells.push(current);
-          current = "";
-        } else {
-          current += ch;
-        }
-      }
-      cells.push(current);
-      return cells;
-    });
-
-    const XLSX = await import("xlsx");
-    const worksheet = XLSX.utils.aoa_to_sheet(rows);
-
-    // Post-process cells for correct Excel types:
-    // 1. Force cells starting with -, =, +, @ to explicit text (preserves "-0V" wire numbers)
-    // 2. Convert purely numeric strings to number cells (so lengths like "48.5" become
-    //    real numbers that Excel can SUM, not left-aligned text)
-    const range = XLSX.utils.decode_range(worksheet["!ref"] || "A1");
-    for (let r = range.s.r; r <= range.e.r; r++) {
-      for (let c = range.s.c; c <= range.e.c; c++) {
-        const addr = XLSX.utils.encode_cell({ r, c });
-        const cell = worksheet[addr];
-        if (cell && typeof cell.v === "string") {
-          if (/^[-=+@]/.test(cell.v)) {
-            cell.t = "s";
-          } else if (cell.v.trim() !== "" && !Number.isNaN(Number(cell.v))) {
-            cell.v = Number(cell.v);
-            cell.t = "n";
-          }
-        }
-      }
-    }
-
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Brandlist");
+    const [{ buildBrandingWorkbookFromCsv }, XLSX] = await Promise.all([
+      import("@/lib/project-exports/branding-xlsx-workbook"),
+      import("xlsx-js-style"),
+    ]);
+    const workbook = buildBrandingWorkbookFromCsv(csvContent, "Brandlist");
     const xlsxBuffer = XLSX.write(workbook, { type: "array", bookType: "xlsx" });
 
     const brandedName = buildBrandingFilename({
