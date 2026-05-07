@@ -9,10 +9,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
@@ -24,14 +20,23 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import type { ProjectRevisionTreeRow, RevisionScanRequest, RevisionScanScope } from "@/lib/revision/types";
+
+export interface ProjectRowSettings {
+  name?: string;
+  unitNumber?: string;
+  color?: string;
+  dueDate?: string;
+}
 
 interface RevisionScanWorkflowProps {
   defaultLegalSourceRoot?: string | null;
   defaultBrandSourceRoot?: string | null;
-  onOpenMultiSheetReview?: () => void;
+  onOpenMultiSheetReview?: (projectId?: string | null) => void;
+  onScanComplete?: (projectCount: number) => void;
+  renderInline?: boolean;
 }
 
 interface RevisionScanApiResponse {
@@ -92,9 +97,11 @@ export function RevisionScanWorkflow({
   defaultLegalSourceRoot,
   defaultBrandSourceRoot,
   onOpenMultiSheetReview,
+  onScanComplete,
+  renderInline = false,
 }: RevisionScanWorkflowProps) {
   const { toast } = useToast();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(renderInline);
   const [scope, setScope] = useState<RevisionScanScope>("both");
   const [fromDateTime, setFromDateTime] = useState(() => toInputDateTimeLocal(new Date(new Date().getFullYear(), 0, 1)));
   const [toDateTime, setToDateTime] = useState(() => toInputDateTimeLocal(new Date()));
@@ -112,6 +119,7 @@ export function RevisionScanWorkflow({
   const [readinessFilter, setReadinessFilter] = useState<"all" | "ready" | "partial" | "blocked">("all");
   const [dependencyFilter, setDependencyFilter] = useState<"all" | "missing" | "changed">("all");
   const [lastGeneration, setLastGeneration] = useState<GenerateApiResponse | null>(null);
+  const [projectSettings, setProjectSettings] = useState<Record<string, ProjectRowSettings>>({});
 
   const requestPayload = useMemo(
     () => buildRevisionRequest({ fromDateTime, toDateTime, scope, legalSourceRoot, brandSourceRoot }),
@@ -167,6 +175,7 @@ export function RevisionScanWorkflow({
       setScanGeneratedAt(payload.scan.generatedAt);
       setExpandedProjectKeys(new Set(payload.scan.projects.slice(0, 3).map((row) => row.rootLabel)));
       setSelectedProjectKeys(new Set());
+      onScanComplete?.(payload.scan.projects.length);
 
       if (saveAsDefault) {
         localStorage.setItem(
@@ -200,6 +209,7 @@ export function RevisionScanWorkflow({
     periodicEnabled,
     periodicMinutes,
     requestPayload,
+    onScanComplete,
     saveAsDefault,
     scope,
     toDateTime,
@@ -207,7 +217,7 @@ export function RevisionScanWorkflow({
   ]);
 
   useEffect(() => {
-    if (!open || !periodicEnabled || isScanning) {
+    if ((!renderInline && !open) || !periodicEnabled || isScanning) {
       return;
     }
 
@@ -220,7 +230,7 @@ export function RevisionScanWorkflow({
     return () => {
       window.clearInterval(timer);
     };
-  }, [open, periodicEnabled, periodicMinutes, isScanning, runScan]);
+  }, [open, periodicEnabled, periodicMinutes, isScanning, renderInline, runScan]);
 
   const toggleProjectSelection = (projectKey: string, nextSelected: boolean) => {
     setSelectedProjectKeys((previous) => {
@@ -245,6 +255,7 @@ export function RevisionScanWorkflow({
         body: JSON.stringify({
           selectedProjectKeys: Array.from(selectedProjectKeys),
           scanRequest: requestPayload,
+          projectSettings,
         }),
       });
 
@@ -254,10 +265,13 @@ export function RevisionScanWorkflow({
       }
 
       setLastGeneration(payload);
+      const firstResolved = payload.generated.find((g) => g.resolvedProjectId)?.resolvedProjectId ?? null;
       toast({
         title: "Generation complete",
         description: `${payload.generated.length} project(s) generated from source references.`,
       });
+      // Store first resolved ID for post-generation callback
+      setLastGeneration((prev) => prev ? { ...prev, _firstResolvedProjectId: firstResolved } : prev);
     } catch (error) {
       toast({
         title: "Generation failed",
@@ -361,25 +375,16 @@ export function RevisionScanWorkflow({
     }
   };
 
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button type="button" variant="outline" className="gap-2">
-          <RefreshCw className="h-4 w-4" />
-          Check for Revisions
-        </Button>
-      </DialogTrigger>
+  const workflowContent = (
+    <div className="flex h-full flex-col">
+      <div className="border-b px-6 py-4">
+        <h2 className="text-lg font-semibold">Filesystem Revision Scan Workflow</h2>
+        <p className="text-sm text-muted-foreground">
+          Scan source paths directly, preview revision candidates, select projects, and generate schemas/manifests from latest valid file pairs.
+        </p>
+      </div>
 
-      <DialogContent className="max-h-[90vh] max-w-[96vw] overflow-hidden p-0 sm:max-w-[92vw]">
-        <div className="flex h-full flex-col">
-          <DialogHeader className="border-b px-6 py-4">
-            <DialogTitle>Filesystem Revision Scan Workflow</DialogTitle>
-            <DialogDescription>
-              Scan source paths directly, preview revision candidates, select projects, and generate schemas/manifests from latest valid file pairs.
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-4 overflow-auto px-6 py-4">
+      <div className="space-y-4 overflow-auto px-6 py-4">
             <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
               <div className="space-y-1.5">
                 <Label htmlFor="revision-scan-from">From</Label>
@@ -449,21 +454,23 @@ export function RevisionScanWorkflow({
             </div>
 
             <div className="flex flex-wrap items-center gap-4 rounded-lg border bg-muted/30 px-3 py-2 text-sm">
-              <label className="inline-flex items-center gap-2">
-                <Checkbox
+              <div className="inline-flex items-center gap-2">
+                <Switch
+                  id="revision-periodic-enabled"
                   checked={periodicEnabled}
                   onCheckedChange={(checked) => setPeriodicEnabled(Boolean(checked))}
                 />
-                Enable periodic background revision checks
-              </label>
+                <Label htmlFor="revision-periodic-enabled">Enable periodic background revision checks</Label>
+              </div>
 
-              <label className="inline-flex items-center gap-2">
-                <Checkbox
+              <div className="inline-flex items-center gap-2">
+                <Switch
+                  id="revision-save-default"
                   checked={saveAsDefault}
                   onCheckedChange={(checked) => setSaveAsDefault(Boolean(checked))}
                 />
-                Save as default scan behavior
-              </label>
+                <Label htmlFor="revision-save-default">Save as default scan behavior</Label>
+              </div>
 
               <Badge variant="outline" className="ml-auto">
                 <CalendarClock className="mr-1 h-3.5 w-3.5" />
@@ -511,9 +518,17 @@ export function RevisionScanWorkflow({
               isLoading={isScanning}
               expandedProjectKeys={expandedProjectKeys}
               selectedProjectKeys={selectedProjectKeys}
+              projectSettings={projectSettings}
               onToggleExpand={toggleExpand}
               onToggleProjectSelection={toggleProjectSelection}
               onToggleSelectAll={handleSelectAll}
+              onUpdateProjectSettings={(key, patch) => {
+                setProjectSettings((prev) => ({ ...prev, [key]: { ...prev[key], ...patch } }));
+              }}
+              onDeleteProject={(key) => {
+                setSelectedProjectKeys((prev) => { const next = new Set(prev); next.delete(key); return next; });
+                setRows((prev) => prev.filter((r) => r.rootLabel !== key));
+              }}
             />
 
             {lastGeneration ? (
@@ -531,50 +546,71 @@ export function RevisionScanWorkflow({
                 </ul>
               </div>
             ) : null}
-          </div>
+      </div>
 
-          <DialogFooter className="border-t px-6 py-4">
-            <div className="mr-auto flex items-center gap-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button type="button" variant="outline" className="gap-2">
-                    <Settings2 className="h-4 w-4" />
-                    Download / Open Actions
-                    <ChevronDown className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-64">
-                  <DropdownMenuItem onClick={() => downloadLatestForType("brand-list")}>Download latest Brand List</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => downloadLatestForType("wire-list")}>Download latest Wire List</DropdownMenuItem>
-                  <DropdownMenuItem onClick={downloadAllGeneratedOutputs}>Download all generated outputs</DropdownMenuItem>
-                  <DropdownMenuItem onClick={exportSelectedProjectManifests}>Export selected project manifests</DropdownMenuItem>
-                  <DropdownMenuItem onClick={openAbsolutePaths}>Open PDF in browser / Excel in desktop app</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+      <div className="flex items-center border-t px-6 py-4">
+        <div className="mr-auto flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button type="button" variant="outline" className="gap-2">
+                <Settings2 className="h-4 w-4" />
+                Download / Open Actions
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-64">
+              <DropdownMenuItem onClick={() => downloadLatestForType("brand-list")}>Download latest Brand List</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => downloadLatestForType("wire-list")}>Download latest Wire List</DropdownMenuItem>
+              <DropdownMenuItem onClick={downloadAllGeneratedOutputs}>Download all generated outputs</DropdownMenuItem>
+              <DropdownMenuItem onClick={exportSelectedProjectManifests}>Export selected project manifests</DropdownMenuItem>
+              <DropdownMenuItem onClick={openAbsolutePaths}>Open PDF in browser / Excel in desktop app</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-              {lastGeneration ? (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={onOpenMultiSheetReview}
-                  disabled={!onOpenMultiSheetReview}
-                >
-                  Open Multi-Sheet Review
-                </Button>
-              ) : null}
-
-              <Badge variant="outline">{selectedProjectKeys.size} selected</Badge>
-            </div>
-
-            <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
-              Close
+          {lastGeneration ? (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenMultiSheetReview?.(
+                (lastGeneration as GenerateApiResponse & { _firstResolvedProjectId?: string | null })._firstResolvedProjectId
+              )}
+              disabled={!onOpenMultiSheetReview}
+            >
+              Open Multi-Sheet Review
             </Button>
-            <Button type="button" onClick={handleGenerate} disabled={isGenerating || selectedProjectKeys.size === 0}>
-              {isGenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              Generate Selected Outputs
-            </Button>
-          </DialogFooter>
+          ) : null}
+
+          <Badge variant="outline">{selectedProjectKeys.size} selected</Badge>
         </div>
+
+        {!renderInline ? (
+          <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
+            Close
+          </Button>
+        ) : null}
+        <Button type="button" onClick={handleGenerate} disabled={isGenerating || selectedProjectKeys.size === 0}>
+          {isGenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+          Generate Selected Outputs
+        </Button>
+      </div>
+    </div>
+  );
+
+  if (renderInline) {
+    return <div className="rounded-xl border border-border bg-background">{workflowContent}</div>;
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button type="button" variant="outline" className="gap-2">
+          <RefreshCw className="h-4 w-4" />
+          Check for Revisions
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent className="max-h-[90vh] max-w-[96vw] overflow-hidden p-0 sm:max-w-[92vw]">
+        {workflowContent}
       </DialogContent>
     </Dialog>
   );

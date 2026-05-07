@@ -294,7 +294,7 @@ export function useRevisionPanel({
       throw new Error("Revision source folder is unavailable")
     }
 
-    const url = `/api/projects/projects/files?project=${encodeURIComponent(history.folderName)}&file=${encodeURIComponent(revision.filename)}`
+    const url = `/api/projects/files?project=${encodeURIComponent(history.folderName)}&file=${encodeURIComponent(revision.filename)}`
     const response = await fetch(url)
     if (!response.ok) {
       throw new Error(`Failed to load revision file: ${revision.filename}`)
@@ -333,7 +333,7 @@ export function useRevisionPanel({
       throw new Error("Layout revision source is unavailable")
     }
 
-    const url = `/api/projects/projects/files?project=${encodeURIComponent(history.folderName)}&file=${encodeURIComponent(revision.filename)}`
+    const url = `/api/projects/files?project=${encodeURIComponent(history.folderName)}&file=${encodeURIComponent(revision.filename)}`
     const response = await fetch(url)
     if (!response.ok) {
       throw new Error(`Failed to load layout revision: ${revision.filename}`)

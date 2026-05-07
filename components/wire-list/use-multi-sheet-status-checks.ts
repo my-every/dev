@@ -26,6 +26,20 @@ function formatReviewTime(value?: string | null) {
   return date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
 }
 
+function buildExportHref(projectId: string | undefined, relativePath?: string) {
+  if (!projectId || !relativePath) {
+    return null;
+  }
+
+  const normalizedRelativePath = relativePath.replace(/^exports\//, "");
+  const encodedSegments = normalizedRelativePath
+    .split("/")
+    .map((segment) => encodeURIComponent(segment))
+    .join("/");
+
+  return `/api/projects/${encodeURIComponent(projectId)}/exports/files/${encodedSegments}?download=1`;
+}
+
 export function useMultiSheetStatusChecks(options: {
   tabs: MultiSheetTabItem[];
   activeSlug: string | null;
@@ -110,20 +124,15 @@ export function useMultiSheetStatusChecks(options: {
     [importSession?.rowDecisions, importSheetDiffs],
   );
 
-  const exportReadyHref = useMemo(() => {
-    const relativePath = exportResult?.brandingWorkbook?.relativePath;
-    if (!projectId || !relativePath) {
-      return null;
-    }
+  const exportReadyHref = useMemo(
+    () => buildExportHref(projectId, exportResult?.brandingWorkbook?.relativePath),
+    [exportResult?.brandingWorkbook?.relativePath, projectId],
+  );
 
-    const normalizedRelativePath = relativePath.replace(/^exports\//, "");
-    const encodedSegments = normalizedRelativePath
-      .split("/")
-      .map((segment) => encodeURIComponent(segment))
-      .join("/");
-
-    return `/api/projects/${encodeURIComponent(projectId)}/exports/files/${encodedSegments}?download=1`;
-  }, [exportResult?.brandingWorkbook?.relativePath, projectId]);
+  const wireListSchemaHref = useMemo(
+    () => buildExportHref(projectId, exportResult?.wireListSchema?.relativePath),
+    [exportResult?.wireListSchema?.relativePath, projectId],
+  );
 
   return {
     latestReviewLabel,
@@ -133,5 +142,6 @@ export function useMultiSheetStatusChecks(options: {
     coverActionLabel,
     pendingImportCount,
     exportReadyHref,
+    wireListSchemaHref,
   };
 }

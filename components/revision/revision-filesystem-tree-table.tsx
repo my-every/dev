@@ -1,22 +1,34 @@
 "use client";
 
-import { ChevronDown, ChevronRight, FileText, Folder, FolderOpen } from "lucide-react";
+import { useState } from "react";
+import { ChevronDown, ChevronRight, FileText, Folder, FolderOpen, Settings2, Trash2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import type { ProjectRevisionTreeRow, RevisionFilesystemNode } from "@/lib/revision/types";
+import type { ProjectRowSettings } from "@/components/revision/revision-scan-workflow";
 
 interface RevisionFilesystemTreeTableProps {
   rows: ProjectRevisionTreeRow[];
   isLoading?: boolean;
   expandedProjectKeys: Set<string>;
   selectedProjectKeys: Set<string>;
+  projectSettings?: Record<string, ProjectRowSettings>;
   onToggleExpand: (projectKey: string) => void;
   onToggleProjectSelection: (projectKey: string, nextSelected: boolean) => void;
   onToggleSelectAll: (nextSelected: boolean) => void;
+  onUpdateProjectSettings?: (projectKey: string, settings: Partial<ProjectRowSettings>) => void;
+  onDeleteProject?: (projectKey: string) => void;
 }
 
 function formatDate(value: string | null | undefined): string {
@@ -64,6 +76,137 @@ function ReadinessBadge({ readiness }: { readiness: ProjectRevisionTreeRow["read
   return <Badge variant="destructive">Blocked</Badge>;
 }
 
+const COLOR_PRESETS = [
+  "#ffcc61", "#3B82F6", "#10B981", "#8B5CF6",
+  "#F59E0B", "#EF4444", "#06B6D4", "#F97316",
+  "#EC4899", "#6366F1", "#14B8A6", "#84CC16",
+];
+
+function ProjectSettingsPopover({
+  projectKey,
+  settings,
+  onUpdate,
+  onDelete,
+}: {
+  projectKey: string;
+  settings: ProjectRowSettings;
+  onUpdate?: (projectKey: string, settings: Partial<ProjectRowSettings>) => void;
+  onDelete?: (projectKey: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [localName, setLocalName] = useState(settings.name ?? "");
+  const [localUnit, setLocalUnit] = useState(settings.unitNumber ?? "");
+  const [localDue, setLocalDue] = useState(settings.dueDate ?? "");
+  const [localColor, setLocalColor] = useState(settings.color ?? "");
+
+  function handleSave() {
+    onUpdate?.(projectKey, {
+      name: localName || undefined,
+      unitNumber: localUnit || undefined,
+      dueDate: localDue || undefined,
+      color: localColor || undefined,
+    });
+    setOpen(false);
+  }
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="h-6 w-6 shrink-0"
+          aria-label={`Settings for ${projectKey}`}
+        >
+          <Settings2 className="h-3.5 w-3.5" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-72 p-4" align="end">
+        <div className="space-y-3">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Project Metadata</p>
+
+          <div className="space-y-1.5">
+            <Label htmlFor={`name-${projectKey}`} className="text-xs">Display Name</Label>
+            <Input
+              id={`name-${projectKey}`}
+              value={localName}
+              placeholder={projectKey}
+              onChange={(e) => setLocalName(e.target.value)}
+              className="h-7 text-xs"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor={`unit-${projectKey}`} className="text-xs">Unit Number</Label>
+            <Input
+              id={`unit-${projectKey}`}
+              value={localUnit}
+              placeholder="e.g. 1"
+              onChange={(e) => setLocalUnit(e.target.value)}
+              className="h-7 text-xs"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor={`due-${projectKey}`} className="text-xs">Due Date</Label>
+            <Input
+              id={`due-${projectKey}`}
+              type="date"
+              value={localDue}
+              onChange={(e) => setLocalDue(e.target.value)}
+              className="h-7 text-xs"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label className="text-xs">Color</Label>
+            <div className="flex flex-wrap gap-1.5">
+              {COLOR_PRESETS.map((c) => (
+                <Button
+                  key={c}
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="h-5 w-5 rounded-full border-2 p-0 transition-transform hover:scale-110"
+                  style={{
+                    backgroundColor: c,
+                    borderColor: localColor === c ? "white" : "transparent",
+                    outline: localColor === c ? `2px solid ${c}` : "none",
+                  }}
+                  onClick={() => setLocalColor(c)}
+                  aria-label={c}
+                />
+              ))}
+              {localColor && !COLOR_PRESETS.includes(localColor) && (
+                <div className="h-5 w-5 rounded-full border-2 border-white" style={{ backgroundColor: localColor }} />
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 pt-1">
+            <Button type="button" size="sm" className="flex-1 h-7 text-xs" onClick={handleSave}>
+              Save
+            </Button>
+            {onDelete && (
+              <Button
+                type="button"
+                variant="destructive"
+                size="icon"
+                className="h-7 w-7 shrink-0"
+                onClick={() => { onDelete(projectKey); setOpen(false); }}
+                aria-label="Remove project from scan"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </Button>
+            )}
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
 export function RevisionFilesystemTreeTable({
   rows,
   isLoading = false,
@@ -72,12 +215,15 @@ export function RevisionFilesystemTreeTable({
   onToggleExpand,
   onToggleProjectSelection,
   onToggleSelectAll,
+  projectSettings = {},
+  onUpdateProjectSettings,
+  onDeleteProject,
 }: RevisionFilesystemTreeTableProps) {
   const allSelected = rows.length > 0 && rows.every((row) => selectedProjectKeys.has(row.rootLabel));
 
   return (
     <div className="rounded-lg border border-border">
-      <div className="grid grid-cols-[42px_280px_1fr_180px_140px_170px_170px_120px_120px] items-center gap-2 border-b bg-muted/40 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+      <div className="grid grid-cols-[42px_280px_1fr_180px_140px_170px_170px_120px_120px_36px] items-center gap-2 border-b bg-muted/40 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         <Checkbox
           checked={allSelected}
           onCheckedChange={(checked) => onToggleSelectAll(Boolean(checked))}
@@ -91,6 +237,7 @@ export function RevisionFilesystemTreeTable({
         <span>Prev vs Current</span>
         <span>Validation</span>
         <span>Readiness</span>
+        <span />
       </div>
 
       <div className="max-h-105 overflow-auto">
@@ -99,7 +246,7 @@ export function RevisionFilesystemTreeTable({
             {[1, 2, 3, 4].map((index) => (
               <div
                 key={index}
-                className="grid grid-cols-[42px_280px_1fr_180px_140px_170px_170px_120px_120px] items-center gap-2"
+                className="grid grid-cols-[42px_280px_1fr_180px_140px_170px_170px_120px_120px_36px] items-center gap-2"
               >
                 <Skeleton className="h-4 w-4" />
                 <Skeleton className="h-5 w-56" />
@@ -110,6 +257,7 @@ export function RevisionFilesystemTreeTable({
                 <Skeleton className="h-5 w-32" />
                 <Skeleton className="h-5 w-24" />
                 <Skeleton className="h-5 w-20" />
+                <Skeleton className="h-5 w-6" />
               </div>
             ))}
           </div>
@@ -122,15 +270,17 @@ export function RevisionFilesystemTreeTable({
         {!isLoading && rows.map((project) => {
           const isExpanded = expandedProjectKeys.has(project.rootLabel);
           const isSelected = selectedProjectKeys.has(project.rootLabel);
+          const settings = projectSettings[project.rootLabel] ?? {};
           const pairingLabel = project.validation.hasMatchingRevisionPairs
             ? "Matched"
             : project.revisionPairState.comparisonState === "partial"
               ? "Partial"
               : "Missing";
+          const displayName = settings.name || project.rootLabel;
 
           return (
             <div key={project.rootLabel} className="border-b last:border-b-0">
-              <div className="grid grid-cols-[42px_280px_1fr_180px_140px_170px_170px_120px_120px] items-center gap-2 px-3 py-2 text-sm">
+              <div className="grid grid-cols-[42px_280px_1fr_180px_140px_170px_170px_120px_120px_36px] items-center gap-2 px-3 py-2 text-sm">
                 <Checkbox
                   checked={isSelected}
                   onCheckedChange={(checked) => onToggleProjectSelection(project.rootLabel, Boolean(checked))}
@@ -149,7 +299,9 @@ export function RevisionFilesystemTreeTable({
                     {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                   </Button>
                   {isExpanded ? <FolderOpen className="h-4 w-4 text-muted-foreground" /> : <Folder className="h-4 w-4 text-muted-foreground" />}
-                  <span className="truncate font-medium">{project.rootLabel}</span>
+                  <span className="truncate font-medium" style={settings.color ? { color: settings.color } : undefined}>
+                    {displayName}
+                  </span>
                 </div>
 
                 <span className="truncate text-xs text-muted-foreground">
@@ -163,6 +315,13 @@ export function RevisionFilesystemTreeTable({
                 </span>
                 <ValidationBadge project={project} />
                 <ReadinessBadge readiness={project.readiness} />
+
+                <ProjectSettingsPopover
+                  projectKey={project.rootLabel}
+                  settings={settings}
+                  onUpdate={onUpdateProjectSettings}
+                  onDelete={onDeleteProject}
+                />
               </div>
 
               {isExpanded ? (
@@ -171,7 +330,7 @@ export function RevisionFilesystemTreeTable({
                     <div
                       key={node.id}
                       className={cn(
-                        "grid grid-cols-[42px_280px_1fr_180px_140px_170px_170px_120px_120px] items-center gap-2 rounded-md px-1 py-1 text-xs",
+                        "grid grid-cols-[42px_280px_1fr_180px_140px_170px_170px_120px_120px_36px] items-center gap-2 rounded-md px-1 py-1 text-xs",
                         "hover:bg-muted/40",
                       )}
                     >
@@ -192,6 +351,7 @@ export function RevisionFilesystemTreeTable({
                       <Badge variant={node.readinessStatus === "ready" ? "default" : "secondary"}>
                         {node.readinessStatus || "-"}
                       </Badge>
+                      <span />
                     </div>
                   ))}
                 </div>

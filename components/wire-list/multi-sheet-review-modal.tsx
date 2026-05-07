@@ -351,6 +351,7 @@ export function MultiSheetReviewModal({
     coverActionLabel,
     pendingImportCount,
     exportReadyHref,
+    wireListSchemaHref,
   } = useMultiSheetStatusChecks({
     tabs,
     activeSlug,
@@ -444,6 +445,8 @@ export function MultiSheetReviewModal({
     [isWireListMode],
   );
 
+  const lastWorkflowLogSignatureRef = useRef<string | null>(null);
+
   const logBrandingWorkflowActivity = useCallback(async (
     workflow: "brandlist" | "branding",
     milestone: string,
@@ -453,6 +456,13 @@ export function MultiSheetReviewModal({
     if (!projectId || !user?.badge) {
       return;
     }
+
+    const logSignature = `${projectId}:${workflow}:${milestone}:${action}`;
+    if (lastWorkflowLogSignatureRef.current === logSignature) {
+      return;
+    }
+
+    const shift = user.currentShift ?? "1st";
 
     const automatedFollowUps =
       action === "COMPLETED" && milestone === "complete"
@@ -477,7 +487,33 @@ export function MultiSheetReviewModal({
         : [];
 
     try {
-      await activityService.logAction(user.badge, user.currentShift ?? "1st", {
+      const latestForProject = await activityService.getActivity(user.badge, shift, {
+        projectIds: [projectId],
+        limit: 1,
+      });
+      const latest = latestForProject[0];
+      const latestMetadata = (latest?.metadata ?? {}) as Record<string, unknown>;
+      const latestWorkflow =
+        typeof latestMetadata.workflow === "string" ? latestMetadata.workflow : "";
+      const latestMilestone =
+        typeof latestMetadata.milestone === "string" ? latestMetadata.milestone : "";
+
+      if (
+        latest &&
+        latest.action === action &&
+        latest.projectId === projectId &&
+        latestWorkflow === workflow &&
+        latestMilestone === milestone
+      ) {
+        lastWorkflowLogSignatureRef.current = logSignature;
+        return;
+      }
+    } catch {
+      // Continue and best-effort log on read failures.
+    }
+
+    try {
+      await activityService.logAction(user.badge, shift, {
         action,
         projectId,
         performedBy: user.badge,
@@ -492,17 +528,21 @@ export function MultiSheetReviewModal({
           automatedFollowUps,
         },
       });
+      lastWorkflowLogSignatureRef.current = logSignature;
     } catch {
       // Activity logging should never block review flow.
     }
   }, [currentProject?.name, currentProject?.pdNumber, projectId, user?.badge, user?.currentShift]);
 
   const handleContinueFromCoverWithActivity = useCallback(async () => {
-    await logBrandingWorkflowActivity("brandlist", "start", "STARTED");
-    await logBrandingWorkflowActivity("brandlist", "continue", "STARTED");
+    await logBrandingWorkflowActivity(
+      "brandlist",
+      coverActionLabel === "Start" ? "start" : "continue",
+      "STARTED",
+    );
 
     await handleContinueFromCover();
-  }, [handleContinueFromCover, logBrandingWorkflowActivity]);
+  }, [coverActionLabel, handleContinueFromCover, logBrandingWorkflowActivity]);
 
   const handleImportFromCoverWithActivity = useCallback(async () => {
     await logBrandingWorkflowActivity("brandlist", "import", "STARTED");
@@ -515,14 +555,12 @@ export function MultiSheetReviewModal({
   }, [logBrandingWorkflowActivity]);
 
   const handleSaveAndContinueLater = useCallback(() => {
-    void logBrandingWorkflowActivity("brandlist", "save-later", "COMPLETED");
     setIsOpen(false);
-  }, [logBrandingWorkflowActivity, setIsOpen]);
+  }, [setIsOpen]);
 
   const handleCloseModalWithActivity = useCallback(() => {
-    void logBrandingWorkflowActivity("brandlist", "save-later", "COMPLETED");
     setIsOpen(false);
-  }, [logBrandingWorkflowActivity, setIsOpen]);
+  }, [setIsOpen]);
 
   const handleOpenLoginWithActivity = useCallback(() => {
     void logBrandingWorkflowActivity("brandlist", "login", "STARTED");
@@ -595,13 +633,11 @@ export function MultiSheetReviewModal({
   ]);
 
   const handleApproveFlow = useCallback(() => {
-    void logBrandingWorkflowActivity("brandlist", "approve-sheet", "STARTED");
     // Skip modal confirmation and directly execute approval
     void handleConfirmApproveFlow();
-  }, [handleConfirmApproveFlow, logBrandingWorkflowActivity]);
+  }, [handleConfirmApproveFlow]);
 
   const handleCombineFlow = useCallback(async () => {
-    await logBrandingWorkflowActivity("brandlist", "combine", "STARTED");
     setReviewSequencePhase("processing");
     setReviewSequenceMessage("Combining approved sheets and preparing your workbook...");
     setReviewSequenceOpen(true);
@@ -616,9 +652,8 @@ export function MultiSheetReviewModal({
   }, [handleCombine, logBrandingWorkflowActivity]);
 
   const handleUnapproveWithActivity = useCallback(async () => {
-    await logBrandingWorkflowActivity("brandlist", "unapprove-sheet", "STARTED");
     await handleUnapproveSheet();
-  }, [handleUnapproveSheet, logBrandingWorkflowActivity]);
+  }, [handleUnapproveSheet]);
 
   return (
     <>
@@ -693,6 +728,9 @@ export function MultiSheetReviewModal({
                     projectCreatedAt={currentProject?.createdAt}
                     currentShift={user?.currentShift}
                     activitiesApiUrl={coverActivitiesApiUrl}
+                    brandingWorkbookHref={exportReadyHref}
+                    wireListSchemaHref={wireListSchemaHref}
+                    onDownloadAllWireLists={handleDownloadAllWireLists}
                     onContinue={handleContinueFromCoverWithActivity}
                     onSaveAndContinueLater={handleSaveAndContinueLater}
                     onImport={() => void handleImportFromCoverWithActivity()}

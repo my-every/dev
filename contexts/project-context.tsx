@@ -29,7 +29,7 @@ const ACTIVE_PROJECT_KEY = "wirelist_active_project";
 // ============================================================================
 
 async function fetchManifests(): Promise<ProjectManifest[]> {
-  const response = await fetch('/api/projects/projects', { cache: 'no-store' });
+  const response = await fetch('/api/projects', { cache: 'no-store' });
   if (!response.ok) return [];
   const payload = await response.json() as { manifests?: ProjectManifest[] };
   return payload.manifests ?? [];

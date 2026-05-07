@@ -37,6 +37,14 @@ extraResources:
     to: next-standalone/public
   - from: Share
     to: next-standalone/Share
+    filter:
+      - "**/*"
+      - "!Legal Drawings/**"
+      - "!Legal/**"
+      - "!Brand List/**"
+      - "!**/Legal Drawings/**"
+      - "!**/Legal/**"
+      - "!**/Brand List/**"
 win:
   icon: public/windows/icon.ico
   requestedExecutionLevel: asInvoker

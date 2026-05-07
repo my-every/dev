@@ -17,6 +17,8 @@ interface RuntimeSettings {
   shareDirectory?: string | null
   appMode?: AppLaunchMode
   firstLaunchCompleted?: boolean
+  legalDrawingsPath?: string | null
+  brandListPath?: string | null
 }
 
 type ShareDirectorySource = 'env' | 'config' | 'default' | 'standalone'
@@ -267,9 +269,36 @@ export async function setAppModeSettings(appMode: AppLaunchMode): Promise<{
     appMode: normalizedMode,
     firstLaunchCompleted: true,
   }))
-
+  
   return {
     appMode: normalizedMode,
     firstLaunchCompleted: true,
   }
 }
+
+  export async function getPathSettings(): Promise<{
+    legalDrawingsPath: string | null
+    brandListPath: string | null
+  }> {
+    const settings = await readRuntimeSettings()
+    return {
+      legalDrawingsPath: settings.legalDrawingsPath ?? null,
+      brandListPath: settings.brandListPath ?? null,
+    }
+  }
+
+  export async function setPathSettings(updates: {
+    legalDrawingsPath?: string | null
+    brandListPath?: string | null
+  }): Promise<{ legalDrawingsPath: string | null; brandListPath: string | null }> {
+    const updated = await updateRuntimeSettings(current => ({
+      ...current,
+      ...(Object.prototype.hasOwnProperty.call(updates, 'legalDrawingsPath') && { legalDrawingsPath: updates.legalDrawingsPath ?? null }),
+      ...(Object.prototype.hasOwnProperty.call(updates, 'brandListPath') && { brandListPath: updates.brandListPath ?? null }),
+    }))
+    return {
+      legalDrawingsPath: updated.legalDrawingsPath ?? null,
+      brandListPath: updated.brandListPath ?? null,
+    }
+  }
+

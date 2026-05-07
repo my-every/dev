@@ -176,7 +176,7 @@ export function ProjectFilesTab({ project, onNavigateToTab }: ProjectTabProps) {
                 </div>
                 {history?.folderName ? (
                   <a
-                    href={`/api/projects/projects/files?project=${encodeURIComponent(history.folderName)}&file=${encodeURIComponent(file.filename)}`}
+                    href={`/api/projects/files?project=${encodeURIComponent(history.folderName)}&file=${encodeURIComponent(file.filename)}`}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex h-8 items-center gap-1 rounded-md border border-border/60 px-2 text-xs hover:bg-muted/50"

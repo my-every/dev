@@ -1,7 +1,15 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
-import { BookOpen, FileUp, Layers3, LogIn, Activity, RefreshCw } from "lucide-react";
+import {
+  BookOpen,
+  FileText,
+  FileUp,
+  Layers3,
+  LogIn,
+  Activity,
+  RefreshCw,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -69,6 +77,9 @@ interface MultiSheetReviewCoverShellProps {
    * Used to synthesize a "Project created" seed entry when no activity exists.
    */
   projectCreatedAt?: string;
+  brandingWorkbookHref?: string | null;
+  wireListSchemaHref?: string | null;
+  onDownloadAllWireLists?: () => void;
   onContinue: () => Promise<void> | void;
   onImport: () => void;
   onOpenTutorial: () => void;
@@ -94,6 +105,9 @@ export function MultiSheetReviewCoverShell({
   currentShift,
   activitiesApiUrl,
   projectCreatedAt,
+  brandingWorkbookHref,
+  wireListSchemaHref,
+  onDownloadAllWireLists,
   onContinue,
   onImport,
   onOpenTutorial,
@@ -230,7 +244,7 @@ export function MultiSheetReviewCoverShell({
 
   // ── Render ──────────────────────────────────────────────────────────────
   return (
-    <div className="relative flex h-full w-full overflow-auto backdrop-blur-3xl  "    
+    <div className="relative flex h-full min-h-0 w-full overflow-hidden backdrop-blur-3xl"
     >
       {/* Ambient background gradient */}
       <div className="pointer-events-none absolute inset-0 "
@@ -249,7 +263,7 @@ export function MultiSheetReviewCoverShell({
         • Mobile  : single column, card → timeline stacked
         • lg+     : side-by-side, card fixed width | timeline flex-1
       */}
-      <div className="relative flex w-full  flex-col items-stretch gap-0 p-4 sm:p-6 lg:flex-row lg:items-start lg:justify-center lg:gap-6 lg:p-8 xl:p-10 2xl:p-12">
+      <div className="relative flex h-full min-h-0 w-full flex-col items-stretch gap-0 overflow-y-auto p-4 sm:p-6 lg:flex-row lg:items-start lg:justify-center lg:gap-6 lg:p-8 xl:p-10 2xl:p-12">
 
         {/* ── LEFT: Cover card ─────────────────────────────────────────── */}
         <div className="w-full shrink-0 sm:max-w-lg sm:self-center lg:max-w-none lg:self-auto lg:w-[420px] xl:w-[460px] max-h-[80vh]">
@@ -338,6 +352,58 @@ export function MultiSheetReviewCoverShell({
                 <FileUp className="mr-2 h-4 w-4" />
                 Import Brand List
               </Button>
+
+              {(brandingWorkbookHref || wireListSchemaHref || onDownloadAllWireLists) ? (
+                <div className="rounded-2xl border border-white/15 bg-white/5 p-2.5">
+                  <div className="mb-2 px-1 text-[11px] uppercase tracking-[0.14em] text-white/55">
+                    Exports
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    {brandingWorkbookHref ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="justify-start border-white/20 bg-white/6 text-white hover:bg-white/12 hover:text-white"
+                        onClick={() => {
+                          window.open(brandingWorkbookHref, "_blank", "noopener,noreferrer");
+                        }}
+                      >
+                        <FileText className="mr-2 h-4 w-4" />
+                        Download Brand List Workbook
+                      </Button>
+                    ) : null}
+
+                    {wireListSchemaHref ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="justify-start border-white/20 bg-white/6 text-white hover:bg-white/12 hover:text-white"
+                        onClick={() => {
+                          window.open(wireListSchemaHref, "_blank", "noopener,noreferrer");
+                        }}
+                      >
+                        <Layers3 className="mr-2 h-4 w-4" />
+                        Download Wire List Schema
+                      </Button>
+                    ) : null}
+
+                    {onDownloadAllWireLists ? (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="justify-start border-white/20 bg-white/6 text-white hover:bg-white/12 hover:text-white"
+                        onClick={onDownloadAllWireLists}
+                      >
+                        <BookOpen className="mr-2 h-4 w-4" />
+                        Download Exported PDFs
+                      </Button>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
             </div>
 
             {/* Auth row */}
@@ -389,11 +455,11 @@ export function MultiSheetReviewCoverShell({
         {/* ── RIGHT: Activity timeline panel ───────────────────────────── */}
         <div
           className={cn(
-            "flex w-full flex-col overflow-hidden rounded-3xl border border-border/70",
+            "flex w-full min-h-0 flex-col overflow-hidden rounded-3xl border border-border/70",
             "bg-card/95 text-card-foreground",
             "shadow-2xl backdrop-blur-xl",
             // On mobile allow it to grow naturally; on lg+ fill remaining width
-            "min-h-[480px] lg:flex-1 lg:max-w-[620px]",
+            "min-h-[480px] lg:flex-1 lg:max-h-[80vh] lg:max-w-[620px]",
           )}
         >
           {/* Panel header */}
@@ -429,7 +495,7 @@ export function MultiSheetReviewCoverShell({
           </div>
 
           {/* Scrollable timeline body */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="min-h-0 flex-1 overflow-y-auto">
             {resolvedApiUrl ? (
               <ActivityTimeline
                 activities={displayActivities}

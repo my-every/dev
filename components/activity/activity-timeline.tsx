@@ -216,6 +216,11 @@ interface ActivityAttachmentLink {
   href: string;
 }
 
+interface GroupedTimelineActivity {
+  primary: ActivityEntry;
+  groupedChildren: ActivityEntry[];
+}
+
 function normalizeBadgeId(value?: string): string | null {
   if (!value) return null;
   const digits = value.replace(/\D+/g, "");
@@ -236,6 +241,15 @@ function readMilestoneKey(metadata?: Record<string, unknown>): string {
   return typeof metadata?.milestone === "string"
     ? metadata.milestone.toLowerCase()
     : "";
+}
+
+function getTimelineGroupingKey(activity: ActivityEntry): string {
+  const metadata = (activity.metadata ?? {}) as Record<string, unknown>;
+  const workflow =
+    typeof metadata.workflow === "string" ? metadata.workflow.toLowerCase() : "";
+  const scope =
+    typeof metadata.scope === "string" ? metadata.scope.toLowerCase() : "";
+  return [activity.action, activity.projectId ?? "", workflow, scope].join("|");
 }
 
 function isLifecycleUserAction(activity: ActivityEntry): boolean {
@@ -1310,6 +1324,36 @@ export function ActivityTimeline({
     return lifecycle;
   }, [activities, filterMode, searchTerm, sortOrder, maxItems]);
 
+  const groupedActivities = useMemo<GroupedTimelineActivity[]>(() => {
+    if (!showNestedActivities || filteredActivities.length === 0) {
+      return filteredActivities.map((activity) => ({
+        primary: activity,
+        groupedChildren: [],
+      }));
+    }
+
+    const groups: GroupedTimelineActivity[] = [];
+    for (const activity of filteredActivities) {
+      const previous = groups[groups.length - 1];
+      if (!previous) {
+        groups.push({ primary: activity, groupedChildren: [] });
+        continue;
+      }
+
+      if (
+        getTimelineGroupingKey(previous.primary) ===
+        getTimelineGroupingKey(activity)
+      ) {
+        previous.groupedChildren.push(activity);
+        continue;
+      }
+
+      groups.push({ primary: activity, groupedChildren: [] });
+    }
+
+    return groups;
+  }, [filteredActivities, showNestedActivities]);
+
   const stats = useMemo(() => {
     if (!showStats) return null;
     const actionCounts: Record<string, number> = {};
@@ -1901,14 +1945,16 @@ export function ActivityTimeline({
         )}
 
         {!loading &&
-          filteredActivities.map((activity, idx) => {
+          groupedActivities.map((group, idx) => {
+            const activity = group.primary;
+            const groupedChildren = group.groupedChildren;
             const {
               icon: Icon,
               color,
               bg,
               border,
             } = getActivityIcon(activity.action);
-            const isLast = idx === filteredActivities.length - 1;
+            const isLast = idx === groupedActivities.length - 1;
             const isExpanded = expandedActivities.has(activity.id);
             const isClicked = clickedActivityId === activity.id;
             const metadata = activity.metadata as
@@ -1918,8 +1964,11 @@ export function ActivityTimeline({
             const hasRelated =
               !isSyntheticSummary &&
               showNestedActivities &&
-              activity.relatedActivityIds &&
-              activity.relatedActivityIds.length > 0;
+              (
+                (activity.relatedActivityIds &&
+                  activity.relatedActivityIds.length > 0) ||
+                groupedChildren.length > 0
+              );
             const hasComments =
               !isSyntheticSummary &&
               showComments &&
@@ -2277,7 +2326,25 @@ export function ActivityTimeline({
                                   🔗 Related Processes:
                                 </h4>
                                 <div className="space-y-1 max-h-48 overflow-y-auto">
-                                  {activity.relatedActivityIds!.map(
+                                  {groupedChildren.map((nested) => (
+                                    <div
+                                      key={`${activity.id}-grouped-${nested.id}`}
+                                      className="rounded border border-border/50 bg-background p-2 text-xs transition-colors hover:border-border"
+                                    >
+                                      <div className="font-medium">
+                                        {buildStructuredTitle(nested)}
+                                      </div>
+                                      <div className="text-muted-foreground">
+                                        <span suppressHydrationWarning>
+                                          {formatDistanceToNow(
+                                            new Date(nested.timestamp),
+                                            { addSuffix: true },
+                                          )}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  ))}
+                                  {(activity.relatedActivityIds ?? []).map(
                                     (relatedId) => {
                                       const relatedActivity = activities.find(
                                         (a) => a.id === relatedId,

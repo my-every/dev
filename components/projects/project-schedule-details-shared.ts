@@ -130,7 +130,7 @@ export function formatStageLabel(stage: string): string {
 }
 
 export async function loadProjectScheduleDetailsData(row: ProjectScheduleSlotsTableRow): Promise<ProjectScheduleDetailsDataPayload> {
-  const response = await fetch("/api/projects/projects", { cache: "no-store" });
+  const response = await fetch("/api/projects", { cache: "no-store" });
   if (!response.ok) {
     throw new Error("Failed to load project manifests");
   }

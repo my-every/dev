@@ -1,8 +1,8 @@
 "use client";
 
-import { FormEvent, Suspense, useMemo, useState } from "react";
+import { FormEvent, Suspense, useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { LogIn, RotateCcw, ShieldCheck } from "lucide-react";
 
 import { D380Logo } from "@/components/projects/layout/logo";
@@ -14,8 +14,6 @@ import { useSession } from "@/hooks/use-session";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
-const ALLOWED_DESTINATIONS = new Set(["projects", "schedule", "parts"]);
-
 function normalizeBadge(value: string) {
   return value.trim().replace(/\D/g, "");
 }
@@ -24,15 +22,10 @@ function normalizePin(value: string) {
   return value.trim().replace(/\D/g, "").slice(0, 4);
 }
 
-function resolveDestination(value: string | null) {
-  return value && ALLOWED_DESTINATIONS.has(value) ? value : "projects";
-}
-
 // ── Main content ──────────────────────────────────────────────────────────────
 
 function AppLauncherContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { user, isAuthenticated, isLoading, signIn, signOut } = useSession();
   const [badge, setBadge] = useState("");
   const [pin, setPin] = useState("");
@@ -40,12 +33,7 @@ function AppLauncherContent() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pinResetBadge, setPinResetBadge] = useState<string | null>(null);
 
-  const destination = useMemo(
-    () => resolveDestination(searchParams.get("to")),
-    [searchParams],
-  );
-  const activeBadge = user?.badge ?? normalizeBadge(badge);
-  const launchHref = activeBadge ? `/${activeBadge}/${destination}` : "/380";
+  const launchHref = "/380/projects";
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -72,12 +60,12 @@ function AppLauncherContent() {
       return;
     }
 
-    router.push(`/${nextBadge}/${destination}`);
+    router.push("/380/projects");
   }
 
   // ── Sign-in panel content ──────────────────────────────────────────────────
 
-  const signedInPanel = isAuthenticated && activeBadge ? (
+  const signedInPanel = isAuthenticated ? (
     <div className="space-y-3">
       <div className="rounded-2xl border border-yellow-400 bg-muted/10 backdrop-blur-sm p-4">
         <div className="flex items-center gap-3">
@@ -99,7 +87,7 @@ function AppLauncherContent() {
       <Button asChild className="w-full rounded-xl bg-yellow-400 text-foreground hover:bg-yellow-500">
         <Link href={launchHref}>
           <LogIn className="mr-1.5 size-3.5" />
-          Continue to {destination}
+          Continue to Revision Review
         </Link>
       </Button>
 
@@ -128,7 +116,7 @@ function AppLauncherContent() {
           value={badge}
           placeholder="e.g. 1001"
           onChange={(e) => setBadge(normalizeBadge(e.target.value))}
-          className="rounded-xl border-border bg-muted text-foreground placeholder:text-muted-foreground"
+          className="rounded-xl border-border bg-muted/30 text-foreground placeholder:text-muted-foreground"
         />
       </div>
       <div className="space-y-1.5">
@@ -141,7 +129,7 @@ function AppLauncherContent() {
           value={pin}
           placeholder="4-digit PIN"
           onChange={(e) => setPin(normalizePin(e.target.value))}
-          className="rounded-xl border-border bg-muted text-foreground placeholder:text-muted-foreground"
+          className="rounded-xl border-border bg-muted/30 text-foreground placeholder:text-muted-foreground"
         />
       </div>
       {error && (
@@ -152,7 +140,7 @@ function AppLauncherContent() {
       <Button
         type="submit"
         disabled={isSubmitting || isLoading}
-        className="w-full rounded-xl bg-background text-foreground hover:bg-background"
+        className="w-full rounded-xl bg-yellow-400 text-foreground hover:bg-yellow-500"
       >
         {isSubmitting ? "Signing in…" : "Sign in and continue"}
       </Button>
@@ -172,7 +160,7 @@ function AppLauncherContent() {
           onOpenChange={(open) => {
             if (!open) {
               setPinResetBadge(null);
-              router.push(`/${pinResetBadge}/${destination}`);
+              router.push("/380/projects");
             }
           }}
         />
@@ -193,12 +181,11 @@ function AppLauncherContent() {
                 <D380Logo size="sm" />
                 <div>
                   <div className="text-sm font-semibold tracking-tight text-foreground">D380</div>
-                  <div className="text-[11px] text-muted-foreground">App launcher</div>
                 </div>
               </div>
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <ShieldCheck className="size-3.5" />
-                <span>Secure sign-in</span>
+                <span>Secure Sign-in</span>
               </div>
             </div>
 
@@ -224,7 +211,7 @@ function AppLauncherContent() {
               variant="ghost"
               className="w-full rounded-xl border border-border bg-transparent text-xs text-muted-foreground hover:bg-muted hover:text-foreground"
             >
-              <Link href="/startup">Startup settings</Link>
+              <Link href="/startup">Startup Settings</Link>
             </Button>
           </div>
         </div>

@@ -85,7 +85,7 @@ function isPartListSheetName(name: string): boolean {
 }
 
 function buildLegalDrawingsHref(projectFolder: string, fileName: string): string {
-  return `/api/projects/projects/files?project=${encodeURIComponent(projectFolder)}&file=${encodeURIComponent(fileName)}`
+  return `/api/projects/files?project=${encodeURIComponent(projectFolder)}&file=${encodeURIComponent(fileName)}`
 }
 
 function findBlueLabelsSheet(sheets: ParsedWorkbookSheet[]): ParsedWorkbookSheet | null {

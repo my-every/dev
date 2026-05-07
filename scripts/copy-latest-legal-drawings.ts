@@ -22,6 +22,7 @@ interface CandidateFile {
 interface ProjectResult {
 	projectFolderName: string;
 	projectNumber: string;
+	projectName: string;
 	copiedFiles: CandidateFile[];
 }
 
@@ -140,6 +141,16 @@ function getProjectNumber(projectFolderName: string): string {
 	return prefix?.trim() || projectFolderName;
 }
 
+/**
+ * Extracts the human-readable project name from a folder formatted as
+ * `P#_ProjectName`. Returns an empty string when there is no underscore.
+ */
+function getProjectName(projectFolderName: string): string {
+	const underscoreIndex = projectFolderName.indexOf("_");
+	if (underscoreIndex === -1) return "";
+	return projectFolderName.slice(underscoreIndex + 1).trim();
+}
+
 function getMatchKind(fileName: string): MatchKind | null {
 	const extension = path.extname(fileName).toLowerCase();
 	const baseName = path.basename(fileName, extension).toLowerCase();
@@ -240,7 +251,9 @@ function copyProjectFiles(options: CliOptions): ProjectResult[] {
 
 		const copiedFiles = findLatestMatches(electricalPath, options.fromTimeMs);
 		const projectNumber = getProjectNumber(projectDirectory.name);
-		const destinationDirectory = path.join(options.outputRoot, projectNumber);
+		const projectName = getProjectName(projectDirectory.name);
+		const destinationFolderName = projectName ? `${projectNumber}_${projectName}` : projectNumber;
+		const destinationDirectory = path.join(options.outputRoot, destinationFolderName);
 
 		if (copiedFiles.length > 0 && !options.dryRun) {
 			fs.mkdirSync(destinationDirectory, { recursive: true });
@@ -257,6 +270,7 @@ function copyProjectFiles(options: CliOptions): ProjectResult[] {
 		results.push({
 			projectFolderName: projectDirectory.name,
 			projectNumber,
+			projectName,
 			copiedFiles,
 		});
 	}
@@ -276,7 +290,11 @@ function printResults(results: ProjectResult[], options: CliOptions): void {
 	}
 
 	for (const result of results) {
-		console.log(`${result.projectFolderName} -> ${path.join(options.outputRoot, result.projectNumber)}`);
+		const destinationFolderName = result.projectName ? `${result.projectNumber}_${result.projectName}` : result.projectNumber;
+		console.log(`${result.projectFolderName} -> ${path.join(options.outputRoot, destinationFolderName)}`);
+		if (result.projectName) {
+			console.log(`  Project name: ${result.projectName}`);
+		}
 
 		if (result.copiedFiles.length === 0) {
 			console.log("  No matching UCP spreadsheet, UCP WL Compare spreadsheet, UCP wire list spreadsheet, or LAY PDF found.");
