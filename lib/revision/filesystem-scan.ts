@@ -501,7 +501,7 @@ export async function scanProjectRevisionsFromFilesystem(
     )
   }
 
-  const nowMs = Date.now()
+  const currentTimeMs = Date.now()
   const projects: ProjectRevisionTreeRow[] = []
 
   for (const aggregate of aggregates.values()) {
@@ -520,7 +520,7 @@ export async function scanProjectRevisionsFromFilesystem(
       revisionPairState,
       candidateFiles,
       Boolean(aggregate.brandRootPath),
-      nowMs,
+      currentTimeMs,
     )
 
     const latestModifiedTimeMs = candidateFiles[0]?.modifiedTimeMs ?? 0

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Check, FolderOpen, Loader2, Save } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, FolderOpen, Loader2, Save } from "lucide-react";
 
 import { D380Logo } from "@/components/projects/layout/logo";
 import { Button } from "@/components/ui/button";
@@ -208,6 +208,18 @@ export function PathSettingsForm() {
               )}
               {isSaving ? "Saving…" : saved ? "Saved" : "Save Settings"}
             </Button>
+
+            {saved && (
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full gap-2"
+                onClick={() => router.push("/380/projects")}
+              >
+                Go to 380 Projects
+                <ArrowRight className="size-4" />
+              </Button>
+            )}
           </div>
         )}
       </main>
