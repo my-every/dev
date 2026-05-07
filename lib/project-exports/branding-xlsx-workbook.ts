@@ -15,7 +15,7 @@ const TITLE_STYLE = {
 const SUBHEADER_STYLE = {
   font: { bold: true },
   alignment: { wrapText: true, vertical: "center" as const },
-  fill: { fgColor: { rgb: "EEF2FF" } },
+  fill: { fgColor: { rgb: "E3E3E3" } },
 };
 
 const PREFIX_GROUP_STYLE = {
@@ -27,7 +27,7 @@ const PREFIX_GROUP_STYLE = {
 const BUNDLE_HEADER_STYLE = {
   font: { bold: true },
   alignment: { wrapText: true, vertical: "center" as const },
-  fill: { fgColor: { rgb: "EEF2FF" } },
+  fill: { fgColor: { rgb: "E3E3E3" } },
 };
 
 const DATA_CELL_STYLE = {
