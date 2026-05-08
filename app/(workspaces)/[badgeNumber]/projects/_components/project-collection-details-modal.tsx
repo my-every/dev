@@ -702,6 +702,9 @@ export function ProjectCollectionDetailsModal({
   const [crossWireSettingsMessage, setCrossWireSettingsMessage] = useState<
     string | null
   >(null);
+  const [crossWireSwapLocationsAll, setCrossWireSwapLocationsAll] = useState(false);
+  const [crossWireSwapLocationsBySheet, setCrossWireSwapLocationsBySheet] =
+    useState<Record<string, boolean>>({});
 
   const [layoutWorkspaceOpen, setLayoutWorkspaceOpen] = useState(false);
   const [wireReviewOpen, setWireReviewOpen] = useState(false);
@@ -766,6 +769,8 @@ export function ProjectCollectionDetailsModal({
       setHasLoadedCrossWireSchema(false);
       setSavingCrossWireSettingsBySheet({});
       setCrossWireSettingsMessage(null);
+      setCrossWireSwapLocationsAll(false);
+      setCrossWireSwapLocationsBySheet({});
       setSelectedAssignmentSlug(null);
       return;
     }
@@ -786,6 +791,8 @@ export function ProjectCollectionDetailsModal({
     setRegeneratingBrandBySheet({});
     setSavingCrossWireSettingsBySheet({});
     setCrossWireSettingsMessage(null);
+    setCrossWireSwapLocationsAll(false);
+    setCrossWireSwapLocationsBySheet({});
     setSchemaExternalLocations({});
     setResolvedVisibilityBySheet({});
     setRefreshJob(null);
@@ -838,6 +845,35 @@ export function ProjectCollectionDetailsModal({
       ) ?? null,
     [assignmentEntries, selectedAssignmentSlug],
   );
+
+  const selectedCrossWireSwapSheetSlugs = useMemo(
+    () =>
+      Object.entries(crossWireSwapLocationsBySheet)
+        .filter(([, checked]) => checked)
+        .map(([sheetSlug]) => sheetSlug),
+    [crossWireSwapLocationsBySheet],
+  );
+
+  const crossWirePreviewHref = useMemo(() => {
+    const baseHref = `/print/project-context/${encodeURIComponent(currentProject?.id ?? "")}/cross-wire`;
+    if (!currentProject?.id) {
+      return baseHref;
+    }
+
+    const params = new URLSearchParams();
+    if (crossWireSwapLocationsAll) {
+      params.set("swapLocations", "1");
+    } else if (selectedCrossWireSwapSheetSlugs.length > 0) {
+      params.set("swapSheets", selectedCrossWireSwapSheetSlugs.join(","));
+    }
+
+    const query = params.toString();
+    return query ? `${baseHref}?${query}` : baseHref;
+  }, [
+    crossWireSwapLocationsAll,
+    currentProject?.id,
+    selectedCrossWireSwapSheetSlugs,
+  ]);
 
   const latestLegalRevisionRecord = useMemo(() => {
     if (!legalDetail?.revisions?.length) {
@@ -2166,6 +2202,21 @@ export function ProjectCollectionDetailsModal({
   }, [currentProject?.id, refreshCrossWireSchema]);
 
   if (!currentProject) return null;
+
+  const handleCrossWireSwapBySheet = (sheetSlug: string, checked: boolean) => {
+    setCrossWireSwapLocationsBySheet((previous) => ({
+      ...previous,
+      [sheetSlug]: checked,
+    }));
+  };
+
+  const setAllCrossWireSwapBySheet = (checked: boolean) => {
+    const next: Record<string, boolean> = {};
+    for (const assignment of assignmentEntries) {
+      next[assignment.sheetSlug] = checked;
+    }
+    setCrossWireSwapLocationsBySheet(next);
+  };
 
   const openLayoutWorkspace = () => {
     setLayoutWorkspaceOpen(true);
@@ -4077,7 +4128,7 @@ export function ProjectCollectionDetailsModal({
                         PDF
                       </a>
                       <a
-                        href={`/print/project-context/${encodeURIComponent(currentProject.id)}/cross-wire`}
+                        href={crossWirePreviewHref}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex h-8 items-center gap-1.5 rounded-md border border-input bg-background px-3 text-xs font-medium text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
@@ -4086,6 +4137,64 @@ export function ProjectCollectionDetailsModal({
                         Open External URL
                       </a>
                     </div>
+                  </div>
+
+                  <div className="space-y-2 rounded-lg border border-border/60 bg-card/20 px-3 py-2">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <div className="text-xs font-semibold text-foreground">Swap From/To Locations</div>
+                        <p className="text-[11px] text-card-foreground">
+                          Choose all assignments or set swapped columns individually per sheet.
+                        </p>
+                      </div>
+                      <Switch
+                        checked={crossWireSwapLocationsAll}
+                        onCheckedChange={setCrossWireSwapLocationsAll}
+                        aria-label="Toggle swapped cross wire locations for all assignments"
+                      />
+                    </div>
+
+                    {!crossWireSwapLocationsAll ? (
+                      <>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            className="h-7 px-2 text-[11px]"
+                            onClick={() => setAllCrossWireSwapBySheet(true)}
+                          >
+                            Set all
+                          </Button>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            className="h-7 px-2 text-[11px]"
+                            onClick={() => setAllCrossWireSwapBySheet(false)}
+                          >
+                            Clear all
+                          </Button>
+                        </div>
+                        <div className="grid gap-1 sm:grid-cols-2">
+                          {assignmentEntries.map((assignment) => (
+                            <label
+                              key={`swap-${assignment.sheetSlug}`}
+                              className="flex items-center justify-between rounded border border-border/60 px-2 py-1.5 text-xs"
+                            >
+                              <span className="truncate">{assignment.sheetName}</span>
+                              <Switch
+                                checked={crossWireSwapLocationsBySheet[assignment.sheetSlug] ?? false}
+                                onCheckedChange={(checked) =>
+                                  handleCrossWireSwapBySheet(assignment.sheetSlug, checked)
+                                }
+                                aria-label={`Toggle swapped locations for ${assignment.sheetName}`}
+                              />
+                            </label>
+                          ))}
+                        </div>
+                      </>
+                    ) : null}
                   </div>
 
                   {crossWireSettingsMessage ? (
