@@ -404,6 +404,9 @@ export async function buildManifestAssignmentSummaries(
       },
       buildUpEstTime: formatMinutes(estimates.buildUp),
       wireListEstTime: formatMinutes(estimates.wireList),
+      normalizedTitle: normalizedLayout?.primaryPage?.normalizedTitle ?? assignment.normalizedTitle,
+      panelNumber: normalizedLayout?.primaryPage?.panelNumber ?? assignment.panelNumber,
+      boxNumber: normalizedLayout?.primaryPage?.boxNumber ?? assignment.boxNumber,
       layout: normalizedLayout,
     }
   }

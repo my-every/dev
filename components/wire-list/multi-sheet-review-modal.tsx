@@ -19,7 +19,6 @@ import { MultiSheetReviewCoverShell } from "@/components/wire-list/multi-sheet-r
 import { MultiSheetReviewHeaderBar } from "@/components/wire-list/multi-sheet-review-header-bar";
 import { MultiSheetReviewSequenceDialog } from "@/components/wire-list/multi-sheet-review-sequence-dialog";
 import { MultiSheetPreparingShell } from "@/components/wire-list/multi-sheet-review-preparing-shell";
-import { MultiSheetReviewStateDialog } from "@/components/wire-list/multi-sheet-review-state-dialog";
 import { MultiSheetReviewTutorialDialog } from "@/components/wire-list/multi-sheet-review-tutorial-dialog";
 import { MultiSheetReviewWorkspaceShell } from "@/components/wire-list/multi-sheet-review-workspace-shell";
 import { useMultiSheetBrandReviewController } from "@/components/wire-list/use-multi-sheet-brand-review-controller";
@@ -567,10 +566,7 @@ export function MultiSheetReviewModal({
     setLoginOpen(true);
   }, [logBrandingWorkflowActivity]);
 
-  const handleStartReviewFromStateDialog = useCallback(() => {
-    setStateReviewOpen(false);
-    void beginReviewSurface(false);
-  }, [beginReviewSurface]);
+
 
   const activeNavigationItem = activeSlug
     ? navigationItems.find((item) => item.slug === activeSlug) ?? null
@@ -877,12 +873,6 @@ export function MultiSheetReviewModal({
         onPositionChange={setLayoutPreviewPosition}
       />
 
-      <MultiSheetReviewStateDialog
-        open={stateReviewOpen}
-        onOpenChange={setStateReviewOpen}
-        reviewState={reviewState}
-        onStartReview={handleStartReviewFromStateDialog}
-      />
 
       <MultiSheetReviewSequenceDialog
         open={reviewSequenceOpen}

@@ -206,6 +206,8 @@ async function hydrateManifestOperationalMetrics(
         status: nextStatus,
         linkedOperationCode: assignment.linkedOperationCode ?? boardAssignment?.operationCode ?? swsConfig?.linkedOperationCode ?? null,
         defaultOperationCodeByStage: assignment.defaultOperationCodeByStage ?? swsConfig?.defaultOperationCodeByStage ?? {},
+        assignedBadge: boardAssignment?.assignedBadge ?? assignment.assignedBadge ?? null,
+        workflowStatus: boardAssignment?.workflowStatus ?? assignment.workflowStatus ?? null,
         boardAssignment: boardAssignment ? {
           ...boardAssignment,
           actualStartTime: latestStart ?? boardAssignment.actualStartTime ?? null,
@@ -253,6 +255,8 @@ function ensureManifestBoardAssignments(manifest: ProjectManifest): ProjectManif
               actualEndTime: existingBoardAssignment.actualEndTime ?? null,
               activeOperationEntryId: existingBoardAssignment.activeOperationEntryId ?? null,
             },
+            assignedBadge: existingBoardAssignment.assignedBadge ?? null,
+            workflowStatus: existingBoardAssignment.workflowStatus ?? (existingBoardAssignment.workAreaId ? 'scheduled' : 'pending'),
             linkedOperationCode: assignment.linkedOperationCode ?? existingBoardAssignment.operationCode ?? null,
             defaultOperationCodeByStage: assignment.defaultOperationCodeByStage ?? {},
           },
@@ -654,6 +658,13 @@ export async function updateManifestBoardAssignment(
     return null
   }
 
+  const mergedBoardAssignment = {
+    ...(assignment.boardAssignment ?? {
+      assignmentId: `${projectId}:${sheetSlug}`,
+      estimatedMinutes: deriveEstimatedMinutes(assignment.buildUpEstTime, assignment.wireListEstTime),
+    }),
+    ...updates,
+  }
   manifest.assignments[sheetSlug] = {
     ...assignment,
     linkedOperationCode: updates.operationCode ?? assignment.linkedOperationCode ?? null,
@@ -661,13 +672,9 @@ export async function updateManifestBoardAssignment(
       ...(assignment.defaultOperationCodeByStage ?? {}),
       ...(updates.operationCode ? { [assignment.stage]: updates.operationCode } : {}),
     },
-    boardAssignment: {
-      ...(assignment.boardAssignment ?? {
-        assignmentId: `${projectId}:${sheetSlug}`,
-        estimatedMinutes: deriveEstimatedMinutes(assignment.buildUpEstTime, assignment.wireListEstTime),
-      }),
-      ...updates,
-    },
+    assignedBadge: mergedBoardAssignment.assignedBadge ?? assignment.assignedBadge ?? null,
+    workflowStatus: mergedBoardAssignment.workflowStatus ?? assignment.workflowStatus ?? null,
+    boardAssignment: mergedBoardAssignment,
   }
 
   return writeProjectManifest(manifest)

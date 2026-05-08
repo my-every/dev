@@ -569,6 +569,7 @@ export function ProjectCollectionDetailsModal({
   const [selectedAssignmentSlug, setSelectedAssignmentSlug] = useState<
     string | null
   >(null);
+  const [assignmentGroupMode, setAssignmentGroupMode] = useState<"flat" | "unit-type">("flat");
 
   const [brandListSettingsMatrix, setBrandListSettingsMatrix] =
     useState<WireListSettingsMatrix>({});
@@ -636,6 +637,17 @@ export function ProjectCollectionDetailsModal({
       ),
     [assignmentEntries, schemaExternalLocations],
   );
+
+  const assignmentGroups = useMemo(() => {
+    if (assignmentGroupMode === "flat") return null;
+    const groups = new Map<string, typeof assignmentEntries>();
+    for (const a of assignmentEntries) {
+      const key = a.unitType || "—";
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key)!.push(a);
+    }
+    return Array.from(groups.entries()).sort(([a], [b]) => a.localeCompare(b));
+  }, [assignmentEntries, assignmentGroupMode]);
 
   useEffect(() => {
     if (!currentProject) {
@@ -1411,7 +1423,7 @@ export function ProjectCollectionDetailsModal({
                     value={tab.id}
                     disabled={isDisabled}
                     className={cn(
-                      "w-full justify-start gap-2 rounded-lg px-3 py-2 text-sm font-medium",
+                      "w-full justify-start gap-2 rounded-lg px-3 py-2 text-sm max-h-max font-medium",
                       "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
                       "text-card-foreground hover:bg-muted/50 hover:text-foreground",
                       isDisabled &&
@@ -1428,7 +1440,7 @@ export function ProjectCollectionDetailsModal({
               })}
             </TabsList>
 
-            <div className="min-h-0 flex-1 overflow-hidden">
+            <div className="min-h-0 flex-1 overflow-y-scroll">
               <TabsContent value="details" className="m-0 h-full">
                 <ProjectTabContentShell meta={getTabMeta("details")}>
 
@@ -1640,22 +1652,48 @@ export function ProjectCollectionDetailsModal({
                 <ProjectTabContentShell meta={getTabMeta("assignments")} selectedAssignment={selectedAssignment}>
 
                 {assignmentEntries.length > 0 ? (
-                  <div className="grid grid-cols-3  gap-2 rounded-xl border border-border bg-background/40 p-3">
-                    <div className="flex flex-col items-center gap-0.5 py-1">
-                      <span className="text-lg font-semibold text-foreground">{assignmentEntries.length}</span>
-                      <span className="text-[11px] text-card-foreground">Total</span>
+                  <div className="flex items-center gap-3 rounded-xl border border-border bg-background/40 p-3">
+                    <div className="flex flex-1 items-center divide-x divide-border">
+                      <div className="flex flex-col items-center gap-0.5 py-1 pr-4">
+                        <span className="text-lg font-semibold text-foreground">{assignmentEntries.length}</span>
+                        <span className="text-[11px] text-card-foreground">Total</span>
+                      </div>
+                      <div className="flex flex-col items-center gap-0.5 py-1 px-4">
+                        <span className="text-lg font-semibold text-foreground">
+                          {assignmentEntries.filter((a) => a.status === "completed").length}
+                        </span>
+                        <span className="text-[11px] text-card-foreground">Completed</span>
+                      </div>
+                      <div className="flex flex-col items-center gap-0.5 py-1 pl-4">
+                        <span className="text-lg font-semibold text-foreground">
+                          {assignmentEntries.filter((a) => Boolean(a.swsType)).length}
+                        </span>
+                        <span className="text-[11px] text-card-foreground">With SWS</span>
+                      </div>
                     </div>
-                    <div className="flex flex-col items-center gap-0.5 py-1 border-x border-border">
-                      <span className="text-lg font-semibold text-foreground">
-                        {assignmentEntries.filter((a) => a.status === "completed").length}
-                      </span>
-                      <span className="text-[11px] text-card-foreground">Completed</span>
-                    </div>
-                    <div className="flex flex-col items-center gap-0.5 py-1">
-                      <span className="text-lg font-semibold text-foreground">
-                        {assignmentEntries.filter((a) => Boolean(a.swsType)).length}
-                      </span>
-                      <span className="text-[11px] text-card-foreground">With SWS</span>
+                    <div className="flex items-center gap-1 rounded-lg border border-border bg-muted/40 p-0.5 text-xs shrink-0">
+                      <button
+                        onClick={() => setAssignmentGroupMode("flat")}
+                        className={cn(
+                          "rounded-md px-2.5 py-1 font-medium transition-colors",
+                          assignmentGroupMode === "flat"
+                            ? "bg-background text-foreground shadow-sm"
+                            : "text-card-foreground hover:text-foreground",
+                        )}
+                      >
+                        Assignments
+                      </button>
+                      <button
+                        onClick={() => setAssignmentGroupMode("unit-type")}
+                        className={cn(
+                          "rounded-md px-2.5 py-1 font-medium transition-colors",
+                          assignmentGroupMode === "unit-type"
+                            ? "bg-background text-foreground shadow-sm"
+                            : "text-card-foreground hover:text-foreground",
+                        )}
+                      >
+                        Unit Type
+                      </button>
                     </div>
                   </div>
                 ) : null}
@@ -1667,137 +1705,163 @@ export function ProjectCollectionDetailsModal({
                   />
                 ) : (
                   <div className="rounded-xl border border-border overflow-hidden">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead className="w-8 px-3 py-2" />
-                            <TableHead className="py-2">Project</TableHead>
-                            <TableHead className="py-2">Stage</TableHead>
-                            <TableHead className="py-2">Status</TableHead>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-8 px-3 py-2" />
+                          <TableHead className="py-2">Project</TableHead>
+                          <TableHead className="py-2">Stage</TableHead>
+                          <TableHead className="py-2">Status</TableHead>
+                          {assignmentGroupMode === "flat" ? (
                             <TableHead className="py-2">Unit Type</TableHead>
-                            <TableHead className="py-2">SWS</TableHead>
-
-                            <TableHead className="py-2" />
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {assignmentEntries.map((assignment, idx) => {
-                            const isExpanded = expandedAssignments.has(
-                              assignment.sheetSlug,
-                            );
-                            const toggleExpand = () => {
-                              if (isExpanded) {
-                                setExpandedAssignments(new Set());
-                                setSelectedAssignmentSlug((prev) =>
-                                  prev === assignment.sheetSlug ? null : prev,
-                                );
-                                return;
-                              }
-                              setExpandedAssignments(
-                                new Set([assignment.sheetSlug]),
-                              );
-                              setSelectedAssignmentSlug(assignment.sheetSlug);
-                            };
-
-                            return (
-                              <React.Fragment key={assignment.sheetSlug}>
-                                <TableRow
-                                  index={idx}
-                                  className={cn(
-                                    "cursor-pointer",
-                                    isExpanded && "bg-card/20",
-                                  )}
-                                  onClick={toggleExpand}
-                                >
-                                  <TableCell className="px-3 py-2.5">
-                                    <ChevronRight
-                                      className={cn(
-                                        "h-3.5 w-3.5 text-card-foreground transition-transform duration-150",
-                                        isExpanded && "rotate-90",
-                                      )}
-                                    />
-                                  </TableCell>
-                                  <TableCell className="py-2.5">
-                                    <div className="text-sm font-medium text-foreground">
-                                      {assignment.sheetName}
+                          ) : null}
+                          <TableHead className="py-2">SWS</TableHead>
+                          <TableHead className="py-2" />
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {assignmentGroups
+                          ? assignmentGroups.map(([unitType, groupAssignments]) => (
+                              <React.Fragment key={unitType}>
+                                <tr className="bg-muted/40 border-b border-border/60">
+                                  <td colSpan={6} className="px-4 py-2">
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-[11px] font-semibold uppercase tracking-wide text-card-foreground">
+                                        {unitType}
+                                      </span>
+                                      <span className="text-[11px] text-card-foreground/50">
+                                        {groupAssignments.length} assignment{groupAssignments.length !== 1 ? "s" : ""}
+                                      </span>
                                     </div>
-                                  </TableCell>
-                                  <TableCell className="py-2.5">
-                                    <Badge
-                                      variant="outline"
-                                      className="h-5 text-[10px]"
-                                    >
-                                      {formatTokenLabel(assignment.stage)}
-                                    </Badge>
-                                  </TableCell>
-                                  <TableCell className="py-2.5">
-                                    <Badge
-                                      variant="secondary"
-                                      className="h-5 text-[10px]"
-                                    >
-                                      {formatTokenLabel(assignment.status)}
-                                    </Badge>
-                                  </TableCell>
-                                  <TableCell className="py-2.5 text-sm">
-                                    {assignment.unitType || "—"}
-                                  </TableCell>
-                                  <TableCell className="py-2.5 text-sm">
-                                    {assignment.swsType || "—"}
-                                  </TableCell>
-
-                                  <TableCell className="py-2.5">
-                                    <div
-                                      className="flex items-center justify-end gap-1"
-                                      onClick={(e) => e.stopPropagation()}
-                                    >
-                                      {assignment.files.wireListPDFPath ? (
-                                        <Button
-                                          asChild
-                                          size="sm"
-                                          variant="ghost"
-                                          className="h-7 px-2 text-xs"
-                                        >
-                                          <a
-                                            href={buildExportFileHref(
-                                              currentProject.id,
-                                              assignment.files.wireListPDFPath,
-                                            )}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                          >
-                                            <Download className="h-3 w-3" />
+                                  </td>
+                                </tr>
+                                {groupAssignments.map((assignment, idx) => {
+                                  const isExpanded = expandedAssignments.has(assignment.sheetSlug);
+                                  const toggleExpand = () => {
+                                    if (isExpanded) {
+                                      setExpandedAssignments(new Set());
+                                      setSelectedAssignmentSlug((prev) =>
+                                        prev === assignment.sheetSlug ? null : prev,
+                                      );
+                                      return;
+                                    }
+                                    setExpandedAssignments(new Set([assignment.sheetSlug]));
+                                    setSelectedAssignmentSlug(assignment.sheetSlug);
+                                  };
+                                  return (
+                                    <React.Fragment key={assignment.sheetSlug}>
+                                      <TableRow
+                                        index={idx}
+                                        className={cn("cursor-pointer", isExpanded && "bg-card/20")}
+                                        onClick={toggleExpand}
+                                      >
+                                        <TableCell className="px-3 py-2.5">
+                                          <ChevronRight className={cn("h-3.5 w-3.5 text-card-foreground transition-transform duration-150", isExpanded && "rotate-90")} />
+                                        </TableCell>
+                                        <TableCell className="py-2.5">
+                                          <div className="text-sm font-medium text-foreground">{assignment.sheetName}</div>
+                                        </TableCell>
+                                        <TableCell className="py-2.5">
+                                          <Badge variant="outline" className="h-5 text-[10px]">{formatTokenLabel(assignment.stage)}</Badge>
+                                        </TableCell>
+                                        <TableCell className="py-2.5">
+                                          <Badge variant="secondary" className="h-5 text-[10px]">{formatTokenLabel(assignment.status)}</Badge>
+                                        </TableCell>
+                                        <TableCell className="py-2.5 text-sm">{assignment.swsType || "—"}</TableCell>
+                                        <TableCell className="py-2.5">
+                                          <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
+                                            {assignment.files.wireListPDFPath ? (
+                                              <Button asChild size="sm" variant="ghost" className="h-7 px-2 text-xs">
+                                                <a href={buildExportFileHref(currentProject.id, assignment.files.wireListPDFPath)} target="_blank" rel="noopener noreferrer">
+                                                  <Download className="h-3 w-3" />
+                                                </a>
+                                              </Button>
+                                            ) : null}
+                                            <Button asChild size="sm" variant="ghost" className="h-7 px-2 text-xs">
+                                              <a href={`/${badgeNumber}/projects/${encodeURIComponent(currentProject.id)}`}>
+                                                <ExternalLink className="h-3 w-3" />
+                                              </a>
+                                            </Button>
+                                          </div>
+                                        </TableCell>
+                                      </TableRow>
+                                      {isExpanded ? (
+                                        <tr className="bg-card/15">
+                                          <td colSpan={10} className="px-4 py-3">
+                                            <div className="h-18 rounded-lg border border-dashed border-border/60 bg-background/40" />
+                                          </td>
+                                        </tr>
+                                      ) : null}
+                                    </React.Fragment>
+                                  );
+                                })}
+                              </React.Fragment>
+                            ))
+                          : assignmentEntries.map((assignment, idx) => {
+                              const isExpanded = expandedAssignments.has(assignment.sheetSlug);
+                              const toggleExpand = () => {
+                                if (isExpanded) {
+                                  setExpandedAssignments(new Set());
+                                  setSelectedAssignmentSlug((prev) =>
+                                    prev === assignment.sheetSlug ? null : prev,
+                                  );
+                                  return;
+                                }
+                                setExpandedAssignments(new Set([assignment.sheetSlug]));
+                                setSelectedAssignmentSlug(assignment.sheetSlug);
+                              };
+                              return (
+                                <React.Fragment key={assignment.sheetSlug}>
+                                  <TableRow
+                                    index={idx}
+                                    className={cn("cursor-pointer", isExpanded && "bg-card/20")}
+                                    onClick={toggleExpand}
+                                  >
+                                    <TableCell className="px-3 py-2.5">
+                                      <ChevronRight className={cn("h-3.5 w-3.5 text-card-foreground transition-transform duration-150", isExpanded && "rotate-90")} />
+                                    </TableCell>
+                                    <TableCell className="py-2.5">
+                                      <div className="text-sm font-medium text-foreground">{assignment.sheetName}</div>
+                                    </TableCell>
+                                    <TableCell className="py-2.5">
+                                      <Badge variant="outline" className="h-5 text-[10px]">{formatTokenLabel(assignment.stage)}</Badge>
+                                    </TableCell>
+                                    <TableCell className="py-2.5">
+                                      <Badge variant="secondary" className="h-5 text-[10px]">{formatTokenLabel(assignment.status)}</Badge>
+                                    </TableCell>
+                                    <TableCell className="py-2.5 text-sm">{assignment.unitType || "—"}</TableCell>
+                                    <TableCell className="py-2.5 text-sm">{assignment.swsType || "—"}</TableCell>
+                                    <TableCell className="py-2.5">
+                                      <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
+                                        {assignment.files.wireListPDFPath ? (
+                                          <Button asChild size="sm" variant="ghost" className="h-7 px-2 text-xs">
+                                            <a href={buildExportFileHref(currentProject.id, assignment.files.wireListPDFPath)} target="_blank" rel="noopener noreferrer">
+                                              <Download className="h-3 w-3" />
+                                            </a>
+                                          </Button>
+                                        ) : null}
+                                        <Button asChild size="sm" variant="ghost" className="h-7 px-2 text-xs">
+                                          <a href={`/${badgeNumber}/projects/${encodeURIComponent(currentProject.id)}`}>
+                                            <ExternalLink className="h-3 w-3" />
                                           </a>
                                         </Button>
-                                      ) : null}
-                                      <Button
-                                        asChild
-                                        size="sm"
-                                        variant="ghost"
-                                        className="h-7 px-2 text-xs"
-                                      >
-                                        <a
-                                          href={`/${badgeNumber}/projects/${encodeURIComponent(currentProject.id)}`}
-                                        >
-                                          <ExternalLink className="h-3 w-3" />
-                                        </a>
-                                      </Button>
-                                    </div>
-                                  </TableCell>
-                                </TableRow>
-                                {isExpanded ? (
-                                  <tr className="bg-card/15">
-                                    <td colSpan={10} className="px-4 py-3">
-                                      <div className="h-18 rounded-lg border border-dashed border-border/60 bg-background/40" />
-                                    </td>
-                                  </tr>
-                                ) : null}
-                              </React.Fragment>
-                            );
-                          })}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  )}
+                                      </div>
+                                    </TableCell>
+                                  </TableRow>
+                                  {isExpanded ? (
+                                    <tr className="bg-card/15">
+                                      <td colSpan={10} className="px-4 py-3">
+                                        <div className="h-18 rounded-lg border border-dashed border-border/60 bg-background/40" />
+                                      </td>
+                                    </tr>
+                                  ) : null}
+                                </React.Fragment>
+                              );
+                            })}
+                      </TableBody>
+                    </Table>
+                  </div>
+                )}
 
                 </ProjectTabContentShell>
               </TabsContent>

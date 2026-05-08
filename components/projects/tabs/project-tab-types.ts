@@ -13,7 +13,7 @@ export type ProjectTabId =
   | "team"
   | "settings";
 
-export type ProjectDetailsSubtabId = "summary" | "units" | "assignments" | "settings";
+export type ProjectDetailsSubtabId = "summary" | "units" | "assignments" | "settings" | "engineer";
 
 export interface ProjectTabProps {
   project: ProjectManifest;

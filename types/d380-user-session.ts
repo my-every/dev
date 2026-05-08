@@ -3,30 +3,18 @@ import type { ShiftOptionId } from '@/types/d380-startup'
 
 export type UserRole =
   | 'DEVELOPER'
-  | 'MANAGER'
-  | 'SUPERVISOR'
   | 'TEAM_LEAD'
-  | 'QA'
-  | 'BRANDER'
   | 'ASSEMBLER'
 
 export const USER_ROLE_LABELS: Record<UserRole, string> = {
   DEVELOPER: 'Developer',
-  MANAGER: 'Manager',
-  SUPERVISOR: 'Supervisor',
   TEAM_LEAD: 'Team Lead',
-  QA: 'Quality Assurance',
-  BRANDER: 'Brander',
   ASSEMBLER: 'Assembler',
 }
 
 export const USER_ROLE_HIERARCHY: Record<UserRole, number> = {
   DEVELOPER: 200,
-  MANAGER: 100,
-  SUPERVISOR: 80,
   TEAM_LEAD: 60,
-  QA: 50,
-  BRANDER: 40,
   ASSEMBLER: 20,
 }
 

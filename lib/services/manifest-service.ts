@@ -108,14 +108,15 @@ export function calculateAggregates(
     }
 
     // Priority counts
-    if (assignment.priority) {
-      priorityCounts[assignment.priority.level]++
+    const level = assignment.priorityLevel ?? assignment.priority?.level
+    if (level) {
+      priorityCounts[level]++
 
       // Track highest priority
-      const currentIndex = priorityOrder.indexOf(assignment.priority.level)
+      const currentIndex = priorityOrder.indexOf(level)
       const highestIndex = priorityOrder.indexOf(highestPriority)
       if (currentIndex < highestIndex) {
-        highestPriority = assignment.priority.level
+        highestPriority = level
       }
     }
 
@@ -189,7 +190,8 @@ export function filterAssignments(
 
     // Filter by priority levels
     if (filters.priorityLevels && filters.priorityLevels.length > 0) {
-      if (!assignment.priority || !filters.priorityLevels.includes(assignment.priority.level)) {
+      const level = assignment.priorityLevel ?? assignment.priority?.level
+      if (!level || !filters.priorityLevels.includes(level)) {
         return false
       }
     }

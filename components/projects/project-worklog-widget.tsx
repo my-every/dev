@@ -315,11 +315,11 @@ function toProjectAssignmentOptions(project: ProjectManifest | null) {
   return Object.entries(project.assignments ?? {})
     .filter(([, assignment]) => {
       // Show only unassigned (no badge) or NOT_STARTED / ready-queue statuses
-      const hasNoAssignee = !assignment.boardAssignment?.assignedBadge;
+      const hasNoAssignee = !(assignment.assignedBadge ?? assignment.boardAssignment?.assignedBadge);
       const isQueueStatus =
         assignment.status === "NOT_STARTED" ||
         assignment.status === "INCOMPLETE" ||
-        !assignment.boardAssignment?.assignedBadge;
+        !(assignment.assignedBadge ?? assignment.boardAssignment?.assignedBadge);
       return hasNoAssignee || isQueueStatus;
     })
     .map(([assignmentId, assignment]) => {
@@ -330,7 +330,7 @@ function toProjectAssignmentOptions(project: ProjectManifest | null) {
         label: assignment.sheetName || assignment.sheetSlug || assignmentId,
         stage,
         nextOperation,
-        isUnassigned: !assignment.boardAssignment?.assignedBadge,
+        isUnassigned: !(assignment.assignedBadge ?? assignment.boardAssignment?.assignedBadge),
       };
     });
 }

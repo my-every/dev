@@ -221,9 +221,11 @@ export function manifestToTimelineAssignment(
     estimatedStartTime: startTime,
     estimatedEndTime: endTime,
     status: mapManifestStatusToTimeline(assignment.status),
-    priority: assignment.priority
-      ? mapPriorityLevelToTimeline(assignment.priority.level)
-      : 'medium',
+    priority: assignment.priorityLevel
+      ? mapPriorityLevelToTimeline(assignment.priorityLevel)
+      : assignment.priority
+        ? mapPriorityLevelToTimeline(assignment.priority.level)
+        : 'medium',
     isOvertime: false,
     color: project.color,
     notes: `Stage: ${assignment.stage}`,

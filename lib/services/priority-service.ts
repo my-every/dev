@@ -316,6 +316,7 @@ export function calculateProjectPriorities(
     updatedAssignments[slug] = {
       ...assignment,
       priority,
+      priorityLevel: priority.level,
       remainingMinutes,
       totalEstimatedMinutes,
     }

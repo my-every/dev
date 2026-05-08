@@ -172,6 +172,18 @@ export interface ManifestAssignment extends ManifestSheetBase {
   stage: AssignmentStageId
   status: ManifestAssignmentStatus
   unitType?: string
+  /** Normalized title of the matched primary layout page, promoted from layout.primaryPage.normalizedTitle */
+  normalizedTitle?: string
+  /** Panel number of the matched primary layout page, promoted from layout.primaryPage.panelNumber */
+  panelNumber?: string | null
+  /** Box number of the matched primary layout page, promoted from layout.primaryPage.boxNumber */
+  boxNumber?: string | null
+  /** Priority level shortcut, promoted from priority.level — avoids null-chaining on every filter/sort */
+  priorityLevel?: PriorityLevel
+  /** Assigned badge shortcut, promoted from boardAssignment.assignedBadge */
+  assignedBadge?: string | null
+  /** Board workflow status shortcut, promoted from boardAssignment.workflowStatus */
+  workflowStatus?: string | null
   buildUpEstTime?: string
   wireListEstTime?: string
   totalEstimatedMinutes?: number

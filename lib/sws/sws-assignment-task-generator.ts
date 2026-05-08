@@ -118,8 +118,8 @@ function buildTaskTreeFromTemplate(
   assignment: ManifestAssignment,
 ): { groups: SwsChecklistGroup[]; taskCount: number; subtaskCount: number } {
   const stageId = assignment.stage;
-  const panelNumber = assignment.layout?.primaryPage?.panelNumber;
-  const boxNumber = assignment.layout?.primaryPage?.boxNumber;
+  const panelNumber = assignment.panelNumber ?? assignment.layout?.primaryPage?.panelNumber;
+  const boxNumber = assignment.boxNumber ?? assignment.layout?.primaryPage?.boxNumber;
 
   let taskCount = 0;
   let subtaskCount = 0;
@@ -221,8 +221,8 @@ export function generateSwsAssignmentTaskSchema(
       status: assignment.status,
       templateId,
       unitType: assignment.unitType,
-      panelNumber: assignment.layout?.primaryPage?.panelNumber,
-      boxNumber: assignment.layout?.primaryPage?.boxNumber,
+      panelNumber: assignment.panelNumber ?? assignment.layout?.primaryPage?.panelNumber,
+      boxNumber: assignment.boxNumber ?? assignment.layout?.primaryPage?.boxNumber,
     },
     worksheetMetadata,
     summary: {

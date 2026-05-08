@@ -52,8 +52,8 @@ function resolveTemplateFromAssignmentShape(assignment: ManifestAssignment, stag
         return "CONSOLE_BUILD_UP_PANEL_HANG";
     }
 
-    const hasPanelNumber = Boolean(assignment.layout?.primaryPage?.panelNumber);
-    const hasBoxNumber = Boolean(assignment.layout?.primaryPage?.boxNumber);
+    const hasPanelNumber = Boolean(assignment.panelNumber ?? assignment.layout?.primaryPage?.panelNumber);
+    const hasBoxNumber = Boolean(assignment.boxNumber ?? assignment.layout?.primaryPage?.boxNumber);
 
     if (hasPanelNumber) {
         return "PANEL_BUILD_WIRE";

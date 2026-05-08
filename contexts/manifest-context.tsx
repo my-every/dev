@@ -120,11 +120,11 @@ export function ManifestProvider({
   const totalProjects = manifests.length
   const totalAssignments = flattenedAssignments.length
   const criticalCount = useMemo(
-    () => flattenedAssignments.filter((a) => a.priority.level === "critical").length,
+    () => flattenedAssignments.filter((a) => (a.assignment.priorityLevel ?? a.priority.level) === "critical").length,
     [flattenedAssignments]
   )
   const highCount = useMemo(
-    () => flattenedAssignments.filter((a) => a.priority.level === "high").length,
+    () => flattenedAssignments.filter((a) => (a.assignment.priorityLevel ?? a.priority.level) === "high").length,
     [flattenedAssignments]
   )
 
@@ -214,7 +214,7 @@ export function ManifestProvider({
 
   const getAssignmentsByPriority = useCallback(
     (level: PriorityLevel) =>
-      flattenedAssignments.filter((a) => a.priority.level === level),
+      flattenedAssignments.filter((a) => (a.assignment.priorityLevel ?? a.priority.level) === level),
     [flattenedAssignments]
   )
 

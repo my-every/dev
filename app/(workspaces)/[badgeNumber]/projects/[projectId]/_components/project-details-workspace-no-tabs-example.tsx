@@ -3,10 +3,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Layers, PanelTop, Rows4, UserRound } from "lucide-react";
+import { Layers, PanelTop, Rows4, Settings2, UserRound } from "lucide-react";
 
 import { ProjectIcon } from "@/app/(workspaces)/[badgeNumber]/projects/_components/project-icon";
 import { UsersTeamsAvatarGroup } from "@/app/(workspaces)/[badgeNumber]/users/_components/users-teams-avatar-group";
+import { ProjectManifestEditor } from "@/components/manifest/project-manifest-editor";
 
 import { ProjectOverviewSummaryTab, type OverviewActionModalType } from "@/components/projects/tabs/project-overview-summary-tab";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -54,6 +55,7 @@ const SUBTABS: { id: ProjectDetailsSubtabId; label: string; icon: ReactNode }[] 
   { id: "units", label: "Units", icon: <Layers className="h-4 w-4" /> },
   { id: "assignments", label: "Assignments", icon: <Rows4 className="h-4 w-4" /> },
   { id: "settings", label: "Settings", icon: <UserRound className="h-4 w-4" /> },
+  { id: "engineer", label: "Engineer", icon: <Settings2 className="h-4 w-4" /> },
 ];
 
 const ACTION_MODAL_LABELS: Record<OverviewActionModalType, string> = {
@@ -244,7 +246,7 @@ export function ProjectDetailsWorkspaceNoTabsExample({ project }: ProjectDetails
 
   useEffect(() => {
     const param = searchParams.get(SUBTAB_QUERY_KEY);
-    if (param === "summary" || param === "units" || param === "assignments" || param === "settings") {
+    if (param === "summary" || param === "units" || param === "assignments" || param === "settings" || param === "engineer") {
       setSubtab(param);
       return;
     }
@@ -483,54 +485,63 @@ export function ProjectDetailsWorkspaceNoTabsExample({ project }: ProjectDetails
           </Tabs>
         </div>
 
-        <ScrollArea className="flex-1 min-h-0">
-          <div className="px-5 pb-5 pt-2">
-            {subtab === "summary" ? (
-              <ProjectOverviewSummaryTab
-                project={model}
-                projectColor={projectColor}
-                onProjectRefresh={refreshProjectState}
-                onNavigateToTab={handleNavigateToTab}
-                onOpenBrandReview={() => setBrandReviewOpen(true)}
-                actionStateRefreshKey={actionStateRefreshKey}
-                badgeNumber={undefined}
-                onOpenActionModal={handleOpenActionModal}
-                availableActions={{
-                  layout: canOpenLayoutWorkspace,
-                  "wire-print": canOpenWirePrintWorkspace,
-                  "sheet-workspace": operationalSheets.length > 0,
-                }}
-                onExportProjectPdf={() => {
-                  if (!canOpenLayoutWorkspace) return;
-                  window.open(`/api/projects/${encodeURIComponent(model.id)}/layout-pdf?raw=1`, "_blank", "noopener,noreferrer");
-                }}
-              />
-            ) : null}
+        {subtab !== "engineer" ? (
+          <ScrollArea className="flex-1 min-h-0">
+            <div className="px-5 pb-5 pt-2">
+              {subtab === "summary" ? (
+                <ProjectOverviewSummaryTab
+                  project={model}
+                  projectColor={projectColor}
+                  onProjectRefresh={refreshProjectState}
+                  onNavigateToTab={handleNavigateToTab}
+                  onOpenBrandReview={() => setBrandReviewOpen(true)}
+                  actionStateRefreshKey={actionStateRefreshKey}
+                  badgeNumber={undefined}
+                  onOpenActionModal={handleOpenActionModal}
+                  availableActions={{
+                    layout: canOpenLayoutWorkspace,
+                    "wire-print": canOpenWirePrintWorkspace,
+                    "sheet-workspace": operationalSheets.length > 0,
+                  }}
+                  onExportProjectPdf={() => {
+                    if (!canOpenLayoutWorkspace) return;
+                    window.open(`/api/projects/${encodeURIComponent(model.id)}/layout-pdf?raw=1`, "_blank", "noopener,noreferrer");
+                  }}
+                />
+              ) : null}
 
-            {subtab === "units" ? <ProjectUnitsPanel project={model} onOpenAction={handleNavigateToTab} /> : null}
+              {subtab === "units" ? <ProjectUnitsPanel project={model} onOpenAction={handleNavigateToTab} /> : null}
 
-            {subtab === "assignments" ? (
-              <ProjectAssignmentsTab
-                project={model}
-                projectColor={projectColor}
-                hasLegals={hasLegals}
-                onProjectRefresh={refreshProjectState}
-                onNavigateToTab={handleNavigateToTab}
-              />
-            ) : null}
+              {subtab === "assignments" ? (
+                <ProjectAssignmentsTab
+                  project={model}
+                  projectColor={projectColor}
+                  hasLegals={hasLegals}
+                  onProjectRefresh={refreshProjectState}
+                  onNavigateToTab={handleNavigateToTab}
+                />
+              ) : null}
 
-            {subtab === "settings" ? (
-              <ProjectSettingsTab
-                project={model}
-                projectColor={projectColor}
-                onProjectRefresh={refreshProjectState}
-                onNavigateToTab={handleNavigateToTab}
-              />
-            ) : null}
+              {subtab === "settings" ? (
+                <ProjectSettingsTab
+                  project={model}
+                  projectColor={projectColor}
+                  onProjectRefresh={refreshProjectState}
+                  onNavigateToTab={handleNavigateToTab}
+                />
+              ) : null}
+            </div>
+          </ScrollArea>
+        ) : null}
 
-         
+        {subtab === "engineer" ? (
+          <div className="flex-1 min-h-0 overflow-hidden border-t border-border/50">
+            <ProjectManifestEditor
+              project={model}
+              onProjectRefresh={refreshProjectState}
+            />
           </div>
-        </ScrollArea>
+        ) : null}
       </div>
 
       <ProjectActionModal
