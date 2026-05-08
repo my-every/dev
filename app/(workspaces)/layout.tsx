@@ -107,9 +107,9 @@ function toRootNavItem(item: ResolvedNavItem): RootNavItem {
 function buildFallbackNav(badgeNumber: string | null): RootNavItem[] {
   const base = badgeNumber ?? "";
   return [
-    { id: "home", href: `/${base}`, label: "Home", icon: LayoutDashboard },
+    { id: "home", href: `/${base}/projects`, label: "Home", icon: LayoutDashboard },
     { id: "projects", href: `/${base}/projects`, label: "Projects", icon: FolderKanban },
-    { id: "parts", href: `/${base}/parts`, label: "Parts", icon: Boxes },
+    { id: "parts", href: `/${base}/projects`, label: "Parts", icon: Boxes },
   ];
 }
 
