@@ -4,10 +4,10 @@
   "filename": "4M093-UCPWiringList_A.6_M.2.xlsx",
   "pdNumber": "ANG01",
   "unitNumber": "1",
-  "revision": "A.6_M.2",
+  "revision": "A.6",
   "lwcType": "ONSKID",
-  "color": "#8B5CF6",
-  "createdAt": "2026-05-05T14:01:46.423Z",
+  "color": "#6d57a1",
+  "createdAt": "2026-05-08T19:24:33.756Z",
   "sheets": [
     {
       "slug": "blue-labels",
@@ -299,7 +299,7 @@
         "primaryPage": {
           "pageNumber": 6,
           "title": "JB71 B,PNL GEN CTRL",
-          "normalizedTitle": "B PNL GEN CTRL",
+          "normalizedTitle": "B PANEL GEN CTRL",
           "unitType": "JB71",
           "panelNumber": null,
           "boxNumber": null,
@@ -311,7 +311,7 @@
           {
             "pageNumber": 6,
             "title": "JB71 B,PNL GEN CTRL",
-            "normalizedTitle": "B PNL GEN CTRL",
+            "normalizedTitle": "B PANEL GEN CTRL",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
@@ -322,7 +322,7 @@
           {
             "pageNumber": 7,
             "title": "JB71 C,PNL EQP CTRL",
-            "normalizedTitle": "C PNL EQP CTRL",
+            "normalizedTitle": "C PANEL EQP CTRL",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
@@ -334,16 +334,16 @@
       },
       "devices": {},
       "boxSide": "leftBackSide",
-      "normalizedTitle": "B PNL GEN CTRL",
+      "normalizedTitle": "B PANEL GEN CTRL",
       "totalEstimatedMinutes": 7,
       "remainingMinutes": 7,
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 40816,
+        "remainingMinutes": 40579,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 680h 16m remaining - READY_TO_LAY"
+        "reason": "Low priority: 676h 19m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -388,48 +388,7 @@
       "unitType": "JB71",
       "panducts": [],
       "rails": [],
-      "externalLocations": [
-        {
-          "location": "JB71 B,PNL CTRL1",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL B",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL JB70 TT6",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "F G EDIO ONSK",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "FIRE SYSTEM RAIL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "PLC",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "RAIL RIGHT JB70",
-          "wireListVisible": true,
-          "brandingVisible": true
-        }
-      ],
+      "externalLocations": [],
       "whiteLabels": [],
       "blueLabels": [
         "AT1100K",
@@ -449,50 +408,50 @@
         "primaryPage": {
           "pageNumber": 11,
           "title": "JB71 B,DOOR OPR",
-          "normalizedTitle": "B DR OPR",
+          "normalizedTitle": "B DOOR OPR",
           "unitType": "JB71",
           "panelNumber": null,
           "boxNumber": null,
           "confidence": "high",
           "matchMethod": "title",
-          "score": 171
+          "score": 191
         },
         "pages": [
           {
             "pageNumber": 11,
             "title": "JB71 B,DOOR OPR",
-            "normalizedTitle": "B DR OPR",
+            "normalizedTitle": "B DOOR OPR",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 171
+            "score": 191
           },
           {
             "pageNumber": 12,
             "title": "JB71 C,DOOR PNL EQP",
-            "normalizedTitle": "C DR PNL EQP",
+            "normalizedTitle": "C DOOR PANEL EQP",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 149
+            "score": 169
           }
         ]
       },
       "devices": {},
-      "normalizedTitle": "B DR OPR",
+      "normalizedTitle": "B DOOR OPR",
       "totalEstimatedMinutes": 10,
       "remainingMinutes": 10,
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 40813,
+        "remainingMinutes": 40576,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 680h 13m remaining - READY_TO_LAY"
+        "reason": "Low priority: 676h 16m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -537,53 +496,7 @@
       "unitType": "JB71",
       "panducts": [],
       "rails": [],
-      "externalLocations": [
-        {
-          "location": "JB71 B,PNL CTRL1",
-          "wireListVisible": false,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL CTRL2",
-          "wireListVisible": false,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL B",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL JB70 TT6",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "F G EDIO ONSK",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "FIRE SYSTEM RAIL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "PLC",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "RAIL RIGHT JB70",
-          "wireListVisible": true,
-          "brandingVisible": true
-        }
-      ],
+      "externalLocations": [],
       "whiteLabels": [],
       "blueLabels": [
         "SB0472",
@@ -623,50 +536,50 @@
         "primaryPage": {
           "pageNumber": 10,
           "title": "JB71 B,DOOR CTRL",
-          "normalizedTitle": "B DR CTRL",
+          "normalizedTitle": "B DOOR CTRL",
           "unitType": "JB71",
           "panelNumber": null,
           "boxNumber": null,
           "confidence": "high",
           "matchMethod": "title",
-          "score": 171
+          "score": 191
         },
         "pages": [
           {
             "pageNumber": 10,
             "title": "JB71 B,DOOR CTRL",
-            "normalizedTitle": "B DR CTRL",
+            "normalizedTitle": "B DOOR CTRL",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 171
+            "score": 191
           },
           {
             "pageNumber": 12,
             "title": "JB71 C,DOOR PNL EQP",
-            "normalizedTitle": "C DR PNL EQP",
+            "normalizedTitle": "C DOOR PANEL EQP",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 150
+            "score": 170
           }
         ]
       },
       "devices": {},
-      "normalizedTitle": "B DR CTRL",
+      "normalizedTitle": "B DOOR CTRL",
       "totalEstimatedMinutes": 76,
       "remainingMinutes": 76,
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 40747,
+        "remainingMinutes": 40510,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 679h 7m remaining - READY_TO_LAY"
+        "reason": "Low priority: 675h 10m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -719,83 +632,7 @@
         "17\" Rail",
         "21.75\" Rail"
       ],
-      "externalLocations": [
-        {
-          "location": "JB71 B,DOOR CTRL",
-          "wireListVisible": false,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,DOOR OPR",
-          "wireListVisible": false,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL CTRL2",
-          "wireListVisible": false,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL CUSTOMER",
-          "wireListVisible": false,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL DC PWR",
-          "wireListVisible": false,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL VIBRATION",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 C,PNL EQP CTRL",
-          "wireListVisible": false,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL B",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL JB70 TT6",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "F G EDIO ONSK",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "FIRE SYSTEM RAIL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "PLC",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "RAIL RIGHT JB70",
-          "wireListVisible": true,
-          "brandingVisible": true
-        }
-      ],
+      "externalLocations": [],
       "whiteLabels": [
         "AF0071G",
         "IEG00115",
@@ -912,50 +749,50 @@
         "primaryPage": {
           "pageNumber": 5,
           "title": "JB71 B,PNL CTRL2",
-          "normalizedTitle": "B PNL CTRL2",
+          "normalizedTitle": "B PANEL CTRL2",
           "unitType": "JB71",
           "panelNumber": null,
           "boxNumber": null,
           "confidence": "high",
           "matchMethod": "title",
-          "score": 174
+          "score": 170
         },
         "pages": [
           {
             "pageNumber": 5,
             "title": "JB71 B,PNL CTRL2",
-            "normalizedTitle": "B PNL CTRL2",
+            "normalizedTitle": "B PANEL CTRL2",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 174
+            "score": 170
           },
           {
             "pageNumber": 3,
             "title": "JB71 B,PNL VIBRATION",
-            "normalizedTitle": "B PNL VIB",
+            "normalizedTitle": "B PANEL VIB",
             "unitType": "JB71",
             "panelNumber": "1702271-161",
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 172
+            "score": 168
           }
         ]
       },
       "devices": {},
-      "normalizedTitle": "B PNL CTRL2",
+      "normalizedTitle": "B PANEL CTRL2",
       "totalEstimatedMinutes": 338,
       "remainingMinutes": 338,
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 40485,
+        "remainingMinutes": 40248,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 674h 45m remaining - READY_TO_LAY"
+        "reason": "Low priority: 670h 48m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -1008,78 +845,7 @@
         "65.25\" Rail",
         "2.75\" Rail"
       ],
-      "externalLocations": [
-        {
-          "location": "JB71 B,DOOR OPR",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL CTRL1",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL CUSTOMER",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL DC PWR",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL VIBRATION",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 C,PNL EQP CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL B",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL JB70 TT6",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "F G EDIO ONSK",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "FIRE SYSTEM RAIL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "PLC",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "RAIL RIGHT JB70",
-          "wireListVisible": true,
-          "brandingVisible": true
-        }
-      ],
+      "externalLocations": [],
       "whiteLabels": [
         "IEG00115",
         "AF0062G",
@@ -1202,50 +968,50 @@
         "primaryPage": {
           "pageNumber": 4,
           "title": "JB71 B,PNL CTRL1",
-          "normalizedTitle": "B PNL CTRL1",
+          "normalizedTitle": "B PANEL CTRL1",
           "unitType": "JB71",
           "panelNumber": null,
           "boxNumber": null,
           "confidence": "high",
           "matchMethod": "title",
-          "score": 174
+          "score": 170
         },
         "pages": [
           {
             "pageNumber": 4,
             "title": "JB71 B,PNL CTRL1",
-            "normalizedTitle": "B PNL CTRL1",
+            "normalizedTitle": "B PANEL CTRL1",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 174
+            "score": 170
           },
           {
             "pageNumber": 3,
             "title": "JB71 B,PNL VIBRATION",
-            "normalizedTitle": "B PNL VIB",
+            "normalizedTitle": "B PANEL VIB",
             "unitType": "JB71",
             "panelNumber": "1702271-161",
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 172
+            "score": 168
           }
         ]
       },
       "devices": {},
-      "normalizedTitle": "B PNL CTRL1",
+      "normalizedTitle": "B PANEL CTRL1",
       "totalEstimatedMinutes": 605,
       "remainingMinutes": 605,
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 40218,
+        "remainingMinutes": 39981,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 670h 18m remaining - READY_TO_LAY"
+        "reason": "Low priority: 666h 21m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -1300,73 +1066,7 @@
         "25.75\" Rail",
         "41.25\" Rail"
       ],
-      "externalLocations": [
-        {
-          "location": "JB71 B,PNL CTRL1",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL CTRL2",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL DC PWR",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 C,DOOR PNL EQP",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 C,PNL EQP CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL B",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL JB70 TT6",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "F G EDIO ONSK",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "FIRE SYSTEM RAIL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "PLC",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "RAIL RIGHT JB70",
-          "wireListVisible": true,
-          "brandingVisible": true
-        }
-      ],
+      "externalLocations": [],
       "whiteLabels": [
         "IEG00116",
         "AF0183G",
@@ -1467,51 +1167,51 @@
         "primaryPage": {
           "pageNumber": 3,
           "title": "JB71 B,PNL VIBRATION",
-          "normalizedTitle": "B PNL VIB",
+          "normalizedTitle": "B PANEL VIB",
           "unitType": "JB71",
           "panelNumber": "1702271-161",
           "boxNumber": null,
           "confidence": "high",
           "matchMethod": "title",
-          "score": 172
+          "score": 168
         },
         "pages": [
           {
             "pageNumber": 3,
             "title": "JB71 B,PNL VIBRATION",
-            "normalizedTitle": "B PNL VIB",
+            "normalizedTitle": "B PANEL VIB",
             "unitType": "JB71",
             "panelNumber": "1702271-161",
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 172
+            "score": 168
           },
           {
             "pageNumber": 4,
             "title": "JB71 B,PNL CTRL1",
-            "normalizedTitle": "B PNL CTRL1",
+            "normalizedTitle": "B PANEL CTRL1",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 172
+            "score": 168
           }
         ]
       },
       "devices": {},
-      "normalizedTitle": "B PNL VIB",
+      "normalizedTitle": "B PANEL VIB",
       "panelNumber": "1702271-161",
       "totalEstimatedMinutes": 633,
       "remainingMinutes": 633,
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 40190,
+        "remainingMinutes": 39953,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 669h 50m remaining - READY_TO_LAY"
+        "reason": "Low priority: 665h 53m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -1562,78 +1262,7 @@
         "4.25\" Rail",
         "11.25\" Rail"
       ],
-      "externalLocations": [
-        {
-          "location": "JB71 B,BOX CONTROL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL CTRL1",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL CTRL2",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL CUSTOMER",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL VIBRATION",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 C,PNL EQP PWR",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL B",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL JB70 TT6",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "F G EDIO ONSK",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "FIRE SYSTEM RAIL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "PLC",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "RAIL RIGHT JB70",
-          "wireListVisible": true,
-          "brandingVisible": true
-        }
-      ],
+      "externalLocations": [],
       "whiteLabels": [
         "IEG0011G",
         "GR0060",
@@ -1709,50 +1338,50 @@
         "primaryPage": {
           "pageNumber": 8,
           "title": "JB71 C,PNL EQP PWR",
-          "normalizedTitle": "C PNL EQP PWR",
+          "normalizedTitle": "C PANEL EQP PWR",
           "unitType": "JB71",
           "panelNumber": null,
           "boxNumber": null,
           "confidence": "high",
           "matchMethod": "title",
-          "score": 247
+          "score": 243
         },
         "pages": [
           {
             "pageNumber": 8,
             "title": "JB71 C,PNL EQP PWR",
-            "normalizedTitle": "C PNL EQP PWR",
+            "normalizedTitle": "C PANEL EQP PWR",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 247
+            "score": 243
           },
           {
             "pageNumber": 3,
             "title": "JB71 B,PNL VIBRATION",
-            "normalizedTitle": "B PNL VIB",
+            "normalizedTitle": "B PANEL VIB",
             "unitType": "JB71",
             "panelNumber": "1702271-161",
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 124
+            "score": 120
           }
         ]
       },
       "devices": {},
-      "normalizedTitle": "C PNL EQP PWR",
+      "normalizedTitle": "C PANEL EQP PWR",
       "totalEstimatedMinutes": 139,
       "remainingMinutes": 139,
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 40684,
+        "remainingMinutes": 40447,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 678h 4m remaining - READY_TO_LAY"
+        "reason": "Low priority: 674h 7m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -1804,68 +1433,7 @@
         "27\" Rail",
         "44\" Rail"
       ],
-      "externalLocations": [
-        {
-          "location": "JB71 B,PNL CTRL1",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL CTRL2",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL CUSTOMER",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL DC PWR",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 C,PNL EQP CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL B",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL JB70 TT6",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "F G EDIO ONSK",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "FIRE SYSTEM RAIL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "PLC",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "RAIL RIGHT JB70",
-          "wireListVisible": true,
-          "brandingVisible": true
-        }
-      ],
+      "externalLocations": [],
       "whiteLabels": [
         "EXCS",
         "AU0120G",
@@ -1985,28 +1553,17 @@
       "wireListEstTime": "3h 38m",
       "layout": {
         "primaryPage": {
-          "pageNumber": 7,
-          "title": "JB71 C,PNL EQP CTRL",
-          "normalizedTitle": "C PNL EQP CTRL",
+          "pageNumber": 1,
+          "title": "JB71 B,BOX CONTROL",
+          "normalizedTitle": "B BOX CTRL",
           "unitType": "JB71",
           "panelNumber": null,
-          "boxNumber": null,
+          "boxNumber": "1484715-4000",
           "confidence": "high",
           "matchMethod": "title",
-          "score": 151
+          "score": 149
         },
         "pages": [
-          {
-            "pageNumber": 7,
-            "title": "JB71 C,PNL EQP CTRL",
-            "normalizedTitle": "C PNL EQP CTRL",
-            "unitType": "JB71",
-            "panelNumber": null,
-            "boxNumber": null,
-            "confidence": "high",
-            "matchMethod": "title",
-            "score": 151
-          },
           {
             "pageNumber": 1,
             "title": "JB71 B,BOX CONTROL",
@@ -2017,21 +1574,33 @@
             "confidence": "high",
             "matchMethod": "title",
             "score": 149
+          },
+          {
+            "pageNumber": 7,
+            "title": "JB71 C,PNL EQP CTRL",
+            "normalizedTitle": "C PANEL EQP CTRL",
+            "unitType": "JB71",
+            "panelNumber": null,
+            "boxNumber": null,
+            "confidence": "high",
+            "matchMethod": "title",
+            "score": 147
           }
         ]
       },
       "devices": {},
       "boxSide": "rightBackSide",
-      "normalizedTitle": "C PNL EQP CTRL",
+      "normalizedTitle": "B BOX CTRL",
+      "boxNumber": "1484715-4000",
       "totalEstimatedMinutes": 537,
       "remainingMinutes": 537,
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 40286,
+        "remainingMinutes": 40049,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 671h 26m remaining - READY_TO_LAY"
+        "reason": "Low priority: 667h 29m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -2083,58 +1652,7 @@
         "20\" Rail",
         "21.25\" LOW RAIL"
       ],
-      "externalLocations": [
-        {
-          "location": "JB71 B,PNL CTRL1",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL CTRL2",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL DC PWR",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL B",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL JB70 TT6",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "F G EDIO ONSK",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "FIRE SYSTEM RAIL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "PLC",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "RAIL RIGHT JB70",
-          "wireListVisible": true,
-          "brandingVisible": true
-        }
-      ],
+      "externalLocations": [],
       "whiteLabels": [
         "XT04002",
         "XT04001"
@@ -2190,50 +1708,50 @@
         "primaryPage": {
           "pageNumber": 4,
           "title": "JB71 B,PNL CTRL1",
-          "normalizedTitle": "B PNL CTRL1",
+          "normalizedTitle": "B PANEL CTRL1",
           "unitType": "JB71",
           "panelNumber": null,
           "boxNumber": null,
           "confidence": "high",
           "matchMethod": "title",
-          "score": 172
+          "score": 168
         },
         "pages": [
           {
             "pageNumber": 4,
             "title": "JB71 B,PNL CTRL1",
-            "normalizedTitle": "B PNL CTRL1",
+            "normalizedTitle": "B PANEL CTRL1",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 172
+            "score": 168
           },
           {
             "pageNumber": 5,
             "title": "JB71 B,PNL CTRL2",
-            "normalizedTitle": "B PNL CTRL2",
+            "normalizedTitle": "B PANEL CTRL2",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 172
+            "score": 168
           }
         ]
       },
       "devices": {},
-      "normalizedTitle": "B PNL CTRL1",
+      "normalizedTitle": "B PANEL CTRL1",
       "totalEstimatedMinutes": 86,
       "remainingMinutes": 86,
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 40737,
+        "remainingMinutes": 40500,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 678h 57m remaining - READY_TO_LAY"
+        "reason": "Low priority: 675h remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -2278,58 +1796,7 @@
       "unitType": "JB71",
       "panducts": [],
       "rails": [],
-      "externalLocations": [
-        {
-          "location": "JB71 B,PNL CUSTOMER",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 C,PNL EQP CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 C,PNL EQP PWR",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL B",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL JB70 TT6",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "F G EDIO ONSK",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "FIRE SYSTEM RAIL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "PLC",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "RAIL RIGHT JB70",
-          "wireListVisible": true,
-          "brandingVisible": true
-        }
-      ],
+      "externalLocations": [],
       "whiteLabels": [],
       "blueLabels": [
         "SA0170",
@@ -2354,51 +1821,51 @@
         "primaryPage": {
           "pageNumber": 11,
           "title": "JB71 B,DOOR OPR",
-          "normalizedTitle": "B DR OPR",
+          "normalizedTitle": "B DOOR OPR",
           "unitType": "JB71",
           "panelNumber": null,
           "boxNumber": null,
           "confidence": "high",
           "matchMethod": "title",
-          "score": 150
+          "score": 170
         },
         "pages": [
           {
             "pageNumber": 11,
             "title": "JB71 B,DOOR OPR",
-            "normalizedTitle": "B DR OPR",
+            "normalizedTitle": "B DOOR OPR",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 150
+            "score": 170
           },
           {
             "pageNumber": 10,
             "title": "JB71 B,DOOR CTRL",
-            "normalizedTitle": "B DR CTRL",
+            "normalizedTitle": "B DOOR CTRL",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 149
+            "score": 169
           }
         ]
       },
       "devices": {},
       "boxSide": "leftDoor",
-      "normalizedTitle": "B DR OPR",
+      "normalizedTitle": "B DOOR OPR",
       "totalEstimatedMinutes": 56,
       "remainingMinutes": 56,
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 40767,
+        "remainingMinutes": 40530,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 679h 27m remaining - READY_TO_LAY"
+        "reason": "Low priority: 675h 30m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -2451,73 +1918,7 @@
         "11.25\" Rail",
         "20\" Rail"
       ],
-      "externalLocations": [
-        {
-          "location": "JB71 B,PNL CTRL1",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL CTRL2",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL CUSTOMER",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 B,PNL GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 C,DOOR PNL EQP",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 C,PNL EQP PWR",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL B",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL JB70 TT6",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "F G EDIO ONSK",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "FIRE SYSTEM RAIL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "PLC",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "RAIL RIGHT JB70",
-          "wireListVisible": true,
-          "brandingVisible": true
-        }
-      ],
+      "externalLocations": [],
       "whiteLabels": [
         "GR0170",
         "GR0171",
@@ -2559,50 +1960,50 @@
         "primaryPage": {
           "pageNumber": 6,
           "title": "JB71 B,PNL GEN CTRL",
-          "normalizedTitle": "B PNL GEN CTRL",
+          "normalizedTitle": "B PANEL GEN CTRL",
           "unitType": "JB71",
           "panelNumber": null,
           "boxNumber": null,
           "confidence": "high",
           "matchMethod": "title",
-          "score": 151
+          "score": 147
         },
         "pages": [
           {
             "pageNumber": 6,
             "title": "JB71 B,PNL GEN CTRL",
-            "normalizedTitle": "B PNL GEN CTRL",
+            "normalizedTitle": "B PANEL GEN CTRL",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 151
+            "score": 147
           },
           {
             "pageNumber": 8,
             "title": "JB71 C,PNL EQP PWR",
-            "normalizedTitle": "C PNL EQP PWR",
+            "normalizedTitle": "C PANEL EQP PWR",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 148
+            "score": 144
           }
         ]
       },
       "devices": {},
-      "normalizedTitle": "B PNL GEN CTRL",
+      "normalizedTitle": "B PANEL GEN CTRL",
       "totalEstimatedMinutes": 248,
       "remainingMinutes": 248,
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 40575,
+        "remainingMinutes": 40338,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 676h 15m remaining - READY_TO_LAY"
+        "reason": "Low priority: 672h 18m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -2652,58 +2053,7 @@
       "rails": [
         "11.25\" Rail"
       ],
-      "externalLocations": [
-        {
-          "location": "JB71 B,PNL DC PWR",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 C,DOOR PNL EQP",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "JB71 C,PNL EQP CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL B",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL JB70 TT6",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "F G EDIO ONSK",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "FIRE SYSTEM RAIL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "PLC",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "RAIL RIGHT JB70",
-          "wireListVisible": true,
-          "brandingVisible": true
-        }
-      ],
+      "externalLocations": [],
       "whiteLabels": [
         "GR0175",
         "GR0176",
@@ -2737,51 +2087,51 @@
         "primaryPage": {
           "pageNumber": 2,
           "title": "JB71 B,PNL DC PWR",
-          "normalizedTitle": "B PNL DC PWR",
+          "normalizedTitle": "B PANEL DC PWR",
           "unitType": "JB71",
           "panelNumber": "1702271-141",
           "boxNumber": null,
           "confidence": "high",
           "matchMethod": "title",
-          "score": 247
+          "score": 243
         },
         "pages": [
           {
             "pageNumber": 2,
             "title": "JB71 B,PNL DC PWR",
-            "normalizedTitle": "B PNL DC PWR",
+            "normalizedTitle": "B PANEL DC PWR",
             "unitType": "JB71",
             "panelNumber": "1702271-141",
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 247
+            "score": 243
           },
           {
             "pageNumber": 7,
             "title": "JB71 C,PNL EQP CTRL",
-            "normalizedTitle": "C PNL EQP CTRL",
+            "normalizedTitle": "C PANEL EQP CTRL",
             "unitType": "JB71",
             "panelNumber": null,
             "boxNumber": null,
             "confidence": "high",
             "matchMethod": "title",
-            "score": 148
+            "score": 144
           }
         ]
       },
       "devices": {},
-      "normalizedTitle": "B PNL DC PWR",
+      "normalizedTitle": "B PANEL DC PWR",
       "panelNumber": "1702271-141",
       "totalEstimatedMinutes": 61,
       "remainingMinutes": 61,
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 40762,
+        "remainingMinutes": 40525,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 679h 22m remaining - READY_TO_LAY"
+        "reason": "Low priority: 675h 25m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -2827,43 +2177,7 @@
       "rails": [
         "12\" RAIL"
       ],
-      "externalLocations": [
-        {
-          "location": "CONTROL B",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "CONTROL JB70 TT6",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "F G EDIO ONSK",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "FIRE SYSTEM RAIL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "GEN CTRL",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "PLC",
-          "wireListVisible": true,
-          "brandingVisible": true
-        },
-        {
-          "location": "RAIL RIGHT JB70",
-          "wireListVisible": true,
-          "brandingVisible": true
-        }
-      ],
+      "externalLocations": [],
       "whiteLabels": [],
       "blueLabels": [
         "UA1210",
@@ -2888,28 +2202,28 @@
         "primaryPage": {
           "pageNumber": 9,
           "title": "PNL,PROBE DRIVER",
-          "normalizedTitle": "PNL PROBE DRIVER",
+          "normalizedTitle": "PANEL PROBE DRIVER",
           "panelNumber": "1060659",
           "boxNumber": null,
           "confidence": "high",
           "matchMethod": "title",
-          "score": 215
+          "score": 229
         },
         "pages": []
       },
       "devices": {},
       "boxSide": "topBackSide",
-      "normalizedTitle": "PNL PROBE DRIVER",
+      "normalizedTitle": "PANEL PROBE DRIVER",
       "panelNumber": "1060659",
       "totalEstimatedMinutes": 2,
       "remainingMinutes": 2,
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 40821,
+        "remainingMinutes": 40584,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 680h 21m remaining - READY_TO_LAY"
+        "reason": "Low priority: 676h 24m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -3043,8 +2357,6 @@
       "dept380Target": ""
     }
   },
-  "panducts": 34,
-  "rails": 15,
   "aggregates": {
     "totalAssignments": 13,
     "completedAssignments": 0,
@@ -3084,10 +2396,11 @@
       "pnl-probe-driver"
     ]
   },
-  "projectName": "STOCK",
   "dueDate": "2026-06-06",
+  "status": "active",
   "activeWorkbookRevisionId": "4M093-UCPWiringList_A.6_M.2.xlsx",
-  "activeLayoutRevisionId": "4M093_CORE_LAY_A.6_M.2.pdf",
+  "panducts": 34,
+  "rails": 15,
   "whiteLabels": [
     "0V",
     "AF0062G",
@@ -4390,9 +3703,7 @@
         "blue-labels"
       ],
       "matchingStrategy": "reference-sheet-header-to-assignment-name",
-      "generatedAt": "2026-05-08T15:22:20.830Z"
+      "generatedAt": "2026-05-08T19:25:02.611Z"
     }
-  },
-  "status": "ACTIVE",
-  "deptTargetDate": "2026-05-22"
+  }
 }

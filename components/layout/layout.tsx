@@ -49,6 +49,7 @@ type PageLayoutShellProps = {
     userAvatarMenu?: UserAvatarMenuProps;
     showUserAvatarMenu?: boolean;
     classNames?: PageLayoutShellClassNames;
+    defaultSidebarOpen?: boolean;
     defaultSidePanelOpen?: boolean;
     defaultAsideOpen?: boolean;
 };
@@ -165,6 +166,7 @@ function PageLayoutBase({
     userAvatarMenu,
     showUserAvatarMenu = true,
     classNames,
+    defaultSidebarOpen = true,
     defaultSidePanelOpen = true,
     defaultAsideOpen = false,
 }: PageLayoutShellProps) {
@@ -374,11 +376,16 @@ export default function PageLayoutShell({
     userAvatarMenu,
     showUserAvatarMenu = true,
     classNames,
+    defaultSidebarOpen = true,
     defaultSidePanelOpen = true,
     defaultAsideOpen = true,
 }: PageLayoutShellProps) {
     return (
-        <LayoutUIProvider defaultAsideOpen={defaultAsideOpen} defaultSidePanelOpen={defaultSidePanelOpen}>
+        <LayoutUIProvider
+            defaultSidebarOpen={defaultSidebarOpen}
+            defaultSidePanelOpen={defaultSidePanelOpen}
+            defaultAsideOpen={defaultAsideOpen}
+        >
             <PageLayoutBase
                 activeRootId={activeRootId}
                 navItems={navItems}
@@ -387,6 +394,7 @@ export default function PageLayoutShell({
                 userAvatarMenu={userAvatarMenu}
                 showUserAvatarMenu={showUserAvatarMenu}
                 classNames={classNames}
+                defaultSidebarOpen={defaultSidebarOpen}
                 defaultSidePanelOpen={defaultSidePanelOpen}
                 defaultAsideOpen={defaultAsideOpen}
             >

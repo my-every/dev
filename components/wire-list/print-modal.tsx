@@ -1530,12 +1530,20 @@ export function WireListPrintDocument({
   const handleResetBrandingMeasurement = onResetBrandingMeasurement ?? (() => { });
 
   if (data.settings.mode === "branding") {
+    const brandingRowCount = brandingVisibleSections.reduce((sum, s) => sum + s.rows.length, 0);
     return (
       <PrintPage
         className="shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
         pageNumber={1}
         totalPages={1}
       >
+        <ProjectInfoHeader
+          projectInfo={data.projectInfo}
+          sheetTitle={`${data.sheetTitle} - Branding`}
+          totalRows={brandingRowCount}
+          pageNumber={1}
+          totalPages={1}
+        />
         <BrandingPreviewContent
           sections={brandingVisibleSections}
           renderSection={({ group, subsection, rows }) => (

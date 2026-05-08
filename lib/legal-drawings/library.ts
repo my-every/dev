@@ -20,6 +20,13 @@ import type { StoredProject } from '@/types/d380-shared'
 import type { ProjectModel } from '@/lib/workbook/types'
 import type { LegalDrawingsLibraryManifest, LegalProjectRecord, LegalRevisionArtifactStatus, LegalRevisionRecord, LegalDrawingsSyncResult, LegalSyncProjectResult, CreateProjectFromLegalSourceInput } from '@/types/legal-drawings'
 import { buildShareProjectFolderName, writeProjectManifest } from '@/lib/project-state/share-project-state-handlers'
+import {
+  applyResolvedVisibilityToManifest,
+  readAssignmentVisibilityReferenceSettings,
+  readProjectAssignmentVisibilitySettings,
+  resolveVisibilitySettingsForManifest,
+} from '@/lib/project-state/assignment-visibility-settings'
+import { resolveProjectRootDirectory, readProjectManifest as readExistingProjectManifest } from '@/lib/project-state/share-project-state-handlers'
 import type { LayoutPagesIndexDocument, SlimLayoutPage } from '@/lib/layout-matching'
 import { buildSlimLayoutPagesFromIndex, extractLayoutPagesIndexOnServer } from '@/lib/layout-matching/extract-layout-pages-index-server'
 import { enrichManifestFromProjectState } from '@/lib/project-state/manifest-enrichment'
@@ -1148,6 +1155,115 @@ async function seedProjectStateFromRevisionRoot(revisionRoot: string, destinatio
   }
 
   await fs.mkdir(path.join(destinationStateRoot, 'sheet-state'), { recursive: true })
+}
+
+export async function refreshProjectFromLegalRevision(input: {
+  projectId: string
+  pdNumber: string
+  revision?: string | null
+}) {
+  const projectId = input.projectId.trim()
+  const pdNumber = input.pdNumber.trim().toUpperCase()
+
+  if (!projectId) {
+    throw new Error('projectId is required')
+  }
+  if (!pdNumber) {
+    throw new Error('pdNumber is required')
+  }
+
+  const legalProject = await getLegalProjectRecord(pdNumber)
+  if (!legalProject) {
+    throw new Error(`Legal project not found: ${pdNumber}`)
+  }
+
+  const selectedRevision = normalizeRevisionFolderName(input.revision || legalProject.latestRevision)
+  await rebuildLegalRevisionFiles(pdNumber, selectedRevision)
+
+  const legalRoot = await getLegalDrawingsRoot()
+  const revisionRoot = path.join(legalRoot, pdNumber, selectedRevision)
+  const revisionManifest = await readJsonFile<ProjectManifest>(path.join(revisionRoot, 'project-manifest.json'))
+  const revisionRecord = await readJsonFile<LegalRevisionRecord>(path.join(revisionRoot, 'revision.json'))
+
+  if (!revisionManifest) {
+    throw new Error(`Missing project-manifest.json for legal revision ${pdNumber}/${selectedRevision}`)
+  }
+
+  const existingManifest = await readExistingProjectManifest(projectId)
+  const projectRoot = await resolveProjectRootDirectory(projectId, {
+    pdNumber: existingManifest?.pdNumber ?? pdNumber,
+    projectName: existingManifest?.name ?? revisionManifest.name,
+  })
+  if (!projectRoot) {
+    throw new Error(`Project root not found for ${projectId}`)
+  }
+
+  const projectStateRoot = path.join(projectRoot, 'state')
+  await seedProjectStateFromRevisionRoot(revisionRoot, projectStateRoot)
+
+  const seededManifest = await readJsonFile<ProjectManifest>(path.join(projectStateRoot, 'project-manifest.json'))
+  if (!seededManifest) {
+    throw new Error('Failed to seed project manifest from legal revision')
+  }
+
+  const nextManifestBase: ProjectManifest = {
+    ...seededManifest,
+    id: existingManifest?.id ?? projectId,
+    name: existingManifest?.name ?? seededManifest.name,
+    filename: existingManifest?.filename ?? seededManifest.filename,
+    pdNumber: existingManifest?.pdNumber ?? pdNumber,
+    unitNumber: existingManifest?.unitNumber ?? seededManifest.unitNumber,
+    revision: selectedRevision,
+    lwcType: existingManifest?.lwcType ?? seededManifest.lwcType,
+    dueDate: existingManifest?.dueDate ?? seededManifest.dueDate,
+    planConlayDate: existingManifest?.planConlayDate ?? seededManifest.planConlayDate,
+    planConassyDate: existingManifest?.planConassyDate ?? seededManifest.planConassyDate,
+    shipDate: existingManifest?.shipDate ?? seededManifest.shipDate,
+    color: existingManifest?.color ?? seededManifest.color,
+    status: existingManifest?.status ?? seededManifest.status,
+    activeWorkbookRevisionId: revisionRecord?.workbookFileName ?? seededManifest.activeWorkbookRevisionId,
+    activeLayoutRevisionId: revisionRecord?.layoutFileName ?? seededManifest.activeLayoutRevisionId,
+  }
+
+  const [projectSettings, referenceSettings] = await Promise.all([
+    readProjectAssignmentVisibilitySettings(projectId),
+    readAssignmentVisibilityReferenceSettings(),
+  ])
+
+  const resolvedBySheet = resolveVisibilitySettingsForManifest(
+    nextManifestBase,
+    projectSettings,
+    referenceSettings,
+  )
+  const nextManifestWithVisibility = applyResolvedVisibilityToManifest(
+    nextManifestBase,
+    resolvedBySheet,
+  )
+
+  const savedManifest = await writeProjectManifest(nextManifestWithVisibility)
+  const enriched = await enrichManifestFromProjectState(savedManifest)
+
+  // Preserve external location visibility from explicit settings after enrichment.
+  const mergedAssignments = {
+    ...enriched.assignments,
+  }
+  for (const [sheetSlug, assignment] of Object.entries(nextManifestWithVisibility.assignments ?? {})) {
+    if (!assignment.externalLocations) {
+      continue
+    }
+    mergedAssignments[sheetSlug] = {
+      ...mergedAssignments[sheetSlug],
+      externalLocations: assignment.externalLocations,
+    }
+  }
+
+  const finalManifest: ProjectManifest = {
+    ...enriched,
+    assignments: mergedAssignments,
+  }
+
+  await writeProjectManifest(finalManifest)
+  return finalManifest
 }
 
 export async function createProjectFromLegalSource(input: CreateProjectFromLegalSourceInput) {

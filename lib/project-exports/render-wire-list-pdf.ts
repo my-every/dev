@@ -125,6 +125,7 @@ export async function renderWireListPdfFromRoute(options: {
   projectId: string;
   sheetSlug: string;
   grouping?: string;
+  mode?: "branding";
 }): Promise<Uint8Array> {
   const targetUrl = new URL(
     `/print/project-context/${encodeURIComponent(options.projectId)}/wire-list/${encodeURIComponent(options.sheetSlug)}`,
@@ -136,6 +137,9 @@ export async function renderWireListPdfFromRoute(options: {
   }
   if (options.grouping) {
     targetUrl.searchParams.set("grouping", options.grouping);
+  }
+  if (options.mode) {
+    targetUrl.searchParams.set("mode", options.mode);
   }
 
   return renderPdfFromUrl(targetUrl);

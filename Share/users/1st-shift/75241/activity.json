@@ -1,8 +1,149 @@
 {
   "badge": "75241",
   "shift": "1st",
-  "lastUpdated": "2026-05-07T18:23:42.456Z",
+  "lastUpdated": "2026-05-08T19:25:12.423Z",
   "activities": [
+    {
+      "id": "act_1778268312399_w5zra",
+      "timestamp": "2026-05-08T19:25:12.403Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "workflow": "legal-revision-refresh",
+        "pdNumber": "ANG01",
+        "revision": "A.6",
+        "jobId": "rev_job_1778267715916_8uqhz"
+      },
+      "projectId": "ang01-stock",
+      "comment": "Legal revision refresh completed.",
+      "result": "success"
+    },
+    {
+      "id": "act_1778267716038_e9ev4",
+      "timestamp": "2026-05-08T19:15:16.038Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "workflow": "legal-revision-refresh",
+        "pdNumber": "ANG01",
+        "revision": "A.6",
+        "jobId": "rev_job_1778267715916_8uqhz"
+      },
+      "projectId": "ang01-stock",
+      "comment": "Legal revision refresh started in background.",
+      "result": "pending"
+    },
+    {
+      "id": "act_1778261334725_pmktv",
+      "timestamp": "2026-05-08T17:28:54.725Z",
+      "action": "STARTED",
+      "performedBy": "75241",
+      "metadata": {
+        "projectName": "STOCK",
+        "pdNumber": "ANG01",
+        "sheetName": "JB71 B,DOOR CTRL",
+        "workflow": "Box Build",
+        "before": {
+          "stage": "BOX_BUILD",
+          "status": "INCOMPLETE"
+        },
+        "after": {
+          "status": "IN_PROGRESS"
+        }
+      },
+      "assignmentId": "jb71-b-door-ctrl",
+      "projectId": "ang01-stock",
+      "stage": "BOX_BUILD",
+      "result": "success"
+    },
+    {
+      "id": "act_1778261329594_4luou",
+      "timestamp": "2026-05-08T17:28:49.594Z",
+      "action": "REOPENED",
+      "performedBy": "75241",
+      "metadata": {
+        "projectName": "STOCK",
+        "pdNumber": "ANG01",
+        "sheetName": "JB71 B,DOOR CTRL",
+        "workflow": "Box Build",
+        "before": {
+          "stage": "BOX_BUILD",
+          "status": "NOT_STARTED"
+        },
+        "after": {
+          "status": "INCOMPLETE"
+        }
+      },
+      "assignmentId": "jb71-b-door-ctrl",
+      "projectId": "ang01-stock",
+      "stage": "BOX_BUILD",
+      "result": "success"
+    },
+    {
+      "id": "act_1778261290145_tr833",
+      "timestamp": "2026-05-08T17:28:10.145Z",
+      "action": "STAGE_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "projectName": "STOCK",
+        "pdNumber": "ANG01",
+        "sheetName": "JB71 B,DOOR CTRL",
+        "workflow": "Box Build",
+        "before": {
+          "stage": "READY_TO_LAY",
+          "status": "NOT_STARTED"
+        },
+        "after": {
+          "stage": "BOX_BUILD"
+        },
+        "toStage": "Box Build",
+        "fromStage": "READY TO LAY"
+      },
+      "assignmentId": "jb71-b-door-ctrl",
+      "projectId": "ang01-stock",
+      "stage": "BOX_BUILD",
+      "result": "success"
+    },
+    {
+      "id": "act_1778260175171_yoi9o",
+      "timestamp": "2026-05-08T17:09:35.171Z",
+      "action": "STAGE_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "sheetName": "JB71 B,BOX CONTROL",
+        "before": {
+          "stage": "READY_TO_LAY",
+          "status": "IN_PROGRESS"
+        },
+        "after": {
+          "stage": "BUILD_UP"
+        }
+      },
+      "assignmentId": "jb71-b-box-control",
+      "projectId": "ang01-stock",
+      "stage": "BUILD_UP",
+      "result": "success"
+    },
+    {
+      "id": "act_1778260165962_d93dj",
+      "timestamp": "2026-05-08T17:09:25.962Z",
+      "action": "STARTED",
+      "performedBy": "75241",
+      "metadata": {
+        "sheetName": "JB71 B,BOX CONTROL",
+        "before": {
+          "stage": "READY_TO_LAY",
+          "status": "NOT_STARTED"
+        },
+        "after": {
+          "status": "IN_PROGRESS"
+        }
+      },
+      "assignmentId": "jb71-b-box-control",
+      "projectId": "ang01-stock",
+      "stage": "READY_TO_LAY",
+      "result": "success"
+    },
     {
       "id": "act_1778178222456_yfuup",
       "timestamp": "2026-05-07T18:23:42.456Z",
@@ -399,8 +540,8 @@
     }
   ],
   "stats": {
-    "totalActions": 24,
-    "actionsToday": 2,
-    "lastActionTime": "2026-05-07T18:23:42.456Z"
+    "totalActions": 31,
+    "actionsToday": 7,
+    "lastActionTime": "2026-05-08T19:25:12.403Z"
   }
 }

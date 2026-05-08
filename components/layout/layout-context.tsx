@@ -32,6 +32,7 @@ const LayoutUIContext = createContext<LayoutUIContextValue | null>(null);
 
 type LayoutUIProviderProps = {
     children: React.ReactNode;
+    defaultSidebarOpen?: boolean;
     defaultSidePanelOpen?: boolean;
     defaultAsideOpen?: boolean;
     defaultFloatingActionsOpen?: boolean;
@@ -39,12 +40,13 @@ type LayoutUIProviderProps = {
 
 export function LayoutUIProvider({
     children,
+    defaultSidebarOpen = true,
     defaultSidePanelOpen = true,
     defaultAsideOpen = true,
     defaultFloatingActionsOpen = true,
 }: LayoutUIProviderProps) {
     const isMobile = useIsMobile();
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(defaultSidebarOpen);
     const [isDesktopSidePanelOpen, setIsDesktopSidePanelOpen] = useState(defaultSidePanelOpen);
     const [isMobileSidePanelOpen, setIsMobileSidePanelOpen] = useState(false);
     const [isAsideOpen, setIsAsideOpen] = useState(defaultAsideOpen);

@@ -263,7 +263,7 @@ export default function WorkspaceLayout({ children }: WorkspaceLayoutProps) {
 
   return (
     <WorkspaceAccessContext.Provider value={accessContextValue}>
-      <PageLayoutShell navItems={navItems} activeRootId={activeRootId}>
+      <PageLayoutShell navItems={navItems} activeRootId={activeRootId} defaultSidebarOpen={false}>
         {children}
       </PageLayoutShell>
     </WorkspaceAccessContext.Provider>

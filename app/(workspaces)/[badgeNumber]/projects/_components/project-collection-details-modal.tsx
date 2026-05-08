@@ -20,6 +20,7 @@ import {
   Layers,
   Loader2,
   Package,
+  Palette,
   Pencil,
   Upload,
   X,
@@ -44,6 +45,22 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  ColorPicker,
+  ColorPickerArea,
+  ColorPickerContent,
+  ColorPickerHueSlider,
+  ColorPickerInput,
+  ColorPickerSwatch,
+  ColorPickerTrigger,
+} from "@/components/ui/color-picker";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -54,13 +71,20 @@ import {
   RevisionField,
   UnitNumberField,
 } from "@/components/projects/fields";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import type { LegalProjectRecord } from "@/types/legal-drawings";
 import type { ProjectManifest } from "@/types/project-manifest";
-import { MultiSheetPrintModal } from "@/components/wire-list/multi-sheet-print-modal";
-import { MultiSheetWireListModal } from "@/components/wire-list/multi-sheet-wire-list-modal";
+import { parseRevisionFromFilename } from "@/lib/revision/types";
+import { parseImportedBrandWorkbook } from "@/lib/wire-brand-list/import-workbook";
+import { validateWorkbookFile } from "@/lib/workbook/parse-workbook";
+import { LayoutPdfWorkspaceDialog } from "@/components/projects/layout-pdf-workspace-dialog";
+import { MultiWireListPrintWorkspaceDialog } from "@/components/projects/multi-wire-list-print-workspace-dialog";
 
 import { ProjectIcon } from "./project-icon";
+import { AssignmentLabelDownloadButton } from "@/components/projects/assignment-label-download-button";
+import { StageSelectorCell } from "@/components/projects/assignment-stage-selector-cell";
+import { StatusButtonCell } from "@/components/projects/assignment-status-button-cell";
 
 interface ProjectCollectionDetailsModalProps {
   open: boolean;
@@ -99,6 +123,34 @@ interface CrossWireSchemaSummary {
   unitTypeGroups?: Array<unknown>;
 }
 
+interface ResolvedVisibilityCell {
+  wireListVisible: boolean;
+  brandingVisible: boolean;
+  crossWireVisible: boolean;
+  source: "project" | "reference" | "manifest-default";
+}
+
+type ResolvedVisibilityBySheet = Record<
+  string,
+  Record<string, ResolvedVisibilityCell>
+>;
+
+interface RevisionRefreshJobProgress {
+  uploadStored: boolean;
+  legalRevisionBuilt: boolean;
+  projectStateRefreshed: boolean;
+  wireBrandSchemasGenerated: boolean;
+  crossWireSchemaGenerated: boolean;
+}
+
+interface RevisionRefreshJob {
+  jobId: string;
+  status: "running" | "completed" | "failed";
+  message: string;
+  error: string | null;
+  progress: RevisionRefreshJobProgress;
+}
+
 type WireListSettingsMatrix = Record<string, Record<string, boolean>>;
 
 type ProjectDetailsTab =
@@ -125,6 +177,17 @@ interface ProjectTabMeta {
   guidanceDescription: string;
   guidanceItems: TabGuidanceItem[];
 }
+
+const PROJECT_STATUS_OPTIONS = [
+  { value: "legals_pending", label: "Legals Pending", dot: "bg-slate-400" },
+  { value: "brandlist",      label: "Brand List",     dot: "bg-blue-500"  },
+  { value: "branding",       label: "Branding",       dot: "bg-purple-500"},
+  { value: "kitting",        label: "Kitting",        dot: "bg-amber-500" },
+  { value: "active",         label: "Active",         dot: "bg-green-500" },
+  { value: "blocked",        label: "Blocked",        dot: "bg-red-500"   },
+  { value: "completed",      label: "Completed",      dot: "bg-emerald-500"},
+  { value: "shipped",        label: "Shipped",        dot: "bg-teal-500"  },
+] as const;
 
 const PROJECT_TAB_META: ProjectTabMeta[] = [
   {
@@ -289,6 +352,21 @@ function formatTokenLabel(value?: string | null): string {
 function formatList(values: string[] | undefined, emptyLabel: string): string {
   if (!values || values.length === 0) return emptyLabel;
   return values.join(", ");
+}
+
+function deriveRevisionLabelFromFiles(files: Array<File | null | undefined>): string {
+  for (const file of files) {
+    if (!file) {
+      continue;
+    }
+
+    const parsed = parseRevisionFromFilename(file.name);
+    if (parsed.revision && parsed.revision.toLowerCase() !== "unknown") {
+      return parsed.revision;
+    }
+  }
+
+  return "";
 }
 
 function hasUploadedLegalFiles(project: ProjectManifest): boolean {
@@ -520,6 +598,7 @@ export function ProjectCollectionDetailsModal({
   project,
 }: ProjectCollectionDetailsModalProps) {
   const router = useRouter();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<ProjectDetailsTab>("details");
   const [projectState, setProjectState] = useState<ProjectManifest | null>(
     project,
@@ -536,11 +615,18 @@ export function ProjectCollectionDetailsModal({
   const [loadingLegals, setLoadingLegals] = useState(false);
 
   const [workbookFile, setWorkbookFile] = useState<File | null>(null);
+  const [greenChangesFile, setGreenChangesFile] = useState<File | null>(null);
   const [layoutFile, setLayoutFile] = useState<File | null>(null);
   const workbookInputRef = useRef<HTMLInputElement | null>(null);
+  const greenChangesInputRef = useRef<HTMLInputElement | null>(null);
   const layoutInputRef = useRef<HTMLInputElement | null>(null);
+  const [revisionNameDraft, setRevisionNameDraft] = useState("");
+  const [revisionNameTouched, setRevisionNameTouched] = useState(false);
   const [uploadingLegals, setUploadingLegals] = useState(false);
   const [legalsMessage, setLegalsMessage] = useState<string | null>(null);
+  const [resolvedVisibilityBySheet, setResolvedVisibilityBySheet] = useState<ResolvedVisibilityBySheet>({});
+  const [refreshJob, setRefreshJob] = useState<RevisionRefreshJob | null>(null);
+  const refreshJobPollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const [brandingExports, setBrandingExports] =
     useState<BrandingExportResult | null>(null);
@@ -602,6 +688,9 @@ export function ProjectCollectionDetailsModal({
     string | null
   >(null);
 
+  const [crossWireSettingsMatrix, setCrossWireSettingsMatrix] =
+    useState<WireListSettingsMatrix>({});
+
   const [crossWireSchema, setCrossWireSchema] =
     useState<CrossWireSchemaSummary | null>(null);
   const [hasLoadedCrossWireSchema, setHasLoadedCrossWireSchema] =
@@ -614,14 +703,22 @@ export function ProjectCollectionDetailsModal({
   const [crossWireSettingsMessage, setCrossWireSettingsMessage] = useState<
     string | null
   >(null);
+  const brandImportInputRef = useRef<HTMLInputElement | null>(null);
+  const [preparingBrandImport, setPreparingBrandImport] = useState(false);
 
+  const [layoutWorkspaceOpen, setLayoutWorkspaceOpen] = useState(false);
   const [wireReviewOpen, setWireReviewOpen] = useState(false);
-  const [printWorkspaceOpen, setPrintWorkspaceOpen] = useState(false);
-  const hasChildWorkflowOpen = wireReviewOpen || printWorkspaceOpen;
+  const hasChildWorkflowOpen = layoutWorkspaceOpen || wireReviewOpen;
   const collectionModalOpen = open && !hasChildWorkflowOpen;
 
   useEffect(() => {
+    if (refreshJobPollRef.current) {
+      clearInterval(refreshJobPollRef.current);
+      refreshJobPollRef.current = null;
+    }
+
     if (!open) {
+      void clearBrandImportSession();
       setProjectState(project);
       setEditDraft(null);
       setIsEditing(false);
@@ -639,13 +736,19 @@ export function ProjectCollectionDetailsModal({
       setRegeneratingBrandBySheet({});
       setSchemaExternalLocations({});
       setWorkbookFile(null);
+      setGreenChangesFile(null);
       setLayoutFile(null);
+      setRevisionNameDraft("");
+      setRevisionNameTouched(false);
       setLegalsMessage(null);
+      setResolvedVisibilityBySheet({});
+      setRefreshJob(null);
       setExpandedAssignments(new Set());
       setExpandedBrandAssignments(new Set());
       setExpandedCrossAssignments(new Set());
+      setLayoutWorkspaceOpen(false);
       setWireReviewOpen(false);
-      setPrintWorkspaceOpen(false);
+      setCrossWireSettingsMatrix({});
       setCrossWireSchema(null);
       setHasLoadedCrossWireSchema(false);
       setSavingCrossWireSettingsBySheet({});
@@ -671,12 +774,30 @@ export function ProjectCollectionDetailsModal({
     setSavingCrossWireSettingsBySheet({});
     setCrossWireSettingsMessage(null);
     setSchemaExternalLocations({});
+    setResolvedVisibilityBySheet({});
+    setRefreshJob(null);
+    setWorkbookFile(null);
+    setGreenChangesFile(null);
+    setLayoutFile(null);
+    setRevisionNameDraft("");
+    setRevisionNameTouched(false);
+    setLayoutWorkspaceOpen(false);
     setWireReviewOpen(false);
-    setPrintWorkspaceOpen(false);
+    setCrossWireSettingsMatrix({});
     setCrossWireSchema(null);
     setHasLoadedCrossWireSchema(false);
     setExpandedCrossAssignments(new Set());
-  }, [open, project]);
+  }, [open, project, clearBrandImportSession]);
+
+  useEffect(
+    () => () => {
+      if (refreshJobPollRef.current) {
+        clearInterval(refreshJobPollRef.current);
+        refreshJobPollRef.current = null;
+      }
+    },
+    [],
+  );
 
   const currentProject = isEditing ? editDraft : projectState;
 
@@ -703,6 +824,428 @@ export function ProjectCollectionDetailsModal({
       ) ?? null,
     [assignmentEntries, selectedAssignmentSlug],
   );
+
+  const latestLegalRevisionRecord = useMemo(() => {
+    if (!legalDetail?.revisions?.length) {
+      return null;
+    }
+
+    return (
+      legalDetail.revisions.find(
+        (revision) => revision.revision === legalDetail.latestRevision,
+      )
+      ?? [...legalDetail.revisions].sort((left, right) =>
+        right.revision.localeCompare(left.revision),
+      )[0]
+    );
+  }, [legalDetail]);
+
+  // Stable project ID ref — avoids recreating updateAssignment on every state change.
+  const projectIdRef = useRef<string | null>(null);
+  if (projectState?.id) projectIdRef.current = projectState.id;
+
+  const updateAssignment = useCallback(
+    async (sheetSlug: string, patch: { stage?: string; status?: string }) => {
+      const projectId = projectIdRef.current;
+      if (!projectId) return;
+      const res = await fetch(
+        `/api/projects/${encodeURIComponent(projectId)}/assignments/${encodeURIComponent(sheetSlug)}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "x-badge-number": badgeNumber,
+            "x-shift": "1st",
+          },
+          body: JSON.stringify(patch),
+        },
+      );
+      if (!res.ok) return;
+      const data = (await res.json()) as { assignment: typeof assignmentEntries[0] };
+      setProjectState((prev) =>
+        prev
+          ? {
+              ...prev,
+              assignments: {
+                ...prev.assignments,
+                [sheetSlug]: data.assignment,
+              },
+            }
+          : prev,
+      );
+    },
+    [badgeNumber],
+  );
+
+  useEffect(() => {
+    if (revisionNameTouched) {
+      return;
+    }
+
+    const computedRevision = deriveRevisionLabelFromFiles([
+      workbookFile,
+      greenChangesFile,
+      layoutFile,
+    ]);
+
+    setRevisionNameDraft(
+      computedRevision || currentProject?.revision || legalDetail?.latestRevision || "",
+    );
+  }, [
+    currentProject?.revision,
+    greenChangesFile,
+    layoutFile,
+    legalDetail?.latestRevision,
+    revisionNameTouched,
+    workbookFile,
+  ]);
+
+  const handleBrandImportFileSelection = useCallback(async (file: File | null) => {
+    if (!currentProject?.id || !file) {
+      return;
+    }
+
+    const validation = validateWorkbookFile(file);
+    if (!validation.isValid) {
+      toast({
+        title: "Invalid workbook",
+        description: validation.error,
+        duration: 3500,
+      });
+      return;
+    }
+
+    setPreparingBrandImport(true);
+    try {
+      const importedSheets = await parseImportedBrandWorkbook(file);
+      const prepareResponse = await fetch(
+        `/api/projects/${encodeURIComponent(currentProject.id)}/multi-sheet-print/import`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "prepare",
+            workbookFileName: file.name,
+            importedSheets,
+          }),
+        },
+      );
+
+      const preparePayload = (await prepareResponse.json().catch(() => ({}))) as {
+        importSession?: Record<string, unknown>;
+        error?: string;
+      };
+
+      if (!prepareResponse.ok || !preparePayload.importSession) {
+        throw new Error(
+          preparePayload.error || "Failed to prepare brand list comparison.",
+        );
+      }
+
+      const sessionResponse = await fetch(
+        `/api/projects/${encodeURIComponent(currentProject.id)}/multi-sheet-print/session`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            entryMode: "import-review",
+            importSession: preparePayload.importSession,
+          }),
+        },
+      );
+
+      if (!sessionResponse.ok) {
+        throw new Error("Failed to persist brand list import session.");
+      }
+
+      const returnTo = `/${badgeNumber}/projects?openProjectId=${encodeURIComponent(currentProject.id)}`;
+      onOpenChange(false);
+      router.push(
+        `/${badgeNumber}/projects/${encodeURIComponent(currentProject.id)}/brand-list-import?returnTo=${encodeURIComponent(returnTo)}`,
+      );
+    } catch (error) {
+      toast({
+        title: "Import failed",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Unable to prepare brand list comparison.",
+        duration: 4000,
+      });
+    } finally {
+      setPreparingBrandImport(false);
+    }
+  }, [badgeNumber, currentProject?.id, onOpenChange, router, toast]);
+
+  const clearBrandImportSession = useCallback(async () => {
+    if (!projectState?.id) return;
+    try {
+      await fetch(
+        `/api/projects/${encodeURIComponent(projectState.id)}/multi-sheet-print/session`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            entryMode: "cover",
+            importSession: null,
+          }),
+        },
+      );
+    } catch (error) {
+      // Silently fail on cleanup; this is a best-effort operation
+    }
+  }, [projectState?.id]);
+
+  const normalizeLocationKey = useCallback((value: string | null | undefined) => {
+    return String(value ?? "")
+      .trim()
+      .toUpperCase()
+      .replace(/\s+/g, " ");
+  }, []);
+
+  const fetchResolvedVisibilitySettings = useCallback(async () => {
+    if (!currentProject?.id) {
+      setResolvedVisibilityBySheet({});
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `/api/projects/${encodeURIComponent(currentProject.id)}/assignment-visibility-settings`,
+        { cache: "no-store" },
+      );
+
+      if (!response.ok) {
+        return;
+      }
+
+      const payload = (await response.json()) as {
+        resolvedBySheet?: ResolvedVisibilityBySheet;
+      };
+      setResolvedVisibilityBySheet(payload.resolvedBySheet ?? {});
+    } catch {
+      // Non-blocking: UI falls back to manifest values.
+    }
+  }, [currentProject?.id]);
+
+  const buildVisibilitySettingsPayload = useCallback(() => {
+    return assignmentEntries.map((assignment) => {
+      const existingByKey = new Map(
+        (assignment.externalLocations ?? []).map((item) => [
+          normalizeLocationKey(item.location),
+          item,
+        ]),
+      );
+
+      const schemaLocations = schemaExternalLocations[assignment.sheetSlug] ?? [];
+      const mergedLocations: Array<{
+        location: string;
+        wireListVisible: boolean;
+        brandingVisible: boolean;
+        crossWireVisible: boolean;
+      }> = [];
+      const seenKeys = new Set<string>();
+
+      for (const location of schemaLocations) {
+        const key = normalizeLocationKey(location);
+        if (!key) {
+          continue;
+        }
+        seenKeys.add(key);
+        const existing = existingByKey.get(key);
+        mergedLocations.push({
+          location,
+          wireListVisible:
+            wireListSettingsMatrix[assignment.sheetSlug]?.[key]
+            ?? existing?.wireListVisible
+            ?? true,
+          brandingVisible:
+            brandListSettingsMatrix[assignment.sheetSlug]?.[key]
+            ?? existing?.brandingVisible
+            ?? true,
+          crossWireVisible:
+            crossWireSettingsMatrix[assignment.sheetSlug]?.[key]
+            ?? existing?.wireListVisible
+            ?? true,
+        });
+      }
+
+      for (const [key, existing] of existingByKey) {
+        if (seenKeys.has(key)) {
+          continue;
+        }
+        mergedLocations.push({
+          location: String(existing.location ?? ""),
+          wireListVisible:
+            wireListSettingsMatrix[assignment.sheetSlug]?.[key]
+            ?? existing.wireListVisible
+            ?? true,
+          brandingVisible:
+            brandListSettingsMatrix[assignment.sheetSlug]?.[key]
+            ?? existing.brandingVisible
+            ?? true,
+          crossWireVisible:
+            crossWireSettingsMatrix[assignment.sheetSlug]?.[key]
+            ?? existing.wireListVisible
+            ?? true,
+        });
+      }
+
+      return {
+        sheetSlug: assignment.sheetSlug,
+        sheetName: assignment.sheetName,
+        unitType: assignment.unitType ?? null,
+        locations: mergedLocations,
+      };
+    });
+  }, [
+    assignmentEntries,
+    brandListSettingsMatrix,
+    crossWireSettingsMatrix,
+    normalizeLocationKey,
+    schemaExternalLocations,
+    wireListSettingsMatrix,
+  ]);
+
+  const persistAssignmentVisibilitySettings = useCallback(async () => {
+    if (!currentProject?.id) {
+      return;
+    }
+
+    const assignments = buildVisibilitySettingsPayload();
+    if (!assignments.length) {
+      return;
+    }
+
+    await fetch(
+      `/api/projects/${encodeURIComponent(currentProject.id)}/assignment-visibility-settings`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-badge-number": badgeNumber,
+          "x-shift": "1st",
+        },
+        body: JSON.stringify({
+          pdNumber: currentProject.pdNumber,
+          assignments,
+          persistToReference: true,
+        }),
+      },
+    ).catch(() => null);
+  }, [badgeNumber, buildVisibilitySettingsPayload, currentProject?.id, currentProject?.pdNumber]);
+
+  const refreshProjectManifestAfterRevision = useCallback(async () => {
+    if (!currentProject?.id) {
+      return;
+    }
+
+    const response = await fetch(
+      `/api/projects/${encodeURIComponent(currentProject.id)}`,
+      { cache: "no-store" },
+    );
+    if (!response.ok) {
+      return;
+    }
+
+    const payload = (await response.json()) as { manifest?: ProjectManifest };
+    if (!payload.manifest) {
+      return;
+    }
+
+    setProjectState(normalizeManifestAfterLegalUpload(payload.manifest));
+  }, [currentProject?.id]);
+
+  const stopRefreshJobPolling = useCallback(() => {
+    if (refreshJobPollRef.current) {
+      clearInterval(refreshJobPollRef.current);
+      refreshJobPollRef.current = null;
+    }
+  }, []);
+
+  const startRefreshJobPolling = useCallback((projectId: string) => {
+    stopRefreshJobPolling();
+
+    refreshJobPollRef.current = setInterval(() => {
+      void (async () => {
+        try {
+          const response = await fetch(
+            `/api/projects/revisions/${encodeURIComponent(projectId)}/refresh-job`,
+            { cache: "no-store" },
+          );
+          if (!response.ok) {
+            return;
+          }
+
+          const payload = (await response.json()) as { job?: RevisionRefreshJob };
+          if (!payload.job) {
+            return;
+          }
+
+          setRefreshJob(payload.job);
+
+          if (payload.job.status === "running") {
+            return;
+          }
+
+          stopRefreshJobPolling();
+
+          if (payload.job.status === "completed") {
+            setLegalsMessage(
+              payload.job.message ||
+                "Revision refresh completed. All tabs now use the latest revision.",
+            );
+            await refreshProjectManifestAfterRevision();
+            await fetchResolvedVisibilitySettings();
+            setHasLoadedLegals(false);
+            setHasLoadedBrandingExports(false);
+            setHasLoadedWireExports(false);
+            setHasLoadedCrossWireSchema(false);
+            return;
+          }
+
+          setLegalsMessage(
+            payload.job.error || "Revision refresh failed. Please try again.",
+          );
+        } catch {
+          // Keep polling through transient failures.
+        }
+      })();
+    }, 2000);
+  }, [
+    fetchResolvedVisibilitySettings,
+    refreshProjectManifestAfterRevision,
+    stopRefreshJobPolling,
+  ]);
+
+  useEffect(() => {
+    if (!currentProject?.id || !open) {
+      return;
+    }
+
+    void (async () => {
+      try {
+        const response = await fetch(
+          `/api/projects/revisions/${encodeURIComponent(currentProject.id)}/refresh-job`,
+          { cache: "no-store" },
+        );
+        if (!response.ok) {
+          return;
+        }
+        const payload = (await response.json()) as { job?: RevisionRefreshJob };
+        if (!payload.job) {
+          return;
+        }
+
+        setRefreshJob(payload.job);
+        if (payload.job.status === "running") {
+          startRefreshJobPolling(currentProject.id);
+        }
+      } catch {
+        // Silent fallback; uploader still works without restored polling.
+      }
+    })();
+  }, [currentProject?.id, open, startRefreshJobPolling]);
 
   const anyAssignmentHasLocations = useMemo(
     () =>
@@ -732,7 +1275,7 @@ export function ProjectCollectionDetailsModal({
       assignmentsWithExternal += 1;
       totalLocations += locations.length;
       for (const key of locations) {
-        if (wireListSettingsMatrix[assignment.sheetSlug]?.[key] ?? true) {
+        if (crossWireSettingsMatrix[assignment.sheetSlug]?.[key] ?? true) {
           visibleLocations += 1;
         }
       }
@@ -744,7 +1287,7 @@ export function ProjectCollectionDetailsModal({
       visibleLocations,
       hiddenLocations: Math.max(0, totalLocations - visibleLocations),
     };
-  }, [assignmentEntries, schemaExternalLocations, wireListSettingsMatrix]);
+  }, [assignmentEntries, schemaExternalLocations, crossWireSettingsMatrix]);
 
   const assignmentGroups = useMemo(() => {
     if (assignmentGroupMode === "flat") return null;
@@ -756,6 +1299,14 @@ export function ProjectCollectionDetailsModal({
     }
     return Array.from(groups.entries()).sort(([a], [b]) => a.localeCompare(b));
   }, [assignmentEntries, assignmentGroupMode]);
+
+  useEffect(() => {
+    if (!currentProject?.id) {
+      setResolvedVisibilityBySheet({});
+      return;
+    }
+    void fetchResolvedVisibilitySettings();
+  }, [currentProject?.id, fetchResolvedVisibilitySettings]);
 
   useEffect(() => {
     if (!currentProject) {
@@ -777,13 +1328,25 @@ export function ProjectCollectionDetailsModal({
       for (const location of schemaExternalLocations[assignment.sheetSlug] ??
         []) {
         const key = location.trim().toUpperCase();
-        if (key) row[key] = existingByKey.get(key)?.wireListVisible ?? true;
+        if (!key) {
+          continue;
+        }
+        row[key] =
+          resolvedVisibilityBySheet[assignment.sheetSlug]?.[key]
+            ?.wireListVisible
+          ?? existingByKey.get(key)?.wireListVisible
+          ?? true;
       }
       nextMatrix[assignment.sheetSlug] = row;
     }
 
     setWireListSettingsMatrix(nextMatrix);
-  }, [assignmentEntries, currentProject, schemaExternalLocations]);
+  }, [
+    assignmentEntries,
+    currentProject,
+    resolvedVisibilityBySheet,
+    schemaExternalLocations,
+  ]);
 
   useEffect(() => {
     if (!currentProject) {
@@ -805,13 +1368,66 @@ export function ProjectCollectionDetailsModal({
       for (const location of schemaExternalLocations[assignment.sheetSlug] ??
         []) {
         const key = location.trim().toUpperCase();
-        if (key) row[key] = existingByKey.get(key)?.brandingVisible ?? true;
+        if (!key) {
+          continue;
+        }
+        row[key] =
+          resolvedVisibilityBySheet[assignment.sheetSlug]?.[key]
+            ?.brandingVisible
+          ?? existingByKey.get(key)?.brandingVisible
+          ?? true;
       }
       nextMatrix[assignment.sheetSlug] = row;
     }
 
     setBrandListSettingsMatrix(nextMatrix);
-  }, [assignmentEntries, currentProject, schemaExternalLocations]);
+  }, [
+    assignmentEntries,
+    currentProject,
+    resolvedVisibilityBySheet,
+    schemaExternalLocations,
+  ]);
+
+  // Initialize cross-wire settings matrix from wireListVisible (separate copy, independent of wire list tab)
+  useEffect(() => {
+    if (!currentProject) {
+      setCrossWireSettingsMatrix({});
+      return;
+    }
+
+    const nextMatrix: WireListSettingsMatrix = {};
+    for (const assignment of assignmentEntries) {
+      const existingByKey = new Map(
+        (assignment.externalLocations ?? []).map((item) => [
+          String(item.location ?? "")
+            .trim()
+            .toUpperCase(),
+          item,
+        ]),
+      );
+      const row: Record<string, boolean> = {};
+      for (const location of schemaExternalLocations[assignment.sheetSlug] ??
+        []) {
+        const key = location.trim().toUpperCase();
+        if (!key) {
+          continue;
+        }
+        row[key] =
+          resolvedVisibilityBySheet[assignment.sheetSlug]?.[key]
+            ?.crossWireVisible
+          ?? existingByKey.get(key)?.wireListVisible
+          ?? true;
+      }
+      nextMatrix[assignment.sheetSlug] = row;
+    }
+
+    setCrossWireSettingsMatrix(nextMatrix);
+  }, [
+    assignmentEntries,
+    currentProject,
+    resolvedVisibilityBySheet,
+    schemaExternalLocations,
+  ]);
 
   const refreshLegalDetail = useCallback(async () => {
     if (!projectState?.pdNumber) {
@@ -1241,6 +1857,8 @@ export function ProjectCollectionDetailsModal({
       }
 
       await refreshWireExports();
+      await persistAssignmentVisibilitySettings();
+      await fetchResolvedVisibilitySettings();
       setWireListSettingsMessage(
         `${assignment.sheetName} settings saved and PDF regenerated.`,
       );
@@ -1264,6 +1882,8 @@ export function ProjectCollectionDetailsModal({
   }, [
     assignmentEntries,
     currentProject,
+    fetchResolvedVisibilitySettings,
+    persistAssignmentVisibilitySettings,
     refreshWireExports,
     schemaExternalLocations,
     wireListSettingsMatrix,
@@ -1389,6 +2009,8 @@ export function ProjectCollectionDetailsModal({
       }
 
       await refreshBrandingExports();
+      await persistAssignmentVisibilitySettings();
+      await fetchResolvedVisibilitySettings();
       setBrandListSettingsMessage(
         `${assignment.sheetName} settings saved and brand list regenerated.`,
       );
@@ -1413,13 +2035,15 @@ export function ProjectCollectionDetailsModal({
     assignmentEntries,
     brandListSettingsMatrix,
     currentProject,
+    fetchResolvedVisibilitySettings,
+    persistAssignmentVisibilitySettings,
     refreshBrandingExports,
     schemaExternalLocations,
   ]);
 
   const setCrossWireLocationVisibility = useCallback(
     (sheetSlug: string, location: string, visible: boolean) => {
-      setWireListSettingsMatrix((prev) => ({
+      setCrossWireSettingsMatrix((prev) => ({
         ...prev,
         [sheetSlug]: {
           ...(prev[sheetSlug] ?? {}),
@@ -1467,7 +2091,7 @@ export function ProjectCollectionDetailsModal({
         return {
           location,
           wireListVisible:
-            wireListSettingsMatrix[assignment.sheetSlug]?.[key] ??
+            crossWireSettingsMatrix[assignment.sheetSlug]?.[key] ??
             existing?.wireListVisible ??
             true,
           brandingVisible: existing?.brandingVisible ?? true,
@@ -1541,6 +2165,9 @@ export function ProjectCollectionDetailsModal({
           await refreshCrossWireSchema();
         }
       }
+
+      await persistAssignmentVisibilitySettings();
+      await fetchResolvedVisibilitySettings();
     } catch (error) {
       setCrossWireSettingsMessage(
         error instanceof Error
@@ -1556,9 +2183,11 @@ export function ProjectCollectionDetailsModal({
   }, [
     assignmentEntries,
     currentProject,
+    fetchResolvedVisibilitySettings,
+    persistAssignmentVisibilitySettings,
     refreshCrossWireSchema,
     schemaExternalLocations,
-    wireListSettingsMatrix,
+    crossWireSettingsMatrix,
   ]);
 
   const handleRegenerateCrossWireSchema = useCallback(async () => {
@@ -1602,19 +2231,48 @@ export function ProjectCollectionDetailsModal({
   if (!currentProject) return null;
 
   const openLayoutWorkspace = () => {
+    setLayoutWorkspaceOpen(true);
     setWireReviewOpen(false);
-    onOpenChange(false);
-    router.push(
-      `/${badgeNumber}/projects/${encodeURIComponent(currentProject.id)}?action=layout-workspace`,
-    );
   };
 
   const openWireReview = () => {
     setWireReviewOpen(true);
   };
 
+  const openBrandImportReview = () => {
+    brandImportInputRef.current?.click();
+  };
+
   const openPrintWorkspace = () => {
-    setPrintWorkspaceOpen(true);
+    onOpenChange(false);
+    router.push(
+      `/${badgeNumber}/projects/${encodeURIComponent(currentProject.id)}`,
+    );
+  };
+
+  const handleDownloadAllWireLists = () => {
+    if (!wireExports?.sheetExports?.length) return;
+    for (const entry of wireExports.sheetExports) {
+      const link = document.createElement("a");
+      link.href = buildExportFileHref(currentProject.id, entry.relativePath);
+      link.download = entry.fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
+  const handleDownloadAllBrandLists = () => {
+    const sheets = assignmentEntries.filter((a) => a.sheetSlug);
+    if (!sheets.length) return;
+    for (const assignment of sheets) {
+      const link = document.createElement("a");
+      link.href = `/api/projects/${encodeURIComponent(currentProject.id)}/brand-list-pdf/${encodeURIComponent(assignment.sheetSlug)}`;
+      link.download = `${assignment.sheetSlug}-branding.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   const handleUploadLegals = async () => {
@@ -1622,8 +2280,8 @@ export function ProjectCollectionDetailsModal({
       return;
     }
 
-    if (!workbookFile && !layoutFile) {
-      setLegalsMessage("Select a workbook or layout PDF first.");
+    if (!workbookFile && !greenChangesFile && !layoutFile) {
+      setLegalsMessage("Select a UCP wire list, green changes workbook, or layout PDF first.");
       return;
     }
 
@@ -1632,18 +2290,33 @@ export function ProjectCollectionDetailsModal({
     try {
       const formData = new FormData();
       formData.set("pdNumber", currentProject.pdNumber);
+      const computedRevision = deriveRevisionLabelFromFiles([
+        workbookFile,
+        greenChangesFile,
+        layoutFile,
+      ]);
+      const effectiveRevisionName = revisionNameDraft.trim() || computedRevision || currentProject.revision;
+      if (effectiveRevisionName) {
+        formData.set("revisionName", effectiveRevisionName);
+      }
       if (workbookFile) formData.set("workbook", workbookFile);
+      if (greenChangesFile) formData.set("greenChanges", greenChangesFile);
       if (layoutFile) formData.set("layout", layoutFile);
 
       const response = await fetch(
-        `/api/projects/revisions/${encodeURIComponent(currentProject.id)}/files`,
+        `/api/projects/revisions/${encodeURIComponent(currentProject.id)}/files?async=1`,
         {
           method: "POST",
+          headers: {
+            "x-badge-number": badgeNumber,
+            "x-shift": "1st",
+          },
           body: formData,
         },
       );
       const payload = (await response.json().catch(() => ({}))) as {
         error?: string;
+        refreshJob?: RevisionRefreshJob;
       };
 
       if (!response.ok) {
@@ -1652,40 +2325,22 @@ export function ProjectCollectionDetailsModal({
       }
 
       setWorkbookFile(null);
+      setGreenChangesFile(null);
       setLayoutFile(null);
+      setRevisionNameTouched(false);
+      setRevisionNameDraft("");
       if (workbookInputRef.current) workbookInputRef.current.value = "";
+      if (greenChangesInputRef.current) greenChangesInputRef.current.value = "";
       if (layoutInputRef.current) layoutInputRef.current.value = "";
-      const refreshedManifestResponse = await fetch(
-        `/api/projects/${encodeURIComponent(currentProject.id)}`,
-        {
-          cache: "no-store",
-        },
-      );
-      if (refreshedManifestResponse.ok) {
-        const refreshedPayload = (await refreshedManifestResponse.json()) as {
-          manifest?: ProjectManifest;
-        };
-        if (refreshedPayload.manifest) {
-          const normalizedManifest = normalizeManifestAfterLegalUpload(
-            refreshedPayload.manifest,
-          );
-          if (normalizedManifest !== refreshedPayload.manifest) {
-            await fetch(
-              `/api/projects/${encodeURIComponent(currentProject.id)}`,
-              {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(normalizedManifest),
-              },
-            ).catch(() => null);
-          }
-          setProjectState(normalizedManifest);
-        }
+      if (payload.refreshJob) {
+        setRefreshJob(payload.refreshJob);
+        startRefreshJobPolling(currentProject.id);
       }
-      setLegalsMessage("Legal files uploaded and schemas regenerated.");
+      setLegalsMessage(
+        "Legal files uploaded. Regeneration is running in the background. You will be notified here when it finishes.",
+      );
+      await fetchResolvedVisibilitySettings();
       void refreshLegalDetail();
-      void refreshBrandingExports();
-      void refreshWireExports();
     } finally {
       setUploadingLegals(false);
     }
@@ -1998,15 +2653,58 @@ export function ProjectCollectionDetailsModal({
                       >
                         Status
                       </Label>
-                      <Input
-                        id="project-status"
-                        value={String(currentProject.status || "")}
-                        onChange={(event) =>
-                          setProjectField("status", event.target.value)
+                      <Select
+                        value={currentProject.status || ""}
+                        onValueChange={(value) =>
+                          setProjectField("status", value as typeof PROJECT_STATUS_OPTIONS[number]["value"])
                         }
-                        className="h-9 text-sm"
-                        placeholder="Status"
-                      />
+                      >
+                        <SelectTrigger id="project-status" className="h-9 text-sm">
+                          <SelectValue placeholder="Select status">
+                            {(() => {
+                              const opt = PROJECT_STATUS_OPTIONS.find((o) => o.value === currentProject.status);
+                              return opt ? (
+                                <span className="flex items-center gap-2">
+                                  <span className={cn("h-2 w-2 rounded-full shrink-0", opt.dot)} />
+                                  {opt.label}
+                                </span>
+                              ) : "Select status";
+                            })()}
+                          </SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                          {PROJECT_STATUS_OPTIONS.map((opt) => (
+                            <SelectItem key={opt.value} value={opt.value}>
+                              <span className="flex items-center gap-2">
+                                <span className={cn("h-2 w-2 rounded-full shrink-0", opt.dot)} />
+                                {opt.label}
+                              </span>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="grid gap-1.5 md:col-span-2">
+                      <Label className="text-xs font-medium text-card-foreground">
+                        Color
+                      </Label>
+                      <ColorPicker
+                        value={currentProject.color || "#ffcc61"}
+                        onValueChange={(value) => setProjectField("color", value)}
+                      >
+                        <ColorPickerTrigger asChild>
+                          <button className="flex h-9 w-full items-center gap-2 rounded-md border border-input bg-background px-3 text-sm shadow-sm transition-colors hover:bg-accent">
+                            <ColorPickerSwatch className="h-5 w-5 rounded-sm border border-border shrink-0" />
+                            <span className="font-mono text-xs">{currentProject.color || "#ffcc61"}</span>
+                          </button>
+                        </ColorPickerTrigger>
+                        <ColorPickerContent>
+                          <ColorPickerArea />
+                          <ColorPickerHueSlider />
+                          <ColorPickerInput />
+                        </ColorPickerContent>
+                      </ColorPicker>
                     </div>
                   </div>
                 ) : (
@@ -2053,44 +2751,27 @@ export function ProjectCollectionDetailsModal({
                       )}
                     </DetailRow>
                     <DetailRow icon={FileText} label="Status">
-                      {formatTokenLabel(currentProject.status || "unknown")}
+                      {(() => {
+                        const opt = PROJECT_STATUS_OPTIONS.find((o) => o.value === currentProject.status);
+                        return (
+                          <span className="flex items-center gap-2">
+                            {opt && <span className={cn("h-2 w-2 rounded-full shrink-0", opt.dot)} />}
+                            {opt ? opt.label : formatTokenLabel(currentProject.status || "unknown")}
+                          </span>
+                        );
+                      })()}
                     </DetailRow>
-                    <div className="space-y-2">
-                  <div className="text-xs font-semibold uppercase tracking-wide text-card-foreground">
-                    Project Color
-                  </div>
-                  {isEditing ? (
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="color"
-                        value={currentProject.color || "#ffcc61"}
-                        onChange={(event) =>
-                          setProjectField("color", event.target.value)
-                        }
-                        className="h-9 w-12 rounded-md border border-border bg-transparent p-1"
-                      />
-                      <Input
-                        value={currentProject.color || "#ffcc61"}
-                        onChange={(event) =>
-                          setProjectField("color", event.target.value)
-                        }
-                        className="h-8 w-40 font-mono text-sm"
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <span
-                        className="h-5 w-5 rounded-full border border-border"
-                        style={{
-                          backgroundColor: currentProject.color || "#ffcc61",
-                        }}
-                      />
-                      <span className="font-mono text-xs text-card-foreground">
-                        {currentProject.color || "#ffcc61"}
+                    <DetailRow icon={Palette} label="Color">
+                      <span className="flex items-center gap-2">
+                        <span
+                          className="h-4 w-4 rounded-sm border border-border shrink-0"
+                          style={{ backgroundColor: currentProject.color || "#ffcc61" }}
+                        />
+                        <span className="font-mono text-xs text-card-foreground">
+                          {currentProject.color || "#ffcc61"}
+                        </span>
                       </span>
-                    </div>
-                  )}
-                    </div>
+                    </DetailRow>
 
                     <Separator />
 
@@ -2117,14 +2798,26 @@ export function ProjectCollectionDetailsModal({
                           <ExternalLink className="h-3.5 w-3.5" />
                           Open PDF Layout Workspace
                         </Button>
+   
                         <Button
                           size="sm"
                           variant="outline"
                           className="justify-start gap-2"
-                          onClick={openPrintWorkspace}
+                          onClick={handleDownloadAllWireLists}
+                          disabled={!wireExports?.sheetExports?.length}
                         >
                           <Download className="h-3.5 w-3.5" />
-                          Open Multi-Sheet Print Modal
+                          Download All Wire List PDFs
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="justify-start gap-2"
+                          onClick={handleDownloadAllBrandLists}
+                          disabled={!assignmentEntries.length}
+                        >
+                          <Download className="h-3.5 w-3.5" />
+                          Download All Brand List PDFs
                         </Button>
                       </div>
                     </div>
@@ -2148,12 +2841,6 @@ export function ProjectCollectionDetailsModal({
                           {assignmentEntries.filter((a) => a.status === "completed").length}
                         </span>
                         <span className="text-[11px] text-card-foreground">Completed</span>
-                      </div>
-                      <div className="flex flex-col items-center gap-0.5 py-1 pl-4">
-                        <span className="text-lg font-semibold text-foreground">
-                          {assignmentEntries.filter((a) => Boolean(a.swsType)).length}
-                        </span>
-                        <span className="text-[11px] text-card-foreground">With SWS</span>
                       </div>
                     </div>
                     <div className="flex items-center gap-1 rounded-lg border border-border bg-muted/40 p-0.5 text-xs shrink-0">
@@ -2200,7 +2887,6 @@ export function ProjectCollectionDetailsModal({
                           {assignmentGroupMode === "flat" ? (
                             <TableHead className="py-2">Unit Type</TableHead>
                           ) : null}
-                          <TableHead className="py-2">SWS</TableHead>
                           <TableHead className="py-2" />
                         </TableRow>
                       </TableHeader>
@@ -2244,15 +2930,20 @@ export function ProjectCollectionDetailsModal({
                                           <ChevronRight className={cn("h-3.5 w-3.5 text-card-foreground transition-transform duration-150", isExpanded && "rotate-90")} />
                                         </TableCell>
                                         <TableCell className="py-2.5">
-                                          <div className="text-sm font-medium text-foreground">{assignment.sheetName}</div>
+                                          <div className="text-sm font-medium text-foreground">{assignment.normalizedTitle ?? assignment.sheetName}</div>
                                         </TableCell>
-                                        <TableCell className="py-2.5">
-                                          <Badge variant="outline" className="h-5 text-[10px]">{formatTokenLabel(assignment.stage)}</Badge>
+                                        <TableCell className="py-2.5" onClick={(e) => e.stopPropagation()}>
+                                          <StageSelectorCell
+                                            currentStage={assignment.stage}
+                                            onSave={(newStage) => updateAssignment(assignment.sheetSlug, { stage: newStage })}
+                                          />
                                         </TableCell>
-                                        <TableCell className="py-2.5">
-                                          <Badge variant="secondary" className="h-5 text-[10px]">{formatTokenLabel(assignment.status)}</Badge>
+                                        <TableCell className="py-2.5" onClick={(e) => e.stopPropagation()}>
+                                          <StatusButtonCell
+                                            currentStatus={assignment.status}
+                                            onSave={(newStatus) => updateAssignment(assignment.sheetSlug, { status: newStatus })}
+                                          />
                                         </TableCell>
-                                        <TableCell className="py-2.5 text-sm">{assignment.swsType || "—"}</TableCell>
                                         <TableCell className="py-2.5">
                                           <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
                                             {assignment.files.wireListPDFPath ? (
@@ -2273,7 +2964,35 @@ export function ProjectCollectionDetailsModal({
                                       {isExpanded ? (
                                         <tr className="bg-card/15">
                                           <td colSpan={10} className="px-4 py-3">
-                                            <div className="h-18 rounded-lg border border-dashed border-border/60 bg-background/40" />
+                                            <div className="grid grid-cols-3 gap-2">
+                                              {assignment.blueLabels?.length ? (
+                                                <AssignmentLabelDownloadButton
+                                                  projectId={currentProject.id}
+                                                  assignmentSlug={assignment.sheetSlug}
+                                                  labelType="blue"
+                                                  className="w-full justify-center"
+                                                />
+                                              ) : null}
+                                              {assignment.whiteLabels?.length ? (
+                                                <AssignmentLabelDownloadButton
+                                                  projectId={currentProject.id}
+                                                  assignmentSlug={assignment.sheetSlug}
+                                                  labelType="white"
+                                                  className="w-full justify-center"
+                                                />
+                                              ) : null}
+                                              {assignment.partNumbers?.length ? (
+                                                <AssignmentLabelDownloadButton
+                                                  projectId={currentProject.id}
+                                                  assignmentSlug={assignment.sheetSlug}
+                                                  labelType="cable"
+                                                  className="w-full justify-center"
+                                                />
+                                              ) : null}
+                                              {!assignment.blueLabels?.length && !assignment.whiteLabels?.length && !assignment.partNumbers?.length ? (
+                                                <span className="col-span-3 text-xs text-muted-foreground">No label data for this assignment</span>
+                                              ) : null}
+                                            </div>
                                           </td>
                                         </tr>
                                       ) : null}
@@ -2306,16 +3025,21 @@ export function ProjectCollectionDetailsModal({
                                       <ChevronRight className={cn("h-3.5 w-3.5 text-card-foreground transition-transform duration-150", isExpanded && "rotate-90")} />
                                     </TableCell>
                                     <TableCell className="py-2.5">
-                                      <div className="text-sm font-medium text-foreground">{assignment.sheetName}</div>
+                                      <div className="text-sm font-medium text-foreground">{assignment.normalizedTitle ?? assignment.sheetName}</div>
                                     </TableCell>
-                                    <TableCell className="py-2.5">
-                                      <Badge variant="outline" className="h-5 text-[10px]">{formatTokenLabel(assignment.stage)}</Badge>
+                                    <TableCell className="py-2.5" onClick={(e) => e.stopPropagation()}>
+                                      <StageSelectorCell
+                                        currentStage={assignment.stage}
+                                        onSave={(newStage) => updateAssignment(assignment.sheetSlug, { stage: newStage })}
+                                      />
                                     </TableCell>
-                                    <TableCell className="py-2.5">
-                                      <Badge variant="secondary" className="h-5 text-[10px]">{formatTokenLabel(assignment.status)}</Badge>
+                                    <TableCell className="py-2.5" onClick={(e) => e.stopPropagation()}>
+                                      <StatusButtonCell
+                                        currentStatus={assignment.status}
+                                        onSave={(newStatus) => updateAssignment(assignment.sheetSlug, { status: newStatus })}
+                                      />
                                     </TableCell>
                                     <TableCell className="py-2.5 text-sm">{assignment.unitType || "—"}</TableCell>
-                                    <TableCell className="py-2.5 text-sm">{assignment.swsType || "—"}</TableCell>
                                     <TableCell className="py-2.5">
                                       <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
                                         {assignment.files.wireListPDFPath ? (
@@ -2336,7 +3060,35 @@ export function ProjectCollectionDetailsModal({
                                   {isExpanded ? (
                                     <tr className="bg-card/15">
                                       <td colSpan={10} className="px-4 py-3">
-                                        <div className="h-18 rounded-lg border border-dashed border-border/60 bg-background/40" />
+                                        <div className="grid grid-cols-3 gap-2">
+                                          {assignment.blueLabels?.length ? (
+                                            <AssignmentLabelDownloadButton
+                                              projectId={currentProject.id}
+                                              assignmentSlug={assignment.sheetSlug}
+                                              labelType="blue"
+                                              className="w-full justify-center"
+                                            />
+                                          ) : null}
+                                          {assignment.whiteLabels?.length ? (
+                                            <AssignmentLabelDownloadButton
+                                              projectId={currentProject.id}
+                                              assignmentSlug={assignment.sheetSlug}
+                                              labelType="white"
+                                              className="w-full justify-center"
+                                            />
+                                          ) : null}
+                                          {assignment.partNumbers?.length ? (
+                                            <AssignmentLabelDownloadButton
+                                              projectId={currentProject.id}
+                                              assignmentSlug={assignment.sheetSlug}
+                                              labelType="cable"
+                                              className="w-full justify-center"
+                                            />
+                                          ) : null}
+                                          {!assignment.blueLabels?.length && !assignment.whiteLabels?.length && !assignment.partNumbers?.length ? (
+                                            <span className="col-span-3 text-xs text-muted-foreground">No label data for this assignment</span>
+                                          ) : null}
+                                        </div>
                                       </td>
                                     </tr>
                                   ) : null}
@@ -2355,7 +3107,7 @@ export function ProjectCollectionDetailsModal({
                 <ProjectTabContentShell meta={getTabMeta("legals")}>
 
                 {legalDetail ? (
-                  <div className="grid grid-cols-2 gap-2 rounded-xl border border-border bg-background/40 p-3 sm:grid-cols-4">
+                  <div className="grid grid-cols-2 gap-2 rounded-xl border border-border bg-background/40 p-3 sm:grid-cols-5">
                     <div className="flex flex-col gap-0.5 py-1">
                       <span className="text-[11px] text-card-foreground">Latest Revision</span>
                       <span className="font-mono text-sm font-semibold text-foreground">
@@ -2383,6 +3135,16 @@ export function ProjectCollectionDetailsModal({
                       </span>
                     </div>
                     <div className="flex flex-col gap-0.5 py-1 sm:border-l sm:border-border sm:pl-3">
+                      <span className="text-[11px] text-card-foreground">Compare</span>
+                      <span className="text-sm font-medium">
+                        {legalDetail.hasGreenChangesWorkbook ? (
+                          <span className="text-green-600">Present</span>
+                        ) : (
+                          <span className="text-card-foreground">Missing</span>
+                        )}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 py-1 sm:border-l sm:border-border sm:pl-3">
                       <span className="text-[11px] text-card-foreground">Revisions</span>
                       <span className="text-sm font-semibold text-foreground">
                         {legalDetail.revisions.length}
@@ -2392,39 +3154,116 @@ export function ProjectCollectionDetailsModal({
                 ) : null}
 
                 <div className="grid gap-3 rounded-xl border border-border bg-background/40 p-4 sm:grid-cols-2">
-                  <label className="space-y-1.5">
-                    <span className="text-xs text-card-foreground">
-                      Workbook (.xlsx/.xls)
+                  <input
+                    ref={workbookInputRef}
+                    type="file"
+                    accept=".xlsx,.xls,.xlsm,.xlsb"
+                    className="hidden"
+                    onClick={(event) => {
+                      (event.currentTarget as HTMLInputElement).value = "";
+                    }}
+                    onChange={(event) =>
+                      setWorkbookFile(event.target.files?.[0] ?? null)
+                    }
+                  />
+                  <input
+                    ref={greenChangesInputRef}
+                    type="file"
+                    accept=".xlsx,.xls,.xlsm,.xlsb"
+                    className="hidden"
+                    onClick={(event) => {
+                      (event.currentTarget as HTMLInputElement).value = "";
+                    }}
+                    onChange={(event) =>
+                      setGreenChangesFile(event.target.files?.[0] ?? null)
+                    }
+                  />
+                  <input
+                    ref={layoutInputRef}
+                    type="file"
+                    accept=".pdf"
+                    className="hidden"
+                    onClick={(event) => {
+                      (event.currentTarget as HTMLInputElement).value = "";
+                    }}
+                    onChange={(event) =>
+                      setLayoutFile(event.target.files?.[0] ?? null)
+                    }
+                  />
+
+                  <div className="space-y-1.5 rounded-lg border border-border/70 bg-card/20 p-3">
+                    <span className="text-xs font-medium text-card-foreground">
+                      UCP Wire List
                     </span>
-                    <input
-                      ref={workbookInputRef}
-                      type="file"
-                      accept=".xlsx,.xls"
-                      onClick={(event) => {
-                        (event.currentTarget as HTMLInputElement).value = "";
-                      }}
-                      onChange={(event) =>
-                        setWorkbookFile(event.target.files?.[0] ?? null)
-                      }
-                      className="block w-full text-xs"
-                    />
-                  </label>
-                  <label className="space-y-1.5">
-                    <span className="text-xs text-card-foreground">
-                      Layout (.pdf)
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      className="w-full justify-start gap-2"
+                      onClick={() => workbookInputRef.current?.click()}
+                    >
+                      <Upload className="h-3.5 w-3.5" />
+                      {workbookFile ? "Replace Workbook" : "Choose Workbook"}
+                    </Button>
+                    <p className="truncate text-xs text-card-foreground">
+                      {workbookFile?.name || latestLegalRevisionRecord?.workbookFileName || "No workbook selected"}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1.5 rounded-lg border border-border/70 bg-card/20 p-3">
+                    <span className="text-xs font-medium text-card-foreground">
+                      Layout PDF
                     </span>
-                    <input
-                      ref={layoutInputRef}
-                      type="file"
-                      accept=".pdf"
-                      onClick={(event) => {
-                        (event.currentTarget as HTMLInputElement).value = "";
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      className="w-full justify-start gap-2"
+                      onClick={() => layoutInputRef.current?.click()}
+                    >
+                      <Upload className="h-3.5 w-3.5" />
+                      {layoutFile ? "Replace Layout" : "Choose Layout PDF"}
+                    </Button>
+                    <p className="truncate text-xs text-card-foreground">
+                      {layoutFile?.name || latestLegalRevisionRecord?.layoutFileName || "No layout selected"}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1.5 rounded-lg border border-border/70 bg-card/20 p-3">
+                    <span className="text-xs font-medium text-card-foreground">
+                      UCP Wire List Green Changes (Compare)
+                    </span>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      className="w-full justify-start gap-2"
+                      onClick={() => greenChangesInputRef.current?.click()}
+                    >
+                      <Upload className="h-3.5 w-3.5" />
+                      {greenChangesFile ? "Replace Compare Workbook" : "Choose Compare Workbook"}
+                    </Button>
+                    <p className="truncate text-xs text-card-foreground">
+                      {greenChangesFile?.name || latestLegalRevisionRecord?.greenChangesWorkbookFileName || "No compare workbook selected"}
+                    </p>
+                  </div>
+
+                  <label className="space-y-1.5 rounded-lg border border-border/70 bg-card/20 p-3">
+                    <span className="text-xs font-medium text-card-foreground">
+                      Revision Name
+                    </span>
+                    <Input
+                      value={revisionNameDraft}
+                      onChange={(event) => {
+                        setRevisionNameTouched(true);
+                        setRevisionNameDraft(event.target.value);
                       }}
-                      onChange={(event) =>
-                        setLayoutFile(event.target.files?.[0] ?? null)
-                      }
-                      className="block w-full text-xs"
+                      placeholder="Auto-detected from selected files"
+                      className="h-9"
                     />
+                    <p className="text-xs text-card-foreground">
+                      Computed: {deriveRevisionLabelFromFiles([workbookFile, greenChangesFile, layoutFile]) || legalDetail?.latestRevision || "Not detected"}
+                    </p>
                   </label>
 
                   <div className="sm:col-span-2 flex items-center gap-2">
@@ -2439,16 +3278,7 @@ export function ProjectCollectionDetailsModal({
                       ) : (
                         <Upload className="h-3.5 w-3.5" />
                       )}
-                      Upload Legals
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="gap-1.5"
-                      onClick={openLayoutWorkspace}
-                    >
-                      <ExternalLink className="h-3.5 w-3.5" />
-                      Open Layout Workspace
+                      Upload Revision
                     </Button>
                     {legalsMessage ? (
                       <span className="text-xs text-card-foreground">
@@ -2456,8 +3286,27 @@ export function ProjectCollectionDetailsModal({
                       </span>
                     ) : null}
                   </div>
+                  {refreshJob ? (
+                    <div className="sm:col-span-2 rounded-md border border-border/70 bg-card/30 px-3 py-2 text-xs">
+                      <div className="flex items-center gap-2">
+                        {refreshJob.status === "running" ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : null}
+                        <span className="font-medium text-foreground">
+                          Revision Refresh: {refreshJob.status === "running"
+                            ? "In progress"
+                            : refreshJob.status === "completed"
+                              ? "Completed"
+                              : "Failed"}
+                        </span>
+                      </div>
+                      <div className="mt-1 text-card-foreground">
+                        {refreshJob.error ?? refreshJob.message}
+                      </div>
+                    </div>
+                  ) : null}
                   <p className="sm:col-span-2 text-xs text-card-foreground">
-                    Upload workbook and/or layout to enable revision refresh.
+                    Upload the UCP wire list, optional compare workbook, and layout PDF to refresh the legal revision in the background.
                   </p>
                 </div>
 
@@ -2602,7 +3451,7 @@ export function ProjectCollectionDetailsModal({
                 <ProjectTabContentShell meta={getTabMeta("brand-lists")}>
 
                 {brandingExports && brandingExports.sheetExports.length > 0 ? (
-                  <div className="grid grid-cols-3 gap-2 rounded-xl border border-border bg-background/40 p-3">
+                  <div className="grid grid-cols-4 gap-2 rounded-xl border border-border bg-background/40 p-3">
                     <div className="flex flex-col gap-0.5 py-1">
                       <span className="text-[11px] text-card-foreground">Assignments</span>
                       <span className="text-lg font-semibold text-foreground">
@@ -2619,10 +3468,16 @@ export function ProjectCollectionDetailsModal({
                         )}
                       </span>
                     </div>
-                    <div className="flex flex-col gap-0.5 py-1">
+                    <div className="flex flex-col gap-0.5 py-1 border-r border-border pr-3">
                       <span className="text-[11px] text-card-foreground">Generated</span>
                       <span className="text-xs text-foreground">
                         {formatDateValue(brandingExports.generatedAt)}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 py-1">
+                      <span className="text-[11px] text-card-foreground">Legal Revision</span>
+                      <span className="font-mono text-sm font-semibold text-foreground">
+                        {headerRevision}
                       </span>
                     </div>
                   </div>
@@ -2638,6 +3493,34 @@ export function ProjectCollectionDetailsModal({
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="gap-1.5"
+                      onClick={openBrandImportReview}
+                      disabled={preparingBrandImport}
+                    >
+                      {preparingBrandImport ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <Upload className="h-3.5 w-3.5" />
+                      )}
+                      Import &amp; Merge Brand List
+                    </Button>
+                    <input
+                      ref={brandImportInputRef}
+                      type="file"
+                      accept=".xlsx,.xls,.xlsm,.xlsb"
+                      className="hidden"
+                      onClick={(event) => {
+                        (event.currentTarget as HTMLInputElement).value = "";
+                      }}
+                      onChange={(event) => {
+                        void handleBrandImportFileSelection(
+                          event.target.files?.[0] ?? null,
+                        );
+                      }}
+                    />
                     <Button
                       size="sm"
                       variant="outline"
@@ -2852,21 +3735,16 @@ export function ProjectCollectionDetailsModal({
                                 >
                                   {visibleCount}/{locations.length}
                                 </Badge>
-                                {exportEntry ? (
-                                  <a
-                                    href={buildExportFileHref(
-                                      currentProject.id,
-                                      exportEntry.relativePath,
-                                    )}
-                                    download
-                                    onClick={(e) => e.stopPropagation()}
-                                    className="inline-flex h-7 items-center gap-1 rounded px-2 text-card-foreground transition-colors hover:bg-background hover:text-foreground"
-                                    title="Download sheet brand list"
-                                  >
-                                    <Download className="h-3.5 w-3.5" />
-                                    <span className="text-[11px]">XLSX</span>
-                                  </a>
-                                ) : null}
+                                <a
+                                  href={`/api/projects/${encodeURIComponent(currentProject.id)}/brand-list-pdf/${encodeURIComponent(assignment.sheetSlug)}`}
+                                  download
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="inline-flex h-7 items-center gap-1 rounded px-2 text-card-foreground transition-colors hover:bg-background hover:text-foreground"
+                                  title="Download sheet brand list PDF"
+                                >
+                                  <Download className="h-3.5 w-3.5" />
+                                  <span className="text-[11px]">PDF</span>
+                                </a>
                                 <Button
                                   size="sm"
                                   variant="outline"
@@ -2945,7 +3823,7 @@ export function ProjectCollectionDetailsModal({
                 <ProjectTabContentShell meta={getTabMeta("wire-lists")}>
 
                 {wireExports && wireExports.sheetExports.length > 0 ? (
-                  <div className="grid grid-cols-2 gap-2 rounded-xl border border-border bg-background/40 p-3">
+                  <div className="grid grid-cols-3 gap-2 rounded-xl border border-border bg-background/40 p-3">
                     <div className="flex flex-col gap-0.5 py-1">
                       <span className="text-[11px] text-card-foreground">Sheets</span>
                       <span className="text-lg font-semibold text-foreground">
@@ -2956,6 +3834,12 @@ export function ProjectCollectionDetailsModal({
                       <span className="text-[11px] text-card-foreground">Generated</span>
                       <span className="text-xs text-foreground">
                         {formatDateValue(wireExports.generatedAt)}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 border-l border-border py-1 pl-3">
+                      <span className="text-[11px] text-card-foreground">Legal Revision</span>
+                      <span className="font-mono text-sm font-semibold text-foreground">
+                        {headerRevision}
                       </span>
                     </div>
                   </div>
@@ -3030,7 +3914,7 @@ export function ProjectCollectionDetailsModal({
                       description="Click Generate to produce wire list PDFs for all sheets."
                       action={
                         <Button size="sm" onClick={openWireReview}>
-                          Open Multi Wire List Modal
+                          Open Wire List Workspace
                         </Button>
                       }
                     />
@@ -3238,7 +4122,7 @@ export function ProjectCollectionDetailsModal({
 
               <TabsContent value="cross-wire" className="m-0 h-full">
                 <ProjectTabContentShell meta={getTabMeta("cross-wire")}>
-                  <div className="grid grid-cols-2 gap-2 rounded-xl border border-border bg-background/40 p-3">
+                  <div className="grid grid-cols-3 gap-2 rounded-xl border border-border bg-background/40 p-3">
                     <div className="flex flex-col gap-0.5 py-1">
                       <span className="text-[11px] text-card-foreground">Assignments</span>
                       <span className="text-lg font-semibold text-foreground">
@@ -3249,6 +4133,12 @@ export function ProjectCollectionDetailsModal({
                       <span className="text-[11px] text-card-foreground">Visible</span>
                       <span className="text-lg font-semibold text-foreground">
                         {crossWireStats.visibleLocations}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 border-l border-border py-1 pl-3">
+                      <span className="text-[11px] text-card-foreground">Legal Revision</span>
+                      <span className="font-mono text-sm font-semibold text-foreground">
+                        {headerRevision}
                       </span>
                     </div>
                     <div className="flex flex-col gap-0.5 border-t border-border py-1">
@@ -3346,7 +4236,7 @@ export function ProjectCollectionDetailsModal({
 
                         const visibleCount = locations.filter(
                           (loc) =>
-                            wireListSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true,
+                            crossWireSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true,
                         ).length;
                         const isSavingSheet =
                           savingCrossWireSettingsBySheet[assignment.sheetSlug] ?? false;
@@ -3436,7 +4326,7 @@ export function ProjectCollectionDetailsModal({
                                         assignment.sheetSlug,
                                         loc.key,
                                         !(
-                                          wireListSettingsMatrix[assignment.sheetSlug]?.[
+                                          crossWireSettingsMatrix[assignment.sheetSlug]?.[
                                             loc.key
                                           ] ?? true
                                         ),
@@ -3445,7 +4335,7 @@ export function ProjectCollectionDetailsModal({
                                   >
                                     <Switch
                                       checked={
-                                        wireListSettingsMatrix[assignment.sheetSlug]?.[
+                                        crossWireSettingsMatrix[assignment.sheetSlug]?.[
                                           loc.key
                                         ] ?? true
                                       }
@@ -3516,9 +4406,11 @@ export function ProjectCollectionDetailsModal({
         </DialogContent>
       </Dialog>
 
-      <MultiSheetWireListModal
+      <MultiWireListPrintWorkspaceDialog
         projectId={currentProject.id}
-        currentSheetSlug={operationalSheets[0]?.slug}
+        projectName={currentProject.name}
+        projectColor={currentProject.color}
+        sheets={operationalSheets.map((s) => ({ slug: s.slug, name: s.name, rowCount: s.rowCount }))}
         open={wireReviewOpen}
         onOpenChange={(nextOpen) => {
           setWireReviewOpen(nextOpen);
@@ -3526,15 +4418,14 @@ export function ProjectCollectionDetailsModal({
             void refreshWireExports();
           }
         }}
-        workspaceMode="wire-list"
-        showTrigger={false}
       />
 
-      <MultiSheetPrintModal
-        projectId={currentProject.id}
-        open={printWorkspaceOpen}
-        onOpenChange={setPrintWorkspaceOpen}
-        showTrigger={false}
+      <LayoutPdfWorkspaceDialog
+        open={layoutWorkspaceOpen}
+        onOpenChange={setLayoutWorkspaceOpen}
+        endpoint={`/api/projects/${encodeURIComponent(currentProject.id)}/layout-pdf`}
+        quickBackLabel="Back to Project Collection"
+        onQuickBack={() => setLayoutWorkspaceOpen(false)}
       />
     </> 
   );

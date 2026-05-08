@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import {
     WorkspaceCollectionView,
@@ -41,7 +42,30 @@ export function ProjectsCollection({
     projects,
     mode = "default",
 }: ProjectsCollectionProps) {
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
     const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+
+    const openProjectIdFromUrl = searchParams.get("openProjectId");
+
+    useEffect(() => {
+        if (!openProjectIdFromUrl) {
+            return;
+        }
+
+        const projectExists = projects.some((project) => project.id === openProjectIdFromUrl);
+        if (projectExists) {
+            setSelectedProjectId(openProjectIdFromUrl);
+        }
+    }, [openProjectIdFromUrl, projects]);
+
+    function clearOpenProjectParam() {
+        const next = new URLSearchParams(searchParams.toString());
+        next.delete("openProjectId");
+        const query = next.toString();
+        router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    }
 
     const selectedProject = useMemo(
         () => projects.find((project) => project.id === selectedProjectId) ?? null,
@@ -145,6 +169,9 @@ export function ProjectsCollection({
                 onOpenChange={(nextOpen) => {
                     if (!nextOpen) {
                         setSelectedProjectId(null);
+                        if (openProjectIdFromUrl) {
+                            clearOpenProjectParam();
+                        }
                     }
                 }}
                 badgeNumber={badgeNumber}

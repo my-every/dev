@@ -70,6 +70,7 @@ export type ManifestAssignmentStatus =
   | 'BLOCKED'
   | 'COMPLETE'
   | 'COMPLETED'
+  | 'GREEN_CHANGE'
 
 export interface ManifestBoardAssignmentMeta {
   assignmentId: string

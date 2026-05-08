@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { CheckCircle2, Download, Minus, Plus, XCircle } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -48,6 +48,22 @@ export function MultiSheetImportReviewPanel({
   isApplying,
 }: MultiSheetImportReviewPanelProps) {
   const activeSheetDiff = sheetDiffs.find((sheet) => sheet.sheetSlug === activeSheetSlug) ?? sheetDiffs[0] ?? null;
+  const activeChangedDiffs = useMemo(
+    () => (activeSheetDiff ? activeSheetDiff.diffs.filter((diff) => diff.changeType !== "unchanged") : []),
+    [activeSheetDiff],
+  );
+  const lengthChangedDiffs = useMemo(
+    () => activeChangedDiffs.filter((diff) => diff.changeType === "length-changed"),
+    [activeChangedDiffs],
+  );
+  const importedOnlyDiffs = useMemo(
+    () => activeChangedDiffs.filter((diff) => diff.changeType === "imported-only"),
+    [activeChangedDiffs],
+  );
+  const currentOnlyDiffs = useMemo(
+    () => activeChangedDiffs.filter((diff) => diff.changeType === "current-only"),
+    [activeChangedDiffs],
+  );
   const sectionSummaries = useMemo(() => {
     if (!activeSheetDiff) {
       return [];
@@ -118,6 +134,18 @@ export function MultiSheetImportReviewPanel({
       structuralRemovals,
     };
   }, [rowDecisions, sheetDiffs]);
+
+  const applyDecisionToActiveSheet = useCallback((decision: MultiSheetImportDecision) => {
+    if (!activeSheetDiff) {
+      return;
+    }
+    for (const diff of activeSheetDiff.diffs) {
+      if (diff.changeType === "unchanged") {
+        continue;
+      }
+      onDecisionChange(diff.diffId, decision, activeSheetDiff.sheetSlug);
+    }
+  }, [activeSheetDiff, onDecisionChange]);
 
   return (
     <div className="flex h-full min-h-0 flex-col xl:flex-row">
@@ -213,17 +241,80 @@ export function MultiSheetImportReviewPanel({
                   <div>Imported Workbook</div>
                   <div>Decision</div>
                 </div>
-                {activeSheetDiff.diffs.map((diff) => (
+                {lengthChangedDiffs.length > 0 ? (
+                  <DiffSectionHeader
+                    title="Changed Length Rows"
+                    description="Match keys exist in both versions, but the length value changed."
+                    count={lengthChangedDiffs.length}
+                  />
+                ) : null}
+                {lengthChangedDiffs.map((diff) => (
                   <DiffRow
                     key={diff.diffId}
                     diff={diff}
                     importMode={importMode}
-                    decision={rowDecisions[diff.diffId] ?? (diff.changeType === "unchanged" ? "accept" : "pending")}
+                    decision={rowDecisions[diff.diffId] ?? "pending"}
                     onDecisionChange={(decision) => onDecisionChange(diff.diffId, decision, activeSheetDiff.sheetSlug)}
                   />
                 ))}
+
+                {importedOnlyDiffs.length > 0 ? (
+                  <DiffSectionHeader
+                    title="New In Uploaded File"
+                    description="Rows present in upload but not in current generated brand list."
+                    count={importedOnlyDiffs.length}
+                  />
+                ) : null}
+                {importedOnlyDiffs.map((diff) => (
+                  <DiffRow
+                    key={diff.diffId}
+                    diff={diff}
+                    importMode={importMode}
+                    decision={rowDecisions[diff.diffId] ?? "pending"}
+                    onDecisionChange={(decision) => onDecisionChange(diff.diffId, decision, activeSheetDiff.sheetSlug)}
+                  />
+                ))}
+
+                {currentOnlyDiffs.length > 0 ? (
+                  <DiffSectionHeader
+                    title="Excluded From Uploaded File"
+                    description="Rows present now but missing in upload. Set to Hide to keep excluded from merge."
+                    count={currentOnlyDiffs.length}
+                  />
+                ) : null}
+                {currentOnlyDiffs.map((diff) => (
+                  <DiffRow
+                    key={diff.diffId}
+                    diff={diff}
+                    importMode={importMode}
+                    decision={rowDecisions[diff.diffId] ?? "pending"}
+                    onDecisionChange={(decision) => onDecisionChange(diff.diffId, decision, activeSheetDiff.sheetSlug)}
+                  />
+                ))}
+                {activeChangedDiffs.length === 0 ? (
+                  <div className="px-4 py-6 text-sm text-muted-foreground">No changed rows to review for this sheet.</div>
+                ) : null}
               </div>
             </ScrollArea>
+
+            <div className="sticky bottom-0 z-10 border-t bg-background/95 px-4 py-3 backdrop-blur">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="text-xs text-muted-foreground">
+                  {activeChangedDiffs.length} changed rows in this sheet
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Button type="button" size="sm" variant="outline" onClick={() => applyDecisionToActiveSheet("accept")}>
+                    Approve All
+                  </Button>
+                  <Button type="button" size="sm" variant="outline" onClick={() => applyDecisionToActiveSheet("reject")}>
+                    Hide All
+                  </Button>
+                  <Button type="button" size="sm" onClick={onApply} disabled={isApplying}>
+                    {isApplying ? "Applying..." : "Apply Selected"}
+                  </Button>
+                </div>
+              </div>
+            </div>
           </>
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-muted-foreground">No matched imported sheets available.</div>
@@ -338,7 +429,7 @@ function DiffRow({
             </Button>
             <Button type="button" size="sm" onClick={() => onDecisionChange("reject")} variant={decision === "reject" ? "secondary" : "outline"} disabled={isLockedByMode}>
               <XCircle className="mr-2 h-4 w-4" />
-              Reject
+              Hide
             </Button>
             <Button type="button" size="sm" onClick={() => onDecisionChange("pending")} variant={decision === "pending" ? "secondary" : "ghost"} disabled={isLockedByMode}>
               <Minus className="mr-2 h-4 w-4" />
@@ -347,6 +438,26 @@ function DiffRow({
           </>
         )}
       </div>
+    </div>
+  );
+}
+
+function DiffSectionHeader({
+  title,
+  description,
+  count,
+}: {
+  title: string;
+  description: string;
+  count: number;
+}) {
+  return (
+    <div className="border-b border-border/60 bg-muted/20 px-4 py-2">
+      <div className="flex items-center justify-between gap-2">
+        <div className="text-xs font-semibold uppercase tracking-[0.08em] text-foreground">{title}</div>
+        <Badge variant="dot">{count}</Badge>
+      </div>
+      <div className="mt-1 text-[11px] text-muted-foreground">{description}</div>
     </div>
   );
 }

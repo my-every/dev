@@ -1,44 +1,150 @@
 /**
  * Utilities for normalizing sheet names and layout page titles for matching.
+ *
+ * Pipeline (in order):
+ *   1. removeSuffixes     — strip project-specific trailing tokens (,SMT130 ;TT6 ^JB70 etc.)
+ *   2. normalizeSeparators — collapse ^ ; & . and other punctuation → single space
+ *   3. replacePhrases     — swap multi-word expressions before word-level expansion
+ *   4. expandAbbreviations — word-by-word lookup in ABBREVIATION_MAP
  */
 
 // ============================================================================
-// Abbreviation Mappings
+// Abbreviation Map
 // ============================================================================
 
 /**
- * Common abbreviations and their expanded forms.
- * Key is the canonical form, values are alternatives.
+ * Canonical form → all accepted spellings (including the canonical itself).
+ * `buildReverseLookup` inverts this so every spelling maps to its canonical.
+ *
+ * Rules:
+ * - Key  = the canonical OUTPUT form used throughout the app.
+ * - Values = every alias / abbreviation / long-form that should collapse to it.
+ * - Keep keys upper-case; values are compared case-insensitively at runtime.
  */
 const ABBREVIATION_MAP: Record<string, string[]> = {
-  "PNL": ["PANEL", "PN"],
-  "CTRL": ["CONTROL", "CNTRL", "CTL"],
-  "PWR": ["POWER", "POW"],
-  "DST": ["DIST", "DISTRIBUTION"],
-  "DR": ["DOOR", "DRAWER"],
-  "CMPNT": ["COMPONENT", "COMP"],
-  "GEN": ["GENERAL", "GENERATOR"],
-  "FGE": ["FG&E", "F&G", "FIRE GAS", "FIRE & GAS", "FIRE AND GAS"],
-  "PROX": ["PROXIMITY"],
-  "TURB": ["TURBINE"],
-  "MCC": ["MOTOR CONTROL CENTER", "MOTOR CONTROL"],
-  "TCP": ["THERMOCOUPLE", "TC PANEL", "TCPANEL"],
-  "PLC": ["PROGRAMMABLE LOGIC", "PROGRAMMABLE LOGIC CONTROLLER"],
-  "JB": ["JUNCTION BOX", "JBOX", "J-BOX"],
-  "SMT": ["SUMMIT"],
-  "VIB": ["VIBRATION"],
-  "BECK": ["BECKWITH"],
+  // ── Structural / physical ────────────────────────────────────────────────
+  "PANEL":    ["PANEL", "PNL", "PN", "PNL."],
+  "DOOR":     ["DOOR", "DR", "DRAWER"],
+  "RAIL":     ["RAIL", "RL"],
+  "BOX":      ["BOX", "BX"],
+  "CONSOLE":  ["CONSOLE", "CONS"],
+  "ASSEMBLY": ["ASSEMBLY", "ASSY"],
+  "BLANK":    ["BLANK", "BLNK"],
+  "LEFT":     ["LEFT", "LFT", "LT"],
+  "RIGHT":    ["RIGHT", "RGT", "RT"],
+  "BACK":     ["BACK", "BK"],
+  "FRONT":    ["FRONT", "FRT"],
+  "ISOLATOR": ["ISOLATOR", "ISOL", "ISO"],
+
+  // ── Electrical / controls ────────────────────────────────────────────────
+  "CTRL":     ["CTRL", "CONTROL", "CNTRL", "CTL", "CNTL"],
+  "PWR":      ["PWR", "POWER", "POW"],
+  "DIST":     ["DIST", "DISTRIBUTION", "DST", "DISTR", "DISTRB"],
+  "VIB":      ["VIB", "VIBRATION", "VIBR"],
+  "PROX":     ["PROX", "PROXIMITY", "PROXIMITOR"],
+  "GEN":      ["GEN", "GENERATOR"],
+  "TURB":     ["TURB", "TURBINE"],
+  "COMP":     ["COMP", "COMPRESSOR"],
+  "CONV":     ["CONV", "CONVERTER", "CONVERTOR"],
+  "VFD":      ["VFD", "VARIABLE FREQUENCY DRIVE"],
+  "AUX":      ["AUX", "AUXILIARY"],
+  "OPR":      ["OPR", "OPERATOR", "OPERATION"],
+  "EQP":      ["EQP", "EQUIPMENT", "EQUIP"],
+  "CMPNT":    ["CMPNT", "COMPONENT"],
+  "CUST":     ["CUST", "CUSTOMER"],
+  "INTRFC":   ["INTRFC", "INTERFACE", "INTF"],
+  "LIQ":      ["LIQ", "LIQUID"],
+  "FO":       ["FO", "FUEL OIL", "FUEL-OIL"],
+  "RELAY":    ["RELAY", "RLY"],
+
+  // ── System acronyms (map common long-forms → short canonical) ───────────
+  "MCC":      ["MCC", "MOTOR CONTROL CENTER", "MOTOR CONTROL"],
+  "PLC":      ["PLC", "PROGRAMMABLE LOGIC CONTROLLER", "PROGRAMMABLE LOGIC"],
+  "TCP":      ["TCP", "THERMOCOUPLE PANEL", "TC PANEL", "TCPANEL", "THERMOCOUPLE"],
+  "FGE":      ["FGE", "FG&E", "F&G", "FIRE GAS", "FIRE & GAS", "FIRE AND GAS"],
+  "BOP":      ["BOP", "BALANCE OF PLANT"],
+  "HPC":      ["HPC", "HP COMP", "HIGH PRESSURE COMP", "HIGH PRESSURE COMPRESSOR"],
+  "LPC":      ["LPC", "LP COMP", "LOW PRESSURE COMP", "LOW PRESSURE COMPRESSOR"],
+  "GB":       ["GB", "GEARBOX", "GEAR BOX"],
+  "DCS":      ["DCS", "DISTRIBUTED CONTROL SYSTEM"],
+  "SIS":      ["SIS", "SAFETY INSTRUMENTED SYSTEM"],
+  "UCP":      ["UCP", "UNIT CONTROL PANEL"],
+  "EEC":      ["EEC"],
+  "SCS":      ["SCS"],
+  "PSS":      ["PSS"],
+  "IS":       ["IS", "INTRINSICALLY SAFE"],
+
+  // ── Junction-box type shortcuts ──────────────────────────────────────────
+  "JB":       ["JB", "JUNCTION BOX", "JBOX", "J-BOX"],
+  "SMT":      ["SMT", "SUMMIT"],
+  "BECK":     ["BECK", "BECKWITH"],
 };
 
+// ============================================================================
+// Phrase Map  (multi-word pre-substitutions, applied before word expansion)
+// ============================================================================
+
 /**
- * Build a reverse lookup map for expansions.
+ * Ordered list of [pattern, replacement] pairs.
+ * Applied against the UPPER-CASE, separator-normalised string.
+ * Patterns are matched whole-word where possible.
  */
+const PHRASE_REPLACEMENTS: Array<[RegExp, string]> = [
+  // Power distribution variants
+  [/\bPOWER\s+DIST(?:RIBUTION)?\b/g,          "PWR DIST"],
+  [/\bPWR\s+DST\b/g,                           "PWR DIST"],
+  [/\bPWR\s+DISTR?\b/g,                        "PWR DIST"],
+  [/\bPOWERDIST\b/g,                           "PWR DIST"],
+
+  // HP / LP Compressor → canonical acronym
+  [/\bHP\s+COMPRESSOR\b/g,                     "HPC"],
+  [/\bHP\s+COMP\b/g,                           "HPC"],
+  [/\bHIGH\s+PRESSURE\s+COMP(?:RESSOR)?\b/g,  "HPC"],
+  [/\bLP\s+COMPRESSOR\b/g,                     "LPC"],
+  [/\bLP\s+COMP\b/g,                           "LPC"],
+  [/\bLOW\s+PRESSURE\s+COMP(?:RESSOR)?\b/g,   "LPC"],
+
+  // Gear box
+  [/\bGEAR\s+BOX\b/g,                          "GB"],
+
+  // Fire & Gas
+  [/\bFIRE\s*(?:AND|&)\s*GAS\b/g,             "FGE"],
+  [/\bFG\s*&\s*E\b/g,                          "FGE"],
+
+  // Fuel oil
+  [/\bFUEL[\s-]+OIL\b/g,                       "FO"],
+
+  // Junction box
+  [/\bJUNCTION\s+BOX\b/g,                      "JB"],
+
+  // Motor control center
+  [/\bMOTOR\s+CONTROL\s+CENTER\b/g,            "MCC"],
+
+  // Variable frequency drive
+  [/\bVARIABLE\s+FREQUENCY\s+DRIVE\b/g,        "VFD"],
+
+  // Programmable logic controller
+  [/\bPROGRAMMABLE\s+LOGIC\s+CONTROLLER\b/g,   "PLC"],
+  [/\bPROGRAMMABLE\s+LOGIC\b/g,                "PLC"],
+
+  // Left / right rail shorthand
+  [/\bLEFT\s+SIDE\s+RAIL\b/g,                  "LEFT RAIL"],
+  [/\bRIGHT\s+SIDE\s+RAIL\b/g,                 "RIGHT RAIL"],
+  [/\bLEFT\s+SIDE\s+PANEL\b/g,                 "LEFT PANEL"],
+  [/\bRIGHT\s+SIDE\s+PANEL\b/g,                "RIGHT PANEL"],
+];
+
+// ============================================================================
+// Reverse lookup
+// ============================================================================
+
 function buildReverseLookup(): Map<string, string> {
   const map = new Map<string, string>();
-  for (const [abbrev, expansions] of Object.entries(ABBREVIATION_MAP)) {
-    map.set(abbrev.toUpperCase(), abbrev.toUpperCase());
-    for (const expansion of expansions) {
-      map.set(expansion.toUpperCase(), abbrev.toUpperCase());
+  for (const [canonical, spellings] of Object.entries(ABBREVIATION_MAP)) {
+    const key = canonical.toUpperCase();
+    map.set(key, key);
+    for (const spelling of spellings) {
+      map.set(spelling.toUpperCase(), key);
     }
   }
   return map;
@@ -47,159 +153,206 @@ function buildReverseLookup(): Map<string, string> {
 const REVERSE_LOOKUP = buildReverseLookup();
 
 // ============================================================================
-// Normalization Functions
+// Normalization steps
 // ============================================================================
 
 /**
- * Remove common suffixes like ",SMT130" or ",JB70" that are project-specific.
- * These suffixes don't help with matching and can cause false negatives.
+ * Strip project-specific trailing tokens that add noise without aiding matching.
+ * Runs on the RAW (pre-punctuation) string so comma/semicolon anchors still work.
  */
 function removeSuffixes(text: string): string {
-  // Remove project-specific suffixes like ",SMT130", ",JB70", etc.
-  let result = text;
-  
-  // Remove suffixes at end of string or before other text
-  result = result.replace(/[,\s]+SMT\d+/gi, "");
-  result = result.replace(/[,\s]+JB\d+/gi, "");
-  result = result.replace(/[,\s]+\d+-BAY/gi, ""); // Remove n-BAY suffixes
-  
-  return result.trim();
+  let t = text;
+
+  // Project reference codes  e.g. ",SMT130"  ",JB70"  "^JB70"  " JB74"
+  t = t.replace(/[\s,;^]+SMT\d+/gi, "");
+
+  // Terminal-tray markers  e.g. ";TT6"  ";TT12"
+  t = t.replace(/[;,\s^]+TT\d+\b/gi, "");
+
+  // Bay counts  e.g. ",2-BAY"  " 1-BAY"
+  t = t.replace(/[\s,;^]+\d+[\s-]?BAY\b/gi, "");
+
+  // Customer-copy markers  e.g. ",C.C."
+  t = t.replace(/[\s,;^]+C\.C\./gi, "");
+
+  // Site/scope tags  e.g. ",ONSK"  ",CSMD"
+  t = t.replace(/[\s,;^]+(?:ONSK|CSMD)\b/gi, "");
+
+  return t.trim();
 }
 
 /**
- * Normalize punctuation and whitespace.
+ * Collapse ALL separator-like characters (commas, hyphens, carets, semicolons,
+ * ampersands when standalone, periods, underscores) into a single space.
  */
-function normalizePunctuation(text: string): string {
+function normalizeSeparators(text: string): string {
   return text
-    .replace(/[,\-_:;]+/g, " ")  // Replace punctuation with spaces
-    .replace(/\s+/g, " ")         // Collapse multiple spaces
+    .replace(/\^/g, " ")          // caret used as word separator
+    .replace(/[,\-_:;]+/g, " ")   // standard punctuation
+    .replace(/\.(?!\d)/g, " ")    // dot NOT followed by digit (preserve "2.5")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
 /**
- * Expand abbreviations to canonical form.
+ * Apply PHRASE_REPLACEMENTS on the upper-cased, separator-normalised string
+ * before word-level expansion so multi-word terms are caught as a unit.
+ */
+function replacePhrases(text: string): string {
+  let t = text;
+  for (const [pattern, replacement] of PHRASE_REPLACEMENTS) {
+    t = t.replace(pattern, replacement);
+  }
+  return t.replace(/\s+/g, " ").trim();
+}
+
+/**
+ * Word-by-word lookup in REVERSE_LOOKUP.
+ * Tokens that have no entry pass through unchanged.
  */
 function expandAbbreviations(text: string): string {
-  const words = text.split(" ");
-  return words.map(word => {
-    const upper = word.toUpperCase();
-    return REVERSE_LOOKUP.get(upper) || upper;
-  }).join(" ");
+  return text
+    .split(" ")
+    .map((word) => REVERSE_LOOKUP.get(word.toUpperCase()) ?? word.toUpperCase())
+    .join(" ");
 }
 
+// ============================================================================
+// Public API
+// ============================================================================
+
 /**
- * Normalize a sheet name for matching.
- * This is used for wire-list sheet names.
+ * Normalize a wire-list sheet name for matching against layout page titles.
  */
 export function normalizeSheetName(name: string): string {
-  let normalized = name.toUpperCase();
-  normalized = removeSuffixes(normalized);
-  normalized = normalizePunctuation(normalized);
-  normalized = expandAbbreviations(normalized);
-  return normalized;
+  let t = name.toUpperCase();
+  t = removeSuffixes(t);
+  t = normalizeSeparators(t);
+  t = replacePhrases(t);
+  t = expandAbbreviations(t);
+  return t;
 }
 
 /**
- * Normalize a layout page title for matching.
- * This is used for PDF layout page titles.
+ * Normalize a PDF layout page title for matching against sheet names.
  */
 export function normalizeLayoutPageTitle(title: string): string {
-  let normalized = title.toUpperCase();
-  normalized = removeSuffixes(normalized);
-  normalized = normalizePunctuation(normalized);
-  normalized = expandAbbreviations(normalized);
-  return normalized;
+  return normalizeSheetName(title);
 }
 
 /**
- * Extract keywords from normalized text for fuzzy matching.
+ * Extract keywords from a normalized string for fuzzy / keyword matching.
+ * Short stop-words and very short tokens are filtered out.
  */
 export function extractKeywords(text: string): string[] {
-  const normalized = normalizeSheetName(text);
-  return normalized
+  const STOP = new Set(["THE", "AND", "OF", "FOR", "TO", "A", "AN", "IN", "AT", "BY"]);
+  return normalizeSheetName(text)
     .split(" ")
-    .filter(word => word.length > 1)
-    .filter(word => !["THE", "AND", "OF", "FOR", "TO", "A", "AN"].includes(word));
+    .filter((w) => w.length > 1 && !STOP.has(w));
 }
 
 /**
- * Check if two normalized strings are equivalent.
+ * Return true when two names normalise to the same string.
  */
 export function areNamesEquivalent(name1: string, name2: string): boolean {
-  const norm1 = normalizeSheetName(name1);
-  const norm2 = normalizeSheetName(name2);
-  return norm1 === norm2;
+  return normalizeSheetName(name1) === normalizeSheetName(name2);
 }
 
 /**
- * Calculate similarity score between two names (0-1).
+ * Jaccard similarity (0–1) between the keyword sets of two names.
  */
 export function calculateNameSimilarity(name1: string, name2: string): number {
-  const keywords1 = extractKeywords(name1);
-  const keywords2 = extractKeywords(name2);
-  
-  if (keywords1.length === 0 || keywords2.length === 0) {
-    return 0;
-  }
-  
-  // Calculate Jaccard similarity
-  const set1 = new Set(keywords1);
-  const set2 = new Set(keywords2);
-  
+  const kw1 = new Set(extractKeywords(name1));
+  const kw2 = new Set(extractKeywords(name2));
+  if (kw1.size === 0 || kw2.size === 0) return 0;
+
   let intersection = 0;
-  for (const word of set1) {
-    if (set2.has(word)) {
-      intersection++;
-    }
-  }
-  
-  const union = set1.size + set2.size - intersection;
+  for (const w of kw1) if (kw2.has(w)) intersection++;
+
+  const union = kw1.size + kw2.size - intersection;
   return union > 0 ? intersection / union : 0;
 }
 
 /**
- * Extract panel letter from a name (e.g., "PNL A" -> "A").
+ * Extract the panel-letter designator from a name (e.g. "PNL A" → "A").
  */
 export function extractPanelLetter(name: string): string | undefined {
-  const match = name.match(/PNL\s*([A-Z])/i);
+  const match = name.match(/(?:PNL|PANEL)\s*([A-Z])\b/i);
   return match ? match[1].toUpperCase() : undefined;
 }
 
 /**
- * Check if name contains specific panel type keywords.
+ * Return a deduplicated list of panel-type keyword tags for a name.
+ * Used for scoring / filtering in layout matching.
  */
 export function getPanelTypeKeywords(name: string): string[] {
   const upper = name.toUpperCase();
-  const keywords: string[] = [];
-  
-  // Panel types
-  if (/\bCONTROL\b/i.test(upper) || /\bCTRL\b/i.test(upper)) keywords.push("CONTROL");
-  if (/\bDOOR\b/i.test(upper)) keywords.push("DOOR");
-  if (/\bPOWER\b/i.test(upper) || /\bPWR\b/i.test(upper)) keywords.push("POWER");
-  if (/\bPNL\b/i.test(upper) || /\bPANEL\b/i.test(upper)) keywords.push("PANEL");
-  if (/\bMCC\b/i.test(upper)) keywords.push("MCC");
-  if (/\bPLC\b/i.test(upper)) keywords.push("PLC");
-  if (/\bTCP\b/i.test(upper)) keywords.push("TCP");
-  if (/\bGEN\b/i.test(upper)) keywords.push("GEN");
-  if (/\bFG&E\b/i.test(upper) || /\bFGE\b/i.test(upper) || /\bFIRE\s*(AND|&)?\s*GAS\b/i.test(upper)) keywords.push("FGE");
-  if (/\bDST\b/i.test(upper) || /\bDIST\b/i.test(upper)) keywords.push("DIST");
-  if (/\bBECKWITH\b/i.test(upper)) keywords.push("BECKWITH");
-  if (/\bRELAY\b/i.test(upper)) keywords.push("RELAY");
-  if (/\bVIB\b/i.test(upper) || /\bVIBRATION\b/i.test(upper)) keywords.push("VIB");
-  if (/\bJB\d*\b/i.test(upper) || /\bJUNCTION\s*BOX\b/i.test(upper)) keywords.push("JB");
-  if (/\bCMPNT\b/i.test(upper) || /\bCOMPONENT\b/i.test(upper)) keywords.push("CMPNT");
-  
-  // Extract panel letter if present
-  const panelMatch = upper.match(/\b(?:PNL|PANEL)\s*([A-Z])\b/);
-  if (panelMatch) {
-    keywords.push(`PNL_${panelMatch[1]}`);
-  }
-  
-  // Extract JB number if present
-  const jbMatch = upper.match(/\bJB(\d+)\b/);
-  if (jbMatch) {
-    keywords.push(`JB${jbMatch[1]}`);
-  }
-  
-  return keywords;
+  const tags: string[] = [];
+
+  // Control
+  if (/\b(?:CTRL|CONTROL|CNTRL|CTL|CNTL)\b/.test(upper)) tags.push("CTRL");
+  // Door
+  if (/\b(?:DOOR|DR)\b/.test(upper))                       tags.push("DOOR");
+  // Power
+  if (/\b(?:PWR|POWER|POW)\b/.test(upper))                 tags.push("PWR");
+  // Panel
+  if (/\b(?:PNL|PANEL|PN)\b/.test(upper))                  tags.push("PANEL");
+  // MCC
+  if (/\bMCC\b/.test(upper))                               tags.push("MCC");
+  // PLC
+  if (/\bPLC\b/.test(upper))                               tags.push("PLC");
+  // TCP
+  if (/\bTCP\b/.test(upper))                               tags.push("TCP");
+  // Generator
+  if (/\bGEN(?:ERATOR)?\b/.test(upper))                    tags.push("GEN");
+  // Fire & Gas
+  if (/\b(?:FG&E|FGE|F&G|FIRE\s*(?:AND|&)?\s*GAS)\b/.test(upper)) tags.push("FGE");
+  // Distribution
+  if (/\b(?:DIST|DST|DISTRIBUTION|DISTR)\b/.test(upper))  tags.push("DIST");
+  // Beckwith
+  if (/\b(?:BECKWITH|BECK)\b/.test(upper))                 tags.push("BECK");
+  // Relay
+  if (/\bRELAY\b/.test(upper))                             tags.push("RELAY");
+  // Vibration
+  if (/\b(?:VIB|VIBRATION)\b/.test(upper))                 tags.push("VIB");
+  // Junction box
+  if (/\b(?:JB\d*|JUNCTION\s*BOX)\b/.test(upper))          tags.push("JB");
+  // Component
+  if (/\b(?:CMPNT|COMPONENT)\b/.test(upper))               tags.push("CMPNT");
+  // Compressor
+  if (/\b(?:COMP|COMPRESSOR|HPC|LPC)\b/.test(upper))       tags.push("COMP");
+  // HPC / LPC
+  if (/\b(?:HPC|HP\s*COMP(?:RESSOR)?|HIGH\s+PRESSURE)\b/.test(upper)) tags.push("HPC");
+  if (/\b(?:LPC|LP\s*COMP(?:RESSOR)?|LOW\s+PRESSURE)\b/.test(upper))  tags.push("LPC");
+  // Converter / VFD
+  if (/\b(?:CONV|CONVERTER|VFD)\b/.test(upper))            tags.push("CONV");
+  // BOP
+  if (/\bBOP\b/.test(upper))                               tags.push("BOP");
+  // Auxiliary
+  if (/\b(?:AUX|AUXILIARY)\b/.test(upper))                 tags.push("AUX");
+  // Prox
+  if (/\b(?:PROX|PROXIMITY|PROXIMITOR)\b/.test(upper))     tags.push("PROX");
+  // Turbine
+  if (/\b(?:TURB|TURBINE)\b/.test(upper))                  tags.push("TURB");
+  // Gearbox
+  if (/\b(?:GB|GEARBOX|GEAR\s*BOX)\b/.test(upper))         tags.push("GB");
+  // Equipment
+  if (/\b(?:EQP|EQUIPMENT|EQUIP)\b/.test(upper))           tags.push("EQP");
+  // Interface
+  if (/\b(?:INTRFC|INTF|INTERFACE)\b/.test(upper))         tags.push("INTRFC");
+  // Liquid / Fuel Oil
+  if (/\b(?:LIQ|LIQUID)\b/.test(upper))                    tags.push("LIQ");
+  if (/\b(?:FO|FUEL\s*OIL)\b/.test(upper))                 tags.push("FO");
+  // Assembly
+  if (/\b(?:ASSY|ASSEMBLY)\b/.test(upper))                 tags.push("ASSY");
+
+  // Panel letter  e.g. "PNL A" → "PNL_A"
+  const panelLetterMatch = upper.match(/\b(?:PNL|PANEL)\s+([A-Z])\b/);
+  if (panelLetterMatch) tags.push(`PNL_${panelLetterMatch[1]}`);
+
+  // JB number  e.g. "JB70" → "JB70"
+  const jbNumberMatch = upper.match(/\bJB(\d+)\b/);
+  if (jbNumberMatch) tags.push(`JB${jbNumberMatch[1]}`);
+
+  return [...new Set(tags)]; // deduplicate
 }
