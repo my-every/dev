@@ -718,7 +718,21 @@ export function ProjectCollectionDetailsModal({
     }
 
     if (!open) {
-      void clearBrandImportSession();
+      if (project?.id) {
+        void fetch(
+          `/api/projects/${encodeURIComponent(project.id)}/multi-sheet-print/session`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              entryMode: "cover",
+              importSession: null,
+            }),
+          },
+        ).catch(() => {
+          // Best-effort cleanup; no user-facing failure needed.
+        });
+      }
       setProjectState(project);
       setEditDraft(null);
       setIsEditing(false);
@@ -787,7 +801,7 @@ export function ProjectCollectionDetailsModal({
     setCrossWireSchema(null);
     setHasLoadedCrossWireSchema(false);
     setExpandedCrossAssignments(new Set());
-  }, [open, project, clearBrandImportSession]);
+  }, [open, project]);
 
   useEffect(
     () => () => {
