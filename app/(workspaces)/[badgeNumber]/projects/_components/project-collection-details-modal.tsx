@@ -557,6 +557,11 @@ export function ProjectCollectionDetailsModal({
   const [wireListSettingsMatrix, setWireListSettingsMatrix] =
     useState<WireListSettingsMatrix>({});
   const [savingWireListSettings, setSavingWireListSettings] = useState(false);
+  const [savingWireListSettingsBySheet, setSavingWireListSettingsBySheet] =
+    useState<Record<string, boolean>>({});
+  const [regeneratingWireBySheet, setRegeneratingWireBySheet] = useState<
+    Record<string, boolean>
+  >({});
   const [wireListSettingsMessage, setWireListSettingsMessage] = useState<
     string | null
   >(null);
@@ -599,6 +604,8 @@ export function ProjectCollectionDetailsModal({
       setHasLoadedBrandingExports(false);
       setWireExports(null);
       setHasLoadedWireExports(false);
+      setSavingWireListSettingsBySheet({});
+      setRegeneratingWireBySheet({});
       setSchemaExternalLocations({});
       setWorkbookFile(null);
       setLayoutFile(null);
@@ -619,6 +626,8 @@ export function ProjectCollectionDetailsModal({
     setHasLoadedBrandingExports(false);
     setWireExports(null);
     setHasLoadedWireExports(false);
+    setSavingWireListSettingsBySheet({});
+    setRegeneratingWireBySheet({});
     setSchemaExternalLocations({});
   }, [open, project]);
 
@@ -1002,57 +1011,65 @@ export function ProjectCollectionDetailsModal({
     [],
   );
 
-  const handleSaveWireListSettings = useCallback(async () => {
+  const handleSaveWireListSettings = useCallback(async (sheetSlug: string) => {
     if (!currentProject) return;
 
+    const assignment = assignmentEntries.find(
+      (entry) => entry.sheetSlug === sheetSlug,
+    );
+    if (!assignment) {
+      return;
+    }
+
     setSavingWireListSettings(true);
+    setSavingWireListSettingsBySheet((prev) => ({
+      ...prev,
+      [sheetSlug]: true,
+    }));
     setWireListSettingsMessage(null);
     try {
-      const nextAssignments = Object.fromEntries(
-        assignmentEntries.map((assignment) => {
-          const existingByKey = new Map(
-            (assignment.externalLocations ?? []).map((item) => [
-              String(item.location ?? "")
-                .trim()
-                .toUpperCase(),
-              item,
-            ]),
-          );
-
-          // Use schema-derived locations as the canonical set; fall back to existing entries
-          const schemaLocations =
-            schemaExternalLocations[assignment.sheetSlug] ?? [];
-          const schemaKeys = new Set(
-            schemaLocations.map((l) => l.trim().toUpperCase()),
-          );
-
-          const externalLocations = schemaLocations.map((location) => {
-            const key = location.trim().toUpperCase();
-            const existing = existingByKey.get(key);
-            return {
-              location,
-              wireListVisible:
-                wireListSettingsMatrix[assignment.sheetSlug]?.[key] ??
-                existing?.wireListVisible ??
-                true,
-              brandingVisible: existing?.brandingVisible ?? true,
-            };
-          });
-
-          // Preserve any existing entries not covered by the schema (e.g. brandingVisible-only entries)
-          for (const [key, existing] of existingByKey) {
-            if (!schemaKeys.has(key)) {
-              externalLocations.push({
-                location: String(existing.location ?? ""),
-                wireListVisible: existing.wireListVisible ?? true,
-                brandingVisible: existing.brandingVisible ?? true,
-              });
-            }
-          }
-
-          return [assignment.sheetSlug, { ...assignment, externalLocations }];
-        }),
+      const existingByKey = new Map(
+        (assignment.externalLocations ?? []).map((item) => [
+          String(item.location ?? "")
+            .trim()
+            .toUpperCase(),
+          item,
+        ]),
       );
+
+      const schemaLocations = schemaExternalLocations[assignment.sheetSlug] ?? [];
+      const schemaKeys = new Set(schemaLocations.map((l) => l.trim().toUpperCase()));
+
+      const externalLocations = schemaLocations.map((location) => {
+        const key = location.trim().toUpperCase();
+        const existing = existingByKey.get(key);
+        return {
+          location,
+          wireListVisible:
+            wireListSettingsMatrix[assignment.sheetSlug]?.[key] ??
+            existing?.wireListVisible ??
+            true,
+          brandingVisible: existing?.brandingVisible ?? true,
+        };
+      });
+
+      for (const [key, existing] of existingByKey) {
+        if (!schemaKeys.has(key)) {
+          externalLocations.push({
+            location: String(existing.location ?? ""),
+            wireListVisible: existing.wireListVisible ?? true,
+            brandingVisible: existing.brandingVisible ?? true,
+          });
+        }
+      }
+
+      const nextAssignments = {
+        ...currentProject.assignments,
+        [assignment.sheetSlug]: {
+          ...assignment,
+          externalLocations,
+        },
+      };
 
       const nextManifest: ProjectManifest = {
         ...currentProject,
@@ -1083,19 +1100,30 @@ export function ProjectCollectionDetailsModal({
         ...serverManifest,
         assignments: {
           ...serverManifest.assignments,
-          ...nextAssignments,
+          [assignment.sheetSlug]: nextAssignments[assignment.sheetSlug],
         },
       };
       setProjectState(mergedManifest);
-      setWireListSettingsMessage("Saved — regenerating wire lists…");
-      // Rebuild wire list exports so visibility changes take effect immediately
-      void fetch(
-        `/api/projects/${encodeURIComponent(currentProject.id)}/exports?kind=wire-lists`,
+      setWireListSettingsMessage(
+        `Saved ${assignment.sheetName} settings — regenerating PDF…`,
+      );
+      setRegeneratingWireBySheet((prev) => ({
+        ...prev,
+        [sheetSlug]: true,
+      }));
+
+      const regenerateResponse = await fetch(
+        `/api/projects/${encodeURIComponent(currentProject.id)}/exports?kind=wire-lists&sheet=${encodeURIComponent(sheetSlug)}`,
         { method: "POST" },
-      )
-        .then(() => refreshWireExports())
-        .catch(() => refreshWireExports())
-        .then(() => setWireListSettingsMessage("Wire list settings saved."));
+      );
+      if (!regenerateResponse.ok) {
+        throw new Error("Settings saved but failed to regenerate sheet PDF.");
+      }
+
+      await refreshWireExports();
+      setWireListSettingsMessage(
+        `${assignment.sheetName} settings saved and PDF regenerated.`,
+      );
     } catch (error) {
       setWireListSettingsMessage(
         error instanceof Error
@@ -1103,6 +1131,14 @@ export function ProjectCollectionDetailsModal({
           : "Failed to save wire list settings.",
       );
     } finally {
+      setSavingWireListSettingsBySheet((prev) => ({
+        ...prev,
+        [sheetSlug]: false,
+      }));
+      setRegeneratingWireBySheet((prev) => ({
+        ...prev,
+        [sheetSlug]: false,
+      }));
       setSavingWireListSettings(false);
     }
   }, [
@@ -2602,33 +2638,8 @@ export function ProjectCollectionDetailsModal({
                       }
                     />
                   ) : (
-                    <div className="space-y-2">
-                      {wireExports.sheetExports.map((entry) => (
-                        <a
-                          key={entry.relativePath}
-                          href={buildExportFileHref(
-                            currentProject.id,
-                            entry.relativePath,
-                          ).replace("?download=1", "")}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-3 rounded-xl border border-border bg-background/40 px-3 py-2.5 text-sm hover:bg-card/50"
-                        >
-                          <FileText className="h-4 w-4 shrink-0 text-card-foreground" />
-                          <div className="min-w-0 flex-1">
-                            <div className="truncate text-sm">{entry.sheetName}</div>
-                            <div className="truncate font-mono text-[11px] text-card-foreground">
-                              {entry.fileName}
-                            </div>
-                          </div>
-                          {typeof entry.rowCount === "number" ? (
-                            <Badge variant="outline" className="h-5 shrink-0 text-[10px]">
-                              {entry.rowCount} rows
-                            </Badge>
-                          ) : null}
-                          <ExternalLink className="h-3.5 w-3.5 shrink-0 text-card-foreground" />
-                        </a>
-                      ))}
+                    <div className="rounded-xl border border-border bg-background/40 px-3 py-2.5 text-xs text-card-foreground">
+                      Use each sheet card below to save visibility settings and download/regenerate that sheet PDF.
                     </div>
                   )}
                 </div>
@@ -2640,26 +2651,9 @@ export function ProjectCollectionDetailsModal({
                     <div>
                       <h3 className="text-sm font-semibold">Wire List Visibility</h3>
                       <p className="mt-0.5 text-xs text-card-foreground">
-                        Show or hide external locations per sheet
+                        Configure visibility and regenerate/download each sheet PDF
                       </p>
                     </div>
-                    <Button
-                      size="sm"
-                      className="gap-1.5 shrink-0"
-                      onClick={() => void handleSaveWireListSettings()}
-                      disabled={
-                        savingWireListSettings ||
-                        assignmentEntries.length === 0 ||
-                        !anyAssignmentHasLocations
-                      }
-                    >
-                      {savingWireListSettings ? (
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                      ) : (
-                        <Check className="h-3.5 w-3.5" />
-                      )}
-                      Save
-                    </Button>
                   </div>
 
                   {wireListSettingsMessage ? (
@@ -2688,6 +2682,9 @@ export function ProjectCollectionDetailsModal({
                   ) : (
                     <div className="space-y-2">
                       {assignmentEntries.map((assignment) => {
+                        const exportEntry = wireExports?.sheetExports.find(
+                          (entry) => entry.sheetSlug === assignment.sheetSlug,
+                        );
                         const locations = (schemaExternalLocations[assignment.sheetSlug] ?? [])
                           .map((loc) => ({
                             label: loc,
@@ -2698,6 +2695,11 @@ export function ProjectCollectionDetailsModal({
                           (loc) =>
                             wireListSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true,
                         ).length;
+                        const isSavingSheet =
+                          savingWireListSettingsBySheet[assignment.sheetSlug] ?? false;
+                        const isRegeneratingSheet =
+                          regeneratingWireBySheet[assignment.sheetSlug] ?? false;
+                        const isBusySheet = isSavingSheet || isRegeneratingSheet;
                         const allVisible = visibleCount === locations.length;
 
                         return (
@@ -2705,12 +2707,23 @@ export function ProjectCollectionDetailsModal({
                             key={assignment.sheetSlug}
                             className="overflow-hidden rounded-lg border border-border/60 bg-card/30 transition-colors hover:border-border/80"
                           >
-                            <button
+                            <div
+                              role="button"
+                              tabIndex={0}
                               onClick={() => {
                                 const current = expandedAssignments.has(assignment.sheetSlug);
                                 setExpandedAssignments(
                                   current ? new Set() : new Set([assignment.sheetSlug]),
                                 );
+                              }}
+                              onKeyDown={(event) => {
+                                if (event.key === "Enter" || event.key === " ") {
+                                  event.preventDefault();
+                                  const current = expandedAssignments.has(assignment.sheetSlug);
+                                  setExpandedAssignments(
+                                    current ? new Set() : new Set([assignment.sheetSlug]),
+                                  );
+                                }
                               }}
                               className="flex w-full items-center justify-between px-4 py-3 transition-colors hover:bg-card/40"
                             >
@@ -2737,6 +2750,38 @@ export function ProjectCollectionDetailsModal({
                                 >
                                   {visibleCount}/{locations.length}
                                 </Badge>
+                                {exportEntry ? (
+                                  <a
+                                    href={buildExportFileHref(
+                                      currentProject.id,
+                                      exportEntry.relativePath,
+                                    )}
+                                    download
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="inline-flex h-7 items-center gap-1 rounded px-2 text-card-foreground transition-colors hover:bg-background hover:text-foreground"
+                                    title="Download sheet PDF"
+                                  >
+                                    <Download className="h-3.5 w-3.5" />
+                                    <span className="text-[11px]">PDF</span>
+                                  </a>
+                                ) : null}
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-7 gap-1 px-2 text-[11px]"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    void handleSaveWireListSettings(assignment.sheetSlug);
+                                  }}
+                                  disabled={isBusySheet || locations.length === 0}
+                                >
+                                  {isBusySheet ? (
+                                    <Loader2 className="h-3 w-3 animate-spin" />
+                                  ) : (
+                                    <Check className="h-3 w-3" />
+                                  )}
+                                  Save + Generate
+                                </Button>
                                 <a
                                   href={buildWireListPrintHref(currentProject.id, assignment.sheetSlug, true)}
                                   target="_blank"
@@ -2748,7 +2793,7 @@ export function ProjectCollectionDetailsModal({
                                   <ExternalLink className="h-3.5 w-3.5" />
                                 </a>
                               </div>
-                            </button>
+                            </div>
 
                             {expandedAssignments.has(assignment.sheetSlug) && locations.length > 0 ? (
                               <div className="space-y-2 border-t border-border/40 bg-background/40 p-3">

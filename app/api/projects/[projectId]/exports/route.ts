@@ -5,6 +5,7 @@ import {
   readBrandingCsvExports,
 } from '@/lib/project-exports/branding-csv-exports'
 import {
+  ensureWireListPdfSheetExport,
   generateWireListPdfExports,
   readWireListPdfExports,
 } from '@/lib/project-exports/wire-list-pdf-exports'
@@ -55,6 +56,7 @@ export async function POST(
 ) {
   const { projectId } = await params
   const kind = parseKind(request.nextUrl.searchParams.get('kind'))
+  const sheet = request.nextUrl.searchParams.get('sheet')?.trim() || null
 
   if (!kind) {
     return NextResponse.json({ error: 'Missing or invalid kind' }, { status: 400 })
@@ -64,6 +66,15 @@ export async function POST(
     if (kind === 'branding') {
       const result = await generateBrandingCsvExports(projectId)
       return NextResponse.json(result)
+    }
+
+    if (sheet) {
+      await ensureWireListPdfSheetExport(projectId, sheet, request.nextUrl.origin)
+      const refreshed = await readWireListPdfExports(projectId)
+      if (!refreshed) {
+        return NextResponse.json({ error: 'Export manifest not found' }, { status: 404 })
+      }
+      return NextResponse.json(refreshed)
     }
 
     const result = await generateWireListPdfExports(projectId, request.nextUrl.origin)
