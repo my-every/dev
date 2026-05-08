@@ -5,7 +5,7 @@ import { promises as fs } from 'node:fs'
 import path from 'node:path'
 
 import { resolveStandaloneShareDirectory } from '@/lib/runtime/share-directory'
-import type { UserIdentity } from '@/types/d380-user-session'
+import type { UserIdentity, UserRole } from '@/types/d380-user-session'
 
 const PIN_HMAC_SECRET = 'd380-pin-auth-key'
 

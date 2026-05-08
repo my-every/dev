@@ -86,6 +86,7 @@ function normalizeRole(value: string): UserRole {
     case 'DEVELOPER':
     case 'MANAGER':
     case 'SUPERVISOR':
+    case 'ENGINEER':
     case 'TEAM_LEAD':
     case 'QA':
     case 'BRANDER':
@@ -301,6 +302,55 @@ export async function updateUserPinInShare(
 
   await writeCsvDocument(document)
   return toUserIdentity(document.headers, nextRow)
+}
+
+export async function createUserInShare(params: {
+  badge: string
+  legalName: string
+  role: UserRole
+  pin: string
+}): Promise<UserIdentity | null> {
+  const document = await readCsvDocument()
+
+  // Reject duplicate badge
+  if (findRowByBadge(document, params.badge)) {
+    return null
+  }
+
+  const now = new Date().toISOString()
+  const firstWord = params.legalName.trim().split(/\s+/)
+  const initials = firstWord
+    .slice(0, 2)
+    .map(w => w[0]?.toUpperCase() ?? '')
+    .join('')
+
+  const preferredName = firstWord[0] ?? params.badge
+  const title = getUserDefaultTitleForRole(params.role)
+  const pinHash = hashPin(params.pin, params.badge)
+
+  // Build row aligned to current headers
+  const row: string[] = document.headers.map(header => {
+    switch (header) {
+      case 'badge': return params.badge
+      case 'pin': return pinHash
+      case REQUIRED_PIN_CHANGE_COLUMN: return 'false'
+      case 'legal_name': return params.legalName.trim()
+      case 'preferred_name': return preferredName
+      case 'initials': return initials
+      case 'role': return params.role
+      case TITLE_COLUMN: return title
+      case 'primary_lwc': return 'NEW_FLEX'
+      case 'shift': return '1st'
+      case 'is_active': return 'true'
+      case 'created_at': return now
+      case 'updated_at': return now
+      default: return ''
+    }
+  })
+
+  document.rows.push(row)
+  await writeCsvDocument(document)
+  return toUserIdentity(document.headers, row)
 }
 
 export async function migratePinsToHash(): Promise<number> {
