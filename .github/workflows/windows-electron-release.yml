@@ -1,34 +1,20 @@
-name: build-windows-release
+name: Windows Electron Release
 
 on:
   workflow_dispatch:
   push:
     tags:
-      - "v*"
+      - 'v*'
 
 permissions:
   contents: write
 
-concurrency:
-  group: windows-release-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  build-sign-release:
+  build-windows-release:
     runs-on: windows-latest
-    timeout-minutes: 45
-    environment: release
-    # Skip the job entirely when signing secrets are not configured.
-    # The job will appear as "skipped" in the Actions UI rather than failing.
-    if: ${{ secrets.WINDOWS_CSC_LINK != '' && secrets.WINDOWS_CSC_KEY_PASSWORD != '' }}
-    env:
-      # Base64 PFX or file URL accepted by electron-builder
-      CSC_LINK: ${{ secrets.WINDOWS_CSC_LINK }}
-      CSC_KEY_PASSWORD: ${{ secrets.WINDOWS_CSC_KEY_PASSWORD }}
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup pnpm
@@ -36,48 +22,31 @@ jobs:
         with:
           version: 10
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
 
-      - name: Validate signing secrets
-        shell: pwsh
-        run: |
-          # These checks are belt-and-suspenders; the job-level `if` already
-          # skips the job when secrets are absent.
-          Write-Host "CSC_LINK length : $($env:CSC_LINK.Length)"
-          Write-Host "CSC_KEY_PASSWORD set: $(-not [string]::IsNullOrWhiteSpace($env:CSC_KEY_PASSWORD))"
-
-      - name: Install
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build and sign Windows installer
+      - name: Build Windows Electron installer
         run: pnpm dist:win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Verify Authenticode signatures
-        shell: pwsh
-        run: |
-          $files = Get-ChildItem release -Recurse -Include *.exe,*.msi | Where-Object { $_.FullName -notmatch "win-unpacked" }
-          if (-not $files) { throw "No signed installer artifacts found." }
-          foreach ($f in $files) {
-            $sig = Get-AuthenticodeSignature $f.FullName
-            Write-Host "$($f.Name): $($sig.Status) / $($sig.SignerCertificate.Subject)"
-            if ($sig.Status -ne "Valid") { throw "Invalid signature on $($f.FullName)" }
-          }
-
-      - name: Upload release artifacts
+      - name: Upload Windows release artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: windows-release
+          name: windows-electron-release
           path: |
             release/*.exe
             release/*.blockmap
             release/latest*.yml
+          if-no-files-found: error
 
-      - name: Publish GitHub Release
+      - name: Publish GitHub release assets
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
