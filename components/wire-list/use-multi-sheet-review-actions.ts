@@ -57,63 +57,15 @@ export function useMultiSheetReviewActions(options: {
   } = options;
 
   const ensureBrandSchemasGenerated = useCallback(async () => {
-    if (
-      !projectId ||
-      reviewState.totalSheets === 0 ||
-      reviewState.savedSchemas >= reviewState.totalSheets
-    ) {
+    if (!projectId || reviewState.totalSheets === 0) {
       return true;
     }
 
-    setModalSurface("generating");
-    setGenerationStatus("preparing");
-    setGenerationMessage(
-      "Preparing brand list schemas for each operational sheet...",
-    );
-
-    try {
-      setGenerationStatus("generating");
-      setGenerationMessage(
-        "Generating editable brand list schemas from the saved wire-list data...",
-      );
-      const response = await fetch(
-        `/api/projects/${encodeURIComponent(projectId)}/wire-brand-list-schemas`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ mode: "all" }),
-        },
-      );
-      if (!response.ok) {
-        const payload = await response
-          .json()
-          .catch(() => ({ error: `HTTP ${response.status}` }));
-        throw new Error(payload.error || `HTTP ${response.status}`);
-      }
-
-      await response.json().catch(() => null);
-      await refreshSavedBrandSchemas();
-      setGenerationStatus("success");
-      setGenerationMessage("Brand list schemas are ready.");
-      return true;
-    } catch (error) {
-      setGenerationStatus("error");
-      setGenerationMessage(
-        error instanceof Error
-          ? error.message
-          : "Failed to generate brand list schemas.",
-      );
-      return false;
-    }
-  }, [
-    projectId,
-    refreshSavedBrandSchemas,
-    reviewState.savedSchemas,
-    reviewState.totalSheets,
-    setGenerationMessage,
-    setGenerationStatus,
-    setModalSurface,
-  ]);
+    // Fast path: avoid generating all sheet schemas up front.
+    // Schemas are loaded/generated lazily per sheet in the review workspace.
+    await refreshSavedBrandSchemas().catch(() => null);
+    return true;
+  }, [projectId, refreshSavedBrandSchemas, reviewState.totalSheets]);
 
   const beginReviewSurface = useCallback(
     async (nextReadOnly: boolean) => {
@@ -127,47 +79,23 @@ export function useMultiSheetReviewActions(options: {
         return;
       }
 
-      if (
-        reviewState.savedSchemas >= reviewState.totalSheets &&
-        reviewState.totalSheets > 0
-      ) {
-        setEntryMode("review");
-        openReviewSurface(nextReadOnly);
-        return;
-      }
-
-      setModalSurface("generating");
-      setGenerationStatus("preparing");
-      setGenerationMessage(
-        nextReadOnly
-          ? "Loading the approved brand list review workspace..."
-          : "Opening the first sheet in the brand list approval flow...",
-      );
-
       const ready = await ensureBrandSchemasGenerated();
       if (!ready) {
         return;
       }
 
-      setGenerationStatus("success");
-      setGenerationMessage(
-        nextReadOnly
-          ? "Approved review is ready."
-          : "Review workspace ready. Transitioning to the first sheet...",
-      );
-      await new Promise((resolve) => window.setTimeout(resolve, 380));
+      setGenerationStatus("idle");
+      setGenerationMessage("Review workspace ready.");
       setEntryMode("review");
       openReviewSurface(nextReadOnly);
     },
     [
       ensureBrandSchemasGenerated,
       openReviewSurface,
-      reviewState.savedSchemas,
       reviewState.totalSheets,
       setEntryMode,
       setGenerationMessage,
       setGenerationStatus,
-      setModalSurface,
       toast,
     ],
   );

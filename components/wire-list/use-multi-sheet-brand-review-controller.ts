@@ -182,6 +182,7 @@ export function useMultiSheetBrandReviewController({
   const [entryMode, setEntryMode] = useState<MultiSheetReviewEntryMode>("cover");
   const [importSession, setImportSession] = useState<MultiSheetImportSession | null>(null);
   const pendingBrandSchemaSaveRef = useRef<Record<string, Promise<BrandListExportSchema | null>>>({});
+  const missingBrandSchemaSlugsRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     setSelectedBrandRows(new Set());
@@ -344,13 +345,27 @@ export function useMultiSheetBrandReviewController({
       return;
     }
 
+    const savedSchemaSet = new Set(savedBrandSchemaSlugs);
+    const shouldFetchBrandSchema =
+      force ||
+      savedSchemaSet.has(sheetSlug) ||
+      !missingBrandSchemaSlugsRef.current.has(sheetSlug);
+
     setLoadingSlug(sheetSlug);
     try {
       const [sheet, printSchema, brandSchema] = await Promise.all([
         fetchSheetSchema(projectId, sheetSlug),
         fetchWireListPrintSchema(projectId, sheetSlug),
-        fetchBrandListSchema(projectId, sheetSlug),
+        shouldFetchBrandSchema
+          ? fetchBrandListSchema(projectId, sheetSlug)
+          : Promise.resolve(null),
       ]);
+
+      if (brandSchema) {
+        missingBrandSchemaSlugsRef.current.delete(sheetSlug);
+      } else if (!savedSchemaSet.has(sheetSlug)) {
+        missingBrandSchemaSlugsRef.current.add(sheetSlug);
+      }
 
       setResourceMap((prev) => ({
         ...prev,
@@ -363,7 +378,7 @@ export function useMultiSheetBrandReviewController({
     } finally {
       setLoadingSlug((prev) => (prev === sheetSlug ? null : prev));
     }
-  }, [projectId, resourceMap]);
+  }, [projectId, resourceMap, savedBrandSchemaSlugs]);
 
   useEffect(() => {
     if (!isOpen || !activeSlug) {
@@ -490,6 +505,7 @@ export function useMultiSheetBrandReviewController({
             brandSchema: payload.schema,
           },
         }));
+        missingBrandSchemaSlugsRef.current.delete(sheetSlug);
         setSavedBrandSchemaSlugs((prev) => Array.from(new Set([...prev, sheetSlug])));
         return payload.schema;
       })

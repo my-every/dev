@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import { runLegalDrawingsMaintenance } from '@/lib/legal-drawings/admin'
+import { invalidateLegalDrawingsLibraryManifestCache } from '@/lib/legal-drawings/library'
 
 export const dynamic = 'force-dynamic'
 
@@ -20,6 +21,10 @@ export async function POST(
 
     if (result.projects.length === 0) {
       return NextResponse.json({ error: 'Legal project not found' }, { status: 404 })
+    }
+
+    if (!body.dryRun) {
+      invalidateLegalDrawingsLibraryManifestCache()
     }
 
     return NextResponse.json(result)

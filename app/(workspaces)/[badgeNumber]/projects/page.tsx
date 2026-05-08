@@ -44,6 +44,8 @@ export default function ProjectsWorkspacePage({
   const { user } = useSession();
   const [projects, setProjects] = useState<ProjectManifest[]>([]);
   const [legalProjects, setLegalProjects] = useState<LegalProjectRecord[]>([]);
+  const [hasLoadedLegalProjects, setHasLoadedLegalProjects] = useState(false);
+  const [legalsTabVisited, setLegalsTabVisited] = useState(false);
   const [viewerSettings, setViewerSettings] = useState<UserSettings | null>(null);
   const [state, setState] = useState<LoadState>("loading");
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -54,18 +56,12 @@ export default function ProjectsWorkspacePage({
     async function loadProjects() {
       setState("loading");
 
-      const [projectsResponse, legalResponse] = await Promise.all([
-        fetch("/api/projects", { cache: "no-store" }),
-        fetch("/api/legal-drawings", { cache: "no-store" }),
-      ]);
-      const [payload, legalPayload] = await Promise.all([
+      const projectsResponse = await fetch("/api/projects", { cache: "no-store" });
+      const payload = await (
         projectsResponse.ok
           ? ((await projectsResponse.json()) as ProjectsResponse)
-          : { manifests: [] },
-        legalResponse.ok
-          ? ((await legalResponse.json()) as LegalDrawingsLibraryManifest)
-          : { projects: [], generatedAt: new Date().toISOString() },
-      ]);
+          : { manifests: [] }
+      );
       if (!mounted) {
         return;
       }
@@ -79,7 +75,6 @@ export default function ProjectsWorkspacePage({
       });
 
       setProjects(nextProjects);
-      setLegalProjects(legalPayload.projects ?? []);
       setState("ready");
     }
 
@@ -89,6 +84,38 @@ export default function ProjectsWorkspacePage({
       mounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadLegalProjects() {
+      const legalResponse = await fetch("/api/legal-drawings", { cache: "no-store" });
+      const legalPayload = await (
+        legalResponse.ok
+          ? ((await legalResponse.json()) as LegalDrawingsLibraryManifest)
+          : { projects: [], generatedAt: new Date().toISOString() }
+      );
+
+      if (!mounted) {
+        return;
+      }
+
+      setLegalProjects(legalPayload.projects ?? []);
+      setHasLoadedLegalProjects(true);
+    }
+
+    if (!legalsTabVisited || hasLoadedLegalProjects) {
+      return () => {
+        mounted = false;
+      };
+    }
+
+    void loadLegalProjects();
+
+    return () => {
+      mounted = false;
+    };
+  }, [hasLoadedLegalProjects, legalsTabVisited]);
 
   useEffect(() => {
     let mounted = true;
@@ -120,25 +147,28 @@ export default function ProjectsWorkspacePage({
   async function handleRefresh() {
     setIsRefreshing(true);
     try {
-      const [projectsResponse, legalResponse] = await Promise.all([
-        fetch("/api/projects", { cache: "no-store" }),
-        fetch("/api/legal-drawings", { cache: "no-store" }),
-      ]);
-      const [payload, legalPayload] = await Promise.all([
+      const projectsResponse = await fetch("/api/projects", { cache: "no-store" });
+      const payload = await (
         projectsResponse.ok
           ? ((await projectsResponse.json()) as { manifests?: ProjectManifest[] })
-          : { manifests: [] },
-        legalResponse.ok
-          ? ((await legalResponse.json()) as LegalDrawingsLibraryManifest)
-          : { projects: [], generatedAt: new Date().toISOString() },
-      ]);
+          : { manifests: [] }
+      );
       const nextProjects = (payload.manifests ?? []).sort((left, right) => {
         const pdCompare = left.pdNumber.localeCompare(right.pdNumber);
         if (pdCompare !== 0) return pdCompare;
         return (left.unitNumber || "").localeCompare(right.unitNumber || "");
       });
       setProjects(nextProjects);
-      setLegalProjects(legalPayload.projects ?? []);
+
+      if (hasLoadedLegalProjects) {
+        const legalResponse = await fetch("/api/legal-drawings", { cache: "no-store" });
+        const legalPayload = await (
+          legalResponse.ok
+            ? ((await legalResponse.json()) as LegalDrawingsLibraryManifest)
+            : { projects: [], generatedAt: new Date().toISOString() }
+        );
+        setLegalProjects(legalPayload.projects ?? []);
+      }
     } finally {
       setIsRefreshing(false);
     }
@@ -318,6 +348,11 @@ export default function ProjectsWorkspacePage({
       sidePanel={
         <ProjectsSidePanelNav
           mode={mode}
+          onSidePanelTabChange={(tab) => {
+            if (tab === "legals") {
+              setLegalsTabVisited(true);
+            }
+          }}
           data={{
             badgeNumber: params.badgeNumber,
             monthLabel: canViewUpcomingProjects

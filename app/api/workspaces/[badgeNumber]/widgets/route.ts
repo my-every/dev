@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { upsertUserSettings } from "@/lib/user-settings/share-user-settings-store";
+import { readUserFromShare } from "@/lib/session/share-user-store";
 import { readSystemWorkspaceConfig, readWorkspaceConfig } from "@/lib/workspace/workspace-config-store";
 import { DEFAULT_WIDGET_REGISTRY, mergeWidgetOverrides } from "@/lib/workspace/widget-registry";
 import { DEFAULT_LAYOUT_PRESETS } from "@/lib/workspace/layout-presets";
@@ -27,17 +28,20 @@ export async function GET(
   const { badgeNumber } = await params;
   const shift = req.nextUrl.searchParams.get("shift") ?? "1st";
 
-  const [settings, workspaceConfig, systemConfig] = await Promise.all([
+  const [settings, workspaceConfig, systemConfig, csvUser] = await Promise.all([
     upsertUserSettings(badgeNumber, shift),
     readWorkspaceConfig(badgeNumber, shift),
     readSystemWorkspaceConfig(),
+    readUserFromShare(badgeNumber),
   ]);
 
   const grantedRoleKeys = (settings.roles ?? [])
     .filter((r) => r.enabled)
     .map((r) => r.role);
 
-  const role = resolveHighestWorkspaceRole(undefined, grantedRoleKeys);
+  // Use the CSV role as the base so users without an explicit settings.json
+  // still get the correct layout (e.g. DEVELOPER from the users.csv role column).
+  const role = resolveHighestWorkspaceRole(csvUser?.role ?? undefined, grantedRoleKeys);
   const permissions = resolveProcessPermissions({ role });
   const featureFlags = resolveFeatureFlags(
     systemConfig.features,

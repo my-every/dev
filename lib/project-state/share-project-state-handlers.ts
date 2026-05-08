@@ -23,6 +23,33 @@ import { deriveSwsProgressSummary } from '@/lib/sws/progress'
 const PROJECT_MANIFEST_FILE = 'project-manifest.json'
 const SHEETS_DIR = 'sheets'
 
+// ── Project root directory cache ─────────────────────────────────────────────
+// resolveExistingProjectRoot scans every project folder on the network share
+// (S:\) and reads each manifest.json twice per request — expensive over SMB.
+// Cache the resolved path per projectId with a 2-minute TTL.
+const PROJECT_ROOT_CACHE_TTL_MS = 2 * 60 * 1000
+interface ProjectRootCacheEntry { dir: string | null; ts: number }
+const projectRootCache = new Map<string, ProjectRootCacheEntry>()
+
+function getCachedProjectRoot(projectId: string): string | null | undefined {
+  const entry = projectRootCache.get(projectId)
+  if (!entry) return undefined
+  if (Date.now() - entry.ts > PROJECT_ROOT_CACHE_TTL_MS) {
+    projectRootCache.delete(projectId)
+    return undefined
+  }
+  return entry.dir
+}
+
+function setCachedProjectRoot(projectId: string, dir: string | null): void {
+  projectRootCache.set(projectId, { dir, ts: Date.now() })
+}
+
+/** Invalidate the cached directory path for a project (call after write/create operations). */
+export function invalidateProjectRootCache(projectId: string): void {
+  projectRootCache.delete(projectId)
+}
+
 async function resolveShareProjectsRoot(): Promise<string> {
   const shareRoot = await resolveShareDirectory()
   return path.join(shareRoot, 'Projects')
@@ -425,32 +452,38 @@ export function buildShareProjectFolderName(pdNumber: string, projectName?: stri
 }
 
 async function resolveExistingProjectRoot(projectId: string): Promise<string | null> {
+  const cached = getCachedProjectRoot(projectId)
+  if (cached !== undefined) return cached
+
   const shareProjectsRoot = await resolveShareProjectsRoot()
   const folders = await listProjectFolders()
 
-  // First pass: exact ID match
+  // Single pass: check exact ID match and slug match together to halve file reads
   for (const folder of folders) {
     const stateDirectory = path.join(shareProjectsRoot, folder, 'state')
     const manifestPath = path.join(stateDirectory, PROJECT_MANIFEST_FILE)
     const manifest = await readJsonFile<ProjectManifest>(manifestPath)
-    if (manifest?.id === projectId) {
-      return path.join(shareProjectsRoot, folder)
-    }
-  }
+    if (!manifest) continue
 
-  // Second pass: match by pdNumber-name slug (supports clean URL routing)
-  for (const folder of folders) {
-    const stateDirectory = path.join(shareProjectsRoot, folder, 'state')
-    const manifestPath = path.join(stateDirectory, PROJECT_MANIFEST_FILE)
-    const manifest = await readJsonFile<ProjectManifest>(manifestPath)
-    if (manifest?.pdNumber && manifest?.name) {
+    if (manifest.id === projectId) {
+      const dir = path.join(shareProjectsRoot, folder)
+      setCachedProjectRoot(projectId, dir)
+      return dir
+    }
+
+    if (manifest.pdNumber && manifest.name) {
       const slug = generateCleanProjectId(manifest.pdNumber, manifest.name)
       if (slug === projectId) {
-        return path.join(shareProjectsRoot, folder)
+        const dir = path.join(shareProjectsRoot, folder)
+        setCachedProjectRoot(projectId, dir)
+        // Also cache under the manifest's own id so future lookups by either key are fast
+        if (manifest.id && manifest.id !== projectId) setCachedProjectRoot(manifest.id, dir)
+        return dir
       }
     }
   }
 
+  setCachedProjectRoot(projectId, null)
   return null
 }
 

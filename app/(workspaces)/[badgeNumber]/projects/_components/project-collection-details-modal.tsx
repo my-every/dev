@@ -525,6 +525,7 @@ export function ProjectCollectionDetailsModal({
   const [legalDetail, setLegalDetail] = useState<LegalProjectRecord | null>(
     null,
   );
+  const [hasLoadedLegals, setHasLoadedLegals] = useState(false);
   const [loadingLegals, setLoadingLegals] = useState(false);
 
   const [workbookFile, setWorkbookFile] = useState<File | null>(null);
@@ -536,9 +537,12 @@ export function ProjectCollectionDetailsModal({
 
   const [brandingExports, setBrandingExports] =
     useState<BrandingExportResult | null>(null);
+  const [hasLoadedBrandingExports, setHasLoadedBrandingExports] =
+    useState(false);
   const [wireExports, setWireExports] = useState<WireListExportResult | null>(
     null,
   );
+  const [hasLoadedWireExports, setHasLoadedWireExports] = useState(false);
   const [loadingBrandingExports, setLoadingBrandingExports] = useState(false);
   const [loadingWireExports, setLoadingWireExports] = useState(false);
   const [regeneratingBranding, setRegeneratingBranding] = useState(false);
@@ -589,6 +593,13 @@ export function ProjectCollectionDetailsModal({
       setIsEditing(false);
       setSaveError(null);
       setActiveTab("details");
+      setLegalDetail(null);
+      setHasLoadedLegals(false);
+      setBrandingExports(null);
+      setHasLoadedBrandingExports(false);
+      setWireExports(null);
+      setHasLoadedWireExports(false);
+      setSchemaExternalLocations({});
       setWorkbookFile(null);
       setLayoutFile(null);
       setLegalsMessage(null);
@@ -602,6 +613,13 @@ export function ProjectCollectionDetailsModal({
     setEditDraft(null);
     setIsEditing(false);
     setSaveError(null);
+    setLegalDetail(null);
+    setHasLoadedLegals(false);
+    setBrandingExports(null);
+    setHasLoadedBrandingExports(false);
+    setWireExports(null);
+    setHasLoadedWireExports(false);
+    setSchemaExternalLocations({});
   }, [open, project]);
 
   const currentProject = isEditing ? editDraft : projectState;
@@ -636,6 +654,11 @@ export function ProjectCollectionDetailsModal({
         (a) => (schemaExternalLocations[a.sheetSlug] ?? []).length > 0,
       ),
     [assignmentEntries, schemaExternalLocations],
+  );
+
+  const hasSchemaExternalLocations = useMemo(
+    () => Object.keys(schemaExternalLocations).length > 0,
+    [schemaExternalLocations],
   );
 
   const assignmentGroups = useMemo(() => {
@@ -708,6 +731,7 @@ export function ProjectCollectionDetailsModal({
   const refreshLegalDetail = useCallback(async () => {
     if (!projectState?.pdNumber) {
       setLegalDetail(null);
+      setHasLoadedLegals(false);
       return;
     }
 
@@ -727,12 +751,14 @@ export function ProjectCollectionDetailsModal({
       setLegalDetail(payload);
     } finally {
       setLoadingLegals(false);
+      setHasLoadedLegals(true);
     }
   }, [projectState?.pdNumber]);
 
   const refreshBrandingExports = useCallback(async () => {
     if (!projectState?.id) {
       setBrandingExports(null);
+      setHasLoadedBrandingExports(false);
       return;
     }
 
@@ -751,12 +777,14 @@ export function ProjectCollectionDetailsModal({
       setBrandingExports((await response.json()) as BrandingExportResult);
     } finally {
       setLoadingBrandingExports(false);
+      setHasLoadedBrandingExports(true);
     }
   }, [projectState?.id]);
 
   const refreshWireExports = useCallback(async () => {
     if (!projectState?.id) {
       setWireExports(null);
+      setHasLoadedWireExports(false);
       return;
     }
 
@@ -775,6 +803,7 @@ export function ProjectCollectionDetailsModal({
       setWireExports((await response.json()) as WireListExportResult);
     } finally {
       setLoadingWireExports(false);
+      setHasLoadedWireExports(true);
     }
   }, [projectState?.id]);
 
@@ -826,20 +855,76 @@ export function ProjectCollectionDetailsModal({
   }, [projectState?.id, assignmentEntries]);
 
   useEffect(() => {
-    if (!open || !projectState) {
+    if (!open || !projectState || activeTab !== "legals") {
       return;
     }
-
-    void refreshLegalDetail();
-    void refreshBrandingExports();
-    void refreshWireExports();
-    void refreshSchemaLocations();
+    if (!loadingLegals && !hasLoadedLegals) {
+      void refreshLegalDetail();
+    }
   }, [
+    activeTab,
+    hasLoadedLegals,
+    loadingLegals,
+    open,
+    projectState,
+    refreshLegalDetail,
+  ]);
+
+  useEffect(() => {
+    if (!open || !projectState || activeTab !== "brand-lists") {
+      return;
+    }
+    if (!loadingBrandingExports && !hasLoadedBrandingExports) {
+      void refreshBrandingExports();
+    }
+  }, [
+    activeTab,
+    hasLoadedBrandingExports,
+    loadingBrandingExports,
     open,
     projectState,
     refreshBrandingExports,
-    refreshLegalDetail,
+  ]);
+
+  useEffect(() => {
+    if (!open || !projectState || activeTab !== "wire-lists") {
+      return;
+    }
+    if (!loadingWireExports && !hasLoadedWireExports) {
+      void refreshWireExports();
+    }
+  }, [
+    activeTab,
+    hasLoadedWireExports,
+    loadingWireExports,
+    open,
+    projectState,
     refreshWireExports,
+  ]);
+
+  useEffect(() => {
+    if (!open || !projectState) {
+      return;
+    }
+    const needsSchemaForTab =
+      activeTab === "brand-lists" || activeTab === "wire-lists";
+    if (!needsSchemaForTab) {
+      return;
+    }
+    if (
+      !loadingSchemaLocations &&
+      assignmentEntries.length > 0 &&
+      !hasSchemaExternalLocations
+    ) {
+      void refreshSchemaLocations();
+    }
+  }, [
+    activeTab,
+    assignmentEntries.length,
+    hasSchemaExternalLocations,
+    loadingSchemaLocations,
+    open,
+    projectState,
     refreshSchemaLocations,
   ]);
 
@@ -1148,14 +1233,6 @@ export function ProjectCollectionDetailsModal({
   ]);
 
   if (!currentProject) return null;
-
-  const openBrandReview = () => {
-    setWireReviewOpen(false);
-    onOpenChange(false);
-    router.push(
-      `/${badgeNumber}/projects/${encodeURIComponent(currentProject.id)}?action=brand-workspace`,
-    );
-  };
 
   const openLayoutWorkspace = () => {
     setWireReviewOpen(false);
@@ -2149,7 +2226,7 @@ export function ProjectCollectionDetailsModal({
                       Brand List Exports
                     </div>
                     <p className="text-xs text-card-foreground">
-                      Review, approve, and export brand lists.
+                      Generate and export brand lists.
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
@@ -2232,11 +2309,6 @@ export function ProjectCollectionDetailsModal({
                     <EmptyStateCard
                       title="No brand lists exported yet."
                       description="Click Generate to produce brand list outputs for all sheets."
-                      action={
-                        <Button size="sm" onClick={openBrandReview}>
-                          Open Brand List Review
-                        </Button>
-                      }
                     />
                   ) : (
                     <div className="space-y-2">

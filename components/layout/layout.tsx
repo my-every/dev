@@ -166,7 +166,7 @@ function PageLayoutBase({
     showUserAvatarMenu = true,
     classNames,
     defaultSidePanelOpen = true,
-    defaultAsideOpen = true,
+    defaultAsideOpen = false,
 }: PageLayoutShellProps) {
     const prefersReducedMotion = useReducedMotion();
     const { isSidebarOpen, isSidePanelOpen, openSidePanel } = useLayoutUI();

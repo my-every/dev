@@ -58,6 +58,7 @@ interface ScannedFile {
 interface FileCollectionOptions {
   fromTimeMs?: number
   toTimeMs?: number
+  projectFilter?: string | null
   telemetry?: ScanCollectionTelemetry
 }
 
@@ -379,11 +380,18 @@ async function discoverLegalProjects(
   }
 
   const entries = await fs.readdir(legalRoot, { withFileTypes: true })
+  const filter = options.projectFilter?.trim().toUpperCase() || null
   for (const entry of entries) {
     if (!entry.isDirectory()) continue
 
     const pdNumber = extractProjectNumberFromLegalFolder(entry.name)
     const projectName = getProjectNameFromLegalFolder(entry.name)
+    if (filter) {
+      const label = `${pdNumber}_${projectName}`.toUpperCase()
+      if (!label.includes(filter) && pdNumber !== filter) {
+        continue
+      }
+    }
     const rootPath = path.join(legalRoot, entry.name)
     const files = await collectFilesRecursively(rootPath, options)
 
@@ -427,11 +435,18 @@ async function mergeBrandProjects(
   }
 
   const entries = await fs.readdir(sourceRoot, { withFileTypes: true })
+  const filter = options.projectFilter?.trim().toUpperCase() || null
   for (const entry of entries) {
     if (!entry.isDirectory()) continue
 
     const parsed = parseBrandProjectFolder(entry.name)
     if (!parsed) continue
+    if (filter) {
+      const label = `${parsed.pdNumber}_${parsed.projectName}`.toUpperCase()
+      if (!label.includes(filter) && parsed.pdNumber !== filter) {
+        continue
+      }
+    }
 
     const rootPath = path.join(sourceRoot, entry.name)
     const files = await collectFilesRecursively(rootPath, options)
@@ -526,6 +541,7 @@ export async function scanProjectRevisionsFromFilesystem(
     const legalProjects = await discoverLegalProjects(sourceRoots.legalSourceRoot ?? '', {
       fromTimeMs,
       toTimeMs,
+      projectFilter,
       telemetry: collectionTelemetry,
     })
     for (const [pdNumber, aggregate] of legalProjects.entries()) {
@@ -546,6 +562,7 @@ export async function scanProjectRevisionsFromFilesystem(
     await mergeBrandProjects(aggregates, sourceRoots.brandSourceRoot ?? '', {
       fromTimeMs,
       toTimeMs,
+      projectFilter,
       telemetry: collectionTelemetry,
     })
     console.info(

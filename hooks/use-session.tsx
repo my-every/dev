@@ -172,8 +172,13 @@ export function SessionProvider({ children }: SessionProviderProps) {
     const normalizedBadge = normalizeBadgeInput(badge)
     const normalizedPin = normalizePinInput(pin)
 
-    if (!normalizedBadge || normalizedPin.length !== 4) {
-      return { success: false, error: 'Badge must be numeric and PIN must be 4 digits.' }
+    if (!normalizedBadge) {
+      return { success: false, error: 'Badge must be numeric.' }
+    }
+
+    // Allow empty PIN so first-time users can bootstrap into onboarding.
+    if (normalizedPin.length > 0 && normalizedPin.length !== 4) {
+      return { success: false, error: 'PIN must be 4 digits.' }
     }
 
     setState(prev => ({ ...prev, isLoading: true }))

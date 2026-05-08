@@ -23,7 +23,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useSession } from "@/hooks/use-session";
 import type {
@@ -373,6 +373,9 @@ export function LegalsDetailModal({
             <DialogTitle className="text-lg font-semibold truncate">
               {displayName}
             </DialogTitle>
+            <DialogDescription className="sr-only">
+              Legal project details and revision actions for {displayName} ({project.pdNumber}).
+            </DialogDescription>
             <div className="flex items-center gap-2 mt-1 flex-wrap">
               <span className="font-mono text-xs text-muted-foreground">{project.pdNumber}</span>
               {lwcLabel && (

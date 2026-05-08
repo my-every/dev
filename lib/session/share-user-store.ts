@@ -273,7 +273,7 @@ export async function verifyPinInShare(
 
 export async function updateUserPinInShare(
   badge: string,
-  currentPin: string,
+  currentPin: string | null | undefined,
   nextPin: string,
 ): Promise<UserIdentity | null> {
   const document = await readCsvDocument()
@@ -286,7 +286,10 @@ export async function updateUserPinInShare(
   const currentRow = document.rows[rowIndex]
   const storedBadge = getValue(document.headers, currentRow, 'badge')
   const storedPin = getValue(document.headers, currentRow, 'pin')
-  if (!verifyPinHash(currentPin, storedPin, storedBadge)) {
+  const currentUser = toUserIdentity(document.headers, currentRow)
+  const isInitialPinSetup = currentUser.requiresPinChange && !currentPin
+
+  if (!isInitialPinSetup && !verifyPinHash(currentPin ?? '', storedPin, storedBadge)) {
     return null
   }
 

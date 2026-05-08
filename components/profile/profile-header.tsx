@@ -66,14 +66,14 @@ function identityToProfile(user: UserIdentity): UserProfile {
 // PROFILE HEADER - Main component
 // ============================================================================
 
-type ProfileHeaderLayout = 'horizontal' | 'vertical'
+type ProfileHeaderLayout = 'horizontal' | 'vertical' | 'side'
 
 interface ProfileHeaderProps {
   badgeNumber: string
   isEditable?: boolean
   /** Render in compact mode for narrow containers like aside panels */
   compact?: boolean
-  /** Layout variant — horizontal (default) or vertical (avatar + name stacked center) */
+  /** Layout variant — horizontal (default), vertical (avatar + name stacked center), or side (avatar + fields in a clean flex row, no cover overlap) */
   layout?: ProfileHeaderLayout
   /** Actions rendered in the bottom-right of the header */
   actions?: ProfileAction[];
@@ -90,6 +90,7 @@ export function ProfileHeader({
   className,
 }: ProfileHeaderProps) {
   const isVertical = layout === 'vertical'
+  const isSide = layout === 'side'
   // State for profile data
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [initialAvatarUrl, setInitialAvatarUrl] = useState<string | null>(null);
@@ -238,7 +239,8 @@ export function ProfileHeader({
   return (
     <Card
       className={cn(
-        "overflow-hidden pt-0 gap-10 rounded-none bg-background border-0",
+        "overflow-hidden pt-0 rounded-none bg-background border-0 w-full",
+        isSide ? "gap-0" : "gap-10",
         className,
       )}
     >
@@ -247,7 +249,7 @@ export function ProfileHeader({
         ref={coverContainerRef}
         className={cn(
           "relative",
-          isVertical ? "h-28 sm:h-36" : compact ? "h-24" : "h-36 sm:h-44 md:h-52",
+          isSide ? "h-14 sm:h-18 md:h-20" : isVertical ? "h-28 sm:h-36" : compact ? "h-24" : "h-36 sm:h-44 md:h-52",
           isRepositioning && "cursor-grab active:cursor-grabbing select-none",
           !mergedProfile.coverImageUrl && headerSolidBg,
           mergedProfile.coverImageUrl && "bg-slate-800",
@@ -265,56 +267,63 @@ export function ProfileHeader({
             draggable={false}
           />
         ) : (
-          <div className="absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-transparent" />
+          <div className="absolute inset-0" />
         )}
 
-        {/* Cover image overlay gradient (hidden during repositioning for clarity) */}
-        {!isRepositioning && (
-          <>
-            <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/15 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-background via-background/80 to-transparent" />
-          </>
-        )}
-
-        {/* Color picker — shown when no cover image */}
-        {!mergedProfile.coverImageUrl && !isRepositioning && (
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="absolute top-2 right-2 z-10 h-7 gap-1.5 rounded-full bg-black/20 text-white/80 backdrop-blur-sm text-[11px] hover:bg-black/40 hover:text-white"
-              >
-                <Palette className="h-3 w-3" />
-                Color
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent align="end" className="w-auto p-2.5">
-              <p className="text-[11px] font-medium text-muted-foreground mb-2">
-                Header Color
-              </p>
-              <div className="grid grid-cols-6 gap-1.5">
-                {HEADER_COLOR_OPTIONS.map((opt) => {
-                  const isActive = headerColorIndex === opt.index;
-                  return (
-                    <button
-                      key={opt.index}
-                      type="button"
-                      onClick={() => setHeaderColorIndex(opt.index)}
-                      className={cn(
-                        "h-6 w-6 rounded-full transition-all cursor-pointer",
-                        opt.bg,
-                        isActive
-                          ? "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110"
-                          : "hover:scale-110",
-                      )}
-                      aria-label={`Color option ${opt.index + 1}`}
-                    />
-                  );
-                })}
-              </div>
-            </PopoverContent>
-          </Popover>
+        {/* Combined button group: Color + Edit Cover */}
+        {!isRepositioning && (!mergedProfile.coverImageUrl || isEditable) && (
+          <div className="absolute top-3 right-3 z-10 flex divide-x divide-white/20 overflow-hidden rounded-full bg-black/40 backdrop-blur-sm">
+            {!mergedProfile.coverImageUrl && (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 rounded-none px-3 gap-1.5 text-white/90 text-[11px] hover:bg-white/20 hover:text-white"
+                  >
+                    <Palette className="h-3 w-3" />
+                    Color
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="end" className="w-auto p-2.5">
+                  <p className="text-[11px] font-medium text-muted-foreground mb-2">
+                    Header Color
+                  </p>
+                  <div className="grid grid-cols-6 gap-1.5">
+                    {HEADER_COLOR_OPTIONS.map((opt) => {
+                      const isActive = headerColorIndex === opt.index;
+                      return (
+                        <button
+                          key={opt.index}
+                          type="button"
+                          onClick={() => setHeaderColorIndex(opt.index)}
+                          className={cn(
+                            "h-6 w-6 rounded-full transition-all cursor-pointer",
+                            opt.bg,
+                            isActive
+                              ? "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110"
+                              : "hover:scale-110",
+                          )}
+                          aria-label={`Color option ${opt.index + 1}`}
+                        />
+                      );
+                    })}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
+            {isEditable && (
+              <ProfileCoverImageUploader
+                onImageChange={handleCoverChange}
+                onReposition={
+                  mergedProfile.coverImageUrl ? handleRepositionStart : undefined
+                }
+                isOpen={isEditingCover}
+                onOpenChange={setIsEditingCover}
+                className="relative top-auto right-auto rounded-none bg-transparent hover:bg-white/20 text-white/90 hover:text-white h-7 px-3 text-[11px]"
+              />
+            )}
+          </div>
         )}
 
         {/* Reposition mode overlay */}
@@ -354,21 +363,77 @@ export function ProfileHeader({
           </div>
         )}
 
-        {/* Edit cover button */}
-        {isEditable && !isRepositioning && (
-          <ProfileCoverImageUploader
-            onImageChange={handleCoverChange}
-            onReposition={
-              mergedProfile.coverImageUrl ? handleRepositionStart : undefined
-            }
-            isOpen={isEditingCover}
-            onOpenChange={setIsEditingCover}
-          />
-        )}
       </div>
 
       {/* Profile Content */}
-      {isVertical ? (
+      {isSide ? (
+        /* ── Side layout: @container-driven fluid row ── */
+        <div className="@container w-full">
+          <div className="flex w-full items-center gap-2.5 px-3 py-2.5 @sm:gap-3 @sm:px-4 @sm:py-3 @md:py-4">
+            {/* Avatar — scales with container */}
+            <div className="shrink-0">
+              <ProfileAvatar
+                fullName={mergedProfile.fullName}
+                preferredName={mergedProfile.preferredName}
+                avatarUrl={mergedProfile.avatarUrl}
+                status={mergedProfile.status}
+                size="sm"
+                colorKey={badgeNumber}
+                editable={isEditable}
+                onImageChange={handleAvatarChange}
+                isEditOpen={isEditingAvatar}
+                onEditOpenChange={setIsEditingAvatar}
+                className="@md:hidden"
+              />
+              <ProfileAvatar
+                fullName={mergedProfile.fullName}
+                preferredName={mergedProfile.preferredName}
+                avatarUrl={mergedProfile.avatarUrl}
+                status={mergedProfile.status}
+                size="md"
+                colorKey={badgeNumber}
+                editable={isEditable}
+                onImageChange={handleAvatarChange}
+                isEditOpen={isEditingAvatar}
+                onEditOpenChange={setIsEditingAvatar}
+                className="hidden @md:block"
+              />
+            </div>
+
+            {/* Identity + meta — grows to fill remaining space */}
+            <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+              <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5">
+                <span className="truncate font-medium text-sm @sm:text-base leading-tight">
+                  {mergedProfile.preferredName || mergedProfile.fullName}
+                </span>
+                <ProfileRoleBadge role={mergedProfile.role} />
+              </div>
+              {/* Meta row — progressively reveals more info as container widens */}
+                <ProfileMetaRow
+                  profile={mergedProfile}
+                  compact
+                  className="@md:flex hidden"
+                />
+                <ProfileMetaRow
+                  profile={mergedProfile}
+                  badgeOnly
+                  className="flex @md:hidden"
+                />
+              {mergedProfile.bio && (
+                <ProfileBio
+                  bio={mergedProfile.bio}
+                  className="hidden @lg:block mt-0.5 text-xs text-muted-foreground line-clamp-1"
+                />
+              )}
+            </div>
+
+            {/* Actions — pinned to the right */}
+            {actions && actions.length > 0 && (
+              <ProfileActions actions={actions} className="shrink-0 self-center" />
+            )}
+          </div>
+        </div>
+      ) : isVertical ? (
         /* ── Vertical layout: avatar + name + role centered ── */
         <div className="relative flex flex-col items-center px-4 pb-6 -mt-12 sm:-mt-14 gap-3 text-center">
           <ProfileAvatar
@@ -378,6 +443,7 @@ export function ProfileHeader({
             status={mergedProfile.status}
             size="lg"
             colorKey={badgeNumber}
+            align="center"
             editable={isEditable}
             onImageChange={handleAvatarChange}
             isEditOpen={isEditingAvatar}
@@ -386,8 +452,9 @@ export function ProfileHeader({
           <div className="flex flex-col items-center gap-1">
             <ProfileIdentity
               preferredName={mergedProfile.preferredName}
-              fullName={mergedProfile.fullName}
               title={mergedProfile.title}
+              layout={layout}
+              className="items-center"
             >
               <ProfileRoleBadge role={mergedProfile.role} />
             </ProfileIdentity>
@@ -477,3 +544,4 @@ export function ProfileHeader({
     </Card>
   );
 }
+

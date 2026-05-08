@@ -306,6 +306,12 @@ export function MultiSheetReviewModal({
       return;
     }
 
+    const shouldLoadLayoutAssets =
+      layoutPreviewOpen || standardViewMode === "layout";
+    if (!shouldLoadLayoutAssets) {
+      return;
+    }
+
     let cancelled = false;
     void fetch(
       `/api/projects/${encodeURIComponent(projectId)}/layout-pdf`,
@@ -339,7 +345,7 @@ export function MultiSheetReviewModal({
     return () => {
       cancelled = true;
     };
-  }, [isOpen, projectId]);
+  }, [isOpen, layoutPreviewOpen, projectId, standardViewMode]);
 
   const isWireListMode = activeWorkspaceMode === "wire-list";
   const {

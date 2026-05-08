@@ -2,14 +2,12 @@
 
 import { use, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Bell, Filter, GraduationCap, LayoutDashboard, Plus, Settings, Trophy, User } from "lucide-react";
+import { Bell, Filter, GraduationCap, LayoutDashboard, Settings, Trophy, User } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import type { SlotItemMapArray } from "swapy";
-
 import { PageContent } from "@/components/layout/page-content";
 import { ProfileHeader } from "@/components/profile/profile-header";
 import { OverviewTimerCard } from "@/components/projects/overview-timer-card";
-import { SwapyLayout, SwapySlot, SwapyItem, DragHandle } from "@/components/swap";
+import { DragDropGrid, DraggableDroppableSlot, DragHandle } from "@/components/swap";
 import { ProjectIcon } from "./projects/_components/project-icon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,17 +20,9 @@ import { LWC_TYPE_REGISTRY } from "@/lib/workbook/types";
 import { useSession } from "@/hooks/use-session";
 import type { BoardDataResponse } from "@/lib/board/types";
 import {
-  AssemblerSidePanel,
-  TeamLeadSidePanel,
-  buildDashboardSeedBundle,
-  type DashboardSeedBundle,
   type PriorityBucket,
   type ProjectLoadBarPoint,
   type PrioritizedProjectCardVM,
-  type RoleDashboardFilterState,
-  type SidePanelLwcFilter,
-  type SidePanelShiftFilter,
-  type TeamMemberCardVM,
 } from "./_components";
 import type { LegalDrawingsLibraryManifest, LegalProjectRecord } from "@/types/legal-drawings";
 import type { ProjectManifest } from "@/types/project-manifest";
@@ -51,10 +41,6 @@ export type DashboardWidgetState<T> = {
 
 type BoardAssignment = BoardDataResponse["projects"][number]["assignments"][number];
 
-/**
- * Data bundle passed to all widget components — avoids prop drilling
- * through the registry dispatch.
- */
 type DashboardDataBundle = {
   badgeNumber: string;
   loading: boolean;
@@ -72,7 +58,6 @@ type DashboardDataBundle = {
   projectLoadBars: ProjectLoadBarPoint[];
   overviewState: DashboardWidgetState<ProjectLoadBarPoint[]>;
   priorityMix: Record<PriorityBucket, number>;
-  monthScopeLabel: string;
   // Skills / training
   skillsSentiment: string;
   training: TrainingSummary[];
@@ -84,9 +69,6 @@ type DashboardDataBundle = {
 type WidgetComponentProps = DashboardDataBundle & { widget: ResolvedWidget };
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-
-const MIN_REQUIRED_TEAM = 3;
-const MIN_REQUIRED_PROJECTS = 3;
 
 /** Tailwind col-span lookup — avoids unsafe dynamic class generation. */
 const COL_SPAN_CLASS: Record<number, string> = {
@@ -102,21 +84,6 @@ function roleToDashboardKind(role: UserRole): RoleDashboardKind {
   return role === "TEAM_LEAD" || role === "SUPERVISOR" || role === "MANAGER" || role === "DEVELOPER"
     ? "team_lead"
     : "assembler";
-}
-
-function normalizeShift(value: string | null | undefined): SidePanelShiftFilter {
-  const normalized = String(value ?? "").toLowerCase();
-  if (normalized.includes("1") || normalized.includes("first")) return "1st";
-  if (normalized.includes("2") || normalized.includes("second")) return "2nd";
-  return "all";
-}
-
-function normalizeLwc(value: string | null | undefined): SidePanelLwcFilter {
-  const normalized = String(value ?? "").toLowerCase();
-  if (normalized.includes("off")) return "offskid";
-  if (normalized.includes("flex")) return "flex";
-  if (normalized.includes("on") || normalized.includes("skid")) return "onskid";
-  return "all";
 }
 
 function priorityRank(value: string | null | undefined): number {
@@ -212,7 +179,6 @@ function WidgetShell({
 }
 
 // ─── Widget components ────────────────────────────────────────────────────────
-// Each maps to one widgetType key in WORKSPACE_WIDGET_COMPONENT_REGISTRY.
 
 function OverviewTimerWidget({ badgeNumber, selectedProjectId, loading, onRetry }: WidgetComponentProps) {
   if (selectedProjectId) {
@@ -402,8 +368,6 @@ function TrainingInventoryWidget({ training, trainingState, onRetry }: WidgetCom
 }
 
 // ─── Widget component registry ────────────────────────────────────────────────
-// Maps widgetType string (from WidgetDescriptor) → React component.
-// Never store React components in config/JSON — resolve here on the client.
 
 const WORKSPACE_WIDGET_COMPONENT_REGISTRY: Record<string, React.FC<WidgetComponentProps>> = {
   OverviewTimerCard: OverviewTimerWidget,
@@ -439,13 +403,6 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
   const [training, setTraining] = useState<TrainingSummary[]>([]);
   const [userRole, setUserRole] = useState<UserRole>(sessionUser?.role ?? "ASSEMBLER");
   const [assignmentsFilter, setAssignmentsFilter] = useState<"all" | "active" | "upcoming">("all");
-  const [selectedMemberBadge, setSelectedMemberBadge] = useState<string | null>(null);
-  const [panelFilters, setPanelFilters] = useState<RoleDashboardFilterState>({
-    tab: "team",
-    search: "",
-    shift: "all",
-    lwc: "all",
-  });
   const [selectedProjectId, setSelectedProjectId] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -515,16 +472,14 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
         };
         setResolvedWidgets(widgetsPayload.widgets ?? []);
         if (widgetsPayload.layout) setWidgetLayout(widgetsPayload.layout);
-        if (widgetsPayload.role) {
-          // Sync role from workspace API when session role not set
-          const wsRole = widgetsPayload.role as UserRole;
-          if (!sessionUser?.role) setUserRole(wsRole);
+        if (widgetsPayload.role && !sessionUser?.role) {
+          setUserRole(widgetsPayload.role as UserRole);
         }
       }
 
+      // Seed selected project from the current user's active assignment
       const member = boardPayload.members.find((item) => item.badge === params.badgeNumber);
       const activeProject = member?.activeAssignments[0]?.projectId;
-      setSelectedMemberBadge(member?.badge ?? null);
       setSelectedProjectId(activeProject ?? boardPayload.projects[0]?.id ?? "");
     } catch (error) {
       setLoadError(error instanceof Error ? error.message : "Failed to load dashboard");
@@ -539,11 +494,8 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.badgeNumber]);
 
-  // Sync role from session context (for role switching)
   useEffect(() => {
-    if (sessionUser?.role) {
-      setUserRole(sessionUser.role);
-    }
+    if (sessionUser?.role) setUserRole(sessionUser.role);
   }, [sessionUser?.role]);
 
   useEffect(() => {
@@ -560,63 +512,32 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
   }, [boardData]);
 
   const myAssignments = useMemo(
-    () => allAssignments.filter((assignment) => assignment.assignedBadge === params.badgeNumber),
+    () => allAssignments.filter((a) => a.assignedBadge === params.badgeNumber),
     [allAssignments, params.badgeNumber],
   );
 
   const filteredAssignments = useMemo(() => {
-    const sourceAssignments = dashboardKind === "team_lead" ? allAssignments : myAssignments;
-    return sourceAssignments.filter((assignment) => {
+    const source = dashboardKind === "team_lead" ? allAssignments : myAssignments;
+    return source.filter((assignment) => {
       if (assignmentsFilter === "active" && assignment.workflowStatus !== "in-progress") return false;
       if (
         assignmentsFilter === "upcoming"
         && assignment.workflowStatus !== "pending"
         && assignment.workflowStatus !== "scheduled"
       ) return false;
-      if (panelFilters.shift !== "all") {
-        if (normalizeShift(assignment.shiftId ?? null) !== panelFilters.shift) return false;
-      }
-      if (panelFilters.lwc !== "all") {
-        const projectLwc = boardData?.projects.find((project) => project.id === assignment.projectId)?.lwcType;
-        if (normalizeLwc(projectLwc) !== panelFilters.lwc) return false;
-      }
-      if (selectedMemberBadge && assignment.assignedBadge && assignment.assignedBadge !== selectedMemberBadge) return false;
       return true;
     });
-  }, [allAssignments, assignmentsFilter, boardData?.projects, dashboardKind, myAssignments, panelFilters.lwc, panelFilters.shift, selectedMemberBadge]);
+  }, [allAssignments, assignmentsFilter, dashboardKind, myAssignments]);
 
   const skillsSentiment = useMemo(() => {
     const member = boardData?.members.find((item) => item.badge === params.badgeNumber);
     const values = Object.values(member?.skills ?? {});
     if (values.length === 0) return "No skills data";
-    const avg = values.reduce((sum, value) => sum + value, 0) / values.length;
+    const avg = values.reduce((sum, v) => sum + v, 0) / values.length;
     if (avg >= 3) return "Strong";
     if (avg >= 2) return "Developing";
     return "Needs support";
   }, [boardData, params.badgeNumber]);
-
-  const monthScopeLabel = useMemo(() => {
-    const now = new Date();
-    const current = new Intl.DateTimeFormat(undefined, { month: "short" }).format(now);
-    const nextDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-    const next = new Intl.DateTimeFormat(undefined, { month: "short" }).format(nextDate);
-    return `${current} + ${next}`;
-  }, []);
-
-  const teamCards = useMemo<TeamMemberCardVM[]>(() => {
-    if (!boardData) return [];
-    return boardData.members
-      .map((member) => ({
-        badge: member.badge,
-        name: member.preferredName || member.fullName || member.badge,
-        role: member.role,
-        shift: member.shift,
-        lwc: member.primaryLwc,
-        availability: member.availabilityStatus,
-        activeAssignmentCount: member.activeAssignments.length,
-      }))
-      .sort((left, right) => left.name.localeCompare(right.name));
-  }, [boardData]);
 
   const prioritizedProjects = useMemo<PrioritizedProjectCardVM[]>(() => {
     const now = new Date();
@@ -624,7 +545,7 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
     const nextDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
     const nextMonth = `${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, "0")}`;
 
-    const mapped = legalProjects
+    return legalProjects
       .filter((project) => {
         const dueMonth = project.dueMonth || String(project.dueDate || "").slice(0, 7);
         return dueMonth === currentMonth || dueMonth === nextMonth;
@@ -633,7 +554,6 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
         const linked = projectManifests.find((item) => item.pdNumber === project.pdNumber);
         const boardProject = boardData?.projects.find((item) => item.pdNumber === project.pdNumber);
         const name = project.projectName || project.projectNameHint || linked?.name || project.pdNumber;
-        const status = linked?.status ?? null;
         const priorityLabel = linked?.aggregates?.highestPriority ?? (project.daysLate && project.daysLate > 0 ? "urgent" : "normal");
         return {
           id: linked?.id ?? `${project.pdNumber}-${project.latestRevision ?? "latest"}`,
@@ -645,38 +565,28 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
           dueDate: project.dueDate ?? null,
           daysLate: project.daysLate ?? null,
           priorityLabel,
-          status,
+          status: linked?.status ?? null,
           lwc: project.lwcType ?? linked?.lwcType ?? boardProject?.lwcType ?? "unassigned",
           color: project.color ?? linked?.color ?? "#FFCC61",
           href: linked?.id ? `/${params.badgeNumber}/projects/${encodeURIComponent(linked.id)}` : null,
           assignmentCount: boardProject?.assignments.length ?? 0,
         } satisfies PrioritizedProjectCardVM;
       })
-      .filter((item) => Boolean(item.projectId));
-
-    return mapped.sort((left, right) => {
-      const leftLate = left.daysLate ?? Number.NEGATIVE_INFINITY;
-      const rightLate = right.daysLate ?? Number.NEGATIVE_INFINITY;
-      if (leftLate !== rightLate) return rightLate - leftLate;
-      const leftDue = Date.parse(left.dueDate ?? "");
-      const rightDue = Date.parse(right.dueDate ?? "");
-      if (Number.isFinite(leftDue) && Number.isFinite(rightDue) && leftDue !== rightDue) return leftDue - rightDue;
-      const leftPriority = priorityRank(left.priorityLabel);
-      const rightPriority = priorityRank(right.priorityLabel);
-      if (leftPriority !== rightPriority) return rightPriority - leftPriority;
-      return left.name.localeCompare(right.name);
-    });
+      .filter((item) => Boolean(item.projectId))
+      .sort((a, b) => {
+        const aLate = a.daysLate ?? Number.NEGATIVE_INFINITY;
+        const bLate = b.daysLate ?? Number.NEGATIVE_INFINITY;
+        if (aLate !== bLate) return bLate - aLate;
+        const aDue = Date.parse(a.dueDate ?? "");
+        const bDue = Date.parse(b.dueDate ?? "");
+        if (Number.isFinite(aDue) && Number.isFinite(bDue) && aDue !== bDue) return aDue - bDue;
+        return priorityRank(b.priorityLabel) - priorityRank(a.priorityLabel);
+      });
   }, [boardData?.projects, legalProjects, params.badgeNumber, projectManifests]);
 
-  const seedBundle = useMemo<DashboardSeedBundle>(() => buildDashboardSeedBundle(), []);
-  const usingSeedFallback = teamCards.length < MIN_REQUIRED_TEAM || prioritizedProjects.length < MIN_REQUIRED_PROJECTS;
-  const sidePanelTeam = usingSeedFallback ? seedBundle.team : teamCards;
-  const sidePanelProjects = usingSeedFallback ? seedBundle.projects : prioritizedProjects;
-
   const projectLoadBars = useMemo<ProjectLoadBarPoint[]>(() => {
-    const source = usingSeedFallback ? sidePanelProjects : prioritizedProjects;
-    if (source.length === 0) return [];
-    return source.map((project) => {
+    if (prioritizedProjects.length === 0) return [];
+    return prioritizedProjects.map((project) => {
       const bucket = priorityBucketFromProject(project);
       return {
         projectId: project.projectId,
@@ -693,13 +603,11 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
         revision: project.revision,
       } satisfies ProjectLoadBarPoint;
     });
-  }, [prioritizedProjects, sidePanelProjects, usingSeedFallback]);
+  }, [prioritizedProjects]);
 
   const priorityMix = useMemo(() => {
     const mix: Record<PriorityBucket, number> = { urgent: 0, high: 0, normal: 0, scheduled: 0 };
-    for (const row of projectLoadBars) {
-      mix[row.priorityBucket] += 1;
-    }
+    for (const row of projectLoadBars) mix[row.priorityBucket] += 1;
     return mix;
   }, [projectLoadBars]);
 
@@ -729,7 +637,7 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
         ? { status: "empty" }
         : { status: "ready", data: projectLoadBars };
 
-  // ── Data bundle (passed to all widget components) ────────────────────────────
+  // ── Data bundle ───────────────────────────────────────────────────────────────
 
   const dataBundle = useMemo<DashboardDataBundle>(
     () => ({
@@ -747,7 +655,6 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
       projectLoadBars,
       overviewState,
       priorityMix,
-      monthScopeLabel,
       skillsSentiment,
       training,
       trainingState,
@@ -757,38 +664,34 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
     [
       params.badgeNumber, loading, loadError, boardData, selectedProjectId,
       filteredAssignments, assignmentsFilter, assignmentsState,
-      projectLoadBars, overviewState, priorityMix, monthScopeLabel,
+      projectLoadBars, overviewState, priorityMix,
       skillsSentiment, training, trainingState, dashboardKind,
     ],
   );
 
-  // ── Swapy swap handler ───────────────────────────────────────────────────────
+  // ── Drag-and-drop swap handler ───────────────────────────────────────────────
 
   const handleSwap = useCallback(
-    ({ newSlotItemMap }: { newSlotItemMap: { asArray: SlotItemMapArray } }) => {
+    (activeId: string, overId: string) => {
       const snapshot = resolvedWidgets;
 
-      // Build new slot assignments from Swapy's result
-      const newSlotAssignments = new Map<string, string>(); // slotId → widgetId
-      for (const { slotId, itemId } of newSlotItemMap.asArray) {
-        if (slotId && itemId) newSlotAssignments.set(slotId, itemId);
-      }
+      // Swap the slot metadata (order + slotId) between the two widgets.
+      const activeWidget = resolvedWidgets.find((w) => w.id === activeId);
+      const overWidget = resolvedWidgets.find((w) => w.id === overId);
+      if (!activeWidget || !overWidget) return;
 
-      // Remap each widget to its new slotId based on the swap result
       const updated: ResolvedWidget[] = resolvedWidgets.map((widget) => {
-        const newSlotId = [...newSlotAssignments.entries()].find(([, wId]) => wId === widget.id)?.[0];
-        if (!newSlotId || newSlotId === widget.slot.slotId) return widget;
-        // Find the order of the slot this widget is moving into
-        const targetSlotWidget = resolvedWidgets.find((w) => w.slot.slotId === newSlotId);
-        return {
-          ...widget,
-          slot: { ...widget.slot, slotId: newSlotId, order: targetSlotWidget?.slot.order ?? widget.slot.order },
-        };
+        if (widget.id === activeId) {
+          return { ...widget, slot: { ...widget.slot, slotId: overWidget.slot.slotId, order: overWidget.slot.order } };
+        }
+        if (widget.id === overId) {
+          return { ...widget, slot: { ...widget.slot, slotId: activeWidget.slot.slotId, order: activeWidget.slot.order } };
+        }
+        return widget;
       });
 
       setResolvedWidgets(updated);
 
-      // Persist to API — rollback on failure
       const slotOverrides = updated.map((widget, idx) => ({
         slotId: widget.slot.slotId,
         widgetId: widget.id,
@@ -818,14 +721,10 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
     [resolvedWidgets, targetBadge, shift],
   );
 
-  // ── Resolved widget lists ────────────────────────────────────────────────────
+  // ── Resolved widget lists ─────────────────────────────────────────────────────
 
-  /** Timer widget renders at the top, outside the drag grid */
-  const timerWidget = resolvedWidgets.find(
-    (w) => w.widgetType === "OverviewTimerCard" && w.visible,
-  );
+  const timerWidget = resolvedWidgets.find((w) => w.widgetType === "OverviewTimerCard" && w.visible);
 
-  /** Draggable, visible widgets sorted by slot order — drive the swapy grid */
   const gridWidgets = useMemo(
     () =>
       resolvedWidgets
@@ -834,38 +733,15 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
     [resolvedWidgets],
   );
 
-  /** Whether the drag feature is active for this session */
   const swapEnabled = gridWidgets.some((w) => w.draggable);
 
-  // ── Handlers ─────────────────────────────────────────────────────────────────
+  // ── Tab handler ───────────────────────────────────────────────────────────────
 
   const onTabChange = (nextTab: "dashboard" | "profile" | "settings") => {
     setTab(nextTab);
     const next = new URLSearchParams(searchParams.toString());
     next.set("tab", nextTab);
     router.replace(`/${params.badgeNumber}?${next.toString()}`);
-  };
-
-  const handleAssignHighestPriority = async (projectId: string, memberBadge: string | null) => {
-    if (!projectId || !memberBadge || !boardData) return;
-    const targetProject = boardData.projects.find((project) => project.id === projectId);
-    const targetAssignment = targetProject?.assignments.find(
-      (assignment) =>
-        assignment.workflowStatus !== "completed"
-        && (!assignment.assignedBadge || assignment.assignedBadge === memberBadge),
-    );
-    if (!targetAssignment) return;
-    await fetch("/api/board/assign", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        actorBadge: params.badgeNumber,
-        actorPin: "",
-        assignmentId: targetAssignment.assignmentId,
-        memberBadge,
-      }),
-    });
-    await loadDashboard();
   };
 
   const commandSearchGroups = [
@@ -885,7 +761,7 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
   return (
     <PageContent
       variant="default"
-      showPanel={true}
+      showPanel={false}
       showAside={true}
       showBreadcrumbs={true}
       showHeader={true}
@@ -893,60 +769,10 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
       showHeaderTitleInline={false}
       showSubHeader={true}
       showStartUpButton={false}
-      showSidePanelToggle={true}
+      showSidePanelToggle={false}
       showAsideToggle={true}
       commandSearchGroups={commandSearchGroups}
       commandSearchPlaceholder={`Search workspace ${params.badgeNumber}`}
-      sidePanel={
-        dashboardKind === "team_lead" ? (
-          <TeamLeadSidePanel
-            mode={loading ? "skeleton" : "dynamic"}
-            data={{
-              badgeNumber: params.badgeNumber,
-              dashboardKind,
-              monthScopeLabel,
-              team: sidePanelTeam,
-              projects: sidePanelProjects,
-              filters: panelFilters,
-              onFiltersChange: (next) => setPanelFilters(next),
-              onSelectProject: (projectId) => setSelectedProjectId(projectId),
-              onSelectMember: (badge) => setSelectedMemberBadge(badge),
-              onOpenBoardAssign: () => router.push("/board"),
-              onOpenMyAssignments: () => {
-                setAssignmentsFilter("active");
-                setPanelFilters((prev) => ({ ...prev, tab: "projects" }));
-              },
-              onViewProject: (projectId) => {
-                router.push(`/${params.badgeNumber}/projects/${encodeURIComponent(projectId)}`);
-              },
-              onAssignHighestPriority: handleAssignHighestPriority,
-            }}
-          />
-        ) : (
-          <AssemblerSidePanel
-            mode={loading ? "skeleton" : "dynamic"}
-            data={{
-              badgeNumber: params.badgeNumber,
-              dashboardKind,
-              monthScopeLabel,
-              team: sidePanelTeam,
-              projects: sidePanelProjects,
-              filters: panelFilters,
-              onFiltersChange: (next) => setPanelFilters(next),
-              onSelectProject: (projectId) => setSelectedProjectId(projectId),
-              onSelectMember: (badge) => setSelectedMemberBadge(badge),
-              onOpenMyAssignments: () => {
-                setAssignmentsFilter("active");
-                setPanelFilters((prev) => ({ ...prev, tab: "projects" }));
-              },
-              onViewProject: (projectId) => {
-                router.push(`/${params.badgeNumber}/projects/${encodeURIComponent(projectId)}`);
-              },
-              onAssignHighestPriority: handleAssignHighestPriority,
-            }}
-          />
-        )
-      }
       subHeader={
         <div className="space-y-3 px-3 py-2 sm:px-4 lg:px-5">
           {tab === "profile" || tab === "settings" ? (
@@ -954,7 +780,7 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
               badgeNumber={targetBadge}
               compact
               isEditable={true}
-              layout="horizontal"
+              layout="side" 
               className="bg-transparent"
             />
           ) : null}
@@ -975,46 +801,24 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
       }
     >
       <div className="space-y-4 p-4 sm:p-5 lg:p-6">
-        {/* ── Profile / settings tabs ────────────────────────────────────────── */}
+        {/* ── Profile / settings ───────────────────────────────────────────── */}
         {tab === "profile" || tab === "settings" ? (
           <div className="space-y-4">
             <Card className="rounded-2xl border-border/60">
-              <CardHeader>
-                <CardTitle>Badge {params.badgeNumber}</CardTitle>
-                <CardDescription>
-                  {tab === "profile"
-                    ? "Profile is now merged as a root tab for all badges."
-                    : "Workspace preferences and account settings for this badge."}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-wrap items-center gap-3">
-                <Badge>Role {userRole}</Badge>
-                <Badge>{roleToDashboardKind(userRole) === "team_lead" ? "Team Lead Layout" : "Assembler Layout"}</Badge>
-                {tab === "profile" ? (
-                  <Button variant="outline" onClick={() => router.push(`/${params.badgeNumber}/profile/${params.badgeNumber}`)}>Open Full Profile Detail</Button>
-                ) : null}
-              </CardContent>
+             
+              
             </Card>
             {tab === "settings" ? (
               <Card className="rounded-2xl border-border/60">
-                <CardHeader>
-                  <CardTitle>Settings</CardTitle>
-                  <CardDescription>Manage badge-level preferences, notifications, and defaults.</CardDescription>
-                </CardHeader>
-                <CardContent className="flex flex-wrap items-center gap-3">
-                  <Button variant="outline" onClick={() => router.push(`/${params.badgeNumber}/profile/${params.badgeNumber}`)}>
-                    Open Profile Settings
-                  </Button>
-                </CardContent>
+               
               </Card>
             ) : null}
           </div>
         ) : null}
 
-        {/* ── Dashboard tab ─────────────────────────────────────────────────── */}
+        {/* ── Dashboard ────────────────────────────────────────────────────── */}
         {tab === "dashboard" ? (
           <>
-            {/* Widget loading skeleton */}
             {widgetsLoading ? (
               <div className="space-y-4">
                 <Skeleton className="h-32 w-full rounded-2xl" />
@@ -1028,20 +832,23 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
               </div>
             ) : (
               <>
-                {/* Timer — full-width, non-draggable, always at top */}
+                {/* Timer — full-width, pinned at top, outside drag grid */}
                 {timerWidget ? (
-                  <OverviewTimerWidget
-                    {...dataBundle}
-                    widget={timerWidget}
-                  />
+                  <OverviewTimerWidget {...dataBundle} widget={timerWidget} />
                 ) : null}
 
-                {/* Widget grid — Swapy-powered when draggable widgets are present */}
+                {/* Draggable widget grid */}
                 {gridWidgets.length > 0 ? (
-                  <SwapyLayout
+                  <DragDropGrid
                     id="workspace-dashboard-grid"
                     onSwap={swapEnabled ? handleSwap : undefined}
                     className="grid grid-cols-4 gap-4"
+                    renderOverlay={(activeId) => {
+                      const widget = gridWidgets.find((w) => w.id === activeId);
+                      const Component = widget ? WORKSPACE_WIDGET_COMPONENT_REGISTRY[widget.widgetType] : null;
+                      if (!widget || !Component) return null;
+                      return <Component {...dataBundle} widget={widget} />;
+                    }}
                   >
                     {gridWidgets.map((widget) => {
                       const Component = WORKSPACE_WIDGET_COMPONENT_REGISTRY[widget.widgetType];
@@ -1057,20 +864,15 @@ export default function WorkspaceHome({ params: paramsPromise }: WorkspaceHomePr
                       }
 
                       return (
-                        <SwapySlot key={widget.slot.slotId} id={widget.slot.slotId} className={colClass}>
-                          <SwapyItem id={widget.id} className="h-full" dragItemOpacity={70}>
-                            <div className="relative h-full">
-                              <DragHandle />
-                              <Component {...dataBundle} widget={widget} />
-                            </div>
-                          </SwapyItem>
-                        </SwapySlot>
+                        <DraggableDroppableSlot key={widget.id} id={widget.id} className={colClass}>
+                          <DragHandle />
+                          <Component {...dataBundle} widget={widget} />
+                        </DraggableDroppableSlot>
                       );
                     })}
-                  </SwapyLayout>
+                  </DragDropGrid>
                 ) : null}
 
-                {/* Fallback: no widgets resolved (API failure / empty registry) */}
                 {!timerWidget && gridWidgets.length === 0 ? (
                   <Card className="rounded-2xl border-border/60">
                     <CardContent className="py-10 text-center text-sm text-muted-foreground">

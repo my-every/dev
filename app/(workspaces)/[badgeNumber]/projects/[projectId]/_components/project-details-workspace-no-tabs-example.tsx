@@ -213,6 +213,7 @@ export function ProjectDetailsWorkspaceNoTabsExample({ project }: ProjectDetails
   const firstOperationalSheetSlug = operationalSheets[0]?.slug ?? null;
   const activityMode = (searchParams.get("activityMode") ?? "").toLowerCase();
   const activityScenario = searchParams.get("activityScenario") ?? "all";
+  const isBrandWorkspaceAction = (searchParams.get("action") ?? "") === "brand-workspace";
   const brandListActivitiesApiUrl = useMemo(() => {
     const encodedProjectId = encodeURIComponent(model.id);
     if (activityMode === "demo") {
@@ -269,6 +270,11 @@ export function ProjectDetailsWorkspaceNoTabsExample({ project }: ProjectDetails
   }, [searchParams]);
 
   useEffect(() => {
+    // Skip non-essential team hydration when deep-linking straight into brand workspace.
+    if (isBrandWorkspaceAction || brandReviewOpen) {
+      return;
+    }
+
     let cancelled = false;
 
     async function loadTeam() {
@@ -310,7 +316,7 @@ export function ProjectDetailsWorkspaceNoTabsExample({ project }: ProjectDetails
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [brandReviewOpen, isBrandWorkspaceAction]);
 
   const updateSubtab = useCallback(
     (next: ProjectDetailsSubtabId) => {
@@ -454,15 +460,17 @@ export function ProjectDetailsWorkspaceNoTabsExample({ project }: ProjectDetails
               </p>
               <h2 className="truncate text-lg font-semibold">{model.name}</h2>
             </div>
-            <div className="hidden md:flex">
-              <UsersTeamsAvatarGroup
-                users={users}
-                max={6}
-                size={32}
-                selectedUserBadge={selectedBadge}
-                onSelectUser={(user) => setSelectedBadge(user.badge)}
-              />
-            </div>
+            {!brandReviewOpen && !isBrandWorkspaceAction ? (
+              <div className="hidden md:flex">
+                <UsersTeamsAvatarGroup
+                  users={users}
+                  max={6}
+                  size={32}
+                  selectedUserBadge={selectedBadge}
+                  onSelectUser={(user) => setSelectedBadge(user.badge)}
+                />
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -488,7 +496,7 @@ export function ProjectDetailsWorkspaceNoTabsExample({ project }: ProjectDetails
         {subtab !== "engineer" ? (
           <ScrollArea className="flex-1 min-h-0">
             <div className="px-5 pb-5 pt-2">
-              {subtab === "summary" ? (
+              {subtab === "summary" && !brandReviewOpen && !isBrandWorkspaceAction ? (
                 <ProjectOverviewSummaryTab
                   project={model}
                   projectColor={projectColor}

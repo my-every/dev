@@ -31,6 +31,16 @@ import { updateLayoutPageReferenceStore } from '@/lib/layout-matching/layout-pag
 const WORKBOOK_PATTERN = /\.(xlsx|xlsm|xls|xlsb)$/i
 const LAYOUT_PATTERN = /\.pdf$/i
 
+const LEGAL_LIBRARY_CACHE_TTL_MS = 60_000
+let legalLibraryManifestCache:
+  | { manifest: LegalDrawingsLibraryManifest; expiresAt: number }
+  | null = null
+let legalLibraryManifestInFlight: Promise<LegalDrawingsLibraryManifest> | null = null
+
+export function invalidateLegalDrawingsLibraryManifestCache() {
+  legalLibraryManifestCache = null
+}
+
 interface LegalSourceCandidate {
   pdNumber: string
   projectNameHint: string
@@ -734,7 +744,7 @@ async function buildProjectRecord(projectRoot: string, pdNumber: string): Promis
   }
 }
 
-export async function getLegalDrawingsLibraryManifest(): Promise<LegalDrawingsLibraryManifest> {
+async function buildLegalDrawingsLibraryManifest(): Promise<LegalDrawingsLibraryManifest> {
   const legalRoot = await getLegalDrawingsRoot()
   const exists = await pathExists(legalRoot)
   if (!exists) {
@@ -754,6 +764,30 @@ export async function getLegalDrawingsLibraryManifest(): Promise<LegalDrawingsLi
     generatedAt: new Date().toISOString(),
     sourceRoot: null,
     projects: projects.sort((left, right) => left.pdNumber.localeCompare(right.pdNumber, undefined, { numeric: true, sensitivity: 'base' })),
+  }
+}
+
+export async function getLegalDrawingsLibraryManifest(): Promise<LegalDrawingsLibraryManifest> {
+  const now = Date.now()
+  if (legalLibraryManifestCache && legalLibraryManifestCache.expiresAt > now) {
+    return legalLibraryManifestCache.manifest
+  }
+
+  if (legalLibraryManifestInFlight) {
+    return legalLibraryManifestInFlight
+  }
+
+  legalLibraryManifestInFlight = buildLegalDrawingsLibraryManifest()
+
+  try {
+    const manifest = await legalLibraryManifestInFlight
+    legalLibraryManifestCache = {
+      manifest,
+      expiresAt: Date.now() + LEGAL_LIBRARY_CACHE_TTL_MS,
+    }
+    return manifest
+  } finally {
+    legalLibraryManifestInFlight = null
   }
 }
 
@@ -785,6 +819,7 @@ export async function patchLegalProjectMeta(
 
   const updated = { ...existing, ...patch }
   await fs.writeFile(metaPath, JSON.stringify(updated, null, 2), 'utf8')
+  invalidateLegalDrawingsLibraryManifestCache()
   return buildProjectRecord(projectRoot, pdNumber.trim().toUpperCase())
 }
 
@@ -907,12 +942,15 @@ export async function syncLegalDrawingsLibrary(explicitSourceRoot?: string | nul
     })
   }
 
-  return {
+  const result = {
     syncedAt: new Date().toISOString(),
     sourceRoot,
     projectCount: projectResults.length,
     projects: projectResults,
   }
+
+  invalidateLegalDrawingsLibraryManifestCache()
+  return result
 }
 
 export async function rebuildLegalRevisionArtifacts(pdNumber: string, revision?: string | null) {
@@ -1012,6 +1050,7 @@ export async function rebuildLegalRevisionArtifacts(pdNumber: string, revision?:
   }
 
   await writeJsonFile(path.join(revisionRoot, 'revision.json'), nextRecord)
+  invalidateLegalDrawingsLibraryManifestCache()
   return nextRecord
 }
 

@@ -37,11 +37,11 @@ export async function PATCH(request: Request) {
   try {
     const body = await request.json() as {
       badge?: string
-      currentPin?: string
+      currentPin?: string | null
       nextPin?: string
     }
 
-    if (!body.badge || !body.currentPin || !body.nextPin) {
+    if (!body.badge || !body.nextPin) {
       return NextResponse.json(
         { success: false, feedback: createSessionFeedback('PIN_CHANGE_FAILED') },
         { status: 400 },

@@ -259,6 +259,55 @@ export class SimulatedSessionService implements ISessionService {
   }
 
   async signIn(request: SignInRequest): Promise<ServiceResult<SignInResult>> {
+    const normalizedBadge = request.badge.trim().replace(/\D/g, '')
+    const normalizedPin = request.pin.trim().replace(/\D/g, '')
+
+    // First-time bootstrap: allow badge-only sign in when the user is marked
+    // requiresPinChange. This lets onboarding/profile setup run before PIN setup.
+    if (normalizedPin.length === 0) {
+      const identityResult = await this.getUserIdentity(normalizedBadge)
+      const identity = identityResult.data
+
+      if (!identity) {
+        return ok({
+          success: false,
+          error: 'Badge not found',
+          errorCode: 'INVALID_BADGE',
+        })
+      }
+
+      if (!identity.isActive) {
+        return ok({
+          success: false,
+          error: 'Account inactive',
+          errorCode: 'ACCOUNT_INACTIVE',
+        })
+      }
+
+      if (!identity.requiresPinChange) {
+        return ok({
+          success: false,
+          error: 'PIN is required for this account',
+          errorCode: 'INVALID_PIN',
+        })
+      }
+
+      const active = [...this.sessions.values()].find(
+        s => s.badge === normalizedBadge && s.status === 'active'
+      )
+      if (active) {
+        this.currentSessionId = active.id
+        return ok({ success: true, session: active, requiresPinChange: true })
+      }
+
+      const session = this.createSession(identity, {
+        ...request,
+        badge: normalizedBadge,
+        pin: normalizedPin,
+      })
+      return ok({ success: true, session, requiresPinChange: true })
+    }
+
     const verified = await this.verifyCredentials(request.badge, request.pin)
     if (!verified.data?.success || !verified.data.user) {
       return ok({

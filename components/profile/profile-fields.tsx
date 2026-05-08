@@ -48,6 +48,8 @@ interface ProfileAvatarProps {
     onEditOpenChange?: (open: boolean) => void
     /** Stable key for deterministic color (e.g. badge number) */
     colorKey?: string
+    /** Horizontal alignment of the avatar within its container */
+    align?: 'start' | 'center'
     className?: string
 }
 
@@ -88,6 +90,7 @@ export function ProfileAvatar({
     isEditOpen,
     onEditOpenChange,
     colorKey,
+    align = 'start',
     className,
 }: ProfileAvatarProps) {
     const initials = React.useMemo(
@@ -103,7 +106,7 @@ export function ProfileAvatar({
     const statusConfig = status ? STATUS_DISPLAY_CONFIG[status] : null
 
     return (
-        <div className={cn('relative max-w-max', className)}>
+        <div className={cn('relative w-fit', align === 'center' && 'mx-auto', className)}>
             <Avatar className={cn('border-4 border-background shadow-xl', AVATAR_SIZE_CLASSES[size])}>
                 {avatarUrl ? <AvatarImage src={avatarUrl} alt={fullName} /> : null}
                 <AvatarFallback className={cn('font-bold', color.bg, color.text, AVATAR_TEXT_CLASSES[size])}>
@@ -172,6 +175,7 @@ interface ProfileIdentityProps {
     title?: string
     children?: React.ReactNode
     className?: string
+    layout?: 'vertical' | 'horizontal'
 }
 
 export function ProfileIdentity({
@@ -179,24 +183,20 @@ export function ProfileIdentity({
     fullName,
     title,
     children,
+    layout = 'horizontal',
     className,
 }: ProfileIdentityProps) {
     return (
-        <div className={cn('space-y-0.5', className)}>
-            <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
-                <h1 className="text-xl font-bold text-foreground sm:text-2xl">
+        <div className={cn(
+            'flex min-w-0 items-center gap-2',
+            layout === 'vertical' ? 'flex-col items-start' : 'flex-row flex-wrap',
+            className,
+        )}>
+            <span className={cn('min-w-0 truncate font-medium', layout === 'vertical' ? 'text-lg' : 'text-base')}>
                     {preferredName || fullName}
-                </h1>
-                {children}
-            </div>
-
-            {!preferredName && (
-                <p className="text-sm text-muted-foreground">{fullName}</p>
-            )}
-
-            {title && (
-                <p className="mt-1 text-sm font-medium text-muted-foreground">{title}</p>
-            )}
+                </span>
+              
+            {children}
         </div>
     )
 }
@@ -226,10 +226,14 @@ export function ProfileMetaItem({ icon: Icon, children, className }: ProfileMeta
 
 interface ProfileMetaRowProps {
     profile: Pick<UserProfile, 'badgeId' | 'email' | 'location' | 'department' | 'shift' | 'joinedAt'>
+    /** Show only the badge number — for very narrow containers */
+    badgeOnly?: boolean
+    /** Suppress joinedAt and location for medium-width containers */
+    compact?: boolean
     className?: string
 }
 
-export function ProfileMetaRow({ profile, className }: ProfileMetaRowProps) {
+export function ProfileMetaRow({ profile, badgeOnly, compact, className }: ProfileMetaRowProps) {
     return (
         <div className={cn('flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground', className)}>
             <div className="flex items-center gap-1.5">
@@ -238,23 +242,23 @@ export function ProfileMetaRow({ profile, className }: ProfileMetaRowProps) {
                 </Badge>
             </div>
 
-            {profile.email && (
+            {!badgeOnly && profile.email && (
                 <ProfileMetaItem icon={Mail}>{profile.email}</ProfileMetaItem>
             )}
 
-            {profile.location && (
+            {!badgeOnly && !compact && profile.location && (
                 <ProfileMetaItem icon={MapPin}>{profile.location}</ProfileMetaItem>
             )}
 
-            {profile.department && (
+            {!badgeOnly && profile.department && (
                 <ProfileMetaItem icon={Building}>{profile.department}</ProfileMetaItem>
             )}
 
-            {profile.shift && (
+            {!badgeOnly && profile.shift && (
                 <ProfileMetaItem icon={Clock}>{profile.shift} Shift</ProfileMetaItem>
             )}
 
-            {profile.joinedAt && (
+            {!badgeOnly && !compact && profile.joinedAt && (
                 <ProfileMetaItem icon={Calendar}>
                     Started {new Date(profile.joinedAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                 </ProfileMetaItem>

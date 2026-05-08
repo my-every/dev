@@ -122,7 +122,7 @@ export async function verifyPinInStandalone(
 
 export async function updateUserPinInStandalone(
   badge: string,
-  _currentPin: string,
+  _currentPin: string | null | undefined,
   nextPin: string,
 ): Promise<UserIdentity> {
   const document = await readDocument()

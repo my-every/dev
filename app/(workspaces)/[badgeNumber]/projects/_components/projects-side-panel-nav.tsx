@@ -154,7 +154,9 @@ type ProjectsSidePanelNavData = {
 };
 
 type ProjectsSidePanelNavProps =
-  BaseStatefulProps<ProjectsSidePanelNavData>;
+  BaseStatefulProps<ProjectsSidePanelNavData> & {
+    onSidePanelTabChange?: (tab: "priority" | "legals") => void;
+  };
 
 type ProjectTab = "active" | "pending" | "complete";
 type SidePanelTab = "priority" | "legals";
@@ -184,6 +186,7 @@ export function ProjectsSidePanelNav({
   mode = "default",
   data,
   className,
+  onSidePanelTabChange,
 }: ProjectsSidePanelNavProps) {
   const [sidePanelTab, setSidePanelTab] = useState<SidePanelTab>("priority");
   const [lwcFilter, setLwcFilter] = useState<LwcFilter>("all");
@@ -482,6 +485,7 @@ export function ProjectsSidePanelNav({
               onValueChange={(value) => {
                 const next = value as SidePanelTab;
                 setSidePanelTab(next);
+                onSidePanelTabChange?.(next);
                 if (next !== "priority") setPriorityEditMode(false);
               }}
             >

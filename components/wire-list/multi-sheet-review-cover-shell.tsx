@@ -23,6 +23,7 @@ import type { MultiSheetStatusSummary } from "@/components/wire-list/multi-sheet
 
 /** How often (ms) to silently re-fetch activity in the background */
 const ACTIVITY_POLL_MS = 10_000;
+const ACTIVITY_EVENT_REFRESH_THROTTLE_MS = 5_000;
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -121,6 +122,7 @@ export function MultiSheetReviewCoverShell({
   const [activitiesError, setActivitiesError] = useState<string | null>(null);
   const [isContinuing, setIsContinuing] = useState(false);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const lastEventRefreshAtRef = useRef(0);
 
   // Resolve the API URL: project-wide endpoint (all badges) > explicit override > null (no panel)
   const resolvedApiUrl: string | null =
@@ -164,13 +166,6 @@ export function MultiSheetReviewCoverShell({
   useEffect(() => {
     void loadActivities(true);
 
-    const delayedRefreshFast = window.setTimeout(() => {
-      void loadActivities(false);
-    }, 1200);
-    const delayedRefreshSlow = window.setTimeout(() => {
-      void loadActivities(false);
-    }, 4000);
-
     if (resolvedApiUrl) {
       pollRef.current = setInterval(() => {
         void loadActivities(false);
@@ -178,8 +173,6 @@ export function MultiSheetReviewCoverShell({
     }
 
     return () => {
-      window.clearTimeout(delayedRefreshFast);
-      window.clearTimeout(delayedRefreshSlow);
       if (pollRef.current) {
         clearInterval(pollRef.current);
         pollRef.current = null;
@@ -191,14 +184,23 @@ export function MultiSheetReviewCoverShell({
   useEffect(() => {
     if (!resolvedApiUrl) return;
 
+    const triggerEventRefresh = () => {
+      const now = Date.now();
+      if (now - lastEventRefreshAtRef.current < ACTIVITY_EVENT_REFRESH_THROTTLE_MS) {
+        return;
+      }
+      lastEventRefreshAtRef.current = now;
+      void loadActivities(false);
+    };
+
     const handleVisibility = () => {
       if (document.visibilityState === "visible") {
-        void loadActivities(false);
+        triggerEventRefresh();
       }
     };
 
     const handleFocus = () => {
-      void loadActivities(false);
+      triggerEventRefresh();
     };
 
     document.addEventListener("visibilitychange", handleVisibility);

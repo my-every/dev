@@ -44,7 +44,7 @@ export async function verifyPinForRuntime(
 
 export async function updateUserPinForRuntime(
   badge: string,
-  currentPin: string,
+  currentPin: string | null | undefined,
   nextPin: string,
 ): Promise<UserIdentity | null> {
   if (await isStandaloneToolMode()) {

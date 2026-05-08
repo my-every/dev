@@ -83,7 +83,14 @@ export async function getProjectRevisionHistory(
   pdNumberHint?: string | null,
 ): Promise<ProjectRevisionHistory | null> {
   try {
-    const scan = await scanProjectRevisionsFromFilesystem({ scope: 'both' })
+    const normalizedHint = pdNumberHint?.trim().replace(/^pd-/i, '') || null
+    const normalizedProject = projectIdOrPdNumber.trim().replace(/^pd-/i, '')
+    const projectFilter = normalizedHint || normalizedProject
+
+    const scan = await scanProjectRevisionsFromFilesystem({
+      scope: 'both',
+      projectFilter,
+    })
     const searchTerm = projectIdOrPdNumber
       .replace(/^pd-/i, '')
       .toLowerCase()

@@ -87,7 +87,9 @@ function resolveActiveRoot(pathname: string): string {
   if (pathname.includes("/parts")) return "parts";
   if (pathname.includes("/branding")) return "branding";
   if (pathname.includes("/users")) return "users";
-  if (pathname.includes("/board")) return "board";
+  if (pathname === "/board" || pathname.startsWith("/board/")) return "board";
+  if (pathname.includes("/schedule")) return "schedule";
+  if (pathname === "/system" || pathname.startsWith("/system/")) return "system";
   return "home";
 }
 
@@ -157,7 +159,13 @@ export default function WorkspaceLayout({ children }: WorkspaceLayoutProps) {
   const [role, setRole] = useState<WorkspaceRole>("ASSEMBLER");
   const [isLoading, setIsLoading] = useState(true);
 
-  const badgeNumber = useMemo(() => extractBadgeNumber(pathname), [pathname]);
+  // Prefer the numeric segment from the URL (e.g. /29535/projects → "29535").
+  // Fall back to the session user's own badge for routes without one (/board, /system, etc.)
+  // so the home nav item always points to the correct badge workspace.
+  const badgeNumber = useMemo(
+    () => extractBadgeNumber(pathname) ?? user?.badge ?? null,
+    [pathname, user?.badge],
+  );
   const activeRootId = useMemo(() => resolveActiveRoot(pathname), [pathname]);
   const shift = user?.currentShift ?? "1st";
 
