@@ -44,6 +44,11 @@ export function LayoutPdfWorkspaceDialog({
 
     fetch(endpoint, { cache: "no-store" })
       .then(async (response) => {
+        // 404 means this project/revision has no layout workspace payload yet.
+        if (response.status === 404) {
+          return null;
+        }
+
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`);
         }

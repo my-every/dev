@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Columns3, Plus, RotateCcw, Ruler, Trash2 } from "lucide-react";
 import {
   type ColumnDef,
@@ -52,6 +52,7 @@ interface BrandListEditorTableProps {
 
 type EditorTableRow = {
   row: BrandListSchemaRow;
+  rowId: string;
   rowIndex: number;
 };
 
@@ -71,6 +72,21 @@ function createDefaultColumnVisibility(): VisibilityState {
     acc[column.key] = true;
     return acc;
   }, {});
+}
+
+function normalizeRowValue(value: unknown): string {
+  if (value === null || value === undefined) {
+    return "";
+  }
+  return String(value);
+}
+
+function resolveRowId(row: BrandListSchemaRow, rowIndex: number, scope = "row"): string {
+  const legacyRow = row as Partial<BrandListSchemaRow>;
+  if (typeof legacyRow.rowId === "string" && legacyRow.rowId.trim().length > 0) {
+    return legacyRow.rowId;
+  }
+  return `legacy-${scope}-${rowIndex}`;
 }
 
 export function BrandListEditorTable({
@@ -109,7 +125,7 @@ export function BrandListEditorTable({
             prefixIndex,
             bundleIndex,
             rowIndex,
-            rowId: row.rowId,
+            rowId: resolveRowId(row, rowIndex, `p${prefixIndex}-b${bundleIndex}`),
           })),
         ),
       ),
@@ -138,13 +154,17 @@ export function BrandListEditorTable({
     }
 
     return {
-      rowId: row.rowId,
-      fromDeviceId: row.fromDeviceId,
-      toDeviceId: row.toDeviceId,
-      toLocation: row.toLocation,
-      wireNo: row.wireNo,
-      wireId: row.wireId,
-      bundleDisplay: row.bundleDisplay,
+      rowId: resolveRowId(
+        row,
+        measurementTarget.rowIndex,
+        `p${measurementTarget.prefixIndex}-b${measurementTarget.bundleIndex}`,
+      ),
+      fromDeviceId: normalizeRowValue(row.fromDeviceId),
+      toDeviceId: normalizeRowValue(row.toDeviceId),
+      toLocation: normalizeRowValue(row.toLocation),
+      wireNo: normalizeRowValue(row.wireNo),
+      wireId: normalizeRowValue(row.wireId),
+      bundleDisplay: normalizeRowValue(row.bundleDisplay),
     };
   }, [measurementTarget, schema.prefixGroups]);
   const canOpenMeasurement = Boolean(layoutWorkspaceEndpoint) && !readOnly;
@@ -161,9 +181,9 @@ export function BrandListEditorTable({
   };
 
   return (
-    <div className="overflow-hidden flex flex-col flex-1">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
 
-      <div>
+      <div className="min-h-0 flex-1 overflow-auto">
         <div className="hidden items-center justify-end border-b px-4 py-2 xl:flex">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -215,7 +235,10 @@ export function BrandListEditorTable({
               </div>
 
               {prefixGroup.bundles.map((bundle, bundleIndex) => {
-                const sectionRowIds = bundle.rows.map((row) => row.rowId);
+                const sectionScope = `p${prefixIndex}-b${bundleIndex}`;
+                const sectionRowIds = bundle.rows.map((row, rowIndex) =>
+                  resolveRowId(row, rowIndex, sectionScope),
+                );
                 const sectionSelected = sectionRowIds.length > 0 && sectionRowIds.every((rowId) => selectedRowIds.has(rowId));
                 const bundleDisplayTitle = normalizeDisplayTitle(bundle.bundleName);
                 const locationDisplayTitle = normalizeDisplayTitle(bundle.toLocation || schema.sheetName);
@@ -252,17 +275,17 @@ export function BrandListEditorTable({
 
                     <div className="divide-y bg-background xl:hidden">
                       {bundle.rows.map((row, rowIndex) => (
-                        <div key={row.rowId} className="px-4 py-2">
+                        <div key={resolveRowId(row, rowIndex, sectionScope)} className="px-4 py-2">
                           <div className="rounded-xl border bg-muted/10 p-3 xl:hidden">
                             <div className="mb-3 flex items-center justify-between">
                               <label className="inline-flex items-center gap-2 text-xs font-medium text-muted-foreground">
                                 <input
                                   type="checkbox"
                                   className="h-4 w-4 accent-primary"
-                                  checked={selectedRowIds.has(row.rowId)}
+                                  checked={selectedRowIds.has(resolveRowId(row, rowIndex, sectionScope))}
                                   disabled={readOnly}
-                                  onChange={(event) => onToggleRow(row.rowId, event.target.checked)}
-                                  aria-label={`Select row ${row.rowId}`}
+                                  onChange={(event) => onToggleRow(resolveRowId(row, rowIndex, sectionScope), event.target.checked)}
+                                  aria-label={`Select row ${resolveRowId(row, rowIndex, sectionScope)}`}
                                 />
                                 Select Row
                               </label>
@@ -279,18 +302,18 @@ export function BrandListEditorTable({
                             </div>
 
                             <div className="grid grid-cols-1 gap-2">
-                              <MobileInput label="From Device" value={row.fromDeviceId} disabled={readOnly} onChange={(value) => onUpdateRow(prefixIndex, bundleIndex, rowIndex, { fromDeviceId: value })} />
+                              <MobileInput label="From Device" value={normalizeRowValue(row.fromDeviceId)} disabled={readOnly} onChange={(value) => onUpdateRow(prefixIndex, bundleIndex, rowIndex, { fromDeviceId: value })} />
                               <div className="grid grid-cols-2 gap-2">
-                                <MobileInput label="Wire No." value={row.wireNo} disabled={readOnly} onChange={(value) => onUpdateRow(prefixIndex, bundleIndex, rowIndex, { wireNo: value })} />
-                                <MobileInput label="Wire ID" value={row.wireId} disabled={readOnly} onChange={(value) => onUpdateRow(prefixIndex, bundleIndex, rowIndex, { wireId: value })} />
+                                <MobileInput label="Wire No." value={normalizeRowValue(row.wireNo)} disabled={readOnly} onChange={(value) => onUpdateRow(prefixIndex, bundleIndex, rowIndex, { wireNo: value })} />
+                                <MobileInput label="Wire ID" value={normalizeRowValue(row.wireId)} disabled={readOnly} onChange={(value) => onUpdateRow(prefixIndex, bundleIndex, rowIndex, { wireId: value })} />
                               </div>
                               <div className="grid grid-cols-2 gap-2">
-                                <MobileInput label="Gauge" value={row.gaugeSize} disabled={readOnly} onChange={(value) => onUpdateRow(prefixIndex, bundleIndex, rowIndex, { gaugeSize: value })} />
+                                <MobileInput label="Gauge" value={normalizeRowValue(row.gaugeSize)} disabled={readOnly} onChange={(value) => onUpdateRow(prefixIndex, bundleIndex, rowIndex, { gaugeSize: value })} />
                                 <div className="space-y-1">
                                   <MobileInput
                                     label="Length"
                                     type="number"
-                                    value={row.length ?? ""}
+                                    value={normalizeRowValue(row.length ?? "")}
                                     disabled={readOnly}
                                     onChange={(value) => {
                                       const nextLength = String(value).trim() === "" ? null : Number(value);
@@ -310,7 +333,7 @@ export function BrandListEditorTable({
                                         prefixIndex,
                                         bundleIndex,
                                         rowIndex,
-                                        rowId: row.rowId,
+                                        rowId: resolveRowId(row, rowIndex, sectionScope),
                                       })
                                     }
                                   >
@@ -319,9 +342,9 @@ export function BrandListEditorTable({
                                   </Button>
                                 </div>
                               </div>
-                              <MobileInput label="To Device" value={row.toDeviceId} disabled={readOnly} onChange={(value) => onUpdateRow(prefixIndex, bundleIndex, rowIndex, { toDeviceId: value })} />
-                              <MobileInput label="To Location" value={row.toLocation} disabled={readOnly} onChange={(value) => onUpdateRow(prefixIndex, bundleIndex, rowIndex, { toLocation: normalizeDisplayTitle(value) })} />
-                              <MobileInput label="Bundle Display" value={row.bundleDisplay} disabled={readOnly} onChange={(value) => onUpdateRow(prefixIndex, bundleIndex, rowIndex, { bundleDisplay: normalizeDisplayTitle(value) })} />
+                              <MobileInput label="To Device" value={normalizeRowValue(row.toDeviceId)} disabled={readOnly} onChange={(value) => onUpdateRow(prefixIndex, bundleIndex, rowIndex, { toDeviceId: value })} />
+                              <MobileInput label="To Location" value={normalizeRowValue(row.toLocation)} disabled={readOnly} onChange={(value) => onUpdateRow(prefixIndex, bundleIndex, rowIndex, { toLocation: normalizeDisplayTitle(value) })} />
+                              <MobileInput label="Bundle Display" value={normalizeRowValue(row.bundleDisplay)} disabled={readOnly} onChange={(value) => onUpdateRow(prefixIndex, bundleIndex, rowIndex, { bundleDisplay: normalizeDisplayTitle(value) })} />
                             </div>
                           </div>
                         </div>
@@ -445,8 +468,13 @@ function BundleDesktopTable({
   onRemoveRow: (prefixIndex: number, bundleIndex: number, rowIndex: number) => void;
 }) {
   const data = useMemo<EditorTableRow[]>(
-    () => rows.map((row, rowIndex) => ({ row, rowIndex })),
-    [rows],
+    () =>
+      rows.map((row, rowIndex) => ({
+        row,
+        rowId: resolveRowId(row, rowIndex, `p${prefixIndex}-b${bundleIndex}`),
+        rowIndex,
+      })),
+    [bundleIndex, prefixIndex, rows],
   );
 
   const columns = useMemo<ColumnDef<EditorTableRow>[]>(
@@ -459,12 +487,12 @@ function BundleDesktopTable({
           <input
             type="checkbox"
             className="h-4 w-4 accent-primary"
-            checked={selectedRowIds.has(tableRow.original.row.rowId)}
+            checked={selectedRowIds.has(tableRow.original.rowId)}
             disabled={readOnly}
             onChange={(event) =>
-              onToggleRow(tableRow.original.row.rowId, event.target.checked)
+              onToggleRow(tableRow.original.rowId, event.target.checked)
             }
-            aria-label={`Select row ${tableRow.original.row.rowId}`}
+            aria-label={`Select row ${tableRow.original.rowId}`}
           />
         ),
       },
@@ -472,9 +500,9 @@ function BundleDesktopTable({
         id: "fromDeviceId",
         header: "From Device",
         cell: ({ row: tableRow }) => (
-          <Input
-            value={tableRow.original.row.fromDeviceId}
-            className="h-9 rounded-none border-0 bg-muted/30 font-mono text-sm shadow-none"
+          <AutoSizingCellInput
+            value={normalizeRowValue(tableRow.original.row.fromDeviceId)}
+            className="bg-muted/30 font-mono"
             disabled={readOnly}
             onChange={(event) =>
               onUpdateRow(prefixIndex, bundleIndex, tableRow.original.rowIndex, {
@@ -488,9 +516,9 @@ function BundleDesktopTable({
         id: "wireNo",
         header: "Wire No.",
         cell: ({ row: tableRow }) => (
-          <Input
-            value={tableRow.original.row.wireNo}
-            className="h-9 rounded-none border-0 bg-muted/20 font-mono text-sm shadow-none"
+          <AutoSizingCellInput
+            value={normalizeRowValue(tableRow.original.row.wireNo)}
+            className="bg-muted/20 font-mono"
             disabled={readOnly}
             onChange={(event) =>
               onUpdateRow(prefixIndex, bundleIndex, tableRow.original.rowIndex, {
@@ -504,9 +532,9 @@ function BundleDesktopTable({
         id: "wireId",
         header: "Wire ID",
         cell: ({ row: tableRow }) => (
-          <Input
-            value={tableRow.original.row.wireId}
-            className="h-9 rounded-none border-0 bg-muted/30 font-mono text-sm shadow-none"
+          <AutoSizingCellInput
+            value={normalizeRowValue(tableRow.original.row.wireId)}
+            className="bg-muted/30 font-mono"
             disabled={readOnly}
             onChange={(event) =>
               onUpdateRow(prefixIndex, bundleIndex, tableRow.original.rowIndex, {
@@ -520,9 +548,9 @@ function BundleDesktopTable({
         id: "gaugeSize",
         header: "Gauge",
         cell: ({ row: tableRow }) => (
-          <Input
-            value={tableRow.original.row.gaugeSize}
-            className="h-9 rounded-none border-0 bg-muted/20 font-mono text-sm shadow-none"
+          <AutoSizingCellInput
+            value={normalizeRowValue(tableRow.original.row.gaugeSize)}
+            className="bg-muted/20 font-mono"
             disabled={readOnly}
             onChange={(event) =>
               onUpdateRow(prefixIndex, bundleIndex, tableRow.original.rowIndex, {
@@ -541,7 +569,7 @@ function BundleDesktopTable({
               type="number"
               min={0}
               step={0.5}
-              value={tableRow.original.row.length ?? ""}
+              value={normalizeRowValue(tableRow.original.row.length ?? "")}
               className="h-9 rounded-none border-0 bg-amber-50 font-mono text-sm shadow-none"
               disabled={readOnly}
               onChange={(event) => {
@@ -564,7 +592,7 @@ function BundleDesktopTable({
               className="h-8 w-8"
               disabled={!canMeasure}
               onClick={() =>
-                onMeasureRow(tableRow.original.rowIndex, tableRow.original.row.rowId)
+                onMeasureRow(tableRow.original.rowIndex, tableRow.original.rowId)
               }
             >
               <Ruler className="h-3.5 w-3.5" />
@@ -576,9 +604,9 @@ function BundleDesktopTable({
         id: "toDeviceId",
         header: "To Device",
         cell: ({ row: tableRow }) => (
-          <Input
-            value={tableRow.original.row.toDeviceId}
-            className="h-9 rounded-none border-0 bg-muted/30 font-mono text-sm shadow-none"
+          <AutoSizingCellInput
+            value={normalizeRowValue(tableRow.original.row.toDeviceId)}
+            className="bg-muted/30 font-mono"
             disabled={readOnly}
             onChange={(event) =>
               onUpdateRow(prefixIndex, bundleIndex, tableRow.original.rowIndex, {
@@ -592,9 +620,9 @@ function BundleDesktopTable({
         id: "toLocation",
         header: "To Location",
         cell: ({ row: tableRow }) => (
-          <Input
-            value={tableRow.original.row.toLocation}
-            className="h-9 rounded-none border-0 bg-muted/20 text-sm shadow-none"
+          <AutoSizingCellInput
+            value={normalizeRowValue(tableRow.original.row.toLocation)}
+            className="bg-muted/20"
             disabled={readOnly}
             onChange={(event) =>
               onUpdateRow(prefixIndex, bundleIndex, tableRow.original.rowIndex, {
@@ -608,9 +636,9 @@ function BundleDesktopTable({
         id: "bundleDisplay",
         header: "Bundle Display",
         cell: ({ row: tableRow }) => (
-          <Input
-            value={tableRow.original.row.bundleDisplay}
-            className="h-9 rounded-none border-0 bg-muted/30 text-sm shadow-none"
+          <AutoSizingCellInput
+            value={normalizeRowValue(tableRow.original.row.bundleDisplay)}
+            className="bg-muted/30"
             disabled={readOnly}
             onChange={(event) =>
               onUpdateRow(prefixIndex, bundleIndex, tableRow.original.rowIndex, {
@@ -660,11 +688,12 @@ function BundleDesktopTable({
       columnVisibility,
     },
     getCoreRowModel: getCoreRowModel(),
-    getRowId: (original) => original.row.rowId,
+    getRowId: (original) => original.rowId,
   });
 
   return (
-    <div className="hidden xl:block">
+    <div className="hidden min-h-0 flex-1 xl:block">
+      <div className="h-full overflow-auto">
       <Table className="w-full table-fixed">
         <TableHeader className="bg-muted/40">
           {table.getHeaderGroups().map((headerGroup) => (
@@ -697,7 +726,38 @@ function BundleDesktopTable({
           ))}
         </TableBody>
       </Table>
+      </div>
     </div>
+  );
+}
+
+function AutoSizingCellInput({
+  value,
+  className,
+  disabled,
+  onChange,
+}: {
+  value: string;
+  className: string;
+  disabled: boolean;
+  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+}) {
+  const [inputValue, setInputValue] = useState(value);
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
+
+  return (
+    <textarea
+      value={inputValue}
+      className={`min-h-9 w-full resize-y rounded-none border-0 px-3 py-2 text-sm leading-snug shadow-none outline-none ring-0 ${className}`}
+      disabled={disabled}
+      onChange={(event) => {
+        setInputValue(event.target.value);
+        onChange(event);
+      }}
+    />
   );
 }
 
@@ -719,13 +779,22 @@ function MobileInput({
       <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-muted-foreground">
         {label}
       </span>
-      <Input
-        type={type}
-        value={value}
-        className="h-9 text-sm"
-        disabled={disabled}
-        onChange={(event) => onChange(event.target.value)}
-      />
+      {type === "number" ? (
+        <Input
+          type={type}
+          value={value}
+          className="h-9 text-sm"
+          disabled={disabled}
+          onChange={(event) => onChange(event.target.value)}
+        />
+      ) : (
+        <textarea
+          value={normalizeRowValue(value)}
+          className="min-h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm leading-snug"
+          disabled={disabled}
+          onChange={(event) => onChange(event.target.value)}
+        />
+      )}
     </label>
   );
 }

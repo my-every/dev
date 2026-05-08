@@ -30,6 +30,8 @@ interface MultiSheetImportReviewShellProps {
   onReviewStructuralChanges: () => void;
   onApply: () => void;
   onContinueToReview: () => void;
+  disabled?: boolean;
+  busyMessage?: string;
 }
 
 export function MultiSheetImportReviewShell({
@@ -48,28 +50,41 @@ export function MultiSheetImportReviewShell({
   onReviewStructuralChanges,
   onApply,
   onContinueToReview,
+  disabled = false,
+  busyMessage = "Preparing imported workbook review...",
 }: MultiSheetImportReviewShellProps) {
   return (
-    <MultiSheetImportReviewPanel
-      sheetDiffs={sheetDiffs}
-      activeSheetSlug={activeSheetSlug}
-      importMode={importMode}
-      rowDecisions={rowDecisions}
-      onImportModeChange={onImportModeChange}
-      onActiveSheetChange={(sheetSlug) => {
-        onActiveSheetChange(sheetSlug);
-        onUpdateImportSession((prev) =>
-          prev ? { ...prev, activeSheetSlug: sheetSlug } : prev,
-        );
-      }}
-      onDecisionChange={onDecisionChange}
-      onApproveSection={onApproveSection}
-      onApproveSheet={onApproveSheet}
-      onAcceptAllLengthChanges={onAcceptAllLengthChanges}
-      onReviewStructuralChanges={onReviewStructuralChanges}
-      onApply={onApply}
-      onContinueToReview={onContinueToReview}
-      isApplying={isApplying}
-    />
+    <div className="relative h-full" aria-busy={disabled}>
+      <div className={disabled ? "pointer-events-none select-none opacity-60" : ""}>
+        <MultiSheetImportReviewPanel
+          sheetDiffs={sheetDiffs}
+          activeSheetSlug={activeSheetSlug}
+          importMode={importMode}
+          rowDecisions={rowDecisions}
+          onImportModeChange={onImportModeChange}
+          onActiveSheetChange={(sheetSlug) => {
+            onActiveSheetChange(sheetSlug);
+            onUpdateImportSession((prev) =>
+              prev ? { ...prev, activeSheetSlug: sheetSlug } : prev,
+            );
+          }}
+          onDecisionChange={onDecisionChange}
+          onApproveSection={onApproveSection}
+          onApproveSheet={onApproveSheet}
+          onAcceptAllLengthChanges={onAcceptAllLengthChanges}
+          onReviewStructuralChanges={onReviewStructuralChanges}
+          onApply={onApply}
+          onContinueToReview={onContinueToReview}
+          isApplying={isApplying}
+        />
+      </div>
+      {disabled ? (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/70 backdrop-blur-[1px]">
+          <div className="rounded-md border border-border/70 bg-card px-3 py-2 text-sm text-muted-foreground">
+            {busyMessage}
+          </div>
+        </div>
+      ) : null}
+    </div>
   );
 }

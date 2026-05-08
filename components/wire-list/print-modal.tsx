@@ -352,7 +352,7 @@ const DEFAULT_SECTION_COLUMNS: SectionColumnVisibility = {
   wireType: false,
   gaugeSize: true,
   fromLocation: false,
-  toLocation: false,
+  toLocation: true,
   swapFromTo: false,
 };
 
@@ -5677,7 +5677,7 @@ export function SingleSheetPrintWorkspace({
                                           )}
                                         </Button>
                                         {/* Swap From/To for all subsections in this group */}
-                                        {!isLocationHidden && settings.mode === "standardize" && (
+                                        {!isLocationHidden && settings.mode === "standardize" && printViewTab === "cross-wire" && (
                                           (() => {
                                             const allSwapped = group.subsections.every((sub) => {
                                               const cols = getEffectiveSectionColumns(settings.sectionColumnVisibility, sub.label, sub.sectionKind);
@@ -5829,7 +5829,7 @@ export function SingleSheetPrintWorkspace({
                                                   >
                                                     {settings.mode === "branding" ? "Gauge" : "Size"}
                                                   </DropdownMenuCheckboxItem>
-                                                  {settings.mode !== "branding" && (
+                                                  {settings.mode !== "branding" && printViewTab === "cross-wire" && (
                                                     <DropdownMenuCheckboxItem
                                                       checked={sectionColumns.fromLocation ?? false}
                                                       onCheckedChange={(checked) => updateSectionColumnVisibility(
@@ -5842,7 +5842,7 @@ export function SingleSheetPrintWorkspace({
                                                       From Location
                                                     </DropdownMenuCheckboxItem>
                                                   )}
-                                                  {settings.mode !== "branding" && (
+                                                  {settings.mode !== "branding" && printViewTab === "cross-wire" && (
                                                     <DropdownMenuCheckboxItem
                                                       checked={sectionColumns.toLocation ?? true}
                                                       onCheckedChange={(checked) => updateSectionColumnVisibility(
@@ -5855,18 +5855,22 @@ export function SingleSheetPrintWorkspace({
                                                       To Location
                                                     </DropdownMenuCheckboxItem>
                                                   )}
-                                                  <DropdownMenuSeparator />
-                                                  <DropdownMenuCheckboxItem
-                                                    checked={sectionColumns.swapFromTo ?? false}
-                                                    onCheckedChange={(checked) => updateSectionColumnVisibility(
-                                                      subsection.label,
-                                                      subsection.sectionKind,
-                                                      "swapFromTo",
-                                                      Boolean(checked),
-                                                    )}
-                                                  >
-                                                    Swap From / To
-                                                  </DropdownMenuCheckboxItem>
+                                                  {printViewTab === "cross-wire" ? (
+                                                    <>
+                                                      <DropdownMenuSeparator />
+                                                      <DropdownMenuCheckboxItem
+                                                        checked={sectionColumns.swapFromTo ?? false}
+                                                        onCheckedChange={(checked) => updateSectionColumnVisibility(
+                                                          subsection.label,
+                                                          subsection.sectionKind,
+                                                          "swapFromTo",
+                                                          Boolean(checked),
+                                                        )}
+                                                      >
+                                                        Swap From / To
+                                                      </DropdownMenuCheckboxItem>
+                                                    </>
+                                                  ) : null}
                                                   <DropdownMenuSeparator />
                                                   <DropdownMenuItem
                                                     onClick={() => resetSectionColumnVisibility(subsection.label, subsection.sectionKind)}

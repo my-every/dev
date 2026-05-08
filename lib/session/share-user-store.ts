@@ -13,6 +13,36 @@ import type { ShiftOptionId } from '@/types/d380-startup'
 const REQUIRED_PIN_CHANGE_COLUMN = 'requires_pin_change'
 const TITLE_COLUMN = 'title'
 const PIN_HMAC_SECRET = 'd380-pin-auth-key'
+const DEFAULT_USER_CSV_HEADERS = [
+  'badge',
+  'pin',
+  REQUIRED_PIN_CHANGE_COLUMN,
+  'legal_name',
+  'preferred_name',
+  'initials',
+  'role',
+  TITLE_COLUMN,
+  'primary_lwc',
+  'shift',
+  'email',
+  'phone',
+  'is_active',
+  'created_at',
+  'updated_at',
+  'skill_brand_list',
+  'skill_branding',
+  'skill_build_up',
+  'skill_wiring',
+  'skill_wiring_ipv',
+  'skill_box_build',
+  'skill_cross_wire',
+  'skill_test',
+  'skill_pwr_check',
+  'skill_biq',
+  'skill_green_change',
+  'years_experience',
+  'hire_date',
+] as const
 
 async function getUsersCsvPath(): Promise<string> {
   const shareRoot = await resolveShareDirectory()
@@ -69,6 +99,13 @@ function verifyPinHash(inputPin: string, storedValue: string, badge: string): bo
 interface CsvDocument {
   headers: string[]
   rows: string[][]
+}
+
+function createEmptyCsvDocument(): CsvDocument {
+  return {
+    headers: [...DEFAULT_USER_CSV_HEADERS],
+    rows: [],
+  }
 }
 
 function normalizeBoolean(value: string | undefined, defaultValue = false): boolean {
@@ -165,6 +202,10 @@ function splitCsvLine(line: string): string[] {
 }
 
 function parseCsv(content: string): CsvDocument {
+  if (!content.trim()) {
+    return createEmptyCsvDocument()
+  }
+
   const lines = content.trim().split(/\r?\n/)
   const headers = splitCsvLine(lines[0] ?? '')
   const rows = lines.slice(1).filter(Boolean).map(splitCsvLine)
@@ -236,13 +277,22 @@ function toUserIdentity(headers: string[], row: string[]): UserIdentity {
 
 async function readCsvDocument(): Promise<CsvDocument> {
   const usersCsvPath = await getUsersCsvPath()
-  const raw = await fs.readFile(usersCsvPath, 'utf-8')
-  return parseCsv(raw)
+  try {
+    const raw = await fs.readFile(usersCsvPath, 'utf-8')
+    return parseCsv(raw)
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+      return createEmptyCsvDocument()
+    }
+
+    throw error
+  }
 }
 
 async function writeCsvDocument(document: CsvDocument): Promise<void> {
   const lines = [document.headers.join(','), ...document.rows.map(row => row.join(','))]
   const usersCsvPath = await getUsersCsvPath()
+  await fs.mkdir(path.dirname(usersCsvPath), { recursive: true })
   await fs.writeFile(usersCsvPath, `${lines.join('\n')}\n`, 'utf-8')
 }
 

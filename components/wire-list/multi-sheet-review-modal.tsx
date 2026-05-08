@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Layers3 } from "lucide-react";
+import { Layers3, Loader2 } from "lucide-react";
 
 import { LoginPopup } from "@/components/dialog/login-popup";
 import { Button } from "@/components/ui/button";
@@ -126,6 +126,7 @@ export function MultiSheetReviewModal({
   const [importSheetDiffs, setImportSheetDiffs] = useState<MultiSheetImportSheetDiff[]>([]);
   const [isApplyingImport, setIsApplyingImport] = useState(false);
   const [reviewSequenceOpen, setReviewSequenceOpen] = useState(false);
+  const [isImportReviewHydrating, setIsImportReviewHydrating] = useState(false);
   const [standardViewMode, setStandardViewMode] = useState<"wire-list" | "layout">("wire-list");
   const [reviewSequencePhase, setReviewSequencePhase] = useState<
     "confirm" | "processing" | "complete"
@@ -277,6 +278,7 @@ export function MultiSheetReviewModal({
     if (!isOpen) {
       autoStartedRef.current = false;
       setStandardViewMode("wire-list");
+      setIsImportReviewHydrating(false);
     }
   }, [isOpen]);
 
@@ -287,6 +289,10 @@ export function MultiSheetReviewModal({
   // Auto-hydrate import diffs when modal re-opens with a pending import session
   // This handles the case where parent re-renders cause the local state to reset
   useEffect(() => {
+    if (modalSurface !== "import-review") {
+      setIsImportReviewHydrating(false);
+    }
+
     if (
       isOpen &&
       modalSurface === "import-review" &&
@@ -294,12 +300,22 @@ export function MultiSheetReviewModal({
       !importSession.appliedAt &&
       importSheetDiffs.length === 0
     ) {
-      void hydrateImportReview(importSession).catch((error) => {
-        console.error("[v0] Failed to re-hydrate import review:", error);
-        setModalSurface("cover");
-      });
+      setIsImportReviewHydrating(true);
+      void hydrateImportReview(importSession)
+        .catch((error) => {
+          console.error("[v0] Failed to re-hydrate import review:", error);
+          setModalSurface("cover");
+        })
+        .finally(() => {
+          setIsImportReviewHydrating(false);
+        });
     }
   }, [isOpen, modalSurface, importSession, importSheetDiffs.length, hydrateImportReview, setModalSurface]);
+
+  const importReviewLocked = modalSurface === "import-review" && (isImportReviewHydrating || isApplyingImport);
+  const reviewWorkspaceLocked =
+    modalSurface === "review"
+    && (!activeSlug || !activeNavigationItem || (!isWireListMode && !activeBrandSchema));
 
   useEffect(() => {
     if (!isOpen || !projectId) {
@@ -788,6 +804,12 @@ export function MultiSheetReviewModal({
                     onApply={() => void applyImportChanges()}
                     onContinueToReview={() => void beginReviewSurface(false)}
                     isApplying={isApplyingImport}
+                    disabled={importReviewLocked}
+                    busyMessage={
+                      isApplyingImport
+                        ? "Applying import changes..."
+                        : "Preparing imported workbook review..."
+                    }
                   />
                 ) : (
                   <MultiSheetReviewWorkspaceShell
@@ -858,6 +880,8 @@ export function MultiSheetReviewModal({
                     onApprove={handleApproveFlow}
                     onUnapprove={() => void handleUnapproveWithActivity()}
                     onCombine={() => void handleCombineFlow()}
+                    disabled={reviewWorkspaceLocked}
+                    busyMessage="Preparing sheet workspace..."
                   />
                 )}
               </div>

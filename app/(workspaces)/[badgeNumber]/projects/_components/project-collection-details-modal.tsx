@@ -76,10 +76,9 @@ import { cn } from "@/lib/utils";
 import type { LegalProjectRecord } from "@/types/legal-drawings";
 import type { ProjectManifest } from "@/types/project-manifest";
 import { parseRevisionFromFilename } from "@/lib/revision/types";
-import { parseImportedBrandWorkbook } from "@/lib/wire-brand-list/import-workbook";
-import { validateWorkbookFile } from "@/lib/workbook/parse-workbook";
 import { LayoutPdfWorkspaceDialog } from "@/components/projects/layout-pdf-workspace-dialog";
 import { MultiWireListPrintWorkspaceDialog } from "@/components/projects/multi-wire-list-print-workspace-dialog";
+import { MultiSheetReviewModal } from "@/components/wire-list/multi-sheet-review-modal";
 
 import { ProjectIcon } from "./project-icon";
 import { AssignmentLabelDownloadButton } from "@/components/projects/assignment-label-download-button";
@@ -703,12 +702,11 @@ export function ProjectCollectionDetailsModal({
   const [crossWireSettingsMessage, setCrossWireSettingsMessage] = useState<
     string | null
   >(null);
-  const brandImportInputRef = useRef<HTMLInputElement | null>(null);
-  const [preparingBrandImport, setPreparingBrandImport] = useState(false);
 
   const [layoutWorkspaceOpen, setLayoutWorkspaceOpen] = useState(false);
   const [wireReviewOpen, setWireReviewOpen] = useState(false);
-  const hasChildWorkflowOpen = layoutWorkspaceOpen || wireReviewOpen;
+  const [brandReviewOpen, setBrandReviewOpen] = useState(false);
+  const hasChildWorkflowOpen = layoutWorkspaceOpen || wireReviewOpen || brandReviewOpen;
   const collectionModalOpen = open && !hasChildWorkflowOpen;
 
   useEffect(() => {
@@ -762,6 +760,7 @@ export function ProjectCollectionDetailsModal({
       setExpandedCrossAssignments(new Set());
       setLayoutWorkspaceOpen(false);
       setWireReviewOpen(false);
+      setBrandReviewOpen(false);
       setCrossWireSettingsMatrix({});
       setCrossWireSchema(null);
       setHasLoadedCrossWireSchema(false);
@@ -797,6 +796,7 @@ export function ProjectCollectionDetailsModal({
     setRevisionNameTouched(false);
     setLayoutWorkspaceOpen(false);
     setWireReviewOpen(false);
+    setBrandReviewOpen(false);
     setCrossWireSettingsMatrix({});
     setCrossWireSchema(null);
     setHasLoadedCrossWireSchema(false);
@@ -913,83 +913,6 @@ export function ProjectCollectionDetailsModal({
     revisionNameTouched,
     workbookFile,
   ]);
-
-  const handleBrandImportFileSelection = useCallback(async (file: File | null) => {
-    if (!currentProject?.id || !file) {
-      return;
-    }
-
-    const validation = validateWorkbookFile(file);
-    if (!validation.isValid) {
-      toast({
-        title: "Invalid workbook",
-        description: validation.error,
-        duration: 3500,
-      });
-      return;
-    }
-
-    setPreparingBrandImport(true);
-    try {
-      const importedSheets = await parseImportedBrandWorkbook(file);
-      const prepareResponse = await fetch(
-        `/api/projects/${encodeURIComponent(currentProject.id)}/multi-sheet-print/import`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            action: "prepare",
-            workbookFileName: file.name,
-            importedSheets,
-          }),
-        },
-      );
-
-      const preparePayload = (await prepareResponse.json().catch(() => ({}))) as {
-        importSession?: Record<string, unknown>;
-        error?: string;
-      };
-
-      if (!prepareResponse.ok || !preparePayload.importSession) {
-        throw new Error(
-          preparePayload.error || "Failed to prepare brand list comparison.",
-        );
-      }
-
-      const sessionResponse = await fetch(
-        `/api/projects/${encodeURIComponent(currentProject.id)}/multi-sheet-print/session`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            entryMode: "import-review",
-            importSession: preparePayload.importSession,
-          }),
-        },
-      );
-
-      if (!sessionResponse.ok) {
-        throw new Error("Failed to persist brand list import session.");
-      }
-
-      const returnTo = `/${badgeNumber}/projects?openProjectId=${encodeURIComponent(currentProject.id)}`;
-      onOpenChange(false);
-      router.push(
-        `/${badgeNumber}/projects/${encodeURIComponent(currentProject.id)}/brand-list-import?returnTo=${encodeURIComponent(returnTo)}`,
-      );
-    } catch (error) {
-      toast({
-        title: "Import failed",
-        description:
-          error instanceof Error
-            ? error.message
-            : "Unable to prepare brand list comparison.",
-        duration: 4000,
-      });
-    } finally {
-      setPreparingBrandImport(false);
-    }
-  }, [badgeNumber, currentProject?.id, onOpenChange, router, toast]);
 
   const clearBrandImportSession = useCallback(async () => {
     if (!projectState?.id) return;
@@ -2254,7 +2177,11 @@ export function ProjectCollectionDetailsModal({
   };
 
   const openBrandImportReview = () => {
-    brandImportInputRef.current?.click();
+    setBrandReviewOpen(true);
+  };
+
+  const openBrandListApprovalEditor = () => {
+    setBrandReviewOpen(true);
   };
 
   const openPrintWorkspace = () => {
@@ -2802,6 +2729,15 @@ export function ProjectCollectionDetailsModal({
                         >
                           <Layers className="h-3.5 w-3.5" />
                           Open Multi-Sheet Workspace
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="justify-start gap-2"
+                          onClick={openBrandListApprovalEditor}
+                        >
+                          <FileSpreadsheet className="h-3.5 w-3.5" />
+                          Open Brand List Approval Editor
                         </Button>
                         <Button
                           size="sm"
@@ -3494,29 +3430,10 @@ export function ProjectCollectionDetailsModal({
                       variant="outline"
                       className="gap-1.5"
                       onClick={openBrandImportReview}
-                      disabled={preparingBrandImport}
                     >
-                      {preparingBrandImport ? (
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                      ) : (
-                        <Upload className="h-3.5 w-3.5" />
-                      )}
+                      <Upload className="h-3.5 w-3.5" />
                       Import &amp; Merge Brand List
                     </Button>
-                    <input
-                      ref={brandImportInputRef}
-                      type="file"
-                      accept=".xlsx,.xls,.xlsm,.xlsb"
-                      className="hidden"
-                      onClick={(event) => {
-                        (event.currentTarget as HTMLInputElement).value = "";
-                      }}
-                      onChange={(event) => {
-                        void handleBrandImportFileSelection(
-                          event.target.files?.[0] ?? null,
-                        );
-                      }}
-                    />
                     <Button
                       size="sm"
                       variant="outline"
@@ -4390,6 +4307,20 @@ export function ProjectCollectionDetailsModal({
             void refreshWireExports();
           }
         }}
+      />
+
+      <MultiSheetReviewModal
+        projectId={currentProject.id}
+        open={brandReviewOpen}
+        onOpenChange={(nextOpen) => {
+          setBrandReviewOpen(nextOpen);
+          if (!nextOpen) {
+            void refreshBrandingExports();
+          }
+        }}
+        showTrigger={false}
+        title="Brand List Approval Editor"
+        combineLabel="Combine Brand List"
       />
 
       <LayoutPdfWorkspaceDialog

@@ -10,10 +10,19 @@ export async function GET(
 ) {
   const { projectId } = await params;
 
-  const job = await readRevisionRefreshJob(projectId);
-  if (!job) {
-    return NextResponse.json({ error: "Revision refresh job not found." }, { status: 404 });
+  try {
+    const job = await readRevisionRefreshJob(projectId);
+    // No active/previous job is a valid state.
+    return NextResponse.json({ job });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to read revision refresh job.",
+      },
+      { status: 500 },
+    );
   }
-
-  return NextResponse.json({ job });
 }
