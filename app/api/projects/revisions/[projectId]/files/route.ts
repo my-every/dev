@@ -32,7 +32,7 @@ export const dynamic = 'force-dynamic'
 // Helpers
 // ---------------------------------------------------------------------------
 
-const ALLOWED_EXTENSIONS = new Set(['.xlsx', '.xls', '.pdf'])
+const ALLOWED_EXTENSIONS = new Set(['.xlsx', '.xls', '.xlsm', '.xlsb', '.pdf'])
 
 async function getLegalDrawingsRoot(): Promise<string> {
   const shareRoot = await resolveShareDirectory()

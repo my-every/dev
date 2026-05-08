@@ -490,7 +490,7 @@ function StandaloneBackgroundBuildPage() {
             <FileInput
               id="ucp-workbook"
               label="UCP Workbook (required)"
-              accept=".xlsx,.xls,.xlsm"
+              accept=".xlsx,.xls,.xlsm,.xlsb"
               file={ucpWorkbook}
               onChange={setUcpWorkbook}
             />
@@ -504,7 +504,7 @@ function StandaloneBackgroundBuildPage() {
             <FileInput
               id="brand-merge"
               label="Brandlist Merge (optional)"
-              accept=".xlsx,.xls,.xlsm"
+              accept=".xlsx,.xls,.xlsm,.xlsb"
               file={brandMergeWorkbook}
               onChange={setBrandMergeWorkbook}
             />
