@@ -19,6 +19,24 @@ export default async function CrossWirePrintPage({
   const manifest = await readProjectManifest(projectId);
   if (!manifest) notFound();
 
+  const normalizeLocationKey = (value: string) =>
+    (value ?? "")
+      .trim()
+      .toUpperCase()
+      .replace(/^JB\d+\s+/i, "")
+      .replace(/\s+/g, " ");
+
+  const assignmentVisibilityBySlug = new Map<string, Map<string, boolean>>();
+  for (const [slug, assignment] of Object.entries(manifest.assignments ?? {})) {
+    const visibility = new Map<string, boolean>();
+    for (const location of assignment.externalLocations ?? []) {
+      const key = normalizeLocationKey(String(location.location ?? ""));
+      if (!key) continue;
+      visibility.set(key, location.wireListVisible ?? true);
+    }
+    assignmentVisibilityBySlug.set(slug, visibility);
+  }
+
   // Get all operational assignments with their unitType from the manifest
   const operationalSlugs = manifest.sheets
     .filter((s) => s.kind === "operational")
@@ -44,7 +62,22 @@ export default async function CrossWirePrintPage({
       });
       if (!doc) return null;
 
-      const externalGroups = doc.processedLocationGroups.filter((g) => g.isExternal);
+      const locationVisibility = assignmentVisibilityBySlug.get(sheetSlug);
+      const externalGroups = doc.processedLocationGroups.filter((g) => {
+        if (!g.isExternal) return false;
+        if (!locationVisibility || locationVisibility.size === 0) return true;
+
+        const rawKey = normalizeLocationKey(g.location);
+        const displayKey = normalizeLocationKey(g.displayLocation ?? "");
+
+        if (locationVisibility.has(rawKey)) {
+          return locationVisibility.get(rawKey) !== false;
+        }
+        if (locationVisibility.has(displayKey)) {
+          return locationVisibility.get(displayKey) !== false;
+        }
+        return true;
+      });
       if (externalGroups.length === 0) return null;
 
       return { doc, externalGroups, unitType, sheetSlug };
@@ -94,11 +127,10 @@ export default async function CrossWirePrintPage({
 
     const baseDoc = items[0].doc;
 
-    // Derive visible sections from the merged external groups so all sections render,
-    // not just the first assignment's sections that come from baseDoc.
+    // Derive visible sections from merged groups after applying assignment visibility rules.
     const standardVisibleSections = buildVisiblePreviewSections(
       processedLocationGroups,
-      new Set(), // no hidden sections — show all in cross-wire context
+      new Set(),
       baseDoc.settings.sectionColumnVisibility ?? {},
     );
 
@@ -128,8 +160,7 @@ export default async function CrossWirePrintPage({
       // Null out sheetDocument — it was built for the source assignment's
       // internal rows and would cause the wrong sections to render.
       sheetDocument: undefined,
-      // Clear hidden sections — external groups are hidden by default in the
-      // regular wire list view but must be fully visible in cross-wire context.
+      // Clear hidden sections; we already filtered by visibility before merge.
       hiddenSectionKeys: [],
       previewPageCount,
       partNumberEntries: Array.from(mergedPartNumbers.entries()),

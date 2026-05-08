@@ -247,7 +247,7 @@ export function LegalDrawingsLibraryPanel() {
                                 />
                                 <ActionCard
                                     title="Rebuild visible packages"
-                                    description="Regenerate manifests, layout metadata, and schema artifacts for the currently visible packages."
+                                    description="Regenerate manifests, layout metadata, and schema files for the currently visible packages."
                                     icon={<WandSparkles className="h-4 w-4" />}
                                     onClick={() => void runBulkAction("rebuild")}
                                     disabled={bulkRunning !== null}
@@ -303,7 +303,7 @@ export function LegalDrawingsLibraryPanel() {
                             const latestRevisionRecord =
                                 project.revisions.find(revision => revision.revision === project.latestRevision)
                                 ?? project.revisions[project.revisions.length - 1];
-                            const artifactStatus = latestRevisionRecord?.artifacts;
+                            const artifactStatus = latestRevisionRecord?.files;
                             const createReady = Boolean(artifactStatus?.manifestBuilt);
                             const sheetReady = Boolean(artifactStatus?.sheetSchemasBuilt);
                             const layoutWorkspaceReady = Boolean(artifactStatus?.layoutPagesBuilt);

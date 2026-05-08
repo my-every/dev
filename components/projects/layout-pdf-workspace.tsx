@@ -976,9 +976,9 @@ export function LayoutPdfWorkspace({
           <div className="flex items-center justify-between border-b border-border/50 px-4 py-3">
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                Inspector
+                MetaData
               </p>
-              <p className="mt-1 text-sm font-medium">Metadata &amp; Entities</p>
+              <p className="mt-1 text-sm font-medium">Properties</p>
             </div>
             <Button
               variant="ghost"
@@ -1033,7 +1033,7 @@ export function LayoutPdfWorkspace({
 
               <div className="min-h-0 rounded-2xl border border-border/50 bg-background/70 p-4">
                 <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                  Detected Entities
+                  Detected Fields
                 </p>
                 <div className="mt-3 space-y-3 pr-1">
                   <EntitySection

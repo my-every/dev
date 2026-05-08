@@ -57,6 +57,7 @@ import {
 import { cn } from "@/lib/utils";
 import type { LegalProjectRecord } from "@/types/legal-drawings";
 import type { ProjectManifest } from "@/types/project-manifest";
+import { MultiSheetPrintModal } from "@/components/wire-list/multi-sheet-print-modal";
 import { MultiSheetWireListModal } from "@/components/wire-list/multi-sheet-wire-list-modal";
 
 import { ProjectIcon } from "./project-icon";
@@ -90,6 +91,12 @@ interface WireListExportResult {
     fileName: string;
     relativePath: string;
   }>;
+}
+
+interface CrossWireSchemaSummary {
+  generatedAt: string;
+  totalCrossWireRows: number;
+  unitTypeGroups?: Array<unknown>;
 }
 
 type WireListSettingsMatrix = Record<string, Record<string, boolean>>;
@@ -163,7 +170,7 @@ const PROJECT_TAB_META: ProjectTabMeta[] = [
     description: "Upload workbook and layout files, then review revision artifact health.",
     guidanceTitle: "Legals Guidance",
     guidanceDescription:
-      "Use this tab to upload legal drawing files and verify whether required revision artifacts exist.",
+      "Use this tab to upload legal drawing files and verify whether required revision files exist.",
     guidanceItems: [
       { title: "Workbook", description: "The Excel legal drawing workbook used to generate assignment and print schemas." },
       { title: "Layout PDF", description: "The layout drawing used for visual review and layout workspace support." },
@@ -284,7 +291,7 @@ function formatList(values: string[] | undefined, emptyLabel: string): string {
   return values.join(", ");
 }
 
-function hasUploadedLegalArtifacts(project: ProjectManifest): boolean {
+function hasUploadedLegalFiles(project: ProjectManifest): boolean {
   const hasOperationalSheets = (project.sheets ?? []).some(
     (sheet) => sheet.kind === "operational" && sheet.hasData,
   );
@@ -298,7 +305,7 @@ function hasUploadedLegalArtifacts(project: ProjectManifest): boolean {
 function normalizeManifestAfterLegalUpload(
   manifest: ProjectManifest,
 ): ProjectManifest {
-  if (!hasUploadedLegalArtifacts(manifest)) {
+  if (!hasUploadedLegalFiles(manifest)) {
     return manifest;
   }
 
@@ -575,6 +582,9 @@ export function ProjectCollectionDetailsModal({
   const [expandedBrandAssignments, setExpandedBrandAssignments] = useState<Set<string>>(
     new Set(),
   );
+  const [expandedCrossAssignments, setExpandedCrossAssignments] = useState<Set<string>>(
+    new Set(),
+  );
   const [selectedAssignmentSlug, setSelectedAssignmentSlug] = useState<
     string | null
   >(null);
@@ -583,12 +593,31 @@ export function ProjectCollectionDetailsModal({
   const [brandListSettingsMatrix, setBrandListSettingsMatrix] =
     useState<WireListSettingsMatrix>({});
   const [savingBrandListSettings, setSavingBrandListSettings] = useState(false);
+  const [savingBrandListSettingsBySheet, setSavingBrandListSettingsBySheet] =
+    useState<Record<string, boolean>>({});
+  const [regeneratingBrandBySheet, setRegeneratingBrandBySheet] = useState<
+    Record<string, boolean>
+  >({});
   const [brandListSettingsMessage, setBrandListSettingsMessage] = useState<
     string | null
   >(null);
 
+  const [crossWireSchema, setCrossWireSchema] =
+    useState<CrossWireSchemaSummary | null>(null);
+  const [hasLoadedCrossWireSchema, setHasLoadedCrossWireSchema] =
+    useState(false);
+  const [loadingCrossWireSchema, setLoadingCrossWireSchema] = useState(false);
+  const [regeneratingCrossWireSchema, setRegeneratingCrossWireSchema] =
+    useState(false);
+  const [savingCrossWireSettingsBySheet, setSavingCrossWireSettingsBySheet] =
+    useState<Record<string, boolean>>({});
+  const [crossWireSettingsMessage, setCrossWireSettingsMessage] = useState<
+    string | null
+  >(null);
+
   const [wireReviewOpen, setWireReviewOpen] = useState(false);
-  const hasChildWorkflowOpen = wireReviewOpen;
+  const [printWorkspaceOpen, setPrintWorkspaceOpen] = useState(false);
+  const hasChildWorkflowOpen = wireReviewOpen || printWorkspaceOpen;
   const collectionModalOpen = open && !hasChildWorkflowOpen;
 
   useEffect(() => {
@@ -606,12 +635,21 @@ export function ProjectCollectionDetailsModal({
       setHasLoadedWireExports(false);
       setSavingWireListSettingsBySheet({});
       setRegeneratingWireBySheet({});
+      setSavingBrandListSettingsBySheet({});
+      setRegeneratingBrandBySheet({});
       setSchemaExternalLocations({});
       setWorkbookFile(null);
       setLayoutFile(null);
       setLegalsMessage(null);
       setExpandedAssignments(new Set());
       setExpandedBrandAssignments(new Set());
+      setExpandedCrossAssignments(new Set());
+      setWireReviewOpen(false);
+      setPrintWorkspaceOpen(false);
+      setCrossWireSchema(null);
+      setHasLoadedCrossWireSchema(false);
+      setSavingCrossWireSettingsBySheet({});
+      setCrossWireSettingsMessage(null);
       setSelectedAssignmentSlug(null);
       return;
     }
@@ -628,7 +666,16 @@ export function ProjectCollectionDetailsModal({
     setHasLoadedWireExports(false);
     setSavingWireListSettingsBySheet({});
     setRegeneratingWireBySheet({});
+    setSavingBrandListSettingsBySheet({});
+    setRegeneratingBrandBySheet({});
+    setSavingCrossWireSettingsBySheet({});
+    setCrossWireSettingsMessage(null);
     setSchemaExternalLocations({});
+    setWireReviewOpen(false);
+    setPrintWorkspaceOpen(false);
+    setCrossWireSchema(null);
+    setHasLoadedCrossWireSchema(false);
+    setExpandedCrossAssignments(new Set());
   }, [open, project]);
 
   const currentProject = isEditing ? editDraft : projectState;
@@ -669,6 +716,35 @@ export function ProjectCollectionDetailsModal({
     () => Object.keys(schemaExternalLocations).length > 0,
     [schemaExternalLocations],
   );
+
+  const crossWireStats = useMemo(() => {
+    let assignmentsWithExternal = 0;
+    let totalLocations = 0;
+    let visibleLocations = 0;
+
+    for (const assignment of assignmentEntries) {
+      const locations = (schemaExternalLocations[assignment.sheetSlug] ?? [])
+        .map((loc) => loc.trim().toUpperCase())
+        .filter(Boolean);
+      if (locations.length === 0) {
+        continue;
+      }
+      assignmentsWithExternal += 1;
+      totalLocations += locations.length;
+      for (const key of locations) {
+        if (wireListSettingsMatrix[assignment.sheetSlug]?.[key] ?? true) {
+          visibleLocations += 1;
+        }
+      }
+    }
+
+    return {
+      assignmentsWithExternal,
+      totalLocations,
+      visibleLocations,
+      hiddenLocations: Math.max(0, totalLocations - visibleLocations),
+    };
+  }, [assignmentEntries, schemaExternalLocations, wireListSettingsMatrix]);
 
   const assignmentGroups = useMemo(() => {
     if (assignmentGroupMode === "flat") return null;
@@ -863,6 +939,32 @@ export function ProjectCollectionDetailsModal({
     }
   }, [projectState?.id, assignmentEntries]);
 
+  const refreshCrossWireSchema = useCallback(async () => {
+    if (!projectState?.id) {
+      setCrossWireSchema(null);
+      setHasLoadedCrossWireSchema(false);
+      return;
+    }
+
+    setLoadingCrossWireSchema(true);
+    try {
+      const response = await fetch(
+        `/api/projects/${encodeURIComponent(projectState.id)}/cross-wire-schema`,
+        { cache: "no-store" },
+      );
+      if (!response.ok) {
+        setCrossWireSchema(null);
+        return;
+      }
+
+      const payload = (await response.json()) as CrossWireSchemaSummary;
+      setCrossWireSchema(payload);
+    } finally {
+      setLoadingCrossWireSchema(false);
+      setHasLoadedCrossWireSchema(true);
+    }
+  }, [projectState?.id]);
+
   useEffect(() => {
     if (!open || !projectState || activeTab !== "legals") {
       return;
@@ -912,11 +1014,29 @@ export function ProjectCollectionDetailsModal({
   ]);
 
   useEffect(() => {
+    if (!open || !projectState || activeTab !== "cross-wire") {
+      return;
+    }
+    if (!loadingCrossWireSchema && !hasLoadedCrossWireSchema) {
+      void refreshCrossWireSchema();
+    }
+  }, [
+    activeTab,
+    hasLoadedCrossWireSchema,
+    loadingCrossWireSchema,
+    open,
+    projectState,
+    refreshCrossWireSchema,
+  ]);
+
+  useEffect(() => {
     if (!open || !projectState) {
       return;
     }
     const needsSchemaForTab =
-      activeTab === "brand-lists" || activeTab === "wire-lists";
+      activeTab === "brand-lists" ||
+      activeTab === "wire-lists" ||
+      activeTab === "cross-wire";
     if (!needsSchemaForTab) {
       return;
     }
@@ -1162,55 +1282,65 @@ export function ProjectCollectionDetailsModal({
     [],
   );
 
-  const handleSaveBrandListSettings = useCallback(async () => {
+  const handleSaveBrandListSettings = useCallback(async (sheetSlug: string) => {
     if (!currentProject) return;
 
+    const assignment = assignmentEntries.find(
+      (entry) => entry.sheetSlug === sheetSlug,
+    );
+    if (!assignment) {
+      return;
+    }
+
     setSavingBrandListSettings(true);
+    setSavingBrandListSettingsBySheet((prev) => ({
+      ...prev,
+      [sheetSlug]: true,
+    }));
     setBrandListSettingsMessage(null);
     try {
-      const nextAssignments = Object.fromEntries(
-        assignmentEntries.map((assignment) => {
-          const existingByKey = new Map(
-            (assignment.externalLocations ?? []).map((item) => [
-              String(item.location ?? "")
-                .trim()
-                .toUpperCase(),
-              item,
-            ]),
-          );
-
-          const schemaLocations =
-            schemaExternalLocations[assignment.sheetSlug] ?? [];
-          const schemaKeys = new Set(
-            schemaLocations.map((l) => l.trim().toUpperCase()),
-          );
-
-          const externalLocations = schemaLocations.map((location) => {
-            const key = location.trim().toUpperCase();
-            const existing = existingByKey.get(key);
-            return {
-              location,
-              wireListVisible: existing?.wireListVisible ?? true,
-              brandingVisible:
-                brandListSettingsMatrix[assignment.sheetSlug]?.[key] ??
-                existing?.brandingVisible ??
-                true,
-            };
-          });
-
-          for (const [key, existing] of existingByKey) {
-            if (!schemaKeys.has(key)) {
-              externalLocations.push({
-                location: String(existing.location ?? ""),
-                wireListVisible: existing.wireListVisible ?? true,
-                brandingVisible: existing.brandingVisible ?? true,
-              });
-            }
-          }
-
-          return [assignment.sheetSlug, { ...assignment, externalLocations }];
-        }),
+      const existingByKey = new Map(
+        (assignment.externalLocations ?? []).map((item) => [
+          String(item.location ?? "")
+            .trim()
+            .toUpperCase(),
+          item,
+        ]),
       );
+
+      const schemaLocations = schemaExternalLocations[assignment.sheetSlug] ?? [];
+      const schemaKeys = new Set(schemaLocations.map((l) => l.trim().toUpperCase()));
+
+      const externalLocations = schemaLocations.map((location) => {
+        const key = location.trim().toUpperCase();
+        const existing = existingByKey.get(key);
+        return {
+          location,
+          wireListVisible: existing?.wireListVisible ?? true,
+          brandingVisible:
+            brandListSettingsMatrix[assignment.sheetSlug]?.[key] ??
+            existing?.brandingVisible ??
+            true,
+        };
+      });
+
+      for (const [key, existing] of existingByKey) {
+        if (!schemaKeys.has(key)) {
+          externalLocations.push({
+            location: String(existing.location ?? ""),
+            wireListVisible: existing.wireListVisible ?? true,
+            brandingVisible: existing.brandingVisible ?? true,
+          });
+        }
+      }
+
+      const nextAssignments = {
+        ...currentProject.assignments,
+        [assignment.sheetSlug]: {
+          ...assignment,
+          externalLocations,
+        },
+      };
 
       const nextManifest: ProjectManifest = {
         ...currentProject,
@@ -1238,19 +1368,30 @@ export function ProjectCollectionDetailsModal({
         ...serverManifest,
         assignments: {
           ...serverManifest.assignments,
-          ...nextAssignments,
+          [assignment.sheetSlug]: nextAssignments[assignment.sheetSlug],
         },
       };
       setProjectState(mergedManifest);
-      setBrandListSettingsMessage("Saved — regenerating brand lists…");
-      // Rebuild branding exports so visibility changes take effect immediately
-      void fetch(
-        `/api/projects/${encodeURIComponent(currentProject.id)}/exports?kind=branding`,
+      setBrandListSettingsMessage(
+        `Saved ${assignment.sheetName} settings — regenerating brand list…`,
+      );
+      setRegeneratingBrandBySheet((prev) => ({
+        ...prev,
+        [sheetSlug]: true,
+      }));
+
+      const regenerateResponse = await fetch(
+        `/api/projects/${encodeURIComponent(currentProject.id)}/exports?kind=branding&sheet=${encodeURIComponent(sheetSlug)}`,
         { method: "POST" },
-      )
-        .then(() => refreshBrandingExports())
-        .catch(() => refreshBrandingExports())
-        .then(() => setBrandListSettingsMessage("Brand list settings saved."));
+      );
+      if (!regenerateResponse.ok) {
+        throw new Error("Settings saved but failed to regenerate brand list.");
+      }
+
+      await refreshBrandingExports();
+      setBrandListSettingsMessage(
+        `${assignment.sheetName} settings saved and brand list regenerated.`,
+      );
     } catch (error) {
       setBrandListSettingsMessage(
         error instanceof Error
@@ -1258,6 +1399,14 @@ export function ProjectCollectionDetailsModal({
           : "Failed to save brand list settings.",
       );
     } finally {
+      setSavingBrandListSettingsBySheet((prev) => ({
+        ...prev,
+        [sheetSlug]: false,
+      }));
+      setRegeneratingBrandBySheet((prev) => ({
+        ...prev,
+        [sheetSlug]: false,
+      }));
       setSavingBrandListSettings(false);
     }
   }, [
@@ -1267,6 +1416,188 @@ export function ProjectCollectionDetailsModal({
     refreshBrandingExports,
     schemaExternalLocations,
   ]);
+
+  const setCrossWireLocationVisibility = useCallback(
+    (sheetSlug: string, location: string, visible: boolean) => {
+      setWireListSettingsMatrix((prev) => ({
+        ...prev,
+        [sheetSlug]: {
+          ...(prev[sheetSlug] ?? {}),
+          [location]: visible,
+        },
+      }));
+    },
+    [],
+  );
+
+  const handleSaveCrossWireSettings = useCallback(async (sheetSlug: string) => {
+    if (!currentProject) return;
+
+    const assignment = assignmentEntries.find(
+      (entry) => entry.sheetSlug === sheetSlug,
+    );
+    if (!assignment) {
+      return;
+    }
+
+    setSavingCrossWireSettingsBySheet((prev) => ({
+      ...prev,
+      [sheetSlug]: true,
+    }));
+    setCrossWireSettingsMessage(null);
+
+    try {
+      const existingByKey = new Map(
+        (assignment.externalLocations ?? []).map((item) => [
+          String(item.location ?? "")
+            .trim()
+            .toUpperCase(),
+          item,
+        ]),
+      );
+
+      const schemaLocations = schemaExternalLocations[assignment.sheetSlug] ?? [];
+      const schemaKeys = new Set(
+        schemaLocations.map((location) => location.trim().toUpperCase()),
+      );
+
+      const externalLocations = schemaLocations.map((location) => {
+        const key = location.trim().toUpperCase();
+        const existing = existingByKey.get(key);
+        return {
+          location,
+          wireListVisible:
+            wireListSettingsMatrix[assignment.sheetSlug]?.[key] ??
+            existing?.wireListVisible ??
+            true,
+          brandingVisible: existing?.brandingVisible ?? true,
+        };
+      });
+
+      for (const [key, existing] of existingByKey) {
+        if (!schemaKeys.has(key)) {
+          externalLocations.push({
+            location: String(existing.location ?? ""),
+            wireListVisible: existing.wireListVisible ?? true,
+            brandingVisible: existing.brandingVisible ?? true,
+          });
+        }
+      }
+
+      const nextAssignments = {
+        ...currentProject.assignments,
+        [assignment.sheetSlug]: {
+          ...assignment,
+          externalLocations,
+        },
+      };
+
+      const nextManifest: ProjectManifest = {
+        ...currentProject,
+        assignments: nextAssignments,
+      };
+
+      const response = await fetch(
+        `/api/projects/${encodeURIComponent(currentProject.id)}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(nextManifest),
+        },
+      );
+      const payload = (await response.json().catch(() => ({}))) as {
+        manifest?: ProjectManifest;
+        error?: string;
+      };
+      if (!response.ok) {
+        throw new Error(payload.error || "Failed to save cross wire settings.");
+      }
+
+      const serverManifest = payload.manifest ?? nextManifest;
+      const mergedManifest: ProjectManifest = {
+        ...serverManifest,
+        assignments: {
+          ...serverManifest.assignments,
+          [assignment.sheetSlug]: nextAssignments[assignment.sheetSlug],
+        },
+      };
+      setProjectState(mergedManifest);
+      setCrossWireSettingsMessage(
+        `Saved ${assignment.sheetName} visibility settings for cross wire.`,
+      );
+
+      const regenerateResponse = await fetch(
+        `/api/projects/${encodeURIComponent(currentProject.id)}/cross-wire-schema`,
+        { method: "POST" },
+      );
+      if (regenerateResponse.ok) {
+        const regeneratePayload = (await regenerateResponse.json().catch(
+          () => ({}),
+        )) as { schema?: CrossWireSchemaSummary };
+        if (regeneratePayload.schema) {
+          setCrossWireSchema(regeneratePayload.schema);
+          setHasLoadedCrossWireSchema(true);
+        } else {
+          await refreshCrossWireSchema();
+        }
+      }
+    } catch (error) {
+      setCrossWireSettingsMessage(
+        error instanceof Error
+          ? error.message
+          : "Failed to save cross wire settings.",
+      );
+    } finally {
+      setSavingCrossWireSettingsBySheet((prev) => ({
+        ...prev,
+        [sheetSlug]: false,
+      }));
+    }
+  }, [
+    assignmentEntries,
+    currentProject,
+    refreshCrossWireSchema,
+    schemaExternalLocations,
+    wireListSettingsMatrix,
+  ]);
+
+  const handleRegenerateCrossWireSchema = useCallback(async () => {
+    if (!currentProject?.id) {
+      return;
+    }
+
+    setRegeneratingCrossWireSchema(true);
+    setCrossWireSettingsMessage(null);
+    try {
+      const response = await fetch(
+        `/api/projects/${encodeURIComponent(currentProject.id)}/cross-wire-schema`,
+        { method: "POST" },
+      );
+      const payload = (await response.json().catch(() => ({}))) as {
+        schema?: CrossWireSchemaSummary;
+        error?: string;
+      };
+      if (!response.ok) {
+        throw new Error(payload.error || "Failed to regenerate cross wire schema.");
+      }
+
+      if (payload.schema) {
+        setCrossWireSchema(payload.schema);
+        setHasLoadedCrossWireSchema(true);
+      } else {
+        await refreshCrossWireSchema();
+      }
+      setCrossWireSettingsMessage("Cross wire schema regenerated.");
+    } catch (error) {
+      setCrossWireSettingsMessage(
+        error instanceof Error
+          ? error.message
+          : "Failed to regenerate cross wire schema.",
+      );
+    } finally {
+      setRegeneratingCrossWireSchema(false);
+    }
+  }, [currentProject?.id, refreshCrossWireSchema]);
 
   if (!currentProject) return null;
 
@@ -1280,6 +1611,10 @@ export function ProjectCollectionDetailsModal({
 
   const openWireReview = () => {
     setWireReviewOpen(true);
+  };
+
+  const openPrintWorkspace = () => {
+    setPrintWorkspaceOpen(true);
   };
 
   const handleUploadLegals = async () => {
@@ -1756,6 +2091,43 @@ export function ProjectCollectionDetailsModal({
                     </div>
                   )}
                     </div>
+
+                    <Separator />
+
+                    <div className="space-y-2">
+                      <div className="text-xs font-semibold uppercase tracking-wide text-card-foreground">
+                        Workspace Actions
+                      </div>
+                      <div className="grid gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="justify-start gap-2"
+                          onClick={openWireReview}
+                        >
+                          <Layers className="h-3.5 w-3.5" />
+                          Open Multi-Sheet Workspace
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="justify-start gap-2"
+                          onClick={openLayoutWorkspace}
+                        >
+                          <ExternalLink className="h-3.5 w-3.5" />
+                          Open PDF Layout Workspace
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="justify-start gap-2"
+                          onClick={openPrintWorkspace}
+                        >
+                          <Download className="h-3.5 w-3.5" />
+                          Open Multi-Sheet Print Modal
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 )}
                 </ProjectTabContentShell>
@@ -2112,7 +2484,7 @@ export function ProjectCollectionDetailsModal({
                       )
                       .map((revision) => {
                         const isLatest = revision.revision === legalDetail.latestRevision;
-                        const artifactValues = Object.values(revision.artifacts);
+                        const artifactValues = Object.values(revision.files);
                         const presentCount = artifactValues.filter(Boolean).length;
                         const allBuilt = presentCount === artifactValues.length;
                         return (
@@ -2149,7 +2521,7 @@ export function ProjectCollectionDetailsModal({
                                     allBuilt && "border-green-200 bg-green-50 text-green-700",
                                   )}
                                 >
-                                  {presentCount}/{artifactValues.length} artifacts
+                                  {presentCount}/{artifactValues.length} files
                                 </Badge>
                               </div>
                             </div>
@@ -2160,7 +2532,7 @@ export function ProjectCollectionDetailsModal({
                               <div className="flex items-center gap-3 px-4 py-2.5">
                                 <FileSpreadsheet className={cn(
                                   "h-4 w-4 shrink-0",
-                                  revision.artifacts.workbookPresent ? "text-green-600" : "text-card-foreground/40",
+                                  revision.files.workbookPresent ? "text-green-600" : "text-card-foreground/40",
                                 )} />
                                 <div className="min-w-0 flex-1">
                                   <div className="text-xs font-medium text-card-foreground">Workbook</div>
@@ -2177,7 +2549,7 @@ export function ProjectCollectionDetailsModal({
                                     {formatDateValue(revision.workbookUpdatedAt)}
                                   </span>
                                 ) : null}
-                                {revision.artifacts.greenChangesWorkbookPresent ? (
+                                {revision.files.greenChangesWorkbookPresent ? (
                                   <Badge variant="outline" className="h-5 shrink-0 text-[10px]">
                                     + GC
                                   </Badge>
@@ -2188,7 +2560,7 @@ export function ProjectCollectionDetailsModal({
                               <div className="flex items-center gap-3 px-4 py-2.5">
                                 <FileText className={cn(
                                   "h-4 w-4 shrink-0",
-                                  revision.artifacts.layoutPresent ? "text-blue-600" : "text-card-foreground/40",
+                                  revision.files.layoutPresent ? "text-blue-600" : "text-card-foreground/40",
                                 )} />
                                 <div className="min-w-0 flex-1">
                                   <div className="text-xs font-medium text-card-foreground">Layout PDF</div>
@@ -2205,7 +2577,7 @@ export function ProjectCollectionDetailsModal({
                                     {formatDateValue(revision.layoutUpdatedAt)}
                                   </span>
                                 ) : null}
-                                {isLatest && revision.artifacts.layoutPresent ? (
+                                {isLatest && revision.files.layoutPresent ? (
                                   <Button
                                     size="sm"
                                     variant="ghost"
@@ -2367,30 +2739,9 @@ export function ProjectCollectionDetailsModal({
                           <Download className="h-3.5 w-3.5 text-card-foreground" />
                         </a>
                       ) : null}
-
-                      {brandingExports.sheetExports.map((entry) => (
-                        <a
-                          key={entry.sheetSlug}
-                          href={`/print/project-context/${encodeURIComponent(currentProject.id)}/wire-list/${encodeURIComponent(entry.sheetSlug)}?mode=branding`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-3 rounded-xl border border-border bg-muted/40 px-3 py-2.5 text-sm hover:bg-card/50"
-                        >
-                          <FileSpreadsheet className="h-4 w-4 shrink-0 text-green-600" />
-                          <div className="min-w-0 flex-1">
-                            <div className="truncate text-sm">{entry.sheetName}</div>
-                            <div className="truncate font-mono text-[11px] text-card-foreground">
-                              {entry.fileName}
-                            </div>
-                          </div>
-                          {typeof entry.rowCount === "number" ? (
-                            <Badge variant="outline" className="h-5 shrink-0 text-[10px]">
-                              {entry.rowCount} rows
-                            </Badge>
-                          ) : null}
-                          <ExternalLink className="h-3.5 w-3.5 shrink-0 text-card-foreground" />
-                        </a>
-                      ))}
+                      <div className="rounded-xl border border-border bg-background/40 px-3 py-2.5 text-xs text-card-foreground">
+                        Use each sheet card below to save visibility settings and download/regenerate that sheet brand list.
+                      </div>
                     </div>
                   )}
                 </div>
@@ -2402,26 +2753,9 @@ export function ProjectCollectionDetailsModal({
                     <div>
                       <h3 className="text-sm font-semibold">Brand List Visibility</h3>
                       <p className="mt-0.5 text-xs text-card-foreground">
-                        Show or hide external locations per sheet in brand list exports
+                        Configure visibility and regenerate/download each sheet brand list
                       </p>
                     </div>
-                    <Button
-                      size="sm"
-                      className="gap-1.5 shrink-0"
-                      onClick={() => void handleSaveBrandListSettings()}
-                      disabled={
-                        savingBrandListSettings ||
-                        assignmentEntries.length === 0 ||
-                        !anyAssignmentHasLocations
-                      }
-                    >
-                      {savingBrandListSettings ? (
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                      ) : (
-                        <Check className="h-3.5 w-3.5" />
-                      )}
-                      Save
-                    </Button>
                   </div>
 
                   {brandListSettingsMessage ? (
@@ -2450,6 +2784,9 @@ export function ProjectCollectionDetailsModal({
                   ) : (
                     <div className="space-y-2">
                       {assignmentEntries.map((assignment) => {
+                        const exportEntry = brandingExports?.sheetExports.find(
+                          (entry) => entry.sheetSlug === assignment.sheetSlug,
+                        );
                         const locations = (schemaExternalLocations[assignment.sheetSlug] ?? [])
                           .map((loc) => ({
                             label: loc,
@@ -2460,6 +2797,11 @@ export function ProjectCollectionDetailsModal({
                           (loc) =>
                             brandListSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true,
                         ).length;
+                        const isSavingSheet =
+                          savingBrandListSettingsBySheet[assignment.sheetSlug] ?? false;
+                        const isRegeneratingSheet =
+                          regeneratingBrandBySheet[assignment.sheetSlug] ?? false;
+                        const isBusySheet = isSavingSheet || isRegeneratingSheet;
                         const allVisible = visibleCount === locations.length;
 
                         return (
@@ -2467,12 +2809,23 @@ export function ProjectCollectionDetailsModal({
                             key={assignment.sheetSlug}
                             className="overflow-hidden rounded-lg border border-border/60 bg-card/30 transition-colors hover:border-border/80"
                           >
-                            <button
+                            <div
+                              role="button"
+                              tabIndex={0}
                               onClick={() => {
                                 const current = expandedBrandAssignments.has(assignment.sheetSlug);
                                 setExpandedBrandAssignments(
                                   current ? new Set() : new Set([assignment.sheetSlug]),
                                 );
+                              }}
+                              onKeyDown={(event) => {
+                                if (event.key === "Enter" || event.key === " ") {
+                                  event.preventDefault();
+                                  const current = expandedBrandAssignments.has(assignment.sheetSlug);
+                                  setExpandedBrandAssignments(
+                                    current ? new Set() : new Set([assignment.sheetSlug]),
+                                  );
+                                }
                               }}
                               className="flex w-full items-center justify-between px-4 py-3 transition-colors hover:bg-card/40"
                             >
@@ -2492,15 +2845,57 @@ export function ProjectCollectionDetailsModal({
                                   </div>
                                 </div>
                               </div>
-                              <div className="shrink-0">
+                              <div className="flex shrink-0 items-center gap-2">
                                 <Badge
                                   variant={allVisible ? "secondary" : "outline"}
                                   className="h-5 text-[10px]"
                                 >
                                   {visibleCount}/{locations.length}
                                 </Badge>
+                                {exportEntry ? (
+                                  <a
+                                    href={buildExportFileHref(
+                                      currentProject.id,
+                                      exportEntry.relativePath,
+                                    )}
+                                    download
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="inline-flex h-7 items-center gap-1 rounded px-2 text-card-foreground transition-colors hover:bg-background hover:text-foreground"
+                                    title="Download sheet brand list"
+                                  >
+                                    <Download className="h-3.5 w-3.5" />
+                                    <span className="text-[11px]">XLSX</span>
+                                  </a>
+                                ) : null}
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-7 gap-1 px-2 text-[11px]"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    void handleSaveBrandListSettings(assignment.sheetSlug);
+                                  }}
+                                  disabled={isBusySheet || locations.length === 0}
+                                >
+                                  {isBusySheet ? (
+                                    <Loader2 className="h-3 w-3 animate-spin" />
+                                  ) : (
+                                    <Check className="h-3 w-3" />
+                                  )}
+                                  Save + Generate
+                                </Button>
+                                <a
+                                  href={`/print/project-context/${encodeURIComponent(currentProject.id)}/wire-list/${encodeURIComponent(assignment.sheetSlug)}?mode=branding`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="inline-flex h-7 w-7 items-center justify-center rounded text-card-foreground transition-colors hover:bg-background hover:text-foreground"
+                                  title="View/Print this sheet"
+                                >
+                                  <ExternalLink className="h-3.5 w-3.5" />
+                                </a>
                               </div>
-                            </button>
+                            </div>
 
                             {expandedBrandAssignments.has(assignment.sheetSlug) && locations.length > 0 ? (
                               <div className="space-y-2 border-t border-border/40 bg-background/40 p-3">
@@ -2525,7 +2920,9 @@ export function ProjectCollectionDetailsModal({
                                           checked,
                                         )
                                       }
+                                      onPointerDown={(e) => e.stopPropagation()}
                                       onClick={(e) => e.stopPropagation()}
+                                      onKeyDown={(e) => e.stopPropagation()}
                                       aria-label={`Toggle brand list visibility of ${loc.label}`}
                                     />
                                     <span className="font-mono text-sm text-foreground group-hover:text-foreground/80">
@@ -2818,7 +3215,9 @@ export function ProjectCollectionDetailsModal({
                                           checked,
                                         )
                                       }
+                                      onPointerDown={(e) => e.stopPropagation()}
                                       onClick={(e) => e.stopPropagation()}
+                                      onKeyDown={(e) => e.stopPropagation()}
                                       aria-label={`Toggle visibility of ${loc.label}`}
                                     />
                                     <span className="font-mono text-sm text-foreground group-hover:text-foreground/80">
@@ -2839,46 +3238,241 @@ export function ProjectCollectionDetailsModal({
 
               <TabsContent value="cross-wire" className="m-0 h-full">
                 <ProjectTabContentShell meta={getTabMeta("cross-wire")}>
-
-                <div className="space-y-2">
-                  <a
-                    href={`/print/project-context/${encodeURIComponent(currentProject.id)}/cross-wire`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 rounded-xl border border-border bg-background/40 px-3 py-2.5 text-sm hover:bg-card/50"
-                  >
-                    <FileText className="h-4 w-4 shrink-0 text-yellow-400" />
-                    <div className="min-w-0 flex-1">
-                      <div className="text-sm">Cross Wire List</div>
-                      <div className="text-[11px] text-card-foreground">Interactive print preview</div>
+                  <div className="grid grid-cols-2 gap-2 rounded-xl border border-border bg-background/40 p-3">
+                    <div className="flex flex-col gap-0.5 py-1">
+                      <span className="text-[11px] text-card-foreground">Assignments</span>
+                      <span className="text-lg font-semibold text-foreground">
+                        {crossWireStats.assignmentsWithExternal}
+                      </span>
                     </div>
-                    <ExternalLink className="h-3.5 w-3.5 shrink-0 text-card-foreground" />
-                  </a>
-                </div>
+                    <div className="flex flex-col gap-0.5 border-l border-border py-1 pl-3">
+                      <span className="text-[11px] text-card-foreground">Visible</span>
+                      <span className="text-lg font-semibold text-foreground">
+                        {crossWireStats.visibleLocations}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 border-t border-border py-1">
+                      <span className="text-[11px] text-card-foreground">Hidden</span>
+                      <span className="text-lg font-semibold text-foreground">
+                        {crossWireStats.hiddenLocations}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 border-l border-t border-border py-1 pl-3">
+                      <span className="text-[11px] text-card-foreground">Generated</span>
+                      <span className="text-xs text-foreground">
+                        {formatDateValue(crossWireSchema?.generatedAt)}
+                      </span>
+                    </div>
+                  </div>
 
-                <div className="rounded-xl border border-border bg-background/40 p-4 space-y-2">
-                  <div className="text-sm font-semibold">Generate Schema</div>
-                  <p className="text-xs text-card-foreground">
-                    Rebuilds the cross wire schema from all assignment brand
-                    list schemas. Use this after updating wire data.
-                  </p>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="gap-1.5"
-                    onClick={() =>
-                      window.open(
-                        `/print/project-context/${encodeURIComponent(currentProject.id)}/cross-wire?generate=1`,
-                        "_blank",
-                        "noreferrer",
-                      )
-                    }
-                  >
-                    <GitBranch className="h-3.5 w-3.5" />
-                    Regenerate &amp; Open
-                  </Button>
-                </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <div className="text-sm font-semibold">Cross Wire Actions</div>
+                      <p className="text-xs text-card-foreground">
+                        Regenerate schema, download PDF, or open external cross wire view.
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="gap-1.5"
+                        onClick={() => void handleRegenerateCrossWireSchema()}
+                        disabled={regeneratingCrossWireSchema}
+                      >
+                        {regeneratingCrossWireSchema ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                          <GitBranch className="h-3.5 w-3.5" />
+                        )}
+                        Generate
+                      </Button>
+                      <a
+                        href={`/api/projects/${encodeURIComponent(currentProject.id)}/cross-wire-pdf`}
+                        download
+                        className="inline-flex h-8 items-center gap-1.5 rounded-md border border-input bg-background px-3 text-xs font-medium text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+                      >
+                        <Download className="h-3.5 w-3.5" />
+                        PDF
+                      </a>
+                      <a
+                        href={`/print/project-context/${encodeURIComponent(currentProject.id)}/cross-wire`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex h-8 items-center gap-1.5 rounded-md border border-input bg-background px-3 text-xs font-medium text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+                      >
+                        <ExternalLink className="h-3.5 w-3.5" />
+                        Open External URL
+                      </a>
+                    </div>
+                  </div>
 
+                  {crossWireSettingsMessage ? (
+                    <div
+                      className={cn(
+                        "rounded-lg px-3 py-2 text-xs",
+                        crossWireSettingsMessage.toLowerCase().includes("failed") ||
+                          crossWireSettingsMessage.toLowerCase().includes("error")
+                          ? "bg-destructive/10 text-destructive"
+                          : "bg-green-500/10 text-green-700",
+                      )}
+                    >
+                      {crossWireSettingsMessage}
+                    </div>
+                  ) : null}
+
+                  {loadingSchemaLocations || loadingCrossWireSchema ? (
+                    <div className="flex items-center justify-center gap-2 py-6 text-sm text-card-foreground">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Loading cross wire settings…
+                    </div>
+                  ) : assignmentEntries.length === 0 || !anyAssignmentHasLocations ? (
+                    <EmptyStateCard
+                      title="No external locations found."
+                      description="Generate wire list schemas to populate cross wire visibility settings."
+                    />
+                  ) : (
+                    <div className="space-y-2">
+                      {assignmentEntries.map((assignment) => {
+                        const locations = (schemaExternalLocations[assignment.sheetSlug] ?? [])
+                          .map((loc) => ({
+                            label: loc,
+                            key: loc.trim().toUpperCase(),
+                          }))
+                          .filter((loc) => loc.key);
+                        if (locations.length === 0) {
+                          return null;
+                        }
+
+                        const visibleCount = locations.filter(
+                          (loc) =>
+                            wireListSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true,
+                        ).length;
+                        const isSavingSheet =
+                          savingCrossWireSettingsBySheet[assignment.sheetSlug] ?? false;
+                        const allVisible = visibleCount === locations.length;
+
+                        return (
+                          <div
+                            key={assignment.sheetSlug}
+                            className="overflow-hidden rounded-lg border border-border/60 bg-card/30 transition-colors hover:border-border/80"
+                          >
+                            <div
+                              role="button"
+                              tabIndex={0}
+                              onClick={() => {
+                                const current = expandedCrossAssignments.has(
+                                  assignment.sheetSlug,
+                                );
+                                setExpandedCrossAssignments(
+                                  current ? new Set() : new Set([assignment.sheetSlug]),
+                                );
+                              }}
+                              onKeyDown={(event) => {
+                                if (event.key === "Enter" || event.key === " ") {
+                                  event.preventDefault();
+                                  const current = expandedCrossAssignments.has(
+                                    assignment.sheetSlug,
+                                  );
+                                  setExpandedCrossAssignments(
+                                    current ? new Set() : new Set([assignment.sheetSlug]),
+                                  );
+                                }
+                              }}
+                              className="flex w-full items-center justify-between px-4 py-3 transition-colors hover:bg-card/40"
+                            >
+                              <div className="flex min-w-0 flex-1 items-center gap-3 text-left">
+                                <ChevronRight
+                                  className={cn(
+                                    "h-4 w-4 shrink-0 text-card-foreground transition-transform",
+                                    expandedCrossAssignments.has(assignment.sheetSlug) &&
+                                      "rotate-90",
+                                  )}
+                                />
+                                <div className="min-w-0 flex-1">
+                                  <div className="text-sm font-medium text-foreground">
+                                    {assignment.sheetName}
+                                  </div>
+                                  <div className="font-mono text-xs text-card-foreground">
+                                    {assignment.sheetSlug}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex shrink-0 items-center gap-2">
+                                <Badge
+                                  variant={allVisible ? "secondary" : "outline"}
+                                  className="h-5 text-[10px]"
+                                >
+                                  {visibleCount}/{locations.length}
+                                </Badge>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-7 gap-1 px-2 text-[11px]"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    void handleSaveCrossWireSettings(assignment.sheetSlug);
+                                  }}
+                                  disabled={isSavingSheet}
+                                >
+                                  {isSavingSheet ? (
+                                    <Loader2 className="h-3 w-3 animate-spin" />
+                                  ) : (
+                                    <Check className="h-3 w-3" />
+                                  )}
+                                  Save + Generate
+                                </Button>
+                              </div>
+                            </div>
+
+                            {expandedCrossAssignments.has(assignment.sheetSlug) ? (
+                              <div className="space-y-2 border-t border-border/40 bg-background/40 p-3">
+                                {locations.map((loc) => (
+                                  <div
+                                    key={loc.key}
+                                    className="group flex cursor-pointer items-center gap-3 rounded px-2 py-1.5 transition-colors hover:bg-card/40"
+                                    onClick={() =>
+                                      setCrossWireLocationVisibility(
+                                        assignment.sheetSlug,
+                                        loc.key,
+                                        !(
+                                          wireListSettingsMatrix[assignment.sheetSlug]?.[
+                                            loc.key
+                                          ] ?? true
+                                        ),
+                                      )
+                                    }
+                                  >
+                                    <Switch
+                                      checked={
+                                        wireListSettingsMatrix[assignment.sheetSlug]?.[
+                                          loc.key
+                                        ] ?? true
+                                      }
+                                      onCheckedChange={(checked) =>
+                                        setCrossWireLocationVisibility(
+                                          assignment.sheetSlug,
+                                          loc.key,
+                                          checked,
+                                        )
+                                      }
+                                      onPointerDown={(e) => e.stopPropagation()}
+                                      onClick={(e) => e.stopPropagation()}
+                                      onKeyDown={(e) => e.stopPropagation()}
+                                      aria-label={`Toggle cross wire visibility of ${loc.label}`}
+                                    />
+                                    <span className="font-mono text-sm text-foreground group-hover:text-foreground/80">
+                                      {loc.label}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : null}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </ProjectTabContentShell>
               </TabsContent>
             </div>
@@ -2933,6 +3527,13 @@ export function ProjectCollectionDetailsModal({
           }
         }}
         workspaceMode="wire-list"
+        showTrigger={false}
+      />
+
+      <MultiSheetPrintModal
+        projectId={currentProject.id}
+        open={printWorkspaceOpen}
+        onOpenChange={setPrintWorkspaceOpen}
         showTrigger={false}
       />
     </> 

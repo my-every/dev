@@ -458,7 +458,7 @@ Each project in the schedule shows:
 | Error | Cause | Solution |
 |-------|-------|----------|
 | "Legal revision not found" | Missing revision folder | Sync legal drawings library |
-| "Missing project-manifest.json" | Revision not built | Run rebuild artifacts |
+| "Missing project-manifest.json" | Revision not built | Run rebuild files |
 | "Failed to create project" | Disk/permission error | Check Share directory permissions |
 | Empty projects list | No projects created | Create first project from schedule |
 
@@ -482,7 +482,7 @@ The project creation flow from the schedule route involves:
 5. **Displaying** in project listings via `GET /api/projects`
 
 The system maintains data integrity by:
-- Seeding project state from legal revision artifacts
+- Seeding project state from legal revision files
 - Generating unique project IDs
 - Persisting all metadata in `project-manifest.json`
 - Supporting incremental updates via manifest enrichment

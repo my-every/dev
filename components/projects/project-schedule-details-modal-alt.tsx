@@ -586,7 +586,7 @@ export function ProjectScheduleDetailsModalAlt({
                     <Card className="border-border ">
                       <CardHeader>
                         <div className="flex items-center justify-between gap-2">
-                          <CardTitle className="text-sm text-foreground">Delivery Artifacts</CardTitle>
+                          <CardTitle className="text-sm text-foreground">Delivery Files</CardTitle>
                           <Button
                             type="button"
                             size="sm"

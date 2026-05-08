@@ -26,7 +26,7 @@ export interface LegalRevisionRecord {
   layoutRelativePath?: string | null
   layoutUpdatedAt?: string | null
   sourceFingerprint?: string | null
-  artifacts: LegalRevisionArtifactStatus
+  files: LegalRevisionArtifactStatus
   generatedAt?: string | null
 }
 

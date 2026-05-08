@@ -335,7 +335,7 @@ async function buildServerLayoutPages(layoutPath: string): Promise<{
   return { index, slimPages }
 }
 
-async function buildLegalRevisionArtifacts(
+async function buildLegalRevisionFiles(
   revisionRoot: string,
   candidate: LegalSourceCandidate,
   revision: string,
@@ -648,7 +648,7 @@ function buildRevisionRecord(
       greenChangesWorkbook ? `${greenChangesWorkbook.fileName}:${greenChangesWorkbook.mtimeMs}` : 'no-green-changes-workbook',
       layout ? `${layout.fileName}:${layout.mtimeMs}` : 'no-layout',
     ].join('|'),
-    artifacts: artifactStatus,
+    files: artifactStatus,
     generatedAt: new Date().toISOString(),
   }
 }
@@ -724,17 +724,17 @@ async function buildProjectRecord(projectRoot: string, pdNumber: string): Promis
     daysLate: latest?.daysLate ?? projectMeta?.daysLate ?? null,
     hasWorkbook: Boolean(
       latest?.hasWorkbook
-      ?? latestRevisionRecord?.artifacts?.workbookPresent
+      ?? latestRevisionRecord?.files?.workbookPresent
       ?? latestRevisionRecord?.workbookFileName,
     ),
     hasGreenChangesWorkbook: Boolean(
       latest?.hasGreenChangesWorkbook
-      ?? latestRevisionRecord?.artifacts?.greenChangesWorkbookPresent
+      ?? latestRevisionRecord?.files?.greenChangesWorkbookPresent
       ?? latestRevisionRecord?.greenChangesWorkbookFileName,
     ),
     hasLayout: Boolean(
       latest?.hasLayout
-      ?? latestRevisionRecord?.artifacts?.layoutPresent
+      ?? latestRevisionRecord?.files?.layoutPresent
       ?? latestRevisionRecord?.layoutFileName,
     ),
     latestWorkbookUpdatedAt: latest?.latestWorkbookUpdatedAt ?? latestRevisionRecord?.workbookUpdatedAt ?? null,
@@ -889,7 +889,7 @@ export async function syncLegalDrawingsLibrary(explicitSourceRoot?: string | nul
       await copyFileIfChanged(candidate.layout.fullPath, path.join(revisionRoot, candidate.layout.fileName))
     }
 
-    const built = await buildLegalRevisionArtifacts(revisionRoot, candidate, latestRevision)
+    const built = await buildLegalRevisionFiles(revisionRoot, candidate, latestRevision)
     diagnostics.push(...built.diagnostics)
 
     const artifactStatus: LegalRevisionArtifactStatus = {
@@ -953,7 +953,7 @@ export async function syncLegalDrawingsLibrary(explicitSourceRoot?: string | nul
   return result
 }
 
-export async function rebuildLegalRevisionArtifacts(pdNumber: string, revision?: string | null) {
+export async function rebuildLegalRevisionFiles(pdNumber: string, revision?: string | null) {
   const project = await getLegalProjectRecord(pdNumber)
   if (!project) {
     throw new Error(`Legal project ${pdNumber} not found`)
@@ -1009,7 +1009,7 @@ export async function rebuildLegalRevisionArtifacts(pdNumber: string, revision?:
       } satisfies SourceFileCandidate
     : null
 
-  const built = await buildLegalRevisionArtifacts(revisionRoot, {
+  const built = await buildLegalRevisionFiles(revisionRoot, {
     pdNumber: project.pdNumber,
     projectNameHint: project.projectNameHint ?? project.pdNumber,
     sourceFolderName: project.folderName,
@@ -1034,8 +1034,8 @@ export async function rebuildLegalRevisionArtifacts(pdNumber: string, revision?:
       greenChangesWorkbook ? `${greenChangesWorkbook.fileName}:${greenChangesWorkbook.mtimeMs}` : 'no-green-changes-workbook',
       layout ? `${layout.fileName}:${layout.mtimeMs}` : 'no-layout',
     ].join('|'),
-    artifacts: {
-      ...revisionRecord.artifacts,
+    files: {
+      ...revisionRecord.files,
       greenChangesWorkbookPresent: Boolean(greenChangesWorkbook),
       uploadPropsBuilt: built.uploadPropsBuilt,
       manifestBuilt: Boolean(built.manifest),
@@ -1171,7 +1171,7 @@ export async function createProjectFromLegalSource(input: CreateProjectFromLegal
   let revisionManifest = await readJsonFile<ProjectManifest>(path.join(revisionRoot, 'project-manifest.json'))
   let revisionRecord = await readJsonFile<LegalRevisionRecord>(path.join(revisionRoot, 'revision.json'))
 
-  // Some legal revisions exist but have not had artifacts generated yet.
+  // Some legal revisions exist but have not had files generated yet.
   // In that case, automatically fall back to the newest revision that has
   // a built manifest so create-project does not fail with a hard 500.
   if (!revisionManifest) {

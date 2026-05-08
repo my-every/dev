@@ -30,7 +30,7 @@ export async function POST(
     return NextResponse.json(result)
   } catch (error) {
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Failed to clear generated legal artifacts' },
+      { error: error instanceof Error ? error.message : 'Failed to clear generated legal files' },
       { status: 500 },
     )
   }

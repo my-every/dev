@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import {
+  ensureBrandingCsvSheetExport,
   generateBrandingCsvExports,
   readBrandingCsvExports,
 } from '@/lib/project-exports/branding-csv-exports'
@@ -64,6 +65,15 @@ export async function POST(
 
   try {
     if (kind === 'branding') {
+      if (sheet) {
+        await ensureBrandingCsvSheetExport(projectId, sheet)
+        const refreshed = await readBrandingCsvExports(projectId)
+        if (!refreshed) {
+          return NextResponse.json({ error: 'Export manifest not found' }, { status: 404 })
+        }
+        return NextResponse.json(refreshed)
+      }
+
       const result = await generateBrandingCsvExports(projectId)
       return NextResponse.json(result)
     }

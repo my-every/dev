@@ -78,7 +78,7 @@ const TAB_DEFINITIONS: Array<{
   kind: "milestone" | "work";
 }> = [
   { id: "LEGALS_READY", label: "Legals", description: "Legals must be validated before project files can move into upload and downstream preparation.", chipLabel: "Gate", kind: "milestone" },
-  { id: "PROJECT_UPLOAD", label: "Project Upload", description: "Workbook and layout artifacts must be uploaded before brand and floor execution can continue.", chipLabel: "Gate", kind: "milestone" },
+  { id: "PROJECT_UPLOAD", label: "Project Upload", description: "Workbook and layout files must be uploaded before brand and floor execution can continue.", chipLabel: "Gate", kind: "milestone" },
   { id: "BRANDLIST_COMPLETE", label: "Brand List", description: "Brand list export and review must finish before branding can be released.", chipLabel: "Gate", kind: "milestone" },
   { id: "BRANDING_READY", label: "Branding", description: "Branding output must be complete before assignments can move into ready-to-lay release.", chipLabel: "Gate", kind: "milestone" },
   { id: "READY_TO_LAY", label: "Ready To Lay", description: "Assignments released after project-level gates are complete.", chipLabel: "Milestone", kind: "milestone" },

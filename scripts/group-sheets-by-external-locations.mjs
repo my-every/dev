@@ -1,7 +1,7 @@
 /**
  * group-sheets-by-external-locations.mjs
  *
- * Scan sheet JSON artifacts under Share/Legal Drawings and group sheets that
+ * Scan sheet JSON files under Share/Legal Drawings and group sheets that
  * contain external location references.
  *
  * Usage:

@@ -126,6 +126,38 @@ export async function renderWireListPdfFromRoute(options: {
   sheetSlug: string;
   grouping?: string;
 }): Promise<Uint8Array> {
+  const targetUrl = new URL(
+    `/print/project-context/${encodeURIComponent(options.projectId)}/wire-list/${encodeURIComponent(options.sheetSlug)}`,
+    options.origin,
+  );
+  // Force HTTP for localhost to avoid SSL errors in Playwright
+  if (targetUrl.hostname === "localhost" && targetUrl.protocol === "https:") {
+    targetUrl.protocol = "http:";
+  }
+  if (options.grouping) {
+    targetUrl.searchParams.set("grouping", options.grouping);
+  }
+
+  return renderPdfFromUrl(targetUrl);
+}
+
+export async function renderCrossWirePdfFromRoute(options: {
+  origin: string;
+  projectId: string;
+}): Promise<Uint8Array> {
+  const targetUrl = new URL(
+    `/print/project-context/${encodeURIComponent(options.projectId)}/cross-wire`,
+    options.origin,
+  );
+  // Force HTTP for localhost to avoid SSL errors in Playwright
+  if (targetUrl.hostname === "localhost" && targetUrl.protocol === "https:") {
+    targetUrl.protocol = "http:";
+  }
+
+  return renderPdfFromUrl(targetUrl);
+}
+
+async function renderPdfFromUrl(targetUrl: URL): Promise<Uint8Array> {
   let browser;
   try {
     browser = await chromium.launch({ headless: true });
@@ -149,18 +181,6 @@ export async function renderWireListPdfFromRoute(options: {
       viewport: { width: 1280, height: 1800 },
       deviceScaleFactor: 1,
     });
-    const targetUrl = new URL(
-      `/print/project-context/${encodeURIComponent(options.projectId)}/wire-list/${encodeURIComponent(options.sheetSlug)}`,
-      options.origin,
-    );
-    // Force HTTP for localhost to avoid SSL errors in Playwright
-    if (targetUrl.hostname === "localhost" && targetUrl.protocol === "https:") {
-      targetUrl.protocol = "http:";
-    }
-    if (options.grouping) {
-      targetUrl.searchParams.set("grouping", options.grouping);
-    }
-
     await page.goto(targetUrl.toString(), {
       waitUntil: "domcontentloaded",
       timeout: 45000,

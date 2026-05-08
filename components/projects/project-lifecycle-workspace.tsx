@@ -339,7 +339,7 @@ export function ProjectLifecycleWorkspace({
                   <div className="space-y-1">
                     <div className="text-sm font-semibold text-foreground">Project Upload is ready</div>
                     <p className="text-sm text-muted-foreground">
-                      Legals are ready. Upload the workbook and layout artifacts to unlock downstream brand and floor stages.
+                      Legals are ready. Upload the workbook and layout files to unlock downstream brand and floor stages.
                     </p>
                   </div>
                   <Button className="gap-2 self-start md:self-auto" onClick={() => setUploadOpen(true)}>
@@ -432,7 +432,7 @@ export function ProjectLifecycleWorkspace({
           <DialogHeader>
             <DialogTitle>Upload Project Files</DialogTitle>
             <DialogDescription>
-              Upload the workbook and layout artifacts for {currentProject.name}.
+              Upload the workbook and layout files for {currentProject.name}.
             </DialogDescription>
           </DialogHeader>
 

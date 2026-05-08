@@ -121,27 +121,27 @@ async function processPdFolder(entry) {
   const latestRevisionPath = latestRevision ? path.join(pdPath, latestRevision) : null;
   const latestRevisionRecordPath = latestRevisionPath ? path.join(latestRevisionPath, "revision.json") : null;
   const latestRevisionRecord = latestRevisionRecordPath ? await readJsonIfExists(latestRevisionRecordPath) : null;
-  const latestHasUsableArtifacts = latestRevisionPath
-    ? await hasUsableGeneratedArtifacts(latestRevisionRecord, latestRevisionPath)
+  const latestHasUsableFiles = latestRevisionPath
+    ? await hasUsableGeneratedFiles(latestRevisionRecord, latestRevisionPath)
     : false;
   const shouldSkipWholeProject =
     Boolean(latestRevision) &&
     existingLatest?.latestRevision === latestRevision &&
     existingLatest?.sourceFingerprint === latestFingerprint &&
     latestRevisionRecord?.sourceFingerprint === latestFingerprint &&
-    latestHasUsableArtifacts;
+    latestHasUsableFiles;
 
   for (const revision of revisionNames) {
     const discoveredRevision = discoveredRevisions.find((item) => item.revision === revision) || null;
     const revisionPath = path.join(pdPath, revision);
     const revisionRecordPath = path.join(pdPath, revision, "revision.json");
     const existingRevisionMeta = await readJsonIfExists(revisionRecordPath);
-    const revisionHasUsableArtifacts = await hasUsableGeneratedArtifacts(existingRevisionMeta, revisionPath);
+    const revisionHasUsableFiles = await hasUsableGeneratedFiles(existingRevisionMeta, revisionPath);
     const shouldSkipRevision =
       shouldSkipWholeProject ||
       (Boolean(discoveredRevision?.fingerprint) &&
         existingRevisionMeta?.sourceFingerprint === discoveredRevision.fingerprint &&
-        revisionHasUsableArtifacts);
+        revisionHasUsableFiles);
     const revisionSummary = await processRevision({
       pdNumber,
       pdPath,
@@ -689,7 +689,7 @@ async function seedRevisionSourceFiles(pdNumber, revisionPath, discoveredRevisio
       ? `${sanitizeRevisionFolderName(discoveredRevision.revision)}/${discoveredRevision.layoutFileName}`
       : null,
     layoutUpdatedAt,
-    artifacts: {
+    files: {
       workbookPresent: Boolean(discoveredRevision.workbookPath),
       layoutPresent: Boolean(discoveredRevision.layoutPath),
       uploadPropsBuilt: false,
@@ -914,7 +914,7 @@ function buildRevisionFingerprint(revision) {
   return [revision.workbookFingerprint || "no-workbook", revision.greenChangesFingerprint || "no-green-changes", revision.layoutFingerprint || "no-layout"].join("|");
 }
 
-async function hasUsableGeneratedArtifacts(meta, revisionPath) {
+async function hasUsableGeneratedFiles(meta, revisionPath) {
   if (!meta || !revisionPath) {
     return false;
   }

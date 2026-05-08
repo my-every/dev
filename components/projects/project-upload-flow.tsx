@@ -120,7 +120,7 @@ interface ProjectUploadFlowProps {
   onRevisionComplete?: (result: RevisionUploadCompleteResult) => void;
 }
 
-function hasUploadedLegalArtifacts(project: ProjectManifest): boolean {
+function hasUploadedLegalFiles(project: ProjectManifest): boolean {
   const hasOperationalSheets = (project.sheets ?? []).some(
     (sheet) => sheet.kind === "operational" && sheet.hasData,
   );
@@ -130,7 +130,7 @@ function hasUploadedLegalArtifacts(project: ProjectManifest): boolean {
 }
 
 function normalizeManifestAfterLegalUpload(manifest: ProjectManifest): ProjectManifest {
-  if (!hasUploadedLegalArtifacts(manifest)) {
+  if (!hasUploadedLegalFiles(manifest)) {
     return manifest;
   }
 

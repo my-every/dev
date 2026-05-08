@@ -25,7 +25,7 @@ async function seedDefaultTasksForProject(input: {
 
   const defaultTasks: CreateProjectTaskInput[] = [
     {
-      title: 'Review legal artifacts and revision',
+      title: 'Review legal files and revision',
       scope: 'legal' as ProjectTaskScope,
       projectId: input.projectId,
       pdNumber: input.pdNumber,

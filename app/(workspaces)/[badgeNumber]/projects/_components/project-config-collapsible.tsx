@@ -45,7 +45,7 @@ export type ProjectInstanceItem = {
   lwcType?: string | null;
   revisions?: Array<{
     revision: string;
-    artifacts: { manifestBuilt: boolean };
+    files: { manifestBuilt: boolean };
   }>;
 };
 
@@ -325,7 +325,7 @@ type ProjectConfigFormProps = {
 
 function ProjectConfigForm({ project, config, onUpdateConfig }: ProjectConfigFormProps) {
   const availableRevisions = (() => {
-    const ready = (project.revisions ?? []).filter((rev) => Boolean(rev?.artifacts?.manifestBuilt));
+    const ready = (project.revisions ?? []).filter((rev) => Boolean(rev?.files?.manifestBuilt));
     return ready.length > 0 ? ready : project.revisions ?? [];
   })();
 

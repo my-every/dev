@@ -57,6 +57,11 @@ export interface BrandingCsvExportResult {
   combinedRelativePath?: string;
 }
 
+export interface EnsuredBrandingCsvSheetExport {
+  record: BrandingCsvSheetExportRecord;
+  absoluteFilePath: string;
+}
+
 export async function readBrandingCsvExports(projectId: string): Promise<BrandingCsvExportResult | null> {
   const manifest = await readProjectManifest(projectId);
   if (!manifest) {
@@ -245,6 +250,148 @@ export async function generateBrandingCsvExports(projectId: string): Promise<Bra
   );
 
   return result;
+}
+
+export async function ensureBrandingCsvSheetExport(
+  projectId: string,
+  sheetSlug: string,
+): Promise<EnsuredBrandingCsvSheetExport> {
+  const manifest = await readProjectManifest(projectId);
+  if (!manifest) {
+    throw new Error("Project not found");
+  }
+
+  const sheet = manifest.sheets.find(
+    (entry) => entry.kind === "operational" && entry.slug === sheetSlug,
+  );
+  if (!sheet) {
+    throw new Error("Operational sheet not found");
+  }
+
+  const unitNumber = manifest.unitNumber ?? "";
+  const unitExportsRoot = await resolveUnitExportsRoot(projectId, unitNumber);
+  if (!unitExportsRoot) {
+    throw new Error("Project exports directory not found");
+  }
+
+  const sanitizedUnit = sanitizeExportFileSegment(unitNumber);
+  const brandingExportsDirectory = path.join(unitExportsRoot, BRANDING_EXPORTS_DIRECTORY);
+  const exportsManifestPath = path.join(brandingExportsDirectory, BRANDING_EXPORTS_MANIFEST);
+  await fs.mkdir(brandingExportsDirectory, { recursive: true });
+
+  const exportsManifest =
+    await readJsonFile<BrandingCsvExportResult>(exportsManifestPath) ??
+    {
+      projectId,
+      projectName: manifest.name,
+      generatedAt: new Date().toISOString(),
+      sheetExports: [],
+      skippedSheets: [],
+    };
+
+  const documentData = await buildProjectSheetPrintDocument({
+    projectId,
+    sheetSlug: sheet.slug,
+    settings: {
+      mode: "branding",
+      showCoverPage: false,
+      showTableOfContents: false,
+      showIPVCodes: false,
+    },
+  });
+
+  if (!documentData || !documentData.sheetDocument) {
+    throw new Error("Unable to build branding document");
+  }
+
+  const brandingVisibleSections = documentData.sheetDocument.brandingSections;
+  if (brandingVisibleSections.length === 0) {
+    throw new Error("No branding rows after filtering");
+  }
+
+  const partNumberMap = new Map(documentData.partNumberEntries ?? []);
+  const sheetSchema = await readSheetSchema(projectId, sheet.slug);
+  const controlsDE = sheetSchema?.metadata?.controlsDE;
+
+  const csvContent = buildBrandingCsvContent({
+    brandingVisibleSections,
+    currentSheetName: documentData.currentSheetName,
+    sectionColumnVisibility: documentData.settings.sectionColumnVisibility,
+    partNumberMap,
+    brandingSortMode: documentData.settings.brandingSortMode,
+    projectInfo: {
+      pdNumber: manifest.pdNumber,
+      projectName: manifest.name,
+      revision: manifest.revision,
+      controlsDE,
+    },
+  });
+
+  if (!csvContent) {
+    throw new Error("No branding rows after filtering");
+  }
+
+  const rowCount = Math.max(csvContent.split("\n").length - 13, 0);
+  const fileName = buildBrandingFilename({
+    pdNumber: manifest.pdNumber,
+    projectName: manifest.name,
+    revision: manifest.revision,
+    unitNumber: manifest.unitNumber,
+    sheetName: sheet.name,
+    extension: "xlsx",
+  });
+  const absoluteFilePath = path.join(brandingExportsDirectory, fileName);
+  const relativePath = path.posix.join(
+    EXPORTS_DIRECTORY,
+    UNITS_DIRECTORY,
+    sanitizedUnit,
+    BRANDING_EXPORTS_DIRECTORY,
+    fileName,
+  );
+
+  const workbook = buildBrandingWorkbookFromCsv(csvContent, "Brandlist");
+  const xlsxBuffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" }) as Uint8Array;
+  await fs.writeFile(absoluteFilePath, Buffer.from(xlsxBuffer));
+
+  const csvFileName = buildBrandingFilename({
+    pdNumber: manifest.pdNumber,
+    projectName: manifest.name,
+    revision: manifest.revision,
+    unitNumber: manifest.unitNumber,
+    sheetName: sheet.name,
+    extension: "csv",
+  });
+  await fs.writeFile(path.join(brandingExportsDirectory, csvFileName), csvContent, "utf-8");
+
+  const record: BrandingCsvSheetExportRecord = {
+    sheetSlug: sheet.slug,
+    sheetName: sheet.name,
+    rowCount,
+    fileName,
+    relativePath,
+  };
+
+  exportsManifest.generatedAt = new Date().toISOString();
+  exportsManifest.projectId = projectId;
+  exportsManifest.projectName = manifest.name;
+  exportsManifest.sheetExports = [
+    ...exportsManifest.sheetExports.filter((entry) => entry.sheetSlug !== sheetSlug),
+    record,
+  ];
+  exportsManifest.skippedSheets = exportsManifest.skippedSheets.filter(
+    (entry) => entry.sheetSlug !== sheetSlug,
+  );
+
+  // Combined workbook is a full-project artifact and may be stale after single-sheet regeneration.
+  delete exportsManifest.combinedFileName;
+  delete exportsManifest.combinedRelativePath;
+
+  await fs.writeFile(exportsManifestPath, JSON.stringify(exportsManifest, null, 2), "utf-8");
+
+  return {
+    record,
+    absoluteFilePath,
+  };
 }
 
 /**

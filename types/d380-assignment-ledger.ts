@@ -11,7 +11,7 @@
  *       /Share/users/<shift>/<badge>/history/<YYYY>/<MM>/assignment-history.json
  *
  * Project state under /Share/Projects/<pd>_<name>/state/ is canonical.
- * Ledger and history are reporting/audit artifacts derived from project state.
+ * Ledger and history are reporting/audit files derived from project state.
  */
 
 import type { AssignmentStageId } from '@/types/d380-assignment-stages'

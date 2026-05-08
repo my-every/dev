@@ -71,8 +71,8 @@ export interface SlotProjectUploadStatus extends SlotProjectIdentity {
   manifestPath: string;
   projectRoot: string;
   manifestExists: boolean;
-  hasWorkbookArtifacts: boolean;
-  hasLayoutArtifacts: boolean;
+  hasWorkbookFiles: boolean;
+  hasLayoutFiles: boolean;
   hasUploadedProjectFiles: boolean;
   legalsUploadStatus: SlotProjectPresenceStatus;
 }
@@ -273,7 +273,7 @@ function buildLifecycleGates(row: SlotsSeedRow, legalsUploaded: boolean) {
       gateId: "LEGALS_READY",
       status: legalsUploaded ? "COMPLETE" : inferLegalsScheduleState(legalsRaw) === "missing" ? "LOCKED" : "READY",
       targetDate: parseUsDateToIso(legalsRaw) || undefined,
-      notes: legalsUploaded ? "Detected uploaded workbook + layout artifacts." : "Seeded from Schedule.csv legals milestone.",
+      notes: legalsUploaded ? "Detected uploaded workbook + layout files." : "Seeded from Schedule.csv legals milestone.",
     },
     {
       gateId: "BRANDLIST_COMPLETE",
@@ -437,15 +437,15 @@ export async function inspectSlotProjectStatus(
   const manifestExists = Boolean(manifest);
   const workbookFlag = typeof manifest?.activeWorkbookRevisionId === "string" && manifest.activeWorkbookRevisionId.length > 0;
   const layoutFlag = typeof manifest?.activeLayoutRevisionId === "string" && manifest.activeLayoutRevisionId.length > 0;
-  const hasSheetArtifacts = await hasAnyFiles(path.join(stateRoot, "sheets"));
-  const hasLayoutArtifacts = layoutFlag || await fileExists(path.join(stateRoot, "layout-pages.json"));
-  const hasWorkbookArtifacts = workbookFlag || hasSheetArtifacts || await fileExists(path.join(stateRoot, "upload-props.json"));
-  const hasUploadedProjectFiles = hasWorkbookArtifacts && hasLayoutArtifacts;
+  const hasSheetFiles = await hasAnyFiles(path.join(stateRoot, "sheets"));
+  const hasLayoutFiles = layoutFlag || await fileExists(path.join(stateRoot, "layout-pages.json"));
+  const hasWorkbookFiles = workbookFlag || hasSheetFiles || await fileExists(path.join(stateRoot, "upload-props.json"));
+  const hasUploadedProjectFiles = hasWorkbookFiles && hasLayoutFiles;
 
   let legalsUploadStatus: SlotProjectPresenceStatus = "missing_project";
   if (manifestExists && hasUploadedProjectFiles) {
     legalsUploadStatus = "uploaded_legals";
-  } else if (manifestExists && (hasWorkbookArtifacts || hasLayoutArtifacts)) {
+  } else if (manifestExists && (hasWorkbookFiles || hasLayoutFiles)) {
     legalsUploadStatus = "partial_upload";
   } else if (manifestExists) {
     legalsUploadStatus = "seeded_from_slots";
@@ -456,8 +456,8 @@ export async function inspectSlotProjectStatus(
     projectRoot,
     manifestPath,
     manifestExists,
-    hasWorkbookArtifacts,
-    hasLayoutArtifacts,
+    hasWorkbookFiles,
+    hasLayoutFiles,
     hasUploadedProjectFiles,
     legalsUploadStatus,
   };

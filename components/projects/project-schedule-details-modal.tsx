@@ -464,7 +464,7 @@ export function ProjectScheduleDetailsModal({
                         </div>
 
                         <div className="rounded-lg border border-dashed p-3 text-xs text-muted-foreground">
-                          Reserved for additional export workflows (bundled ZIP, publish package, and downstream handoff artifacts).
+                          Reserved for additional export workflows (bundled ZIP, publish package, and downstream handoff files).
                         </div>
                       </CardContent>
                     </Card>

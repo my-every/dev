@@ -907,8 +907,8 @@ function RevisionRow({
   revision: LegalRevisionRecord;
   isLatest: boolean;
 }) {
-  const artifacts = revision.artifacts;
-  const artifactEntries: Array<{ key: keyof typeof artifacts; label: string }> = [
+  const files = revision.files;
+  const artifactEntries: Array<{ key: keyof typeof files; label: string }> = [
     { key: "workbookPresent", label: "Workbook" },
     { key: "layoutPresent", label: "Layout" },
     { key: "manifestBuilt", label: "Manifest" },
@@ -920,7 +920,7 @@ function RevisionRow({
     { key: "devicePartNumbersBuilt", label: "Part Numbers" },
   ];
 
-  const presentCount = artifactEntries.filter((e) => artifacts[e.key]).length;
+  const presentCount = artifactEntries.filter((e) => files[e.key]).length;
 
   return (
     <div className="rounded-xl border border-border bg-background/50 p-4">
@@ -933,7 +933,7 @@ function RevisionRow({
           </Badge>
         )}
         <span className="ml-auto text-xs text-muted-foreground">
-          {presentCount}/{artifactEntries.length} artifacts
+          {presentCount}/{artifactEntries.length} files
         </span>
       </div>
 
@@ -943,7 +943,7 @@ function RevisionRow({
             key={key}
             className={cn(
               "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium border",
-              artifacts[key]
+              files[key]
                 ? "bg-emerald-500/8 text-emerald-700 border-emerald-500/20 dark:text-emerald-400"
                 : "bg-muted text-muted-foreground/60 border-border",
             )}

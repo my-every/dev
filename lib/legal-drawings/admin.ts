@@ -91,9 +91,9 @@ export function getLegalDrawingsMaintenanceHelpText() {
     '',
     'Commands:',
     '  clear-meta          Remove root project-meta.json and latest.json',
-    '  clear-generated     Remove generated revision artifacts (layout/pages/schemas/state)',
+    '  clear-generated     Remove generated revision files (layout/pages/schemas/state)',
     '  clear-revision-meta Remove build-meta.json and revision.json from revision folders',
-    '  clear-unknown-schema-compare Remove unknown compare artifacts in wire-list-green-changes',
+    '  clear-unknown-schema-compare Remove unknown compare files in wire-list-green-changes',
     '  clear-empty-directories Remove empty directories under each legal project',
     '  clear-orphans       Remove common orphan/temp files (*.tmp, *.temp, *.bak, .DS_Store)',
     '  restore-root-sources Copy missing root UCP/LAY files back from the chosen/latest revision',
@@ -175,7 +175,7 @@ async function processProject(
   if (context.command === 'clear-generated') {
     for (const revision of revisionNames) {
       const revisionPath = path.join(pdPath, revision)
-      const removed = await clearGeneratedArtifacts(revisionPath, context.dryRun)
+      const removed = await clearGeneratedFiles(revisionPath, context.dryRun)
       summary.revisions.push({ revision, removed })
     }
     return summary
@@ -216,7 +216,7 @@ async function processProject(
     }
     for (const revision of revisionNames) {
       const revisionPath = path.join(pdPath, revision)
-      const removed = await clearGeneratedArtifacts(revisionPath, context.dryRun)
+      const removed = await clearGeneratedFiles(revisionPath, context.dryRun)
       for (const fileName of REVISION_META_FILES) {
         const targetPath = path.join(revisionPath, fileName)
         if (await removeIfExists(targetPath, context.dryRun)) {
@@ -267,7 +267,7 @@ async function processProject(
   return summary
 }
 
-async function clearGeneratedArtifacts(revisionPath: string, dryRun: boolean) {
+async function clearGeneratedFiles(revisionPath: string, dryRun: boolean) {
   const removed: string[] = []
   for (const fileName of GENERATED_ROOT_FILES) {
     const targetPath = path.join(revisionPath, fileName)

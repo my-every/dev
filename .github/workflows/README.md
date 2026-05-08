@@ -25,7 +25,7 @@ How it works:
 1. Installs dependencies with `pnpm install --frozen-lockfile`
 2. Builds + signs via `pnpm dist:win`
 3. Verifies Authenticode signatures on produced installers
-4. Uploads artifacts and publishes on tag pushes (`v*`)
+4. Uploads files and publishes on tag pushes (`v*`)
 
 ## 2) EV Signing (Self-hosted)
 
@@ -47,7 +47,7 @@ How it works:
 1. Installs dependencies with `pnpm install --frozen-lockfile`
 2. Builds + signs via `pnpm dist:win`
 3. Verifies Authenticode signatures
-4. Uploads artifacts and publishes on tag pushes (`v*`)
+4. Uploads files and publishes on tag pushes (`v*`)
 
 ## 3) electron-builder signing config
 

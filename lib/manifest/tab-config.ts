@@ -76,7 +76,7 @@ const DEFAULT_TAB_CONFIG: TabConfigItem[] = [
     description: "Upload workbook and layout files, then review revision artifact health.",
     guidanceTitle: "Legals Guidance",
     guidanceDescription:
-      "Use this tab to upload legal drawing files and verify whether required revision artifacts exist.",
+      "Use this tab to upload legal drawing files and verify whether required revision files exist.",
     guidanceItems: [
       { title: "Workbook", description: "The Excel legal drawing workbook used to generate schemas." },
       { title: "Layout PDF", description: "The layout drawing used for visual review and workspace support." },

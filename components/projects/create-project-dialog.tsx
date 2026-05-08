@@ -114,7 +114,7 @@ const COLOR_PRESETS = [
 function getManifestReadyRevisions(project: LegalProjectRecord | null): string[] {
     if (!project) return [];
     const ready = (project.revisions ?? [])
-        .filter(revision => Boolean(revision?.artifacts?.manifestBuilt))
+        .filter(revision => Boolean(revision?.files?.manifestBuilt))
         .map(revision => revision.revision)
         .filter(Boolean);
     return ready.length > 0

@@ -190,7 +190,7 @@ function ensureRequiredColumns(record: Record<string, string>): Record<string, s
   return next
 }
 
-async function scaffoldUserArtifacts(
+async function scaffoldUserFiles(
   shareDirectory: string,
   records: Record<string, string>[],
 ): Promise<{ createdSettings: number; createdProfiles: number }> {
@@ -324,7 +324,7 @@ export async function POST(request: NextRequest) {
 
     await fs.writeFile(usersCsvPath, csvContent, 'utf-8')
 
-    const result = await scaffoldUserArtifacts(resolvedShareDirectory, records)
+    const result = await scaffoldUserFiles(resolvedShareDirectory, records)
 
     return NextResponse.json({
       success: true,

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { rebuildLegalRevisionArtifacts } from '@/lib/legal-drawings/library'
+import { rebuildLegalRevisionFiles } from '@/lib/legal-drawings/library'
 
 export const dynamic = 'force-dynamic'
 
@@ -11,11 +11,11 @@ export async function POST(
   try {
     const { pdNumber } = await params
     const body = await request.json().catch(() => ({})) as { revision?: string | null }
-    const record = await rebuildLegalRevisionArtifacts(pdNumber, body.revision)
+    const record = await rebuildLegalRevisionFiles(pdNumber, body.revision)
     return NextResponse.json(record)
   } catch (error) {
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Failed to rebuild legal revision artifacts' },
+      { error: error instanceof Error ? error.message : 'Failed to rebuild legal revision files' },
       { status: 500 },
     )
   }
