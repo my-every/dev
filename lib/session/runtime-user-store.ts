@@ -1,14 +1,16 @@
 import 'server-only'
 
-import type { UserIdentity } from '@/types/d380-user-session'
+import type { UserIdentity, UserRole } from '@/types/d380-user-session'
 import { isStandaloneToolMode } from '@/lib/runtime/share-directory'
 import {
+  createUserInShare,
   readUserFromShare,
   readUsersFromShare,
   updateUserPinInShare,
   verifyPinInShare,
 } from '@/lib/session/share-user-store'
 import {
+  createUserInStandalone,
   readUserFromStandalone,
   readUsersFromStandalone,
   updateUserPinInStandalone,
@@ -40,6 +42,19 @@ export async function verifyPinForRuntime(
   }
 
   return verifyPinInShare(badge, pin)
+}
+
+export async function createUserForRuntime(params: {
+  badge: string
+  legalName: string
+  role: UserRole
+  pin: string
+}): Promise<UserIdentity | null> {
+  if (await isStandaloneToolMode()) {
+    return createUserInStandalone(params)
+  }
+
+  return createUserInShare(params)
 }
 
 export async function updateUserPinForRuntime(

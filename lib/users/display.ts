@@ -18,6 +18,10 @@ export function getUserDefaultTitleForRole(role?: string | null) {
       return "Manager";
     case "SUPERVISOR":
       return "Supervisor";
+    case "ENGINEER":
+      return "Engineer";
+    case "TEAM_LEAD":
+      return "Team Lead";
     default:
       return "Electronic Electrical Assembler";
   }

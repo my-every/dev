@@ -120,6 +120,54 @@ export async function verifyPinInStandalone(
   return { valid: true, user: sanitizeIdentity(created) }
 }
 
+export async function createUserInStandalone(params: {
+  badge: string
+  legalName: string
+  role: UserRole
+  pin: string
+}): Promise<UserIdentity | null> {
+  const document = await readDocument()
+
+  // Reject duplicate badge
+  if (document.users.find(u => u.badge === params.badge)) {
+    return null
+  }
+
+  const now = new Date().toISOString()
+  const words = params.legalName.trim().split(/\s+/)
+  const initials = words.slice(0, 2).map(w => w[0]?.toUpperCase() ?? '').join('')
+  const preferredName = words[0] ?? params.badge
+
+  const newUser: UserIdentity = {
+    badge: params.badge,
+    pinHash: hashPin(params.pin, params.badge),
+    legalName: params.legalName.trim(),
+    preferredName,
+    initials,
+    role: params.role,
+    title: params.role.replace(/_/g, ' '),
+    avatarPath: null,
+    primaryLwc: 'NEW_FLEX',
+    currentShift: '1st',
+    email: null,
+    phone: null,
+    isActive: true,
+    requiresPinChange: false,
+    createdAt: now,
+    updatedAt: now,
+    skills: {
+      brandList: 0, branding: 0, buildUp: 0, wiring: 0,
+      wiringIpv: 0, boxBuild: 0, crossWire: 0, test: 0,
+      pwrCheck: 0, biq: 0, greenChange: 0,
+    },
+    yearsExperience: 0,
+  }
+
+  document.users.push(newUser)
+  await writeDocument(document)
+  return { ...newUser, pinHash: '' }
+}
+
 export async function updateUserPinInStandalone(
   badge: string,
   _currentPin: string | null | undefined,

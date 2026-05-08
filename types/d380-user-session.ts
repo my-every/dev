@@ -463,6 +463,20 @@ export const ROLE_DASHBOARD_CONFIGS: Record<UserRole, RoleDashboardConfig> = {
     showProjectBoard: true,
     showTeamRoster: true,
   },
+  ENGINEER: {
+    title: 'Engineer Dashboard',
+    subtitle: 'Engineering & technical overview',
+    widgets: [
+      { type: 'my_assignments', colSpan: 2 },
+      { type: 'quality_metrics', colSpan: 2 },
+      { type: 'project_board', colSpan: 4 },
+      { type: 'recent_activity', colSpan: 2 },
+      { type: 'notifications', colSpan: 2 },
+    ],
+    quickActions: ['VERIFY_STAGE', 'APPROVE_STAGE', 'ASSIGN_MEMBER'],
+    showProjectBoard: true,
+    showTeamRoster: false,
+  },
   TEAM_LEAD: {
     title: 'Team Lead Dashboard',
     subtitle: 'Team assignments',

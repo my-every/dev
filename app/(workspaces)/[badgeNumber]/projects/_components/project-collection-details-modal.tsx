@@ -2967,11 +2967,6 @@ export function ProjectCollectionDetailsModal({
                                                 </a>
                                               </Button>
                                             ) : null}
-                                            <Button asChild size="sm" variant="ghost" className="h-7 px-2 text-xs">
-                                              <a href={`/${badgeNumber}/projects/${encodeURIComponent(currentProject.id)}`}>
-                                                <ExternalLink className="h-3 w-3" />
-                                              </a>
-                                            </Button>
                                           </div>
                                         </TableCell>
                                       </TableRow>
@@ -3063,11 +3058,6 @@ export function ProjectCollectionDetailsModal({
                                             </a>
                                           </Button>
                                         ) : null}
-                                        <Button asChild size="sm" variant="ghost" className="h-7 px-2 text-xs">
-                                          <a href={`/${badgeNumber}/projects/${encodeURIComponent(currentProject.id)}`}>
-                                            <ExternalLink className="h-3 w-3" />
-                                          </a>
-                                        </Button>
                                       </div>
                                     </TableCell>
                                   </TableRow>
@@ -3497,15 +3487,7 @@ export function ProjectCollectionDetailsModal({
                   </div>
                 ) : null}
 
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
-                    <div className="text-sm font-semibold">
-                      Brand List Exports
-                    </div>
-                    <p className="text-xs text-card-foreground">
-                      Generate and export brand lists.
-                    </p>
-                  </div>
+                <div className="flex flex-wrap items-center justify-end gap-3">
                   <div className="flex items-center gap-2">
                     <Button
                       size="sm"
@@ -3737,9 +3719,7 @@ export function ProjectCollectionDetailsModal({
                                   <div className="text-sm font-medium text-foreground">
                                     {assignment.sheetName}
                                   </div>
-                                  <div className="font-mono text-xs text-card-foreground">
-                                    {assignment.sheetSlug}
-                                  </div>
+                                 
                                 </div>
                               </div>
                               <div className="flex shrink-0 items-center gap-2">
@@ -3858,13 +3838,7 @@ export function ProjectCollectionDetailsModal({
                     </div>
                   </div>
                 ) : null}
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <div className="text-sm font-semibold">Wire List Exports</div>
-                    <p className="text-xs text-card-foreground">
-                      Generate, review, and open wire list PDFs.
-                    </p>
-                  </div>
+                <div className="flex items-center justify-end gap-3">
                   <Button
                     size="sm"
                     variant="outline"
@@ -4033,9 +4007,7 @@ export function ProjectCollectionDetailsModal({
                                   <div className="text-sm font-medium text-foreground">
                                     {assignment.sheetName}
                                   </div>
-                                  <div className="font-mono text-xs text-card-foreground">
-                                    {assignment.sheetSlug}
-                                  </div>
+                                 
                                 </div>
                               </div>
                               <div className="flex shrink-0 items-center gap-2">
@@ -4144,26 +4116,14 @@ export function ProjectCollectionDetailsModal({
                       </span>
                     </div>
                     <div className="flex flex-col gap-0.5 border-l border-border py-1 pl-3">
-                      <span className="text-[11px] text-card-foreground">Visible</span>
-                      <span className="text-lg font-semibold text-foreground">
-                        {crossWireStats.visibleLocations}
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-0.5 border-l border-border py-1 pl-3">
                       <span className="text-[11px] text-card-foreground">Legal Revision</span>
                       <span className="font-mono text-sm font-semibold text-foreground">
                         {headerRevision}
                       </span>
                     </div>
-                    <div className="flex flex-col gap-0.5 border-t border-border py-1">
-                      <span className="text-[11px] text-card-foreground">Hidden</span>
-                      <span className="text-lg font-semibold text-foreground">
-                        {crossWireStats.hiddenLocations}
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-0.5 border-l border-t border-border py-1 pl-3">
+                    <div className="flex flex-col gap-0.5 border-l  border-border py-1 pl-3">
                       <span className="text-[11px] text-card-foreground">Generated</span>
-                      <span className="text-xs text-foreground">
+                      <span className="font-mono text-sm font-semibold text-foreground">
                         {formatDateValue(crossWireSchema?.generatedAt)}
                       </span>
                     </div>
@@ -4297,9 +4257,7 @@ export function ProjectCollectionDetailsModal({
                                   <div className="text-sm font-medium text-foreground">
                                     {assignment.sheetName}
                                   </div>
-                                  <div className="font-mono text-xs text-card-foreground">
-                                    {assignment.sheetSlug}
-                                  </div>
+                                 
                                 </div>
                               </div>
                               <div className="flex shrink-0 items-center gap-2">
