@@ -11,10 +11,22 @@ export const dynamic = "force-dynamic";
 
 export default async function CrossWirePrintPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ projectId: string }>;
+  searchParams: Promise<{ swapLocations?: string; swapSheets?: string }>;
 }) {
   const { projectId } = await params;
+  const resolvedSearchParams = await searchParams;
+  const swapAllLocations =
+    resolvedSearchParams.swapLocations === "1"
+    || resolvedSearchParams.swapLocations === "true";
+  const swapSheets = new Set(
+    String(resolvedSearchParams.swapSheets ?? "")
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean),
+  );
 
   const manifest = await readProjectManifest(projectId);
   if (!manifest) notFound();
@@ -80,7 +92,22 @@ export default async function CrossWirePrintPage({
       });
       if (externalGroups.length === 0) return null;
 
-      return { doc, externalGroups, unitType, sheetSlug };
+      const shouldSwapLocations = swapAllLocations || swapSheets.has(sheetSlug);
+      const renderedGroups = !shouldSwapLocations
+        ? externalGroups
+        : externalGroups.map((group) => ({
+          ...group,
+          subsections: group.subsections.map((subsection) => ({
+            ...subsection,
+            rows: subsection.rows.map((row) => ({
+              ...row,
+              fromLocation: row.toLocation || row.fromLocation || row.location || "",
+              toLocation: row.fromLocation || row.location || row.toLocation || "",
+            })),
+          })),
+        }));
+
+      return { doc, externalGroups: renderedGroups, unitType, sheetSlug };
     }),
   );
 

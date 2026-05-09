@@ -1,0 +1,91 @@
+{
+  "badge": "99999",
+  "shift": "1st",
+  "lastUpdated": "2026-05-08T21:19:38.972Z",
+  "activities": [
+    {
+      "id": "act_1778275178972_fk27z",
+      "timestamp": "2026-05-08T21:19:38.972Z",
+      "action": "STARTED",
+      "performedBy": "99999",
+      "metadata": {
+        "projectName": "STOCK 6",
+        "pdNumber": "ANG06",
+        "sheetName": "JB71 B,PNL CTRL1",
+        "workflow": "Build Up",
+        "before": {
+          "stage": "BUILD_UP",
+          "status": "NOT_STARTED"
+        },
+        "after": {
+          "status": "IN_PROGRESS"
+        }
+      },
+      "assignmentId": "jb71-b-pnl-ctrl1",
+      "projectId": "ang06-stock-6",
+      "stage": "BUILD_UP",
+      "result": "success"
+    },
+    {
+      "id": "act_1778275176521_p97qw",
+      "timestamp": "2026-05-08T21:19:36.521Z",
+      "action": "STAGE_CHANGED",
+      "performedBy": "99999",
+      "metadata": {
+        "projectName": "STOCK 6",
+        "pdNumber": "ANG06",
+        "sheetName": "JB71 B,PNL CTRL1",
+        "workflow": "Build Up",
+        "before": {
+          "stage": "READY_TO_LAY",
+          "status": "NOT_STARTED"
+        },
+        "after": {
+          "stage": "BUILD_UP"
+        },
+        "toStage": "Build Up",
+        "fromStage": "READY TO LAY"
+      },
+      "assignmentId": "jb71-b-pnl-ctrl1",
+      "projectId": "ang06-stock-6",
+      "stage": "BUILD_UP",
+      "result": "success"
+    },
+    {
+      "id": "act_1778273903254_fhe9t",
+      "timestamp": "2026-05-08T20:58:23.254Z",
+      "action": "STARTED",
+      "performedBy": "99999",
+      "metadata": {
+        "projectId": "ang06-stock-6",
+        "projectName": "STOCK 6",
+        "pdNumber": "ANG06",
+        "projectColor": "#10B981",
+        "workflow": "brandlist",
+        "milestone": "start",
+        "automatedFollowUps": []
+      },
+      "projectId": "ang06-stock-6",
+      "result": "success"
+    },
+    {
+      "id": "act_1778272977363_g5rnb",
+      "timestamp": "2026-05-08T20:42:57.363Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "99999",
+      "metadata": {
+        "source": "legal_instance_create",
+        "pdNumber": "ANG06",
+        "revision": "A.6_M.2"
+      },
+      "projectId": "ang06-stock-6",
+      "comment": "Created project instance from legal drawing (ANG06)",
+      "result": "success"
+    }
+  ],
+  "stats": {
+    "totalActions": 4,
+    "actionsToday": 4,
+    "lastActionTime": "2026-05-08T21:19:38.972Z"
+  }
+}

@@ -76,10 +76,9 @@ import { cn } from "@/lib/utils";
 import type { LegalProjectRecord } from "@/types/legal-drawings";
 import type { ProjectManifest } from "@/types/project-manifest";
 import { parseRevisionFromFilename } from "@/lib/revision/types";
-import { parseImportedBrandWorkbook } from "@/lib/wire-brand-list/import-workbook";
-import { validateWorkbookFile } from "@/lib/workbook/parse-workbook";
 import { LayoutPdfWorkspaceDialog } from "@/components/projects/layout-pdf-workspace-dialog";
 import { MultiWireListPrintWorkspaceDialog } from "@/components/projects/multi-wire-list-print-workspace-dialog";
+import { MultiSheetReviewModal } from "@/components/wire-list/multi-sheet-review-modal";
 
 import { ProjectIcon } from "./project-icon";
 import { AssignmentLabelDownloadButton } from "@/components/projects/assignment-label-download-button";
@@ -703,12 +702,14 @@ export function ProjectCollectionDetailsModal({
   const [crossWireSettingsMessage, setCrossWireSettingsMessage] = useState<
     string | null
   >(null);
-  const brandImportInputRef = useRef<HTMLInputElement | null>(null);
-  const [preparingBrandImport, setPreparingBrandImport] = useState(false);
+  const [crossWireSwapLocationsAll, setCrossWireSwapLocationsAll] = useState(false);
+  const [crossWireSwapLocationsBySheet, setCrossWireSwapLocationsBySheet] =
+    useState<Record<string, boolean>>({});
 
   const [layoutWorkspaceOpen, setLayoutWorkspaceOpen] = useState(false);
   const [wireReviewOpen, setWireReviewOpen] = useState(false);
-  const hasChildWorkflowOpen = layoutWorkspaceOpen || wireReviewOpen;
+  const [brandReviewOpen, setBrandReviewOpen] = useState(false);
+  const hasChildWorkflowOpen = layoutWorkspaceOpen || wireReviewOpen || brandReviewOpen;
   const collectionModalOpen = open && !hasChildWorkflowOpen;
 
   useEffect(() => {
@@ -762,11 +763,14 @@ export function ProjectCollectionDetailsModal({
       setExpandedCrossAssignments(new Set());
       setLayoutWorkspaceOpen(false);
       setWireReviewOpen(false);
+      setBrandReviewOpen(false);
       setCrossWireSettingsMatrix({});
       setCrossWireSchema(null);
       setHasLoadedCrossWireSchema(false);
       setSavingCrossWireSettingsBySheet({});
       setCrossWireSettingsMessage(null);
+      setCrossWireSwapLocationsAll(false);
+      setCrossWireSwapLocationsBySheet({});
       setSelectedAssignmentSlug(null);
       return;
     }
@@ -787,6 +791,8 @@ export function ProjectCollectionDetailsModal({
     setRegeneratingBrandBySheet({});
     setSavingCrossWireSettingsBySheet({});
     setCrossWireSettingsMessage(null);
+    setCrossWireSwapLocationsAll(false);
+    setCrossWireSwapLocationsBySheet({});
     setSchemaExternalLocations({});
     setResolvedVisibilityBySheet({});
     setRefreshJob(null);
@@ -797,6 +803,7 @@ export function ProjectCollectionDetailsModal({
     setRevisionNameTouched(false);
     setLayoutWorkspaceOpen(false);
     setWireReviewOpen(false);
+    setBrandReviewOpen(false);
     setCrossWireSettingsMatrix({});
     setCrossWireSchema(null);
     setHasLoadedCrossWireSchema(false);
@@ -838,6 +845,35 @@ export function ProjectCollectionDetailsModal({
       ) ?? null,
     [assignmentEntries, selectedAssignmentSlug],
   );
+
+  const selectedCrossWireSwapSheetSlugs = useMemo(
+    () =>
+      Object.entries(crossWireSwapLocationsBySheet)
+        .filter(([, checked]) => checked)
+        .map(([sheetSlug]) => sheetSlug),
+    [crossWireSwapLocationsBySheet],
+  );
+
+  const crossWirePreviewHref = useMemo(() => {
+    const baseHref = `/print/project-context/${encodeURIComponent(currentProject?.id ?? "")}/cross-wire`;
+    if (!currentProject?.id) {
+      return baseHref;
+    }
+
+    const params = new URLSearchParams();
+    if (crossWireSwapLocationsAll) {
+      params.set("swapLocations", "1");
+    } else if (selectedCrossWireSwapSheetSlugs.length > 0) {
+      params.set("swapSheets", selectedCrossWireSwapSheetSlugs.join(","));
+    }
+
+    const query = params.toString();
+    return query ? `${baseHref}?${query}` : baseHref;
+  }, [
+    crossWireSwapLocationsAll,
+    currentProject?.id,
+    selectedCrossWireSwapSheetSlugs,
+  ]);
 
   const latestLegalRevisionRecord = useMemo(() => {
     if (!legalDetail?.revisions?.length) {
@@ -913,83 +949,6 @@ export function ProjectCollectionDetailsModal({
     revisionNameTouched,
     workbookFile,
   ]);
-
-  const handleBrandImportFileSelection = useCallback(async (file: File | null) => {
-    if (!currentProject?.id || !file) {
-      return;
-    }
-
-    const validation = validateWorkbookFile(file);
-    if (!validation.isValid) {
-      toast({
-        title: "Invalid workbook",
-        description: validation.error,
-        duration: 3500,
-      });
-      return;
-    }
-
-    setPreparingBrandImport(true);
-    try {
-      const importedSheets = await parseImportedBrandWorkbook(file);
-      const prepareResponse = await fetch(
-        `/api/projects/${encodeURIComponent(currentProject.id)}/multi-sheet-print/import`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            action: "prepare",
-            workbookFileName: file.name,
-            importedSheets,
-          }),
-        },
-      );
-
-      const preparePayload = (await prepareResponse.json().catch(() => ({}))) as {
-        importSession?: Record<string, unknown>;
-        error?: string;
-      };
-
-      if (!prepareResponse.ok || !preparePayload.importSession) {
-        throw new Error(
-          preparePayload.error || "Failed to prepare brand list comparison.",
-        );
-      }
-
-      const sessionResponse = await fetch(
-        `/api/projects/${encodeURIComponent(currentProject.id)}/multi-sheet-print/session`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            entryMode: "import-review",
-            importSession: preparePayload.importSession,
-          }),
-        },
-      );
-
-      if (!sessionResponse.ok) {
-        throw new Error("Failed to persist brand list import session.");
-      }
-
-      const returnTo = `/${badgeNumber}/projects?openProjectId=${encodeURIComponent(currentProject.id)}`;
-      onOpenChange(false);
-      router.push(
-        `/${badgeNumber}/projects/${encodeURIComponent(currentProject.id)}/brand-list-import?returnTo=${encodeURIComponent(returnTo)}`,
-      );
-    } catch (error) {
-      toast({
-        title: "Import failed",
-        description:
-          error instanceof Error
-            ? error.message
-            : "Unable to prepare brand list comparison.",
-        duration: 4000,
-      });
-    } finally {
-      setPreparingBrandImport(false);
-    }
-  }, [badgeNumber, currentProject?.id, onOpenChange, router, toast]);
 
   const clearBrandImportSession = useCallback(async () => {
     if (!projectState?.id) return;
@@ -2244,6 +2203,21 @@ export function ProjectCollectionDetailsModal({
 
   if (!currentProject) return null;
 
+  const handleCrossWireSwapBySheet = (sheetSlug: string, checked: boolean) => {
+    setCrossWireSwapLocationsBySheet((previous) => ({
+      ...previous,
+      [sheetSlug]: checked,
+    }));
+  };
+
+  const setAllCrossWireSwapBySheet = (checked: boolean) => {
+    const next: Record<string, boolean> = {};
+    for (const assignment of assignmentEntries) {
+      next[assignment.sheetSlug] = checked;
+    }
+    setCrossWireSwapLocationsBySheet(next);
+  };
+
   const openLayoutWorkspace = () => {
     setLayoutWorkspaceOpen(true);
     setWireReviewOpen(false);
@@ -2254,7 +2228,11 @@ export function ProjectCollectionDetailsModal({
   };
 
   const openBrandImportReview = () => {
-    brandImportInputRef.current?.click();
+    setBrandReviewOpen(true);
+  };
+
+  const openBrandListApprovalEditor = () => {
+    setBrandReviewOpen(true);
   };
 
   const openPrintWorkspace = () => {
@@ -2802,6 +2780,15 @@ export function ProjectCollectionDetailsModal({
                         >
                           <Layers className="h-3.5 w-3.5" />
                           Open Multi-Sheet Workspace
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="justify-start gap-2"
+                          onClick={openBrandListApprovalEditor}
+                        >
+                          <FileSpreadsheet className="h-3.5 w-3.5" />
+                          Open Brand List Approval Editor
                         </Button>
                         <Button
                           size="sm"
@@ -3494,29 +3481,10 @@ export function ProjectCollectionDetailsModal({
                       variant="outline"
                       className="gap-1.5"
                       onClick={openBrandImportReview}
-                      disabled={preparingBrandImport}
                     >
-                      {preparingBrandImport ? (
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                      ) : (
-                        <Upload className="h-3.5 w-3.5" />
-                      )}
+                      <Upload className="h-3.5 w-3.5" />
                       Import &amp; Merge Brand List
                     </Button>
-                    <input
-                      ref={brandImportInputRef}
-                      type="file"
-                      accept=".xlsx,.xls,.xlsm,.xlsb"
-                      className="hidden"
-                      onClick={(event) => {
-                        (event.currentTarget as HTMLInputElement).value = "";
-                      }}
-                      onChange={(event) => {
-                        void handleBrandImportFileSelection(
-                          event.target.files?.[0] ?? null,
-                        );
-                      }}
-                    />
                     <Button
                       size="sm"
                       variant="outline"
@@ -4160,7 +4128,7 @@ export function ProjectCollectionDetailsModal({
                         PDF
                       </a>
                       <a
-                        href={`/print/project-context/${encodeURIComponent(currentProject.id)}/cross-wire`}
+                        href={crossWirePreviewHref}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex h-8 items-center gap-1.5 rounded-md border border-input bg-background px-3 text-xs font-medium text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
@@ -4169,6 +4137,64 @@ export function ProjectCollectionDetailsModal({
                         Open External URL
                       </a>
                     </div>
+                  </div>
+
+                  <div className="space-y-2 rounded-lg border border-border/60 bg-card/20 px-3 py-2">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <div className="text-xs font-semibold text-foreground">Swap From/To Locations</div>
+                        <p className="text-[11px] text-card-foreground">
+                          Choose all assignments or set swapped columns individually per sheet.
+                        </p>
+                      </div>
+                      <Switch
+                        checked={crossWireSwapLocationsAll}
+                        onCheckedChange={setCrossWireSwapLocationsAll}
+                        aria-label="Toggle swapped cross wire locations for all assignments"
+                      />
+                    </div>
+
+                    {!crossWireSwapLocationsAll ? (
+                      <>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            className="h-7 px-2 text-[11px]"
+                            onClick={() => setAllCrossWireSwapBySheet(true)}
+                          >
+                            Set all
+                          </Button>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            className="h-7 px-2 text-[11px]"
+                            onClick={() => setAllCrossWireSwapBySheet(false)}
+                          >
+                            Clear all
+                          </Button>
+                        </div>
+                        <div className="grid gap-1 sm:grid-cols-2">
+                          {assignmentEntries.map((assignment) => (
+                            <label
+                              key={`swap-${assignment.sheetSlug}`}
+                              className="flex items-center justify-between rounded border border-border/60 px-2 py-1.5 text-xs"
+                            >
+                              <span className="truncate">{assignment.sheetName}</span>
+                              <Switch
+                                checked={crossWireSwapLocationsBySheet[assignment.sheetSlug] ?? false}
+                                onCheckedChange={(checked) =>
+                                  handleCrossWireSwapBySheet(assignment.sheetSlug, checked)
+                                }
+                                aria-label={`Toggle swapped locations for ${assignment.sheetName}`}
+                              />
+                            </label>
+                          ))}
+                        </div>
+                      </>
+                    ) : null}
                   </div>
 
                   {crossWireSettingsMessage ? (
@@ -4390,6 +4416,20 @@ export function ProjectCollectionDetailsModal({
             void refreshWireExports();
           }
         }}
+      />
+
+      <MultiSheetReviewModal
+        projectId={currentProject.id}
+        open={brandReviewOpen}
+        onOpenChange={(nextOpen) => {
+          setBrandReviewOpen(nextOpen);
+          if (!nextOpen) {
+            void refreshBrandingExports();
+          }
+        }}
+        showTrigger={false}
+        title="Brand List Approval Editor"
+        combineLabel="Combine Brand List"
       />
 
       <LayoutPdfWorkspaceDialog

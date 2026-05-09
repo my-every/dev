@@ -76,6 +76,8 @@ interface MultiSheetReviewWorkspaceShellProps {
   onApprove: () => void;
   onUnapprove: () => void;
   onCombine: () => void;
+  disabled?: boolean;
+  busyMessage?: string;
 }
 
 function getSwsAccentColor(swsType?: string | null) {
@@ -132,6 +134,8 @@ export function MultiSheetReviewWorkspaceShell({
   onApprove,
   onUnapprove,
   onCombine,
+  disabled = false,
+  busyMessage = "Preparing workspace...",
 }: MultiSheetReviewWorkspaceShellProps) {
   const layoutWorkspaceEndpoint = projectId
     ? `/api/projects/${encodeURIComponent(projectId)}/layout-pdf`
@@ -162,7 +166,8 @@ export function MultiSheetReviewWorkspaceShell({
     (activeSlug ? !pendingBrandSchemaSlugs.includes(activeSlug) : false);
 
   return (
-    <>
+    <div className="relative h-full" aria-busy={disabled}>
+      <div className={disabled ? "pointer-events-none select-none opacity-60" : ""}>
       <MultiSheetReviewNavigatorRail
         items={items}
         isAuthenticated={isAuthenticated}
@@ -268,6 +273,14 @@ export function MultiSheetReviewWorkspaceShell({
         onUnapprove={onUnapprove}
         onCombine={onCombine}
       />
-    </>
+      </div>
+      {disabled ? (
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-background/70 backdrop-blur-[1px]">
+          <div className="rounded-md border border-border/70 bg-card px-3 py-2 text-sm text-muted-foreground">
+            {busyMessage}
+          </div>
+        </div>
+      ) : null}
+    </div>
   );
 }

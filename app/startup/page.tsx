@@ -7,7 +7,6 @@ interface StartupPageProps {
 }
 
 export default async function StartupPage({ searchParams }: StartupPageProps) {
-  const params = await searchParams
-  const revisit = params.revisit === '1'
-  return <FirstLaunchModeSelector allowRevisit={revisit} />
+
+  return <FirstLaunchModeSelector allowRevisit/>
 }

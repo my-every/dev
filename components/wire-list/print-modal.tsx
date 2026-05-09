@@ -351,8 +351,8 @@ const DEFAULT_SECTION_COLUMNS: SectionColumnVisibility = {
   wireId: true,
   wireType: false,
   gaugeSize: true,
-  fromLocation: false,
-  toLocation: false,
+  fromLocation: true,
+  toLocation: true,
   swapFromTo: false,
 };
 
@@ -2357,7 +2357,7 @@ function PrintTableRow({
         </td>
       )}
       {showFromLocation && (
-        <td className="px-1.5 py-0 text-[11px] font-medium">{displayEndpoints.fromLocation || currentSheetName || "-"}</td>
+        <td className="w-[120px] px-1.5 py-0 text-[11px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{displayEndpoints.fromLocation || currentSheetName || "-"}</td>
       )}
       {showPartNumber && (
         <td className="px-1.5 py-0 text-[11px] font-medium text-muted-foreground">{fromReference?.partNumber || ""}</td>
@@ -2411,7 +2411,7 @@ function PrintTableRow({
         <td className="px-1.5 py-0 text-[11px] text-muted-foreground">{toReference?.description || ""}</td>
       )}
       {showToLocation && (
-        <td className="px-1.5 py-0 text-[11px] font-medium">{displayEndpoints.toLocation || currentSheetName || "-"}</td>
+        <td className="w-[120px] px-1.5 py-0 text-[11px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{displayEndpoints.toLocation || currentSheetName || "-"}</td>
       )}
       {showIPV && (
         <td className="px-1.5 py-0 w-5 text-center">
@@ -2533,8 +2533,8 @@ function PrintPreviewTable({
   const showWireId = sectionColumns.wireId;
   const showWireType = sectionColumns.wireType;
   const showGaugeSize = sectionColumns.gaugeSize;
-  const showFromLocation = sectionColumns.fromLocation ?? false;
-  const showToLocation = sectionColumns.toLocation ?? true;
+  const showFromLocation = true;
+  const showToLocation = true;
   const swapFromTo = sectionColumns.swapFromTo ?? false;
   const preserveSequentialRunOrder = shouldPreservePrintSubsectionOrder(sectionKind);
   const wireListSortMode = settings.wireListSortMode;
@@ -2745,7 +2745,7 @@ function PrintPreviewTable({
   const toColSpan = (showToCheckbox ? 1 : 0) + toBaseCount + (showIPV ? 1 : 0) + (showComments ? 1 : 0) + (showEstTime ? 1 : 0);
 
   return (
-    <table className="w-full border-collapse rounded-sm overflow-hidden border border-foreground/30 text-[11px]">
+    <table className="w-full table-fixed border-collapse rounded-sm overflow-hidden border border-foreground/30 text-[11px]">
       <thead className="bg-muted/80" style={{ display: 'table-header-group' }}>
         {/* Group header row: From | Length (optional) | To */}
         <tr className="border-b border-foreground/10">
@@ -2777,7 +2777,7 @@ function PrintPreviewTable({
             <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Est.</th>
           )}
           {showFromLocation && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Location</th>
+            <th className="w-[120px] px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Location</th>
           )}
           {showPartNumberColumn && (
             <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Part No</th>
@@ -2815,7 +2815,7 @@ function PrintPreviewTable({
             <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Desc</th>
           )}
           {showToLocation && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Location</th>
+            <th className="w-[120px] px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Location</th>
           )}
           {showIPV && (
             <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">IPV</th>
@@ -5677,7 +5677,7 @@ export function SingleSheetPrintWorkspace({
                                           )}
                                         </Button>
                                         {/* Swap From/To for all subsections in this group */}
-                                        {!isLocationHidden && settings.mode === "standardize" && (
+                                        {!isLocationHidden && settings.mode === "standardize" && printViewTab === "cross-wire" && (
                                           (() => {
                                             const allSwapped = group.subsections.every((sub) => {
                                               const cols = getEffectiveSectionColumns(settings.sectionColumnVisibility, sub.label, sub.sectionKind);
@@ -5829,7 +5829,7 @@ export function SingleSheetPrintWorkspace({
                                                   >
                                                     {settings.mode === "branding" ? "Gauge" : "Size"}
                                                   </DropdownMenuCheckboxItem>
-                                                  {settings.mode !== "branding" && (
+                                                  {settings.mode !== "branding" && printViewTab === "cross-wire" && (
                                                     <DropdownMenuCheckboxItem
                                                       checked={sectionColumns.fromLocation ?? false}
                                                       onCheckedChange={(checked) => updateSectionColumnVisibility(
@@ -5842,7 +5842,7 @@ export function SingleSheetPrintWorkspace({
                                                       From Location
                                                     </DropdownMenuCheckboxItem>
                                                   )}
-                                                  {settings.mode !== "branding" && (
+                                                  {settings.mode !== "branding" && printViewTab === "cross-wire" && (
                                                     <DropdownMenuCheckboxItem
                                                       checked={sectionColumns.toLocation ?? true}
                                                       onCheckedChange={(checked) => updateSectionColumnVisibility(
@@ -5855,18 +5855,22 @@ export function SingleSheetPrintWorkspace({
                                                       To Location
                                                     </DropdownMenuCheckboxItem>
                                                   )}
-                                                  <DropdownMenuSeparator />
-                                                  <DropdownMenuCheckboxItem
-                                                    checked={sectionColumns.swapFromTo ?? false}
-                                                    onCheckedChange={(checked) => updateSectionColumnVisibility(
-                                                      subsection.label,
-                                                      subsection.sectionKind,
-                                                      "swapFromTo",
-                                                      Boolean(checked),
-                                                    )}
-                                                  >
-                                                    Swap From / To
-                                                  </DropdownMenuCheckboxItem>
+                                                  {printViewTab === "cross-wire" ? (
+                                                    <>
+                                                      <DropdownMenuSeparator />
+                                                      <DropdownMenuCheckboxItem
+                                                        checked={sectionColumns.swapFromTo ?? false}
+                                                        onCheckedChange={(checked) => updateSectionColumnVisibility(
+                                                          subsection.label,
+                                                          subsection.sectionKind,
+                                                          "swapFromTo",
+                                                          Boolean(checked),
+                                                        )}
+                                                      >
+                                                        Swap From / To
+                                                      </DropdownMenuCheckboxItem>
+                                                    </>
+                                                  ) : null}
                                                   <DropdownMenuSeparator />
                                                   <DropdownMenuItem
                                                     onClick={() => resetSectionColumnVisibility(subsection.label, subsection.sectionKind)}

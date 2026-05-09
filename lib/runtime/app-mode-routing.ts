@@ -17,8 +17,8 @@ export function getPostLaunchRouteForMode(mode: AppLaunchMode, badge?: string): 
       // Workspace-only mode: land on the 380 board / launcher page.
       return '/380'
     case 'STANDALONE_TOOL':
-      // Standalone utility mode: open the parts catalogue as the entry point.
-      return '/parts'
+      // Standalone utility mode: open the standalone build tool entry point.
+      return '/standalone'
     default:
       return '/380'
   }
