@@ -41,6 +41,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useProjectContext } from "@/contexts/project-context";
+import { useToast } from "@/hooks/use-toast";
 import type { ProjectManifest } from "@/types/project-manifest";
 import { useLayoutUI } from "@/components/layout/layout-context";
 import { LWC_TYPE_REGISTRY } from "@/lib/workbook/types";
@@ -72,9 +73,11 @@ interface DashboardProjectCardProps {
     isSelected: boolean;
     onSelect: () => void;
     index: number;
+    onDelete?: (e: React.MouseEvent) => void;
+    isDeleting?: boolean;
 }
 
-function DashboardProjectCard({ project, isSelected, onSelect, index }: DashboardProjectCardProps) {
+function DashboardProjectCard({ project, isSelected, onSelect, index, onDelete, isDeleting }: DashboardProjectCardProps) {
     const sheetCount = project.sheets.length;
     const operationalCount = project.sheets.filter(s => s.kind === "operational").length;
     const referenceCount = project.sheets.filter(s => s.kind === "reference").length;
@@ -152,6 +155,17 @@ function DashboardProjectCard({ project, isSelected, onSelect, index }: Dashboar
                                 </div>
                             </div>
                         </div>
+                        {onDelete && (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={onDelete}
+                                disabled={isDeleting}
+                                className="h-7 w-7 p-0 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                            >
+                                <Trash2 className={`h-3.5 w-3.5 ${isDeleting ? "animate-pulse" : ""}`} />
+                            </Button>
+                        )}
                     </div>
                 </CardHeader>
                 <CardContent className="pt-0 pb-2 px-4">
@@ -360,12 +374,14 @@ export function DashboardProjectsGrid({
     selectedProjectId,
     activeSubItem = "overview",
 }: DashboardProjectsGridProps) {
-    const { allProjects, isLoading } = useProjectContext();
+    const { allProjects, isLoading, refreshProjects } = useProjectContext();
     const { openAside, closeAside, isAsideOpen } = useLayoutUI();
+    const { toast } = useToast();
 
     const [searchQuery, setSearchQuery] = useState("");
     const [sortBy, setSortBy] = useState<"recent" | "name" | "sheets">("recent");
     const [viewMode, setViewMode] = useState<"grid" | "kanban">("grid");
+    const [deletingProjectId, setDeletingProjectId] = useState<string | null>(null);
 
     const filteredProjects = useMemo(() => {
         let projects = [...allProjects];
@@ -416,7 +432,7 @@ export function DashboardProjectsGrid({
         }
     }, [filteredProjects, activeSubItem]);
 
-    const handleSelect = useCallback((project: ProjectManifest) => {
+const handleSelect = useCallback((project: ProjectManifest) => {
         if (selectedProjectId === project.id && isAsideOpen) {
             onSelectProject?.(null);
             closeAside();
@@ -425,6 +441,46 @@ export function DashboardProjectsGrid({
         onSelectProject?.(project);
         openAside();
     }, [onSelectProject, selectedProjectId, isAsideOpen, openAside, closeAside]);
+
+    const handleDeleteProject = useCallback(async (project: ProjectManifest, e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (deletingProjectId) return;
+
+        const confirmed = window.confirm(
+            `Are you sure you want to delete "${project.name}"? This cannot be undone.`
+        );
+        if (!confirmed) return;
+
+        setDeletingProjectId(project.id);
+        try {
+            const response = await fetch(`/api/projects/${encodeURIComponent(project.id)}`, {
+                method: "DELETE",
+            });
+            const payload = await response.json().catch(() => ({})) as { error?: string };
+            if (!response.ok) {
+                throw new Error(payload.error || `Could not delete ${project.name}.`);
+            }
+            await refreshProjects();
+            if (selectedProjectId === project.id) {
+                onSelectProject?.(null);
+                closeAside();
+            }
+            toast({
+                title: "Project deleted",
+                description: `${project.name} has been removed.`,
+                duration: 3000,
+            });
+        } catch (error) {
+            toast({
+                title: "Delete failed",
+                description: error instanceof Error ? error.message : `Could not delete ${project.name}.`,
+                variant: "destructive",
+                duration: 4000,
+            });
+        } finally {
+            setDeletingProjectId(null);
+        }
+    }, [deletingProjectId, refreshProjects, selectedProjectId, onSelectProject, closeAside, toast]);
 
     if (isLoading) {
         return (
@@ -608,7 +664,7 @@ export function DashboardProjectsGrid({
                                     {lwcProjects.length === 0 ? (
                                         <div className="text-center py-6 text-muted-foreground text-xs">No projects</div>
                                     ) : (
-                                        <AnimatePresence mode="popLayout">
+<AnimatePresence mode="popLayout">
                                             {lwcProjects.map((project, index) => (
                                                 <DashboardProjectCard
                                                     key={project.id}
@@ -616,6 +672,8 @@ export function DashboardProjectsGrid({
                                                     isSelected={project.id === selectedProjectId}
                                                     onSelect={() => handleSelect(project)}
                                                     index={index}
+                                                    onDelete={(e) => void handleDeleteProject(project, e)}
+                                                    isDeleting={deletingProjectId === project.id}
                                                 />
                                             ))}
                                         </AnimatePresence>
@@ -626,7 +684,7 @@ export function DashboardProjectsGrid({
                     })}
                 </div>
             ) : (
-                /* Grid View */
+/* Grid View */
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     <AnimatePresence mode="popLayout">
                         {subViewProjects.map((project, index) => (
@@ -636,6 +694,8 @@ export function DashboardProjectsGrid({
                                 isSelected={project.id === selectedProjectId}
                                 onSelect={() => handleSelect(project)}
                                 index={index}
+                                onDelete={(e) => void handleDeleteProject(project, e)}
+                                isDeleting={deletingProjectId === project.id}
                             />
                         ))}
                     </AnimatePresence>

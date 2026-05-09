@@ -840,6 +840,24 @@ export async function getLegalProjectRecord(pdNumber: string) {
   return buildProjectRecord(projectRoot, pdNumber.trim().toUpperCase())
 }
 
+/**
+ * Deletes a legal drawings project folder and all its revisions from the library.
+ * Returns true if the project was found and deleted, false if it didn't exist.
+ */
+export async function deleteLegalProject(pdNumber: string): Promise<boolean> {
+  const legalRoot = await getLegalDrawingsRoot()
+  const normalizedPd = pdNumber.trim().toUpperCase()
+  const projectRoot = path.join(legalRoot, normalizedPd)
+
+  if (!(await pathExists(projectRoot))) {
+    return false
+  }
+
+  await fs.rm(projectRoot, { recursive: true, force: true })
+  invalidateLegalDrawingsLibraryManifestCache()
+  return true
+}
+
 function resolveSourceRoot(explicitSourceRoot?: string | null) {
   const sourceRoot = explicitSourceRoot?.trim() || process.env.LEGAL_DRAWINGS_SOURCE_DIR?.trim() || ''
   return sourceRoot || null

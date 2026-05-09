@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { getLegalProjectRecord, patchLegalProjectMeta } from '@/lib/legal-drawings/library'
+import { getLegalProjectRecord, patchLegalProjectMeta, deleteLegalProject } from '@/lib/legal-drawings/library'
 
 export const dynamic = 'force-dynamic'
 
@@ -47,6 +47,25 @@ export async function PATCH(
     if (message.includes('not found')) {
       return NextResponse.json({ error: message }, { status: 404 })
     }
+    return NextResponse.json({ error: message }, { status: 500 })
+  }
+}
+
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ pdNumber: string }> },
+) {
+  const { pdNumber } = await params
+
+  try {
+    const deleted = await deleteLegalProject(pdNumber)
+    if (!deleted) {
+      return NextResponse.json({ error: 'Legal project not found' }, { status: 404 })
+    }
+    return NextResponse.json({ success: true, pdNumber })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error'
+    console.error(`[legal-drawings/${pdNumber}] DELETE failed`, err)
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }
