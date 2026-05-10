@@ -36,7 +36,7 @@ import {
 } from "./project-grouped-accordion";
 import { ProjectNavCard } from "./project-nav-card";
 import { LegalsDetailModal } from "./legals-detail-modal";
-import { ProjectCollectionDetailsModal } from "./project-collection-details-modal";
+
 import type { ProjectManifest } from "@/types/project-manifest";
 
 // ─── Priority rank circle ─────────────────────────────────────────────────────
@@ -195,8 +195,6 @@ export function ProjectsSidePanelNav({
   const [searchValue, setSearchValue] = useState("");
   const [selectedMonth, setSelectedMonth] = useState<string>("all");
   const [selectedLegal, setSelectedLegal] = useState<DueProjectNavItem | null>(null);
-  const [selectedPriorityProjectId, setSelectedPriorityProjectId] = useState<string | null>(null);
-  const [selectedPriorityProject, setSelectedPriorityProject] = useState<ProjectManifest | null>(null);
   const [priorityEditMode, setPriorityEditMode] = useState(false);
   const [prioritySaveBusy, setPrioritySaveBusy] = useState(false);
   const [manualPriorityOrder, setManualPriorityOrder] = useState<string[]>([]);
@@ -344,12 +342,12 @@ export function ProjectsSidePanelNav({
       const canMoveDown = globalIdx >= 0 && globalIdx < orderedPriorityProjects.length - 1;
 
       return (
-        <ProjectNavCard
-          project={{ ...project, href: null }}
-          onClick={() => {
-            if (priorityEditMode) return;
-            setSelectedPriorityProjectId(project.id);
-          }}
+  <ProjectNavCard
+  project={{ ...project, href: `/${data?.badgeNumber}/projects/${encodeURIComponent(project.id)}` }}
+  onClick={() => {
+  if (priorityEditMode) return;
+  // Navigate to project page instead of opening modal
+  }}
           leading={<PriorityRankCircle rank={rank ?? 0} color={project.color} />}
           trailing={
             priorityEditMode ? (
@@ -441,17 +439,7 @@ export function ProjectsSidePanelNav({
         onOpenChange={(open) => { if (!open) setSelectedLegal(null); }}
         project={selectedLegal}
       />
-      <ProjectCollectionDetailsModal
-        open={selectedPriorityProjectId !== null}
-        onOpenChange={(open) => {
-          if (!open) {
-            setSelectedPriorityProjectId(null);
-            setSelectedPriorityProject(null);
-          }
-        }}
-        badgeNumber={data?.badgeNumber ?? ""}
-        project={selectedPriorityProject}
-      />
+
       <WorkspaceSidePanelHeader
         mode={mode}
         title="Projects"

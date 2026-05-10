@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Bell,
   BellRing,
@@ -27,9 +28,7 @@ import type {
 } from "@/lib/wire-brand-list/multi-sheet-review";
 import type { ProjectManifest } from "@/types/project-manifest";
 import type { LwcType, ProjectModel } from "@/lib/workbook/types";
-import { ProjectCollectionDetailsModal } from "@/app/(workspaces)/[badgeNumber]/projects/_components/project-collection-details-modal";
-
-const BADGE_NUMBER_FOR_MODAL = "380";
+const BADGE_NUMBER = "380";
 
 const COLOR_PRESETS = [
   "#ffcc61",
@@ -94,8 +93,8 @@ function StandaloneBackgroundBuildPage() {
     progress: 0,
   });
 
+  const router = useRouter();
   const [createdProject, setCreatedProject] = useState<ProjectManifest | null>(null);
-  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   const [notificationGranted, setNotificationGranted] = useState(
     typeof window !== "undefined" && "Notification" in window
       ? Notification.permission === "granted"
@@ -400,8 +399,8 @@ function StandaloneBackgroundBuildPage() {
     if (card.status !== "ready" || !createdProject) {
       return;
     }
-    setDetailsModalOpen(true);
-  }, [card.status, createdProject]);
+    router.push(`/${BADGE_NUMBER}/projects/${encodeURIComponent(createdProject.id)}`);
+  }, [card.status, createdProject, router]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -603,12 +602,7 @@ function StandaloneBackgroundBuildPage() {
         </section>
       </main>
 
-      <ProjectCollectionDetailsModal
-        open={detailsModalOpen}
-        onOpenChange={setDetailsModalOpen}
-        badgeNumber={BADGE_NUMBER_FOR_MODAL}
-        project={createdProject}
-      />
+
     </div>
   );
 }
