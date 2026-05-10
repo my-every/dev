@@ -150,6 +150,16 @@ interface RevisionRefreshJob {
   error?: string;
 }
 
+function buildExportFileHref(projectId: string, relativePath: string): string {
+  const normalized = relativePath.replace(/^exports\//, "");
+  const segments = normalized
+    .split("/")
+    .filter(Boolean)
+    .map(encodeURIComponent)
+    .join("/");
+  return `/api/projects/${encodeURIComponent(projectId)}/exports/files/${segments}?download=1`;
+}
+
 // ─── Scrollspy Section Definitions ────────────────────────────────────────────
 
 interface ScrollspySection {
@@ -583,6 +593,38 @@ export function ProjectDetailsWorkspace({
     return Object.values(schemaExternalLocations).some((locs) => locs.length > 0);
   }, [schemaExternalLocations]);
 
+  const assignmentGroups = useMemo(() => {
+    if (assignmentGroupMode !== "unit-type") return null;
+    const groups = new Map<string, typeof assignmentEntries>();
+    for (const assignment of assignmentEntries) {
+      const key = assignment.unitType || "Unknown";
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key)!.push(assignment);
+    }
+    return Array.from(groups.entries()).sort(([a], [b]) => a.localeCompare(b));
+  }, [assignmentEntries, assignmentGroupMode]);
+
+  const latestLegalRevisionRecord = useMemo(() => {
+    if (!legalDetail?.revisions?.length) return null;
+    return (
+      legalDetail.revisions.find(
+        (revision) => revision.revision === legalDetail.latestRevision,
+      ) ??
+      [...legalDetail.revisions].sort((left, right) =>
+        right.revision.localeCompare(left.revision),
+      )[0]
+    );
+  }, [legalDetail]);
+
+  function deriveRevisionLabelFromFiles(files: (File | null | undefined)[]): string | null {
+    for (const file of files) {
+      if (!file) continue;
+      const parsed = parseRevisionFromFilename(file.name);
+      if (parsed) return parsed;
+    }
+    return null;
+  }
+
   // ─── Edit Mode Handlers ─────────────────────────────────────────────────────
 
   const enterEditMode = useCallback(() => {
@@ -653,6 +695,143 @@ export function ProjectDetailsWorkspace({
   const openLayoutWorkspace = useCallback(() => {
     setLayoutWorkspaceOpen(true);
   }, []);
+
+  // Stable project ID ref — avoids recreating updateAssignment on every state change.
+  const projectIdRef = useRef<string | null>(null);
+  if (project?.id) projectIdRef.current = project.id;
+
+  const updateAssignment = useCallback(
+    async (sheetSlug: string, patch: { stage?: string; status?: string }) => {
+      const pId = projectIdRef.current;
+      if (!pId) return;
+      const res = await fetch(
+        `/api/projects/${encodeURIComponent(pId)}/assignments/${encodeURIComponent(sheetSlug)}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "x-badge-number": badgeNumber,
+            "x-shift": "1st",
+          },
+          body: JSON.stringify(patch),
+        },
+      );
+      if (res.ok) {
+        const updated = await res.json();
+        setProject((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            assignments: {
+              ...prev.assignments,
+              [sheetSlug]: {
+                ...(prev.assignments?.[sheetSlug] ?? {}),
+                ...updated.assignment,
+              },
+            },
+          };
+        });
+      }
+    },
+    [badgeNumber],
+  );
+
+  // ─── Legals Upload Handler ──────────────────────────────────────────────────
+
+  const handleUploadLegals = useCallback(async () => {
+    if (!project?.id) return;
+
+    if (!workbookFile && !greenChangesFile && !layoutFile) {
+      setLegalsMessage("Select a UCP wire list, green changes workbook, or layout PDF first.");
+      return;
+    }
+
+    setUploadingLegals(true);
+    setLegalsMessage(null);
+    try {
+      const formData = new FormData();
+      formData.set("pdNumber", project.pdNumber);
+      const computedRevision = deriveRevisionLabelFromFiles([
+        workbookFile,
+        greenChangesFile,
+        layoutFile,
+      ]);
+      const effectiveRevisionName = revisionNameDraft.trim() || computedRevision || project.revision;
+      if (effectiveRevisionName) {
+        formData.set("revisionName", effectiveRevisionName);
+      }
+      if (workbookFile) formData.set("workbook", workbookFile);
+      if (greenChangesFile) formData.set("greenChanges", greenChangesFile);
+      if (layoutFile) formData.set("layout", layoutFile);
+
+      const response = await fetch(
+        `/api/projects/revisions/${encodeURIComponent(project.id)}/files?async=1`,
+        {
+          method: "POST",
+          headers: {
+            "x-badge-number": badgeNumber,
+            "x-shift": "1st",
+          },
+          body: formData,
+        },
+      );
+      const payload = (await response.json().catch(() => ({}))) as {
+        error?: string;
+        refreshJob?: RevisionRefreshJob;
+      };
+
+      if (!response.ok) {
+        setLegalsMessage(payload.error || "Failed to upload legal files.");
+        return;
+      }
+
+      setWorkbookFile(null);
+      setGreenChangesFile(null);
+      setLayoutFile(null);
+      setRevisionNameDraft("");
+      setRevisionNameTouched(false);
+      if (workbookInputRef.current) workbookInputRef.current.value = "";
+      if (greenChangesInputRef.current) greenChangesInputRef.current.value = "";
+      if (layoutInputRef.current) layoutInputRef.current.value = "";
+
+      if (payload.refreshJob) {
+        setRefreshJob(payload.refreshJob);
+        setLegalsMessage("Revision files uploaded. Refreshing project...");
+      } else {
+        setLegalsMessage("Revision files uploaded successfully.");
+        // Refetch legal details
+        setHasLoadedLegals(false);
+      }
+
+      const uploadedFiles: string[] = [];
+      if (workbookFile) uploadedFiles.push("workbook");
+      if (greenChangesFile) uploadedFiles.push("green-changes");
+      if (layoutFile) uploadedFiles.push("layout");
+      void logActivityWithFlash("LEGAL_FILES_UPLOADED", {
+        files: uploadedFiles,
+        details: {
+          workbook: workbookFile?.name,
+          greenChanges: greenChangesFile?.name,
+          layout: layoutFile?.name,
+          revision: effectiveRevisionName,
+        },
+      });
+    } catch (err) {
+      setLegalsMessage(
+        err instanceof Error ? err.message : "Failed to upload legal files.",
+      );
+    } finally {
+      setUploadingLegals(false);
+    }
+  }, [
+    badgeNumber,
+    greenChangesFile,
+    layoutFile,
+    logActivityWithFlash,
+    project,
+    revisionNameDraft,
+    workbookFile,
+  ]);
 
   // ─── Cross Wire Handlers ────────────────────────────────────────────────────
 
@@ -984,80 +1163,261 @@ export function ProjectDetailsWorkspace({
                 title="Assignments"
                 description="View and manage project sheet assignments."
               />
-              <div className="mt-4">
+              <div className="mt-4 space-y-3">
+                {assignmentEntries.length > 0 ? (
+                  <div className="flex items-center gap-3 rounded-xl border border-border bg-background/40 p-3">
+                    <div className="flex flex-1 items-center divide-x divide-border">
+                      <div className="flex flex-col items-center gap-0.5 py-1 pr-4">
+                        <span className="text-lg font-semibold text-foreground">{assignmentEntries.length}</span>
+                        <span className="text-[11px] text-muted-foreground">Total</span>
+                      </div>
+                      <div className="flex flex-col items-center gap-0.5 py-1 px-4">
+                        <span className="text-lg font-semibold text-foreground">
+                          {assignmentEntries.filter((a) => a.status === "completed").length}
+                        </span>
+                        <span className="text-[11px] text-muted-foreground">Completed</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1 rounded-lg border border-border bg-muted/40 p-0.5 text-xs shrink-0">
+                      <button
+                        onClick={() => setAssignmentGroupMode("flat")}
+                        className={cn(
+                          "rounded-md px-2.5 py-1 font-medium transition-colors",
+                          assignmentGroupMode === "flat"
+                            ? "bg-background text-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-foreground",
+                        )}
+                      >
+                        Assignments
+                      </button>
+                      <button
+                        onClick={() => setAssignmentGroupMode("unit-type")}
+                        className={cn(
+                          "rounded-md px-2.5 py-1 font-medium transition-colors",
+                          assignmentGroupMode === "unit-type"
+                            ? "bg-background text-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-foreground",
+                        )}
+                      >
+                        Unit Type
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+
                 {assignmentEntries.length === 0 ? (
                   <EmptyStateCard
-                    title="No assignments found"
-                    description="Upload project content or regenerate the manifest to populate assignments."
+                    title="No assignments found in this manifest."
+                    description="Upload project content or regenerate the manifest to populate assignment rows."
                   />
                 ) : (
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between rounded-lg border border-border bg-muted/30 p-3">
-                      <div className="flex items-center gap-4 text-sm">
-                        <div>
-                          <span className="font-semibold">{assignmentEntries.length}</span>
-                          <span className="ml-1 text-muted-foreground">Total</span>
-                        </div>
-                        <div>
-                          <span className="font-semibold">
-                            {assignmentEntries.filter((a) => a.status === "completed").length}
-                          </span>
-                          <span className="ml-1 text-muted-foreground">Completed</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1 rounded-lg border border-border bg-background p-0.5 text-xs">
-                        <button
-                          onClick={() => setAssignmentGroupMode("flat")}
-                          className={cn(
-                            "rounded-md px-2.5 py-1 font-medium transition-colors",
-                            assignmentGroupMode === "flat"
-                              ? "bg-accent text-foreground shadow-sm"
-                              : "text-muted-foreground hover:text-foreground",
-                          )}
-                        >
-                          Assignments
-                        </button>
-                        <button
-                          onClick={() => setAssignmentGroupMode("unit-type")}
-                          className={cn(
-                            "rounded-md px-2.5 py-1 font-medium transition-colors",
-                            assignmentGroupMode === "unit-type"
-                              ? "bg-accent text-foreground shadow-sm"
-                              : "text-muted-foreground hover:text-foreground",
-                          )}
-                        >
-                          Unit Type
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      {assignmentEntries.map((assignment) => (
-                        <div
-                          key={assignment.sheetSlug}
-                          className="flex items-center justify-between rounded-lg border border-border bg-card p-3 hover:bg-accent/50 transition-colors"
-                        >
-                          <div className="min-w-0 flex-1">
-                            <div className="text-sm font-medium text-foreground truncate">
-                              {assignment.sheetName}
-                            </div>
-                            {assignment.unitType && (
-                              <div className="text-xs text-muted-foreground">
-                                {assignment.unitType}
-                              </div>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Badge
-                              variant={assignment.status === "completed" ? "default" : "outline"}
-                              className="text-[10px]"
-                            >
-                              {formatTokenLabel(assignment.status)}
-                            </Badge>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="rounded-xl border border-border overflow-hidden">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-8 px-3 py-2" />
+                          <TableHead className="py-2">Project</TableHead>
+                          <TableHead className="py-2">Stage</TableHead>
+                          <TableHead className="py-2">Status</TableHead>
+                          {assignmentGroupMode === "flat" ? (
+                            <TableHead className="py-2">Unit Type</TableHead>
+                          ) : null}
+                          <TableHead className="py-2" />
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {assignmentGroups
+                          ? assignmentGroups.map(([unitType, groupAssignments]) => (
+                              <React.Fragment key={unitType}>
+                                <tr className="bg-muted/40 border-b border-border/60">
+                                  <td colSpan={6} className="px-4 py-2">
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                                        {unitType}
+                                      </span>
+                                      <span className="text-[11px] text-muted-foreground/50">
+                                        {groupAssignments.length} assignment{groupAssignments.length !== 1 ? "s" : ""}
+                                      </span>
+                                    </div>
+                                  </td>
+                                </tr>
+                                {groupAssignments.map((assignment, idx) => {
+                                  const isExpanded = expandedAssignments.has(assignment.sheetSlug);
+                                  const toggleExpand = () => {
+                                    if (isExpanded) {
+                                      setExpandedAssignments(new Set());
+                                      setSelectedAssignmentSlug((prev) =>
+                                        prev === assignment.sheetSlug ? null : prev,
+                                      );
+                                      return;
+                                    }
+                                    setExpandedAssignments(new Set([assignment.sheetSlug]));
+                                    setSelectedAssignmentSlug(assignment.sheetSlug);
+                                  };
+                                  return (
+                                    <React.Fragment key={assignment.sheetSlug}>
+                                      <TableRow
+                                        index={idx}
+                                        className={cn("cursor-pointer", isExpanded && "bg-card/20")}
+                                        onClick={toggleExpand}
+                                      >
+                                        <TableCell className="px-3 py-2.5">
+                                          <ChevronRight className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-150", isExpanded && "rotate-90")} />
+                                        </TableCell>
+                                        <TableCell className="py-2.5">
+                                          <div className="text-sm font-medium text-foreground">{(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}</div>
+                                        </TableCell>
+                                        <TableCell className="py-2.5" onClick={(e) => e.stopPropagation()}>
+                                          <StageSelectorCell
+                                            currentStage={assignment.stage}
+                                            onSave={(newStage) => updateAssignment(assignment.sheetSlug, { stage: newStage })}
+                                          />
+                                        </TableCell>
+                                        <TableCell className="py-2.5" onClick={(e) => e.stopPropagation()}>
+                                          <StatusButtonCell
+                                            currentStatus={assignment.status}
+                                            onSave={(newStatus) => updateAssignment(assignment.sheetSlug, { status: newStatus })}
+                                          />
+                                        </TableCell>
+                                        <TableCell className="py-2.5">
+                                          <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
+                                            {(assignment as Record<string, unknown>).files && ((assignment as Record<string, unknown>).files as Record<string, unknown>).wireListPDFPath ? (
+                                              <Button asChild size="sm" variant="ghost" className="h-7 px-2 text-xs">
+                                                <a href={buildExportFileHref(project?.id ?? "", ((assignment as Record<string, unknown>).files as Record<string, unknown>).wireListPDFPath as string)} target="_blank" rel="noopener noreferrer">
+                                                  <Download className="h-3 w-3" />
+                                                </a>
+                                              </Button>
+                                            ) : null}
+                                          </div>
+                                        </TableCell>
+                                      </TableRow>
+                                      {isExpanded ? (
+                                        <tr className="bg-card/15">
+                                          <td colSpan={10} className="px-4 py-3">
+                                            <div className="grid grid-cols-3 gap-2">
+                                              {(assignment as Record<string, unknown>).blueLabels && ((assignment as Record<string, unknown>).blueLabels as unknown[])?.length ? (
+                                                <AssignmentLabelDownloadButton
+                                                  projectId={project?.id ?? ""}
+                                                  assignmentSlug={assignment.sheetSlug}
+                                                  labelType="blue"
+                                                  className="w-full justify-center"
+                                                />
+                                              ) : null}
+                                              {(assignment as Record<string, unknown>).whiteLabels && ((assignment as Record<string, unknown>).whiteLabels as unknown[])?.length ? (
+                                                <AssignmentLabelDownloadButton
+                                                  projectId={project?.id ?? ""}
+                                                  assignmentSlug={assignment.sheetSlug}
+                                                  labelType="white"
+                                                  className="w-full justify-center"
+                                                />
+                                              ) : null}
+                                              {(assignment as Record<string, unknown>).partNumbers && ((assignment as Record<string, unknown>).partNumbers as unknown[])?.length ? (
+                                                <AssignmentLabelDownloadButton
+                                                  projectId={project?.id ?? ""}
+                                                  assignmentSlug={assignment.sheetSlug}
+                                                  labelType="part-number"
+                                                  className="w-full justify-center"
+                                                />
+                                              ) : null}
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      ) : null}
+                                    </React.Fragment>
+                                  );
+                                })}
+                              </React.Fragment>
+                            ))
+                          : assignmentEntries.map((assignment, idx) => {
+                              const isExpanded = expandedAssignments.has(assignment.sheetSlug);
+                              const toggleExpand = () => {
+                                if (isExpanded) {
+                                  setExpandedAssignments(new Set());
+                                  setSelectedAssignmentSlug((prev) =>
+                                    prev === assignment.sheetSlug ? null : prev,
+                                  );
+                                  return;
+                                }
+                                setExpandedAssignments(new Set([assignment.sheetSlug]));
+                                setSelectedAssignmentSlug(assignment.sheetSlug);
+                              };
+                              return (
+                                <React.Fragment key={assignment.sheetSlug}>
+                                  <TableRow
+                                    index={idx}
+                                    className={cn("cursor-pointer", isExpanded && "bg-card/20")}
+                                    onClick={toggleExpand}
+                                  >
+                                    <TableCell className="px-3 py-2.5">
+                                      <ChevronRight className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-150", isExpanded && "rotate-90")} />
+                                    </TableCell>
+                                    <TableCell className="py-2.5">
+                                      <div className="text-sm font-medium text-foreground">{(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}</div>
+                                    </TableCell>
+                                    <TableCell className="py-2.5" onClick={(e) => e.stopPropagation()}>
+                                      <StageSelectorCell
+                                        currentStage={assignment.stage}
+                                        onSave={(newStage) => updateAssignment(assignment.sheetSlug, { stage: newStage })}
+                                      />
+                                    </TableCell>
+                                    <TableCell className="py-2.5" onClick={(e) => e.stopPropagation()}>
+                                      <StatusButtonCell
+                                        currentStatus={assignment.status}
+                                        onSave={(newStatus) => updateAssignment(assignment.sheetSlug, { status: newStatus })}
+                                      />
+                                    </TableCell>
+                                    <TableCell className="py-2.5">
+                                      {assignment.unitType || "—"}
+                                    </TableCell>
+                                    <TableCell className="py-2.5">
+                                      <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
+                                        {(assignment as Record<string, unknown>).files && ((assignment as Record<string, unknown>).files as Record<string, unknown>).wireListPDFPath ? (
+                                          <Button asChild size="sm" variant="ghost" className="h-7 px-2 text-xs">
+                                            <a href={buildExportFileHref(project?.id ?? "", ((assignment as Record<string, unknown>).files as Record<string, unknown>).wireListPDFPath as string)} target="_blank" rel="noopener noreferrer">
+                                              <Download className="h-3 w-3" />
+                                            </a>
+                                          </Button>
+                                        ) : null}
+                                      </div>
+                                    </TableCell>
+                                  </TableRow>
+                                  {isExpanded ? (
+                                    <tr className="bg-card/15">
+                                      <td colSpan={10} className="px-4 py-3">
+                                        <div className="grid grid-cols-3 gap-2">
+                                          {(assignment as Record<string, unknown>).blueLabels && ((assignment as Record<string, unknown>).blueLabels as unknown[])?.length ? (
+                                            <AssignmentLabelDownloadButton
+                                              projectId={project?.id ?? ""}
+                                              assignmentSlug={assignment.sheetSlug}
+                                              labelType="blue"
+                                              className="w-full justify-center"
+                                            />
+                                          ) : null}
+                                          {(assignment as Record<string, unknown>).whiteLabels && ((assignment as Record<string, unknown>).whiteLabels as unknown[])?.length ? (
+                                            <AssignmentLabelDownloadButton
+                                              projectId={project?.id ?? ""}
+                                              assignmentSlug={assignment.sheetSlug}
+                                              labelType="white"
+                                              className="w-full justify-center"
+                                            />
+                                          ) : null}
+                                          {(assignment as Record<string, unknown>).partNumbers && ((assignment as Record<string, unknown>).partNumbers as unknown[])?.length ? (
+                                            <AssignmentLabelDownloadButton
+                                              projectId={project?.id ?? ""}
+                                              assignmentSlug={assignment.sheetSlug}
+                                              labelType="part-number"
+                                              className="w-full justify-center"
+                                            />
+                                          ) : null}
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  ) : null}
+                                </React.Fragment>
+                              );
+                            })}
+                      </TableBody>
+                    </Table>
                   </div>
                 )}
               </div>
@@ -1070,11 +1430,191 @@ export function ProjectDetailsWorkspace({
                 title="Legals"
                 description="Manage legal document uploads and revisions."
               />
-              <div className="mt-4">
-                <EmptyStateCard
-                  title="Legal document management"
-                  description="Upload workbook, green changes, and layout files to manage project revisions."
-                />
+              <div className="mt-4 space-y-4">
+                {legalDetail ? (
+                  <div className="grid grid-cols-2 gap-2 rounded-xl border border-border bg-background/40 p-3 sm:grid-cols-5">
+                    <div className="flex flex-col gap-0.5 py-1">
+                      <span className="text-[11px] text-muted-foreground">Latest Revision</span>
+                      <span className="font-mono text-sm font-semibold text-foreground">
+                        {legalDetail.latestRevision ?? "—"}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 py-1 sm:border-l sm:border-border sm:pl-3">
+                      <span className="text-[11px] text-muted-foreground">Workbook</span>
+                      <span className="text-sm font-medium">
+                        {legalDetail.hasWorkbook ? (
+                          <span className="text-green-600">Present</span>
+                        ) : (
+                          <span className="text-muted-foreground">Missing</span>
+                        )}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 py-1 sm:border-l sm:border-border sm:pl-3">
+                      <span className="text-[11px] text-muted-foreground">Layout</span>
+                      <span className="text-sm font-medium">
+                        {legalDetail.hasLayout ? (
+                          <span className="text-green-600">Present</span>
+                        ) : (
+                          <span className="text-muted-foreground">Missing</span>
+                        )}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 py-1 sm:border-l sm:border-border sm:pl-3">
+                      <span className="text-[11px] text-muted-foreground">Compare</span>
+                      <span className="text-sm font-medium">
+                        {legalDetail.hasGreenChangesWorkbook ? (
+                          <span className="text-green-600">Present</span>
+                        ) : (
+                          <span className="text-muted-foreground">Missing</span>
+                        )}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 py-1 sm:border-l sm:border-border sm:pl-3">
+                      <span className="text-[11px] text-muted-foreground">Revisions</span>
+                      <span className="text-sm font-semibold text-foreground">
+                        {legalDetail.revisions.length}
+                      </span>
+                    </div>
+                  </div>
+                ) : null}
+
+                <div className="grid gap-3 rounded-xl border border-border bg-background/40 p-4 sm:grid-cols-2">
+                  <input
+                    ref={workbookInputRef}
+                    type="file"
+                    accept=".xlsx,.xls,.xlsm,.xlsb"
+                    className="hidden"
+                    onClick={(event) => {
+                      (event.currentTarget as HTMLInputElement).value = "";
+                    }}
+                    onChange={(event) =>
+                      setWorkbookFile(event.target.files?.[0] ?? null)
+                    }
+                  />
+                  <input
+                    ref={greenChangesInputRef}
+                    type="file"
+                    accept=".xlsx,.xls,.xlsm,.xlsb"
+                    className="hidden"
+                    onClick={(event) => {
+                      (event.currentTarget as HTMLInputElement).value = "";
+                    }}
+                    onChange={(event) =>
+                      setGreenChangesFile(event.target.files?.[0] ?? null)
+                    }
+                  />
+                  <input
+                    ref={layoutInputRef}
+                    type="file"
+                    accept=".pdf"
+                    className="hidden"
+                    onClick={(event) => {
+                      (event.currentTarget as HTMLInputElement).value = "";
+                    }}
+                    onChange={(event) =>
+                      setLayoutFile(event.target.files?.[0] ?? null)
+                    }
+                  />
+
+                  <div className="space-y-1.5 rounded-lg border border-border/70 bg-card/20 p-3">
+                    <span className="text-xs font-medium text-muted-foreground">
+                      UCP Wire List
+                    </span>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      className="w-full justify-start gap-2"
+                      onClick={() => workbookInputRef.current?.click()}
+                    >
+                      <Upload className="h-3.5 w-3.5" />
+                      {workbookFile ? "Replace Workbook" : "Choose Workbook"}
+                    </Button>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {workbookFile?.name || latestLegalRevisionRecord?.workbookFileName || "No workbook selected"}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1.5 rounded-lg border border-border/70 bg-card/20 p-3">
+                    <span className="text-xs font-medium text-muted-foreground">
+                      Layout PDF
+                    </span>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      className="w-full justify-start gap-2"
+                      onClick={() => layoutInputRef.current?.click()}
+                    >
+                      <Upload className="h-3.5 w-3.5" />
+                      {layoutFile ? "Replace Layout" : "Choose Layout PDF"}
+                    </Button>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {layoutFile?.name || latestLegalRevisionRecord?.layoutFileName || "No layout selected"}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1.5 rounded-lg border border-border/70 bg-card/20 p-3">
+                    <span className="text-xs font-medium text-muted-foreground">
+                      UCP Wire List Green Changes (Compare)
+                    </span>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      className="w-full justify-start gap-2"
+                      onClick={() => greenChangesInputRef.current?.click()}
+                    >
+                      <Upload className="h-3.5 w-3.5" />
+                      {greenChangesFile ? "Replace Compare Workbook" : "Choose Compare Workbook"}
+                    </Button>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {greenChangesFile?.name || latestLegalRevisionRecord?.greenChangesWorkbookFileName || "No compare workbook selected"}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1.5 rounded-lg border border-border/70 bg-card/20 p-3">
+                    <span className="text-xs font-medium text-muted-foreground">
+                      Revision Label
+                    </span>
+                    <Input
+                      placeholder="e.g. A.1"
+                      value={revisionNameDraft}
+                      onChange={(e) => {
+                        setRevisionNameDraft(e.target.value);
+                        setRevisionNameTouched(true);
+                      }}
+                      className="h-9 text-sm"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Computed: {deriveRevisionLabelFromFiles([workbookFile, greenChangesFile, layoutFile]) || legalDetail?.latestRevision || "Not detected"}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Button
+                    size="sm"
+                    variant="default"
+                    disabled={uploadingLegals || (!workbookFile && !greenChangesFile && !layoutFile)}
+                    onClick={handleUploadLegals}
+                  >
+                    {uploadingLegals ? (
+                      <>
+                        <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
+                        Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="mr-2 h-3.5 w-3.5" />
+                        Upload Revision Files
+                      </>
+                    )}
+                  </Button>
+                  {legalsMessage && (
+                    <span className="text-xs text-muted-foreground">{legalsMessage}</span>
+                  )}
+                </div>
               </div>
             </section>
 
