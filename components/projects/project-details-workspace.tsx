@@ -245,7 +245,7 @@ function EmptyStateCard({
   );
 }
 
-// ──���� Scrollspy Navigation Components ──────────────────────────────────────────
+// ──����� Scrollspy Navigation Components ──────────────────────────────────────────
 
 function NavItem({
   section,
@@ -929,6 +929,30 @@ export function ProjectDetailsWorkspace({
     } finally {
       setLoadingBrandingExports(false);
       setHasLoadedBrandingExports(true);
+    }
+  }, [project?.id]);
+
+  const refreshWireExports = useCallback(async () => {
+    if (!project?.id) {
+      setWireExports(null);
+      setHasLoadedWireExports(false);
+      return;
+    }
+
+    setLoadingWireExports(true);
+    try {
+      const response = await fetch(
+        `/api/projects/${encodeURIComponent(project.id)}/exports?kind=wire`,
+        { cache: "no-store" },
+      );
+      if (!response.ok) {
+        setWireExports(null);
+        return;
+      }
+      setWireExports((await response.json()) as WireListExportResult);
+    } finally {
+      setLoadingWireExports(false);
+      setHasLoadedWireExports(true);
     }
   }, [project?.id]);
 
@@ -2082,7 +2106,7 @@ export function ProjectDetailsWorkspace({
               </div>
             </section>
 
-            {/* ─── Cross Wire Section ──────────────────────────────────────── */}
+            {/* ─── Cross Wire Section ────────────────────────────────────��─── */}
             <section data-section="cross-wire" className="scroll-mt-6">
               <SectionHeader
                 icon={ExternalLink}
