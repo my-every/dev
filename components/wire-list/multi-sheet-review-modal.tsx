@@ -49,6 +49,10 @@ export interface MultiSheetReviewModalProps {
   autoStartReview?: boolean;
   autoStartReadOnly?: boolean;
   activitiesApiUrl?: string | null;
+  /** When true, opens the file picker immediately when modal opens */
+  autoStartImport?: boolean;
+  /** Callback to notify parent that import was triggered, allowing parent to clear the flag */
+  onImportStarted?: () => void;
 }
 
 function buildWorkspaceSkeleton(isWireListMode: boolean) {
@@ -106,6 +110,8 @@ export function MultiSheetReviewModal({
   autoStartReview = false,
   autoStartReadOnly = false,
   activitiesApiUrl,
+  autoStartImport = false,
+  onImportStarted,
 }: MultiSheetReviewModalProps) {
   const { currentProject, loadProject } = useProjectContext();
   const { user } = useSession();
@@ -136,6 +142,7 @@ export function MultiSheetReviewModal({
   );
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const autoStartedRef = useRef(false);
+  const autoImportTriggeredRef = useRef(false);
 
   const isControlled = typeof controlledOpen === "boolean";
   const isOpen = isControlled ? controlledOpen : internalOpen;
@@ -437,6 +444,31 @@ export function MultiSheetReviewModal({
     projectId,
     tabs.length,
   ]);
+
+  // Auto-start import: trigger file picker immediately when modal opens with autoStartImport
+  useEffect(() => {
+    if (!isOpen) {
+      autoImportTriggeredRef.current = false;
+      return;
+    }
+
+    if (
+      !autoStartImport ||
+      autoImportTriggeredRef.current ||
+      !fileInputRef.current
+    ) {
+      return;
+    }
+
+    // Use a small delay to ensure modal is fully mounted
+    const timer = setTimeout(() => {
+      autoImportTriggeredRef.current = true;
+      onImportStarted?.();
+      fileInputRef.current?.click();
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [isOpen, autoStartImport, onImportStarted]);
 
   const headerTitle =
     modalSurface === "cover"

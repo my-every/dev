@@ -741,6 +741,7 @@ export function ProjectCollectionDetailsModal({
   const [layoutWorkspaceOpen, setLayoutWorkspaceOpen] = useState(false);
   const [wireReviewOpen, setWireReviewOpen] = useState(false);
   const [brandReviewOpen, setBrandReviewOpen] = useState(false);
+  const [autoStartBrandImport, setAutoStartBrandImport] = useState(false);
   const hasChildWorkflowOpen = layoutWorkspaceOpen || wireReviewOpen || brandReviewOpen;
   const collectionModalOpen = open && !hasChildWorkflowOpen;
 
@@ -2315,6 +2316,7 @@ export function ProjectCollectionDetailsModal({
   };
 
   const openBrandImportReview = () => {
+    setAutoStartBrandImport(true);
     setBrandReviewOpen(true);
   };
 
@@ -4631,12 +4633,15 @@ export function ProjectCollectionDetailsModal({
         onOpenChange={(nextOpen) => {
           setBrandReviewOpen(nextOpen);
           if (!nextOpen) {
+            setAutoStartBrandImport(false);
             void refreshBrandingExports();
           }
         }}
         showTrigger={false}
         title="Brand List Approval Editor"
         combineLabel="Combine Brand List"
+        autoStartImport={autoStartBrandImport}
+        onImportStarted={() => setAutoStartBrandImport(false)}
       />
 
       <LayoutPdfWorkspaceDialog
