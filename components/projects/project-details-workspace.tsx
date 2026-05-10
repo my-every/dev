@@ -442,6 +442,7 @@ export function ProjectDetailsWorkspace({
   const [layoutWorkspaceOpen, setLayoutWorkspaceOpen] = useState(false);
   const [wireReviewOpen, setWireReviewOpen] = useState(false);
   const [brandReviewOpen, setBrandReviewOpen] = useState(false);
+  const [autoStartBrandImport, setAutoStartBrandImport] = useState(false);
 
   // ─── Fetch Project Data ─────────────────────────────────────────────────────
 
@@ -685,10 +686,12 @@ export function ProjectDetailsWorkspace({
   }, []);
 
   const openBrandListApprovalEditor = useCallback(() => {
+    setAutoStartBrandImport(false);
     setBrandReviewOpen(true);
   }, []);
 
   const openBrandImportReview = useCallback(() => {
+    setAutoStartBrandImport(true);
     setBrandReviewOpen(true);
   }, []);
 
@@ -904,6 +907,30 @@ export function ProjectDetailsWorkspace({
       window.open(url, "_blank");
     }
   }, [brandingExports, project?.id]);
+
+  const refreshBrandingExports = useCallback(async () => {
+    if (!project?.id) {
+      setBrandingExports(null);
+      setHasLoadedBrandingExports(false);
+      return;
+    }
+
+    setLoadingBrandingExports(true);
+    try {
+      const response = await fetch(
+        `/api/projects/${encodeURIComponent(project.id)}/exports?kind=branding`,
+        { cache: "no-store" },
+      );
+      if (!response.ok) {
+        setBrandingExports(null);
+        return;
+      }
+      setBrandingExports((await response.json()) as BrandingExportResult);
+    } finally {
+      setLoadingBrandingExports(false);
+      setHasLoadedBrandingExports(true);
+    }
+  }, [project?.id]);
 
   // ─── Render Loading/Error States ────────────────────────────────────────────
 
@@ -2029,12 +2056,15 @@ export function ProjectDetailsWorkspace({
         onOpenChange={(nextOpen) => {
           setBrandReviewOpen(nextOpen);
           if (!nextOpen) {
+            setAutoStartBrandImport(false);
             void refreshBrandingExports();
           }
         }}
         showTrigger={false}
         title="Brand List Approval Editor"
         combineLabel="Combine Brand List"
+        autoStartImport={autoStartBrandImport}
+        onImportStarted={() => setAutoStartBrandImport(false)}
       />
     </div>
   );
