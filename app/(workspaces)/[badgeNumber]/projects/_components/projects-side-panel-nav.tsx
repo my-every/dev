@@ -305,11 +305,7 @@ export function ProjectsSidePanelNav({
 
       return (
   <ProjectNavCard
-  project={{ ...project, href: `/${data?.badgeNumber}/projects/${encodeURIComponent(project.id)}` }}
-  onClick={() => {
-  if (priorityEditMode) return;
-  // Navigate to project page instead of opening modal
-  }}
+  project={{ ...project, href: priorityEditMode ? undefined : `/${data?.badgeNumber}/projects/${encodeURIComponent(project.id)}` }}
           leading={<PriorityRankCircle rank={rank ?? 0} color={project.color} />}
           trailing={
             priorityEditMode ? (

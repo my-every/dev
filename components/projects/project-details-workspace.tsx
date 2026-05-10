@@ -1473,12 +1473,14 @@ export function ProjectDetailsWorkspace({
         projectId={project.id}
         badgeNumber={badgeNumber}
       />
-      <MultiWireListPrintWorkspaceDialog
-        open={wireReviewOpen}
-        onOpenChange={setWireReviewOpen}
-        projectId={project.id}
-        badgeNumber={badgeNumber}
-      />
+<MultiWireListPrintWorkspaceDialog
+  open={wireReviewOpen}
+  onOpenChange={setWireReviewOpen}
+  projectId={project.id}
+  projectName={project.name}
+  projectColor={project.color ?? undefined}
+  sheets={assignmentEntries.map((a) => ({ slug: a.sheetSlug, name: a.sheetName, rowCount: 0 }))}
+  />
     </div>
   );
 }
