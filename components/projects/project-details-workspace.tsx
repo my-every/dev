@@ -245,7 +245,7 @@ function EmptyStateCard({
   );
 }
 
-// ──��� Scrollspy Navigation Components ──────────────────────────────────────────
+// ──���� Scrollspy Navigation Components ──────────────────────────────────────────
 
 function NavItem({
   section,
@@ -932,6 +932,128 @@ export function ProjectDetailsWorkspace({
     }
   }, [project?.id]);
 
+  // ─── Brand List Settings Handlers ───────────────────────────────────────────
+
+  const setBrandListVisibility = useCallback((sheetSlug: string, key: string, visible: boolean) => {
+    setBrandListSettingsMatrix((prev) => ({
+      ...prev,
+      [sheetSlug]: {
+        ...(prev[sheetSlug] ?? {}),
+        [key]: visible,
+      },
+    }));
+    // Mark as dirty
+    setBrandGeneratingSheets((prev) => ({ ...prev, [sheetSlug]: "idle" }));
+  }, []);
+
+  const handleSaveAndGenerateBrandList = useCallback(async (sheetSlug: string) => {
+    if (!project?.id) return;
+
+    // Set to generating state
+    setBrandGeneratingSheets((prev) => ({ ...prev, [sheetSlug]: "generating" }));
+    setSavingBrandListSettingsBySheet((prev) => ({ ...prev, [sheetSlug]: true }));
+
+    try {
+      // Save visibility settings
+      await fetch(
+        `/api/projects/${encodeURIComponent(project.id)}/assignment-visibility`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sheetSlug,
+            visibilitySettings: brandListSettingsMatrix[sheetSlug] ?? {},
+          }),
+        },
+      );
+
+      // Regenerate brand list
+      setRegeneratingBrandBySheet((prev) => ({ ...prev, [sheetSlug]: true }));
+      await fetch(
+        `/api/projects/${encodeURIComponent(project.id)}/brand-list/regenerate`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sheetSlugs: [sheetSlug] }),
+        },
+      );
+
+      setBrandGeneratingSheets((prev) => ({ ...prev, [sheetSlug]: "done" }));
+      await refreshBrandingExports();
+
+      // Reset to idle after 3 seconds
+      setTimeout(() => {
+        setBrandGeneratingSheets((prev) => ({ ...prev, [sheetSlug]: "idle" }));
+      }, 3000);
+    } catch {
+      setBrandGeneratingSheets((prev) => ({ ...prev, [sheetSlug]: "error" }));
+    } finally {
+      setSavingBrandListSettingsBySheet((prev) => ({ ...prev, [sheetSlug]: false }));
+      setRegeneratingBrandBySheet((prev) => ({ ...prev, [sheetSlug]: false }));
+    }
+  }, [project?.id, brandListSettingsMatrix, refreshBrandingExports]);
+
+  // ─── Wire List Settings Handlers ────────────────────────────────────────────
+
+  const setWireListVisibility = useCallback((sheetSlug: string, key: string, visible: boolean) => {
+    setWireListSettingsMatrix((prev) => ({
+      ...prev,
+      [sheetSlug]: {
+        ...(prev[sheetSlug] ?? {}),
+        [key]: visible,
+      },
+    }));
+    // Mark as dirty
+    setWireGeneratingSheets((prev) => ({ ...prev, [sheetSlug]: "idle" }));
+  }, []);
+
+  const handleSaveAndGenerateWireList = useCallback(async (sheetSlug: string) => {
+    if (!project?.id) return;
+
+    // Set to generating state
+    setWireGeneratingSheets((prev) => ({ ...prev, [sheetSlug]: "generating" }));
+    setSavingWireListSettingsBySheet((prev) => ({ ...prev, [sheetSlug]: true }));
+
+    try {
+      // Save visibility settings
+      await fetch(
+        `/api/projects/${encodeURIComponent(project.id)}/assignment-visibility`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sheetSlug,
+            visibilitySettings: wireListSettingsMatrix[sheetSlug] ?? {},
+          }),
+        },
+      );
+
+      // Regenerate wire list
+      setRegeneratingWireBySheet((prev) => ({ ...prev, [sheetSlug]: true }));
+      await fetch(
+        `/api/projects/${encodeURIComponent(project.id)}/wire-list/regenerate`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sheetSlugs: [sheetSlug] }),
+        },
+      );
+
+      setWireGeneratingSheets((prev) => ({ ...prev, [sheetSlug]: "done" }));
+      await refreshWireExports();
+
+      // Reset to idle after 3 seconds
+      setTimeout(() => {
+        setWireGeneratingSheets((prev) => ({ ...prev, [sheetSlug]: "idle" }));
+      }, 3000);
+    } catch {
+      setWireGeneratingSheets((prev) => ({ ...prev, [sheetSlug]: "error" }));
+    } finally {
+      setSavingWireListSettingsBySheet((prev) => ({ ...prev, [sheetSlug]: false }));
+      setRegeneratingWireBySheet((prev) => ({ ...prev, [sheetSlug]: false }));
+    }
+  }, [project?.id, wireListSettingsMatrix, refreshWireExports]);
+
   // ─── Render Loading/Error States ────────────────────────────────────────────
 
   if (loading) {
@@ -1238,18 +1360,18 @@ export function ProjectDetailsWorkspace({
                     description="Upload project content or regenerate the manifest to populate assignment rows."
                   />
                 ) : (
-                  <div className="rounded-xl border border-border overflow-hidden">
-                    <Table>
+                  <div className="rounded-xl border border-border overflow-x-auto">
+                    <Table className="min-w-[600px]">
                       <TableHeader>
                         <TableRow>
                           <TableHead className="w-8 px-3 py-2" />
-                          <TableHead className="py-2">Project</TableHead>
-                          <TableHead className="py-2">Stage</TableHead>
-                          <TableHead className="py-2">Status</TableHead>
+                          <TableHead className="py-2 min-w-[160px]">Project</TableHead>
+                          <TableHead className="py-2 min-w-[120px]">Stage</TableHead>
+                          <TableHead className="py-2 min-w-[100px]">Status</TableHead>
                           {assignmentGroupMode === "flat" ? (
-                            <TableHead className="py-2">Unit Type</TableHead>
+                            <TableHead className="py-2 min-w-[100px]">Unit Type</TableHead>
                           ) : null}
-                          <TableHead className="py-2" />
+                          <TableHead className="py-2 w-12" />
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -1291,8 +1413,10 @@ export function ProjectDetailsWorkspace({
                                         <TableCell className="px-3 py-2.5">
                                           <ChevronRight className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-150", isExpanded && "rotate-90")} />
                                         </TableCell>
-                                        <TableCell className="py-2.5">
-                                          <div className="text-sm font-medium text-foreground">{(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}</div>
+                                        <TableCell className="py-2.5 max-w-[160px]">
+                                          <div className="truncate text-sm font-medium text-foreground" title={(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}>
+                                            {(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}
+                                          </div>
                                         </TableCell>
                                         <TableCell className="py-2.5" onClick={(e) => e.stopPropagation()}>
                                           <StageSelectorCell
@@ -1378,8 +1502,10 @@ export function ProjectDetailsWorkspace({
                                     <TableCell className="px-3 py-2.5">
                                       <ChevronRight className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-150", isExpanded && "rotate-90")} />
                                     </TableCell>
-                                    <TableCell className="py-2.5">
-                                      <div className="text-sm font-medium text-foreground">{(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}</div>
+                                    <TableCell className="py-2.5 max-w-[160px]">
+                                      <div className="truncate text-sm font-medium text-foreground" title={(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}>
+                                        {(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}
+                                      </div>
                                     </TableCell>
                                     <TableCell className="py-2.5" onClick={(e) => e.stopPropagation()}>
                                       <StageSelectorCell
@@ -1675,24 +1801,128 @@ export function ProjectDetailsWorkspace({
                   />
                 ) : (
                   <div className="space-y-2">
-                    {assignmentEntries.map((assignment) => (
-                      <div
-                        key={assignment.sheetSlug}
-                        className="flex items-center justify-between rounded-lg border border-border bg-card p-3"
-                      >
-                        <span className="text-sm font-medium">{assignment.sheetName}</span>
-                        <div className="flex items-center gap-2">
-                          <Button size="sm" variant="ghost" className="h-7 gap-1 px-2 text-xs">
-                            <Download className="h-3 w-3" />
-                            PDF
-                          </Button>
-                          <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs">
-                            <Check className="h-3 w-3" />
-                            Save + Generate
-                          </Button>
+                    {assignmentEntries.map((assignment) => {
+                      const isExpanded = expandedBrandAssignments.has(assignment.sheetSlug);
+                      const toggleExpand = () => {
+                        setExpandedBrandAssignments((prev) => {
+                          const next = new Set(prev);
+                          if (next.has(assignment.sheetSlug)) {
+                            next.delete(assignment.sheetSlug);
+                          } else {
+                            next.add(assignment.sheetSlug);
+                          }
+                          return next;
+                        });
+                      };
+                      const locations = schemaExternalLocations[assignment.sheetSlug] ?? [];
+                      const genState = brandGeneratingSheets[assignment.sheetSlug] ?? "idle";
+                      const brandExport = brandingExports?.sheetExports?.find(
+                        (e) => e.sheetSlug === assignment.sheetSlug,
+                      );
+                      const hasPDF = !!brandExport?.relativePath;
+                      const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+
+                      return (
+                        <div key={assignment.sheetSlug} className="rounded-lg border border-border bg-card overflow-hidden">
+                          <div
+                            className="flex items-center gap-2 p-3 cursor-pointer hover:bg-muted/30 transition-colors"
+                            onClick={toggleExpand}
+                          >
+                            <ChevronRight className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-150 shrink-0", isExpanded && "rotate-90")} />
+                            <span className="truncate text-sm font-medium flex-1" title={normalizedTitle}>{normalizedTitle}</span>
+                            {locations.length > 0 && (
+                              <Badge variant="outline" className="h-5 px-1.5 text-[10px] shrink-0">
+                                {locations.length}
+                              </Badge>
+                            )}
+                            <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
+                              {hasPDF && genState !== "generating" && (
+                                <Button
+                                  asChild
+                                  size="sm"
+                                  variant="ghost"
+                                  className="h-7 gap-1 px-2 text-xs"
+                                >
+                                  <a
+                                    href={`/api/projects/${encodeURIComponent(project?.id ?? "")}/brand-list/download?path=${encodeURIComponent(brandExport.relativePath)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <Download className="h-3 w-3" />
+                                    PDF
+                                  </a>
+                                </Button>
+                              )}
+                              {genState === "generating" ? (
+                                <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs" disabled>
+                                  <Loader2 className="h-3 w-3 animate-spin" />
+                                  Generating
+                                </Button>
+                              ) : genState === "done" ? (
+                                <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs text-green-600" disabled>
+                                  <Check className="h-3 w-3" />
+                                  Done
+                                </Button>
+                              ) : genState === "error" ? (
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  className="h-7 gap-1 px-2 text-xs"
+                                  onClick={() => handleSaveAndGenerateBrandList(assignment.sheetSlug)}
+                                >
+                                  Retry
+                                </Button>
+                              ) : null}
+                            </div>
+                          </div>
+                          {isExpanded && locations.length > 0 && (
+                            <div className="border-t border-border/60 bg-muted/20 px-3 py-2 space-y-2">
+                              <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                                External Locations
+                              </div>
+                              <div className="grid gap-1.5">
+                                {locations.map((loc) => {
+                                  const key = loc.trim().toUpperCase();
+                                  const isVisible = brandListSettingsMatrix[assignment.sheetSlug]?.[key] ?? true;
+                                  return (
+                                    <div key={key} className="flex items-center justify-between gap-2 py-1">
+                                      <span className="font-mono text-xs text-foreground truncate">{loc}</span>
+                                      <Switch
+                                        checked={isVisible}
+                                        onCheckedChange={(checked) => setBrandListVisibility(assignment.sheetSlug, key, checked)}
+                                        aria-label={`Toggle visibility of ${loc}`}
+                                        className="shrink-0"
+                                      />
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                              <div className="pt-2 border-t border-border/40">
+                                <Button
+                                  size="sm"
+                                  variant="default"
+                                  className="w-full h-8 text-xs"
+                                  onClick={() => handleSaveAndGenerateBrandList(assignment.sheetSlug)}
+                                  disabled={genState === "generating"}
+                                >
+                                  {genState === "generating" ? (
+                                    <>
+                                      <Loader2 className="mr-1.5 h-3 w-3 animate-spin" />
+                                      Saving & Generating...
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Check className="mr-1.5 h-3 w-3" />
+                                      Save & Generate
+                                    </>
+                                  )}
+                                </Button>
+                              </div>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </div>
@@ -1724,24 +1954,129 @@ export function ProjectDetailsWorkspace({
                   />
                 ) : (
                   <div className="space-y-2">
-                    {assignmentEntries.map((assignment) => (
-                      <div
-                        key={assignment.sheetSlug}
-                        className="flex items-center justify-between rounded-lg border border-border bg-card p-3"
-                      >
-                        <span className="text-sm font-medium">{assignment.sheetName}</span>
-                        <div className="flex items-center gap-2">
-                          <Button size="sm" variant="ghost" className="h-7 gap-1 px-2 text-xs">
-                            <Download className="h-3 w-3" />
-                            PDF
-                          </Button>
-                          <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs">
-                            <Check className="h-3 w-3" />
-                            Save + Generate
-                          </Button>
+                    {assignmentEntries.map((assignment) => {
+                      const isExpanded = expandedAssignments.has(`wire-${assignment.sheetSlug}`);
+                      const toggleExpand = () => {
+                        setExpandedAssignments((prev) => {
+                          const next = new Set(prev);
+                          const key = `wire-${assignment.sheetSlug}`;
+                          if (next.has(key)) {
+                            next.delete(key);
+                          } else {
+                            next.add(key);
+                          }
+                          return next;
+                        });
+                      };
+                      const locations = schemaExternalLocations[assignment.sheetSlug] ?? [];
+                      const genState = wireGeneratingSheets[assignment.sheetSlug] ?? "idle";
+                      const wireExport = wireExports?.sheetExports?.find(
+                        (e) => e.sheetSlug === assignment.sheetSlug,
+                      );
+                      const hasPDF = !!wireExport?.relativePath;
+                      const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+
+                      return (
+                        <div key={assignment.sheetSlug} className="rounded-lg border border-border bg-card overflow-hidden">
+                          <div
+                            className="flex items-center gap-2 p-3 cursor-pointer hover:bg-muted/30 transition-colors"
+                            onClick={toggleExpand}
+                          >
+                            <ChevronRight className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-150 shrink-0", isExpanded && "rotate-90")} />
+                            <span className="truncate text-sm font-medium flex-1" title={normalizedTitle}>{normalizedTitle}</span>
+                            {locations.length > 0 && (
+                              <Badge variant="outline" className="h-5 px-1.5 text-[10px] shrink-0">
+                                {locations.length}
+                              </Badge>
+                            )}
+                            <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
+                              {hasPDF && genState !== "generating" && (
+                                <Button
+                                  asChild
+                                  size="sm"
+                                  variant="ghost"
+                                  className="h-7 gap-1 px-2 text-xs"
+                                >
+                                  <a
+                                    href={`/api/projects/${encodeURIComponent(project?.id ?? "")}/wire-list/download?path=${encodeURIComponent(wireExport.relativePath)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <Download className="h-3 w-3" />
+                                    PDF
+                                  </a>
+                                </Button>
+                              )}
+                              {genState === "generating" ? (
+                                <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs" disabled>
+                                  <Loader2 className="h-3 w-3 animate-spin" />
+                                  Generating
+                                </Button>
+                              ) : genState === "done" ? (
+                                <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs text-green-600" disabled>
+                                  <Check className="h-3 w-3" />
+                                  Done
+                                </Button>
+                              ) : genState === "error" ? (
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  className="h-7 gap-1 px-2 text-xs"
+                                  onClick={() => handleSaveAndGenerateWireList(assignment.sheetSlug)}
+                                >
+                                  Retry
+                                </Button>
+                              ) : null}
+                            </div>
+                          </div>
+                          {isExpanded && locations.length > 0 && (
+                            <div className="border-t border-border/60 bg-muted/20 px-3 py-2 space-y-2">
+                              <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                                External Locations
+                              </div>
+                              <div className="grid gap-1.5">
+                                {locations.map((loc) => {
+                                  const key = loc.trim().toUpperCase();
+                                  const isVisible = wireListSettingsMatrix[assignment.sheetSlug]?.[key] ?? true;
+                                  return (
+                                    <div key={key} className="flex items-center justify-between gap-2 py-1">
+                                      <span className="font-mono text-xs text-foreground truncate">{loc}</span>
+                                      <Switch
+                                        checked={isVisible}
+                                        onCheckedChange={(checked) => setWireListVisibility(assignment.sheetSlug, key, checked)}
+                                        aria-label={`Toggle visibility of ${loc}`}
+                                        className="shrink-0"
+                                      />
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                              <div className="pt-2 border-t border-border/40">
+                                <Button
+                                  size="sm"
+                                  variant="default"
+                                  className="w-full h-8 text-xs"
+                                  onClick={() => handleSaveAndGenerateWireList(assignment.sheetSlug)}
+                                  disabled={genState === "generating"}
+                                >
+                                  {genState === "generating" ? (
+                                    <>
+                                      <Loader2 className="mr-1.5 h-3 w-3 animate-spin" />
+                                      Saving & Generating...
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Check className="mr-1.5 h-3 w-3" />
+                                      Save & Generate
+                                    </>
+                                  )}
+                                </Button>
+                              </div>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </div>
