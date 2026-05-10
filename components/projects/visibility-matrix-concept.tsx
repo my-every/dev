@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useMemo, useCallback, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Check, Loader2, Download } from "lucide-react";
+import { Check, Loader2, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -55,33 +55,84 @@ export function VisibilityMatrixConcept({
   onSaveAndGenerate,
   loading = false,
 }: VisibilityMatrixProps) {
-  const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const [generatingState, setGeneratingState] = useState<Record<string, GeneratingState>>({});
 
-  // Group assignments by unit type
-  const groupedAssignments = useMemo(() => {
-    const groups: Record<string, Assignment[]> = {};
+  // Build flat rows: one row per (assignment, location) pair
+  const matrixRows = useMemo(() => {
+    const rows: Array<{
+      unitType: string;
+      assignment: Assignment;
+      location: string;
+      locKey: string;
+      isFirstInUnit: boolean;
+      isFirstInAssignment: boolean;
+      unitRowSpan: number;
+      assignmentRowSpan: number;
+    }> = [];
+
+    // Group assignments by unit type first
+    const unitGroups: Record<string, Assignment[]> = {};
     for (const assignment of assignments) {
       const unitType = assignment.unitType ?? extractUnitType(assignment.normalizedTitle ?? assignment.sheetName);
-      if (!groups[unitType]) {
-        groups[unitType] = [];
+      if (!unitGroups[unitType]) {
+        unitGroups[unitType] = [];
       }
-      groups[unitType].push(assignment);
+      unitGroups[unitType].push(assignment);
     }
-    return groups;
-  }, [assignments]);
 
-  const toggleRow = useCallback((sheetSlug: string) => {
-    setExpandedRows((prev) => {
-      const next = new Set(prev);
-      if (next.has(sheetSlug)) {
-        next.delete(sheetSlug);
-      } else {
-        next.add(sheetSlug);
+    // Calculate row spans for each unit and assignment
+    for (const [unitType, unitAssignments] of Object.entries(unitGroups)) {
+      let unitRowCount = 0;
+      const assignmentRowCounts: number[] = [];
+
+      // First pass: count rows per assignment
+      for (const assignment of unitAssignments) {
+        const locations = externalLocations[assignment.sheetSlug] ?? [];
+        const rowCount = Math.max(1, locations.length); // At least 1 row per assignment
+        assignmentRowCounts.push(rowCount);
+        unitRowCount += rowCount;
       }
-      return next;
-    });
-  }, []);
+
+      // Second pass: build rows
+      let unitRowIdx = 0;
+      unitAssignments.forEach((assignment, assignmentIdx) => {
+        const locations = externalLocations[assignment.sheetSlug] ?? [];
+        const assignmentRowCount = assignmentRowCounts[assignmentIdx];
+
+        if (locations.length === 0) {
+          // No locations - single row with empty location
+          rows.push({
+            unitType,
+            assignment,
+            location: "",
+            locKey: "",
+            isFirstInUnit: unitRowIdx === 0,
+            isFirstInAssignment: true,
+            unitRowSpan: unitRowIdx === 0 ? unitRowCount : 0,
+            assignmentRowSpan: assignmentRowCount,
+          });
+          unitRowIdx++;
+        } else {
+          // Multiple locations - one row per location
+          locations.forEach((location, locIdx) => {
+            rows.push({
+              unitType,
+              assignment,
+              location,
+              locKey: location.trim().toUpperCase(),
+              isFirstInUnit: unitRowIdx === 0,
+              isFirstInAssignment: locIdx === 0,
+              unitRowSpan: unitRowIdx === 0 ? unitRowCount : 0,
+              assignmentRowSpan: locIdx === 0 ? assignmentRowCount : 0,
+            });
+            unitRowIdx++;
+          });
+        }
+      });
+    }
+
+    return rows;
+  }, [assignments, externalLocations]);
 
   const handleSaveAndGenerate = useCallback(async (sheetSlug: string) => {
     if (!onSaveAndGenerate) return;
@@ -122,193 +173,153 @@ export function VisibilityMatrixConcept({
         <div>
           <h3 className="text-sm font-semibold text-foreground">Visibility Matrix</h3>
           <p className="text-xs text-muted-foreground">
-            Configure visibility for Wire List, Brand List, and Cross Wire per assignment
+            Configure visibility for Wire List, Brand List, and Cross Wire per external location
           </p>
         </div>
       </div>
 
       {/* Matrix Table */}
       <div className="overflow-x-auto rounded-lg border border-border">
-        <table className="w-full min-w-[640px] text-sm">
+        <table className="w-full min-w-[700px] text-sm border-collapse">
           <thead>
             <tr className="border-b border-border bg-muted/50">
-              <th className="w-8 px-2 py-2" />
-              <th className="px-3 py-2 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Unit Type
+              <th className="w-20 px-3 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Unit
               </th>
-              <th className="px-3 py-2 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <th className="px-3 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Assignment
               </th>
-              <th className="px-3 py-2 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Ext. Locations
+              <th className="px-3 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Ext. Location
               </th>
-              <th className="w-20 px-2 py-2 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <th className="w-16 px-2 py-2.5 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Wire
               </th>
-              <th className="w-20 px-2 py-2 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <th className="w-16 px-2 py-2.5 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Brand
               </th>
-              <th className="w-20 px-2 py-2 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <th className="w-16 px-2 py-2.5 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Cross
               </th>
-              <th className="w-24 px-2 py-2" />
+              <th className="w-16 px-2 py-2.5" />
             </tr>
           </thead>
-          <tbody className="divide-y divide-border">
-            {Object.entries(groupedAssignments).map(([unitType, unitAssignments]) => (
-              unitAssignments.map((assignment, assignmentIdx) => {
-                const isExpanded = expandedRows.has(assignment.sheetSlug);
-                const locations = externalLocations[assignment.sheetSlug] ?? [];
-                const genState = generatingState[assignment.sheetSlug] ?? "idle";
-                const displayTitle = assignment.normalizedTitle ?? assignment.sheetName;
-                
-                // Get summary visibility state (all visible = true)
-                const wireAllVisible = locations.every((loc) => wireListSettings[assignment.sheetSlug]?.[loc.trim().toUpperCase()] ?? true);
-                const brandAllVisible = locations.every((loc) => brandListSettings[assignment.sheetSlug]?.[loc.trim().toUpperCase()] ?? true);
-                const crossAllVisible = locations.every((loc) => crossWireSettings[assignment.sheetSlug]?.[loc.trim().toUpperCase()] ?? true);
+          <tbody>
+            {matrixRows.map((row, rowIdx) => {
+              const wireVisible = row.locKey ? (wireListSettings[row.assignment.sheetSlug]?.[row.locKey] ?? true) : true;
+              const brandVisible = row.locKey ? (brandListSettings[row.assignment.sheetSlug]?.[row.locKey] ?? true) : true;
+              const crossVisible = row.locKey ? (crossWireSettings[row.assignment.sheetSlug]?.[row.locKey] ?? true) : true;
+              const genState = generatingState[row.assignment.sheetSlug] ?? "idle";
+              const displayTitle = row.assignment.normalizedTitle ?? row.assignment.sheetName;
 
-                return (
-                  <tbody key={assignment.sheetSlug}>
-                    {/* Main Assignment Row */}
-                    <tr 
-                      className={cn(
-                        "cursor-pointer transition-colors hover:bg-muted/30",
-                        isExpanded && "bg-muted/20"
-                      )}
-                      onClick={() => locations.length > 0 && toggleRow(assignment.sheetSlug)}
+              return (
+                <tr 
+                  key={`${row.assignment.sheetSlug}-${row.locKey || rowIdx}`}
+                  className={cn(
+                    "border-b border-border/40 transition-colors hover:bg-muted/20",
+                    row.isFirstInAssignment && "border-t border-border/60"
+                  )}
+                >
+                  {/* Unit Type - spans multiple rows */}
+                  {row.unitRowSpan > 0 && (
+                    <td 
+                      className="border-r border-border/40 bg-muted/30 px-3 py-2 align-top"
+                      rowSpan={row.unitRowSpan}
                     >
-                      <td className="px-2 py-2.5">
-                        {locations.length > 0 && (
-                          <ChevronRight 
-                            className={cn(
-                              "h-3.5 w-3.5 text-muted-foreground transition-transform duration-150",
-                              isExpanded && "rotate-90"
-                            )} 
-                          />
-                        )}
-                      </td>
-                      <td className="px-3 py-2.5">
-                        {assignmentIdx === 0 && (
-                          <Badge variant="outline" className="font-mono text-[10px]">
-                            {unitType || "—"}
-                          </Badge>
-                        )}
-                      </td>
-                      <td className="px-3 py-2.5">
-                        <span className="truncate text-sm font-medium text-foreground" title={displayTitle}>
-                          {displayTitle}
-                        </span>
-                      </td>
-                      <td className="px-3 py-2.5">
-                        {locations.length > 0 ? (
-                          <span className="text-xs text-muted-foreground">
-                            {locations.length} location{locations.length !== 1 ? "s" : ""}
-                          </span>
-                        ) : (
-                          <span className="text-xs italic text-muted-foreground/50">None</span>
-                        )}
-                      </td>
-                      <td className="px-2 py-2.5 text-center" onClick={(e) => e.stopPropagation()}>
-                        <span className={cn("text-[10px]", wireAllVisible ? "text-green-600" : "text-muted-foreground")}>
-                          {wireAllVisible ? "Visible" : "Partial"}
-                        </span>
-                      </td>
-                      <td className="px-2 py-2.5 text-center" onClick={(e) => e.stopPropagation()}>
-                        <span className={cn("text-[10px]", brandAllVisible ? "text-green-600" : "text-muted-foreground")}>
-                          {brandAllVisible ? "Visible" : "Partial"}
-                        </span>
-                      </td>
-                      <td className="px-2 py-2.5 text-center" onClick={(e) => e.stopPropagation()}>
-                        <span className={cn("text-[10px]", crossAllVisible ? "text-green-600" : "text-muted-foreground")}>
-                          {crossAllVisible ? "Visible" : "Partial"}
-                        </span>
-                      </td>
-                      <td className="px-2 py-2.5 text-right" onClick={(e) => e.stopPropagation()}>
-                        {genState === "generating" ? (
-                          <Button size="sm" variant="outline" className="h-6 gap-1 px-2 text-[10px]" disabled>
-                            <Loader2 className="h-2.5 w-2.5 animate-spin" />
-                          </Button>
-                        ) : genState === "done" ? (
-                          <Button size="sm" variant="outline" className="h-6 gap-1 px-2 text-[10px] text-green-600" disabled>
-                            <Check className="h-2.5 w-2.5" />
-                          </Button>
-                        ) : (
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="h-6 gap-1 px-2 text-[10px]"
-                            onClick={() => handleSaveAndGenerate(assignment.sheetSlug)}
-                          >
-                            <Download className="h-2.5 w-2.5" />
-                          </Button>
-                        )}
-                      </td>
-                    </tr>
+                      <Badge variant="outline" className="font-mono text-[10px]">
+                        {row.unitType || "—"}
+                      </Badge>
+                    </td>
+                  )}
 
-                    {/* Expanded Location Rows */}
-                    {isExpanded && locations.map((location) => {
-                      const locKey = location.trim().toUpperCase();
-                      const wireVisible = wireListSettings[assignment.sheetSlug]?.[locKey] ?? true;
-                      const brandVisible = brandListSettings[assignment.sheetSlug]?.[locKey] ?? true;
-                      const crossVisible = crossWireSettings[assignment.sheetSlug]?.[locKey] ?? true;
+                  {/* Assignment - spans multiple rows per location count */}
+                  {row.assignmentRowSpan > 0 && (
+                    <td 
+                      className="border-r border-border/40 px-3 py-2 align-top"
+                      rowSpan={row.assignmentRowSpan}
+                    >
+                      <span 
+                        className="block truncate text-xs font-medium text-foreground" 
+                        title={displayTitle}
+                      >
+                        {displayTitle}
+                      </span>
+                    </td>
+                  )}
 
-                      return (
-                        <tr 
-                          key={`${assignment.sheetSlug}-${locKey}`}
-                          className="bg-muted/10 hover:bg-muted/20"
+                  {/* External Location */}
+                  <td className="px-3 py-2">
+                    {row.location ? (
+                      <span className="font-mono text-xs text-foreground/80">{row.location}</span>
+                    ) : (
+                      <span className="text-xs italic text-muted-foreground/50">No locations</span>
+                    )}
+                  </td>
+
+                  {/* Wire List Toggle */}
+                  <td className="px-2 py-2 text-center">
+                    {row.locKey && (
+                      <Switch
+                        checked={wireVisible}
+                        onCheckedChange={(checked) => onWireListChange?.(row.assignment.sheetSlug, row.locKey, checked)}
+                        aria-label={`Wire list visibility for ${row.location}`}
+                        className="scale-75"
+                      />
+                    )}
+                  </td>
+
+                  {/* Brand List Toggle */}
+                  <td className="px-2 py-2 text-center">
+                    {row.locKey && (
+                      <Switch
+                        checked={brandVisible}
+                        onCheckedChange={(checked) => onBrandListChange?.(row.assignment.sheetSlug, row.locKey, checked)}
+                        aria-label={`Brand list visibility for ${row.location}`}
+                        className="scale-75"
+                      />
+                    )}
+                  </td>
+
+                  {/* Cross Wire Toggle */}
+                  <td className="px-2 py-2 text-center">
+                    {row.locKey && (
+                      <Switch
+                        checked={crossVisible}
+                        onCheckedChange={(checked) => onCrossWireChange?.(row.assignment.sheetSlug, row.locKey, checked)}
+                        aria-label={`Cross wire visibility for ${row.location}`}
+                        className="scale-75"
+                      />
+                    )}
+                  </td>
+
+                  {/* Action - only on first row of each assignment */}
+                  {row.assignmentRowSpan > 0 ? (
+                    <td className="px-2 py-2 text-center" rowSpan={row.assignmentRowSpan}>
+                      {genState === "generating" ? (
+                        <Button size="sm" variant="outline" className="h-6 w-6 p-0" disabled>
+                          <Loader2 className="h-3 w-3 animate-spin" />
+                        </Button>
+                      ) : genState === "done" ? (
+                        <Button size="sm" variant="outline" className="h-6 w-6 p-0 text-green-600" disabled>
+                          <Check className="h-3 w-3" />
+                        </Button>
+                      ) : (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-6 w-6 p-0"
+                          onClick={() => handleSaveAndGenerate(row.assignment.sheetSlug)}
                         >
-                          <td className="px-2 py-1.5" />
-                          <td className="px-3 py-1.5" />
-                          <td className="px-3 py-1.5" />
-                          <td className="px-3 py-1.5">
-                            <span className="font-mono text-xs text-foreground/80">{location}</span>
-                          </td>
-                          <td className="px-2 py-1.5 text-center">
-                            <Switch
-                              checked={wireVisible}
-                              onCheckedChange={(checked) => onWireListChange?.(assignment.sheetSlug, locKey, checked)}
-                              aria-label={`Wire list visibility for ${location}`}
-                              className="scale-75"
-                            />
-                          </td>
-                          <td className="px-2 py-1.5 text-center">
-                            <Switch
-                              checked={brandVisible}
-                              onCheckedChange={(checked) => onBrandListChange?.(assignment.sheetSlug, locKey, checked)}
-                              aria-label={`Brand list visibility for ${location}`}
-                              className="scale-75"
-                            />
-                          </td>
-                          <td className="px-2 py-1.5 text-center">
-                            <Switch
-                              checked={crossVisible}
-                              onCheckedChange={(checked) => onCrossWireChange?.(assignment.sheetSlug, locKey, checked)}
-                              aria-label={`Cross wire visibility for ${location}`}
-                              className="scale-75"
-                            />
-                          </td>
-                          <td className="px-2 py-1.5" />
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                );
-              })
-            ))}
+                          <Download className="h-3 w-3" />
+                        </Button>
+                      )}
+                    </td>
+                  ) : null}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
-      </div>
-
-      {/* Legend */}
-      <div className="flex flex-wrap items-center gap-4 text-[10px] text-muted-foreground">
-        <div className="flex items-center gap-1.5">
-          <span className="inline-block h-2 w-2 rounded-full bg-green-500" />
-          <span>Visible = All locations visible</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <span className="inline-block h-2 w-2 rounded-full bg-muted-foreground" />
-          <span>Partial = Some locations hidden</span>
-        </div>
       </div>
     </div>
   );
