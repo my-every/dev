@@ -199,12 +199,13 @@ function ActiveProjectsLWCChart({ projects, className, ...props }: ActiveProject
   }, [columns])
 
   return (
-    <section className={cn("rounded-lg border border-border bg-card p-3", className)} {...props}>
-      <div className="mb-3 flex items-start justify-between gap-3">
+    <section className={cn("rounded-lg border border-border bg-card p-2.5 sm:p-3", className)} {...props}>
+      {/* Header - stacks on mobile */}
+      <div className="mb-2.5 flex flex-col gap-2 sm:mb-3 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
         {/* Title — always visible, never truncated by controls */}
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-foreground">Projects by LWC</p>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs font-semibold text-foreground sm:text-sm">Projects by LWC</p>
+          <p className="text-[10px] text-muted-foreground sm:text-xs">
             {STATUS_META[selectedStatus].label}
             {" · "}
             {selectedMonth === "all" ? "All due months" : formatMonthLabel(selectedMonth)}
@@ -213,10 +214,10 @@ function ActiveProjectsLWCChart({ projects, className, ...props }: ActiveProject
           </p>
         </div>
 
-        {/* Unified filter pill: month picker + status toggle */}
-        <div className="flex shrink-0 items-stretch overflow-hidden rounded-lg border border-input bg-background">
+        {/* Unified filter pill: month picker + status toggle - horizontal scroll on mobile */}
+        <div className="flex w-full shrink-0 items-stretch overflow-x-auto rounded-lg border border-input bg-background scrollbar-none sm:w-auto">
           <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-            <SelectTrigger className="h-8 min-w-[7.5rem] gap-1 rounded-none border-0 px-3 text-xs shadow-none focus:ring-0">
+            <SelectTrigger className="h-7 min-w-[6.5rem] gap-1 rounded-none border-0 px-2 text-[11px] shadow-none focus:ring-0 sm:h-8 sm:min-w-[7.5rem] sm:px-3 sm:text-xs">
               <SelectValue placeholder="All Months" />
             </SelectTrigger>
             <SelectContent>
@@ -237,7 +238,7 @@ function ActiveProjectsLWCChart({ projects, className, ...props }: ActiveProject
               type="button"
               onClick={() => setSelectedStatus(statusKey)}
               className={cn(
-                "h-8 px-3 text-xs font-medium transition-colors",
+                "h-7 whitespace-nowrap px-2 text-[11px] font-medium transition-colors sm:h-8 sm:px-3 sm:text-xs",
                 selectedStatus === statusKey
                   ? "bg-foreground text-background"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -253,9 +254,9 @@ function ActiveProjectsLWCChart({ projects, className, ...props }: ActiveProject
         columns={columns}
         maxValue={maxValue}
         restartOnDataChange
-        className="h-48 overflow-hidden rounded-md"
-        titleClassName="text-xs"
-        valueClassName="text-sm font-semibold"
+        className="h-36 overflow-hidden rounded-md sm:h-48"
+        titleClassName="text-[10px] sm:text-xs"
+        valueClassName="text-xs font-semibold sm:text-sm"
       />
     </section>
   )
@@ -368,10 +369,10 @@ function ProjectLWCChartColumn({
       {...props}
     >
       {/* Title — in its own row so the bar never overlaps it */}
-      <div data-slot="animated-charts-column-title-wrapper" className="shrink-0 px-3 pt-2 pb-1">
+      <div data-slot="animated-charts-column-title-wrapper" className="shrink-0 px-1.5 pt-1.5 pb-0.5 sm:px-3 sm:pt-2 sm:pb-1">
         <span
           data-slot="animated-charts-column-title"
-          className={cn("text-base font-normal text-foreground/50", globalTitleClassName, columnTitleClassName)}
+          className={cn("text-[10px] font-normal text-foreground/50 sm:text-base", globalTitleClassName, columnTitleClassName)}
         >
           {title}
         </span>
@@ -390,7 +391,7 @@ function ProjectLWCChartColumn({
           <motion.span
             data-slot="animated-charts-column-value"
             className={cn(
-              "absolute top-2 left-3 text-base font-normal text-foreground",
+              "absolute top-1 left-1.5 text-xs font-normal text-foreground sm:top-2 sm:left-3 sm:text-base",
               globalValueClassName,
               columnValueClassName,
             )}

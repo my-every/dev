@@ -138,7 +138,7 @@ export function ProjectGroupedAccordion<TProject extends ProjectGroupableItem>({
 
   if (visibleGroups.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-border px-3 py-6 text-center text-sm text-muted-foreground">
+      <div className="rounded-xl border border-dashed border-border px-3 py-4 text-center text-xs text-muted-foreground sm:rounded-2xl sm:py-6 sm:text-sm">
         {emptyGroupMessage}
       </div>
     );
@@ -217,7 +217,7 @@ function ProjectAccordionGroupItem<TProject extends ProjectGroupableItem>({
     <AccordionItem
       value={group.id}
       index={index}
-      className="rounded-2xl border border-border bg-background/40"
+      className="rounded-xl border border-border bg-background/40 sm:rounded-2xl"
     >
       <AccordionTrigger>
         <ProjectGroupTriggerLabel
@@ -228,20 +228,20 @@ function ProjectAccordionGroupItem<TProject extends ProjectGroupableItem>({
         />
       </AccordionTrigger>
       {group.pinnedContent ? (
-        <div className="px-2 pb-2">{group.pinnedContent}</div>
+        <div className="px-1.5 pb-1.5 sm:px-2 sm:pb-2">{group.pinnedContent}</div>
       ) : null}
       <AccordionContent>
         {group.description ? (
-          <p className="mb-2 text-[11px] text-muted-foreground">
+          <p className="mb-1.5 text-[10px] text-muted-foreground sm:mb-2 sm:text-[11px]">
             {group.description}
           </p>
         ) : null}
         {displayProjects.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-border px-3 py-4 text-center text-xs text-muted-foreground">
+          <div className="rounded-lg border border-dashed border-border px-2.5 py-3 text-center text-[10px] text-muted-foreground sm:rounded-xl sm:px-3 sm:py-4 sm:text-xs">
             {emptyGroupMessage}
           </div>
         ) : (
-          <div className={cn("overflow-y-auto space-y-2", contentMaxHeight)}>
+          <div className={cn("overflow-y-auto space-y-1.5 sm:space-y-2", contentMaxHeight)}>
             {displayProjects.map((project) => (
               <div key={`${group.id}-${project.id}`}>
                 {renderProject(project)}
@@ -268,7 +268,7 @@ function ProjectGroupTriggerLabel({
   icon,
 }: ProjectGroupTriggerLabelProps) {
   return (
-    <span className="flex w-full items-center gap-2">
+    <span className="flex w-full items-center gap-1.5 sm:gap-2">
       {icon ? (
         <span aria-hidden className="flex shrink-0 items-center justify-center">
           {icon}
@@ -276,12 +276,12 @@ function ProjectGroupTriggerLabel({
       ) : dotColor ? (
         <span
           aria-hidden
-          className="h-2 w-2 shrink-0 rounded-full"
+          className="h-1.5 w-1.5 shrink-0 rounded-full sm:h-2 sm:w-2"
           style={{ backgroundColor: dotColor }}
         />
       ) : null}
-      <span className="flex-1 truncate text-left">{label}</span>
-      <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] tabular-nums text-muted-foreground">
+      <span className="flex-1 truncate text-left text-xs sm:text-sm">{label}</span>
+      <span className="shrink-0 rounded-full bg-muted px-1.5 py-0.5 text-[9px] tabular-nums text-muted-foreground sm:px-2 sm:text-[11px]">
         {count}
       </span>
     </span>

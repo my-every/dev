@@ -26,7 +26,7 @@ type ProjectNavCardProps = {
 };
 
 const BASE_CARD_CLASSES =
-  "w-full flex items-center gap-3 rounded-2xl border border-border bg-background/70 p-3 transition-colors";
+  "w-full flex items-center gap-2.5 rounded-xl border border-border bg-background/70 p-2.5 transition-colors sm:gap-3 sm:rounded-2xl sm:p-3";
 
 /**
  * Single project card rendered inside the side-panel nav and inside grouped
@@ -58,18 +58,19 @@ export function ProjectNavCard({
           name={project.name}
           color={project.color ?? undefined}
           interactive={false}
+          size="sm"
         />
       )}
       <div className="min-w-0 flex-1">
-        <div className="truncate text-sm font-medium text-foreground">
+        <div className="truncate text-xs font-medium text-foreground sm:text-sm">
           {project.name}
         </div>
-        <div className="mt-2 flex flex-wrap items-center gap-1.5">
+        <div className="mt-1.5 flex flex-wrap items-center gap-1 sm:mt-2 sm:gap-1.5">
           {project.unitNumber ? (
             <UnitNumberField
               mode="status"
               value={project.unitNumber}
-              className="h-5 text-[10px]"
+              className="h-4 text-[9px] sm:h-5 sm:text-[10px]"
             />
           ) : null}
       
@@ -77,7 +78,7 @@ export function ProjectNavCard({
             <RevisionField
               mode="status"
               value={project.revision}
-              className="h-5 text-[10px]"
+              className="h-4 text-[9px] sm:h-5 sm:text-[10px]"
             />
           ) : null}
         

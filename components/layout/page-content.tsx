@@ -34,16 +34,16 @@ const VARIANT_STYLES: Record<
   { sidePanel: string; aside: string }
 > = {
   default: {
-    sidePanel: "lg:w-72 lg:max-w-[300px]",
-    aside: "xl:w-80",
+    sidePanel: "lg:w-64 xl:w-72 lg:max-w-[280px] xl:max-w-[300px]",
+    aside: "xl:w-72 2xl:w-80",
   },
   compact: {
-    sidePanel: "lg:w-64 lg:max-w-[300px]",
-    aside: "xl:w-72",
+    sidePanel: "lg:w-56 xl:w-64 lg:max-w-[260px] xl:max-w-[300px]",
+    aside: "xl:w-64 2xl:w-72",
   },
   wide: {
-    sidePanel: "lg:w-[22rem] lg:max-w-[300px]",
-    aside: "xl:w-[23rem]",
+    sidePanel: "lg:w-72 xl:w-[22rem] lg:max-w-[280px] xl:max-w-[300px]",
+    aside: "xl:w-80 2xl:w-[23rem]",
   },
 };
 
@@ -113,7 +113,7 @@ export function PageContent({
           {showHeader ? (
             <motion.header
               className={cn(
-                "sticky top-0 px-4 relative z-20 border-b border-border  py-3.5 flex items-center justify-between backdrop-blur sm:px-4 lg:px-3",
+                "sticky top-0 px-2.5 relative z-20 border-b border-border py-2.5 flex items-center justify-between backdrop-blur sm:px-4 sm:py-3.5 lg:px-3",
                 classNames?.header,
               )}
               initial={prefersReducedMotion ? undefined : { opacity: 0, y: -6 }}
@@ -123,17 +123,17 @@ export function PageContent({
                 <Button
                   variant="outline"
                   size="sm"
-                  className="absolute top-5 -left-3 z-30 rounded-full p-1 border-border bg-card "
+                  className="absolute top-4 -left-2.5 z-30 hidden rounded-full p-1 border-border bg-card lg:flex sm:top-5 sm:-left-3"
                   onClick={toggleSidePanel}
                   aria-label={isSidePanelOpen ? "Close side panel" : "Open side panel"}
                 >
-                  {isSidePanelOpen ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+                  {isSidePanelOpen ? <ChevronLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
                 </Button>
 
            
-              <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4">
+              <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3 md:gap-4">
                 {showBreadcrumbs ? (
-                  <div className="max-w-max  ml-2 ">
+                  <div className="max-w-max ml-1 sm:ml-2">
                     {showUserAvatarMenu ? (
                       userAvatarMenu ? (
                         <UserAvatarMenu
@@ -156,7 +156,7 @@ export function PageContent({
                 ) : null}
 
                 {showHeaderTitleInline ? (
-                  <div className="min-w-0 pl-4 shrink-0 pr-1 sm:pr-2">
+                  <div className="min-w-0 pl-2 shrink-0 pr-1 sm:pl-4 sm:pr-2">
                     {showUserAvatarMenu && userAvatarMenu ? (
                       <UserAvatarMenu
                         {...userAvatarMenu}
@@ -211,12 +211,12 @@ export function PageContent({
           ) : null}
 
           {showHeading ? (
-            <div className="text-left px-3 sm:px-4 gap-3 flex flex-col lg:px-5">
-              <h2 className="truncate text-2xl font-medium tracking-tight text-foreground">
+            <div className="text-left px-2.5 gap-2 flex flex-col sm:px-4 sm:gap-3 lg:px-5">
+              <h2 className="truncate text-xl font-medium tracking-tight text-foreground sm:text-2xl">
                 {title}
               </h2>
               {subtitle ? (
-                <p className="truncate text-md text-muted-foreground">
+                <p className="truncate text-sm text-muted-foreground sm:text-base">
                   {subtitle}
                 </p>
               ) : null}

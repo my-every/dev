@@ -425,12 +425,12 @@ function DetailRow({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid grid-cols-[180px_1fr] items-start gap-4">
-      <div className="flex items-center gap-2 py-1.5 text-sm text-card-foreground">
-        <Icon className="h-4 w-4" />
+    <div className="flex flex-col gap-1 sm:grid sm:grid-cols-[140px_1fr] sm:items-start sm:gap-3 md:grid-cols-[180px_1fr] md:gap-4">
+      <div className="flex items-center gap-1.5 text-xs text-card-foreground sm:gap-2 sm:py-1.5 sm:text-sm">
+        <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
         {label}
       </div>
-      <div className="py-1 text-sm text-foreground">{children}</div>
+      <div className="text-xs text-foreground sm:py-1 sm:text-sm">{children}</div>
     </div>
   );
 }
@@ -447,18 +447,18 @@ function SectionHeader({
   actions?: React.ReactNode[];
 }) {
   return (
-    <div className="flex items-start gap-3 border-b pb-3">
-      <div className="flex flex-1 flex-wrap justify-start gap-2">
-        <div className="rounded-lg bg-card p-2">
-          <Icon className="h-4 w-4 text-card-foreground" />
+    <div className="flex flex-col gap-2 border-b pb-2.5 sm:flex-row sm:items-start sm:gap-3 sm:pb-3">
+      <div className="flex flex-1 flex-wrap items-start justify-start gap-2">
+        <div className="rounded-md bg-card p-1.5 sm:rounded-lg sm:p-2">
+          <Icon className="h-3.5 w-3.5 text-card-foreground sm:h-4 sm:w-4" />
         </div>
-        <div className="flex flex-col gap-1">
-          <h3 className="font-semibold text-foreground">{title}</h3>
-          <p className="text-sm text-card-foreground">{description}</p>
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5 sm:gap-1">
+          <h3 className="text-sm font-semibold text-foreground sm:text-base">{title}</h3>
+          <p className="text-xs text-card-foreground sm:text-sm">{description}</p>
         </div>
       </div>
       {actions?.length ? (
-        <div className="flex max-w-max items-center gap-2">{actions}</div>
+        <div className="flex max-w-max items-center gap-1.5 sm:gap-2">{actions}</div>
       ) : null}
     </div>
   );
@@ -582,8 +582,8 @@ function ProjectTabContentShell({
   const Icon = meta.icon;
   return (
     <div className="flex min-h-full">
-      <main className="min-w-0 flex-1 overflow-y-auto p-4">
-        <div className="mx-auto w-full max-w-4xl space-y-4">
+      <main className="min-w-0 flex-1 overflow-y-auto p-2.5 sm:p-4">
+        <div className="mx-auto w-full max-w-4xl space-y-3 sm:space-y-4">
           <SectionHeader icon={Icon} title={meta.title} description={meta.description} />
           {children}
         </div>
@@ -2568,37 +2568,45 @@ export function ProjectCollectionDetailsModal({
           }
         }}
       >
-        <DialogContent className="max-w-[98vw]! h-[90vh] w-full flex flex-col gap-0 overflow-hidden p-0">
-          <DialogHeader className="flex shrink-0 items-center gap-3 border-b px-4 py-3 justify-between">
-            <div className="flex min-w-0 flex-1 items-center gap-3">
+        <DialogContent className="max-w-[98vw]! h-[95vh] sm:h-[90vh] w-full flex flex-col gap-0 overflow-hidden p-0">
+          <DialogHeader className="flex shrink-0 items-center gap-2 border-b px-3 py-2.5 justify-between sm:gap-3 sm:px-4 sm:py-3">
+            <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
+              <ProjectIcon
+                name={currentProject.name}
+                color={currentProject.color ?? undefined}
+                interactive={false}
+                size="sm"
+                className="sm:hidden"
+              />
               <ProjectIcon
                 name={currentProject.name}
                 color={currentProject.color ?? undefined}
                 interactive={false}
                 size="lg"
+                className="hidden sm:flex"
               />
               <div className="min-w-0 flex-1">
-                <DialogTitle className="truncate text-lg font-semibold">
+                <DialogTitle className="truncate text-sm font-semibold sm:text-lg">
                   {currentProject.name}
                 </DialogTitle>
-                <div className="mt-1 flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-xs text-card-foreground">
+                <div className="mt-0.5 flex flex-wrap items-center gap-1.5 sm:mt-1 sm:gap-2">
+                  <span className="font-mono text-[10px] text-card-foreground sm:text-xs">
                     {currentProject.pdNumber}
                   </span>
-                  <span className="text-card-foreground/30">·</span>
+                  <span className="hidden text-card-foreground/30 sm:inline">·</span>
                   <Badge
                     variant="outline"
-                    className="h-5 text-[10px] font-mono"
+                    className="h-4 text-[9px] font-mono sm:h-5 sm:text-[10px]"
                   >
                     Rev {headerRevision}
                   </Badge>
                   {currentProject.lwcType ? (
-                    <Badge variant="secondary" className="h-5 text-[10px]">
+                    <Badge variant="secondary" className="hidden h-5 text-[10px] sm:inline-flex">
                       {currentProject.lwcType}
                     </Badge>
                   ) : null}
                   {currentProject.status ? (
-                    <Badge variant="outline" className="h-5 text-[10px]">
+                    <Badge variant="outline" className="hidden h-5 text-[10px] sm:inline-flex">
                       {formatTokenLabel(currentProject.status)}
                     </Badge>
                   ) : null}
@@ -2616,20 +2624,20 @@ export function ProjectCollectionDetailsModal({
                     size="sm"
                     variant="ghost"
                     onClick={cancelEditing}
-                    className="h-8 px-3 text-card-foreground"
+                    className="h-7 px-2 text-card-foreground sm:h-8 sm:px-3"
                   >
-                    <X className="mr-1.5 h-3.5 w-3.5" />
-                    Cancel
+                    <X className="mr-1 h-3 w-3 sm:mr-1.5 sm:h-3.5 sm:w-3.5" />
+                    <span className="hidden xs:inline">Cancel</span>
                   </Button>
                 ) : (
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={startEditing}
-                    className="h-8 px-3"
+                    className="h-7 px-2 sm:h-8 sm:px-3"
                   >
-                    <Pencil className="mr-1.5 h-3.5 w-3.5" />
-                    Edit
+                    <Pencil className="mr-1 h-3 w-3 sm:mr-1.5 sm:h-3.5 sm:w-3.5" />
+                    <span className="hidden xs:inline">Edit</span>
                   </Button>
                 )}
               </div>
@@ -2639,9 +2647,10 @@ export function ProjectCollectionDetailsModal({
           <Tabs
             value={activeTab}
             onValueChange={(value) => setActiveTab(value as ProjectDetailsTab)}
-            className="flex min-h-0 flex-1 bg-background"
+            className="flex min-h-0 flex-1 flex-col bg-background md:flex-row"
           >
-            <TabsList className="h-full w-52 shrink-0 flex-col justify-start gap-1 rounded-none border-r bg-muted/30 p-3">
+            {/* Mobile horizontal tabs */}
+            <TabsList className="flex h-auto w-full shrink-0 flex-row justify-start gap-1 overflow-x-auto rounded-none border-b bg-muted/30 p-2 scrollbar-none md:hidden">
               {PROJECT_TAB_META.map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeTab === tab.id;
@@ -2652,14 +2661,39 @@ export function ProjectCollectionDetailsModal({
                     value={tab.id}
                     disabled={isDisabled}
                     className={cn(
-                      "w-full justify-start gap-2 rounded-lg px-3 py-2 text-sm max-h-max font-medium",
+                      "flex-shrink-0 gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium",
                       "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
                       "text-card-foreground hover:bg-muted/50 hover:text-foreground",
                       isDisabled &&
                         "cursor-not-allowed opacity-45 hover:bg-muted/10 hover:text-card-foreground",
                     )}
                   >
-                    <Icon className="h-4 w-4 shrink-0" />
+                    <Icon className="h-3.5 w-3.5 shrink-0" />
+                    <span className="whitespace-nowrap">{tab.label}</span>
+                  </TabsTrigger>
+                );
+              })}
+            </TabsList>
+            {/* Desktop vertical tabs */}
+            <TabsList className="hidden h-full w-44 shrink-0 flex-col justify-start gap-1 rounded-none border-r bg-muted/30 p-2.5 md:flex lg:w-52 lg:p-3">
+              {PROJECT_TAB_META.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id;
+                const isDisabled = isEditing && !tab.editable;
+                return (
+                  <TabsTrigger
+                    key={tab.id}
+                    value={tab.id}
+                    disabled={isDisabled}
+                    className={cn(
+                      "w-full justify-start gap-2 rounded-lg px-2.5 py-1.5 text-xs max-h-max font-medium lg:px-3 lg:py-2 lg:text-sm",
+                      "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
+                      "text-card-foreground hover:bg-muted/50 hover:text-foreground",
+                      isDisabled &&
+                        "cursor-not-allowed opacity-45 hover:bg-muted/10 hover:text-card-foreground",
+                    )}
+                  >
+                    <Icon className="h-3.5 w-3.5 shrink-0 lg:h-4 lg:w-4" />
                     <span className="truncate">{tab.label}</span>
                     {isActive ? (
                       <ChevronRight className="ml-auto h-3 w-3 shrink-0" />
