@@ -911,6 +911,112 @@ export function ProjectDetailsWorkspace({
     }
   }, [brandingExports, project?.id]);
 
+  // ─── Bulk Save & Generate Handlers for Visibility Matrix ──────────────────
+
+  const handleBulkSaveAndGenerateWireLists = useCallback(async (): Promise<string | null> => {
+    if (!project?.id || assignmentEntries.length === 0) return null;
+
+    // Save all wire list settings
+    await Promise.all(
+      assignmentEntries.map(async (assignment) => {
+        const settings = wireListSettingsMatrix[assignment.sheetSlug] ?? {};
+        await fetch(
+          `/api/projects/${encodeURIComponent(project.id)}/assignment-visibility`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sheetSlug: assignment.sheetSlug,
+              kind: "wire",
+              visibilitySettings: settings,
+            }),
+          }
+        );
+      })
+    );
+
+    // Generate all wire lists
+    const response = await fetch(
+      `/api/projects/${encodeURIComponent(project.id)}/wire-list/generate-all`,
+      { method: "POST" }
+    );
+
+    if (!response.ok) return null;
+
+    // Refresh exports and return download URL
+    await refreshWireExports();
+    return `/api/projects/${encodeURIComponent(project.id)}/wire-list/download-zip`;
+  }, [project?.id, assignmentEntries, wireListSettingsMatrix, refreshWireExports]);
+
+  const handleBulkSaveAndGenerateBrandLists = useCallback(async (): Promise<string | null> => {
+    if (!project?.id || assignmentEntries.length === 0) return null;
+
+    // Save all brand list settings
+    await Promise.all(
+      assignmentEntries.map(async (assignment) => {
+        const settings = brandListSettingsMatrix[assignment.sheetSlug] ?? {};
+        await fetch(
+          `/api/projects/${encodeURIComponent(project.id)}/assignment-visibility`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sheetSlug: assignment.sheetSlug,
+              kind: "branding",
+              visibilitySettings: settings,
+            }),
+          }
+        );
+      })
+    );
+
+    // Generate all brand lists
+    const response = await fetch(
+      `/api/projects/${encodeURIComponent(project.id)}/brand-list/generate-all`,
+      { method: "POST" }
+    );
+
+    if (!response.ok) return null;
+
+    // Refresh exports and return download URL
+    await refreshBrandingExports();
+    return `/api/projects/${encodeURIComponent(project.id)}/brand-list/download-zip`;
+  }, [project?.id, assignmentEntries, brandListSettingsMatrix, refreshBrandingExports]);
+
+  const handleBulkSaveAndGenerateCrossWire = useCallback(async (): Promise<string | null> => {
+    if (!project?.id || assignmentEntries.length === 0) return null;
+
+    // Save all cross wire settings
+    await Promise.all(
+      assignmentEntries.map(async (assignment) => {
+        const settings = crossWireSettingsMatrix[assignment.sheetSlug] ?? {};
+        const isSwapped = crossWireSwapLocationsAll || (crossWireSwapLocationsBySheet[assignment.sheetSlug] ?? false);
+        await fetch(
+          `/api/projects/${encodeURIComponent(project.id)}/cross-wire-visibility`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sheetSlug: assignment.sheetSlug,
+              visibilitySettings: settings,
+              swapLocations: isSwapped,
+            }),
+          }
+        );
+      })
+    );
+
+    // Generate cross wire PDF
+    const response = await fetch(
+      `/api/projects/${encodeURIComponent(project.id)}/cross-wire/generate`,
+      { method: "POST" }
+    );
+
+    if (!response.ok) return null;
+
+    return `/api/projects/${encodeURIComponent(project.id)}/cross-wire/download`;
+  }, [project?.id, assignmentEntries, crossWireSettingsMatrix, crossWireSwapLocationsAll, crossWireSwapLocationsBySheet]);
+
   const refreshBrandingExports = useCallback(async () => {
     if (!project?.id) {
       setBrandingExports(null);
@@ -2445,6 +2551,9 @@ export function ProjectDetailsWorkspace({
                   onWireListChange={(slug, loc, vis) => setWireListLocationVisibility(slug, loc, vis)}
                   onBrandListChange={(slug, loc, vis) => setBrandListLocationVisibility(slug, loc, vis)}
                   onCrossWireChange={(slug, loc, vis) => setCrossWireLocationVisibility(slug, loc, vis)}
+                  onSaveAndGenerateAllWireLists={handleBulkSaveAndGenerateWireLists}
+                  onSaveAndGenerateAllBrandLists={handleBulkSaveAndGenerateBrandLists}
+                  onSaveAndGenerateCrossWire={handleBulkSaveAndGenerateCrossWire}
                   loading={loadingSchemaLocations}
                 />
               </div>

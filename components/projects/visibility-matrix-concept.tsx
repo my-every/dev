@@ -4,10 +4,11 @@ import { useMemo, useCallback, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Check, Loader2, Download } from "lucide-react";
+import { Check, Loader2, Download, FileArchive, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
+// Visibility Matrix: Unified table for Wire List, Brand List, Cross Wire settings
 
 interface Assignment {
   sheetSlug: string;
@@ -27,10 +28,14 @@ interface VisibilityMatrixProps {
   onBrandListChange?: (sheetSlug: string, location: string, visible: boolean) => void;
   onCrossWireChange?: (sheetSlug: string, location: string, visible: boolean) => void;
   onSaveAndGenerate?: (sheetSlug: string) => Promise<void>;
+  onSaveAndGenerateAllWireLists?: () => Promise<string | null>; // returns download URL or null
+  onSaveAndGenerateAllBrandLists?: () => Promise<string | null>;
+  onSaveAndGenerateCrossWire?: () => Promise<string | null>;
   loading?: boolean;
 }
 
-type GeneratingState = "idle" | "generating" | "done" | "error";
+type GeneratingState = "idle" | "generating" | "ready" | "error";
+type BulkGeneratingState = { state: GeneratingState; downloadUrl: string | null };
 
 // ─── Helper: Extract unit type from normalized title ─────────────────────────
 
@@ -53,9 +58,15 @@ export function VisibilityMatrixConcept({
   onBrandListChange,
   onCrossWireChange,
   onSaveAndGenerate,
+  onSaveAndGenerateAllWireLists,
+  onSaveAndGenerateAllBrandLists,
+  onSaveAndGenerateCrossWire,
   loading = false,
 }: VisibilityMatrixProps) {
   const [generatingState, setGeneratingState] = useState<Record<string, GeneratingState>>({});
+  const [wireListBulk, setWireListBulk] = useState<BulkGeneratingState>({ state: "idle", downloadUrl: null });
+  const [brandListBulk, setBrandListBulk] = useState<BulkGeneratingState>({ state: "idle", downloadUrl: null });
+  const [crossWireBulk, setCrossWireBulk] = useState<BulkGeneratingState>({ state: "idle", downloadUrl: null });
 
   // Build flat rows: one row per (assignment, location) pair
   const matrixRows = useMemo(() => {
@@ -140,7 +151,7 @@ export function VisibilityMatrixConcept({
     setGeneratingState((prev) => ({ ...prev, [sheetSlug]: "generating" }));
     try {
       await onSaveAndGenerate(sheetSlug);
-      setGeneratingState((prev) => ({ ...prev, [sheetSlug]: "done" }));
+      setGeneratingState((prev) => ({ ...prev, [sheetSlug]: "ready" }));
       setTimeout(() => {
         setGeneratingState((prev) => ({ ...prev, [sheetSlug]: "idle" }));
       }, 3000);
@@ -148,6 +159,39 @@ export function VisibilityMatrixConcept({
       setGeneratingState((prev) => ({ ...prev, [sheetSlug]: "error" }));
     }
   }, [onSaveAndGenerate]);
+
+  const handleSaveAndGenerateAllWireLists = useCallback(async () => {
+    if (!onSaveAndGenerateAllWireLists) return;
+    setWireListBulk({ state: "generating", downloadUrl: null });
+    try {
+      const url = await onSaveAndGenerateAllWireLists();
+      setWireListBulk({ state: "ready", downloadUrl: url });
+    } catch {
+      setWireListBulk({ state: "error", downloadUrl: null });
+    }
+  }, [onSaveAndGenerateAllWireLists]);
+
+  const handleSaveAndGenerateAllBrandLists = useCallback(async () => {
+    if (!onSaveAndGenerateAllBrandLists) return;
+    setBrandListBulk({ state: "generating", downloadUrl: null });
+    try {
+      const url = await onSaveAndGenerateAllBrandLists();
+      setBrandListBulk({ state: "ready", downloadUrl: url });
+    } catch {
+      setBrandListBulk({ state: "error", downloadUrl: null });
+    }
+  }, [onSaveAndGenerateAllBrandLists]);
+
+  const handleSaveAndGenerateCrossWire = useCallback(async () => {
+    if (!onSaveAndGenerateCrossWire) return;
+    setCrossWireBulk({ state: "generating", downloadUrl: null });
+    try {
+      const url = await onSaveAndGenerateCrossWire();
+      setCrossWireBulk({ state: "ready", downloadUrl: url });
+    } catch {
+      setCrossWireBulk({ state: "error", downloadUrl: null });
+    }
+  }, [onSaveAndGenerateCrossWire]);
 
   if (loading) {
     return (
@@ -319,6 +363,122 @@ export function VisibilityMatrixConcept({
               );
             })}
           </tbody>
+          {/* Footer row with bulk download buttons */}
+          <tfoot>
+            <tr className="border-t-2 border-border bg-muted/30">
+              <td colSpan={3} className="px-3 py-3">
+                <span className="text-xs font-medium text-muted-foreground">
+                  Save & Generate All
+                </span>
+              </td>
+              {/* Wire List Download */}
+              <td className="px-2 py-3 text-center">
+                {wireListBulk.state === "idle" ? (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-7 gap-1 px-2 text-[10px]"
+                    onClick={handleSaveAndGenerateAllWireLists}
+                    disabled={!onSaveAndGenerateAllWireLists}
+                  >
+                    <FileArchive className="h-3 w-3" />
+                    ZIP
+                  </Button>
+                ) : wireListBulk.state === "generating" ? (
+                  <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-[10px]" disabled>
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  </Button>
+                ) : wireListBulk.state === "ready" && wireListBulk.downloadUrl ? (
+                  <Button
+                    size="sm"
+                    variant="default"
+                    className="h-7 gap-1 px-2 text-[10px] bg-green-600 hover:bg-green-700"
+                    asChild
+                  >
+                    <a href={wireListBulk.downloadUrl} download>
+                      <Download className="h-3 w-3" />
+                      DL
+                    </a>
+                  </Button>
+                ) : (
+                  <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-[10px] text-destructive" disabled>
+                    Error
+                  </Button>
+                )}
+              </td>
+              {/* Brand List Download */}
+              <td className="px-2 py-3 text-center">
+                {brandListBulk.state === "idle" ? (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-7 gap-1 px-2 text-[10px]"
+                    onClick={handleSaveAndGenerateAllBrandLists}
+                    disabled={!onSaveAndGenerateAllBrandLists}
+                  >
+                    <FileArchive className="h-3 w-3" />
+                    ZIP
+                  </Button>
+                ) : brandListBulk.state === "generating" ? (
+                  <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-[10px]" disabled>
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  </Button>
+                ) : brandListBulk.state === "ready" && brandListBulk.downloadUrl ? (
+                  <Button
+                    size="sm"
+                    variant="default"
+                    className="h-7 gap-1 px-2 text-[10px] bg-green-600 hover:bg-green-700"
+                    asChild
+                  >
+                    <a href={brandListBulk.downloadUrl} download>
+                      <Download className="h-3 w-3" />
+                      DL
+                    </a>
+                  </Button>
+                ) : (
+                  <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-[10px] text-destructive" disabled>
+                    Error
+                  </Button>
+                )}
+              </td>
+              {/* Cross Wire Download */}
+              <td className="px-2 py-3 text-center">
+                {crossWireBulk.state === "idle" ? (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-7 gap-1 px-2 text-[10px]"
+                    onClick={handleSaveAndGenerateCrossWire}
+                    disabled={!onSaveAndGenerateCrossWire}
+                  >
+                    <FileText className="h-3 w-3" />
+                    PDF
+                  </Button>
+                ) : crossWireBulk.state === "generating" ? (
+                  <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-[10px]" disabled>
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  </Button>
+                ) : crossWireBulk.state === "ready" && crossWireBulk.downloadUrl ? (
+                  <Button
+                    size="sm"
+                    variant="default"
+                    className="h-7 gap-1 px-2 text-[10px] bg-green-600 hover:bg-green-700"
+                    asChild
+                  >
+                    <a href={crossWireBulk.downloadUrl} download>
+                      <Download className="h-3 w-3" />
+                      DL
+                    </a>
+                  </Button>
+                ) : (
+                  <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-[10px] text-destructive" disabled>
+                    Error
+                  </Button>
+                )}
+              </td>
+              <td />
+            </tr>
+          </tfoot>
         </table>
       </div>
     </div>
