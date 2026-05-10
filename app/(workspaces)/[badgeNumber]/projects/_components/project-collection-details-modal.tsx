@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import { useRouter } from "next/navigation";
 import {
+  ArrowLeftRight,
   Calendar,
   Check,
   ChevronRight,
@@ -4307,64 +4308,6 @@ export function ProjectCollectionDetailsModal({
                     </div>
                   </div>
 
-                  <div className="space-y-2 rounded-lg border border-border/60 bg-card/20 px-3 py-2">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <div className="text-xs font-semibold text-foreground">Swap From/To Locations</div>
-                        <p className="text-[11px] text-card-foreground">
-                          Choose all assignments or set swapped columns individually per sheet.
-                        </p>
-                      </div>
-                      <Switch
-                        checked={crossWireSwapLocationsAll}
-                        onCheckedChange={setCrossWireSwapLocationsAll}
-                        aria-label="Toggle swapped cross wire locations for all assignments"
-                      />
-                    </div>
-
-                    {!crossWireSwapLocationsAll ? (
-                      <>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="outline"
-                            className="h-7 px-2 text-[11px]"
-                            onClick={() => setAllCrossWireSwapBySheet(true)}
-                          >
-                            Set all
-                          </Button>
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="outline"
-                            className="h-7 px-2 text-[11px]"
-                            onClick={() => setAllCrossWireSwapBySheet(false)}
-                          >
-                            Clear all
-                          </Button>
-                        </div>
-                        <div className="grid gap-1 sm:grid-cols-2">
-                          {assignmentEntries.map((assignment) => (
-                            <label
-                              key={`swap-${assignment.sheetSlug}`}
-                              className="flex items-center justify-between rounded border border-border/60 px-2 py-1.5 text-xs"
-                            >
-                              <span className="truncate">{assignment.sheetName}</span>
-                              <Switch
-                                checked={crossWireSwapLocationsBySheet[assignment.sheetSlug] ?? false}
-                                onCheckedChange={(checked) =>
-                                  handleCrossWireSwapBySheet(assignment.sheetSlug, checked)
-                                }
-                                aria-label={`Toggle swapped locations for ${assignment.sheetName}`}
-                              />
-                            </label>
-                          ))}
-                        </div>
-                      </>
-                    ) : null}
-                  </div>
-
                   {crossWireSettingsMessage ? (
                     <div
                       className={cn(
@@ -4390,143 +4333,239 @@ export function ProjectCollectionDetailsModal({
                       description="Generate wire list schemas to populate cross wire visibility settings."
                     />
                   ) : (
-                    <div className="space-y-2">
-                      {assignmentEntries.map((assignment) => {
-                        const locations = (schemaExternalLocations[assignment.sheetSlug] ?? [])
-                          .map((loc) => ({
-                            label: loc,
-                            key: loc.trim().toUpperCase(),
-                          }))
-                          .filter((loc) => loc.key);
-                        if (locations.length === 0) {
-                          return null;
-                        }
-
-                        const visibleCount = locations.filter(
-                          (loc) =>
-                            crossWireSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true,
-                        ).length;
-                        const isSavingSheet =
-                          savingCrossWireSettingsBySheet[assignment.sheetSlug] ?? false;
-                        const allVisible = visibleCount === locations.length;
-
-                        return (
-                          <div
-                            key={assignment.sheetSlug}
-                            className="overflow-hidden rounded-lg border border-border/60 bg-card/30 transition-colors hover:border-border/80"
+                    <div className="space-y-3">
+                      {/* Global controls */}
+                      <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border/60 bg-card/20 p-2.5">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-medium text-foreground">Quick Actions:</span>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            className="h-6 gap-1 px-2 text-[10px] sm:h-7 sm:text-[11px]"
+                            onClick={() => {
+                              setCrossWireSwapLocationsAll(true);
+                              setAllCrossWireSwapBySheet(true);
+                            }}
                           >
-                            <div
-                              role="button"
-                              tabIndex={0}
-                              onClick={() => {
-                                const current = expandedCrossAssignments.has(
-                                  assignment.sheetSlug,
-                                );
-                                setExpandedCrossAssignments(
-                                  current ? new Set() : new Set([assignment.sheetSlug]),
-                                );
-                              }}
-                              onKeyDown={(event) => {
-                                if (event.key === "Enter" || event.key === " ") {
-                                  event.preventDefault();
-                                  const current = expandedCrossAssignments.has(
-                                    assignment.sheetSlug,
-                                  );
-                                  setExpandedCrossAssignments(
-                                    current ? new Set() : new Set([assignment.sheetSlug]),
-                                  );
-                                }
-                              }}
-                              className="flex w-full items-center justify-between px-4 py-3 transition-colors hover:bg-card/40"
-                            >
-                              <div className="flex min-w-0 flex-1 items-center gap-3 text-left">
-                                <ChevronRight
-                                  className={cn(
-                                    "h-4 w-4 shrink-0 text-card-foreground transition-transform",
-                                    expandedCrossAssignments.has(assignment.sheetSlug) &&
-                                      "rotate-90",
-                                  )}
-                                />
-                                <div className="min-w-0 flex-1">
-                                  <div className="text-sm font-medium text-foreground">
-                                    {assignment.sheetName}
-                                  </div>
-                                 
-                                </div>
-                              </div>
-                              <div className="flex shrink-0 items-center gap-2">
-                                <Badge
-                                  variant={allVisible ? "secondary" : "outline"}
-                                  className="h-5 text-[10px]"
-                                >
-                                  {visibleCount}/{locations.length}
-                                </Badge>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="h-7 gap-1 px-2 text-[11px]"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    void handleSaveCrossWireSettings(assignment.sheetSlug);
-                                  }}
-                                  disabled={isSavingSheet}
-                                >
-                                  {isSavingSheet ? (
-                                    <Loader2 className="h-3 w-3 animate-spin" />
-                                  ) : (
-                                    <Check className="h-3 w-3" />
-                                  )}
-                                  Save + Generate
-                                </Button>
-                              </div>
-                            </div>
+                            <ArrowLeftRight className="h-3 w-3" />
+                            Swap All
+                          </Button>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            className="h-6 gap-1 px-2 text-[10px] sm:h-7 sm:text-[11px]"
+                            onClick={() => {
+                              setCrossWireSwapLocationsAll(false);
+                              setAllCrossWireSwapBySheet(false);
+                            }}
+                          >
+                            Clear Swaps
+                          </Button>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[10px] text-card-foreground sm:text-[11px]">Swap all locations:</span>
+                          <Switch
+                            checked={crossWireSwapLocationsAll}
+                            onCheckedChange={setCrossWireSwapLocationsAll}
+                            aria-label="Toggle swapped cross wire locations for all assignments"
+                          />
+                        </div>
+                      </div>
 
-                            {expandedCrossAssignments.has(assignment.sheetSlug) ? (
-                              <div className="space-y-2 border-t border-border/40 bg-background/40 p-3">
-                                {locations.map((loc) => (
-                                  <div
-                                    key={loc.key}
-                                    className="group flex cursor-pointer items-center gap-3 rounded px-2 py-1.5 transition-colors hover:bg-card/40"
-                                    onClick={() =>
-                                      setCrossWireLocationVisibility(
-                                        assignment.sheetSlug,
-                                        loc.key,
-                                        !(
-                                          crossWireSettingsMatrix[assignment.sheetSlug]?.[
-                                            loc.key
-                                          ] ?? true
-                                        ),
-                                      )
-                                    }
-                                  >
-                                    <Switch
-                                      checked={
-                                        crossWireSettingsMatrix[assignment.sheetSlug]?.[
-                                          loc.key
-                                        ] ?? true
-                                      }
-                                      onCheckedChange={(checked) =>
-                                        setCrossWireLocationVisibility(
-                                          assignment.sheetSlug,
-                                          loc.key,
-                                          checked,
-                                        )
-                                      }
-                                      onPointerDown={(e) => e.stopPropagation()}
-                                      onClick={(e) => e.stopPropagation()}
-                                      onKeyDown={(e) => e.stopPropagation()}
-                                      aria-label={`Toggle cross wire visibility of ${loc.label}`}
-                                    />
-                                    <span className="font-mono text-sm text-foreground group-hover:text-foreground/80">
-                                      {loc.label}
-                                    </span>
-                                  </div>
-                                ))}
-                              </div>
-                            ) : null}
+                      {/* Unified cross-wire locations table */}
+                      <div className="overflow-hidden rounded-lg border border-border">
+                        {/* Desktop table header */}
+                        <div className="hidden border-b border-border bg-muted/50 sm:grid sm:grid-cols-[1fr_1fr_80px_100px_120px] sm:gap-2 sm:px-3 sm:py-2">
+                          <div className="text-[10px] font-semibold uppercase tracking-wider text-card-foreground">
+                            From Location
                           </div>
-                        );
-                      })}
+                          <div className="text-[10px] font-semibold uppercase tracking-wider text-card-foreground">
+                            To Location
+                          </div>
+                          <div className="text-center text-[10px] font-semibold uppercase tracking-wider text-card-foreground">
+                            Visible
+                          </div>
+                          <div className="text-center text-[10px] font-semibold uppercase tracking-wider text-card-foreground">
+                            Swap Loc
+                          </div>
+                          <div className="text-right text-[10px] font-semibold uppercase tracking-wider text-card-foreground">
+                            Action
+                          </div>
+                        </div>
+
+                        {/* Table rows */}
+                        <div className="divide-y divide-border/60">
+                          {assignmentEntries.map((assignment) => {
+                            const locations = (schemaExternalLocations[assignment.sheetSlug] ?? [])
+                              .map((loc) => ({
+                                label: loc,
+                                key: loc.trim().toUpperCase(),
+                              }))
+                              .filter((loc) => loc.key);
+                            
+                            if (locations.length === 0) {
+                              return null;
+                            }
+
+                            const visibleCount = locations.filter(
+                              (loc) =>
+                                crossWireSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true,
+                            ).length;
+                            const isSavingSheet =
+                              savingCrossWireSettingsBySheet[assignment.sheetSlug] ?? false;
+                            const isSwapped = crossWireSwapLocationsAll || (crossWireSwapLocationsBySheet[assignment.sheetSlug] ?? false);
+
+                            return (
+                              <div key={assignment.sheetSlug} className="bg-background/40">
+                                {locations.map((loc, locIdx) => {
+                                  const isFirstInGroup = locIdx === 0;
+                                  const isLastInGroup = locIdx === locations.length - 1;
+                                  const isVisible = crossWireSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true;
+
+                                  return (
+                                    <div
+                                      key={`${assignment.sheetSlug}-${loc.key}`}
+                                      className={cn(
+                                        "grid grid-cols-[1fr_auto] items-center gap-2 px-2.5 py-2 transition-colors hover:bg-muted/30 sm:grid-cols-[1fr_1fr_80px_100px_120px] sm:gap-2 sm:px-3",
+                                        !isLastInGroup && "border-b border-border/30"
+                                      )}
+                                    >
+                                      {/* From Location (Assignment) */}
+                                      <div className="min-w-0">
+                                        {isFirstInGroup ? (
+                                          <div className="flex items-center gap-1.5">
+                                            <span className="truncate text-xs font-medium text-foreground sm:text-sm">
+                                              {assignment.sheetName}
+                                            </span>
+                                            <Badge variant="outline" className="hidden h-4 shrink-0 px-1.5 text-[9px] sm:inline-flex">
+                                              {visibleCount}/{locations.length}
+                                            </Badge>
+                                          </div>
+                                        ) : (
+                                          <span className="text-[10px] text-card-foreground/50 sm:text-xs">—</span>
+                                        )}
+                                      </div>
+
+                                      {/* To Location (External) */}
+                                      <div className="hidden min-w-0 sm:block">
+                                        <span className="truncate font-mono text-xs text-foreground">
+                                          {loc.label}
+                                        </span>
+                                      </div>
+
+                                      {/* Mobile: To Location + Controls */}
+                                      <div className="flex items-center gap-2 sm:hidden">
+                                        <span className="truncate font-mono text-[10px] text-foreground">
+                                          {loc.label}
+                                        </span>
+                                        <div className="flex shrink-0 items-center gap-3">
+                                          <div className="flex flex-col items-center gap-0.5">
+                                            <span className="text-[8px] text-card-foreground">Vis</span>
+                                            <Switch
+                                              checked={isVisible}
+                                              onCheckedChange={(checked) =>
+                                                setCrossWireLocationVisibility(
+                                                  assignment.sheetSlug,
+                                                  loc.key,
+                                                  checked,
+                                                )
+                                              }
+                                              aria-label={`Toggle visibility of ${loc.label}`}
+                                              className="scale-75"
+                                            />
+                                          </div>
+                                          {isFirstInGroup && (
+                                            <div className="flex flex-col items-center gap-0.5">
+                                              <span className="text-[8px] text-card-foreground">Swap</span>
+                                              <Switch
+                                                checked={isSwapped}
+                                                disabled={crossWireSwapLocationsAll}
+                                                onCheckedChange={(checked) =>
+                                                  handleCrossWireSwapBySheet(assignment.sheetSlug, checked)
+                                                }
+                                                aria-label={`Toggle swap for ${assignment.sheetName}`}
+                                                className="scale-75"
+                                              />
+                                            </div>
+                                          )}
+                                          {isFirstInGroup && (
+                                            <Button
+                                              size="sm"
+                                              variant="ghost"
+                                              className="h-6 w-6 p-0"
+                                              onClick={() => void handleSaveCrossWireSettings(assignment.sheetSlug)}
+                                              disabled={isSavingSheet}
+                                            >
+                                              {isSavingSheet ? (
+                                                <Loader2 className="h-3 w-3 animate-spin" />
+                                              ) : (
+                                                <Check className="h-3 w-3" />
+                                              )}
+                                            </Button>
+                                          )}
+                                        </div>
+                                      </div>
+
+                                      {/* Desktop: Visible toggle */}
+                                      <div className="hidden justify-center sm:flex">
+                                        <Switch
+                                          checked={isVisible}
+                                          onCheckedChange={(checked) =>
+                                            setCrossWireLocationVisibility(
+                                              assignment.sheetSlug,
+                                              loc.key,
+                                              checked,
+                                            )
+                                          }
+                                          aria-label={`Toggle visibility of ${loc.label}`}
+                                        />
+                                      </div>
+
+                                      {/* Desktop: Swap Location toggle (only on first row per assignment) */}
+                                      <div className="hidden justify-center sm:flex">
+                                        {isFirstInGroup ? (
+                                          <Switch
+                                            checked={isSwapped}
+                                            disabled={crossWireSwapLocationsAll}
+                                            onCheckedChange={(checked) =>
+                                              handleCrossWireSwapBySheet(assignment.sheetSlug, checked)
+                                            }
+                                            aria-label={`Toggle swap locations for ${assignment.sheetName}`}
+                                          />
+                                        ) : (
+                                          <span className="text-xs text-card-foreground/40">—</span>
+                                        )}
+                                      </div>
+
+                                      {/* Desktop: Action button (only on first row per assignment) */}
+                                      <div className="hidden justify-end sm:flex">
+                                        {isFirstInGroup ? (
+                                          <Button
+                                            size="sm"
+                                            variant="outline"
+                                            className="h-6 gap-1 px-2 text-[10px]"
+                                            onClick={() => void handleSaveCrossWireSettings(assignment.sheetSlug)}
+                                            disabled={isSavingSheet}
+                                          >
+                                            {isSavingSheet ? (
+                                              <Loader2 className="h-2.5 w-2.5 animate-spin" />
+                                            ) : (
+                                              <Check className="h-2.5 w-2.5" />
+                                            )}
+                                            Save
+                                          </Button>
+                                        ) : null}
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
                   )}
                 </ProjectTabContentShell>
