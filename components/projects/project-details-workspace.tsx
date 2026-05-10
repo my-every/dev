@@ -434,18 +434,18 @@ export function ProjectDetailsWorkspace({
   // ─── Fetch Project Data ─────────────────────────────────────────────────────
 
   useEffect(() => {
-    async function fetchProject() {
-      try {
-        setLoading(true);
-        const res = await fetch(`/api/projects/${encodeURIComponent(projectId)}`);
-        if (!res.ok) {
-          throw new Error("Failed to fetch project");
-        }
-        const data = await res.json();
-        setProject(data.project ?? data);
-        setError(null);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load project");
+  async function fetchProject() {
+  try {
+  setLoading(true);
+  const res = await fetch(`/api/projects/${encodeURIComponent(projectId)}`);
+  if (!res.ok) {
+  throw new Error("Failed to fetch project");
+  }
+  const data = await res.json();
+  setProject(data.manifest ?? data.project ?? data);
+  setError(null);
+  } catch (err) {
+  setError(err instanceof Error ? err.message : "Failed to load project");
       } finally {
         setLoading(false);
       }
