@@ -221,44 +221,6 @@ export function ProjectsSidePanelNav({
     return () => { cancelled = true; };
   }, []);
 
-  useEffect(() => {
-    if (!selectedPriorityProjectId) {
-      setSelectedPriorityProject(null);
-      return;
-    }
-
-    let cancelled = false;
-
-    async function loadProjectDetails() {
-      try {
-        const response = await fetch(`/api/projects/${encodeURIComponent(selectedPriorityProjectId)}`, {
-          cache: "no-store",
-        });
-        if (!response.ok) {
-          if (!cancelled) {
-            setSelectedPriorityProject(null);
-          }
-          return;
-        }
-
-        const payload = (await response.json().catch(() => ({}))) as { manifest?: ProjectManifest };
-        if (!cancelled) {
-          setSelectedPriorityProject(payload.manifest ?? null);
-        }
-      } catch {
-        if (!cancelled) {
-          setSelectedPriorityProject(null);
-        }
-      }
-    }
-
-    void loadProjectDetails();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [selectedPriorityProjectId]);
-
   const savePriorityOrder = useCallback(async (nextOrder: string[]) => {
     setPrioritySaveBusy(true);
     try {
@@ -407,7 +369,7 @@ export function ProjectsSidePanelNav({
     });
   }, [lwcFilter, orderedPriorityProjects, renderPriorityCard]);
 
-  // ── Legals data pipeline ──────────────────────────────────────────────────
+  // ── Legals data pipeline ───────────────────────────────────────────���──────
 
   const filteredLegalsByMonth = useMemo(() => {
     if (selectedMonth === "all") return legalProjects;
