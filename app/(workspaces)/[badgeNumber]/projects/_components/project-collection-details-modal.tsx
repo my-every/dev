@@ -79,7 +79,7 @@ import type { ProjectManifest } from "@/types/project-manifest";
 import { parseRevisionFromFilename } from "@/lib/revision/types";
 import { LayoutPdfWorkspaceDialog } from "@/components/projects/layout-pdf-workspace-dialog";
 import { MultiWireListPrintWorkspaceDialog } from "@/components/projects/multi-wire-list-print-workspace-dialog";
-import { MultiSheetReviewModal } from "@/components/wire-list/multi-sheet-review-modal";
+
 
 import { ProjectIcon } from "./project-icon";
 import { AssignmentLabelDownloadButton } from "@/components/projects/assignment-label-download-button";
@@ -740,9 +740,7 @@ export function ProjectCollectionDetailsModal({
 
   const [layoutWorkspaceOpen, setLayoutWorkspaceOpen] = useState(false);
   const [wireReviewOpen, setWireReviewOpen] = useState(false);
-  const [brandReviewOpen, setBrandReviewOpen] = useState(false);
-  const [autoStartBrandImport, setAutoStartBrandImport] = useState(false);
-  const hasChildWorkflowOpen = layoutWorkspaceOpen || wireReviewOpen || brandReviewOpen;
+  const hasChildWorkflowOpen = layoutWorkspaceOpen || wireReviewOpen;
   const collectionModalOpen = open && !hasChildWorkflowOpen;
 
   useEffect(() => {
@@ -796,7 +794,6 @@ export function ProjectCollectionDetailsModal({
       setExpandedCrossAssignments(new Set());
       setLayoutWorkspaceOpen(false);
       setWireReviewOpen(false);
-      setBrandReviewOpen(false);
       setCrossWireSettingsMatrix({});
       setCrossWireSchema(null);
       setHasLoadedCrossWireSchema(false);
@@ -836,7 +833,6 @@ export function ProjectCollectionDetailsModal({
     setRevisionNameTouched(false);
     setLayoutWorkspaceOpen(false);
     setWireReviewOpen(false);
-    setBrandReviewOpen(false);
     setCrossWireSettingsMatrix({});
     setCrossWireSchema(null);
     setHasLoadedCrossWireSchema(false);
@@ -2316,12 +2312,17 @@ export function ProjectCollectionDetailsModal({
   };
 
   const openBrandImportReview = () => {
-    setAutoStartBrandImport(true);
-    setBrandReviewOpen(true);
+    onOpenChange(false);
+    router.push(
+      `/${badgeNumber}/projects/${encodeURIComponent(currentProject.id)}/brand-list-review?promptImport=1`,
+    );
   };
 
   const openBrandListApprovalEditor = () => {
-    setBrandReviewOpen(true);
+    onOpenChange(false);
+    router.push(
+      `/${badgeNumber}/projects/${encodeURIComponent(currentProject.id)}/brand-list-review`,
+    );
   };
 
   const openPrintWorkspace = () => {
@@ -4627,22 +4628,7 @@ export function ProjectCollectionDetailsModal({
         }}
       />
 
-      <MultiSheetReviewModal
-        projectId={currentProject.id}
-        open={brandReviewOpen}
-        onOpenChange={(nextOpen) => {
-          setBrandReviewOpen(nextOpen);
-          if (!nextOpen) {
-            setAutoStartBrandImport(false);
-            void refreshBrandingExports();
-          }
-        }}
-        showTrigger={false}
-        title="Brand List Approval Editor"
-        combineLabel="Combine Brand List"
-        autoStartImport={autoStartBrandImport}
-        onImportStarted={() => setAutoStartBrandImport(false)}
-      />
+
 
       <LayoutPdfWorkspaceDialog
         open={layoutWorkspaceOpen}
