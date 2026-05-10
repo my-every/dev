@@ -245,7 +245,7 @@ function EmptyStateCard({
   );
 }
 
-// ──����� Scrollspy Navigation Components ──────────────────────────────────────────
+// ──������ Scrollspy Navigation Components ──────────────────────────────────────────
 
 function NavItem({
   section,
@@ -955,6 +955,79 @@ export function ProjectDetailsWorkspace({
       setHasLoadedWireExports(true);
     }
   }, [project?.id]);
+
+  const refreshSchemaLocations = useCallback(async () => {
+    if (!project?.id || assignmentEntries.length === 0) {
+      setSchemaExternalLocations({});
+      return;
+    }
+
+    setLoadingSchemaLocations(true);
+    try {
+      const results = await Promise.allSettled(
+        assignmentEntries.map(async (assignment) => {
+          const response = await fetch(
+            `/api/projects/${encodeURIComponent(project.id)}/wire-list-print-schemas?sheet=${encodeURIComponent(assignment.sheetSlug)}`,
+            { cache: "no-store" },
+          );
+          if (!response.ok)
+            return [assignment.sheetSlug, [] as string[]] as const;
+          const schema = (await response.json()) as {
+            pages?: Array<{
+              pageType: string;
+              locationGroups?: Array<{ location: string; isExternal: boolean }>;
+            }>;
+          };
+          const tocPage = schema.pages?.find((p) => p.pageType === "toc");
+          const locations = (tocPage?.locationGroups ?? [])
+            .filter((g) => g.isExternal === true)
+            .map((g) => String(g.location ?? "").trim())
+            .filter(Boolean);
+          return [
+            assignment.sheetSlug,
+            [...new Set(locations)].sort(),
+          ] as const;
+        }),
+      );
+
+      const newMap: Record<string, string[]> = {};
+      for (const r of results) {
+        if (r.status === "fulfilled") {
+          const [slug, locs] = r.value;
+          newMap[slug] = locs;
+        }
+      }
+      setSchemaExternalLocations(newMap);
+    } finally {
+      setLoadingSchemaLocations(false);
+    }
+  }, [project?.id, assignmentEntries]);
+
+  const hasSchemaExternalLocations = useMemo(
+    () => Object.keys(schemaExternalLocations).length > 0,
+    [schemaExternalLocations],
+  );
+
+  // ─── Fetch Schema External Locations on Load ──────────────────────────────
+
+  useEffect(() => {
+    if (
+      !loading &&
+      project?.id &&
+      assignmentEntries.length > 0 &&
+      !loadingSchemaLocations &&
+      !hasSchemaExternalLocations
+    ) {
+      void refreshSchemaLocations();
+    }
+  }, [
+    loading,
+    project?.id,
+    assignmentEntries.length,
+    loadingSchemaLocations,
+    hasSchemaExternalLocations,
+    refreshSchemaLocations,
+  ]);
 
   // ─── Brand List Settings Handlers ───────────────────────────────────────────
 
@@ -1899,28 +1972,39 @@ export function ProjectDetailsWorkspace({
                               ) : null}
                             </div>
                           </div>
-                          {isExpanded && locations.length > 0 && (
+                          {isExpanded && (
                             <div className="border-t border-border/60 bg-muted/20 px-3 py-2 space-y-2">
                               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                                 External Locations
                               </div>
-                              <div className="grid gap-1.5">
-                                {locations.map((loc) => {
-                                  const key = loc.trim().toUpperCase();
-                                  const isVisible = brandListSettingsMatrix[assignment.sheetSlug]?.[key] ?? true;
-                                  return (
-                                    <div key={key} className="flex items-center justify-between gap-2 py-1">
-                                      <span className="font-mono text-xs text-foreground truncate">{loc}</span>
-                                      <Switch
-                                        checked={isVisible}
-                                        onCheckedChange={(checked) => setBrandListVisibility(assignment.sheetSlug, key, checked)}
-                                        aria-label={`Toggle visibility of ${loc}`}
-                                        className="shrink-0"
-                                      />
-                                    </div>
-                                  );
-                                })}
-                              </div>
+                              {loadingSchemaLocations ? (
+                                <div className="flex items-center gap-2 py-2 text-xs text-muted-foreground">
+                                  <Loader2 className="h-3 w-3 animate-spin" />
+                                  Loading locations...
+                                </div>
+                              ) : locations.length === 0 ? (
+                                <div className="py-2 text-xs text-muted-foreground italic">
+                                  No external locations found for this sheet.
+                                </div>
+                              ) : (
+                                <div className="grid gap-1.5">
+                                  {locations.map((loc) => {
+                                    const key = loc.trim().toUpperCase();
+                                    const isVisible = brandListSettingsMatrix[assignment.sheetSlug]?.[key] ?? true;
+                                    return (
+                                      <div key={key} className="flex items-center justify-between gap-2 py-1">
+                                        <span className="font-mono text-xs text-foreground truncate">{loc}</span>
+                                        <Switch
+                                          checked={isVisible}
+                                          onCheckedChange={(checked) => setBrandListVisibility(assignment.sheetSlug, key, checked)}
+                                          aria-label={`Toggle visibility of ${loc}`}
+                                          className="shrink-0"
+                                        />
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
                               <div className="pt-2 border-t border-border/40">
                                 <Button
                                   size="sm"
@@ -2053,28 +2137,39 @@ export function ProjectDetailsWorkspace({
                               ) : null}
                             </div>
                           </div>
-                          {isExpanded && locations.length > 0 && (
+                          {isExpanded && (
                             <div className="border-t border-border/60 bg-muted/20 px-3 py-2 space-y-2">
                               <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                                 External Locations
                               </div>
-                              <div className="grid gap-1.5">
-                                {locations.map((loc) => {
-                                  const key = loc.trim().toUpperCase();
-                                  const isVisible = wireListSettingsMatrix[assignment.sheetSlug]?.[key] ?? true;
-                                  return (
-                                    <div key={key} className="flex items-center justify-between gap-2 py-1">
-                                      <span className="font-mono text-xs text-foreground truncate">{loc}</span>
-                                      <Switch
-                                        checked={isVisible}
-                                        onCheckedChange={(checked) => setWireListVisibility(assignment.sheetSlug, key, checked)}
-                                        aria-label={`Toggle visibility of ${loc}`}
-                                        className="shrink-0"
-                                      />
-                                    </div>
-                                  );
-                                })}
-                              </div>
+                              {loadingSchemaLocations ? (
+                                <div className="flex items-center gap-2 py-2 text-xs text-muted-foreground">
+                                  <Loader2 className="h-3 w-3 animate-spin" />
+                                  Loading locations...
+                                </div>
+                              ) : locations.length === 0 ? (
+                                <div className="py-2 text-xs text-muted-foreground italic">
+                                  No external locations found for this sheet.
+                                </div>
+                              ) : (
+                                <div className="grid gap-1.5">
+                                  {locations.map((loc) => {
+                                    const key = loc.trim().toUpperCase();
+                                    const isVisible = wireListSettingsMatrix[assignment.sheetSlug]?.[key] ?? true;
+                                    return (
+                                      <div key={key} className="flex items-center justify-between gap-2 py-1">
+                                        <span className="font-mono text-xs text-foreground truncate">{loc}</span>
+                                        <Switch
+                                          checked={isVisible}
+                                          onCheckedChange={(checked) => setWireListVisibility(assignment.sheetSlug, key, checked)}
+                                          aria-label={`Toggle visibility of ${loc}`}
+                                          className="shrink-0"
+                                        />
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
                               <div className="pt-2 border-t border-border/40">
                                 <Button
                                   size="sm"
