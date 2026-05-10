@@ -79,7 +79,7 @@ import type { ProjectManifest } from "@/types/project-manifest";
 import { parseRevisionFromFilename } from "@/lib/revision/types";
 import { LayoutPdfWorkspaceDialog } from "@/components/projects/layout-pdf-workspace-dialog";
 import { MultiWireListPrintWorkspaceDialog } from "@/components/projects/multi-wire-list-print-workspace-dialog";
-
+import { MultiSheetReviewModal } from "@/components/wire-list/multi-sheet-review-modal";
 
 import { ProjectIcon } from "./project-icon";
 import { AssignmentLabelDownloadButton } from "@/components/projects/assignment-label-download-button";
@@ -740,7 +740,8 @@ export function ProjectCollectionDetailsModal({
 
   const [layoutWorkspaceOpen, setLayoutWorkspaceOpen] = useState(false);
   const [wireReviewOpen, setWireReviewOpen] = useState(false);
-  const hasChildWorkflowOpen = layoutWorkspaceOpen || wireReviewOpen;
+  const [brandReviewOpen, setBrandReviewOpen] = useState(false);
+  const hasChildWorkflowOpen = layoutWorkspaceOpen || wireReviewOpen || brandReviewOpen;
   const collectionModalOpen = open && !hasChildWorkflowOpen;
 
   useEffect(() => {
@@ -2312,17 +2313,11 @@ export function ProjectCollectionDetailsModal({
   };
 
   const openBrandImportReview = () => {
-    onOpenChange(false);
-    router.push(
-      `/${badgeNumber}/projects/${encodeURIComponent(currentProject.id)}/brand-list-review?promptImport=1`,
-    );
+    setBrandReviewOpen(true);
   };
 
   const openBrandListApprovalEditor = () => {
-    onOpenChange(false);
-    router.push(
-      `/${badgeNumber}/projects/${encodeURIComponent(currentProject.id)}/brand-list-review`,
-    );
+    setBrandReviewOpen(true);
   };
 
   const openPrintWorkspace = () => {
@@ -4628,7 +4623,19 @@ export function ProjectCollectionDetailsModal({
         }}
       />
 
-
+      <MultiSheetReviewModal
+        projectId={currentProject.id}
+        open={brandReviewOpen}
+        onOpenChange={(nextOpen) => {
+          setBrandReviewOpen(nextOpen);
+          if (!nextOpen) {
+            void refreshBrandingExports();
+          }
+        }}
+        showTrigger={false}
+        title="Brand List Approval Editor"
+        combineLabel="Combine Brand List"
+      />
 
       <LayoutPdfWorkspaceDialog
         open={layoutWorkspaceOpen}

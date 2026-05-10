@@ -74,6 +74,7 @@ import type { ProjectManifest } from "@/types/project-manifest";
 import { parseRevisionFromFilename } from "@/lib/revision/types";
 import { LayoutPdfWorkspaceDialog } from "@/components/projects/layout-pdf-workspace-dialog";
 import { MultiWireListPrintWorkspaceDialog } from "@/components/projects/multi-wire-list-print-workspace-dialog";
+import { MultiSheetReviewModal } from "@/components/wire-list/multi-sheet-review-modal";
 import { AssignmentLabelDownloadButton } from "@/components/projects/assignment-label-download-button";
 import { StageSelectorCell } from "@/components/projects/assignment-stage-selector-cell";
 import { StatusButtonCell } from "@/components/projects/assignment-status-button-cell";
@@ -430,6 +431,7 @@ export function ProjectDetailsWorkspace({
 
   const [layoutWorkspaceOpen, setLayoutWorkspaceOpen] = useState(false);
   const [wireReviewOpen, setWireReviewOpen] = useState(false);
+  const [brandReviewOpen, setBrandReviewOpen] = useState(false);
 
   // ─── Fetch Project Data ─────────────────────────────────────────────────────
 
@@ -641,12 +643,12 @@ export function ProjectDetailsWorkspace({
   }, []);
 
   const openBrandListApprovalEditor = useCallback(() => {
-    router.push(`/${badgeNumber}/projects/${encodeURIComponent(projectId)}/brand-list-review`);
-  }, [router, badgeNumber, projectId]);
+    setBrandReviewOpen(true);
+  }, []);
 
   const openBrandImportReview = useCallback(() => {
-    router.push(`/${badgeNumber}/projects/${encodeURIComponent(projectId)}/brand-list-review?promptImport=1`);
-  }, [router, badgeNumber, projectId]);
+    setBrandReviewOpen(true);
+  }, []);
 
   const openLayoutWorkspace = useCallback(() => {
     setLayoutWorkspaceOpen(true);
@@ -1481,6 +1483,19 @@ export function ProjectDetailsWorkspace({
   projectColor={project.color ?? undefined}
   sheets={assignmentEntries.map((a) => ({ slug: a.sheetSlug, name: a.sheetName, rowCount: 0 }))}
   />
+      <MultiSheetReviewModal
+        projectId={project.id}
+        open={brandReviewOpen}
+        onOpenChange={(nextOpen) => {
+          setBrandReviewOpen(nextOpen);
+          if (!nextOpen) {
+            void refreshBrandingExports();
+          }
+        }}
+        showTrigger={false}
+        title="Brand List Approval Editor"
+        combineLabel="Combine Brand List"
+      />
     </div>
   );
 }
