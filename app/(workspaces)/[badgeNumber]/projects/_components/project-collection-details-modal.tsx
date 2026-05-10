@@ -84,6 +84,9 @@ import { ProjectIcon } from "./project-icon";
 import { AssignmentLabelDownloadButton } from "@/components/projects/assignment-label-download-button";
 import { StageSelectorCell } from "@/components/projects/assignment-stage-selector-cell";
 import { StatusButtonCell } from "@/components/projects/assignment-status-button-cell";
+import { useLayoutUI } from "@/components/layout/layout-context";
+import { activityService } from "@/lib/services/activity-service";
+import type { ActivityAction } from "@/types/activity";
 
 interface ProjectCollectionDetailsModalProps {
   open: boolean;
@@ -598,7 +601,35 @@ export function ProjectCollectionDetailsModal({
 }: ProjectCollectionDetailsModalProps) {
   const router = useRouter();
   const { toast } = useToast();
+  const { flashAside } = useLayoutUI();
   const [activeTab, setActiveTab] = useState<ProjectDetailsTab>("details");
+
+  // Activity logging helper - logs activity and flashes aside
+  const logActivityWithFlash = useCallback(
+    async (
+      action: ActivityAction,
+      metadata: Record<string, unknown>,
+      projectId?: string,
+    ) => {
+      try {
+        await activityService.logAction(badgeNumber, "1st", {
+          action,
+          metadata: {
+            ...metadata,
+            projectName: project?.name,
+            pdNumber: project?.pdNumber,
+          },
+          projectId: projectId ?? project?.id,
+          result: "success",
+        });
+        flashAside();
+      } catch (err) {
+        // Activity logging is non-critical, don't block the user
+        console.error("[v0] Failed to log activity:", err);
+      }
+    },
+    [badgeNumber, project?.id, project?.name, project?.pdNumber, flashAside],
+  );
   const [projectState, setProjectState] = useState<ProjectManifest | null>(
     project,
   );
@@ -1676,6 +1707,21 @@ export function ProjectCollectionDetailsModal({
     setSaving(true);
     setSaveError(null);
     try {
+      // Track what changed for activity logging
+      const changedFields: string[] = [];
+      const changes: Record<string, { from: unknown; to: unknown }> = {};
+      const fieldKeys: (keyof EditableProjectFields)[] = [
+        "name", "unitNumber", "revision", "lwcType",
+        "dueDate", "planConlayDate", "planConassyDate", "shipDate",
+        "status", "color",
+      ];
+      for (const key of fieldKeys) {
+        if (projectState[key] !== editDraft[key]) {
+          changedFields.push(key);
+          changes[key] = { from: projectState[key], to: editDraft[key] };
+        }
+      }
+
       const response = await fetch(
         `/api/projects/${encodeURIComponent(projectState.id)}`,
         {
@@ -1696,6 +1742,24 @@ export function ProjectCollectionDetailsModal({
       setProjectState(payload.manifest ?? editDraft);
       setEditDraft(null);
       setIsEditing(false);
+
+      // Log activity for project details update
+      if (changedFields.length > 0) {
+        const hasStatusChange = changedFields.includes("status");
+        if (hasStatusChange) {
+          void logActivityWithFlash("PROJECT_STATUS_CHANGED", {
+            fromStatus: changes.status?.from,
+            toStatus: changes.status?.to,
+            changedFields,
+            changes,
+          }, projectState.id);
+        } else {
+          void logActivityWithFlash("PROJECT_DETAILS_UPDATED", {
+            changedFields,
+            changes,
+          }, projectState.id);
+        }
+      }
     } catch (error) {
       setSaveError(
         error instanceof Error
@@ -1705,7 +1769,7 @@ export function ProjectCollectionDetailsModal({
     } finally {
       setSaving(false);
     }
-  }, [editDraft, projectState]);
+  }, [editDraft, projectState, logActivityWithFlash]);
 
   const setWireListLocationVisibility = useCallback(
     (sheetSlug: string, location: string, visible: boolean) => {
@@ -1835,6 +1899,13 @@ export function ProjectCollectionDetailsModal({
       setWireListSettingsMessage(
         `${assignment.sheetName} settings saved and PDF regenerated.`,
       );
+
+      // Log activity for visibility settings change
+      void logActivityWithFlash("VISIBILITY_SETTINGS_CHANGED", {
+        settingType: "wire-list",
+        sheetSlug: assignment.sheetSlug,
+        sheetName: assignment.sheetName,
+      }, currentProject.id);
     } catch (error) {
       setWireListSettingsMessage(
         error instanceof Error
@@ -1856,6 +1927,7 @@ export function ProjectCollectionDetailsModal({
     assignmentEntries,
     currentProject,
     fetchResolvedVisibilitySettings,
+    logActivityWithFlash,
     persistAssignmentVisibilitySettings,
     refreshWireExports,
     schemaExternalLocations,
@@ -1987,6 +2059,13 @@ export function ProjectCollectionDetailsModal({
       setBrandListSettingsMessage(
         `${assignment.sheetName} settings saved and brand list regenerated.`,
       );
+
+      // Log activity for visibility settings change
+      void logActivityWithFlash("VISIBILITY_SETTINGS_CHANGED", {
+        settingType: "brand-list",
+        sheetSlug: assignment.sheetSlug,
+        sheetName: assignment.sheetName,
+      }, currentProject.id);
     } catch (error) {
       setBrandListSettingsMessage(
         error instanceof Error
@@ -2009,6 +2088,7 @@ export function ProjectCollectionDetailsModal({
     brandListSettingsMatrix,
     currentProject,
     fetchResolvedVisibilitySettings,
+    logActivityWithFlash,
     persistAssignmentVisibilitySettings,
     refreshBrandingExports,
     schemaExternalLocations,
@@ -2186,6 +2266,12 @@ export function ProjectCollectionDetailsModal({
       if (payload.schema) {
         setCrossWireSchema(payload.schema);
         setHasLoadedCrossWireSchema(true);
+
+        // Log activity for cross wire generation
+        void logActivityWithFlash("CROSS_WIRE_GENERATED", {
+          rowCount: payload.schema.totalRowCount,
+          sheetCount: payload.schema.sheetSlugs?.length ?? 0,
+        }, currentProject.id);
       } else {
         await refreshCrossWireSchema();
       }
@@ -2199,7 +2285,7 @@ export function ProjectCollectionDetailsModal({
     } finally {
       setRegeneratingCrossWireSchema(false);
     }
-  }, [currentProject?.id, refreshCrossWireSchema]);
+  }, [currentProject?.id, logActivityWithFlash, refreshCrossWireSchema]);
 
   if (!currentProject) return null;
 
@@ -2252,6 +2338,13 @@ export function ProjectCollectionDetailsModal({
       link.click();
       document.body.removeChild(link);
     }
+
+    // Log activity for wire list download
+    void logActivityWithFlash("EXPORT_DOWNLOADED", {
+      exportType: "wire-list",
+      fileCount: wireExports.sheetExports.length,
+      downloadType: "all",
+    }, currentProject.id);
   };
 
   const handleDownloadAllBrandLists = () => {
@@ -2265,6 +2358,13 @@ export function ProjectCollectionDetailsModal({
       link.click();
       document.body.removeChild(link);
     }
+
+    // Log activity for brand list download
+    void logActivityWithFlash("EXPORT_DOWNLOADED", {
+      exportType: "brand-list",
+      fileCount: sheets.length,
+      downloadType: "all",
+    }, currentProject.id);
   };
 
   const handleUploadLegals = async () => {
@@ -2333,6 +2433,28 @@ export function ProjectCollectionDetailsModal({
       );
       await fetchResolvedVisibilitySettings();
       void refreshLegalDetail();
+
+      // Log activity for legal upload
+      const uploadedFiles: string[] = [];
+      if (workbookFile) uploadedFiles.push("workbook");
+      if (greenChangesFile) uploadedFiles.push("green-changes");
+      if (layoutFile) uploadedFiles.push("layout");
+      void logActivityWithFlash("LEGAL_UPLOADED", {
+        fileTypes: uploadedFiles,
+        revision: effectiveRevisionName,
+        fileNames: {
+          workbook: workbookFile?.name,
+          greenChanges: greenChangesFile?.name,
+          layout: layoutFile?.name,
+        },
+      }, currentProject.id);
+
+      if (payload.refreshJob) {
+        void logActivityWithFlash("REVISION_REFRESH_STARTED", {
+          jobId: payload.refreshJob.jobId,
+          revision: effectiveRevisionName,
+        }, currentProject.id);
+      }
     } finally {
       setUploadingLegals(false);
     }
@@ -2362,6 +2484,13 @@ export function ProjectCollectionDetailsModal({
         }
         setBrandGeneratingSheets(doneState);
         setBrandingExports(result);
+
+        // Log activity for brand list generation
+        void logActivityWithFlash("BRAND_LIST_GENERATED", {
+          sheetCount: result.sheetExports.length,
+          combined: combine,
+          combinedFileName: result.combinedFileName,
+        }, currentProject.id);
       } else {
         setBrandGeneratingSheets(
           Object.fromEntries(slugs.map((s) => [s, "error" as const])),
@@ -2405,6 +2534,11 @@ export function ProjectCollectionDetailsModal({
         }
         setWireGeneratingSheets(doneState);
         setWireExports(result);
+
+        // Log activity for wire list generation
+        void logActivityWithFlash("WIRE_LIST_GENERATED", {
+          sheetCount: result.sheetExports.length,
+        }, currentProject.id);
       } else {
         setWireGeneratingSheets(
           Object.fromEntries(slugs.map((s) => [s, "error" as const])),
