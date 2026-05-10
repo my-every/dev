@@ -245,7 +245,7 @@ function EmptyStateCard({
   );
 }
 
-// ─── Scrollspy Navigation Components ──────────────────────────────────────────
+// ──��� Scrollspy Navigation Components ──────────────────────────────────────────
 
 function NavItem({
   section,
@@ -1342,7 +1342,7 @@ export function ProjectDetailsWorkspace({
                                                 <AssignmentLabelDownloadButton
                                                   projectId={project?.id ?? ""}
                                                   assignmentSlug={assignment.sheetSlug}
-                                                  labelType="part-number"
+                                                  labelType="cable"
                                                   className="w-full justify-center"
                                                 />
                                               ) : null}
@@ -1432,7 +1432,7 @@ export function ProjectDetailsWorkspace({
                                             <AssignmentLabelDownloadButton
                                               projectId={project?.id ?? ""}
                                               assignmentSlug={assignment.sheetSlug}
-                                              labelType="part-number"
+                                              labelType="cable"
                                               className="w-full justify-center"
                                             />
                                           ) : null}
