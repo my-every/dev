@@ -745,9 +745,18 @@ export function ProjectDetailsWorkspace({
         throw new Error(errData.error ?? "Failed to update unit type");
       }
       const updated = await res.json();
-      // Update project state with the new manifest from the response
-      if (updated.project) {
-        setProject(updated.project);
+      // Update project state by merging the updated assignment into the existing project
+      if (updated.assignment) {
+        setProject((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            assignments: {
+              ...prev.assignments,
+              [sheetSlug]: updated.assignment,
+            },
+          };
+        });
       }
       toast({ title: "Unit type updated" });
     } catch (err) {
@@ -779,9 +788,18 @@ export function ProjectDetailsWorkspace({
         throw new Error(errData.error ?? "Failed to update box side");
       }
       const updated = await res.json();
-      // Update project state with the new manifest from the response
-      if (updated.project) {
-        setProject(updated.project);
+      // Update project state by merging the updated assignment into the existing project
+      if (updated.assignment) {
+        setProject((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            assignments: {
+              ...prev.assignments,
+              [sheetSlug]: updated.assignment,
+            },
+          };
+        });
       }
       toast({ title: "Box side updated" });
     } catch (err) {

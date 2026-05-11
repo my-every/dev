@@ -7,6 +7,7 @@ import { BoxSideConfig, type BoxSideName } from "@/boxSide";
 import {
   Drawer,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -96,6 +97,9 @@ export function BoxSidePopover({
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Select Box Side</DrawerTitle>
+          <DrawerDescription className="sr-only">
+            Choose a box side for this assignment
+          </DrawerDescription>
         </DrawerHeader>
         <div 
           role="listbox" 

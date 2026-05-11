@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import {
   Drawer,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -65,6 +66,9 @@ export function UnitTypePopover({
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Select Unit Type</DrawerTitle>
+          <DrawerDescription className="sr-only">
+            Choose a unit type for this assignment
+          </DrawerDescription>
         </DrawerHeader>
         <div 
           role="listbox" 
