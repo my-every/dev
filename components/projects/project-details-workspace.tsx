@@ -83,6 +83,7 @@ import { useLayoutUI } from "@/components/layout/layout-context";
 import { activityService } from "@/lib/services/activity-service";
 import type { ActivityAction } from "@/types/activity";
 import { VisibilityMatrixConcept } from "@/components/projects/visibility-matrix-concept";
+import { UNIT_TYPE_SUMMARY } from "@/lib/priority-list/unit-type-estimates";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -656,9 +657,15 @@ export function ProjectDetailsWorkspace({
     );
   }, [legalDetail]);
 
-  // Collect unique unit types from assignment entries for the visibility matrix
+  // Collect all available unit types for the visibility matrix dropdown
+  // Includes all known unit types from UNIT_TYPE_SUMMARY plus any currently in use
   const availableUnitTypes = useMemo(() => {
     const unitTypes = new Set<string>();
+    // Add all known unit types from the summary
+    for (const entry of UNIT_TYPE_SUMMARY) {
+      unitTypes.add(entry.unitType);
+    }
+    // Also add any unit types currently assigned (in case they're not in the summary)
     for (const assignment of assignmentEntries) {
       if (assignment.unitType) {
         unitTypes.add(assignment.unitType);
@@ -1695,7 +1702,7 @@ export function ProjectDetailsWorkspace({
               </div>
             </section>
 
-            {/* ─── Assignments Section ─────────────────────────────────────── */}
+            {/* ─── Assignments Section ─────────────────���───────────────────── */}
             <section data-section="assignments" className="scroll-mt-6">
               <SectionHeader
                 icon={GitBranch}
