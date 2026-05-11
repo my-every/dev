@@ -234,6 +234,9 @@ export function VisibilityMatrixConcept({
               <th className="px-3 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Assignment
               </th>
+              <th className="w-28 px-2 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Box Side
+              </th>
               <th className="px-3 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Ext. Location
               </th>
@@ -278,26 +281,33 @@ export function VisibilityMatrixConcept({
                     </td>
                   )}
 
-                  {/* Assignment with Box Side Badge - spans multiple rows per location count */}
+                  {/* Assignment - spans multiple rows per location count */}
                   {row.assignmentRowSpan > 0 && (
                     <td 
                       className="border-r border-border/40 px-3 py-2 align-top"
                       rowSpan={row.assignmentRowSpan}
                     >
-                      <div className="flex flex-col gap-1">
-                        <span 
-                          className="block truncate text-xs font-medium text-foreground" 
-                          title={displayTitle}
-                        >
-                          {displayTitle}
-                        </span>
-                        <BoxSidePopover
-                          value={row.assignment.boxSide}
-                          availableBoxSides={unitTypeBoxSides?.[row.unitType]}
-                          disabled={!isEditing}
-                          onSelect={(boxSide) => onBoxSideChange?.(row.assignment.sheetSlug, boxSide)}
-                        />
-                      </div>
+                      <span 
+                        className="block truncate text-xs font-medium text-foreground" 
+                        title={displayTitle}
+                      >
+                        {displayTitle}
+                      </span>
+                    </td>
+                  )}
+
+                  {/* Box Side - spans multiple rows per assignment */}
+                  {row.assignmentRowSpan > 0 && (
+                    <td 
+                      className="border-r border-border/40 px-2 py-2 align-top"
+                      rowSpan={row.assignmentRowSpan}
+                    >
+                      <BoxSidePopover
+                        value={row.assignment.boxSide}
+                        availableBoxSides={unitTypeBoxSides?.[row.unitType]}
+                        disabled={!isEditing}
+                        onSelect={(boxSide) => onBoxSideChange?.(row.assignment.sheetSlug, boxSide)}
+                      />
                     </td>
                   )}
 
@@ -352,7 +362,7 @@ export function VisibilityMatrixConcept({
           {/* Footer row with bulk download buttons */}
           <tfoot>
             <tr className="border-t-2 border-border bg-muted/30">
-              <td colSpan={3} className="px-3 py-3">
+              <td colSpan={4} className="px-3 py-3">
                 <span className="text-xs font-medium text-muted-foreground">
                   Save & Generate All
                 </span>
