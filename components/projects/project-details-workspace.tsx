@@ -597,6 +597,42 @@ export function ProjectDetailsWorkspace({
     return Object.values(schemaExternalLocations).some((locs) => locs.length > 0);
   }, [schemaExternalLocations]);
 
+  // Filter assignments for Brand List section - only include those with external locations
+  const { brandListAssignments, brandListExcluded } = useMemo(() => {
+    const included: typeof assignmentEntries = [];
+    const excluded: Array<{ assignment: typeof assignmentEntries[0]; reason: string }> = [];
+    for (const assignment of assignmentEntries) {
+      const locations = schemaExternalLocations[assignment.sheetSlug] ?? [];
+      if (locations.length > 0) {
+        included.push(assignment);
+      } else {
+        excluded.push({ 
+          assignment, 
+          reason: "No external locations configured" 
+        });
+      }
+    }
+    return { brandListAssignments: included, brandListExcluded: excluded };
+  }, [assignmentEntries, schemaExternalLocations]);
+
+  // Filter assignments for Cross Wire section - only include those with external locations
+  const { crossWireAssignments, crossWireExcluded } = useMemo(() => {
+    const included: typeof assignmentEntries = [];
+    const excluded: Array<{ assignment: typeof assignmentEntries[0]; reason: string }> = [];
+    for (const assignment of assignmentEntries) {
+      const locations = schemaExternalLocations[assignment.sheetSlug] ?? [];
+      if (locations.length > 0) {
+        included.push(assignment);
+      } else {
+        excluded.push({ 
+          assignment, 
+          reason: "No external locations" 
+        });
+      }
+    }
+    return { crossWireAssignments: included, crossWireExcluded: excluded };
+  }, [assignmentEntries, schemaExternalLocations]);
+
   const assignmentGroups = useMemo(() => {
     if (assignmentGroupMode !== "unit-type") return null;
     const groups = new Map<string, typeof assignmentEntries>();
@@ -1977,14 +2013,14 @@ export function ProjectDetailsWorkspace({
                   </Button>
                 </div>
                 
-                {assignmentEntries.length === 0 ? (
+                {brandListAssignments.length === 0 ? (
                   <EmptyStateCard
                     title="No brand list sheets"
                     description="Generate brand list schemas to populate visibility settings."
                   />
                 ) : (
                   <div className="space-y-2">
-                    {assignmentEntries.map((assignment) => {
+                    {brandListAssignments.map((assignment) => {
                       const isExpanded = expandedBrandAssignments.has(assignment.sheetSlug);
                       const toggleExpand = () => {
                         setExpandedBrandAssignments((prev) => {
@@ -2117,6 +2153,30 @@ export function ProjectDetailsWorkspace({
                         </div>
                       );
                     })}
+                  </div>
+                )}
+
+                {/* Excluded Assignments */}
+                {brandListExcluded.length > 0 && (
+                  <div className="mt-4 rounded-lg border border-border/50 bg-muted/20 p-3">
+                    <p className="mb-2 text-xs font-medium text-muted-foreground">
+                      Excluded from Brand List ({brandListExcluded.length})
+                    </p>
+                    <div className="space-y-1.5">
+                      {brandListExcluded.map(({ assignment, reason }) => {
+                        const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                        return (
+                          <div key={assignment.sheetSlug} className="flex items-center justify-between gap-2 text-xs">
+                            <span className="truncate text-foreground/70" title={normalizedTitle}>
+                              {normalizedTitle}
+                            </span>
+                            <span className="shrink-0 text-muted-foreground/60 italic">
+                              {reason}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
               </div>
@@ -2378,7 +2438,7 @@ export function ProjectDetailsWorkspace({
 
                     {/* Expandable rows - matching Brand/Wire List pattern */}
                     <div className="space-y-2">
-                      {assignmentEntries.map((assignment) => {
+                      {crossWireAssignments.map((assignment) => {
                         const isExpanded = expandedAssignments.has(`cross-${assignment.sheetSlug}`);
                         const toggleExpand = () => {
                           setExpandedAssignments((prev) => {
@@ -2501,6 +2561,30 @@ export function ProjectDetailsWorkspace({
                         );
                       })}
                     </div>
+
+                    {/* Excluded Assignments */}
+                    {crossWireExcluded.length > 0 && (
+                      <div className="mt-4 rounded-lg border border-border/50 bg-muted/20 p-3">
+                        <p className="mb-2 text-xs font-medium text-muted-foreground">
+                          Excluded from Cross Wire ({crossWireExcluded.length})
+                        </p>
+                        <div className="space-y-1.5">
+                          {crossWireExcluded.map(({ assignment, reason }) => {
+                            const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                            return (
+                              <div key={assignment.sheetSlug} className="flex items-center justify-between gap-2 text-xs">
+                                <span className="truncate text-foreground/70" title={normalizedTitle}>
+                                  {normalizedTitle}
+                                </span>
+                                <span className="shrink-0 text-muted-foreground/60 italic">
+                                  {reason}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -2520,6 +2604,7 @@ export function ProjectDetailsWorkspace({
                     sheetSlug: a.sheetSlug,
                     sheetName: a.sheetName,
                     normalizedTitle: (a as Record<string, unknown>).normalizedTitle as string | undefined,
+                    boxSide: (a as Record<string, unknown>).boxSide as string | undefined,
                   }))}
                   externalLocations={schemaExternalLocations}
                   wireListSettings={wireListSettingsMatrix}

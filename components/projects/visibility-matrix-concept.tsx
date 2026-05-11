@@ -15,6 +15,7 @@ interface Assignment {
   sheetName: string;
   normalizedTitle?: string;
   unitType?: string;
+  boxSide?: string;
 }
 
 interface VisibilityMatrixProps {
@@ -70,6 +71,7 @@ export function VisibilityMatrixConcept({
   const matrixRows = useMemo(() => {
     const rows: Array<{
       unitType: string;
+      boxSide: string;
       assignment: Assignment;
       location: string;
       locKey: string;
@@ -77,6 +79,7 @@ export function VisibilityMatrixConcept({
       isFirstInAssignment: boolean;
       unitRowSpan: number;
       assignmentRowSpan: number;
+      boxSideRowSpan: number;
     }> = [];
 
     // Group assignments by unit type first (extracted from first external location)
@@ -105,16 +108,39 @@ export function VisibilityMatrixConcept({
         unitRowCount += rowCount;
       }
 
+      // Group by boxSide within unit for rowSpan calculation
+      const boxSideGroups: Record<string, { assignments: Assignment[]; rowCount: number }> = {};
+      for (const assignment of unitAssignments) {
+        const boxSide = assignment.boxSide ?? "";
+        if (!boxSideGroups[boxSide]) {
+          boxSideGroups[boxSide] = { assignments: [], rowCount: 0 };
+        }
+        boxSideGroups[boxSide].assignments.push(assignment);
+        const locations = externalLocations[assignment.sheetSlug] ?? [];
+        boxSideGroups[boxSide].rowCount += Math.max(1, locations.length);
+      }
+
       // Second pass: build rows
       let unitRowIdx = 0;
+      let currentBoxSide = "";
+      let boxSideRowIdx = 0;
       unitAssignments.forEach((assignment, assignmentIdx) => {
         const locations = externalLocations[assignment.sheetSlug] ?? [];
         const assignmentRowCount = assignmentRowCounts[assignmentIdx];
+        const boxSide = assignment.boxSide ?? "";
+        
+        // Check if boxSide changed
+        if (boxSide !== currentBoxSide) {
+          currentBoxSide = boxSide;
+          boxSideRowIdx = 0;
+        }
+        const boxSideInfo = boxSideGroups[boxSide];
 
         if (locations.length === 0) {
           // No locations - single row with empty location
           rows.push({
             unitType,
+            boxSide,
             assignment,
             location: "",
             locKey: "",
@@ -122,13 +148,16 @@ export function VisibilityMatrixConcept({
             isFirstInAssignment: true,
             unitRowSpan: unitRowIdx === 0 ? unitRowCount : 0,
             assignmentRowSpan: assignmentRowCount,
+            boxSideRowSpan: boxSideRowIdx === 0 ? boxSideInfo.rowCount : 0,
           });
           unitRowIdx++;
+          boxSideRowIdx++;
         } else {
           // Multiple locations - one row per location
           locations.forEach((location, locIdx) => {
             rows.push({
               unitType,
+              boxSide,
               assignment,
               location,
               locKey: location.trim().toUpperCase(),
@@ -136,8 +165,10 @@ export function VisibilityMatrixConcept({
               isFirstInAssignment: locIdx === 0,
               unitRowSpan: unitRowIdx === 0 ? unitRowCount : 0,
               assignmentRowSpan: locIdx === 0 ? assignmentRowCount : 0,
+              boxSideRowSpan: boxSideRowIdx === 0 && locIdx === 0 ? boxSideInfo.rowCount : 0,
             });
             unitRowIdx++;
+            if (locIdx === 0) boxSideRowIdx += assignmentRowCount;
           });
         }
       });
@@ -213,8 +244,11 @@ export function VisibilityMatrixConcept({
         <table className="w-full min-w-[700px] text-sm border-collapse">
           <thead>
             <tr className="border-b border-border bg-muted/50">
-              <th className="w-20 px-3 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <th className="w-16 px-2 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Unit
+              </th>
+              <th className="w-24 px-2 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Box Side
               </th>
               <th className="px-3 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Assignment
@@ -251,12 +285,24 @@ export function VisibilityMatrixConcept({
                   {/* Unit Type - spans multiple rows */}
                   {row.unitRowSpan > 0 && (
                     <td 
-                      className="border-r border-border/40 bg-muted/30 px-3 py-2 align-top"
+                      className="border-r border-border/40 bg-muted/30 px-2 py-2 align-top"
                       rowSpan={row.unitRowSpan}
                     >
                       <Badge variant="outline" className="font-mono text-[10px]">
                         {row.unitType || "—"}
                       </Badge>
+                    </td>
+                  )}
+
+                  {/* Box Side - spans multiple rows per box side group */}
+                  {row.boxSideRowSpan > 0 && (
+                    <td 
+                      className="border-r border-border/40 px-2 py-2 align-top"
+                      rowSpan={row.boxSideRowSpan}
+                    >
+                      <span className="text-xs text-muted-foreground truncate block" title={row.boxSide}>
+                        {row.boxSide || "—"}
+                      </span>
                     </td>
                   )}
 
@@ -326,7 +372,7 @@ export function VisibilityMatrixConcept({
           {/* Footer row with bulk download buttons */}
           <tfoot>
             <tr className="border-t-2 border-border bg-muted/30">
-              <td colSpan={3} className="px-3 py-3">
+              <td colSpan={4} className="px-3 py-3">
                 <span className="text-xs font-medium text-muted-foreground">
                   Save & Generate All
                 </span>
