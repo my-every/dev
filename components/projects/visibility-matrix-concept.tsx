@@ -44,9 +44,14 @@ interface VisibilityMatrixProps {
   crossWireSettings: Record<string, Record<string, boolean>>;
   /** Available box side options per unit type - key is unitType, value is array of box side keys */
   unitTypeBoxSides?: Record<string, string[]>;
+  /** Available unit types for selection */
+  availableUnitTypes?: string[];
+  /** Whether the matrix is in edit mode (controlled by Edit button in workspace) */
+  isEditing?: boolean;
   onWireListChange?: (sheetSlug: string, location: string, visible: boolean) => void;
   onBrandListChange?: (sheetSlug: string, location: string, visible: boolean) => void;
   onCrossWireChange?: (sheetSlug: string, location: string, visible: boolean) => void;
+  onUnitTypeChange?: (sheetSlug: string, unitType: string) => void;
   onBoxSideChange?: (sheetSlug: string, boxSide: string) => void;
   onSaveAndGenerateAllWireLists?: () => Promise<string | null>; // returns download URL or null
   onSaveAndGenerateAllBrandLists?: () => Promise<string | null>;
@@ -76,9 +81,12 @@ export function VisibilityMatrixConcept({
   brandListSettings,
   crossWireSettings,
   unitTypeBoxSides,
+  availableUnitTypes = [],
+  isEditing = false,
   onWireListChange,
   onBrandListChange,
   onCrossWireChange,
+  onUnitTypeChange,
   onBoxSideChange,
   onSaveAndGenerateAllWireLists,
   onSaveAndGenerateAllBrandLists,
@@ -271,19 +279,57 @@ export function VisibilityMatrixConcept({
                     row.isFirstInAssignment && "border-t border-border/60"
                   )}
                 >
-                  {/* Unit Type - spans multiple rows */}
+                  {/* Unit Type - spans multiple rows, editable in edit mode */}
                   {row.unitRowSpan > 0 && (
                     <td 
                       className="border-r border-border/40 bg-muted/30 px-2 py-2 align-top"
                       rowSpan={row.unitRowSpan}
                     >
-                      <Badge variant="outline" className="font-mono text-[10px]">
-                        {row.unitType || "—"}
-                      </Badge>
+                      {isEditing ? (
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <button
+                              className={cn(
+                                "inline-flex items-center gap-0.5 rounded px-1.5 py-0.5",
+                                "font-mono text-[10px] border",
+                                "bg-background hover:bg-muted transition-colors cursor-pointer",
+                                row.unitType ? "border-border" : "border-dashed border-muted-foreground/50"
+                              )}
+                            >
+                              <span>{row.unitType || "Set Unit"}</span>
+                              <ChevronDown className="h-2.5 w-2.5 shrink-0 opacity-50" />
+                            </button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-32 p-1" align="start">
+                            <div className="flex flex-col max-h-48 overflow-y-auto">
+                              {availableUnitTypes.length > 0 ? (
+                                availableUnitTypes.map((unitType) => (
+                                  <button
+                                    key={unitType}
+                                    className={cn(
+                                      "px-2 py-1.5 text-left text-xs font-mono rounded hover:bg-muted transition-colors",
+                                      row.assignment.unitType === unitType && "bg-muted font-medium"
+                                    )}
+                                    onClick={() => onUnitTypeChange?.(row.assignment.sheetSlug, unitType)}
+                                  >
+                                    {unitType}
+                                  </button>
+                                ))
+                              ) : (
+                                <span className="px-2 py-1.5 text-xs text-muted-foreground">No unit types available</span>
+                              )}
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                      ) : (
+                        <Badge variant="outline" className="font-mono text-[10px]">
+                          {row.unitType || "—"}
+                        </Badge>
+                      )}
                     </td>
                   )}
 
-                  {/* Assignment with Box Side Badge/Popover - spans multiple rows per location count */}
+                  {/* Assignment with Box Side Badge - spans multiple rows per location count */}
                   {row.assignmentRowSpan > 0 && (
                     <td 
                       className="border-r border-border/40 px-3 py-2 align-top"
@@ -296,47 +342,54 @@ export function VisibilityMatrixConcept({
                         >
                           {displayTitle}
                         </span>
-                        {/* Box Side Badge with Popover Select */}
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <button
-                              className={cn(
-                                "inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px]",
-                                "bg-muted/60 hover:bg-muted text-muted-foreground",
-                                "transition-colors cursor-pointer border border-transparent hover:border-border/50"
-                              )}
-                            >
-                              <span className="truncate max-w-[100px]">
-                                {normalizeBoxSideName(row.assignment.boxSide) || "Set Box Side"}
-                              </span>
-                              <ChevronDown className="h-2.5 w-2.5 shrink-0 opacity-50" />
-                            </button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-40 p-1" align="start">
-                            <div className="flex flex-col">
-                              {(() => {
-                                // Get available box sides for this unit type
-                                const availableBoxSides = unitTypeBoxSides?.[row.unitType] ?? [];
-                                const options = availableBoxSides.length > 0
-                                  ? BOX_SIDE_OPTIONS.filter(opt => availableBoxSides.includes(opt.value))
-                                  : BOX_SIDE_OPTIONS;
-                                
-                                return options.map((option) => (
-                                  <button
-                                    key={option.value}
-                                    className={cn(
-                                      "px-2 py-1.5 text-left text-xs rounded hover:bg-muted transition-colors",
-                                      row.assignment.boxSide === option.value && "bg-muted font-medium"
-                                    )}
-                                    onClick={() => onBoxSideChange?.(row.assignment.sheetSlug, option.value)}
-                                  >
-                                    {option.label}
-                                  </button>
-                                ));
-                              })()}
-                            </div>
-                          </PopoverContent>
-                        </Popover>
+                        {/* Box Side Badge - editable popover in edit mode, static badge otherwise */}
+                        {isEditing ? (
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <button
+                                className={cn(
+                                  "inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px]",
+                                  "bg-background hover:bg-muted text-muted-foreground",
+                                  "transition-colors cursor-pointer border",
+                                  row.assignment.boxSide ? "border-border" : "border-dashed border-muted-foreground/50"
+                                )}
+                              >
+                                <span className="truncate max-w-[100px]">
+                                  {normalizeBoxSideName(row.assignment.boxSide) || "Set Box Side"}
+                                </span>
+                                <ChevronDown className="h-2.5 w-2.5 shrink-0 opacity-50" />
+                              </button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-40 p-1" align="start">
+                              <div className="flex flex-col max-h-48 overflow-y-auto">
+                                {(() => {
+                                  // Get available box sides for this unit type
+                                  const availableBoxSides = unitTypeBoxSides?.[row.unitType] ?? [];
+                                  const options = availableBoxSides.length > 0
+                                    ? BOX_SIDE_OPTIONS.filter(opt => availableBoxSides.includes(opt.value))
+                                    : BOX_SIDE_OPTIONS;
+                                  
+                                  return options.map((option) => (
+                                    <button
+                                      key={option.value}
+                                      className={cn(
+                                        "px-2 py-1.5 text-left text-xs rounded hover:bg-muted transition-colors",
+                                        row.assignment.boxSide === option.value && "bg-muted font-medium"
+                                      )}
+                                      onClick={() => onBoxSideChange?.(row.assignment.sheetSlug, option.value)}
+                                    >
+                                      {option.label}
+                                    </button>
+                                  ));
+                                })()}
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        ) : row.assignment.boxSide ? (
+                          <span className="inline-flex rounded bg-muted/60 px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                            {normalizeBoxSideName(row.assignment.boxSide)}
+                          </span>
+                        ) : null}
                       </div>
                     </td>
                   )}

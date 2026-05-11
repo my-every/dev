@@ -656,6 +656,17 @@ export function ProjectDetailsWorkspace({
     );
   }, [legalDetail]);
 
+  // Collect unique unit types from assignment entries for the visibility matrix
+  const availableUnitTypes = useMemo(() => {
+    const unitTypes = new Set<string>();
+    for (const assignment of assignmentEntries) {
+      if (assignment.unitType) {
+        unitTypes.add(assignment.unitType);
+      }
+    }
+    return Array.from(unitTypes).sort();
+  }, [assignmentEntries]);
+
   function deriveRevisionLabelFromFiles(files: (File | null | undefined)[]): string | null {
     for (const file of files) {
       if (!file) continue;
@@ -713,6 +724,68 @@ export function ProjectDetailsWorkspace({
       setSaving(false);
     }
   }, [editDraft, project, toast, logActivityWithFlash]);
+
+  // Handler for updating assignment unitType via API
+  const handleAssignmentUnitTypeChange = useCallback(async (sheetSlug: string, unitType: string) => {
+    if (!project) return;
+    try {
+      const res = await fetch(
+        `/api/projects/${encodeURIComponent(project.id)}/assignments/${encodeURIComponent(sheetSlug)}`,
+        {
+          method: "PATCH",
+          headers: { 
+            "Content-Type": "application/json",
+            "x-badge-number": badgeNumber ?? "unknown",
+          },
+          body: JSON.stringify({ unitType }),
+        }
+      );
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error ?? "Failed to update unit type");
+      }
+      // Refresh the project data to reflect the change
+      await refreshProject();
+      toast({ title: "Unit type updated" });
+    } catch (err) {
+      toast({ 
+        title: "Error", 
+        description: err instanceof Error ? err.message : "Failed to update unit type",
+        variant: "destructive" 
+      });
+    }
+  }, [project, badgeNumber, refreshProject, toast]);
+
+  // Handler for updating assignment boxSide via API
+  const handleAssignmentBoxSideChange = useCallback(async (sheetSlug: string, boxSide: string) => {
+    if (!project) return;
+    try {
+      const res = await fetch(
+        `/api/projects/${encodeURIComponent(project.id)}/assignments/${encodeURIComponent(sheetSlug)}`,
+        {
+          method: "PATCH",
+          headers: { 
+            "Content-Type": "application/json",
+            "x-badge-number": badgeNumber ?? "unknown",
+          },
+          body: JSON.stringify({ boxSide }),
+        }
+      );
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error ?? "Failed to update box side");
+      }
+      // Refresh the project data to reflect the change
+      await refreshProject();
+      toast({ title: "Box side updated" });
+    } catch (err) {
+      toast({ 
+        title: "Error", 
+        description: err instanceof Error ? err.message : "Failed to update box side",
+        variant: "destructive" 
+      });
+    }
+  }, [project, badgeNumber, refreshProject, toast]);
 
   // ─── Navigation Handlers ────────────────────────────────────────────────────
 
@@ -2611,13 +2684,13 @@ export function ProjectDetailsWorkspace({
                   wireListSettings={wireListSettingsMatrix}
                   brandListSettings={brandListSettingsMatrix}
                   crossWireSettings={crossWireSettingsMatrix}
+                  availableUnitTypes={availableUnitTypes}
+                  isEditing={isEditing}
                   onWireListChange={(slug, loc, vis) => setWireListLocationVisibility(slug, loc, vis)}
                   onBrandListChange={(slug, loc, vis) => setBrandListLocationVisibility(slug, loc, vis)}
                   onCrossWireChange={(slug, loc, vis) => setCrossWireLocationVisibility(slug, loc, vis)}
-                  onBoxSideChange={(slug, boxSide) => {
-                    // TODO: Implement API to save box side to project manifest
-                    console.log("[v0] Box side change:", slug, boxSide);
-                  }}
+                  onUnitTypeChange={handleAssignmentUnitTypeChange}
+                  onBoxSideChange={handleAssignmentBoxSideChange}
                   onSaveAndGenerateAllWireLists={handleBulkSaveAndGenerateWireLists}
                   onSaveAndGenerateAllBrandLists={handleBulkSaveAndGenerateBrandLists}
                   onSaveAndGenerateCrossWire={handleBulkSaveAndGenerateCrossWire}
