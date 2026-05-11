@@ -83,7 +83,6 @@ import { useLayoutUI } from "@/components/layout/layout-context";
 import { activityService } from "@/lib/services/activity-service";
 import type { ActivityAction } from "@/types/activity";
 import { VisibilityMatrixConcept } from "@/components/projects/visibility-matrix-concept";
-import { BoxSideTestTable } from "@/components/projects/box-side-test-table";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -668,6 +667,26 @@ export function ProjectDetailsWorkspace({
     return Array.from(unitTypes).sort();
   }, [assignmentEntries]);
 
+  // Track which box sides are used by which assignment per unit type (for 1:1 enforcement)
+  // Returns a map: unitType -> { boxSide -> sheetSlug }
+  const usedBoxSidesByUnitType = useMemo(() => {
+    const result: Record<string, Record<string, string>> = {};
+    for (const assignment of assignmentEntries) {
+      const unitType = assignment.unitType;
+      const boxSide = (assignment as Record<string, unknown>).boxSide as string | undefined;
+      if (unitType && boxSide) {
+        if (!result[unitType]) {
+          result[unitType] = {};
+        }
+        // Only track the first assignment found with this boxSide (others are conflicts)
+        if (!result[unitType][boxSide]) {
+          result[unitType][boxSide] = assignment.sheetSlug;
+        }
+      }
+    }
+    return result;
+  }, [assignmentEntries]);
+
   function deriveRevisionLabelFromFiles(files: (File | null | undefined)[]): string | null {
     for (const file of files) {
       if (!file) continue;
@@ -714,9 +733,10 @@ export function ProjectDetailsWorkspace({
         throw new Error(errData.error ?? "Save failed");
       }
       const updated = await res.json();
-      setProject(updated.project ?? updated);
-      setEditDraft(null);
-      setIsEditing(false);
+      const savedProject = updated.project ?? updated;
+      setProject(savedProject);
+      // Keep edit mode active - update editDraft with saved data so user can continue editing
+      setEditDraft(savedProject);
       toast({ title: "Project saved" });
       void logActivityWithFlash("project_updated", { fields: Object.keys(editDraft) });
     } catch (err) {
@@ -773,9 +793,56 @@ export function ProjectDetailsWorkspace({
   }, [project, badgeNumber, toast]);
 
   // Handler for updating assignment boxSide via API
+  // Box side is 1:1 per unit type - if another assignment with same unitType has this boxSide,
+  // we clear that assignment's boxSide first
   const handleAssignmentBoxSideChange = useCallback(async (sheetSlug: string, boxSide: string) => {
     if (!project) return;
+    
+    // Get the current assignment to find its unitType
+    const currentAssignment = project.assignments?.[sheetSlug];
+    const currentUnitType = currentAssignment?.unitType;
+    
+    // Find if any other assignment with the same unitType has this boxSide
+    const conflictingSlug = Object.entries(project.assignments ?? {}).find(
+      ([slug, assignment]) => 
+        slug !== sheetSlug && 
+        assignment.unitType === currentUnitType && 
+        assignment.boxSide === boxSide
+    )?.[0];
+    
     try {
+      // If there's a conflict, clear the other assignment's boxSide first
+      if (conflictingSlug) {
+        const clearRes = await fetch(
+          `/api/projects/${encodeURIComponent(project.id)}/assignments/${encodeURIComponent(conflictingSlug)}`,
+          {
+            method: "PATCH",
+            headers: { 
+              "Content-Type": "application/json",
+              "x-badge-number": badgeNumber ?? "unknown",
+            },
+            body: JSON.stringify({ boxSide: "" }),
+          }
+        );
+        if (clearRes.ok) {
+          const clearedData = await clearRes.json();
+          if (clearedData.assignment) {
+            const clearUpdateFn = (prev: ProjectManifest | null) => {
+              if (!prev) return prev;
+              return {
+                ...prev,
+                assignments: {
+                  ...prev.assignments,
+                  [conflictingSlug]: clearedData.assignment,
+                },
+              };
+            };
+            setProject(clearUpdateFn);
+            setEditDraft((prev) => prev ? clearUpdateFn(prev) : prev);
+          }
+        }
+      }
+      
       const res = await fetch(
         `/api/projects/${encodeURIComponent(project.id)}/assignments/${encodeURIComponent(sheetSlug)}`,
         {
@@ -2692,20 +2759,6 @@ export function ProjectDetailsWorkspace({
                   </div>
                 )}
               </div>
-            </section>
-
-            {/* ─── Box Side Test Table ──────────────────────────────────────── */}
-            <section data-section="box-side-test" className="scroll-mt-6">
-              <BoxSideTestTable
-                projectId={project.id}
-                assignments={assignmentEntries.map((a) => ({
-                  sheetSlug: a.sheetSlug,
-                  sheetName: a.sheetName,
-                  normalizedTitle: (a as Record<string, unknown>).normalizedTitle as string | undefined,
-                  boxSide: (a as Record<string, unknown>).boxSide as string | undefined,
-                }))}
-                badgeNumber={badgeNumber ?? undefined}
-              />
             </section>
 
             {/* ─── Visibility Matrix Concept Section ──────────────────────────── */}
