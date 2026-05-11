@@ -2604,6 +2604,7 @@ export function ProjectDetailsWorkspace({
                     sheetSlug: a.sheetSlug,
                     sheetName: a.sheetName,
                     normalizedTitle: (a as Record<string, unknown>).normalizedTitle as string | undefined,
+                    unitType: a.unitType,
                     boxSide: (a as Record<string, unknown>).boxSide as string | undefined,
                   }))}
                   externalLocations={schemaExternalLocations}
@@ -2613,6 +2614,10 @@ export function ProjectDetailsWorkspace({
                   onWireListChange={(slug, loc, vis) => setWireListLocationVisibility(slug, loc, vis)}
                   onBrandListChange={(slug, loc, vis) => setBrandListLocationVisibility(slug, loc, vis)}
                   onCrossWireChange={(slug, loc, vis) => setCrossWireLocationVisibility(slug, loc, vis)}
+                  onBoxSideChange={(slug, boxSide) => {
+                    // TODO: Implement API to save box side to project manifest
+                    console.log("[v0] Box side change:", slug, boxSide);
+                  }}
                   onSaveAndGenerateAllWireLists={handleBulkSaveAndGenerateWireLists}
                   onSaveAndGenerateAllBrandLists={handleBulkSaveAndGenerateBrandLists}
                   onSaveAndGenerateCrossWire={handleBulkSaveAndGenerateCrossWire}

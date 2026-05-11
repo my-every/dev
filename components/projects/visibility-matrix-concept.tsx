@@ -4,8 +4,10 @@ import { useMemo, useCallback, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Loader2, Download, FileArchive, FileText } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Loader2, Download, FileArchive, FileText, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { BoxSideConfig, type BoxSideName } from "@/boxSide";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 // Visibility Matrix: Unified table for Wire List, Brand List, Cross Wire settings
@@ -18,6 +20,21 @@ interface Assignment {
   boxSide?: string;
 }
 
+// ─── Box Side Helpers ────────────────────────────────────────────────────────
+
+const BOX_SIDE_OPTIONS: { value: BoxSideName; label: string }[] = Object.entries(BoxSideConfig).map(
+  ([key, config]) => ({
+    value: key as BoxSideName,
+    label: config.name,
+  })
+);
+
+function normalizeBoxSideName(boxSide: string | undefined): string {
+  if (!boxSide) return "";
+  const config = BoxSideConfig[boxSide as BoxSideName];
+  return config?.name ?? boxSide;
+}
+
 interface VisibilityMatrixProps {
   projectId: string;
   assignments: Assignment[];
@@ -25,9 +42,12 @@ interface VisibilityMatrixProps {
   wireListSettings: Record<string, Record<string, boolean>>;
   brandListSettings: Record<string, Record<string, boolean>>;
   crossWireSettings: Record<string, Record<string, boolean>>;
+  /** Available box side options per unit type - key is unitType, value is array of box side keys */
+  unitTypeBoxSides?: Record<string, string[]>;
   onWireListChange?: (sheetSlug: string, location: string, visible: boolean) => void;
   onBrandListChange?: (sheetSlug: string, location: string, visible: boolean) => void;
   onCrossWireChange?: (sheetSlug: string, location: string, visible: boolean) => void;
+  onBoxSideChange?: (sheetSlug: string, boxSide: string) => void;
   onSaveAndGenerateAllWireLists?: () => Promise<string | null>; // returns download URL or null
   onSaveAndGenerateAllBrandLists?: () => Promise<string | null>;
   onSaveAndGenerateCrossWire?: () => Promise<string | null>;
@@ -55,9 +75,11 @@ export function VisibilityMatrixConcept({
   wireListSettings,
   brandListSettings,
   crossWireSettings,
+  unitTypeBoxSides,
   onWireListChange,
   onBrandListChange,
   onCrossWireChange,
+  onBoxSideChange,
   onSaveAndGenerateAllWireLists,
   onSaveAndGenerateAllBrandLists,
   onSaveAndGenerateCrossWire,
@@ -71,7 +93,6 @@ export function VisibilityMatrixConcept({
   const matrixRows = useMemo(() => {
     const rows: Array<{
       unitType: string;
-      boxSide: string;
       assignment: Assignment;
       location: string;
       locKey: string;
@@ -79,7 +100,6 @@ export function VisibilityMatrixConcept({
       isFirstInAssignment: boolean;
       unitRowSpan: number;
       assignmentRowSpan: number;
-      boxSideRowSpan: number;
     }> = [];
 
     // Group assignments by unit type first (extracted from first external location)
@@ -108,39 +128,16 @@ export function VisibilityMatrixConcept({
         unitRowCount += rowCount;
       }
 
-      // Group by boxSide within unit for rowSpan calculation
-      const boxSideGroups: Record<string, { assignments: Assignment[]; rowCount: number }> = {};
-      for (const assignment of unitAssignments) {
-        const boxSide = assignment.boxSide ?? "";
-        if (!boxSideGroups[boxSide]) {
-          boxSideGroups[boxSide] = { assignments: [], rowCount: 0 };
-        }
-        boxSideGroups[boxSide].assignments.push(assignment);
-        const locations = externalLocations[assignment.sheetSlug] ?? [];
-        boxSideGroups[boxSide].rowCount += Math.max(1, locations.length);
-      }
-
       // Second pass: build rows
       let unitRowIdx = 0;
-      let currentBoxSide = "";
-      let boxSideRowIdx = 0;
       unitAssignments.forEach((assignment, assignmentIdx) => {
         const locations = externalLocations[assignment.sheetSlug] ?? [];
         const assignmentRowCount = assignmentRowCounts[assignmentIdx];
-        const boxSide = assignment.boxSide ?? "";
-        
-        // Check if boxSide changed
-        if (boxSide !== currentBoxSide) {
-          currentBoxSide = boxSide;
-          boxSideRowIdx = 0;
-        }
-        const boxSideInfo = boxSideGroups[boxSide];
 
         if (locations.length === 0) {
           // No locations - single row with empty location
           rows.push({
             unitType,
-            boxSide,
             assignment,
             location: "",
             locKey: "",
@@ -148,16 +145,13 @@ export function VisibilityMatrixConcept({
             isFirstInAssignment: true,
             unitRowSpan: unitRowIdx === 0 ? unitRowCount : 0,
             assignmentRowSpan: assignmentRowCount,
-            boxSideRowSpan: boxSideRowIdx === 0 ? boxSideInfo.rowCount : 0,
           });
           unitRowIdx++;
-          boxSideRowIdx++;
         } else {
           // Multiple locations - one row per location
           locations.forEach((location, locIdx) => {
             rows.push({
               unitType,
-              boxSide,
               assignment,
               location,
               locKey: location.trim().toUpperCase(),
@@ -165,10 +159,8 @@ export function VisibilityMatrixConcept({
               isFirstInAssignment: locIdx === 0,
               unitRowSpan: unitRowIdx === 0 ? unitRowCount : 0,
               assignmentRowSpan: locIdx === 0 ? assignmentRowCount : 0,
-              boxSideRowSpan: boxSideRowIdx === 0 && locIdx === 0 ? boxSideInfo.rowCount : 0,
             });
             unitRowIdx++;
-            if (locIdx === 0) boxSideRowIdx += assignmentRowCount;
           });
         }
       });
@@ -247,9 +239,6 @@ export function VisibilityMatrixConcept({
               <th className="w-16 px-2 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Unit
               </th>
-              <th className="w-24 px-2 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Box Side
-              </th>
               <th className="px-3 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Assignment
               </th>
@@ -294,30 +283,61 @@ export function VisibilityMatrixConcept({
                     </td>
                   )}
 
-                  {/* Box Side - spans multiple rows per box side group */}
-                  {row.boxSideRowSpan > 0 && (
-                    <td 
-                      className="border-r border-border/40 px-2 py-2 align-top"
-                      rowSpan={row.boxSideRowSpan}
-                    >
-                      <span className="text-xs text-muted-foreground truncate block" title={row.boxSide}>
-                        {row.boxSide || "—"}
-                      </span>
-                    </td>
-                  )}
-
-                  {/* Assignment - spans multiple rows per location count */}
+                  {/* Assignment with Box Side Badge/Popover - spans multiple rows per location count */}
                   {row.assignmentRowSpan > 0 && (
                     <td 
                       className="border-r border-border/40 px-3 py-2 align-top"
                       rowSpan={row.assignmentRowSpan}
                     >
-                      <span 
-                        className="block truncate text-xs font-medium text-foreground" 
-                        title={displayTitle}
-                      >
-                        {displayTitle}
-                      </span>
+                      <div className="flex flex-col gap-1">
+                        <span 
+                          className="block truncate text-xs font-medium text-foreground" 
+                          title={displayTitle}
+                        >
+                          {displayTitle}
+                        </span>
+                        {/* Box Side Badge with Popover Select */}
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <button
+                              className={cn(
+                                "inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px]",
+                                "bg-muted/60 hover:bg-muted text-muted-foreground",
+                                "transition-colors cursor-pointer border border-transparent hover:border-border/50"
+                              )}
+                            >
+                              <span className="truncate max-w-[100px]">
+                                {normalizeBoxSideName(row.assignment.boxSide) || "Set Box Side"}
+                              </span>
+                              <ChevronDown className="h-2.5 w-2.5 shrink-0 opacity-50" />
+                            </button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-40 p-1" align="start">
+                            <div className="flex flex-col">
+                              {(() => {
+                                // Get available box sides for this unit type
+                                const availableBoxSides = unitTypeBoxSides?.[row.unitType] ?? [];
+                                const options = availableBoxSides.length > 0
+                                  ? BOX_SIDE_OPTIONS.filter(opt => availableBoxSides.includes(opt.value))
+                                  : BOX_SIDE_OPTIONS;
+                                
+                                return options.map((option) => (
+                                  <button
+                                    key={option.value}
+                                    className={cn(
+                                      "px-2 py-1.5 text-left text-xs rounded hover:bg-muted transition-colors",
+                                      row.assignment.boxSide === option.value && "bg-muted font-medium"
+                                    )}
+                                    onClick={() => onBoxSideChange?.(row.assignment.sheetSlug, option.value)}
+                                  >
+                                    {option.label}
+                                  </button>
+                                ));
+                              })()}
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                      </div>
                     </td>
                   )}
 
@@ -372,7 +392,7 @@ export function VisibilityMatrixConcept({
           {/* Footer row with bulk download buttons */}
           <tfoot>
             <tr className="border-t-2 border-border bg-muted/30">
-              <td colSpan={4} className="px-3 py-3">
+              <td colSpan={3} className="px-3 py-3">
                 <span className="text-xs font-medium text-muted-foreground">
                   Save & Generate All
                 </span>
