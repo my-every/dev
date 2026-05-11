@@ -48,7 +48,6 @@ export function BoxSideCell({
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       const boxSide = e.target.value;
-      console.log("[v0] BoxSideCell handleChange:", { sheetSlug, boxSide });
       if (onBoxSideChange && boxSide) {
         onBoxSideChange(sheetSlug, boxSide);
       }

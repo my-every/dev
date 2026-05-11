@@ -83,6 +83,7 @@ import { useLayoutUI } from "@/components/layout/layout-context";
 import { activityService } from "@/lib/services/activity-service";
 import type { ActivityAction } from "@/types/activity";
 import { VisibilityMatrixConcept } from "@/components/projects/visibility-matrix-concept";
+import { BoxSideTestTable } from "@/components/projects/box-side-test-table";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -773,7 +774,6 @@ export function ProjectDetailsWorkspace({
 
   // Handler for updating assignment boxSide via API
   const handleAssignmentBoxSideChange = useCallback(async (sheetSlug: string, boxSide: string) => {
-    console.log("[v0] handleAssignmentBoxSideChange:", { sheetSlug, boxSide });
     if (!project) return;
     try {
       const res = await fetch(
@@ -792,10 +792,8 @@ export function ProjectDetailsWorkspace({
         throw new Error(errData.error ?? "Failed to update box side");
       }
       const updated = await res.json();
-      console.log("[v0] handleAssignmentBoxSideChange: API response:", updated);
       // Update project state by merging the updated assignment into the existing project
       if (updated.assignment) {
-        console.log("[v0] handleAssignmentBoxSideChange: updating state with assignment:", updated.assignment);
         const updateFn = (prev: ProjectManifest | null) => {
           if (!prev) return prev;
           return {
@@ -809,9 +807,6 @@ export function ProjectDetailsWorkspace({
         setProject(updateFn);
         // Also update editDraft if in edit mode so UI reflects the change
         setEditDraft((prev) => prev ? updateFn(prev) : prev);
-        console.log("[v0] handleAssignmentBoxSideChange: state updated");
-      } else {
-        console.log("[v0] handleAssignmentBoxSideChange: NO assignment in response!");
       }
       toast({ title: "Box side updated" });
     } catch (err) {
@@ -2697,6 +2692,20 @@ export function ProjectDetailsWorkspace({
                   </div>
                 )}
               </div>
+            </section>
+
+            {/* ─── Box Side Test Table ──────────────────────────────────────── */}
+            <section data-section="box-side-test" className="scroll-mt-6">
+              <BoxSideTestTable
+                projectId={project.id}
+                assignments={assignmentEntries.map((a) => ({
+                  sheetSlug: a.sheetSlug,
+                  sheetName: a.sheetName,
+                  normalizedTitle: (a as Record<string, unknown>).normalizedTitle as string | undefined,
+                  boxSide: (a as Record<string, unknown>).boxSide as string | undefined,
+                }))}
+                badgeNumber={badgeNumber ?? undefined}
+              />
             </section>
 
             {/* ─── Visibility Matrix Concept Section ──────────────────────────── */}
