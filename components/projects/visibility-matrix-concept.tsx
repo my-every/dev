@@ -2,12 +2,11 @@
 
 import { useMemo, useCallback, useState } from "react";
 import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Loader2, Download, FileArchive, FileText, ChevronDown } from "lucide-react";
+import { Loader2, Download, FileArchive, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { BoxSideConfig, type BoxSideName } from "@/boxSide";
+import { UnitTypePopover } from "./unit-type-popover";
+import { BoxSidePopover } from "./box-side-popover";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 // Visibility Matrix: Unified table for Wire List, Brand List, Cross Wire settings
@@ -18,21 +17,6 @@ interface Assignment {
   normalizedTitle?: string;
   unitType?: string;
   boxSide?: string;
-}
-
-// ─── Box Side Helpers ────────────────────────────────────────────────────────
-
-const BOX_SIDE_OPTIONS: { value: BoxSideName; label: string }[] = Object.entries(BoxSideConfig).map(
-  ([key, config]) => ({
-    value: key as BoxSideName,
-    label: config.name,
-  })
-);
-
-function normalizeBoxSideName(boxSide: string | undefined): string {
-  if (!boxSide) return "";
-  const config = BoxSideConfig[boxSide as BoxSideName];
-  return config?.name ?? boxSide;
 }
 
 interface VisibilityMatrixProps {
@@ -285,47 +269,12 @@ export function VisibilityMatrixConcept({
                       className="border-r border-border/40 bg-muted/30 px-2 py-2 align-top"
                       rowSpan={row.unitRowSpan}
                     >
-                      {isEditing ? (
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <button
-                              className={cn(
-                                "inline-flex items-center gap-0.5 rounded px-1.5 py-0.5",
-                                "font-mono text-[10px] border",
-                                "bg-background hover:bg-muted transition-colors cursor-pointer",
-                                row.unitType ? "border-border" : "border-dashed border-muted-foreground/50"
-                              )}
-                            >
-                              <span>{row.unitType || "Set Unit"}</span>
-                              <ChevronDown className="h-2.5 w-2.5 shrink-0 opacity-50" />
-                            </button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-32 p-1" align="start">
-                            <div className="flex flex-col max-h-48 overflow-y-auto">
-                              {availableUnitTypes.length > 0 ? (
-                                availableUnitTypes.map((unitType) => (
-                                  <button
-                                    key={unitType}
-                                    className={cn(
-                                      "px-2 py-1.5 text-left text-xs font-mono rounded hover:bg-muted transition-colors",
-                                      row.assignment.unitType === unitType && "bg-muted font-medium"
-                                    )}
-                                    onClick={() => onUnitTypeChange?.(row.assignment.sheetSlug, unitType)}
-                                  >
-                                    {unitType}
-                                  </button>
-                                ))
-                              ) : (
-                                <span className="px-2 py-1.5 text-xs text-muted-foreground">No unit types available</span>
-                              )}
-                            </div>
-                          </PopoverContent>
-                        </Popover>
-                      ) : (
-                        <Badge variant="outline" className="font-mono text-[10px]">
-                          {row.unitType || "—"}
-                        </Badge>
-                      )}
+                      <UnitTypePopover
+                        value={row.unitType}
+                        options={availableUnitTypes}
+                        disabled={!isEditing}
+                        onSelect={(unitType) => onUnitTypeChange?.(row.assignment.sheetSlug, unitType)}
+                      />
                     </td>
                   )}
 
@@ -342,54 +291,12 @@ export function VisibilityMatrixConcept({
                         >
                           {displayTitle}
                         </span>
-                        {/* Box Side Badge - editable popover in edit mode, static badge otherwise */}
-                        {isEditing ? (
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <button
-                                className={cn(
-                                  "inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px]",
-                                  "bg-background hover:bg-muted text-muted-foreground",
-                                  "transition-colors cursor-pointer border",
-                                  row.assignment.boxSide ? "border-border" : "border-dashed border-muted-foreground/50"
-                                )}
-                              >
-                                <span className="truncate max-w-[100px]">
-                                  {normalizeBoxSideName(row.assignment.boxSide) || "Set Box Side"}
-                                </span>
-                                <ChevronDown className="h-2.5 w-2.5 shrink-0 opacity-50" />
-                              </button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-40 p-1" align="start">
-                              <div className="flex flex-col max-h-48 overflow-y-auto">
-                                {(() => {
-                                  // Get available box sides for this unit type
-                                  const availableBoxSides = unitTypeBoxSides?.[row.unitType] ?? [];
-                                  const options = availableBoxSides.length > 0
-                                    ? BOX_SIDE_OPTIONS.filter(opt => availableBoxSides.includes(opt.value))
-                                    : BOX_SIDE_OPTIONS;
-                                  
-                                  return options.map((option) => (
-                                    <button
-                                      key={option.value}
-                                      className={cn(
-                                        "px-2 py-1.5 text-left text-xs rounded hover:bg-muted transition-colors",
-                                        row.assignment.boxSide === option.value && "bg-muted font-medium"
-                                      )}
-                                      onClick={() => onBoxSideChange?.(row.assignment.sheetSlug, option.value)}
-                                    >
-                                      {option.label}
-                                    </button>
-                                  ));
-                                })()}
-                              </div>
-                            </PopoverContent>
-                          </Popover>
-                        ) : row.assignment.boxSide ? (
-                          <span className="inline-flex rounded bg-muted/60 px-1.5 py-0.5 text-[10px] text-muted-foreground">
-                            {normalizeBoxSideName(row.assignment.boxSide)}
-                          </span>
-                        ) : null}
+                        <BoxSidePopover
+                          value={row.assignment.boxSide}
+                          availableBoxSides={unitTypeBoxSides?.[row.unitType]}
+                          disabled={!isEditing}
+                          onSelect={(boxSide) => onBoxSideChange?.(row.assignment.sheetSlug, boxSide)}
+                        />
                       </div>
                     </td>
                   )}
