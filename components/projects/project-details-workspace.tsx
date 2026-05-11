@@ -744,8 +744,11 @@ export function ProjectDetailsWorkspace({
         const errData = await res.json().catch(() => ({}));
         throw new Error(errData.error ?? "Failed to update unit type");
       }
-      // Refresh the project data to reflect the change
-      await refreshProject();
+      const updated = await res.json();
+      // Update project state with the new manifest from the response
+      if (updated.project) {
+        setProject(updated.project);
+      }
       toast({ title: "Unit type updated" });
     } catch (err) {
       toast({ 
@@ -754,7 +757,7 @@ export function ProjectDetailsWorkspace({
         variant: "destructive" 
       });
     }
-  }, [project, badgeNumber, refreshProject, toast]);
+  }, [project, badgeNumber, toast]);
 
   // Handler for updating assignment boxSide via API
   const handleAssignmentBoxSideChange = useCallback(async (sheetSlug: string, boxSide: string) => {
@@ -775,8 +778,11 @@ export function ProjectDetailsWorkspace({
         const errData = await res.json().catch(() => ({}));
         throw new Error(errData.error ?? "Failed to update box side");
       }
-      // Refresh the project data to reflect the change
-      await refreshProject();
+      const updated = await res.json();
+      // Update project state with the new manifest from the response
+      if (updated.project) {
+        setProject(updated.project);
+      }
       toast({ title: "Box side updated" });
     } catch (err) {
       toast({ 
@@ -785,7 +791,7 @@ export function ProjectDetailsWorkspace({
         variant: "destructive" 
       });
     }
-  }, [project, badgeNumber, refreshProject, toast]);
+  }, [project, badgeNumber, toast]);
 
   // ─── Navigation Handlers ────────────────────────────────────────────────────
 
