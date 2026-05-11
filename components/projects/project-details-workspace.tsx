@@ -935,18 +935,10 @@ export function ProjectDetailsWorkspace({
       })
     );
 
-    // Generate all wire lists
-    const response = await fetch(
-      `/api/projects/${encodeURIComponent(project.id)}/wire-list/generate-all`,
-      { method: "POST" }
-    );
-
-    if (!response.ok) return null;
-
-    // Refresh exports and return download URL
-    await refreshWireExports();
-    return `/api/projects/${encodeURIComponent(project.id)}/wire-list/download-zip`;
-  }, [project?.id, assignmentEntries, wireListSettingsMatrix, refreshWireExports]);
+    // Generate all wire lists and return download URL directly
+    // The download-all endpoint generates and returns ZIP in one request
+    return `/api/projects/${encodeURIComponent(project.id)}/wire-list-pdf/download-all`;
+  }, [project?.id, assignmentEntries, wireListSettingsMatrix]);
 
   const handleBulkSaveAndGenerateBrandLists = useCallback(async (): Promise<string | null> => {
     if (!project?.id || assignmentEntries.length === 0) return null;
@@ -970,18 +962,10 @@ export function ProjectDetailsWorkspace({
       })
     );
 
-    // Generate all brand lists
-    const response = await fetch(
-      `/api/projects/${encodeURIComponent(project.id)}/brand-list/generate-all`,
-      { method: "POST" }
-    );
-
-    if (!response.ok) return null;
-
-    // Refresh exports and return download URL
-    await refreshBrandingExports();
-    return `/api/projects/${encodeURIComponent(project.id)}/brand-list/download-zip`;
-  }, [project?.id, assignmentEntries, brandListSettingsMatrix, refreshBrandingExports]);
+    // Generate all brand lists and return download URL directly
+    // The download-all endpoint generates and returns ZIP in one request
+    return `/api/projects/${encodeURIComponent(project.id)}/brand-list-pdf/download-all`;
+  }, [project?.id, assignmentEntries, brandListSettingsMatrix]);
 
   const handleBulkSaveAndGenerateCrossWire = useCallback(async (): Promise<string | null> => {
     if (!project?.id || assignmentEntries.length === 0) return null;
@@ -1006,15 +990,8 @@ export function ProjectDetailsWorkspace({
       })
     );
 
-    // Generate cross wire PDF
-    const response = await fetch(
-      `/api/projects/${encodeURIComponent(project.id)}/cross-wire/generate`,
-      { method: "POST" }
-    );
-
-    if (!response.ok) return null;
-
-    return `/api/projects/${encodeURIComponent(project.id)}/cross-wire/download`;
+    // Return the cross-wire PDF download URL
+    return `/api/projects/${encodeURIComponent(project.id)}/cross-wire-pdf`;
   }, [project?.id, assignmentEntries, crossWireSettingsMatrix, crossWireSwapLocationsAll, crossWireSwapLocationsBySheet]);
 
   const refreshBrandingExports = useCallback(async () => {

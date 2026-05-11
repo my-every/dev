@@ -11,6 +11,7 @@ export const EXPORTS_DIRECTORY = "exports";
 export const UNITS_DIRECTORY = "units";
 export const BRANDING_EXPORTS_DIRECTORY = "branding";
 export const WIRE_LIST_EXPORTS_DIRECTORY = "wire-lists";
+export const BRAND_LIST_EXPORTS_DIRECTORY = "brand-lists";
 
 export function sanitizeExportFileSegment(value: string): string {
   return value
