@@ -4,7 +4,7 @@ import { useMemo, useCallback, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Check, Loader2, Download, FileArchive, FileText } from "lucide-react";
+import { Loader2, Download, FileArchive, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -27,7 +27,6 @@ interface VisibilityMatrixProps {
   onWireListChange?: (sheetSlug: string, location: string, visible: boolean) => void;
   onBrandListChange?: (sheetSlug: string, location: string, visible: boolean) => void;
   onCrossWireChange?: (sheetSlug: string, location: string, visible: boolean) => void;
-  onSaveAndGenerate?: (sheetSlug: string) => Promise<void>;
   onSaveAndGenerateAllWireLists?: () => Promise<string | null>; // returns download URL or null
   onSaveAndGenerateAllBrandLists?: () => Promise<string | null>;
   onSaveAndGenerateCrossWire?: () => Promise<string | null>;
@@ -37,11 +36,12 @@ interface VisibilityMatrixProps {
 type GeneratingState = "idle" | "generating" | "ready" | "error";
 type BulkGeneratingState = { state: GeneratingState; downloadUrl: string | null };
 
-// ─── Helper: Extract unit type from normalized title ─────────────────────────
+// ─── Helper: Extract unit type from location or title ────────────────────────
 
-function extractUnitType(title: string): string {
-  // Common patterns: "JB71 B,PANEL CTRL" -> "JB71"
-  const match = title.match(/^([A-Z]{1,3}\d{1,3})/i);
+function extractUnitType(location: string): string {
+  // Extract unit type from location patterns like "JB71 B,PNL DC PWR" -> "JB71"
+  // or "JB71" -> "JB71"
+  const match = location.match(/^([A-Z]{1,4}\d{1,3})/i);
   return match ? match[1].toUpperCase() : "";
 }
 
@@ -57,13 +57,11 @@ export function VisibilityMatrixConcept({
   onWireListChange,
   onBrandListChange,
   onCrossWireChange,
-  onSaveAndGenerate,
   onSaveAndGenerateAllWireLists,
   onSaveAndGenerateAllBrandLists,
   onSaveAndGenerateCrossWire,
   loading = false,
 }: VisibilityMatrixProps) {
-  const [generatingState, setGeneratingState] = useState<Record<string, GeneratingState>>({});
   const [wireListBulk, setWireListBulk] = useState<BulkGeneratingState>({ state: "idle", downloadUrl: null });
   const [brandListBulk, setBrandListBulk] = useState<BulkGeneratingState>({ state: "idle", downloadUrl: null });
   const [crossWireBulk, setCrossWireBulk] = useState<BulkGeneratingState>({ state: "idle", downloadUrl: null });
@@ -81,10 +79,13 @@ export function VisibilityMatrixConcept({
       assignmentRowSpan: number;
     }> = [];
 
-    // Group assignments by unit type first
+    // Group assignments by unit type first (extracted from first external location)
     const unitGroups: Record<string, Assignment[]> = {};
     for (const assignment of assignments) {
-      const unitType = assignment.unitType ?? extractUnitType(assignment.normalizedTitle ?? assignment.sheetName);
+      const locations = externalLocations[assignment.sheetSlug] ?? [];
+      // Extract unit type from first location (e.g., "JB71 B,PNL DC PWR" -> "JB71")
+      const firstLocation = locations[0] ?? "";
+      const unitType = assignment.unitType ?? extractUnitType(firstLocation);
       if (!unitGroups[unitType]) {
         unitGroups[unitType] = [];
       }
@@ -144,21 +145,6 @@ export function VisibilityMatrixConcept({
 
     return rows;
   }, [assignments, externalLocations]);
-
-  const handleSaveAndGenerate = useCallback(async (sheetSlug: string) => {
-    if (!onSaveAndGenerate) return;
-    
-    setGeneratingState((prev) => ({ ...prev, [sheetSlug]: "generating" }));
-    try {
-      await onSaveAndGenerate(sheetSlug);
-      setGeneratingState((prev) => ({ ...prev, [sheetSlug]: "ready" }));
-      setTimeout(() => {
-        setGeneratingState((prev) => ({ ...prev, [sheetSlug]: "idle" }));
-      }, 3000);
-    } catch {
-      setGeneratingState((prev) => ({ ...prev, [sheetSlug]: "error" }));
-    }
-  }, [onSaveAndGenerate]);
 
   const handleSaveAndGenerateAllWireLists = useCallback(async () => {
     if (!onSaveAndGenerateAllWireLists) return;
@@ -245,7 +231,6 @@ export function VisibilityMatrixConcept({
               <th className="w-16 px-2 py-2.5 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 Cross
               </th>
-              <th className="w-16 px-2 py-2.5" />
             </tr>
           </thead>
           <tbody>
@@ -253,7 +238,6 @@ export function VisibilityMatrixConcept({
               const wireVisible = row.locKey ? (wireListSettings[row.assignment.sheetSlug]?.[row.locKey] ?? true) : true;
               const brandVisible = row.locKey ? (brandListSettings[row.assignment.sheetSlug]?.[row.locKey] ?? true) : true;
               const crossVisible = row.locKey ? (crossWireSettings[row.assignment.sheetSlug]?.[row.locKey] ?? true) : true;
-              const genState = generatingState[row.assignment.sheetSlug] ?? "idle";
               const displayTitle = row.assignment.normalizedTitle ?? row.assignment.sheetName;
 
               return (
@@ -335,30 +319,6 @@ export function VisibilityMatrixConcept({
                       />
                     )}
                   </td>
-
-                  {/* Action - only on first row of each assignment */}
-                  {row.assignmentRowSpan > 0 ? (
-                    <td className="px-2 py-2 text-center" rowSpan={row.assignmentRowSpan}>
-                      {genState === "generating" ? (
-                        <Button size="sm" variant="outline" className="h-6 w-6 p-0" disabled>
-                          <Loader2 className="h-3 w-3 animate-spin" />
-                        </Button>
-                      ) : genState === "done" ? (
-                        <Button size="sm" variant="outline" className="h-6 w-6 p-0 text-green-600" disabled>
-                          <Check className="h-3 w-3" />
-                        </Button>
-                      ) : (
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="h-6 w-6 p-0"
-                          onClick={() => handleSaveAndGenerate(row.assignment.sheetSlug)}
-                        >
-                          <Download className="h-3 w-3" />
-                        </Button>
-                      )}
-                    </td>
-                  ) : null}
                 </tr>
               );
             })}
@@ -476,7 +436,6 @@ export function VisibilityMatrixConcept({
                   </Button>
                 )}
               </td>
-              <td />
             </tr>
           </tfoot>
         </table>
