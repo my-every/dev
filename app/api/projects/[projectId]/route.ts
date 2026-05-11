@@ -7,6 +7,7 @@ import {
   writeProjectManifest,
 } from '@/lib/project-state/share-project-state-handlers'
 import { enrichManifestFromProjectState } from '@/lib/project-state/manifest-enrichment'
+import { syncAssignmentSettingsToLegal } from '@/lib/legal-drawings/library'
 import {
   buildAllSheetSchemas,
   buildDefaultMappedAssignments,
@@ -121,7 +122,10 @@ export async function PATCH(
   const enrichedManifest = await enrichManifestFromProjectState(updatedManifest)
   await writeProjectManifest(enrichedManifest)
 
-  return NextResponse.json({ project: enrichedManifest })
+  // Sync assignment settings back to legal drawings manifest for future instances
+  const syncResult = await syncAssignmentSettingsToLegal({ projectManifest: enrichedManifest })
+
+  return NextResponse.json({ project: enrichedManifest, legalSync: syncResult })
 }
 
 export async function DELETE(
