@@ -107,8 +107,13 @@ export function VisibilityMatrixConcept({
       unitGroups[unitType].push(assignment);
     }
 
+    // Sort unit groups by number of assignments (most first)
+    const sortedUnitGroups = Object.entries(unitGroups).sort(
+      ([, a], [, b]) => b.length - a.length
+    );
+
     // Calculate row spans for each unit and assignment
-    for (const [unitType, unitAssignments] of Object.entries(unitGroups)) {
+    for (const [unitType, unitAssignments] of sortedUnitGroups) {
       let unitRowCount = 0;
       const assignmentRowCounts: number[] = [];
 
