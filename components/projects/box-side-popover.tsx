@@ -1,10 +1,16 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ChevronDown, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BoxSideConfig, type BoxSideName } from "@/boxSide";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 // ─── Box Side Options ────────────────────────────────────────────────────────
 
@@ -67,36 +73,34 @@ export function BoxSidePopover({
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
         <button
           type="button"
-          role="combobox"
           aria-expanded={open}
-          aria-haspopup="listbox"
           className={cn(
-            "inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px]",
+            "inline-flex items-center gap-1 rounded px-2 py-1 text-xs",
             "bg-background hover:bg-muted text-muted-foreground",
             "transition-colors cursor-pointer border",
             "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1",
+            "min-h-[32px]", // Minimum touch target
             value ? "border-border" : "border-dashed border-muted-foreground/50"
           )}
         >
-          <span className="truncate max-w-[100px]">
+          <span className="truncate max-w-[120px]">
             {displayValue || "Set Box Side"}
           </span>
-          <ChevronDown className="h-2.5 w-2.5 shrink-0 opacity-50" />
+          <ChevronDown className="h-3 w-3 shrink-0 opacity-50" />
         </button>
-      </PopoverTrigger>
-      <PopoverContent 
-        className="w-40 p-1" 
-        align="start"
-        onOpenAutoFocus={(e) => e.preventDefault()}
-      >
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>Select Box Side</DrawerTitle>
+        </DrawerHeader>
         <div 
           role="listbox" 
           aria-label="Select box side"
-          className="flex flex-col max-h-48 overflow-y-auto"
+          className="flex flex-col px-4 pb-6 gap-1"
         >
           {options.map((option) => (
             <button
@@ -105,19 +109,20 @@ export function BoxSidePopover({
               role="option"
               aria-selected={value === option.value}
               className={cn(
-                "flex items-center justify-between px-2 py-1.5 text-left text-xs rounded",
-                "hover:bg-muted transition-colors",
+                "flex items-center justify-between px-4 py-3 text-left text-sm rounded-lg",
+                "hover:bg-muted active:bg-muted transition-colors",
                 "focus:outline-none focus:bg-muted",
+                "min-h-[44px]", // Touch-friendly target
                 value === option.value && "bg-muted font-medium"
               )}
               onClick={() => handleSelect(option.value)}
             >
               <span>{option.label}</span>
-              {value === option.value && <Check className="h-3 w-3 text-primary" />}
+              {value === option.value && <Check className="h-4 w-4 text-primary" />}
             </button>
           ))}
         </div>
-      </PopoverContent>
-    </Popover>
+      </DrawerContent>
+    </Drawer>
   );
 }
