@@ -8,6 +8,7 @@ import React, {
   useState,
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import useSWR from "swr";
 import {
   ArrowLeft,
   ArrowLeftRight,
@@ -83,7 +84,6 @@ import { useLayoutUI } from "@/components/layout/layout-context";
 import { activityService } from "@/lib/services/activity-service";
 import type { ActivityAction } from "@/types/activity";
 import { VisibilityMatrixConcept } from "@/components/projects/visibility-matrix-concept";
-import { UNIT_TYPE_SUMMARY } from "@/lib/priority-list/unit-type-estimates";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -657,22 +657,30 @@ export function ProjectDetailsWorkspace({
     );
   }, [legalDetail]);
 
+  // Fetch available unit types from the reference API
+  const { data: unitTypesData } = useSWR<{ unitTypes: string[] }>(
+    "/api/reference/unit-types",
+    (url: string) => fetch(url).then((res) => res.json())
+  );
+
   // Collect all available unit types for the visibility matrix dropdown
-  // Includes all known unit types from UNIT_TYPE_SUMMARY plus any currently in use
+  // Includes unit types from the reference API plus any currently in use
   const availableUnitTypes = useMemo(() => {
     const unitTypes = new Set<string>();
-    // Add all known unit types from the summary
-    for (const entry of UNIT_TYPE_SUMMARY) {
-      unitTypes.add(entry.unitType);
+    // Add all known unit types from the reference API
+    if (unitTypesData?.unitTypes) {
+      for (const unitType of unitTypesData.unitTypes) {
+        unitTypes.add(unitType);
+      }
     }
-    // Also add any unit types currently assigned (in case they're not in the summary)
+    // Also add any unit types currently assigned (in case they're not in the reference)
     for (const assignment of assignmentEntries) {
       if (assignment.unitType) {
         unitTypes.add(assignment.unitType);
       }
     }
     return Array.from(unitTypes).sort();
-  }, [assignmentEntries]);
+  }, [assignmentEntries, unitTypesData]);
 
   // Track which box sides are used by which assignment per unit type (for 1:1 enforcement)
   // Returns a map: unitType -> { boxSide -> sheetSlug }
