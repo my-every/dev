@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Download, FileArchive, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { UnitTypePopover } from "./unit-type-popover";
-import { BoxSidePopover } from "./box-side-popover";
+import { BoxSideCell } from "./box-side-cell";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 // Visibility Matrix: Unified table for Wire List, Brand List, Cross Wire settings
@@ -302,11 +302,12 @@ export function VisibilityMatrixConcept({
                       className="border-r border-border/40 px-2 py-2 align-top"
                       rowSpan={row.assignmentRowSpan}
                     >
-                      <BoxSidePopover
-                        value={row.assignment.boxSide}
+                      <BoxSideCell
+                        sheetSlug={row.assignment.sheetSlug}
+                        initialValue={row.assignment.boxSide}
                         availableBoxSides={unitTypeBoxSides?.[row.unitType]}
-                        disabled={!isEditing}
-                        onSelect={(boxSide) => onBoxSideChange?.(row.assignment.sheetSlug, boxSide)}
+                        isEditing={isEditing}
+                        onBoxSideChange={onBoxSideChange}
                       />
                     </td>
                   )}

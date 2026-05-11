@@ -773,6 +773,7 @@ export function ProjectDetailsWorkspace({
 
   // Handler for updating assignment boxSide via API
   const handleAssignmentBoxSideChange = useCallback(async (sheetSlug: string, boxSide: string) => {
+    console.log("[v0] handleAssignmentBoxSideChange:", { sheetSlug, boxSide });
     if (!project) return;
     try {
       const res = await fetch(
@@ -791,8 +792,10 @@ export function ProjectDetailsWorkspace({
         throw new Error(errData.error ?? "Failed to update box side");
       }
       const updated = await res.json();
+      console.log("[v0] handleAssignmentBoxSideChange: API response:", updated);
       // Update project state by merging the updated assignment into the existing project
       if (updated.assignment) {
+        console.log("[v0] handleAssignmentBoxSideChange: updating state with assignment:", updated.assignment);
         const updateFn = (prev: ProjectManifest | null) => {
           if (!prev) return prev;
           return {
@@ -806,6 +809,9 @@ export function ProjectDetailsWorkspace({
         setProject(updateFn);
         // Also update editDraft if in edit mode so UI reflects the change
         setEditDraft((prev) => prev ? updateFn(prev) : prev);
+        console.log("[v0] handleAssignmentBoxSideChange: state updated");
+      } else {
+        console.log("[v0] handleAssignmentBoxSideChange: NO assignment in response!");
       }
       toast({ title: "Box side updated" });
     } catch (err) {
