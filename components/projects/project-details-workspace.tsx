@@ -720,6 +720,54 @@ export function ProjectDetailsWorkspace({
     setSaveError(null);
   }, []);
 
+  // Keyboard shortcuts: e = edit, s = save, c = cancel
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input, textarea, or select
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.isContentEditable
+      ) {
+        return;
+      }
+
+      // Ignore if modifier keys are pressed (except for potential future combos)
+      if (e.metaKey || e.ctrlKey || e.altKey) {
+        return;
+      }
+
+      switch (e.key.toLowerCase()) {
+        case "e":
+          if (!isEditing && project) {
+            e.preventDefault();
+            setEditDraft({ ...project });
+            setIsEditing(true);
+          }
+          break;
+        case "s":
+          if (isEditing && editDraft && !saving) {
+            e.preventDefault();
+            void handleSave();
+          }
+          break;
+        case "c":
+          if (isEditing && !saving) {
+            e.preventDefault();
+            setEditDraft(null);
+            setIsEditing(false);
+            setSaveError(null);
+          }
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isEditing, project, editDraft, saving, handleSave]);
+
   const setProjectField = useCallback(
     <K extends keyof ProjectManifest>(key: K, value: ProjectManifest[K]) => {
       setEditDraft((prev) => (prev ? { ...prev, [key]: value } : prev));
@@ -744,8 +792,9 @@ export function ProjectDetailsWorkspace({
       const updated = await res.json();
       const savedProject = updated.project ?? updated;
       setProject(savedProject);
-      // Keep edit mode active - update editDraft with saved data so user can continue editing
-      setEditDraft(savedProject);
+      // Exit edit mode after successful save
+      setEditDraft(null);
+      setIsEditing(false);
       toast({ title: "Project saved" });
       void logActivityWithFlash("project_updated", { fields: Object.keys(editDraft) });
     } catch (err) {
@@ -1503,18 +1552,27 @@ export function ProjectDetailsWorkspace({
         <div className="flex items-center gap-2">
           {isEditing ? (
             <>
-              <Button variant="ghost" size="sm" onClick={cancelEditMode} disabled={saving}>
+              <Button variant="ghost" size="sm" onClick={cancelEditMode} disabled={saving} title="Cancel (C)">
                 Cancel
+                <kbd className="ml-1.5 hidden sm:inline-flex h-5 items-center rounded border border-border bg-muted px-1 font-mono text-[10px] text-muted-foreground">
+                  C
+                </kbd>
               </Button>
-              <Button size="sm" onClick={handleSave} disabled={saving}>
+              <Button size="sm" onClick={handleSave} disabled={saving} title="Save (S)">
                 {saving ? <Loader2 className="mr-2 h-3 w-3 animate-spin" /> : null}
                 Save
+                <kbd className="ml-1.5 hidden sm:inline-flex h-5 items-center rounded border border-primary-foreground/30 bg-primary-foreground/10 px-1 font-mono text-[10px]">
+                  S
+                </kbd>
               </Button>
             </>
           ) : (
-            <Button variant="outline" size="sm" onClick={enterEditMode}>
+            <Button variant="outline" size="sm" onClick={enterEditMode} title="Edit (E)">
               <Pencil className="mr-2 h-3 w-3" />
               Edit
+              <kbd className="ml-1.5 hidden sm:inline-flex h-5 items-center rounded border border-border bg-muted px-1 font-mono text-[10px] text-muted-foreground">
+                E
+              </kbd>
             </Button>
           )}
         </div>

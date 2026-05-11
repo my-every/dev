@@ -94,6 +94,36 @@ export async function PUT(
   return NextResponse.json({ manifest: enrichedManifest })
 }
 
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ projectId: string }> },
+) {
+  const { projectId } = await params
+  const existingManifest = await readProjectManifest(projectId)
+
+  if (!existingManifest) {
+    return NextResponse.json({ error: 'Project not found' }, { status: 404 })
+  }
+
+  const patch = await request.json() as Partial<ProjectManifest>
+
+  // Merge the patch with existing manifest
+  const updatedManifest: ProjectManifest = {
+    ...existingManifest,
+    ...patch,
+    id: projectId, // Ensure ID cannot be changed
+    // Merge assignments if provided
+    assignments: patch.assignments
+      ? { ...existingManifest.assignments, ...patch.assignments }
+      : existingManifest.assignments,
+  }
+
+  const enrichedManifest = await enrichManifestFromProjectState(updatedManifest)
+  await writeProjectManifest(enrichedManifest)
+
+  return NextResponse.json({ project: enrichedManifest })
+}
+
 export async function DELETE(
   _request: NextRequest,
   { params }: { params: Promise<{ projectId: string }> },
