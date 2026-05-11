@@ -747,7 +747,7 @@ export function ProjectDetailsWorkspace({
       const updated = await res.json();
       // Update project state by merging the updated assignment into the existing project
       if (updated.assignment) {
-        setProject((prev) => {
+        const updateFn = (prev: ProjectManifest | null) => {
           if (!prev) return prev;
           return {
             ...prev,
@@ -756,7 +756,10 @@ export function ProjectDetailsWorkspace({
               [sheetSlug]: updated.assignment,
             },
           };
-        });
+        };
+        setProject(updateFn);
+        // Also update editDraft if in edit mode so UI reflects the change
+        setEditDraft((prev) => prev ? updateFn(prev) : prev);
       }
       toast({ title: "Unit type updated" });
     } catch (err) {
@@ -790,7 +793,7 @@ export function ProjectDetailsWorkspace({
       const updated = await res.json();
       // Update project state by merging the updated assignment into the existing project
       if (updated.assignment) {
-        setProject((prev) => {
+        const updateFn = (prev: ProjectManifest | null) => {
           if (!prev) return prev;
           return {
             ...prev,
@@ -799,7 +802,10 @@ export function ProjectDetailsWorkspace({
               [sheetSlug]: updated.assignment,
             },
           };
-        });
+        };
+        setProject(updateFn);
+        // Also update editDraft if in edit mode so UI reflects the change
+        setEditDraft((prev) => prev ? updateFn(prev) : prev);
       }
       toast({ title: "Box side updated" });
     } catch (err) {
