@@ -266,14 +266,14 @@ export function VisibilityMatrixConcept({
                     row.isFirstInAssignment && "border-t border-border/60"
                   )}
                 >
-                  {/* Unit Type - spans multiple rows, editable in edit mode */}
-                  {row.unitRowSpan > 0 && (
+                  {/* Unit Type - spans multiple rows per assignment, editable in edit mode */}
+                  {row.assignmentRowSpan > 0 && (
                     <td 
                       className="border-r border-border/40 bg-muted/30 px-2 py-2 align-top"
-                      rowSpan={row.unitRowSpan}
+                      rowSpan={row.assignmentRowSpan}
                     >
                       <UnitTypePopover
-                        value={row.unitType}
+                        value={row.assignment.unitType || row.unitType}
                         options={availableUnitTypes}
                         disabled={!isEditing}
                         onSelect={(unitType) => onUnitTypeChange?.(row.assignment.sheetSlug, unitType)}
