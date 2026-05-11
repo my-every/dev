@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import { useRouter } from "next/navigation";
 import {
+  ArrowLeftRight,
   Calendar,
   Check,
   ChevronRight,
@@ -84,6 +85,9 @@ import { ProjectIcon } from "./project-icon";
 import { AssignmentLabelDownloadButton } from "@/components/projects/assignment-label-download-button";
 import { StageSelectorCell } from "@/components/projects/assignment-stage-selector-cell";
 import { StatusButtonCell } from "@/components/projects/assignment-status-button-cell";
+import { useLayoutUI } from "@/components/layout/layout-context";
+import { activityService } from "@/lib/services/activity-service";
+import type { ActivityAction } from "@/types/activity";
 
 interface ProjectCollectionDetailsModalProps {
   open: boolean;
@@ -422,12 +426,12 @@ function DetailRow({
   children: React.ReactNode;
 }) {
   return (
-    <div className="grid grid-cols-[180px_1fr] items-start gap-4">
-      <div className="flex items-center gap-2 py-1.5 text-sm text-card-foreground">
-        <Icon className="h-4 w-4" />
+    <div className="flex flex-col gap-1 sm:grid sm:grid-cols-[140px_1fr] sm:items-start sm:gap-3 md:grid-cols-[180px_1fr] md:gap-4">
+      <div className="flex items-center gap-1.5 text-xs text-card-foreground sm:gap-2 sm:py-1.5 sm:text-sm">
+        <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
         {label}
       </div>
-      <div className="py-1 text-sm text-foreground">{children}</div>
+      <div className="text-xs text-foreground sm:py-1 sm:text-sm">{children}</div>
     </div>
   );
 }
@@ -444,18 +448,18 @@ function SectionHeader({
   actions?: React.ReactNode[];
 }) {
   return (
-    <div className="flex items-start gap-3 border-b pb-3">
-      <div className="flex flex-1 flex-wrap justify-start gap-2">
-        <div className="rounded-lg bg-card p-2">
-          <Icon className="h-4 w-4 text-card-foreground" />
+    <div className="flex flex-col gap-2 border-b pb-2.5 sm:flex-row sm:items-start sm:gap-3 sm:pb-3">
+      <div className="flex flex-1 flex-wrap items-start justify-start gap-2">
+        <div className="rounded-md bg-card p-1.5 sm:rounded-lg sm:p-2">
+          <Icon className="h-3.5 w-3.5 text-card-foreground sm:h-4 sm:w-4" />
         </div>
-        <div className="flex flex-col gap-1">
-          <h3 className="font-semibold text-foreground">{title}</h3>
-          <p className="text-sm text-card-foreground">{description}</p>
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5 sm:gap-1">
+          <h3 className="text-sm font-semibold text-foreground sm:text-base">{title}</h3>
+          <p className="text-xs text-card-foreground sm:text-sm">{description}</p>
         </div>
       </div>
       {actions?.length ? (
-        <div className="flex max-w-max items-center gap-2">{actions}</div>
+        <div className="flex max-w-max items-center gap-1.5 sm:gap-2">{actions}</div>
       ) : null}
     </div>
   );
@@ -579,8 +583,8 @@ function ProjectTabContentShell({
   const Icon = meta.icon;
   return (
     <div className="flex min-h-full">
-      <main className="min-w-0 flex-1 overflow-y-auto p-4">
-        <div className="mx-auto w-full max-w-4xl space-y-4">
+      <main className="min-w-0 flex-1 overflow-y-auto p-2.5 sm:p-4">
+        <div className="mx-auto w-full max-w-4xl space-y-3 sm:space-y-4">
           <SectionHeader icon={Icon} title={meta.title} description={meta.description} />
           {children}
         </div>
@@ -598,7 +602,35 @@ export function ProjectCollectionDetailsModal({
 }: ProjectCollectionDetailsModalProps) {
   const router = useRouter();
   const { toast } = useToast();
+  const { flashAside } = useLayoutUI();
   const [activeTab, setActiveTab] = useState<ProjectDetailsTab>("details");
+
+  // Activity logging helper - logs activity and flashes aside
+  const logActivityWithFlash = useCallback(
+    async (
+      action: ActivityAction,
+      metadata: Record<string, unknown>,
+      projectId?: string,
+    ) => {
+      try {
+        await activityService.logAction(badgeNumber, "1st", {
+          action,
+          metadata: {
+            ...metadata,
+            projectName: project?.name,
+            pdNumber: project?.pdNumber,
+          },
+          projectId: projectId ?? project?.id,
+          result: "success",
+        });
+        flashAside();
+      } catch (err) {
+        // Activity logging is non-critical, don't block the user
+        console.error("[v0] Failed to log activity:", err);
+      }
+    },
+    [badgeNumber, project?.id, project?.name, project?.pdNumber, flashAside],
+  );
   const [projectState, setProjectState] = useState<ProjectManifest | null>(
     project,
   );
@@ -763,7 +795,6 @@ export function ProjectCollectionDetailsModal({
       setExpandedCrossAssignments(new Set());
       setLayoutWorkspaceOpen(false);
       setWireReviewOpen(false);
-      setBrandReviewOpen(false);
       setCrossWireSettingsMatrix({});
       setCrossWireSchema(null);
       setHasLoadedCrossWireSchema(false);
@@ -803,7 +834,6 @@ export function ProjectCollectionDetailsModal({
     setRevisionNameTouched(false);
     setLayoutWorkspaceOpen(false);
     setWireReviewOpen(false);
-    setBrandReviewOpen(false);
     setCrossWireSettingsMatrix({});
     setCrossWireSchema(null);
     setHasLoadedCrossWireSchema(false);
@@ -1676,6 +1706,21 @@ export function ProjectCollectionDetailsModal({
     setSaving(true);
     setSaveError(null);
     try {
+      // Track what changed for activity logging
+      const changedFields: string[] = [];
+      const changes: Record<string, { from: unknown; to: unknown }> = {};
+      const fieldKeys: (keyof EditableProjectFields)[] = [
+        "name", "unitNumber", "revision", "lwcType",
+        "dueDate", "planConlayDate", "planConassyDate", "shipDate",
+        "status", "color",
+      ];
+      for (const key of fieldKeys) {
+        if (projectState[key] !== editDraft[key]) {
+          changedFields.push(key);
+          changes[key] = { from: projectState[key], to: editDraft[key] };
+        }
+      }
+
       const response = await fetch(
         `/api/projects/${encodeURIComponent(projectState.id)}`,
         {
@@ -1696,6 +1741,24 @@ export function ProjectCollectionDetailsModal({
       setProjectState(payload.manifest ?? editDraft);
       setEditDraft(null);
       setIsEditing(false);
+
+      // Log activity for project details update
+      if (changedFields.length > 0) {
+        const hasStatusChange = changedFields.includes("status");
+        if (hasStatusChange) {
+          void logActivityWithFlash("PROJECT_STATUS_CHANGED", {
+            fromStatus: changes.status?.from,
+            toStatus: changes.status?.to,
+            changedFields,
+            changes,
+          }, projectState.id);
+        } else {
+          void logActivityWithFlash("PROJECT_DETAILS_UPDATED", {
+            changedFields,
+            changes,
+          }, projectState.id);
+        }
+      }
     } catch (error) {
       setSaveError(
         error instanceof Error
@@ -1705,7 +1768,7 @@ export function ProjectCollectionDetailsModal({
     } finally {
       setSaving(false);
     }
-  }, [editDraft, projectState]);
+  }, [editDraft, projectState, logActivityWithFlash]);
 
   const setWireListLocationVisibility = useCallback(
     (sheetSlug: string, location: string, visible: boolean) => {
@@ -1835,6 +1898,13 @@ export function ProjectCollectionDetailsModal({
       setWireListSettingsMessage(
         `${assignment.sheetName} settings saved and PDF regenerated.`,
       );
+
+      // Log activity for visibility settings change
+      void logActivityWithFlash("VISIBILITY_SETTINGS_CHANGED", {
+        settingType: "wire-list",
+        sheetSlug: assignment.sheetSlug,
+        sheetName: assignment.sheetName,
+      }, currentProject.id);
     } catch (error) {
       setWireListSettingsMessage(
         error instanceof Error
@@ -1856,6 +1926,7 @@ export function ProjectCollectionDetailsModal({
     assignmentEntries,
     currentProject,
     fetchResolvedVisibilitySettings,
+    logActivityWithFlash,
     persistAssignmentVisibilitySettings,
     refreshWireExports,
     schemaExternalLocations,
@@ -1987,6 +2058,13 @@ export function ProjectCollectionDetailsModal({
       setBrandListSettingsMessage(
         `${assignment.sheetName} settings saved and brand list regenerated.`,
       );
+
+      // Log activity for visibility settings change
+      void logActivityWithFlash("VISIBILITY_SETTINGS_CHANGED", {
+        settingType: "brand-list",
+        sheetSlug: assignment.sheetSlug,
+        sheetName: assignment.sheetName,
+      }, currentProject.id);
     } catch (error) {
       setBrandListSettingsMessage(
         error instanceof Error
@@ -2009,6 +2087,7 @@ export function ProjectCollectionDetailsModal({
     brandListSettingsMatrix,
     currentProject,
     fetchResolvedVisibilitySettings,
+    logActivityWithFlash,
     persistAssignmentVisibilitySettings,
     refreshBrandingExports,
     schemaExternalLocations,
@@ -2186,6 +2265,12 @@ export function ProjectCollectionDetailsModal({
       if (payload.schema) {
         setCrossWireSchema(payload.schema);
         setHasLoadedCrossWireSchema(true);
+
+        // Log activity for cross wire generation
+        void logActivityWithFlash("CROSS_WIRE_GENERATED", {
+          rowCount: payload.schema.totalRowCount,
+          sheetCount: payload.schema.sheetSlugs?.length ?? 0,
+        }, currentProject.id);
       } else {
         await refreshCrossWireSchema();
       }
@@ -2199,7 +2284,7 @@ export function ProjectCollectionDetailsModal({
     } finally {
       setRegeneratingCrossWireSchema(false);
     }
-  }, [currentProject?.id, refreshCrossWireSchema]);
+  }, [currentProject?.id, logActivityWithFlash, refreshCrossWireSchema]);
 
   if (!currentProject) return null;
 
@@ -2252,6 +2337,13 @@ export function ProjectCollectionDetailsModal({
       link.click();
       document.body.removeChild(link);
     }
+
+    // Log activity for wire list download
+    void logActivityWithFlash("EXPORT_DOWNLOADED", {
+      exportType: "wire-list",
+      fileCount: wireExports.sheetExports.length,
+      downloadType: "all",
+    }, currentProject.id);
   };
 
   const handleDownloadAllBrandLists = () => {
@@ -2265,6 +2357,13 @@ export function ProjectCollectionDetailsModal({
       link.click();
       document.body.removeChild(link);
     }
+
+    // Log activity for brand list download
+    void logActivityWithFlash("EXPORT_DOWNLOADED", {
+      exportType: "brand-list",
+      fileCount: sheets.length,
+      downloadType: "all",
+    }, currentProject.id);
   };
 
   const handleUploadLegals = async () => {
@@ -2333,6 +2432,28 @@ export function ProjectCollectionDetailsModal({
       );
       await fetchResolvedVisibilitySettings();
       void refreshLegalDetail();
+
+      // Log activity for legal upload
+      const uploadedFiles: string[] = [];
+      if (workbookFile) uploadedFiles.push("workbook");
+      if (greenChangesFile) uploadedFiles.push("green-changes");
+      if (layoutFile) uploadedFiles.push("layout");
+      void logActivityWithFlash("LEGAL_UPLOADED", {
+        fileTypes: uploadedFiles,
+        revision: effectiveRevisionName,
+        fileNames: {
+          workbook: workbookFile?.name,
+          greenChanges: greenChangesFile?.name,
+          layout: layoutFile?.name,
+        },
+      }, currentProject.id);
+
+      if (payload.refreshJob) {
+        void logActivityWithFlash("REVISION_REFRESH_STARTED", {
+          jobId: payload.refreshJob.jobId,
+          revision: effectiveRevisionName,
+        }, currentProject.id);
+      }
     } finally {
       setUploadingLegals(false);
     }
@@ -2362,6 +2483,13 @@ export function ProjectCollectionDetailsModal({
         }
         setBrandGeneratingSheets(doneState);
         setBrandingExports(result);
+
+        // Log activity for brand list generation
+        void logActivityWithFlash("BRAND_LIST_GENERATED", {
+          sheetCount: result.sheetExports.length,
+          combined: combine,
+          combinedFileName: result.combinedFileName,
+        }, currentProject.id);
       } else {
         setBrandGeneratingSheets(
           Object.fromEntries(slugs.map((s) => [s, "error" as const])),
@@ -2405,6 +2533,11 @@ export function ProjectCollectionDetailsModal({
         }
         setWireGeneratingSheets(doneState);
         setWireExports(result);
+
+        // Log activity for wire list generation
+        void logActivityWithFlash("WIRE_LIST_GENERATED", {
+          sheetCount: result.sheetExports.length,
+        }, currentProject.id);
       } else {
         setWireGeneratingSheets(
           Object.fromEntries(slugs.map((s) => [s, "error" as const])),
@@ -2434,37 +2567,45 @@ export function ProjectCollectionDetailsModal({
           }
         }}
       >
-        <DialogContent className="max-w-[98vw]! h-[90vh] w-full flex flex-col gap-0 overflow-hidden p-0">
-          <DialogHeader className="flex shrink-0 items-center gap-3 border-b px-4 py-3 justify-between">
-            <div className="flex min-w-0 flex-1 items-center gap-3">
+        <DialogContent className="max-w-[98vw]! h-[95vh] sm:h-[90vh] w-full flex flex-col gap-0 overflow-hidden p-0">
+          <DialogHeader className="flex shrink-0 items-center gap-2 border-b px-3 py-2.5 justify-between sm:gap-3 sm:px-4 sm:py-3">
+            <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
+              <ProjectIcon
+                name={currentProject.name}
+                color={currentProject.color ?? undefined}
+                interactive={false}
+                size="sm"
+                className="sm:hidden"
+              />
               <ProjectIcon
                 name={currentProject.name}
                 color={currentProject.color ?? undefined}
                 interactive={false}
                 size="lg"
+                className="hidden sm:flex"
               />
               <div className="min-w-0 flex-1">
-                <DialogTitle className="truncate text-lg font-semibold">
+                <DialogTitle className="truncate text-sm font-semibold sm:text-lg">
                   {currentProject.name}
                 </DialogTitle>
-                <div className="mt-1 flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-xs text-card-foreground">
+                <div className="mt-0.5 flex flex-wrap items-center gap-1.5 sm:mt-1 sm:gap-2">
+                  <span className="font-mono text-[10px] text-card-foreground sm:text-xs">
                     {currentProject.pdNumber}
                   </span>
-                  <span className="text-card-foreground/30">·</span>
+                  <span className="hidden text-card-foreground/30 sm:inline">·</span>
                   <Badge
                     variant="outline"
-                    className="h-5 text-[10px] font-mono"
+                    className="h-4 text-[9px] font-mono sm:h-5 sm:text-[10px]"
                   >
                     Rev {headerRevision}
                   </Badge>
                   {currentProject.lwcType ? (
-                    <Badge variant="secondary" className="h-5 text-[10px]">
+                    <Badge variant="secondary" className="hidden h-5 text-[10px] sm:inline-flex">
                       {currentProject.lwcType}
                     </Badge>
                   ) : null}
                   {currentProject.status ? (
-                    <Badge variant="outline" className="h-5 text-[10px]">
+                    <Badge variant="outline" className="hidden h-5 text-[10px] sm:inline-flex">
                       {formatTokenLabel(currentProject.status)}
                     </Badge>
                   ) : null}
@@ -2482,20 +2623,20 @@ export function ProjectCollectionDetailsModal({
                     size="sm"
                     variant="ghost"
                     onClick={cancelEditing}
-                    className="h-8 px-3 text-card-foreground"
+                    className="h-7 px-2 text-card-foreground sm:h-8 sm:px-3"
                   >
-                    <X className="mr-1.5 h-3.5 w-3.5" />
-                    Cancel
+                    <X className="mr-1 h-3 w-3 sm:mr-1.5 sm:h-3.5 sm:w-3.5" />
+                    <span className="hidden xs:inline">Cancel</span>
                   </Button>
                 ) : (
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={startEditing}
-                    className="h-8 px-3"
+                    className="h-7 px-2 sm:h-8 sm:px-3"
                   >
-                    <Pencil className="mr-1.5 h-3.5 w-3.5" />
-                    Edit
+                    <Pencil className="mr-1 h-3 w-3 sm:mr-1.5 sm:h-3.5 sm:w-3.5" />
+                    <span className="hidden xs:inline">Edit</span>
                   </Button>
                 )}
               </div>
@@ -2505,9 +2646,10 @@ export function ProjectCollectionDetailsModal({
           <Tabs
             value={activeTab}
             onValueChange={(value) => setActiveTab(value as ProjectDetailsTab)}
-            className="flex min-h-0 flex-1 bg-background"
+            className="flex min-h-0 flex-1 flex-col bg-background md:flex-row"
           >
-            <TabsList className="h-full w-52 shrink-0 flex-col justify-start gap-1 rounded-none border-r bg-muted/30 p-3">
+            {/* Mobile horizontal tabs */}
+            <TabsList className="flex h-auto w-full shrink-0 flex-row justify-start gap-1 overflow-x-auto rounded-none border-b bg-muted/30 p-2 scrollbar-none md:hidden">
               {PROJECT_TAB_META.map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeTab === tab.id;
@@ -2518,14 +2660,39 @@ export function ProjectCollectionDetailsModal({
                     value={tab.id}
                     disabled={isDisabled}
                     className={cn(
-                      "w-full justify-start gap-2 rounded-lg px-3 py-2 text-sm max-h-max font-medium",
+                      "flex-shrink-0 gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium",
                       "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
                       "text-card-foreground hover:bg-muted/50 hover:text-foreground",
                       isDisabled &&
                         "cursor-not-allowed opacity-45 hover:bg-muted/10 hover:text-card-foreground",
                     )}
                   >
-                    <Icon className="h-4 w-4 shrink-0" />
+                    <Icon className="h-3.5 w-3.5 shrink-0" />
+                    <span className="whitespace-nowrap">{tab.label}</span>
+                  </TabsTrigger>
+                );
+              })}
+            </TabsList>
+            {/* Desktop vertical tabs */}
+            <TabsList className="hidden h-full w-44 shrink-0 flex-col justify-start gap-1 rounded-none border-r bg-muted/30 p-2.5 md:flex lg:w-52 lg:p-3">
+              {PROJECT_TAB_META.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id;
+                const isDisabled = isEditing && !tab.editable;
+                return (
+                  <TabsTrigger
+                    key={tab.id}
+                    value={tab.id}
+                    disabled={isDisabled}
+                    className={cn(
+                      "w-full justify-start gap-2 rounded-lg px-2.5 py-1.5 text-xs max-h-max font-medium lg:px-3 lg:py-2 lg:text-sm",
+                      "data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
+                      "text-card-foreground hover:bg-muted/50 hover:text-foreground",
+                      isDisabled &&
+                        "cursor-not-allowed opacity-45 hover:bg-muted/10 hover:text-card-foreground",
+                    )}
+                  >
+                    <Icon className="h-3.5 w-3.5 shrink-0 lg:h-4 lg:w-4" />
                     <span className="truncate">{tab.label}</span>
                     {isActive ? (
                       <ChevronRight className="ml-auto h-3 w-3 shrink-0" />
@@ -4139,64 +4306,6 @@ export function ProjectCollectionDetailsModal({
                     </div>
                   </div>
 
-                  <div className="space-y-2 rounded-lg border border-border/60 bg-card/20 px-3 py-2">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <div className="text-xs font-semibold text-foreground">Swap From/To Locations</div>
-                        <p className="text-[11px] text-card-foreground">
-                          Choose all assignments or set swapped columns individually per sheet.
-                        </p>
-                      </div>
-                      <Switch
-                        checked={crossWireSwapLocationsAll}
-                        onCheckedChange={setCrossWireSwapLocationsAll}
-                        aria-label="Toggle swapped cross wire locations for all assignments"
-                      />
-                    </div>
-
-                    {!crossWireSwapLocationsAll ? (
-                      <>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="outline"
-                            className="h-7 px-2 text-[11px]"
-                            onClick={() => setAllCrossWireSwapBySheet(true)}
-                          >
-                            Set all
-                          </Button>
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="outline"
-                            className="h-7 px-2 text-[11px]"
-                            onClick={() => setAllCrossWireSwapBySheet(false)}
-                          >
-                            Clear all
-                          </Button>
-                        </div>
-                        <div className="grid gap-1 sm:grid-cols-2">
-                          {assignmentEntries.map((assignment) => (
-                            <label
-                              key={`swap-${assignment.sheetSlug}`}
-                              className="flex items-center justify-between rounded border border-border/60 px-2 py-1.5 text-xs"
-                            >
-                              <span className="truncate">{assignment.sheetName}</span>
-                              <Switch
-                                checked={crossWireSwapLocationsBySheet[assignment.sheetSlug] ?? false}
-                                onCheckedChange={(checked) =>
-                                  handleCrossWireSwapBySheet(assignment.sheetSlug, checked)
-                                }
-                                aria-label={`Toggle swapped locations for ${assignment.sheetName}`}
-                              />
-                            </label>
-                          ))}
-                        </div>
-                      </>
-                    ) : null}
-                  </div>
-
                   {crossWireSettingsMessage ? (
                     <div
                       className={cn(
@@ -4222,143 +4331,239 @@ export function ProjectCollectionDetailsModal({
                       description="Generate wire list schemas to populate cross wire visibility settings."
                     />
                   ) : (
-                    <div className="space-y-2">
-                      {assignmentEntries.map((assignment) => {
-                        const locations = (schemaExternalLocations[assignment.sheetSlug] ?? [])
-                          .map((loc) => ({
-                            label: loc,
-                            key: loc.trim().toUpperCase(),
-                          }))
-                          .filter((loc) => loc.key);
-                        if (locations.length === 0) {
-                          return null;
-                        }
-
-                        const visibleCount = locations.filter(
-                          (loc) =>
-                            crossWireSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true,
-                        ).length;
-                        const isSavingSheet =
-                          savingCrossWireSettingsBySheet[assignment.sheetSlug] ?? false;
-                        const allVisible = visibleCount === locations.length;
-
-                        return (
-                          <div
-                            key={assignment.sheetSlug}
-                            className="overflow-hidden rounded-lg border border-border/60 bg-card/30 transition-colors hover:border-border/80"
+                    <div className="space-y-3">
+                      {/* Global controls */}
+                      <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border/60 bg-card/20 p-2.5">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-medium text-foreground">Quick Actions:</span>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            className="h-6 gap-1 px-2 text-[10px] sm:h-7 sm:text-[11px]"
+                            onClick={() => {
+                              setCrossWireSwapLocationsAll(true);
+                              setAllCrossWireSwapBySheet(true);
+                            }}
                           >
-                            <div
-                              role="button"
-                              tabIndex={0}
-                              onClick={() => {
-                                const current = expandedCrossAssignments.has(
-                                  assignment.sheetSlug,
-                                );
-                                setExpandedCrossAssignments(
-                                  current ? new Set() : new Set([assignment.sheetSlug]),
-                                );
-                              }}
-                              onKeyDown={(event) => {
-                                if (event.key === "Enter" || event.key === " ") {
-                                  event.preventDefault();
-                                  const current = expandedCrossAssignments.has(
-                                    assignment.sheetSlug,
-                                  );
-                                  setExpandedCrossAssignments(
-                                    current ? new Set() : new Set([assignment.sheetSlug]),
-                                  );
-                                }
-                              }}
-                              className="flex w-full items-center justify-between px-4 py-3 transition-colors hover:bg-card/40"
-                            >
-                              <div className="flex min-w-0 flex-1 items-center gap-3 text-left">
-                                <ChevronRight
-                                  className={cn(
-                                    "h-4 w-4 shrink-0 text-card-foreground transition-transform",
-                                    expandedCrossAssignments.has(assignment.sheetSlug) &&
-                                      "rotate-90",
-                                  )}
-                                />
-                                <div className="min-w-0 flex-1">
-                                  <div className="text-sm font-medium text-foreground">
-                                    {assignment.sheetName}
-                                  </div>
-                                 
-                                </div>
-                              </div>
-                              <div className="flex shrink-0 items-center gap-2">
-                                <Badge
-                                  variant={allVisible ? "secondary" : "outline"}
-                                  className="h-5 text-[10px]"
-                                >
-                                  {visibleCount}/{locations.length}
-                                </Badge>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="h-7 gap-1 px-2 text-[11px]"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    void handleSaveCrossWireSettings(assignment.sheetSlug);
-                                  }}
-                                  disabled={isSavingSheet}
-                                >
-                                  {isSavingSheet ? (
-                                    <Loader2 className="h-3 w-3 animate-spin" />
-                                  ) : (
-                                    <Check className="h-3 w-3" />
-                                  )}
-                                  Save + Generate
-                                </Button>
-                              </div>
-                            </div>
+                            <ArrowLeftRight className="h-3 w-3" />
+                            Swap All
+                          </Button>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            className="h-6 gap-1 px-2 text-[10px] sm:h-7 sm:text-[11px]"
+                            onClick={() => {
+                              setCrossWireSwapLocationsAll(false);
+                              setAllCrossWireSwapBySheet(false);
+                            }}
+                          >
+                            Clear Swaps
+                          </Button>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[10px] text-card-foreground sm:text-[11px]">Swap all locations:</span>
+                          <Switch
+                            checked={crossWireSwapLocationsAll}
+                            onCheckedChange={setCrossWireSwapLocationsAll}
+                            aria-label="Toggle swapped cross wire locations for all assignments"
+                          />
+                        </div>
+                      </div>
 
-                            {expandedCrossAssignments.has(assignment.sheetSlug) ? (
-                              <div className="space-y-2 border-t border-border/40 bg-background/40 p-3">
-                                {locations.map((loc) => (
-                                  <div
-                                    key={loc.key}
-                                    className="group flex cursor-pointer items-center gap-3 rounded px-2 py-1.5 transition-colors hover:bg-card/40"
-                                    onClick={() =>
-                                      setCrossWireLocationVisibility(
-                                        assignment.sheetSlug,
-                                        loc.key,
-                                        !(
-                                          crossWireSettingsMatrix[assignment.sheetSlug]?.[
-                                            loc.key
-                                          ] ?? true
-                                        ),
-                                      )
-                                    }
-                                  >
-                                    <Switch
-                                      checked={
-                                        crossWireSettingsMatrix[assignment.sheetSlug]?.[
-                                          loc.key
-                                        ] ?? true
-                                      }
-                                      onCheckedChange={(checked) =>
-                                        setCrossWireLocationVisibility(
-                                          assignment.sheetSlug,
-                                          loc.key,
-                                          checked,
-                                        )
-                                      }
-                                      onPointerDown={(e) => e.stopPropagation()}
-                                      onClick={(e) => e.stopPropagation()}
-                                      onKeyDown={(e) => e.stopPropagation()}
-                                      aria-label={`Toggle cross wire visibility of ${loc.label}`}
-                                    />
-                                    <span className="font-mono text-sm text-foreground group-hover:text-foreground/80">
-                                      {loc.label}
-                                    </span>
-                                  </div>
-                                ))}
-                              </div>
-                            ) : null}
+                      {/* Unified cross-wire locations table */}
+                      <div className="overflow-hidden rounded-lg border border-border">
+                        {/* Desktop table header */}
+                        <div className="hidden border-b border-border bg-muted/50 sm:grid sm:grid-cols-[1fr_1fr_80px_100px_120px] sm:gap-2 sm:px-3 sm:py-2">
+                          <div className="text-[10px] font-semibold uppercase tracking-wider text-card-foreground">
+                            From Location
                           </div>
-                        );
-                      })}
+                          <div className="text-[10px] font-semibold uppercase tracking-wider text-card-foreground">
+                            To Location
+                          </div>
+                          <div className="text-center text-[10px] font-semibold uppercase tracking-wider text-card-foreground">
+                            Visible
+                          </div>
+                          <div className="text-center text-[10px] font-semibold uppercase tracking-wider text-card-foreground">
+                            Swap Loc
+                          </div>
+                          <div className="text-right text-[10px] font-semibold uppercase tracking-wider text-card-foreground">
+                            Action
+                          </div>
+                        </div>
+
+                        {/* Table rows */}
+                        <div className="divide-y divide-border/60">
+                          {assignmentEntries.map((assignment) => {
+                            const locations = (schemaExternalLocations[assignment.sheetSlug] ?? [])
+                              .map((loc) => ({
+                                label: loc,
+                                key: loc.trim().toUpperCase(),
+                              }))
+                              .filter((loc) => loc.key);
+                            
+                            if (locations.length === 0) {
+                              return null;
+                            }
+
+                            const visibleCount = locations.filter(
+                              (loc) =>
+                                crossWireSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true,
+                            ).length;
+                            const isSavingSheet =
+                              savingCrossWireSettingsBySheet[assignment.sheetSlug] ?? false;
+                            const isSwapped = crossWireSwapLocationsAll || (crossWireSwapLocationsBySheet[assignment.sheetSlug] ?? false);
+
+                            return (
+                              <div key={assignment.sheetSlug} className="bg-background/40">
+                                {locations.map((loc, locIdx) => {
+                                  const isFirstInGroup = locIdx === 0;
+                                  const isLastInGroup = locIdx === locations.length - 1;
+                                  const isVisible = crossWireSettingsMatrix[assignment.sheetSlug]?.[loc.key] ?? true;
+
+                                  return (
+                                    <div
+                                      key={`${assignment.sheetSlug}-${loc.key}`}
+                                      className={cn(
+                                        "grid grid-cols-[1fr_auto] items-center gap-2 px-2.5 py-2 transition-colors hover:bg-muted/30 sm:grid-cols-[1fr_1fr_80px_100px_120px] sm:gap-2 sm:px-3",
+                                        !isLastInGroup && "border-b border-border/30"
+                                      )}
+                                    >
+                                      {/* From Location (Assignment) */}
+                                      <div className="min-w-0">
+                                        {isFirstInGroup ? (
+                                          <div className="flex items-center gap-1.5">
+                                            <span className="truncate text-xs font-medium text-foreground sm:text-sm">
+                                              {assignment.sheetName}
+                                            </span>
+                                            <Badge variant="outline" className="hidden h-4 shrink-0 px-1.5 text-[9px] sm:inline-flex">
+                                              {visibleCount}/{locations.length}
+                                            </Badge>
+                                          </div>
+                                        ) : (
+                                          <span className="text-[10px] text-card-foreground/50 sm:text-xs">—</span>
+                                        )}
+                                      </div>
+
+                                      {/* To Location (External) */}
+                                      <div className="hidden min-w-0 sm:block">
+                                        <span className="truncate font-mono text-xs text-foreground">
+                                          {loc.label}
+                                        </span>
+                                      </div>
+
+                                      {/* Mobile: To Location + Controls */}
+                                      <div className="flex items-center gap-2 sm:hidden">
+                                        <span className="truncate font-mono text-[10px] text-foreground">
+                                          {loc.label}
+                                        </span>
+                                        <div className="flex shrink-0 items-center gap-3">
+                                          <div className="flex flex-col items-center gap-0.5">
+                                            <span className="text-[8px] text-card-foreground">Vis</span>
+                                            <Switch
+                                              checked={isVisible}
+                                              onCheckedChange={(checked) =>
+                                                setCrossWireLocationVisibility(
+                                                  assignment.sheetSlug,
+                                                  loc.key,
+                                                  checked,
+                                                )
+                                              }
+                                              aria-label={`Toggle visibility of ${loc.label}`}
+                                              className="scale-75"
+                                            />
+                                          </div>
+                                          {isFirstInGroup && (
+                                            <div className="flex flex-col items-center gap-0.5">
+                                              <span className="text-[8px] text-card-foreground">Swap</span>
+                                              <Switch
+                                                checked={isSwapped}
+                                                disabled={crossWireSwapLocationsAll}
+                                                onCheckedChange={(checked) =>
+                                                  handleCrossWireSwapBySheet(assignment.sheetSlug, checked)
+                                                }
+                                                aria-label={`Toggle swap for ${assignment.sheetName}`}
+                                                className="scale-75"
+                                              />
+                                            </div>
+                                          )}
+                                          {isFirstInGroup && (
+                                            <Button
+                                              size="sm"
+                                              variant="ghost"
+                                              className="h-6 w-6 p-0"
+                                              onClick={() => void handleSaveCrossWireSettings(assignment.sheetSlug)}
+                                              disabled={isSavingSheet}
+                                            >
+                                              {isSavingSheet ? (
+                                                <Loader2 className="h-3 w-3 animate-spin" />
+                                              ) : (
+                                                <Check className="h-3 w-3" />
+                                              )}
+                                            </Button>
+                                          )}
+                                        </div>
+                                      </div>
+
+                                      {/* Desktop: Visible toggle */}
+                                      <div className="hidden justify-center sm:flex">
+                                        <Switch
+                                          checked={isVisible}
+                                          onCheckedChange={(checked) =>
+                                            setCrossWireLocationVisibility(
+                                              assignment.sheetSlug,
+                                              loc.key,
+                                              checked,
+                                            )
+                                          }
+                                          aria-label={`Toggle visibility of ${loc.label}`}
+                                        />
+                                      </div>
+
+                                      {/* Desktop: Swap Location toggle (only on first row per assignment) */}
+                                      <div className="hidden justify-center sm:flex">
+                                        {isFirstInGroup ? (
+                                          <Switch
+                                            checked={isSwapped}
+                                            disabled={crossWireSwapLocationsAll}
+                                            onCheckedChange={(checked) =>
+                                              handleCrossWireSwapBySheet(assignment.sheetSlug, checked)
+                                            }
+                                            aria-label={`Toggle swap locations for ${assignment.sheetName}`}
+                                          />
+                                        ) : (
+                                          <span className="text-xs text-card-foreground/40">—</span>
+                                        )}
+                                      </div>
+
+                                      {/* Desktop: Action button (only on first row per assignment) */}
+                                      <div className="hidden justify-end sm:flex">
+                                        {isFirstInGroup ? (
+                                          <Button
+                                            size="sm"
+                                            variant="outline"
+                                            className="h-6 gap-1 px-2 text-[10px]"
+                                            onClick={() => void handleSaveCrossWireSettings(assignment.sheetSlug)}
+                                            disabled={isSavingSheet}
+                                          >
+                                            {isSavingSheet ? (
+                                              <Loader2 className="h-2.5 w-2.5 animate-spin" />
+                                            ) : (
+                                              <Check className="h-2.5 w-2.5" />
+                                            )}
+                                            Save
+                                          </Button>
+                                        ) : null}
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
                   )}
                 </ProjectTabContentShell>

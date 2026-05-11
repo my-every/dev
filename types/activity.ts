@@ -26,6 +26,20 @@ export const ACTIVITY_ACTIONS = [
     'PROJECT_CREATED',
     'PROJECT_ARCHIVED',
     'PROJECT_UNARCHIVED',
+    // Project Details Actions
+    'PROJECT_DETAILS_UPDATED',
+    'PROJECT_STATUS_CHANGED',
+    // Legal Upload Actions
+    'LEGAL_UPLOADED',
+    'REVISION_REFRESH_STARTED',
+    // Export Generation Actions
+    'BRAND_LIST_GENERATED',
+    'WIRE_LIST_GENERATED',
+    'CROSS_WIRE_GENERATED',
+    // Settings Actions
+    'VISIBILITY_SETTINGS_CHANGED',
+    // Download Actions
+    'EXPORT_DOWNLOADED',
 ] as const
 
 export type ActivityAction = (typeof ACTIVITY_ACTIONS)[number]

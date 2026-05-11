@@ -262,12 +262,13 @@ export async function buildManifestAssignmentSummaries(
         )
       : undefined
 
-    const unitType = normalize(primaryPage?.unitType)
+    // User's explicit unitType takes precedence over inferred values
+    const unitType = normalize(assignment.unitType)
+      || normalize(primaryPage?.unitType)
       || normalize(mappedPage?.unitType)
       || normalize(referenceUnitType)
       || extractUnitType(primaryPage?.title)
       || extractUnitType(assignment.sheetName)
-      || normalize(assignment.unitType)
 
     // Keep only same-unit alternatives once a unit has been resolved.
     const normalizedLayout = matchedLayout

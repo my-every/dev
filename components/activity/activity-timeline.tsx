@@ -184,6 +184,8 @@ interface ActivityTimelineProps {
   onActivityClick?: (activity: ActivityEntry) => void;
   onCommentAdd?: (activityId: string, comment: string) => Promise<void>;
   onCommentDelete?: (activityId: string, commentId: string) => Promise<void>;
+  /** Called when an activity is deleted. Pass this to enable delete buttons. */
+  onActivityDelete?: (activityId: string) => Promise<void>;
   currentBadge?: string;
   aggregateAcrossUsers?: boolean;
   /** Pass the project ID so the timeline can scope its own fetches if needed */
@@ -974,13 +976,15 @@ export function ActivityTimeline({
   onActivityClick,
   onCommentAdd,
   onCommentDelete,
+  onActivityDelete,
   currentBadge,
   aggregateAcrossUsers = false,
   projectId: _projectId,
   className,
   containerClassName,
 }: ActivityTimelineProps) {
-  const [mounted, setMounted] = useState(false);
+const [mounted, setMounted] = useState(false);
+  const [deletingActivityId, setDeletingActivityId] = useState<string | null>(null);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filterMode, setFilterMode] = useState<FilterMode>(initialFilterMode);
@@ -1139,12 +1143,29 @@ export function ActivityTimeline({
     return cleaned.replace(/\b\w/g, (char) => char.toUpperCase());
   }, []);
 
-  const pushFilterPatch = useCallback(
+const pushFilterPatch = useCallback(
     (patch: ActivityTimelineFilterOptions) => {
       onFilterChange?.(patch);
     },
     [onFilterChange],
   );
+
+  const handleDeleteActivity = useCallback(async (activityId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!onActivityDelete || deletingActivityId) return;
+
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this activity entry? This cannot be undone."
+    );
+    if (!confirmed) return;
+
+    setDeletingActivityId(activityId);
+    try {
+      await onActivityDelete(activityId);
+    } finally {
+      setDeletingActivityId(null);
+    }
+  }, [onActivityDelete, deletingActivityId]);
 
   const toggleActivityExpanded = useCallback((activityId: string) => {
     setExpandedActivities((prev) => {
@@ -2248,7 +2269,7 @@ export function ActivityTimeline({
                             )}
                           </div>
 
-                          {(hasRelated || hasComments) && (
+{(hasRelated || hasComments) && (
                             <Button
                               variant="ghost"
                               size="sm"
@@ -2262,6 +2283,22 @@ export function ActivityTimeline({
                                 className={cn(
                                   "h-4 w-4 transition-transform",
                                   isExpanded && "rotate-90",
+                                )}
+                              />
+                            </Button>
+                          )}
+                          {onActivityDelete && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-6 w-6 shrink-0 p-0 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                              onClick={(e) => void handleDeleteActivity(activity.id, e)}
+                              disabled={deletingActivityId === activity.id}
+                            >
+                              <Trash2
+                                className={cn(
+                                  "h-3.5 w-3.5",
+                                  deletingActivityId === activity.id && "animate-pulse",
                                 )}
                               />
                             </Button>

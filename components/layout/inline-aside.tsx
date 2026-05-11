@@ -28,6 +28,7 @@ interface InlineAsideProps {
  * On smaller screens: Renders as an overlay that auto-closes the SidePanel
  * 
  * Uses the layout context's isAsideOpen state for visibility.
+ * Supports flash mode with auto-close and hover-to-pause behavior.
  */
 export function InlineAside({ 
     children, 
@@ -35,11 +36,37 @@ export function InlineAside({
     showCloseButton = true,
     onClose,
 }: InlineAsideProps) {
-    const { isAsideOpen, closeAside } = useLayoutUI();
+    const { 
+        isAsideOpen, 
+        closeAside, 
+        isAsideFlashing,
+        pauseFlashAutoClose,
+        resumeFlashAutoClose,
+        cancelFlashAutoClose,
+    } = useLayoutUI();
 
     const handleClose = () => {
         closeAside();
         onClose?.();
+    };
+
+    const handleMouseEnter = () => {
+        if (isAsideFlashing) {
+            pauseFlashAutoClose();
+        }
+    };
+
+    const handleMouseLeave = () => {
+        if (isAsideFlashing) {
+            resumeFlashAutoClose();
+        }
+    };
+
+    const handleClick = () => {
+        // User clicked inside aside - cancel auto-close
+        if (isAsideFlashing) {
+            cancelFlashAutoClose();
+        }
     };
 
     return (
@@ -51,12 +78,16 @@ export function InlineAside({
                         key="inline-aside-desktop"
                         className={cn(
                             "hidden shrink-0 border-l border-border bg-card xl:block xl:w-96",
+                            isAsideFlashing && "ring-2 ring-primary/50 ring-offset-1 animate-pulse",
                             className
                         )}
                         initial={{ opacity: 0, x: 16 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 16 }}
                         transition={SPRING}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                        onClick={handleClick}
                     >
                         {showCloseButton && (
                             <div className="absolute right-2 top-2 z-10">
@@ -94,12 +125,16 @@ export function InlineAside({
                             key="inline-aside-mobile"
                             className={cn(
                                 "fixed inset-y-2 right-2 z-40 w-[85%] max-w-[22rem] rounded-3xl border border-border bg-card shadow-xl xl:hidden overflow-hidden",
+                                isAsideFlashing && "ring-2 ring-primary/50 ring-offset-1 animate-pulse",
                                 className
                             )}
                             initial={{ x: "110%" }}
                             animate={{ x: 0 }}
                             exit={{ x: "110%" }}
                             transition={SPRING}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                            onClick={handleClick}
                         >
                             {showCloseButton && (
                                 <div className="absolute right-3 top-3 z-10">

@@ -36,7 +36,7 @@ import {
 } from "./project-grouped-accordion";
 import { ProjectNavCard } from "./project-nav-card";
 import { LegalsDetailModal } from "./legals-detail-modal";
-import { ProjectCollectionDetailsModal } from "./project-collection-details-modal";
+
 import type { ProjectManifest } from "@/types/project-manifest";
 
 // ─── Priority rank circle ─────────────────────────────────────────────────────
@@ -54,7 +54,7 @@ function PriorityRankCircle({ rank, color }: { rank: number; color?: string | nu
   const bg = color ?? "#ffcc61";
   return (
     <div
-      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-bold"
+      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[10px] font-bold sm:h-10 sm:w-10 sm:text-xs"
       style={{ backgroundColor: bg, color: rankCircleFg(bg) }}
     >
       #{rank}
@@ -195,8 +195,6 @@ export function ProjectsSidePanelNav({
   const [searchValue, setSearchValue] = useState("");
   const [selectedMonth, setSelectedMonth] = useState<string>("all");
   const [selectedLegal, setSelectedLegal] = useState<DueProjectNavItem | null>(null);
-  const [selectedPriorityProjectId, setSelectedPriorityProjectId] = useState<string | null>(null);
-  const [selectedPriorityProject, setSelectedPriorityProject] = useState<ProjectManifest | null>(null);
   const [priorityEditMode, setPriorityEditMode] = useState(false);
   const [prioritySaveBusy, setPrioritySaveBusy] = useState(false);
   const [manualPriorityOrder, setManualPriorityOrder] = useState<string[]>([]);
@@ -222,44 +220,6 @@ export function ProjectsSidePanelNav({
     void loadPriorityOrder();
     return () => { cancelled = true; };
   }, []);
-
-  useEffect(() => {
-    if (!selectedPriorityProjectId) {
-      setSelectedPriorityProject(null);
-      return;
-    }
-
-    let cancelled = false;
-
-    async function loadProjectDetails() {
-      try {
-        const response = await fetch(`/api/projects/${encodeURIComponent(selectedPriorityProjectId)}`, {
-          cache: "no-store",
-        });
-        if (!response.ok) {
-          if (!cancelled) {
-            setSelectedPriorityProject(null);
-          }
-          return;
-        }
-
-        const payload = (await response.json().catch(() => ({}))) as { manifest?: ProjectManifest };
-        if (!cancelled) {
-          setSelectedPriorityProject(payload.manifest ?? null);
-        }
-      } catch {
-        if (!cancelled) {
-          setSelectedPriorityProject(null);
-        }
-      }
-    }
-
-    void loadProjectDetails();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [selectedPriorityProjectId]);
 
   const savePriorityOrder = useCallback(async (nextOrder: string[]) => {
     setPrioritySaveBusy(true);
@@ -344,12 +304,8 @@ export function ProjectsSidePanelNav({
       const canMoveDown = globalIdx >= 0 && globalIdx < orderedPriorityProjects.length - 1;
 
       return (
-        <ProjectNavCard
-          project={{ ...project, href: null }}
-          onClick={() => {
-            if (priorityEditMode) return;
-            setSelectedPriorityProjectId(project.id);
-          }}
+  <ProjectNavCard
+  project={{ ...project, href: priorityEditMode ? undefined : `/${data?.badgeNumber}/projects/${encodeURIComponent(project.id)}` }}
           leading={<PriorityRankCircle rank={rank ?? 0} color={project.color} />}
           trailing={
             priorityEditMode ? (
@@ -409,7 +365,7 @@ export function ProjectsSidePanelNav({
     });
   }, [lwcFilter, orderedPriorityProjects, renderPriorityCard]);
 
-  // ── Legals data pipeline ──────────────────────────────────────────────────
+  // ── Legals data pipeline ───────────────────────────────────────────���──────
 
   const filteredLegalsByMonth = useMemo(() => {
     if (selectedMonth === "all") return legalProjects;
@@ -441,17 +397,7 @@ export function ProjectsSidePanelNav({
         onOpenChange={(open) => { if (!open) setSelectedLegal(null); }}
         project={selectedLegal}
       />
-      <ProjectCollectionDetailsModal
-        open={selectedPriorityProjectId !== null}
-        onOpenChange={(open) => {
-          if (!open) {
-            setSelectedPriorityProjectId(null);
-            setSelectedPriorityProject(null);
-          }
-        }}
-        badgeNumber={data?.badgeNumber ?? ""}
-        project={selectedPriorityProject}
-      />
+
       <WorkspaceSidePanelHeader
         mode={mode}
         title="Projects"
@@ -464,22 +410,22 @@ export function ProjectsSidePanelNav({
         }
       />
 
-      <div className="border-b border-border px-3 py-3 flex flex-col">
+      <div className="border-b border-border px-2.5 py-2.5 flex flex-col sm:px-3 sm:py-3">
         {mode === "skeleton" ? (
-          <div className="space-y-3">
-            <Skeleton className="h-9 w-full rounded-xl" />
+          <div className="space-y-2.5 sm:space-y-3">
+            <Skeleton className="h-8 w-full rounded-xl sm:h-9" />
             <div className="flex items-center gap-2">
-              <Skeleton className="h-10 flex-1 rounded-2xl" />
-              <Skeleton className="h-10 w-40 rounded-2xl" />
+              <Skeleton className="h-9 flex-1 rounded-xl sm:h-10 sm:rounded-2xl" />
+              <Skeleton className="h-9 w-32 rounded-xl sm:h-10 sm:w-40 sm:rounded-2xl" />
             </div>
-            <div className="flex gap-2">
-              <Skeleton className="h-8 w-16 rounded-full" />
-              <Skeleton className="h-8 w-16 rounded-full" />
-              <Skeleton className="h-8 w-20 rounded-full" />
+            <div className="flex gap-1.5 sm:gap-2">
+              <Skeleton className="h-7 w-14 rounded-full sm:h-8 sm:w-16" />
+              <Skeleton className="h-7 w-14 rounded-full sm:h-8 sm:w-16" />
+              <Skeleton className="h-7 w-16 rounded-full sm:h-8 sm:w-20" />
             </div>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-2.5 sm:space-y-3">
             <Tabs
               value={sidePanelTab}
               onValueChange={(value) => {
@@ -489,33 +435,34 @@ export function ProjectsSidePanelNav({
                 if (next !== "priority") setPriorityEditMode(false);
               }}
             >
-              <TabsList className="grid w-full grid-cols-2 rounded-xl">
-                <TabsTrigger value="priority">Priority</TabsTrigger>
-                <TabsTrigger value="legals">Legals</TabsTrigger>
+              <TabsList className="grid h-8 w-full grid-cols-2 rounded-xl sm:h-9">
+                <TabsTrigger value="priority" className="text-xs sm:text-sm">Priority</TabsTrigger>
+                <TabsTrigger value="legals" className="text-xs sm:text-sm">Legals</TabsTrigger>
               </TabsList>
             </Tabs>
 
             {/* Priority: queue order bar */}
             {showPriorityQueueControls && (
-              <div className="flex items-center justify-between rounded-xl border border-border/70 bg-muted/30 px-2.5 py-1.5">
-                <div className="text-[11px] text-muted-foreground">
-                  Queue order:{" "}
+              <div className="flex items-center justify-between rounded-lg border border-border/70 bg-muted/30 px-2 py-1 sm:rounded-xl sm:px-2.5 sm:py-1.5">
+                <div className="text-[10px] text-muted-foreground sm:text-[11px]">
+                  Queue:{" "}
                   <span className="font-medium text-foreground">1..{orderedPriorityProjects.length}</span>
                 </div>
                 <Button
                   variant={priorityEditMode ? "default" : "outline"}
                   size="sm"
-                  className="h-7 gap-1.5 px-2.5 text-xs"
+                  className="h-6 gap-1 px-2 text-[10px] sm:h-7 sm:gap-1.5 sm:px-2.5 sm:text-xs"
                   onClick={() => setPriorityEditMode((prev) => !prev)}
                 >
                   {prioritySaveBusy ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    <Loader2 className="h-3 w-3 animate-spin sm:h-3.5 sm:w-3.5" />
                   ) : priorityEditMode ? (
-                    <Check className="h-3.5 w-3.5" />
+                    <Check className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                   ) : (
-                    <Pencil className="h-3.5 w-3.5" />
+                    <Pencil className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                   )}
-                  {priorityEditMode ? "Done" : "Edit Queue"}
+                  <span className="hidden xs:inline">{priorityEditMode ? "Done" : "Edit Queue"}</span>
+                  <span className="xs:hidden">{priorityEditMode ? "Done" : "Edit"}</span>
                 </Button>
               </div>
             )}
@@ -523,8 +470,8 @@ export function ProjectsSidePanelNav({
             {/* Legals: month filter */}
             {sidePanelTab === "legals" && availableMonths.length > 0 && (
               <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-                <SelectTrigger className="h-9 rounded-xl">
-                  <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
+                <SelectTrigger className="h-8 rounded-lg text-xs sm:h-9 sm:rounded-xl sm:text-sm">
+                  <Calendar className="mr-1.5 h-3.5 w-3.5 text-muted-foreground sm:mr-2 sm:h-4 sm:w-4" />
                   <SelectValue placeholder="Filter by month" />
                 </SelectTrigger>
                 <SelectContent>
@@ -540,21 +487,21 @@ export function ProjectsSidePanelNav({
 
             {/* Search */}
             <div className="relative">
-              <Search className="pointer-events-none absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Search className="pointer-events-none absolute left-2.5 top-1/2 z-10 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground sm:left-3 sm:h-4 sm:w-4" />
               <Input
                 value={searchValue}
                 onChange={(event) => setSearchValue(event.target.value)}
                 placeholder="Search..."
                 className={cn(
-                  "h-11 w-full rounded-2xl border-border bg-card pl-9",
-                  sidePanelTab === "priority" ? "pr-28" : "pr-4",
+                  "h-9 w-full rounded-xl border-border bg-card pl-8 text-xs sm:h-11 sm:rounded-2xl sm:pl-9 sm:text-sm",
+                  sidePanelTab === "priority" ? "pr-20 sm:pr-28" : "pr-3 sm:pr-4",
                 )}
               />
 
               {sidePanelTab === "priority" && (
-                <div className="absolute right-1 top-1/2 z-10 -translate-y-1/2">
+                <div className="absolute right-0.5 top-1/2 z-10 -translate-y-1/2 sm:right-1">
                   <Select value={lwcFilter} onValueChange={(value) => setLwcFilter(value as LwcFilter)}>
-                    <SelectTrigger className="h-8 w-20 rounded-lg border bg-background px-2 text-xs">
+                    <SelectTrigger className="h-7 w-16 rounded-md border bg-background px-1.5 text-[10px] sm:h-8 sm:w-20 sm:rounded-lg sm:px-2 sm:text-xs">
                       <SelectValue placeholder="All" />
                     </SelectTrigger>
                     <SelectContent>
@@ -571,8 +518,8 @@ export function ProjectsSidePanelNav({
 
             {/* Legals: clean status tabs */}
             {sidePanelTab === "legals" && (
-              <div className="rounded-xl border border-border bg-muted/30 p-1">
-                <div className="grid grid-cols-3 gap-1">
+              <div className="rounded-lg border border-border bg-muted/30 p-0.5 sm:rounded-xl sm:p-1">
+                <div className="grid grid-cols-3 gap-0.5 sm:gap-1">
                   {PROJECT_TAB_OPTIONS.map((opt) => {
                     const isActive = activeTab === opt.id;
                     return (
@@ -581,7 +528,7 @@ export function ProjectsSidePanelNav({
                         type="button"
                         onClick={() => setActiveTab(opt.id)}
                         className={cn(
-                          "inline-flex h-8 items-center justify-center gap-1.5 rounded-lg px-2 text-xs font-medium transition-colors",
+                          "inline-flex h-7 items-center justify-center gap-1 rounded-md px-1.5 text-[10px] font-medium transition-colors sm:h-8 sm:gap-1.5 sm:rounded-lg sm:px-2 sm:text-xs",
                           isActive
                             ? "bg-foreground text-background"
                             : "text-muted-foreground hover:bg-background hover:text-foreground",
@@ -602,15 +549,15 @@ export function ProjectsSidePanelNav({
       </div>
 
       <ScrollArea className="flex-1 flex flex-col">
-        <div className="space-y-4 px-3 py-3">
+        <div className="space-y-2.5 px-2.5 py-2.5 sm:space-y-4 sm:px-3 sm:py-3">
           {mode === "skeleton" ? (
             Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="rounded-2xl border border-border bg-background/70 p-3">
-                <div className="flex items-center gap-3">
-                  <Skeleton className="h-10 w-10 rounded-2xl" />
-                  <div className="min-w-0 flex-1 space-y-2">
-                    <Skeleton className="h-4 w-28" />
-                    <Skeleton className="h-3 w-20" />
+              <div key={i} className="rounded-xl border border-border bg-background/70 p-2.5 sm:rounded-2xl sm:p-3">
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <Skeleton className="h-8 w-8 rounded-xl sm:h-10 sm:w-10 sm:rounded-2xl" />
+                  <div className="min-w-0 flex-1 space-y-1.5 sm:space-y-2">
+                    <Skeleton className="h-3.5 w-24 sm:h-4 sm:w-28" />
+                    <Skeleton className="h-2.5 w-16 sm:h-3 sm:w-20" />
                   </div>
                 </div>
               </div>

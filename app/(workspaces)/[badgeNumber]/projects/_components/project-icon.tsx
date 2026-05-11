@@ -73,15 +73,15 @@ export interface ProjectIconProps {
 }
 
 const SIZE_CONTAINER: Record<ProjectIconSize, string> = {
-  sm: "h-10 w-10 rounded-md",
-  md: "min-h-12.5 w-15 rounded-lg px-2",
-  lg: "h-16 w-16 rounded-2xl px-1.5",
+  sm: "h-8 w-8 rounded-md sm:h-10 sm:w-10",
+  md: "min-h-10 w-12 rounded-lg px-1.5 sm:min-h-12.5 sm:w-15 sm:px-2",
+  lg: "h-12 w-12 rounded-xl px-1 sm:h-16 sm:w-16 sm:rounded-2xl sm:px-1.5",
 };
 
 const SIZE_TEXT: Record<ProjectIconSize, string> = {
-  sm: "text-[7px]",
-  md: "text-[10.5px]",
-  lg: "text-xs",
+  sm: "text-[6px] sm:text-[7px]",
+  md: "text-[9px] sm:text-[10.5px]",
+  lg: "text-[10px] sm:text-xs",
 };
 
 export function ProjectIcon({

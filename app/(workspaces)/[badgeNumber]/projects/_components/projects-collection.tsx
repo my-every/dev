@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import {
     WorkspaceCollectionView,
@@ -15,7 +15,6 @@ import { getDashboardProjectStatus } from "@/lib/projects/dashboard-status";
 import { ASSIGNMENT_STAGES } from "@/types/d380-assignment-stages";
 import type { ProjectManifest } from "@/types/project-manifest";
 import { ActiveProjectsLWCChart } from "./projects-lwc-chart";
-import { ProjectCollectionDetailsModal } from "./project-collection-details-modal";
 import { ProjectIcon } from "./project-icon";
 
 // Ordered kanban column definitions matching the canonical ASSIGNMENT_STAGES sequence.
@@ -43,12 +42,11 @@ export function ProjectsCollection({
     mode = "default",
 }: ProjectsCollectionProps) {
     const router = useRouter();
-    const pathname = usePathname();
     const searchParams = useSearchParams();
-    const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
 
     const openProjectIdFromUrl = searchParams.get("openProjectId");
 
+    // Redirect legacy ?openProjectId=X links to the project page
     useEffect(() => {
         if (!openProjectIdFromUrl) {
             return;
@@ -56,21 +54,9 @@ export function ProjectsCollection({
 
         const projectExists = projects.some((project) => project.id === openProjectIdFromUrl);
         if (projectExists) {
-            setSelectedProjectId(openProjectIdFromUrl);
+            router.replace(`/${badgeNumber}/projects/${encodeURIComponent(openProjectIdFromUrl)}`);
         }
-    }, [openProjectIdFromUrl, projects]);
-
-    function clearOpenProjectParam() {
-        const next = new URLSearchParams(searchParams.toString());
-        next.delete("openProjectId");
-        const query = next.toString();
-        router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
-    }
-
-    const selectedProject = useMemo(
-        () => projects.find((project) => project.id === selectedProjectId) ?? null,
-        [projects, selectedProjectId],
-    );
+    }, [openProjectIdFromUrl, projects, badgeNumber, router]);
 
     // Build tabs and filters from all projects for comprehensive filtering
     const tabs = buildTabs(projects);
@@ -158,24 +144,8 @@ export function ProjectsCollection({
                 mode={mode}
                 filters={filters}
                 searchPlaceholder="Search projects by name, PD number, unit, or LWC type..."
-                detailMode="modal"
-                selectedItemId={selectedProjectId}
-                onSelect={(item) => setSelectedProjectId(item.id)}
+                detailMode="route"
                 kanbanColumnDefinitions={STAGE_KANBAN_COLUMNS}
-            />
-
-            <ProjectCollectionDetailsModal
-                open={Boolean(selectedProjectId)}
-                onOpenChange={(nextOpen) => {
-                    if (!nextOpen) {
-                        setSelectedProjectId(null);
-                        if (openProjectIdFromUrl) {
-                            clearOpenProjectParam();
-                        }
-                    }
-                }}
-                badgeNumber={badgeNumber}
-                project={selectedProject}
             />
         </div>
     );

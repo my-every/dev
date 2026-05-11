@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { useCallback, useMemo, useState } from "react";
 import useSWR from "swr";
-import { FileStack, FileSpreadsheet, FileImage, RefreshCw, Layers, Clock3, ChevronDown, WandSparkles, Printer, FileOutput } from "lucide-react";
+import { FileStack, FileSpreadsheet, FileImage, RefreshCw, Layers, Clock3, ChevronDown, WandSparkles, Printer, FileOutput, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,6 +25,7 @@ export function LegalDrawingsLibraryPanel() {
     const [syncing, setSyncing] = useState(false);
     const [rebuildingPd, setRebuildingPd] = useState<string | null>(null);
     const [bulkRunning, setBulkRunning] = useState<string | null>(null);
+    const [deletingPd, setDeletingPd] = useState<string | null>(null);
     const { data, isLoading, mutate } = useSWR<{ projects?: LegalProjectRecord[] }>("/api/legal-drawings", fetcher);
 
     const projects = data?.projects ?? [];
@@ -199,6 +200,40 @@ export function LegalDrawingsLibraryPanel() {
         setBulkRunning(null);
     }, [ensureWorkspaceProject, filteredProjects, mutate, toast]);
 
+    const handleDelete = useCallback(async (project: LegalProjectRecord) => {
+        if (deletingPd) return;
+        
+        const confirmed = window.confirm(
+            `Are you sure you want to delete ${project.pdNumber}? This will remove all revisions and cannot be undone.`
+        );
+        if (!confirmed) return;
+
+        setDeletingPd(project.pdNumber);
+        try {
+            const response = await fetch(`/api/legal-drawings/${encodeURIComponent(project.pdNumber)}`, {
+                method: "DELETE",
+            });
+            const payload = await response.json().catch(() => ({})) as { error?: string };
+            if (!response.ok) {
+                throw new Error(payload.error || `Could not delete ${project.pdNumber}.`);
+            }
+            await mutate();
+            toast({
+                title: "Legal package deleted",
+                description: `${project.pdNumber} has been removed.`,
+                duration: 3000,
+            });
+        } catch (error) {
+            toast({
+                title: "Delete failed",
+                description: error instanceof Error ? error.message : `Could not delete ${project.pdNumber}.`,
+                duration: 4000,
+            });
+        } finally {
+            setDeletingPd(null);
+        }
+    }, [deletingPd, mutate, toast]);
+
     const readyCount = projects.filter(project => project.hasWorkbook || project.hasLayout).length;
 
     return (
@@ -311,6 +346,7 @@ export function LegalDrawingsLibraryPanel() {
                             const wirePrintReady = Boolean(artifactStatus?.wireListPrintSchemaPrepared);
                             const brandReady = Boolean(artifactStatus?.brandListSchemaPrepared);
                             const isRebuilding = rebuildingPd === project.pdNumber;
+                            const isDeleting = deletingPd === project.pdNumber;
 
                             return (
                         <Card key={project.pdNumber} className="rounded-none border-border/60 gap-0 bg-card/70">
@@ -325,6 +361,15 @@ export function LegalDrawingsLibraryPanel() {
                                         disabled={!project.latestRevision || isRebuilding}
                                     >
                                         <RefreshCw className={`h-4 w-4 ${isRebuilding ? "animate-spin" : ""}`} />
+                                    </Button>
+                                    <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => void handleDelete(project)}
+                                        disabled={isDeleting}
+                                        className="text-destructive hover:bg-destructive/10"
+                                    >
+                                        <Trash2 className={`h-4 w-4 ${isDeleting ? "animate-pulse" : ""}`} />
                                     </Button>
                                     </div>
                                     <Badge variant="outline">{project.latestRevision || "Imported"}</Badge>

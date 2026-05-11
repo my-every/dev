@@ -60,6 +60,9 @@ function sanitizeManifest(manifest: ProjectManifest): ProjectManifest {
       stage: String(a.stage ?? 'BUILD_UP') as ManifestAssignmentNode['stage'],
       status: String(a.status ?? 'NOT_STARTED') as ManifestAssignmentNode['status'],
       unitType: typeof a.unitType === 'string' ? a.unitType : undefined,
+      boxSide: typeof a.boxSide === 'string' ? a.boxSide : undefined,
+      normalizedTitle: typeof a.normalizedTitle === 'string' ? a.normalizedTitle : undefined,
+      boxNumber: typeof a.boxNumber === 'string' ? a.boxNumber : undefined,
       panducts: Array.isArray(a.panducts) ? a.panducts as string[] : [],
       rails: Array.isArray(a.rails) ? a.rails as string[] : [],
       externalLocations: Array.isArray(a.externalLocations)
