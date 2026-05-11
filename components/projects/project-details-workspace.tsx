@@ -8,7 +8,6 @@ import React, {
   useState,
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import useSWR from "swr";
 import {
   ArrowLeft,
   ArrowLeftRight,
@@ -657,30 +656,25 @@ export function ProjectDetailsWorkspace({
     );
   }, [legalDetail]);
 
-  // Fetch available unit types from the reference API
-  const { data: unitTypesData } = useSWR<{ unitTypes: string[] }>(
-    "/api/reference/unit-types",
-    (url: string) => fetch(url).then((res) => res.json())
-  );
-
-  // Collect all available unit types for the visibility matrix dropdown
-  // Includes unit types from the reference API plus any currently in use
+  // Collect available unit types from the project manifest
+  // Only includes unit types defined in the project, not all known unit types
   const availableUnitTypes = useMemo(() => {
     const unitTypes = new Set<string>();
-    // Add all known unit types from the reference API
-    if (unitTypesData?.unitTypes) {
-      for (const unitType of unitTypesData.unitTypes) {
+    // Add unit types from the project manifest
+    const currentProject = isEditing && editDraft ? editDraft : project;
+    if (currentProject?.unitTypes) {
+      for (const unitType of currentProject.unitTypes) {
         unitTypes.add(unitType);
       }
     }
-    // Also add any unit types currently assigned (in case they're not in the reference)
+    // Also add any unit types currently assigned (in case they're not in the manifest array)
     for (const assignment of assignmentEntries) {
       if (assignment.unitType) {
         unitTypes.add(assignment.unitType);
       }
     }
     return Array.from(unitTypes).sort();
-  }, [assignmentEntries, unitTypesData]);
+  }, [assignmentEntries, project, editDraft, isEditing]);
 
   // Track which box sides are used by which assignment per unit type (for 1:1 enforcement)
   // Returns a map: unitType -> { boxSide -> sheetSlug }

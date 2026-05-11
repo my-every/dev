@@ -266,19 +266,34 @@ export function VisibilityMatrixConcept({
                     row.isFirstInAssignment && "border-t border-border/60"
                   )}
                 >
-                  {/* Unit Type - spans multiple rows per assignment, editable in edit mode */}
-                  {row.assignmentRowSpan > 0 && (
-                    <td 
-                      className="border-r border-border/40 bg-muted/30 px-2 py-2 align-top"
-                      rowSpan={row.assignmentRowSpan}
-                    >
-                      <UnitTypePopover
-                        value={row.assignment.unitType || row.unitType}
-                        options={availableUnitTypes}
-                        disabled={!isEditing}
-                        onSelect={(unitType) => onUnitTypeChange?.(row.assignment.sheetSlug, unitType)}
-                      />
-                    </td>
+                  {/* Unit Type - grouped by unit type when viewing, per-assignment when editing */}
+                  {isEditing ? (
+                    // Edit mode: show dropdown per assignment
+                    row.assignmentRowSpan > 0 && (
+                      <td 
+                        className="border-r border-border/40 bg-muted/30 px-2 py-2 align-top"
+                        rowSpan={row.assignmentRowSpan}
+                      >
+                        <UnitTypePopover
+                          value={row.assignment.unitType || row.unitType}
+                          options={availableUnitTypes}
+                          disabled={false}
+                          onSelect={(unitType) => onUnitTypeChange?.(row.assignment.sheetSlug, unitType)}
+                        />
+                      </td>
+                    )
+                  ) : (
+                    // View mode: group assignments by unit type with rowSpan
+                    row.unitRowSpan > 0 && (
+                      <td 
+                        className="border-r border-border/40 bg-muted/30 px-2 py-2 align-top"
+                        rowSpan={row.unitRowSpan}
+                      >
+                        <span className="inline-flex rounded bg-background border border-border px-2 py-1 font-mono text-[11px] text-foreground">
+                          {row.unitType || "—"}
+                        </span>
+                      </td>
+                    )
                   )}
 
                   {/* Assignment - spans multiple rows per location count */}
