@@ -527,6 +527,8 @@ export async function resolveProjectRootDirectory(
 
     const projectDirectory = path.join(shareProjectsRoot, nameSegment)
     await fs.mkdir(projectDirectory, { recursive: true })
+    // Update cache so subsequent lookups find the newly created project
+    setCachedProjectRoot(projectId, projectDirectory)
     return projectDirectory
   }
 
@@ -535,6 +537,8 @@ export async function resolveProjectRootDirectory(
     buildShareProjectFolderName(normalizedPdNumber, options?.projectName),
   )
   await fs.mkdir(projectDirectory, { recursive: true })
+  // Update cache so subsequent lookups find the newly created project
+  setCachedProjectRoot(projectId, projectDirectory)
 
   return projectDirectory
 }
