@@ -720,6 +720,42 @@ export function ProjectDetailsWorkspace({
     setSaveError(null);
   }, []);
 
+  const setProjectField = useCallback(
+    <K extends keyof ProjectManifest>(key: K, value: ProjectManifest[K]) => {
+      setEditDraft((prev) => (prev ? { ...prev, [key]: value } : prev));
+    },
+    [],
+  );
+
+  const handleSave = useCallback(async () => {
+    if (!editDraft || !project) return;
+    setSaving(true);
+    setSaveError(null);
+    try {
+      const res = await fetch(`/api/projects/${encodeURIComponent(project.id)}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editDraft),
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error ?? "Save failed");
+      }
+      const updated = await res.json();
+      const savedProject = updated.project ?? updated;
+      setProject(savedProject);
+      // Exit edit mode after successful save
+      setEditDraft(null);
+      setIsEditing(false);
+      toast({ title: "Project saved" });
+      void logActivityWithFlash("project_updated", { fields: Object.keys(editDraft) });
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : "Save failed");
+    } finally {
+      setSaving(false);
+    }
+  }, [editDraft, project, toast, logActivityWithFlash]);
+
   // Keyboard shortcuts: e = edit, s = save, c = cancel
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -767,42 +803,6 @@ export function ProjectDetailsWorkspace({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isEditing, project, editDraft, saving, handleSave]);
-
-  const setProjectField = useCallback(
-    <K extends keyof ProjectManifest>(key: K, value: ProjectManifest[K]) => {
-      setEditDraft((prev) => (prev ? { ...prev, [key]: value } : prev));
-    },
-    [],
-  );
-
-  const handleSave = useCallback(async () => {
-    if (!editDraft || !project) return;
-    setSaving(true);
-    setSaveError(null);
-    try {
-      const res = await fetch(`/api/projects/${encodeURIComponent(project.id)}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(editDraft),
-      });
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.error ?? "Save failed");
-      }
-      const updated = await res.json();
-      const savedProject = updated.project ?? updated;
-      setProject(savedProject);
-      // Exit edit mode after successful save
-      setEditDraft(null);
-      setIsEditing(false);
-      toast({ title: "Project saved" });
-      void logActivityWithFlash("project_updated", { fields: Object.keys(editDraft) });
-    } catch (err) {
-      setSaveError(err instanceof Error ? err.message : "Save failed");
-    } finally {
-      setSaving(false);
-    }
-  }, [editDraft, project, toast, logActivityWithFlash]);
 
   // Handler for updating assignment unitType via API
   const handleAssignmentUnitTypeChange = useCallback(async (sheetSlug: string, unitType: string) => {
@@ -1502,7 +1502,7 @@ export function ProjectDetailsWorkspace({
     }
   }, [project?.id, wireListSettingsMatrix, refreshWireExports]);
 
-  // ─── Render Loading/Error States ────────────────────────────────────────────
+  // ─── Render Loading/Error States ─────────────────────���──────────────────────
 
   if (loading) {
     return (
