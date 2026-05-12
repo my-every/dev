@@ -320,15 +320,6 @@ export function MultiSheetReviewModal({
   }, [isOpen, modalSurface, importSession, importSheetDiffs.length, hydrateImportReview, setModalSurface]);
 
   const importReviewLocked = modalSurface === "import-review" && (isImportReviewHydrating || isApplyingImport);
-  
-  // Must be defined before reviewWorkspaceLocked uses it
-  const activeNavigationItem = activeSlug
-    ? navigationItems.find((item) => item.slug === activeSlug) ?? null
-    : null;
-  
-  const reviewWorkspaceLocked =
-    modalSurface === "review"
-    && (!activeSlug || !activeNavigationItem || (!isWireListMode && !activeBrandSchema));
 
   useEffect(() => {
     if (!isOpen || !projectId) {
@@ -398,6 +389,15 @@ export function MultiSheetReviewModal({
     exportResult,
     projectId,
   });
+
+  // Derive activeNavigationItem and reviewWorkspaceLocked after navigationItems is available
+  const activeNavigationItem = activeSlug
+    ? navigationItems.find((item) => item.slug === activeSlug) ?? null
+    : null;
+  
+  const reviewWorkspaceLocked =
+    modalSurface === "review"
+    && (!activeSlug || !activeNavigationItem || (!isWireListMode && !activeBrandSchema));
 
   const {
     ensureBrandSchemasGenerated,
