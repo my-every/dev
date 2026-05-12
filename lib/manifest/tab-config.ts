@@ -3,7 +3,7 @@ import "server-only";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
-import { resolveShareDirectory } from "@/lib/runtime/share-directory";
+import { resolveProjectRootDirectory } from "@/lib/project-state/share-project-state-handlers";
 
 export interface TabConfigItem {
   id: string;
@@ -146,14 +146,21 @@ const DEFAULT_TAB_CONFIG: TabConfigItem[] = [
   },
 ];
 
-async function resolveTabConfigPath(projectId: string): Promise<string> {
-  const shareRoot = await resolveShareDirectory();
-  return path.join(shareRoot, "Projects", projectId, "tab-config.json");
+async function resolveTabConfigPath(projectId: string): Promise<string | null> {
+  // Use proper project resolution to find the correct folder (e.g., "4L101_Prop" not "4l101-prop")
+  const projectRoot = await resolveProjectRootDirectory(projectId);
+  if (!projectRoot) {
+    return null;
+  }
+  return path.join(projectRoot, "tab-config.json");
 }
 
 export async function readTabConfig(projectId: string): Promise<TabConfigItem[]> {
   try {
     const configPath = await resolveTabConfigPath(projectId);
+    if (!configPath) {
+      return [...DEFAULT_TAB_CONFIG].sort((a, b) => a.order - b.order);
+    }
     const raw = await fs.readFile(configPath, "utf-8");
     const stored = JSON.parse(raw) as Partial<TabConfigItem>[];
 
@@ -183,6 +190,10 @@ export async function writeTabConfig(
   tabs: TabConfigItem[],
 ): Promise<void> {
   const configPath = await resolveTabConfigPath(projectId);
+  if (!configPath) {
+    console.warn(`[tab-config] Could not resolve project root for ${projectId}, skipping write`);
+    return;
+  }
   // Persist only the user-override-safe keys
   const storable = tabs.map(({ id, label, order, enabled, title, description, guidanceTitle, guidanceDescription, guidanceItems }) => ({
     id, label, order, enabled, title, description, guidanceTitle, guidanceDescription, guidanceItems,
