@@ -1125,6 +1125,35 @@ export function ProjectDetailsWorkspace({
     );
   }, [assignmentEntries]);
 
+  // Setter for wire list visibility per location
+  const setWireListLocationVisibility = useCallback(
+    (sheetSlug: string, locationKey: string, visible: boolean) => {
+      setWireListSettingsMatrix((prev) => ({
+        ...prev,
+        [sheetSlug]: {
+          ...(prev[sheetSlug] ?? {}),
+          [locationKey]: visible,
+        },
+      }));
+    },
+    [],
+  );
+
+  // Setter for brand list visibility per location
+  const setBrandListLocationVisibility = useCallback(
+    (sheetSlug: string, locationKey: string, visible: boolean) => {
+      setBrandListSettingsMatrix((prev) => ({
+        ...prev,
+        [sheetSlug]: {
+          ...(prev[sheetSlug] ?? {}),
+          [locationKey]: visible,
+        },
+      }));
+    },
+    [],
+  );
+
+  // Setter for cross wire visibility per location
   const setCrossWireLocationVisibility = useCallback(
     (sheetSlug: string, locationKey: string, visible: boolean) => {
       setCrossWireSettingsMatrix((prev) => ({
@@ -1708,7 +1737,7 @@ export function ProjectDetailsWorkspace({
         <div className="flex-1 min-w-0 overflow-y-auto" ref={contentRef}>
           <div className="mx-auto max-w-4xl px-4 py-6 space-y-12">
             
-            {/* ─── Details Section ─────────────────────────────────────────── */}
+            {/* ─── Details Section ───────────────────────────────��─────────── */}
             <section data-section="details" className="scroll-mt-6">
               <SectionHeader
                 icon={FileText}

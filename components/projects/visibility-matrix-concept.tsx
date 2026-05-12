@@ -427,38 +427,56 @@ export function VisibilityMatrixConcept({
 
                   {/* Wire List Toggle */}
                   <td className="px-2 py-2 text-center">
-                    {row.locKey && (
-                      <Switch
-                        checked={wireVisible}
-                        onCheckedChange={(checked) => onWireListChange?.(row.assignment.sheetSlug, row.locKey, checked)}
-                        aria-label={`Wire list visibility for ${row.location}`}
-                        className="scale-75"
-                      />
-                    )}
+                    {row.locKey ? (
+                      <div className="inline-flex items-center justify-center min-h-[44px] min-w-[44px]">
+                        <Switch
+                          checked={wireVisible}
+                          disabled={!isEditing}
+                          onCheckedChange={(checked) => {
+                            if (isEditing && onWireListChange) {
+                              onWireListChange(row.assignment.sheetSlug, row.locKey, checked);
+                            }
+                          }}
+                          aria-label={`Wire list visibility for ${row.location}`}
+                        />
+                      </div>
+                    ) : null}
                   </td>
 
                   {/* Brand List Toggle */}
                   <td className="px-2 py-2 text-center">
-                    {row.locKey && (
-                      <Switch
-                        checked={brandVisible}
-                        onCheckedChange={(checked) => onBrandListChange?.(row.assignment.sheetSlug, row.locKey, checked)}
-                        aria-label={`Brand list visibility for ${row.location}`}
-                        className="scale-75"
-                      />
-                    )}
+                    {row.locKey ? (
+                      <div className="inline-flex items-center justify-center min-h-[44px] min-w-[44px]">
+                        <Switch
+                          checked={brandVisible}
+                          disabled={!isEditing}
+                          onCheckedChange={(checked) => {
+                            if (isEditing && onBrandListChange) {
+                              onBrandListChange(row.assignment.sheetSlug, row.locKey, checked);
+                            }
+                          }}
+                          aria-label={`Brand list visibility for ${row.location}`}
+                        />
+                      </div>
+                    ) : null}
                   </td>
 
                   {/* Cross Wire Toggle */}
                   <td className="px-2 py-2 text-center">
-                    {row.locKey && (
-                      <Switch
-                        checked={crossVisible}
-                        onCheckedChange={(checked) => onCrossWireChange?.(row.assignment.sheetSlug, row.locKey, checked)}
-                        aria-label={`Cross wire visibility for ${row.location}`}
-                        className="scale-75"
-                      />
-                    )}
+                    {row.locKey ? (
+                      <div className="inline-flex items-center justify-center min-h-[44px] min-w-[44px]">
+                        <Switch
+                          checked={crossVisible}
+                          disabled={!isEditing}
+                          onCheckedChange={(checked) => {
+                            if (isEditing && onCrossWireChange) {
+                              onCrossWireChange(row.assignment.sheetSlug, row.locKey, checked);
+                            }
+                          }}
+                          aria-label={`Cross wire visibility for ${row.location}`}
+                        />
+                      </div>
+                    ) : null}
                   </td>
                 </tr>
               );
