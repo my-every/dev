@@ -10,6 +10,95 @@ import {
 import { buildManifestAssignmentSummaries } from '@/lib/project-state/manifest-assignment-summaries'
 import { resolveProjectRootDirectory } from '@/lib/project-state/share-project-state-handlers'
 import type { ManifestAssignmentNode, ProjectManifest } from '@/types/project-manifest'
+import { BoxSideConfig, getDefaultExternalLocationSettings } from '@/boxSide'
+
+/**
+ * Infer the box side key from a box side string value.
+ * Normalizes various formats to match BoxSideConfig keys.
+ */
+function inferBoxSideKey(boxSide: string | undefined): string | undefined {
+  if (!boxSide) return undefined
+  
+  const normalized = boxSide.toLowerCase().replace(/[\s_-]+/g, '')
+  
+  // Direct match check
+  for (const key of Object.keys(BoxSideConfig)) {
+    if (normalized === key.toLowerCase()) {
+      return key
+    }
+  }
+  
+  // Partial match for common variations
+  if (normalized.includes('leftdoor')) return 'leftDoor'
+  if (normalized.includes('rightdoor')) return 'rightDoor'
+  if (normalized.includes('leftback')) return 'leftBackSide'
+  if (normalized.includes('rightback')) return 'rightBackSide'
+  if (normalized.includes('topback')) return 'topBackSide'
+  if (normalized.includes('leftside')) return 'leftSide'
+  if (normalized.includes('rightside')) return 'rightSide'
+  if (normalized.includes('back') && !normalized.includes('left') && !normalized.includes('right') && !normalized.includes('top')) {
+    return 'backSide'
+  }
+  
+  return undefined
+}
+
+/**
+ * Compute visibility defaults for an assignment based on its boxSide and 
+ * the boxSides of target external locations.
+ */
+function computeVisibilityDefaults(
+  assignmentBoxSide: string | undefined,
+  externalLocations: Array<{ location: string }>,
+  locationToBoxSide: Record<string, string>
+): Record<string, { wireListVisible: boolean; brandingVisible: boolean; crossWireVisible: boolean }> {
+  const defaults: Record<string, { wireListVisible: boolean; brandingVisible: boolean; crossWireVisible: boolean }> = {}
+  
+  const assignmentBoxSideKey = inferBoxSideKey(assignmentBoxSide)
+  if (!assignmentBoxSideKey) {
+    // No box side set - default all to true
+    for (const loc of externalLocations) {
+      const key = loc.location?.trim().toUpperCase()
+      if (key) {
+        defaults[key] = { wireListVisible: true, brandingVisible: true, crossWireVisible: true }
+      }
+    }
+    return defaults
+  }
+  
+  for (const loc of externalLocations) {
+    const locationKey = loc.location?.trim().toUpperCase()
+    if (!locationKey) continue
+    
+    // Try to find target box side from lookup map or infer from location name
+    let targetBoxSideKey = locationToBoxSide[locationKey]
+    
+    if (!targetBoxSideKey) {
+      // Try partial match
+      for (const [knownLoc, boxSide] of Object.entries(locationToBoxSide)) {
+        if (locationKey.includes(knownLoc) || knownLoc.includes(locationKey)) {
+          targetBoxSideKey = boxSide
+          break
+        }
+      }
+    }
+    
+    if (!targetBoxSideKey) {
+      // Try inferring from location text
+      targetBoxSideKey = inferBoxSideKey(locationKey)
+    }
+    
+    // Get defaults based on box side relationship
+    const settings = getDefaultExternalLocationSettings(assignmentBoxSideKey, targetBoxSideKey)
+    defaults[locationKey] = {
+      wireListVisible: settings.wire_list,
+      brandingVisible: settings.brand_list,
+      crossWireVisible: settings.cross_wire,
+    }
+  }
+  
+  return defaults
+}
 
 function sanitizeManifest(manifest: ProjectManifest): ProjectManifest {
   const assignments: Record<string, ManifestAssignmentNode> = {}
@@ -81,6 +170,40 @@ function sanitizeManifest(manifest: ProjectManifest): ProjectManifest {
       wireListEstTime: typeof a.wireListEstTime === 'string' ? a.wireListEstTime : undefined,
       layout: (a.layout ?? null) as ManifestAssignmentNode['layout'],
       devices: (typeof a.devices === 'object' && a.devices !== null ? a.devices : {}) as ManifestAssignmentNode['devices'],
+    }
+  }
+
+  // Build location-to-boxSide lookup map from all assignments
+  const locationToBoxSide: Record<string, string> = {}
+  for (const assignment of Object.values(assignments)) {
+    const boxSideKey = inferBoxSideKey(assignment.boxSide)
+    if (!boxSideKey) continue
+    
+    // Add sheet name
+    if (assignment.sheetName) {
+      locationToBoxSide[assignment.sheetName.trim().toUpperCase()] = boxSideKey
+    }
+    // Add normalized title
+    if (assignment.normalizedTitle) {
+      locationToBoxSide[assignment.normalizedTitle.trim().toUpperCase()] = boxSideKey
+    }
+    // Add box number variations
+    if (assignment.boxNumber) {
+      const boxNum = assignment.boxNumber.trim().toUpperCase()
+      locationToBoxSide[boxNum] = boxSideKey
+      locationToBoxSide[`${boxNum} PANEL`] = boxSideKey
+    }
+  }
+
+  // Compute visibility defaults for each assignment based on boxSide logic
+  for (const sheetSlug of Object.keys(assignments)) {
+    const assignment = assignments[sheetSlug]
+    if (assignment.externalLocations && assignment.externalLocations.length > 0) {
+      assignment.visibilityDefaults = computeVisibilityDefaults(
+        assignment.boxSide,
+        assignment.externalLocations,
+        locationToBoxSide
+      )
     }
   }
 
