@@ -212,6 +212,17 @@ export function VisibilityMatrixConcept({
     }
   }, [onSaveAndGenerateCrossWire]);
 
+  // Default settings popover state - must be before early returns
+  const [defaultSettingsOpen, setDefaultSettingsOpen] = useState(false);
+  const [overwriteExisting, setOverwriteExisting] = useState(false);
+
+  const handleApplyDefaults = useCallback(async () => {
+    if (!onApplyDefaultSettings) return;
+    await onApplyDefaultSettings({ overwriteExisting });
+    setDefaultSettingsOpen(false);
+    setOverwriteExisting(false);
+  }, [onApplyDefaultSettings, overwriteExisting]);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
@@ -228,16 +239,6 @@ export function VisibilityMatrixConcept({
       </div>
     );
   }
-
-  const [defaultSettingsOpen, setDefaultSettingsOpen] = useState(false);
-  const [overwriteExisting, setOverwriteExisting] = useState(false);
-
-  const handleApplyDefaults = useCallback(async () => {
-    if (!onApplyDefaultSettings) return;
-    await onApplyDefaultSettings({ overwriteExisting });
-    setDefaultSettingsOpen(false);
-    setOverwriteExisting(false);
-  }, [onApplyDefaultSettings, overwriteExisting]);
 
   return (
     <div className="space-y-4">
