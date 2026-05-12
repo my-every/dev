@@ -216,14 +216,16 @@ export function VisibilityMatrixConcept({
   }, [onSaveAndGenerateCrossWire]);
 
   // Default settings popover state - must be before early returns
+  // Default to overwrite=true since applying defaults should reset to standard values
   const [defaultSettingsOpen, setDefaultSettingsOpen] = useState(false);
-  const [overwriteExisting, setOverwriteExisting] = useState(false);
+  const [overwriteExisting, setOverwriteExisting] = useState(true);
 
   const handleApplyDefaults = useCallback(async () => {
     if (!onApplyDefaultSettings) return;
     await onApplyDefaultSettings({ overwriteExisting });
     setDefaultSettingsOpen(false);
-    setOverwriteExisting(false);
+    // Reset to true for next time
+    setOverwriteExisting(true);
   }, [onApplyDefaultSettings, overwriteExisting]);
 
   if (loading) {
