@@ -3,10 +3,17 @@
 import { useMemo, useCallback, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Loader2, Download, FileArchive, FileText } from "lucide-react";
+import { Loader2, Download, FileArchive, FileText, Settings2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { UnitTypePopover } from "./unit-type-popover";
 import { BoxSideCell } from "./box-side-cell";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 // Visibility Matrix: Unified table for Wire List, Brand List, Cross Wire settings
@@ -40,6 +47,10 @@ interface VisibilityMatrixProps {
   onSaveAndGenerateAllWireLists?: () => Promise<string | null>; // returns download URL or null
   onSaveAndGenerateAllBrandLists?: () => Promise<string | null>;
   onSaveAndGenerateCrossWire?: () => Promise<string | null>;
+  /** Callback to apply default visibility settings based on box side installation order */
+  onApplyDefaultSettings?: (options: { overwriteExisting: boolean }) => Promise<void>;
+  /** Whether default settings are currently being applied */
+  applyingDefaults?: boolean;
   loading?: boolean;
 }
 
@@ -75,6 +86,8 @@ export function VisibilityMatrixConcept({
   onSaveAndGenerateAllWireLists,
   onSaveAndGenerateAllBrandLists,
   onSaveAndGenerateCrossWire,
+  onApplyDefaultSettings,
+  applyingDefaults = false,
   loading = false,
 }: VisibilityMatrixProps) {
   const [wireListBulk, setWireListBulk] = useState<BulkGeneratingState>({ state: "idle", downloadUrl: null });
@@ -216,6 +229,16 @@ export function VisibilityMatrixConcept({
     );
   }
 
+  const [defaultSettingsOpen, setDefaultSettingsOpen] = useState(false);
+  const [overwriteExisting, setOverwriteExisting] = useState(false);
+
+  const handleApplyDefaults = useCallback(async () => {
+    if (!onApplyDefaultSettings) return;
+    await onApplyDefaultSettings({ overwriteExisting });
+    setDefaultSettingsOpen(false);
+    setOverwriteExisting(false);
+  }, [onApplyDefaultSettings, overwriteExisting]);
+
   return (
     <div className="space-y-4">
       {/* Header */}
@@ -226,6 +249,63 @@ export function VisibilityMatrixConcept({
             Configure visibility for Wire List, Brand List, and Cross Wire per external location
           </p>
         </div>
+        {/* Default Settings Popover - only show when editing */}
+        {isEditing && onApplyDefaultSettings && (
+          <Popover open={defaultSettingsOpen} onOpenChange={setDefaultSettingsOpen}>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="sm" className="gap-2">
+                <Settings2 className="h-4 w-4" />
+                <span className="hidden sm:inline">Default Settings</span>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent align="end" className="w-80">
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-medium text-sm">Apply Default Visibility Settings</h4>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Set visibility based on box side installation order: Door in, top to bottom, left to right.
+                  </p>
+                </div>
+                <div className="space-y-3 text-xs text-muted-foreground border-t pt-3">
+                  <p><strong>Logic:</strong> Enable settings for downstream connections, disable for upstream.</p>
+                  <ul className="list-disc pl-4 space-y-1">
+                    <li>Door: All connections enabled</li>
+                    <li>Left Side: Enabled downstream, cross-wire only to Door</li>
+                    <li>Top/Left/Right Back: Disabled upstream, enabled downstream</li>
+                    <li>Right Side: All disabled (endpoint)</li>
+                  </ul>
+                </div>
+                <div className="flex items-center gap-2 pt-2 border-t">
+                  <Checkbox
+                    id="overwrite-existing"
+                    checked={overwriteExisting}
+                    onCheckedChange={(checked) => setOverwriteExisting(checked === true)}
+                  />
+                  <Label htmlFor="overwrite-existing" className="text-xs cursor-pointer">
+                    Overwrite existing custom settings
+                  </Label>
+                </div>
+                <div className="flex justify-end gap-2 pt-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setDefaultSettingsOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={handleApplyDefaults}
+                    disabled={applyingDefaults}
+                  >
+                    {applyingDefaults && <Loader2 className="mr-2 h-3 w-3 animate-spin" />}
+                    Apply Defaults
+                  </Button>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+        )}
       </div>
 
       {/* Matrix Table */}

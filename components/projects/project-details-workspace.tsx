@@ -446,6 +446,7 @@ export function ProjectDetailsWorkspace({
   const [wireReviewOpen, setWireReviewOpen] = useState(false);
   const [brandReviewOpen, setBrandReviewOpen] = useState(false);
   const [autoStartBrandImport, setAutoStartBrandImport] = useState(false);
+  const [applyingDefaults, setApplyingDefaults] = useState(false);
 
   // ─── Fetch Project Data ─────────────────────────────────────────────────────
 
@@ -1259,6 +1260,98 @@ export function ProjectDetailsWorkspace({
     return `/api/projects/${encodeURIComponent(project.id)}/cross-wire-pdf`;
   }, [project?.id, assignmentEntries, crossWireSettingsMatrix, crossWireSwapLocationsAll, crossWireSwapLocationsBySheet]);
 
+  // Handler for applying default visibility settings based on box side installation order
+  const handleApplyDefaultSettings = useCallback(async (options: { overwriteExisting: boolean }) => {
+    if (!project?.id) return;
+
+    setApplyingDefaults(true);
+    try {
+      const response = await fetch(
+        `/api/projects/${encodeURIComponent(project.id)}/default-settings`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            applyDefaults: true,
+            syncToLegal: true,
+            overwriteExisting: options.overwriteExisting,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error ?? "Failed to apply default settings");
+      }
+
+      const result = await response.json();
+      
+      // Refresh the project data to pick up the updated settings
+      if (result.project) {
+        setProject(result.project);
+      }
+
+      // Log activity and flash the activity panel
+      void logActivityWithFlash("SETTINGS_CHANGED", {
+        settingsType: "default_visibility",
+        updatedCount: result.updatedCount,
+        updatedAssignments: result.updatedAssignments,
+        overwriteExisting: options.overwriteExisting,
+        legalSync: result.legalSync,
+      });
+
+      toast({
+        title: "Default settings applied",
+        description: result.message,
+      });
+
+      // Reload visibility settings to reflect the changes
+      setLoadingSchemaLocations(true);
+      const locRes = await fetch(`/api/projects/${encodeURIComponent(project.id)}/schema-locations`);
+      if (locRes.ok) {
+        const locData = await locRes.json();
+        setSchemaExternalLocations(locData.bySheet ?? {});
+        
+        // Rebuild settings matrices from the updated project
+        if (result.project?.assignments) {
+          const newWireSettings: WireListSettingsMatrix = {};
+          const newBrandSettings: WireListSettingsMatrix = {};
+          const newCrossSettings: WireListSettingsMatrix = {};
+          
+          for (const [slug, assignment] of Object.entries(result.project.assignments as Record<string, { externalLocations?: Array<{ location: string; wireListVisible?: boolean; brandingVisible?: boolean }> }>)) {
+            const extLocs = assignment.externalLocations ?? [];
+            newWireSettings[slug] = {};
+            newBrandSettings[slug] = {};
+            newCrossSettings[slug] = {};
+            
+            for (const loc of extLocs) {
+              const key = loc.location?.trim().toUpperCase();
+              if (key) {
+                newWireSettings[slug][key] = loc.wireListVisible !== false;
+                newBrandSettings[slug][key] = loc.brandingVisible !== false;
+                newCrossSettings[slug][key] = loc.wireListVisible !== false; // Cross wire follows wire list
+              }
+            }
+          }
+          
+          setWireListSettingsMatrix(newWireSettings);
+          setBrandListSettingsMatrix(newBrandSettings);
+          setCrossWireSettingsMatrix(newCrossSettings);
+        }
+      }
+      setLoadingSchemaLocations(false);
+
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to apply default settings",
+        variant: "destructive",
+      });
+    } finally {
+      setApplyingDefaults(false);
+    }
+  }, [project?.id, logActivityWithFlash, toast]);
+
   const refreshBrandingExports = useCallback(async () => {
     if (!project?.id) {
       setBrandingExports(null);
@@ -1502,7 +1595,7 @@ export function ProjectDetailsWorkspace({
     }
   }, [project?.id, wireListSettingsMatrix, refreshWireExports]);
 
-  // ─── Render Loading/Error States ─────────────────────���──────────────────────
+  // ─── Render Loading/Error States ──────────────────��──���──────────────────────
 
   if (loading) {
     return (
@@ -2859,6 +2952,8 @@ export function ProjectDetailsWorkspace({
                   onSaveAndGenerateAllWireLists={handleBulkSaveAndGenerateWireLists}
                   onSaveAndGenerateAllBrandLists={handleBulkSaveAndGenerateBrandLists}
                   onSaveAndGenerateCrossWire={handleBulkSaveAndGenerateCrossWire}
+                  onApplyDefaultSettings={handleApplyDefaultSettings}
+                  applyingDefaults={applyingDefaults}
                   loading={loadingSchemaLocations}
                 />
               </div>
