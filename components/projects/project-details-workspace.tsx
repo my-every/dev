@@ -83,6 +83,7 @@ import { useLayoutUI } from "@/components/layout/layout-context";
 import { activityService } from "@/lib/services/activity-service";
 import type { ActivityAction } from "@/types/activity";
 import { VisibilityMatrixConcept } from "@/components/projects/visibility-matrix-concept";
+import { BoxSideConfig, getDefaultExternalLocationSettings } from "@/boxSide";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -1510,62 +1511,112 @@ export function ProjectDetailsWorkspace({
     refreshSchemaLocations,
   ]);
 
-  // ─── Initialize Visibility Settings from Project visibilityDefaults ─────────
-  // This ensures the matrix uses the pre-computed boxSide-based defaults on load
+  // ─── Initialize Visibility Settings from boxSide logic ─────────────────────
+  // This ensures the matrix uses boxSide-based defaults on load rather than all enabled
   
   const [hasInitializedVisibilityDefaults, setHasInitializedVisibilityDefaults] = useState(false);
   
   useEffect(() => {
     if (hasInitializedVisibilityDefaults || !project?.assignments || loading) return;
     
+    // Helper to infer box side key from string
+    const inferBoxSideKey = (boxSide: string | undefined): string | undefined => {
+      if (!boxSide) return undefined;
+      const normalized = boxSide.toLowerCase().replace(/[\s_-]+/g, '');
+      for (const key of Object.keys(BoxSideConfig)) {
+        if (normalized === key.toLowerCase()) return key;
+      }
+      if (normalized.includes('leftdoor')) return 'leftDoor';
+      if (normalized.includes('rightdoor')) return 'rightDoor';
+      if (normalized.includes('leftback')) return 'leftBackSide';
+      if (normalized.includes('rightback')) return 'rightBackSide';
+      if (normalized.includes('topback')) return 'topBackSide';
+      if (normalized.includes('leftside')) return 'leftSide';
+      if (normalized.includes('rightside')) return 'rightSide';
+      if (normalized.includes('back') && !normalized.includes('left') && !normalized.includes('right') && !normalized.includes('top')) {
+        return 'backSide';
+      }
+      return undefined;
+    };
+    
+    // Build location-to-boxSide lookup map from all assignments
+    const locationToBoxSide: Record<string, string> = {};
+    for (const assignment of Object.values(project.assignments)) {
+      const boxSideKey = inferBoxSideKey(assignment.boxSide);
+      if (!boxSideKey) continue;
+      if (assignment.sheetName) {
+        locationToBoxSide[assignment.sheetName.trim().toUpperCase()] = boxSideKey;
+      }
+      if (assignment.normalizedTitle) {
+        locationToBoxSide[assignment.normalizedTitle.trim().toUpperCase()] = boxSideKey;
+      }
+      if (assignment.boxNumber) {
+        const boxNum = assignment.boxNumber.trim().toUpperCase();
+        locationToBoxSide[boxNum] = boxSideKey;
+        locationToBoxSide[`${boxNum} PANEL`] = boxSideKey;
+      }
+    }
+    
     const newWireSettings: WireListSettingsMatrix = {};
     const newBrandSettings: WireListSettingsMatrix = {};
     const newCrossSettings: WireListSettingsMatrix = {};
-    let hasAnyDefaults = false;
     
     for (const [slug, assignment] of Object.entries(project.assignments)) {
       newWireSettings[slug] = {};
       newBrandSettings[slug] = {};
       newCrossSettings[slug] = {};
       
-      // First, check if assignment has visibilityDefaults (pre-computed from boxSide logic)
-      const defaults = (assignment as { visibilityDefaults?: Record<string, { wireListVisible: boolean; brandingVisible: boolean; crossWireVisible: boolean }> }).visibilityDefaults;
-      
-      if (defaults && Object.keys(defaults).length > 0) {
-        hasAnyDefaults = true;
-        for (const [locKey, settings] of Object.entries(defaults)) {
-          newWireSettings[slug][locKey] = settings.wireListVisible;
-          newBrandSettings[slug][locKey] = settings.brandingVisible;
-          newCrossSettings[slug][locKey] = settings.crossWireVisible;
-        }
-      }
-      
-      // Then override with any explicit externalLocations settings (user customizations)
+      const assignmentBoxSideKey = inferBoxSideKey(assignment.boxSide);
       const extLocs = assignment.externalLocations ?? [];
+      
       for (const loc of extLocs) {
-        const key = loc.location?.trim().toUpperCase();
-        if (key) {
-          // Only override if explicitly set (not undefined)
-          if (loc.wireListVisible !== undefined) {
-            newWireSettings[slug][key] = loc.wireListVisible;
+        const locationKey = loc.location?.trim().toUpperCase();
+        if (!locationKey) continue;
+        
+        // Check if there are explicit user-set values (wireListVisible/brandingVisible explicitly set)
+        const hasExplicitWire = loc.wireListVisible !== undefined;
+        const hasExplicitBrand = loc.brandingVisible !== undefined;
+        
+        if (hasExplicitWire && hasExplicitBrand) {
+          // User has customized these settings - use them
+          newWireSettings[slug][locationKey] = loc.wireListVisible!;
+          newBrandSettings[slug][locationKey] = loc.brandingVisible!;
+          newCrossSettings[slug][locationKey] = loc.wireListVisible !== false;
+        } else {
+          // Compute defaults from boxSide logic
+          let targetBoxSideKey = locationToBoxSide[locationKey];
+          
+          if (!targetBoxSideKey) {
+            // Try partial match
+            for (const [knownLoc, boxSide] of Object.entries(locationToBoxSide)) {
+              if (locationKey.includes(knownLoc) || knownLoc.includes(locationKey)) {
+                targetBoxSideKey = boxSide;
+                break;
+              }
+            }
           }
-          if (loc.brandingVisible !== undefined) {
-            newBrandSettings[slug][key] = loc.brandingVisible;
+          
+          if (!targetBoxSideKey) {
+            // Try inferring from location text itself
+            targetBoxSideKey = inferBoxSideKey(locationKey);
           }
-          // Cross wire defaults to wire list value if not in visibilityDefaults
-          if (!defaults?.[key]) {
-            newCrossSettings[slug][key] = loc.wireListVisible !== false;
-          }
+          
+          // Get defaults based on boxSide relationship
+          const defaults = assignmentBoxSideKey && targetBoxSideKey
+            ? getDefaultExternalLocationSettings(assignmentBoxSideKey, targetBoxSideKey)
+            : { wire_list: true, brand_list: true, cross_wire: true };
+          
+          newWireSettings[slug][locationKey] = hasExplicitWire ? loc.wireListVisible! : defaults.wire_list;
+          newBrandSettings[slug][locationKey] = hasExplicitBrand ? loc.brandingVisible! : defaults.brand_list;
+          newCrossSettings[slug][locationKey] = defaults.cross_wire;
         }
       }
     }
     
-    if (hasAnyDefaults || Object.keys(newWireSettings).length > 0) {
-      setWireListSettingsMatrix(newWireSettings);
-      setBrandListSettingsMatrix(newBrandSettings);
-      setCrossWireSettingsMatrix(newCrossSettings);
-      setHasInitializedVisibilityDefaults(true);
-    }
+    setWireListSettingsMatrix(newWireSettings);
+    setBrandListSettingsMatrix(newBrandSettings);
+    setCrossWireSettingsMatrix(newCrossSettings);
+    setHasInitializedVisibilityDefaults(true);
   }, [project?.assignments, loading, hasInitializedVisibilityDefaults]);
 
   // ─── Brand List Settings Handlers ───────────────────────────────────────────

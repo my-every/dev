@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/drawer";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { BoxSideConfig, getDefaultExternalLocationSettings } from "@/boxSide";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 // Visibility Matrix: Unified table for Wire List, Brand List, Cross Wire settings
@@ -59,6 +60,27 @@ interface VisibilityMatrixProps {
 
 type GeneratingState = "idle" | "generating" | "ready" | "error";
 type BulkGeneratingState = { state: GeneratingState; downloadUrl: string | null };
+
+// ─── Helper: Infer boxSide key from string ───────────────────────────────────
+
+function inferBoxSideKey(boxSide: string | undefined): string | undefined {
+  if (!boxSide) return undefined;
+  const normalized = boxSide.toLowerCase().replace(/[\s_-]+/g, '');
+  for (const key of Object.keys(BoxSideConfig)) {
+    if (normalized === key.toLowerCase()) return key;
+  }
+  if (normalized.includes('leftdoor')) return 'leftDoor';
+  if (normalized.includes('rightdoor')) return 'rightDoor';
+  if (normalized.includes('leftback')) return 'leftBackSide';
+  if (normalized.includes('rightback')) return 'rightBackSide';
+  if (normalized.includes('topback')) return 'topBackSide';
+  if (normalized.includes('leftside')) return 'leftSide';
+  if (normalized.includes('rightside')) return 'rightSide';
+  if (normalized.includes('back') && !normalized.includes('left') && !normalized.includes('right') && !normalized.includes('top')) {
+    return 'backSide';
+  }
+  return undefined;
+}
 
 // ─── Helper: Extract unit type from location or title ────────────────────────
 
@@ -181,6 +203,66 @@ export function VisibilityMatrixConcept({
 
     return rows;
   }, [assignments, externalLocations]);
+
+  // Build location-to-boxSide lookup map from all assignments for default computation
+  const locationToBoxSide = useMemo(() => {
+    const map: Record<string, string> = {};
+    for (const assignment of assignments) {
+      const boxSideKey = inferBoxSideKey(assignment.boxSide);
+      if (!boxSideKey) continue;
+      if (assignment.sheetName) {
+        map[assignment.sheetName.trim().toUpperCase()] = boxSideKey;
+      }
+      if (assignment.normalizedTitle) {
+        map[assignment.normalizedTitle.trim().toUpperCase()] = boxSideKey;
+      }
+      // Add sheet slug variations
+      map[assignment.sheetSlug.toUpperCase()] = boxSideKey;
+    }
+    return map;
+  }, [assignments]);
+
+  // Helper to get default visibility based on boxSide logic
+  const getDefaultVisibility = useCallback((
+    assignmentBoxSide: string | undefined,
+    locationKey: string
+  ): { wire: boolean; brand: boolean; cross: boolean } => {
+    const assignmentBoxSideKey = inferBoxSideKey(assignmentBoxSide);
+    if (!assignmentBoxSideKey) {
+      // No boxSide set - default to true
+      return { wire: true, brand: true, cross: true };
+    }
+
+    // Try to find target box side from lookup map
+    let targetBoxSideKey = locationToBoxSide[locationKey];
+    
+    if (!targetBoxSideKey) {
+      // Try partial match
+      for (const [knownLoc, boxSide] of Object.entries(locationToBoxSide)) {
+        if (locationKey.includes(knownLoc) || knownLoc.includes(locationKey)) {
+          targetBoxSideKey = boxSide;
+          break;
+        }
+      }
+    }
+
+    if (!targetBoxSideKey) {
+      // Try inferring from location text itself
+      targetBoxSideKey = inferBoxSideKey(locationKey);
+    }
+
+    if (!targetBoxSideKey) {
+      // Can't determine target - default to true
+      return { wire: true, brand: true, cross: true };
+    }
+
+    const defaults = getDefaultExternalLocationSettings(assignmentBoxSideKey, targetBoxSideKey);
+    return {
+      wire: defaults.wire_list,
+      brand: defaults.brand_list,
+      cross: defaults.cross_wire,
+    };
+  }, [locationToBoxSide]);
 
   const handleSaveAndGenerateAllWireLists = useCallback(async () => {
     if (!onSaveAndGenerateAllWireLists) return;
@@ -344,9 +426,21 @@ export function VisibilityMatrixConcept({
           </thead>
           <tbody>
             {matrixRows.map((row, rowIdx) => {
-              const wireVisible = row.locKey ? (wireListSettings[row.assignment.sheetSlug]?.[row.locKey] ?? true) : true;
-              const brandVisible = row.locKey ? (brandListSettings[row.assignment.sheetSlug]?.[row.locKey] ?? true) : true;
-              const crossVisible = row.locKey ? (crossWireSettings[row.assignment.sheetSlug]?.[row.locKey] ?? true) : true;
+              // Get boxSide-based defaults if no explicit setting exists
+              const defaults = row.locKey 
+                ? getDefaultVisibility(row.assignment.boxSide, row.locKey)
+                : { wire: true, brand: true, cross: true };
+              
+              // Use explicit settings if they exist, otherwise use boxSide defaults
+              const wireVisible = row.locKey 
+                ? (wireListSettings[row.assignment.sheetSlug]?.[row.locKey] ?? defaults.wire) 
+                : true;
+              const brandVisible = row.locKey 
+                ? (brandListSettings[row.assignment.sheetSlug]?.[row.locKey] ?? defaults.brand) 
+                : true;
+              const crossVisible = row.locKey 
+                ? (crossWireSettings[row.assignment.sheetSlug]?.[row.locKey] ?? defaults.cross) 
+                : true;
               const displayTitle = row.assignment.normalizedTitle ?? row.assignment.sheetName;
 
               return (
