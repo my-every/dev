@@ -137,6 +137,32 @@ export async function POST(
     });
   }
 
+  // Build a lookup map from location names to box sides
+  // This maps assignment names, normalized titles, and variations to their box side
+  const locationToBoxSide: Record<string, string> = {};
+  
+  for (const [_sheetSlug, assignment] of Object.entries(manifest.assignments ?? {})) {
+    const boxSideKey = inferBoxSideKey(assignment.boxSide);
+    if (!boxSideKey) continue;
+    
+    // Add the sheet name (uppercase)
+    if (assignment.sheetName) {
+      locationToBoxSide[assignment.sheetName.trim().toUpperCase()] = boxSideKey;
+    }
+    
+    // Add the normalized title
+    if (assignment.normalizedTitle) {
+      locationToBoxSide[assignment.normalizedTitle.trim().toUpperCase()] = boxSideKey;
+    }
+    
+    // Add box number variations (e.g., "JB70", "JB70 PANEL")
+    if (assignment.boxNumber) {
+      const boxNum = assignment.boxNumber.trim().toUpperCase();
+      locationToBoxSide[boxNum] = boxSideKey;
+      locationToBoxSide[`${boxNum} PANEL`] = boxSideKey;
+    }
+  }
+
   let updatedCount = 0;
   const updatedAssignments: string[] = [];
   const skippedReasons: string[] = [];
@@ -161,13 +187,33 @@ export async function POST(
 
     // Update each external location's visibility settings
     const updatedLocations = externalLocations.map((extLoc) => {
-      const targetBoxSideKey = inferBoxSideFromLocation(extLoc.location);
+      const locationKey = extLoc.location?.trim().toUpperCase();
       
-      // If we can't infer target box side, apply defaults based on assignment's box side position
-      // (assume downstream relationship - enable settings)
-      const defaults = targetBoxSideKey 
+      // Try multiple methods to find the target box side:
+      // 1. Direct lookup from our assignment name map
+      // 2. Infer from location string (e.g., "LEFT SIDE PANEL")
+      // 3. Partial match against known assignments
+      let targetBoxSideKey = locationToBoxSide[locationKey];
+      
+      if (!targetBoxSideKey) {
+        // Try inferring from the location text itself
+        targetBoxSideKey = inferBoxSideFromLocation(extLoc.location);
+      }
+      
+      if (!targetBoxSideKey) {
+        // Try partial match - check if location contains any known assignment name
+        for (const [knownLoc, boxSide] of Object.entries(locationToBoxSide)) {
+          if (locationKey?.includes(knownLoc) || knownLoc.includes(locationKey ?? "")) {
+            targetBoxSideKey = boxSide;
+            break;
+          }
+        }
+      }
+      
+      // Get defaults based on box side relationship, or use "no change" if we can't determine
+      const defaults: ExternalLocationDefaultSettings = targetBoxSideKey 
         ? getDefaultExternalLocationSettings(assignmentBoxSideKey, targetBoxSideKey)
-        : { wire_list: true, brand_list: true, cross_wire: true };
+        : { wire_list: extLoc.wireListVisible ?? true, brand_list: extLoc.brandingVisible ?? true, cross_wire: true };
 
       // If overwriteExisting is true, always apply defaults
       // If overwriteExisting is false, only apply if values haven't been explicitly set to false
@@ -214,6 +260,7 @@ export async function POST(
       updated: false,
       updatedCount: 0,
       skippedReasons: skippedReasons.slice(0, 10), // Return first 10 for debugging
+      locationToBoxSideMap: locationToBoxSide, // Debug: show the lookup map
     });
   }
 
