@@ -745,11 +745,15 @@ export function ProjectDetailsWorkspace({
       const updated = await res.json();
       const savedProject = updated.project ?? updated;
       setProject(savedProject);
+      // Log activity and flash panel before exiting edit mode
+      void logActivityWithFlash("project_updated", { 
+        fields: Object.keys(editDraft),
+        legalSync: updated.legalSync,
+      });
+      toast({ title: "Project saved" });
       // Exit edit mode after successful save
       setEditDraft(null);
       setIsEditing(false);
-      toast({ title: "Project saved" });
-      void logActivityWithFlash("project_updated", { fields: Object.keys(editDraft) });
     } catch (err) {
       setSaveError(err instanceof Error ? err.message : "Save failed");
     } finally {
@@ -1264,6 +1268,7 @@ export function ProjectDetailsWorkspace({
   const handleApplyDefaultSettings = useCallback(async (options: { overwriteExisting: boolean }) => {
     if (!project?.id) return;
 
+    console.log("[v0] handleApplyDefaultSettings called:", { projectId: project.id, options });
     setApplyingDefaults(true);
     try {
       const response = await fetch(
@@ -1279,12 +1284,16 @@ export function ProjectDetailsWorkspace({
         }
       );
 
+      console.log("[v0] handleApplyDefaultSettings response status:", response.status);
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
+        console.log("[v0] handleApplyDefaultSettings error:", errorData);
         throw new Error(errorData.error ?? "Failed to apply default settings");
       }
 
       const result = await response.json();
+      console.log("[v0] handleApplyDefaultSettings result:", result);
       
       // Refresh the project data to pick up the updated settings
       if (result.project) {
