@@ -139,50 +139,60 @@ export async function POST(
 
   let updatedCount = 0;
   const updatedAssignments: string[] = [];
+  const skippedReasons: string[] = [];
 
   // Process each assignment
   for (const [sheetSlug, assignment] of Object.entries(manifest.assignments ?? {})) {
     const assignmentBoxSideKey = inferBoxSideKey(assignment.boxSide);
     
     if (!assignmentBoxSideKey) {
-      // Skip assignments without a valid box side
+      skippedReasons.push(`${sheetSlug}: no boxSide value (${assignment.boxSide ?? 'undefined'})`);
       continue;
     }
 
     const externalLocations = assignment.externalLocations ?? [];
+    
+    if (externalLocations.length === 0) {
+      skippedReasons.push(`${sheetSlug}: no external locations`);
+      continue;
+    }
+
     let locationUpdated = false;
 
     // Update each external location's visibility settings
     const updatedLocations = externalLocations.map((extLoc) => {
       const targetBoxSideKey = inferBoxSideFromLocation(extLoc.location);
       
-      if (!targetBoxSideKey) {
-        // Can't infer target box side, keep existing settings
+      // If we can't infer target box side, apply defaults based on assignment's box side position
+      // (assume downstream relationship - enable settings)
+      const defaults = targetBoxSideKey 
+        ? getDefaultExternalLocationSettings(assignmentBoxSideKey, targetBoxSideKey)
+        : { wire_list: true, brand_list: true, cross_wire: true };
+
+      // If overwriteExisting is true, always apply defaults
+      // If overwriteExisting is false, only apply if values haven't been explicitly set to false
+      const hasExplicitFalse = 
+        extLoc.wireListVisible === false || 
+        extLoc.brandingVisible === false;
+
+      if (!overwriteExisting && hasExplicitFalse) {
+        // Don't overwrite when settings have been explicitly disabled
         return extLoc;
       }
 
-      const defaults = getDefaultExternalLocationSettings(
-        assignmentBoxSideKey,
-        targetBoxSideKey
-      );
+      // Check if the new values would actually change anything
+      const wouldChange = 
+        extLoc.wireListVisible !== defaults.wire_list ||
+        extLoc.brandingVisible !== defaults.brand_list;
 
-      // Only update if overwriteExisting is true or values are currently all true (default)
-      const isCurrentlyDefault = 
-        extLoc.wireListVisible !== false && 
-        extLoc.brandingVisible !== false;
-
-      if (!overwriteExisting && !isCurrentlyDefault) {
-        // Don't overwrite user-customized settings
-        return extLoc;
+      if (wouldChange) {
+        locationUpdated = true;
       }
 
-      locationUpdated = true;
       return {
         ...extLoc,
         wireListVisible: defaults.wire_list,
         brandingVisible: defaults.brand_list,
-        // Note: crossWireVisible would need to be added to the external location schema
-        // For now, we'll use wireListVisible as the cross_wire indicator
       };
     });
 
@@ -198,9 +208,12 @@ export async function POST(
 
   if (updatedCount === 0) {
     return NextResponse.json({
-      message: "No assignments updated - all already have custom settings or missing box sides",
+      message: overwriteExisting 
+        ? "No assignments updated - check that assignments have box sides and external locations configured"
+        : "No assignments updated - settings already applied or missing configuration. Try with 'Overwrite existing' enabled.",
       updated: false,
       updatedCount: 0,
+      skippedReasons: skippedReasons.slice(0, 10), // Return first 10 for debugging
     });
   }
 
