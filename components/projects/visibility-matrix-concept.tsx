@@ -132,9 +132,26 @@ export function VisibilityMatrixConcept({
       assignmentRowSpan: number;
     }> = [];
 
+    // Helper to get boxSide installation order (lower = earlier in installation)
+    const getBoxSideOrder = (boxSide: string | undefined): number => {
+      const key = inferBoxSideKey(boxSide);
+      if (!key || !BoxSideConfig[key]) return 999; // Unknown goes last
+      return BoxSideConfig[key].order;
+    };
+
+    // Sort assignments by boxSide installation order:
+    // leftDoor (1) -> rightDoor (1) -> leftSide (2) -> topBackSide (3) -> leftBackSide (4) -> rightBackSide (5) -> rightSide (6)
+    const sortedAssignments = [...assignments].sort((a, b) => {
+      const orderA = getBoxSideOrder(a.boxSide);
+      const orderB = getBoxSideOrder(b.boxSide);
+      if (orderA !== orderB) return orderA - orderB;
+      // Secondary sort by sheet name for stability
+      return (a.sheetName ?? '').localeCompare(b.sheetName ?? '');
+    });
+
     // Group assignments by unit type first (extracted from first external location)
     const unitGroups: Record<string, Assignment[]> = {};
-    for (const assignment of assignments) {
+    for (const assignment of sortedAssignments) {
       const locations = externalLocations[assignment.sheetSlug] ?? [];
       // Extract unit type from first location (e.g., "JB71 B,PNL DC PWR" -> "JB71")
       const firstLocation = locations[0] ?? "";

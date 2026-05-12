@@ -220,6 +220,7 @@
       "swsType": "UNDECIDED",
       "stage": "READY_TO_LAY",
       "status": "NOT_STARTED",
+      "unitType": "CONSOLE",
       "boxSide": "topBackSide",
       "panducts": [],
       "rails": [],
@@ -249,10 +250,10 @@
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 35750,
+        "remainingMinutes": 35539,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 595h 50m remaining - READY_TO_LAY"
+        "reason": "Low priority: 592h 19m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -279,8 +280,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "control-2-bay": {
       "sheetSlug": "control-2-bay",
@@ -294,8 +294,7 @@
       "swsType": "UNDECIDED",
       "stage": "READY_TO_LAY",
       "status": "NOT_STARTED",
-      "unitType": "JB70",
-      "boxSide": "leftBackSide",
+      "unitType": "CONSOLE",
       "panducts": [],
       "rails": [],
       "externalLocations": [
@@ -331,8 +330,8 @@
         },
         {
           "location": "RAIL RIGHT JB70",
-          "wireListVisible": false,
-          "brandingVisible": false
+          "wireListVisible": true,
+          "brandingVisible": true
         }
       ],
       "whiteLabels": [],
@@ -380,9 +379,9 @@
           "crossWireVisible": true
         },
         "PLC": {
-          "wireListVisible": false,
-          "brandingVisible": false,
-          "crossWireVisible": false
+          "wireListVisible": true,
+          "brandingVisible": true,
+          "crossWireVisible": true
         },
         "RAIL RIGHT JB70": {
           "wireListVisible": true,
@@ -395,10 +394,10 @@
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 35822,
+        "remainingMinutes": 35611,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 597h 2m remaining - READY_TO_LAY"
+        "reason": "Low priority: 593h 31m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -425,8 +424,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "fg-e-ctrl-smt130": {
       "sheetSlug": "fg-e-ctrl-smt130",
@@ -440,14 +438,15 @@
       "swsType": "PANEL",
       "stage": "READY_TO_LAY",
       "status": "NOT_STARTED",
+      "unitType": "CONSOLE",
       "boxSide": "topBackSide",
       "panducts": [],
       "rails": [],
       "externalLocations": [
         {
           "location": "GEN CMPNT",
-          "wireListVisible": false,
-          "brandingVisible": false
+          "wireListVisible": true,
+          "brandingVisible": true
         },
         {
           "location": "PLC PANEL",
@@ -553,10 +552,10 @@
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 35373,
+        "remainingMinutes": 35162,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 589h 33m remaining - READY_TO_LAY"
+        "reason": "Low priority: 586h 2m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -583,8 +582,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "gen-cmpnt": {
       "sheetSlug": "gen-cmpnt",
@@ -598,7 +596,8 @@
       "swsType": "UNDECIDED",
       "stage": "READY_TO_LAY",
       "status": "NOT_STARTED",
-      "boxSide": "rightBackSide",
+      "unitType": "JB70",
+      "boxSide": "rightSide",
       "panducts": [],
       "rails": [],
       "externalLocations": [
@@ -812,10 +811,10 @@
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 35251,
+        "remainingMinutes": 35040,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 587h 31m remaining - READY_TO_LAY"
+        "reason": "Low priority: 584h remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -842,8 +841,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "mcc-pnl-smt130": {
       "sheetSlug": "mcc-pnl-smt130",
@@ -857,14 +855,15 @@
       "swsType": "PANEL",
       "stage": "READY_TO_LAY",
       "status": "NOT_STARTED",
-      "boxSide": "topBackSide",
+      "unitType": "CONSOLE",
+      "boxSide": "leftSide",
       "panducts": [],
       "rails": [],
       "externalLocations": [
         {
           "location": "GEN CMPNT",
-          "wireListVisible": false,
-          "brandingVisible": false
+          "wireListVisible": true,
+          "brandingVisible": true
         },
         {
           "location": "JB7100",
@@ -992,10 +991,10 @@
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 35493,
+        "remainingMinutes": 35282,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 591h 33m remaining - READY_TO_LAY"
+        "reason": "Low priority: 588h 2m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -1022,8 +1021,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "plc-panel": {
       "sheetSlug": "plc-panel",
@@ -1084,10 +1082,10 @@
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 35793,
+        "remainingMinutes": 35582,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 596h 33m remaining - READY_TO_LAY"
+        "reason": "Low priority: 593h 2m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -1114,8 +1112,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "pnl-a-smt130": {
       "sheetSlug": "pnl-a-smt130",
@@ -1129,14 +1126,15 @@
       "swsType": "PANEL",
       "stage": "READY_TO_LAY",
       "status": "NOT_STARTED",
+      "unitType": "JB70",
       "boxSide": "topBackSide",
       "panducts": [],
       "rails": [],
       "externalLocations": [
         {
           "location": "GEN CMPNT",
-          "wireListVisible": false,
-          "brandingVisible": false
+          "wireListVisible": true,
+          "brandingVisible": true
         },
         {
           "location": "JB7100",
@@ -1313,10 +1311,10 @@
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 35137,
+        "remainingMinutes": 34926,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 585h 37m remaining - READY_TO_LAY"
+        "reason": "Low priority: 582h 6m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -1343,8 +1341,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "pnl-b-smt130": {
       "sheetSlug": "pnl-b-smt130",
@@ -1358,14 +1355,15 @@
       "swsType": "PANEL",
       "stage": "READY_TO_LAY",
       "status": "NOT_STARTED",
-      "boxSide": "topBackSide",
+      "unitType": "JB70",
+      "boxSide": "rightBackSide",
       "panducts": [],
       "rails": [],
       "externalLocations": [
         {
           "location": "GEN CMPNT",
-          "wireListVisible": false,
-          "brandingVisible": false
+          "wireListVisible": true,
+          "brandingVisible": true
         },
         {
           "location": "JB7100",
@@ -1551,10 +1549,10 @@
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 35115,
+        "remainingMinutes": 34904,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 585h 15m remaining - READY_TO_LAY"
+        "reason": "Low priority: 581h 44m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -1581,8 +1579,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "pnl-door-2-bay": {
       "sheetSlug": "pnl-door-2-bay",
@@ -1596,6 +1593,7 @@
       "swsType": "PANEL",
       "stage": "READY_TO_LAY",
       "status": "NOT_STARTED",
+      "unitType": "CONSOLE",
       "boxSide": "leftDoor",
       "panducts": [],
       "rails": [],
@@ -1631,10 +1629,10 @@
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 35778,
+        "remainingMinutes": 35567,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 596h 18m remaining - READY_TO_LAY"
+        "reason": "Low priority: 592h 47m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -1661,8 +1659,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "powerdist-panel": {
       "sheetSlug": "powerdist-panel",
@@ -1708,8 +1705,8 @@
         },
         {
           "location": "RIGHT SIDE RAIL JB70",
-          "wireListVisible": false,
-          "brandingVisible": false
+          "wireListVisible": true,
+          "brandingVisible": true
         }
       ],
       "whiteLabels": [
@@ -1806,10 +1803,10 @@
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 35641,
+        "remainingMinutes": 35430,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 594h 1m remaining - READY_TO_LAY"
+        "reason": "Low priority: 590h 30m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -1836,8 +1833,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "prox-turb": {
       "sheetSlug": "prox-turb",
@@ -1888,10 +1884,10 @@
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 35822,
+        "remainingMinutes": 35611,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 597h 2m remaining - READY_TO_LAY"
+        "reason": "Low priority: 593h 31m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -1918,8 +1914,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "pwr-dst-dr-smt130": {
       "sheetSlug": "pwr-dst-dr-smt130",
@@ -1933,7 +1928,8 @@
       "swsType": "UNDECIDED",
       "stage": "READY_TO_LAY",
       "status": "NOT_STARTED",
-      "boxSide": "topBackSide",
+      "unitType": "CONSOLE",
+      "boxSide": "leftBackSide",
       "panducts": [],
       "rails": [],
       "externalLocations": [],
@@ -1976,10 +1972,10 @@
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 35752,
+        "remainingMinutes": 35541,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 595h 52m remaining - READY_TO_LAY"
+        "reason": "Low priority: 592h 21m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -2006,8 +2002,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "tcp-smt130": {
       "sheetSlug": "tcp-smt130",
@@ -2021,6 +2016,7 @@
       "swsType": "COMPONENT",
       "stage": "READY_TO_LAY",
       "status": "NOT_STARTED",
+      "unitType": "JB70",
       "boxSide": "topBackSide",
       "panducts": [],
       "rails": [],
@@ -2087,10 +2083,10 @@
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 35550,
+        "remainingMinutes": 35339,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 592h 30m remaining - READY_TO_LAY"
+        "reason": "Low priority: 588h 59m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -2117,8 +2113,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "turbine-control-jb70": {
       "sheetSlug": "turbine-control-jb70",
@@ -2164,10 +2159,10 @@
       "priority": {
         "score": 0.03,
         "level": "low",
-        "remainingMinutes": 35819,
+        "remainingMinutes": 35608,
         "deadlineMultiplier": 1,
         "stageWeight": 1.1,
-        "reason": "Low priority: 596h 59m remaining - READY_TO_LAY"
+        "reason": "Low priority: 593h 28m remaining - READY_TO_LAY"
       },
       "priorityLevel": "low",
       "boardAssignment": {
@@ -2194,8 +2189,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     }
   },
   "referenceSheets": {
@@ -2262,7 +2256,8 @@
   },
   "unitType": "JB70",
   "unitTypes": [
-    "JB70"
+    "JB70",
+    "CONSOLE"
   ],
   "aggregates": {
     "totalAssignments": 14,
@@ -2285,30 +2280,32 @@
     }
   },
   "assignmentsByUnitType": {
-    "UNASSIGNED": [
+    "CONSOLE": [
       "beckwith-relay-smt130",
+      "control-2-bay",
       "fg-e-ctrl-smt130",
-      "gen-cmpnt",
       "mcc-pnl-smt130",
-      "pnl-a-smt130",
-      "pnl-b-smt130",
       "pnl-door-2-bay",
-      "prox-turb",
-      "pwr-dst-dr-smt130",
-      "tcp-smt130"
+      "pwr-dst-dr-smt130"
     ],
     "JB70": [
-      "control-2-bay",
+      "gen-cmpnt",
       "plc-panel",
+      "pnl-a-smt130",
+      "pnl-b-smt130",
       "powerdist-panel",
+      "tcp-smt130",
       "turbine-control-jb70"
+    ],
+    "UNASSIGNED": [
+      "prox-turb"
     ]
   },
   "projectName": "PROP-76",
   "lwcType": "OFFSKID",
   "unitNumber": "2",
   "dueDate": "2026-06-06",
-  "color": "#EC4899",
+  "color": "#ed4a9b",
   "activeWorkbookRevisionId": "4K391-UCPWiringList_0.2.xlsx",
   "whiteLabels": [
     "0V",
@@ -3532,7 +3529,7 @@
         "blue-labels"
       ],
       "matchingStrategy": "reference-sheet-header-to-assignment-name",
-      "generatedAt": "2026-05-12T02:51:46.369Z"
+      "generatedAt": "2026-05-12T06:24:53.667Z"
     }
   }
 }
