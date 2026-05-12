@@ -753,7 +753,7 @@ export function ProjectDetailsWorkspace({
       toast({ title: "Project saved" });
       
       // Log activity (fire and forget - don't block on this)
-      logActivityWithFlash("project_updated", { 
+      logActivityWithFlash("PROJECT_DETAILS_UPDATED", { 
         fields: Object.keys(editDraft),
         legalSync: updated.legalSync,
       }).catch(() => {
@@ -1088,7 +1088,7 @@ export function ProjectDetailsWorkspace({
       if (workbookFile) uploadedFiles.push("workbook");
       if (greenChangesFile) uploadedFiles.push("green-changes");
       if (layoutFile) uploadedFiles.push("layout");
-      void logActivityWithFlash("LEGAL_FILES_UPLOADED", {
+      void logActivityWithFlash("LEGAL_UPLOADED", {
         files: uploadedFiles,
         details: {
           workbook: workbookFile?.name,
