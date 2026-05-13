@@ -1298,6 +1298,32 @@ export function ProjectDetailsWorkspace({
     return `/api/projects/${encodeURIComponent(project.id)}/cross-wire-pdf`;
   }, [project?.id, assignmentEntries, crossWireSettingsMatrix, crossWireSwapLocationsAll, crossWireSwapLocationsBySheet]);
 
+  // Memoized cross-wire preview href with swap parameters
+  const selectedCrossWireSwapSheetSlugs = useMemo(
+    () =>
+      Object.entries(crossWireSwapLocationsBySheet)
+        .filter(([, checked]) => checked)
+        .map(([sheetSlug]) => sheetSlug),
+    [crossWireSwapLocationsBySheet],
+  );
+
+  const crossWirePreviewHref = useMemo(() => {
+    const baseHref = `/print/project-context/${encodeURIComponent(project?.id ?? "")}/cross-wire`;
+    if (!project?.id) {
+      return baseHref;
+    }
+    
+    const params = new URLSearchParams();
+    if (crossWireSwapLocationsAll) {
+      params.set("swapLocations", "1");
+    } else if (selectedCrossWireSwapSheetSlugs.length > 0) {
+      params.set("swapSheets", selectedCrossWireSwapSheetSlugs.join(","));
+    }
+    
+    const queryString = params.toString();
+    return queryString ? `${baseHref}?${queryString}` : baseHref;
+  }, [project?.id, crossWireSwapLocationsAll, selectedCrossWireSwapSheetSlugs]);
+
   // Handler for applying default visibility settings based on box side installation order
   const handleApplyDefaultSettings = useCallback(async (options: { overwriteExisting: boolean }) => {
     if (!project?.id) return;
@@ -2475,20 +2501,89 @@ export function ProjectDetailsWorkspace({
                 description="Generate, combine, review, and control brand list outputs."
               />
               <div className="mt-4 space-y-4">
+                {/* Stats header */}
+                {brandingExports && brandingExports.sheetExports.length > 0 ? (
+                  <div className="grid grid-cols-4 gap-2 rounded-xl border border-border bg-muted/30 p-3">
+                    <div className="flex flex-col gap-0.5 py-1">
+                      <span className="text-[11px] text-muted-foreground">Assignments</span>
+                      <span className="text-lg font-semibold text-foreground">
+                        {brandingExports.sheetExports.length}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 py-1 border-x border-border px-3">
+                      <span className="text-[11px] text-muted-foreground">Combined</span>
+                      <span className="text-sm font-medium">
+                        {brandingExports.combinedRelativePath ? (
+                          <span className="text-green-600">Ready</span>
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 py-1 border-r border-border pr-3">
+                      <span className="text-[11px] text-muted-foreground">Generated</span>
+                      <span className="text-xs text-foreground">
+                        {brandingExports.generatedAt ? new Date(brandingExports.generatedAt).toLocaleDateString() : "—"}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 py-1">
+                      <span className="text-[11px] text-muted-foreground">Legal Revision</span>
+                      <span className="font-mono text-sm font-semibold text-foreground">
+                        {project?.revision ?? "—"}
+                      </span>
+                    </div>
+                  </div>
+                ) : null}
+
                 <div className="flex flex-wrap items-center gap-2">
                   <Button size="sm" variant="outline" onClick={openBrandImportReview}>
                     <Upload className="mr-2 h-3.5 w-3.5" />
                     Import & Merge Brand List
                   </Button>
-                  <Button size="sm" variant="outline" disabled={regeneratingBranding}>
-                    <Download className="mr-2 h-3.5 w-3.5" />
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    disabled={regeneratingBranding}
+                    onClick={() => void handleRegenerateBrandingExports(false)}
+                  >
+                    {regeneratingBranding ? (
+                      <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Download className="mr-2 h-3.5 w-3.5" />
+                    )}
                     Generate
                   </Button>
-                  <Button size="sm" variant="default">
-                    <FileSpreadsheet className="mr-2 h-3.5 w-3.5" />
+                  <Button 
+                    size="sm" 
+                    variant="default"
+                    disabled={regeneratingBranding}
+                    onClick={() => void handleRegenerateBrandingExports(true)}
+                  >
+                    {regeneratingBranding ? (
+                      <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <FileSpreadsheet className="mr-2 h-3.5 w-3.5" />
+                    )}
                     Generate & Combine
                   </Button>
                 </div>
+
+                {/* Combined download link */}
+                {brandingExports?.combinedRelativePath ? (
+                  <a
+                    href={`/api/projects/${encodeURIComponent(project?.id ?? "")}/brand-list/download?path=${encodeURIComponent(brandingExports.combinedRelativePath)}`}
+                    download
+                    className="flex items-center justify-between rounded-xl border border-primary/30 bg-primary/5 px-3 py-2.5 text-sm hover:bg-primary/10"
+                  >
+                    <div className="flex items-center gap-2">
+                      <FileSpreadsheet className="h-4 w-4 text-primary" />
+                      <span className="font-medium">
+                        {brandingExports.combinedFileName || "Combined Brand Workbook"}
+                      </span>
+                    </div>
+                    <Download className="h-3.5 w-3.5 text-muted-foreground" />
+                  </a>
+                ) : null}
                 
                 {brandListAssignments.length === 0 ? (
                   <EmptyStateCard
@@ -2667,9 +2762,42 @@ export function ProjectDetailsWorkspace({
                 description="Manage wire list exports and visibility settings per sheet."
               />
               <div className="mt-4 space-y-4">
+                {/* Stats header */}
+                {wireExports && wireExports.sheetExports.length > 0 ? (
+                  <div className="grid grid-cols-3 gap-2 rounded-xl border border-border bg-muted/30 p-3">
+                    <div className="flex flex-col gap-0.5 py-1">
+                      <span className="text-[11px] text-muted-foreground">Assignments</span>
+                      <span className="text-lg font-semibold text-foreground">
+                        {wireExports.sheetExports.length}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 border-l border-border py-1 pl-3">
+                      <span className="text-[11px] text-muted-foreground">Generated</span>
+                      <span className="text-xs text-foreground">
+                        {wireExports.generatedAt ? new Date(wireExports.generatedAt).toLocaleDateString() : "—"}
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 border-l border-border py-1 pl-3">
+                      <span className="text-[11px] text-muted-foreground">Legal Revision</span>
+                      <span className="font-mono text-sm font-semibold text-foreground">
+                        {project?.revision ?? "—"}
+                      </span>
+                    </div>
+                  </div>
+                ) : null}
+
                 <div className="flex flex-wrap items-center gap-2">
-                  <Button size="sm" variant="outline" disabled={regeneratingWire}>
-                    <Download className="mr-2 h-3.5 w-3.5" />
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    disabled={regeneratingWire}
+                    onClick={() => void handleRegenerateWireExports()}
+                  >
+                    {regeneratingWire ? (
+                      <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Download className="mr-2 h-3.5 w-3.5" />
+                    )}
                     Generate All
                   </Button>
                   <Button size="sm" variant="outline" onClick={openWireReview}>
@@ -2832,18 +2960,60 @@ export function ProjectDetailsWorkspace({
                 description="Manage cross-wire schema generation and location visibility."
               />
               <div className="mt-4 space-y-4">
+                {/* Stats header */}
+                <div className="grid grid-cols-3 gap-2 rounded-xl border border-border bg-muted/30 p-3">
+                  <div className="flex flex-col gap-0.5 py-1">
+                    <span className="text-[11px] text-muted-foreground">Assignments</span>
+                    <span className="text-lg font-semibold text-foreground">
+                      {crossWireAssignments.length}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-0.5 border-l border-border py-1 pl-3">
+                    <span className="text-[11px] text-muted-foreground">Legal Revision</span>
+                    <span className="font-mono text-sm font-semibold text-foreground">
+                      {project?.revision ?? "—"}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-0.5 border-l border-border py-1 pl-3">
+                    <span className="text-[11px] text-muted-foreground">Generated</span>
+                    <span className="text-xs text-foreground">
+                      {crossWireSchema?.generatedAt ? new Date(crossWireSchema.generatedAt).toLocaleDateString() : "—"}
+                    </span>
+                  </div>
+                </div>
+
                 <div className="flex flex-wrap items-center gap-2">
-                  <Button size="sm" variant="outline" disabled={regeneratingCrossWireSchema}>
-                    <GitBranch className="mr-2 h-3.5 w-3.5" />
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    disabled={regeneratingCrossWireSchema}
+                    onClick={() => void handleRegenerateCrossWireSchema()}
+                  >
+                    {regeneratingCrossWireSchema ? (
+                      <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <GitBranch className="mr-2 h-3.5 w-3.5" />
+                    )}
                     Generate
                   </Button>
-                  <Button size="sm" variant="outline">
-                    <Download className="mr-2 h-3.5 w-3.5" />
-                    PDF
+                  <Button size="sm" variant="outline" asChild>
+                    <a
+                      href={`/api/projects/${encodeURIComponent(project?.id ?? "")}/cross-wire-pdf`}
+                      download
+                    >
+                      <Download className="mr-2 h-3.5 w-3.5" />
+                      PDF
+                    </a>
                   </Button>
-                  <Button size="sm" variant="outline">
-                    <ExternalLink className="mr-2 h-3.5 w-3.5" />
-                    Open External URL
+                  <Button size="sm" variant="outline" asChild>
+                    <a
+                      href={crossWirePreviewHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink className="mr-2 h-3.5 w-3.5" />
+                      Print Preview
+                    </a>
                   </Button>
                 </div>
 
