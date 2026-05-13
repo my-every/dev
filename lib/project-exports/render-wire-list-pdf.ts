@@ -5,6 +5,7 @@ import path from "node:path";
 import os from "node:os";
 
 import { chromium } from "playwright";
+import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 
 async function pathExists(targetPath: string) {
   try {
@@ -161,6 +162,127 @@ export async function renderCrossWirePdfFromRoute(options: {
   return renderPdfFromUrl(targetUrl);
 }
 
+async function renderFallbackPdf(targetUrl: URL): Promise<Uint8Array> {
+  // Create a simple PDF using pdf-lib when Playwright is not available
+  const pdfDoc = await PDFDocument.create();
+  const page = pdfDoc.addPage([612, 792]); // Letter size
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  
+  const { width, height } = page.getSize();
+  const margin = 40;
+  let y = height - margin;
+  
+  // Header
+  page.drawText("Wire List / Brand List Export", {
+    x: margin,
+    y: y,
+    size: 18,
+    font: boldFont,
+    color: rgb(0.1, 0.1, 0.1),
+  });
+  y -= 30;
+  
+  // Timestamp
+  page.drawText(`Generated: ${new Date().toLocaleString()}`, {
+    x: margin,
+    y: y,
+    size: 10,
+    font: font,
+    color: rgb(0.4, 0.4, 0.4),
+  });
+  y -= 40;
+  
+  // Info box
+  page.drawRectangle({
+    x: margin,
+    y: y - 80,
+    width: width - margin * 2,
+    height: 100,
+    color: rgb(0.97, 0.97, 0.95),
+    borderColor: rgb(0.9, 0.9, 0.85),
+    borderWidth: 1,
+  });
+  
+  y -= 20;
+  page.drawText("PDF Generation Notice", {
+    x: margin + 15,
+    y: y,
+    size: 12,
+    font: boldFont,
+    color: rgb(0.2, 0.2, 0.2),
+  });
+  y -= 20;
+  
+  const noticeLines = [
+    "The full PDF rendering requires a browser environment (Playwright/Chromium).",
+    "This simplified export contains basic document information.",
+    "",
+    "For production deployments, ensure Playwright browsers are installed:",
+    "  npx playwright install chromium",
+  ];
+  
+  for (const line of noticeLines) {
+    page.drawText(line, {
+      x: margin + 15,
+      y: y,
+      size: 9,
+      font: font,
+      color: rgb(0.35, 0.35, 0.35),
+    });
+    y -= 14;
+  }
+  
+  y -= 30;
+  
+  // Document details
+  page.drawText("Document Details", {
+    x: margin,
+    y: y,
+    size: 14,
+    font: boldFont,
+    color: rgb(0.1, 0.1, 0.1),
+  });
+  y -= 25;
+  
+  const details = [
+    `Source URL: ${targetUrl.pathname}`,
+    `Project ID: ${targetUrl.pathname.split("/")[3] || "N/A"}`,
+    `Document Type: ${targetUrl.pathname.includes("cross-wire") ? "Cross Wire" : targetUrl.pathname.includes("brand") ? "Brand List" : "Wire List"}`,
+  ];
+  
+  for (const detail of details) {
+    page.drawText(detail, {
+      x: margin,
+      y: y,
+      size: 10,
+      font: font,
+      color: rgb(0.3, 0.3, 0.3),
+    });
+    y -= 18;
+  }
+  
+  // Footer
+  page.drawText("Caterpillar: Confidential Green", {
+    x: margin,
+    y: 30,
+    size: 8,
+    font: font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  page.drawText("Page 1 of 1", {
+    x: width - margin - 50,
+    y: 30,
+    size: 8,
+    font: font,
+    color: rgb(0.5, 0.5, 0.5),
+  });
+  
+  const pdfBytes = await pdfDoc.save();
+  return pdfBytes;
+}
+
 async function renderPdfFromUrl(targetUrl: URL): Promise<Uint8Array> {
   let browser;
   try {
@@ -168,15 +290,20 @@ async function renderPdfFromUrl(targetUrl: URL): Promise<Uint8Array> {
   } catch (launchError) {
     const fallbackExecutablePath = await resolveChromiumExecutablePath();
     if (fallbackExecutablePath) {
-      browser = await chromium.launch({
-        headless: true,
-        executablePath: fallbackExecutablePath,
-      });
+      try {
+        browser = await chromium.launch({
+          headless: true,
+          executablePath: fallbackExecutablePath,
+        });
+      } catch {
+        // If fallback executable also fails, use pdf-lib fallback
+        console.warn("[v0] Playwright launch failed, using pdf-lib fallback");
+        return renderFallbackPdf(targetUrl);
+      }
     } else {
-      const message = launchError instanceof Error ? launchError.message : String(launchError);
-      throw new Error(
-        `Playwright Chromium browser is not available. Run "npx playwright install chromium" to install it. (${message})`,
-      );
+      // No browser available, use pdf-lib fallback instead of throwing
+      console.warn("[v0] No Chromium browser available, using pdf-lib fallback");
+      return renderFallbackPdf(targetUrl);
     }
   }
 
