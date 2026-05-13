@@ -68,24 +68,31 @@ export function BoxSideCell({
     );
   }
 
-  // When editing, show simple select dropdown
+  // When editing, show select dropdown with visible label
   return (
-    <select
-      value={initialValue || ""}
-      onChange={handleChange}
-      className={cn(
-        "w-full min-h-[44px] px-2 py-1 text-xs rounded border",
-        "bg-background text-foreground",
-        "focus:outline-none focus:ring-2 focus:ring-ring",
-        initialValue ? "border-border" : "border-dashed border-muted-foreground/50"
+    <div className="flex flex-col gap-1">
+      <select
+        value={initialValue || ""}
+        onChange={handleChange}
+        className={cn(
+          "w-full min-h-[44px] px-2 py-1 text-xs rounded border",
+          "bg-background text-foreground",
+          "focus:outline-none focus:ring-2 focus:ring-ring",
+          initialValue ? "border-border" : "border-dashed border-muted-foreground/50"
+        )}
+      >
+        <option value="">Select...</option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      {initialValue && (
+        <span className="text-[10px] text-muted-foreground truncate">
+          {displayValue}
+        </span>
       )}
-    >
-      <option value="">Set Box Side</option>
-      {options.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </select>
+    </div>
   );
 }

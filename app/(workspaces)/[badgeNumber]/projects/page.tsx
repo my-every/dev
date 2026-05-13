@@ -365,6 +365,7 @@ export default function ProjectsWorkspacePage({
         />
       }
       showAside={true}
+      asideTitle="Activity"
       aside={
         <ActivityTimelineContextPanel
           badge={params.badgeNumber}
@@ -419,19 +420,12 @@ export default function ProjectsWorkspacePage({
         </div>
       }
     >
-      <div className="p-3 sm:p-4 lg:p-6">
-        <div className="flex items-start gap-4 lg:gap-6">
-          {/* Main collection — fills available width */}
-          <div className="min-w-0 flex-1">
-            <ProjectsCollection
-              badgeNumber={params.badgeNumber}
-              projects={projects}
-              mode={mode}
-            />
-          </div>
-
-          {/* Worklog widget temporarily hidden */}
-        </div>
+      <div className="box-border min-h-0 w-full max-w-full flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-3 md:p-4 lg:p-6">
+        <ProjectsCollection
+          badgeNumber={params.badgeNumber}
+          projects={projects}
+          mode={mode}
+        />
       </div>
     </PageContent>
   );

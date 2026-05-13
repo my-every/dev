@@ -83,6 +83,7 @@ import { useLayoutUI } from "@/components/layout/layout-context";
 import { activityService } from "@/lib/services/activity-service";
 import type { ActivityAction } from "@/types/activity";
 import { VisibilityMatrixConcept } from "@/components/projects/visibility-matrix-concept";
+import { BoxSideConfig, getDefaultExternalLocationSettings } from "@/boxSide";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -446,6 +447,7 @@ export function ProjectDetailsWorkspace({
   const [wireReviewOpen, setWireReviewOpen] = useState(false);
   const [brandReviewOpen, setBrandReviewOpen] = useState(false);
   const [autoStartBrandImport, setAutoStartBrandImport] = useState(false);
+  const [applyingDefaults, setApplyingDefaults] = useState(false);
 
   // ─── Fetch Project Data ─────────────────────────────────────────────────────
 
@@ -744,16 +746,73 @@ export function ProjectDetailsWorkspace({
       const updated = await res.json();
       const savedProject = updated.project ?? updated;
       setProject(savedProject);
-      // Keep edit mode active - update editDraft with saved data so user can continue editing
-      setEditDraft(savedProject);
+      
+      // Exit edit mode first, then toast and log activity
+      setEditDraft(null);
+      setIsEditing(false);
       toast({ title: "Project saved" });
-      void logActivityWithFlash("project_updated", { fields: Object.keys(editDraft) });
+      
+      // Log activity (fire and forget - don't block on this)
+      logActivityWithFlash("PROJECT_DETAILS_UPDATED", { 
+        fields: Object.keys(editDraft),
+        legalSync: updated.legalSync,
+      }).catch(() => {
+        // Silently ignore activity logging errors
+      });
     } catch (err) {
       setSaveError(err instanceof Error ? err.message : "Save failed");
     } finally {
       setSaving(false);
     }
   }, [editDraft, project, toast, logActivityWithFlash]);
+
+  // Keyboard shortcuts: e = edit, s = save, c = cancel
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input, textarea, or select
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.tagName === "SELECT" ||
+        target.isContentEditable
+      ) {
+        return;
+      }
+
+      // Ignore if modifier keys are pressed (except for potential future combos)
+      if (e.metaKey || e.ctrlKey || e.altKey) {
+        return;
+      }
+
+      switch (e.key.toLowerCase()) {
+        case "e":
+          if (!isEditing && project) {
+            e.preventDefault();
+            setEditDraft({ ...project });
+            setIsEditing(true);
+          }
+          break;
+        case "s":
+          if (isEditing && editDraft && !saving) {
+            e.preventDefault();
+            void handleSave();
+          }
+          break;
+        case "c":
+          if (isEditing && !saving) {
+            e.preventDefault();
+            setEditDraft(null);
+            setIsEditing(false);
+            setSaveError(null);
+          }
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isEditing, project, editDraft, saving, handleSave]);
 
   // Handler for updating assignment unitType via API
   const handleAssignmentUnitTypeChange = useCallback(async (sheetSlug: string, unitType: string) => {
@@ -1029,7 +1088,7 @@ export function ProjectDetailsWorkspace({
       if (workbookFile) uploadedFiles.push("workbook");
       if (greenChangesFile) uploadedFiles.push("green-changes");
       if (layoutFile) uploadedFiles.push("layout");
-      void logActivityWithFlash("LEGAL_FILES_UPLOADED", {
+      void logActivityWithFlash("LEGAL_UPLOADED", {
         files: uploadedFiles,
         details: {
           workbook: workbookFile?.name,
@@ -1067,6 +1126,35 @@ export function ProjectDetailsWorkspace({
     );
   }, [assignmentEntries]);
 
+  // Setter for wire list visibility per location
+  const setWireListLocationVisibility = useCallback(
+    (sheetSlug: string, locationKey: string, visible: boolean) => {
+      setWireListSettingsMatrix((prev) => ({
+        ...prev,
+        [sheetSlug]: {
+          ...(prev[sheetSlug] ?? {}),
+          [locationKey]: visible,
+        },
+      }));
+    },
+    [],
+  );
+
+  // Setter for brand list visibility per location
+  const setBrandListLocationVisibility = useCallback(
+    (sheetSlug: string, locationKey: string, visible: boolean) => {
+      setBrandListSettingsMatrix((prev) => ({
+        ...prev,
+        [sheetSlug]: {
+          ...(prev[sheetSlug] ?? {}),
+          [locationKey]: visible,
+        },
+      }));
+    },
+    [],
+  );
+
+  // Setter for cross wire visibility per location
   const setCrossWireLocationVisibility = useCallback(
     (sheetSlug: string, locationKey: string, visible: boolean) => {
       setCrossWireSettingsMatrix((prev) => ({
@@ -1210,6 +1298,98 @@ export function ProjectDetailsWorkspace({
     return `/api/projects/${encodeURIComponent(project.id)}/cross-wire-pdf`;
   }, [project?.id, assignmentEntries, crossWireSettingsMatrix, crossWireSwapLocationsAll, crossWireSwapLocationsBySheet]);
 
+  // Handler for applying default visibility settings based on box side installation order
+  const handleApplyDefaultSettings = useCallback(async (options: { overwriteExisting: boolean }) => {
+    if (!project?.id) return;
+
+    setApplyingDefaults(true);
+    try {
+      const response = await fetch(
+        `/api/projects/${encodeURIComponent(project.id)}/default-settings`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            applyDefaults: true,
+            syncToLegal: true,
+            overwriteExisting: options.overwriteExisting,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error ?? "Failed to apply default settings");
+      }
+
+      const result = await response.json();
+      
+      // Refresh the project data to pick up the updated settings
+      if (result.project) {
+        setProject(result.project);
+      }
+
+      // Log activity and flash the activity panel
+      void logActivityWithFlash("SETTINGS_CHANGED", {
+        settingsType: "default_visibility",
+        updatedCount: result.updatedCount,
+        updatedAssignments: result.updatedAssignments,
+        overwriteExisting: options.overwriteExisting,
+        legalSync: result.legalSync,
+      });
+
+      toast({
+        title: "Default settings applied",
+        description: result.message,
+      });
+
+      // Reload visibility settings to reflect the changes
+      setLoadingSchemaLocations(true);
+      const locRes = await fetch(`/api/projects/${encodeURIComponent(project.id)}/schema-locations`);
+      if (locRes.ok) {
+        const locData = await locRes.json();
+        setSchemaExternalLocations(locData.bySheet ?? {});
+        
+        // Rebuild settings matrices from the updated project
+        if (result.project?.assignments) {
+          const newWireSettings: WireListSettingsMatrix = {};
+          const newBrandSettings: WireListSettingsMatrix = {};
+          const newCrossSettings: WireListSettingsMatrix = {};
+          
+          for (const [slug, assignment] of Object.entries(result.project.assignments as Record<string, { externalLocations?: Array<{ location: string; wireListVisible?: boolean; brandingVisible?: boolean }> }>)) {
+            const extLocs = assignment.externalLocations ?? [];
+            newWireSettings[slug] = {};
+            newBrandSettings[slug] = {};
+            newCrossSettings[slug] = {};
+            
+            for (const loc of extLocs) {
+              const key = loc.location?.trim().toUpperCase();
+              if (key) {
+                newWireSettings[slug][key] = loc.wireListVisible !== false;
+                newBrandSettings[slug][key] = loc.brandingVisible !== false;
+                newCrossSettings[slug][key] = loc.wireListVisible !== false; // Cross wire follows wire list
+              }
+            }
+          }
+          
+          setWireListSettingsMatrix(newWireSettings);
+          setBrandListSettingsMatrix(newBrandSettings);
+          setCrossWireSettingsMatrix(newCrossSettings);
+        }
+      }
+      setLoadingSchemaLocations(false);
+
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to apply default settings",
+        variant: "destructive",
+      });
+    } finally {
+      setApplyingDefaults(false);
+    }
+  }, [project?.id, logActivityWithFlash, toast]);
+
   const refreshBrandingExports = useCallback(async () => {
     if (!project?.id) {
       setBrandingExports(null);
@@ -1330,6 +1510,114 @@ export function ProjectDetailsWorkspace({
     hasSchemaExternalLocations,
     refreshSchemaLocations,
   ]);
+
+  // ─── Initialize Visibility Settings from boxSide logic ─────────────────────
+  // This ensures the matrix uses boxSide-based defaults on load rather than all enabled
+  
+  const [hasInitializedVisibilityDefaults, setHasInitializedVisibilityDefaults] = useState(false);
+  
+  useEffect(() => {
+    if (hasInitializedVisibilityDefaults || !project?.assignments || loading) return;
+    
+    // Helper to infer box side key from string
+    const inferBoxSideKey = (boxSide: string | undefined): string | undefined => {
+      if (!boxSide) return undefined;
+      const normalized = boxSide.toLowerCase().replace(/[\s_-]+/g, '');
+      for (const key of Object.keys(BoxSideConfig)) {
+        if (normalized === key.toLowerCase()) return key;
+      }
+      if (normalized.includes('leftdoor')) return 'leftDoor';
+      if (normalized.includes('rightdoor')) return 'rightDoor';
+      if (normalized.includes('leftback')) return 'leftBackSide';
+      if (normalized.includes('rightback')) return 'rightBackSide';
+      if (normalized.includes('topback')) return 'topBackSide';
+      if (normalized.includes('leftside')) return 'leftSide';
+      if (normalized.includes('rightside')) return 'rightSide';
+      if (normalized.includes('back') && !normalized.includes('left') && !normalized.includes('right') && !normalized.includes('top')) {
+        return 'backSide';
+      }
+      return undefined;
+    };
+    
+    // Build location-to-boxSide lookup map from all assignments
+    const locationToBoxSide: Record<string, string> = {};
+    for (const assignment of Object.values(project.assignments)) {
+      const boxSideKey = inferBoxSideKey(assignment.boxSide);
+      if (!boxSideKey) continue;
+      if (assignment.sheetName) {
+        locationToBoxSide[assignment.sheetName.trim().toUpperCase()] = boxSideKey;
+      }
+      if (assignment.normalizedTitle) {
+        locationToBoxSide[assignment.normalizedTitle.trim().toUpperCase()] = boxSideKey;
+      }
+      if (assignment.boxNumber) {
+        const boxNum = assignment.boxNumber.trim().toUpperCase();
+        locationToBoxSide[boxNum] = boxSideKey;
+        locationToBoxSide[`${boxNum} PANEL`] = boxSideKey;
+      }
+    }
+    
+    const newWireSettings: WireListSettingsMatrix = {};
+    const newBrandSettings: WireListSettingsMatrix = {};
+    const newCrossSettings: WireListSettingsMatrix = {};
+    
+    for (const [slug, assignment] of Object.entries(project.assignments)) {
+      newWireSettings[slug] = {};
+      newBrandSettings[slug] = {};
+      newCrossSettings[slug] = {};
+      
+      const assignmentBoxSideKey = inferBoxSideKey(assignment.boxSide);
+      const extLocs = assignment.externalLocations ?? [];
+      
+      for (const loc of extLocs) {
+        const locationKey = loc.location?.trim().toUpperCase();
+        if (!locationKey) continue;
+        
+        // Check if there are explicit user-set values (wireListVisible/brandingVisible explicitly set)
+        const hasExplicitWire = loc.wireListVisible !== undefined;
+        const hasExplicitBrand = loc.brandingVisible !== undefined;
+        
+        if (hasExplicitWire && hasExplicitBrand) {
+          // User has customized these settings - use them
+          newWireSettings[slug][locationKey] = loc.wireListVisible!;
+          newBrandSettings[slug][locationKey] = loc.brandingVisible!;
+          newCrossSettings[slug][locationKey] = loc.wireListVisible !== false;
+        } else {
+          // Compute defaults from boxSide logic
+          let targetBoxSideKey = locationToBoxSide[locationKey];
+          
+          if (!targetBoxSideKey) {
+            // Try partial match
+            for (const [knownLoc, boxSide] of Object.entries(locationToBoxSide)) {
+              if (locationKey.includes(knownLoc) || knownLoc.includes(locationKey)) {
+                targetBoxSideKey = boxSide;
+                break;
+              }
+            }
+          }
+          
+          if (!targetBoxSideKey) {
+            // Try inferring from location text itself
+            targetBoxSideKey = inferBoxSideKey(locationKey);
+          }
+          
+          // Get defaults based on boxSide relationship
+          const defaults = assignmentBoxSideKey && targetBoxSideKey
+            ? getDefaultExternalLocationSettings(assignmentBoxSideKey, targetBoxSideKey)
+            : { wire_list: true, brand_list: true, cross_wire: true };
+          
+          newWireSettings[slug][locationKey] = hasExplicitWire ? loc.wireListVisible! : defaults.wire_list;
+          newBrandSettings[slug][locationKey] = hasExplicitBrand ? loc.brandingVisible! : defaults.brand_list;
+          newCrossSettings[slug][locationKey] = defaults.cross_wire;
+        }
+      }
+    }
+    
+    setWireListSettingsMatrix(newWireSettings);
+    setBrandListSettingsMatrix(newBrandSettings);
+    setCrossWireSettingsMatrix(newCrossSettings);
+    setHasInitializedVisibilityDefaults(true);
+  }, [project?.assignments, loading, hasInitializedVisibilityDefaults]);
 
   // ─── Brand List Settings Handlers ───────────────────────────────────────────
 
@@ -1453,7 +1741,7 @@ export function ProjectDetailsWorkspace({
     }
   }, [project?.id, wireListSettingsMatrix, refreshWireExports]);
 
-  // ─── Render Loading/Error States ────────────────────────────────────────────
+  // ─── Render Loading/Error States ──────────────────��──���──────────────────────
 
   if (loading) {
     return (
@@ -1503,18 +1791,27 @@ export function ProjectDetailsWorkspace({
         <div className="flex items-center gap-2">
           {isEditing ? (
             <>
-              <Button variant="ghost" size="sm" onClick={cancelEditMode} disabled={saving}>
+              <Button variant="ghost" size="sm" onClick={cancelEditMode} disabled={saving} title="Cancel (C)">
                 Cancel
+                <kbd className="ml-1.5 hidden sm:inline-flex h-5 items-center rounded border border-border bg-muted px-1 font-mono text-[10px] text-muted-foreground">
+                  C
+                </kbd>
               </Button>
-              <Button size="sm" onClick={handleSave} disabled={saving}>
+              <Button size="sm" onClick={handleSave} disabled={saving} title="Save (S)">
                 {saving ? <Loader2 className="mr-2 h-3 w-3 animate-spin" /> : null}
                 Save
+                <kbd className="ml-1.5 hidden sm:inline-flex h-5 items-center rounded border border-primary-foreground/30 bg-primary-foreground/10 px-1 font-mono text-[10px]">
+                  S
+                </kbd>
               </Button>
             </>
           ) : (
-            <Button variant="outline" size="sm" onClick={enterEditMode}>
+            <Button variant="outline" size="sm" onClick={enterEditMode} title="Edit (E)">
               <Pencil className="mr-2 h-3 w-3" />
               Edit
+              <kbd className="ml-1.5 hidden sm:inline-flex h-5 items-center rounded border border-border bg-muted px-1 font-mono text-[10px] text-muted-foreground">
+                E
+              </kbd>
             </Button>
           )}
         </div>
@@ -1549,7 +1846,7 @@ export function ProjectDetailsWorkspace({
         <div className="flex-1 min-w-0 overflow-y-auto" ref={contentRef}>
           <div className="mx-auto max-w-4xl px-4 py-6 space-y-12">
             
-            {/* ─── Details Section ─────────────────────────────────────────── */}
+            {/* ─── Details Section ───────────────────────────────��─────────── */}
             <section data-section="details" className="scroll-mt-6">
               <SectionHeader
                 icon={FileText}
@@ -2801,6 +3098,8 @@ export function ProjectDetailsWorkspace({
                   onSaveAndGenerateAllWireLists={handleBulkSaveAndGenerateWireLists}
                   onSaveAndGenerateAllBrandLists={handleBulkSaveAndGenerateBrandLists}
                   onSaveAndGenerateCrossWire={handleBulkSaveAndGenerateCrossWire}
+                  onApplyDefaultSettings={handleApplyDefaultSettings}
+                  applyingDefaults={applyingDefaults}
                   loading={loadingSchemaLocations}
                 />
               </div>

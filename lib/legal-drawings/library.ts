@@ -1421,3 +1421,84 @@ export async function ensureLegalWorkspaceProject(input: {
     unitNumber: null,
   })
 }
+
+/**
+ * Syncs assignment settings (unitType, boxSide, normalizedTitle, boxNumber) from a project
+ * instance back to the legal drawings manifest. This ensures future project instances
+ * created from the same legal revision will inherit these settings.
+ */
+export async function syncAssignmentSettingsToLegal(input: {
+  projectManifest: ProjectManifest
+}): Promise<{ synced: boolean; message: string }> {
+  const { projectManifest } = input
+  const pdNumber = projectManifest.pdNumber?.trim().toUpperCase()
+  const revision = projectManifest.revision?.trim().toUpperCase()
+
+  if (!pdNumber) {
+    return { synced: false, message: 'Project manifest is missing pdNumber' }
+  }
+  if (!revision) {
+    return { synced: false, message: 'Project manifest is missing revision' }
+  }
+
+  const legalRoot = await getLegalDrawingsRoot()
+  const revisionRoot = path.join(legalRoot, pdNumber, revision)
+  const legalManifestPath = path.join(revisionRoot, 'project-manifest.json')
+
+  // Check if legal manifest exists
+  if (!(await pathExists(legalManifestPath))) {
+    return { synced: false, message: `Legal manifest not found at ${legalManifestPath}` }
+  }
+
+  // Read existing legal manifest
+  const legalManifest = await readJsonFile<ProjectManifest>(legalManifestPath)
+  if (!legalManifest) {
+    return { synced: false, message: 'Failed to read legal manifest' }
+  }
+
+  // Sync assignment settings from project to legal
+  let changesCount = 0
+  const projectAssignments = projectManifest.assignments ?? {}
+  const legalAssignments = legalManifest.assignments ?? {}
+
+  for (const [sheetSlug, projectAssignment] of Object.entries(projectAssignments)) {
+    const legalAssignment = legalAssignments[sheetSlug]
+    if (!legalAssignment) continue
+
+    // Sync unitType
+    if (projectAssignment.unitType && projectAssignment.unitType !== legalAssignment.unitType) {
+      legalAssignment.unitType = projectAssignment.unitType
+      changesCount++
+    }
+
+    // Sync boxSide
+    if (projectAssignment.boxSide !== undefined && projectAssignment.boxSide !== legalAssignment.boxSide) {
+      legalAssignment.boxSide = projectAssignment.boxSide
+      changesCount++
+    }
+
+    // Sync normalizedTitle
+    if (projectAssignment.normalizedTitle && projectAssignment.normalizedTitle !== legalAssignment.normalizedTitle) {
+      legalAssignment.normalizedTitle = projectAssignment.normalizedTitle
+      changesCount++
+    }
+
+    // Sync boxNumber
+    if (projectAssignment.boxNumber && projectAssignment.boxNumber !== legalAssignment.boxNumber) {
+      legalAssignment.boxNumber = projectAssignment.boxNumber
+      changesCount++
+    }
+  }
+
+  if (changesCount === 0) {
+    return { synced: false, message: 'No changes to sync' }
+  }
+
+  // Write updated legal manifest
+  await writeJsonFile(legalManifestPath, legalManifest)
+
+  // Invalidate cache so future reads pick up the changes
+  invalidateLegalDrawingsLibraryManifestCache()
+
+  return { synced: true, message: `Synced ${changesCount} assignment setting(s) to legal manifest` }
+}

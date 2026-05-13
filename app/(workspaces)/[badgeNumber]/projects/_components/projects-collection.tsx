@@ -137,7 +137,7 @@ export function ProjectsCollection({
         }));
 
     return (
-        <div className="space-y-4">
+        <div className="w-full max-w-full space-y-2 overflow-hidden sm:space-y-3 md:space-y-4">
             <ActiveProjectsLWCChart projects={chartProjects} />
             <WorkspaceCollectionView
                 items={items}

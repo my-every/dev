@@ -17,36 +17,36 @@ export function WorkspaceCollectionViewToggle({
     className,
 }: WorkspaceCollectionViewToggleProps) {
     return (
-        <div className={cn("inline-flex max-w-max items-center rounded-xl border border-border bg-card p-1", className)}>
+        <div className={cn("inline-flex shrink-0 items-center rounded-lg border border-border bg-card p-0.5 sm:rounded-xl sm:p-1", className)}>
             <Button
                 type="button"
                 size="sm"
                 variant={value === "grid" ? "secondary" : "ghost"}
-                className="h-8 rounded-lg px-2.5"
+                className="h-6 rounded-md px-1.5 sm:h-7 sm:px-2 md:h-8 md:rounded-lg md:px-2.5"
                 onClick={() => onValueChange("grid")}
                 aria-pressed={value === "grid"}
             >
-                <Grid3X3 className="h-4 w-4" />
+                <Grid3X3 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </Button>
             <Button
                 type="button"
                 size="sm"
                 variant={value === "list" ? "secondary" : "ghost"}
-                className="h-8 rounded-lg px-2.5"
+                className="h-6 rounded-md px-1.5 sm:h-7 sm:px-2 md:h-8 md:rounded-lg md:px-2.5"
                 onClick={() => onValueChange("list")}
                 aria-pressed={value === "list"}
             >
-                <List className="h-4 w-4" />
+                <List className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </Button>
             <Button
                 type="button"
                 size="sm"
                 variant={value === "kanban" ? "secondary" : "ghost"}
-                className="h-8 rounded-lg px-2.5"
+                className="h-6 rounded-md px-1.5 sm:h-7 sm:px-2 md:h-8 md:rounded-lg md:px-2.5"
                 onClick={() => onValueChange("kanban")}
                 aria-pressed={value === "kanban"}
             >
-                <Columns3 className="h-4 w-4" />
+                <Columns3 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </Button>
         </div>
     );

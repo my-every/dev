@@ -5,6 +5,7 @@ import {
   writeProjectManifest,
 } from "@/lib/project-state/share-project-state-handlers";
 import { enrichManifestFromProjectState } from "@/lib/project-state/manifest-enrichment";
+import { syncAssignmentSettingsToLegal } from "@/lib/legal-drawings/library";
 import { AssignmentPatchSchema } from "@/lib/manifest/engineer-schemas";
 import { appendAuditEntry } from "@/lib/manifest/audit-log";
 import { addActivityToShare } from "@/lib/activity/share-activity-store";
@@ -81,6 +82,13 @@ export async function PATCH(
     },
   });
   await writeProjectManifest(updatedManifest);
+
+  // Sync assignment settings (unitType, boxSide, etc.) back to legal drawings
+  // so future project instances inherit these values
+  if (patch.unitType !== undefined || patch.boxSide !== undefined || 
+      patch.normalizedTitle !== undefined || patch.boxNumber !== undefined) {
+    await syncAssignmentSettingsToLegal({ projectManifest: updatedManifest });
+  }
 
   const badgeNumber = req.headers.get("x-badge-number") ?? "unknown";
   const shift = req.headers.get("x-shift") ?? "1st";

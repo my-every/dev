@@ -213,7 +213,7 @@ function WorkspaceCollectionSelectFilter({
 
     return (
         <Select value={selectedValue} onValueChange={onValueChange}>
-            <SelectTrigger className={cn("h-9 w-[120px] shrink-0 rounded-lg border-border bg-card text-xs sm:w-[140px]", filter.className)}>
+            <SelectTrigger className={cn("h-7 w-[100px] shrink-0 rounded-md border-border bg-card text-[10px] sm:h-8 sm:w-[120px] sm:rounded-lg sm:text-xs md:h-9 md:w-[140px]", filter.className)}>
                 <SelectValue placeholder={filter.placeholder ?? filter.label} />
             </SelectTrigger>
             <SelectContent>
@@ -256,10 +256,10 @@ function WorkspaceCollectionMultiSelectFilter({
                 <Button
                     type="button"
                     variant="outline"
-                    className={cn("h-9 min-w-42.5 justify-between rounded-lg border-border bg-card text-xs font-normal", filter.className)}
+                    className={cn("h-7 min-w-[6.5rem] justify-between rounded-md border-border bg-card text-[10px] font-normal sm:h-8 sm:min-w-[8rem] sm:rounded-lg sm:text-xs md:h-9 md:min-w-[10rem]", filter.className)}
                 >
                     <span className="truncate">{summary}</span>
-                    <ChevronDown className="ml-2 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                    <ChevronDown className="ml-1 h-3 w-3 shrink-0 text-muted-foreground sm:ml-2 sm:h-3.5 sm:w-3.5" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent align="end" className="w-72 space-y-2 p-2">

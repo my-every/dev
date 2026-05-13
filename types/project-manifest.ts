@@ -206,6 +206,16 @@ export interface ManifestAssignment extends ManifestSheetBase {
   rails: string[]
   /** Per-location visibility config for print output; backfilled from UBP reference. */
   externalLocations?: import('@/lib/layout-matching/ubp-reference-index').ExternalLocationConfig[]
+  /** 
+   * Pre-computed default visibility settings based on boxSide installation order logic.
+   * Maps location key (uppercase) to { wireListVisible, brandingVisible, crossWireVisible }.
+   * Used as initial state when loading the matrix - actual settings in externalLocations may override.
+   */
+  visibilityDefaults?: Record<string, {
+    wireListVisible: boolean
+    brandingVisible: boolean
+    crossWireVisible: boolean
+  }>
   whiteLabels: string[]
   blueLabels: string[]
   boardAssignment?: ManifestBoardAssignmentMeta

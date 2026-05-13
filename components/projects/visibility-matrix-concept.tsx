@@ -3,10 +3,21 @@
 import { useMemo, useCallback, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Loader2, Download, FileArchive, FileText } from "lucide-react";
+import { Loader2, Download, FileArchive, FileText, Settings2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { UnitTypePopover } from "./unit-type-popover";
 import { BoxSideCell } from "./box-side-cell";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { BoxSideConfig, getDefaultExternalLocationSettings } from "@/boxSide";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 // Visibility Matrix: Unified table for Wire List, Brand List, Cross Wire settings
@@ -40,11 +51,36 @@ interface VisibilityMatrixProps {
   onSaveAndGenerateAllWireLists?: () => Promise<string | null>; // returns download URL or null
   onSaveAndGenerateAllBrandLists?: () => Promise<string | null>;
   onSaveAndGenerateCrossWire?: () => Promise<string | null>;
+  /** Callback to apply default visibility settings based on box side installation order */
+  onApplyDefaultSettings?: (options: { overwriteExisting: boolean }) => Promise<void>;
+  /** Whether default settings are currently being applied */
+  applyingDefaults?: boolean;
   loading?: boolean;
 }
 
 type GeneratingState = "idle" | "generating" | "ready" | "error";
 type BulkGeneratingState = { state: GeneratingState; downloadUrl: string | null };
+
+// ─── Helper: Infer boxSide key from string ───────────────────────────────────
+
+function inferBoxSideKey(boxSide: string | undefined): string | undefined {
+  if (!boxSide) return undefined;
+  const normalized = boxSide.toLowerCase().replace(/[\s_-]+/g, '');
+  for (const key of Object.keys(BoxSideConfig)) {
+    if (normalized === key.toLowerCase()) return key;
+  }
+  if (normalized.includes('leftdoor')) return 'leftDoor';
+  if (normalized.includes('rightdoor')) return 'rightDoor';
+  if (normalized.includes('leftback')) return 'leftBackSide';
+  if (normalized.includes('rightback')) return 'rightBackSide';
+  if (normalized.includes('topback')) return 'topBackSide';
+  if (normalized.includes('leftside')) return 'leftSide';
+  if (normalized.includes('rightside')) return 'rightSide';
+  if (normalized.includes('back') && !normalized.includes('left') && !normalized.includes('right') && !normalized.includes('top')) {
+    return 'backSide';
+  }
+  return undefined;
+}
 
 // ─── Helper: Extract unit type from location or title ────────────────────────
 
@@ -75,6 +111,8 @@ export function VisibilityMatrixConcept({
   onSaveAndGenerateAllWireLists,
   onSaveAndGenerateAllBrandLists,
   onSaveAndGenerateCrossWire,
+  onApplyDefaultSettings,
+  applyingDefaults = false,
   loading = false,
 }: VisibilityMatrixProps) {
   const [wireListBulk, setWireListBulk] = useState<BulkGeneratingState>({ state: "idle", downloadUrl: null });
@@ -94,9 +132,26 @@ export function VisibilityMatrixConcept({
       assignmentRowSpan: number;
     }> = [];
 
+    // Helper to get boxSide installation order (lower = earlier in installation)
+    const getBoxSideOrder = (boxSide: string | undefined): number => {
+      const key = inferBoxSideKey(boxSide);
+      if (!key || !BoxSideConfig[key]) return 999; // Unknown goes last
+      return BoxSideConfig[key].order;
+    };
+
+    // Sort assignments by boxSide installation order:
+    // leftDoor (1) -> rightDoor (1) -> leftSide (2) -> topBackSide (3) -> leftBackSide (4) -> rightBackSide (5) -> rightSide (6)
+    const sortedAssignments = [...assignments].sort((a, b) => {
+      const orderA = getBoxSideOrder(a.boxSide);
+      const orderB = getBoxSideOrder(b.boxSide);
+      if (orderA !== orderB) return orderA - orderB;
+      // Secondary sort by sheet name for stability
+      return (a.sheetName ?? '').localeCompare(b.sheetName ?? '');
+    });
+
     // Group assignments by unit type first (extracted from first external location)
     const unitGroups: Record<string, Assignment[]> = {};
-    for (const assignment of assignments) {
+    for (const assignment of sortedAssignments) {
       const locations = externalLocations[assignment.sheetSlug] ?? [];
       // Extract unit type from first location (e.g., "JB71 B,PNL DC PWR" -> "JB71")
       const firstLocation = locations[0] ?? "";
@@ -107,8 +162,13 @@ export function VisibilityMatrixConcept({
       unitGroups[unitType].push(assignment);
     }
 
+    // Sort unit groups by number of assignments (most first)
+    const sortedUnitGroups = Object.entries(unitGroups).sort(
+      ([, a], [, b]) => b.length - a.length
+    );
+
     // Calculate row spans for each unit and assignment
-    for (const [unitType, unitAssignments] of Object.entries(unitGroups)) {
+    for (const [unitType, unitAssignments] of sortedUnitGroups) {
       let unitRowCount = 0;
       const assignmentRowCounts: number[] = [];
 
@@ -161,6 +221,66 @@ export function VisibilityMatrixConcept({
     return rows;
   }, [assignments, externalLocations]);
 
+  // Build location-to-boxSide lookup map from all assignments for default computation
+  const locationToBoxSide = useMemo(() => {
+    const map: Record<string, string> = {};
+    for (const assignment of assignments) {
+      const boxSideKey = inferBoxSideKey(assignment.boxSide);
+      if (!boxSideKey) continue;
+      if (assignment.sheetName) {
+        map[assignment.sheetName.trim().toUpperCase()] = boxSideKey;
+      }
+      if (assignment.normalizedTitle) {
+        map[assignment.normalizedTitle.trim().toUpperCase()] = boxSideKey;
+      }
+      // Add sheet slug variations
+      map[assignment.sheetSlug.toUpperCase()] = boxSideKey;
+    }
+    return map;
+  }, [assignments]);
+
+  // Helper to get default visibility based on boxSide logic
+  const getDefaultVisibility = useCallback((
+    assignmentBoxSide: string | undefined,
+    locationKey: string
+  ): { wire: boolean; brand: boolean; cross: boolean } => {
+    const assignmentBoxSideKey = inferBoxSideKey(assignmentBoxSide);
+    if (!assignmentBoxSideKey) {
+      // No boxSide set - default to true
+      return { wire: true, brand: true, cross: true };
+    }
+
+    // Try to find target box side from lookup map
+    let targetBoxSideKey = locationToBoxSide[locationKey];
+    
+    if (!targetBoxSideKey) {
+      // Try partial match
+      for (const [knownLoc, boxSide] of Object.entries(locationToBoxSide)) {
+        if (locationKey.includes(knownLoc) || knownLoc.includes(locationKey)) {
+          targetBoxSideKey = boxSide;
+          break;
+        }
+      }
+    }
+
+    if (!targetBoxSideKey) {
+      // Try inferring from location text itself
+      targetBoxSideKey = inferBoxSideKey(locationKey);
+    }
+
+    if (!targetBoxSideKey) {
+      // Can't determine target - default to true
+      return { wire: true, brand: true, cross: true };
+    }
+
+    const defaults = getDefaultExternalLocationSettings(assignmentBoxSideKey, targetBoxSideKey);
+    return {
+      wire: defaults.wire_list,
+      brand: defaults.brand_list,
+      cross: defaults.cross_wire,
+    };
+  }, [locationToBoxSide]);
+
   const handleSaveAndGenerateAllWireLists = useCallback(async () => {
     if (!onSaveAndGenerateAllWireLists) return;
     setWireListBulk({ state: "generating", downloadUrl: null });
@@ -194,6 +314,19 @@ export function VisibilityMatrixConcept({
     }
   }, [onSaveAndGenerateCrossWire]);
 
+  // Default settings popover state - must be before early returns
+  // Default to overwrite=true since applying defaults should reset to standard values
+  const [defaultSettingsOpen, setDefaultSettingsOpen] = useState(false);
+  const [overwriteExisting, setOverwriteExisting] = useState(true);
+
+  const handleApplyDefaults = useCallback(async () => {
+    if (!onApplyDefaultSettings) return;
+    await onApplyDefaultSettings({ overwriteExisting });
+    setDefaultSettingsOpen(false);
+    // Reset to true for next time
+    setOverwriteExisting(true);
+  }, [onApplyDefaultSettings, overwriteExisting]);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
@@ -221,6 +354,63 @@ export function VisibilityMatrixConcept({
             Configure visibility for Wire List, Brand List, and Cross Wire per external location
           </p>
         </div>
+        {/* Default Settings Drawer - only show when editing */}
+        {isEditing && onApplyDefaultSettings && (
+          <Drawer open={defaultSettingsOpen} onOpenChange={setDefaultSettingsOpen}>
+            <DrawerTrigger asChild>
+              <Button variant="outline" size="sm" className="gap-2 shrink-0">
+                <Settings2 className="h-4 w-4" />
+                <span className="hidden sm:inline">Default Settings</span>
+              </Button>
+            </DrawerTrigger>
+            <DrawerContent>
+              <DrawerHeader>
+                <DrawerTitle>Apply Default Visibility Settings</DrawerTitle>
+                <DrawerDescription>
+                  Set visibility based on box side installation order: Door in, top to bottom, left to right.
+                </DrawerDescription>
+              </DrawerHeader>
+              <div className="px-4 pb-6 space-y-4">
+                <div className="space-y-3 text-sm text-muted-foreground">
+                  <p><strong className="text-foreground">Logic:</strong> Enable settings for downstream connections, disable for upstream.</p>
+                  <ul className="list-disc pl-4 space-y-1.5">
+                    <li>Door: All connections enabled</li>
+                    <li>Left Side: Enabled downstream, cross-wire only to Door</li>
+                    <li>Top/Left/Right Back: Disabled upstream, enabled downstream</li>
+                    <li>Right Side: All disabled (endpoint)</li>
+                  </ul>
+                </div>
+                <div className="flex items-center gap-3 pt-3 border-t">
+                  <Checkbox
+                    id="overwrite-existing"
+                    checked={overwriteExisting}
+                    onCheckedChange={(checked) => setOverwriteExisting(checked === true)}
+                  />
+                  <Label htmlFor="overwrite-existing" className="text-sm cursor-pointer">
+                    Overwrite existing custom settings
+                  </Label>
+                </div>
+                <div className="flex flex-col sm:flex-row justify-end gap-3 pt-3">
+                  <Button
+                    variant="outline"
+                    className="min-h-[44px]"
+                    onClick={() => setDefaultSettingsOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className="min-h-[44px]"
+                    onClick={handleApplyDefaults}
+                    disabled={applyingDefaults}
+                  >
+                    {applyingDefaults && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Apply Defaults
+                  </Button>
+                </div>
+              </div>
+            </DrawerContent>
+          </Drawer>
+        )}
       </div>
 
       {/* Matrix Table */}
@@ -253,9 +443,21 @@ export function VisibilityMatrixConcept({
           </thead>
           <tbody>
             {matrixRows.map((row, rowIdx) => {
-              const wireVisible = row.locKey ? (wireListSettings[row.assignment.sheetSlug]?.[row.locKey] ?? true) : true;
-              const brandVisible = row.locKey ? (brandListSettings[row.assignment.sheetSlug]?.[row.locKey] ?? true) : true;
-              const crossVisible = row.locKey ? (crossWireSettings[row.assignment.sheetSlug]?.[row.locKey] ?? true) : true;
+              // Get boxSide-based defaults if no explicit setting exists
+              const defaults = row.locKey 
+                ? getDefaultVisibility(row.assignment.boxSide, row.locKey)
+                : { wire: true, brand: true, cross: true };
+              
+              // Use explicit settings if they exist, otherwise use boxSide defaults
+              const wireVisible = row.locKey 
+                ? (wireListSettings[row.assignment.sheetSlug]?.[row.locKey] ?? defaults.wire) 
+                : true;
+              const brandVisible = row.locKey 
+                ? (brandListSettings[row.assignment.sheetSlug]?.[row.locKey] ?? defaults.brand) 
+                : true;
+              const crossVisible = row.locKey 
+                ? (crossWireSettings[row.assignment.sheetSlug]?.[row.locKey] ?? defaults.cross) 
+                : true;
               const displayTitle = row.assignment.normalizedTitle ?? row.assignment.sheetName;
 
               return (
@@ -338,38 +540,56 @@ export function VisibilityMatrixConcept({
 
                   {/* Wire List Toggle */}
                   <td className="px-2 py-2 text-center">
-                    {row.locKey && (
-                      <Switch
-                        checked={wireVisible}
-                        onCheckedChange={(checked) => onWireListChange?.(row.assignment.sheetSlug, row.locKey, checked)}
-                        aria-label={`Wire list visibility for ${row.location}`}
-                        className="scale-75"
-                      />
-                    )}
+                    {row.locKey ? (
+                      <div className="inline-flex items-center justify-center min-h-[44px] min-w-[44px]">
+                        <Switch
+                          checked={wireVisible}
+                          disabled={!isEditing}
+                          onCheckedChange={(checked) => {
+                            if (isEditing && onWireListChange) {
+                              onWireListChange(row.assignment.sheetSlug, row.locKey, checked);
+                            }
+                          }}
+                          aria-label={`Wire list visibility for ${row.location}`}
+                        />
+                      </div>
+                    ) : null}
                   </td>
 
                   {/* Brand List Toggle */}
                   <td className="px-2 py-2 text-center">
-                    {row.locKey && (
-                      <Switch
-                        checked={brandVisible}
-                        onCheckedChange={(checked) => onBrandListChange?.(row.assignment.sheetSlug, row.locKey, checked)}
-                        aria-label={`Brand list visibility for ${row.location}`}
-                        className="scale-75"
-                      />
-                    )}
+                    {row.locKey ? (
+                      <div className="inline-flex items-center justify-center min-h-[44px] min-w-[44px]">
+                        <Switch
+                          checked={brandVisible}
+                          disabled={!isEditing}
+                          onCheckedChange={(checked) => {
+                            if (isEditing && onBrandListChange) {
+                              onBrandListChange(row.assignment.sheetSlug, row.locKey, checked);
+                            }
+                          }}
+                          aria-label={`Brand list visibility for ${row.location}`}
+                        />
+                      </div>
+                    ) : null}
                   </td>
 
                   {/* Cross Wire Toggle */}
                   <td className="px-2 py-2 text-center">
-                    {row.locKey && (
-                      <Switch
-                        checked={crossVisible}
-                        onCheckedChange={(checked) => onCrossWireChange?.(row.assignment.sheetSlug, row.locKey, checked)}
-                        aria-label={`Cross wire visibility for ${row.location}`}
-                        className="scale-75"
-                      />
-                    )}
+                    {row.locKey ? (
+                      <div className="inline-flex items-center justify-center min-h-[44px] min-w-[44px]">
+                        <Switch
+                          checked={crossVisible}
+                          disabled={!isEditing}
+                          onCheckedChange={(checked) => {
+                            if (isEditing && onCrossWireChange) {
+                              onCrossWireChange(row.assignment.sheetSlug, row.locKey, checked);
+                            }
+                          }}
+                          aria-label={`Cross wire visibility for ${row.location}`}
+                        />
+                      </div>
+                    ) : null}
                   </td>
                 </tr>
               );

@@ -199,25 +199,27 @@ function ActiveProjectsLWCChart({ projects, className, ...props }: ActiveProject
   }, [columns])
 
   return (
-    <section className={cn("rounded-lg border border-border bg-card p-2.5 sm:p-3", className)} {...props}>
-      {/* Header - stacks on mobile */}
-      <div className="mb-2.5 flex flex-col gap-2 sm:mb-3 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
-        {/* Title — always visible, never truncated by controls */}
-        <div className="min-w-0">
-          <p className="text-xs font-semibold text-foreground sm:text-sm">Projects by LWC</p>
-          <p className="text-[10px] text-muted-foreground sm:text-xs">
-            {STATUS_META[selectedStatus].label}
-            {" · "}
-            {selectedMonth === "all" ? "All due months" : formatMonthLabel(selectedMonth)}
-            {" · "}
-            {filteredProjects.length} project{filteredProjects.length === 1 ? "" : "s"}
-          </p>
+    <section className={cn("rounded-lg border border-border bg-card p-2 sm:p-2.5 md:p-3", className)} {...props}>
+      {/* Header - compact on mobile */}
+      <div className="mb-2 flex flex-col gap-1.5 sm:mb-2.5 sm:gap-2 md:mb-3 md:flex-row md:items-start md:justify-between md:gap-3">
+        {/* Title — always visible */}
+        <div className="min-w-0 flex items-center justify-between gap-2 sm:block">
+          <div>
+            <p className="text-[11px] font-semibold text-foreground sm:text-xs md:text-sm">Projects by LWC</p>
+            <p className="text-[9px] text-muted-foreground sm:text-[10px] md:text-xs">
+              {STATUS_META[selectedStatus].label}
+              {" · "}
+              {selectedMonth === "all" ? "All months" : formatMonthLabel(selectedMonth)}
+              {" · "}
+              {filteredProjects.length} project{filteredProjects.length === 1 ? "" : "s"}
+            </p>
+          </div>
         </div>
 
-        {/* Unified filter pill: month picker + status toggle - horizontal scroll on mobile */}
-        <div className="flex w-full shrink-0 items-stretch overflow-x-auto rounded-lg border border-input bg-background scrollbar-none sm:w-auto">
+        {/* Unified filter pill: month picker + status toggle */}
+        <div className="flex w-full shrink-0 items-stretch overflow-x-auto rounded-md border border-input bg-background scrollbar-none sm:rounded-lg md:w-auto">
           <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-            <SelectTrigger className="h-7 min-w-[6.5rem] gap-1 rounded-none border-0 px-2 text-[11px] shadow-none focus:ring-0 sm:h-8 sm:min-w-[7.5rem] sm:px-3 sm:text-xs">
+            <SelectTrigger className="h-6 min-w-[5.5rem] gap-0.5 rounded-none border-0 px-1.5 text-[10px] shadow-none focus:ring-0 sm:h-7 sm:min-w-[6.5rem] sm:gap-1 sm:px-2 sm:text-[11px] md:h-8 md:min-w-[7.5rem] md:px-3 md:text-xs">
               <SelectValue placeholder="All Months" />
             </SelectTrigger>
             <SelectContent>
@@ -230,7 +232,7 @@ function ActiveProjectsLWCChart({ projects, className, ...props }: ActiveProject
             </SelectContent>
           </Select>
 
-          <div className="my-1.5 w-px bg-border" />
+          <div className="my-1 w-px bg-border sm:my-1.5" />
 
           {(Object.keys(STATUS_META) as ChartStatusFilter[]).map((statusKey) => (
             <button
@@ -238,7 +240,7 @@ function ActiveProjectsLWCChart({ projects, className, ...props }: ActiveProject
               type="button"
               onClick={() => setSelectedStatus(statusKey)}
               className={cn(
-                "h-7 whitespace-nowrap px-2 text-[11px] font-medium transition-colors sm:h-8 sm:px-3 sm:text-xs",
+                "h-6 whitespace-nowrap px-1.5 text-[10px] font-medium transition-colors sm:h-7 sm:px-2 sm:text-[11px] md:h-8 md:px-3 md:text-xs",
                 selectedStatus === statusKey
                   ? "bg-foreground text-background"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -250,14 +252,22 @@ function ActiveProjectsLWCChart({ projects, className, ...props }: ActiveProject
         </div>
       </div>
 
-      <ProjectLWCChart
-        columns={columns}
-        maxValue={maxValue}
-        restartOnDataChange
-        className="h-36 overflow-hidden rounded-md sm:h-48"
-        titleClassName="text-[10px] sm:text-xs"
-        valueClassName="text-xs font-semibold sm:text-sm"
-      />
+      {/* Mobile: Compact horizontal bar summary */}
+      <div className="block sm:hidden">
+        <MobileCompactLWCChart columns={columns} />
+      </div>
+      
+      {/* Desktop: Full animated bar chart */}
+      <div className="hidden sm:block">
+        <ProjectLWCChart
+          columns={columns}
+          maxValue={maxValue}
+          restartOnDataChange
+          className="h-36 overflow-hidden rounded-md md:h-48"
+          titleClassName="text-[10px] md:text-xs"
+          valueClassName="text-xs font-semibold md:text-sm"
+        />
+      </div>
     </section>
   )
 }
@@ -403,6 +413,53 @@ function ProjectLWCChartColumn({
             {appendString && ` ${appendString}`}
           </motion.span>
         </motion.div>
+      </div>
+    </div>
+  )
+}
+
+/** Compact horizontal bar chart for mobile - shows data without animation overhead */
+function MobileCompactLWCChart({ columns }: { columns: ColumnData[] }) {
+  const total = columns.reduce((sum, col) => sum + col.value, 0)
+  
+  if (total === 0) {
+    return (
+      <div className="flex h-10 items-center justify-center rounded-md border bg-muted/30 text-[10px] text-muted-foreground">
+        No projects in current filter
+      </div>
+    )
+  }
+  
+  return (
+    <div className="space-y-1.5">
+      {/* Stacked horizontal bar */}
+      <div className="flex h-6 w-full overflow-hidden rounded-md border">
+        {columns.map((col, idx) => {
+          const percentage = (col.value / total) * 100
+          if (percentage === 0) return null
+          return (
+            <div
+              key={idx}
+              className={cn("flex items-center justify-center", col.className)}
+              style={{ width: `${percentage}%` }}
+            >
+              {percentage >= 15 && (
+                <span className="text-[10px] font-semibold tabular-nums">{col.value}</span>
+              )}
+            </div>
+          )
+        })}
+      </div>
+      
+      {/* Legend row */}
+      <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+        {columns.map((col, idx) => (
+          <div key={idx} className="flex items-center gap-1">
+            <div className={cn("h-2 w-2 rounded-sm", col.className, col.topBorderClassName && "border-t-2", col.topBorderClassName)} />
+            <span className="text-[9px] text-muted-foreground">{col.title}</span>
+            <span className="text-[10px] font-medium tabular-nums">{col.value}</span>
+          </div>
+        ))}
       </div>
     </div>
   )

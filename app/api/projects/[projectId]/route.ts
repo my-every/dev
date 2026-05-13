@@ -7,6 +7,7 @@ import {
   writeProjectManifest,
 } from '@/lib/project-state/share-project-state-handlers'
 import { enrichManifestFromProjectState } from '@/lib/project-state/manifest-enrichment'
+import { syncAssignmentSettingsToLegal } from '@/lib/legal-drawings/library'
 import {
   buildAllSheetSchemas,
   buildDefaultMappedAssignments,
@@ -92,6 +93,39 @@ export async function PUT(
   await writeProjectManifest(enrichedManifest)
   logPhase('write-manifest:complete')
   return NextResponse.json({ manifest: enrichedManifest })
+}
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ projectId: string }> },
+) {
+  const { projectId } = await params
+  const existingManifest = await readProjectManifest(projectId)
+
+  if (!existingManifest) {
+    return NextResponse.json({ error: 'Project not found' }, { status: 404 })
+  }
+
+  const patch = await request.json() as Partial<ProjectManifest>
+
+  // Merge the patch with existing manifest
+  const updatedManifest: ProjectManifest = {
+    ...existingManifest,
+    ...patch,
+    id: projectId, // Ensure ID cannot be changed
+    // Merge assignments if provided
+    assignments: patch.assignments
+      ? { ...existingManifest.assignments, ...patch.assignments }
+      : existingManifest.assignments,
+  }
+
+  const enrichedManifest = await enrichManifestFromProjectState(updatedManifest)
+  await writeProjectManifest(enrichedManifest)
+
+  // Sync assignment settings back to legal drawings manifest for future instances
+  const syncResult = await syncAssignmentSettingsToLegal({ projectManifest: enrichedManifest })
+
+  return NextResponse.json({ project: enrichedManifest, legalSync: syncResult })
 }
 
 export async function DELETE(
