@@ -199,25 +199,24 @@ function ActiveProjectsLWCChart({ projects, className, ...props }: ActiveProject
   }, [columns])
 
   return (
-    <section className={cn("w-full max-w-full overflow-hidden rounded-lg border border-border bg-card p-2 sm:p-2.5 md:p-3", className)} {...props}>
+    <section className={cn("w-full flex-shrink-0 rounded-lg border border-border bg-card p-2 sm:p-2.5 md:p-3", className)} {...props}>
       {/* Header - compact on mobile */}
-      <div className="mb-2 flex w-full flex-col gap-1.5 overflow-hidden sm:mb-2.5 sm:gap-2 md:mb-3 md:flex-row md:items-start md:justify-between md:gap-3">
+      <div className="mb-2 flex flex-col gap-1.5 sm:mb-2.5 sm:gap-2 md:mb-3 md:flex-row md:items-start md:justify-between md:gap-3">
         {/* Title — always visible */}
-        <div className="flex min-w-0 shrink items-center justify-between gap-2 sm:block">
-          <div className="min-w-0">
-            <p className="truncate text-[11px] font-semibold text-foreground sm:text-xs md:text-sm">Projects by LWC</p>
-            <p className="truncate text-[9px] text-muted-foreground sm:text-[10px] md:text-xs">
-              {STATUS_META[selectedStatus].label}
-              {" · "}
-              {selectedMonth === "all" ? "All months" : formatMonthLabel(selectedMonth)}
-              {" · "}
-              {filteredProjects.length} project{filteredProjects.length === 1 ? "" : "s"}
-            </p>
-          </div>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-[11px] font-semibold text-foreground sm:text-xs md:text-sm">Projects by LWC</p>
+          <p className="truncate text-[9px] text-muted-foreground sm:text-[10px] md:text-xs">
+            {STATUS_META[selectedStatus].label}
+            {" · "}
+            {selectedMonth === "all" ? "All months" : formatMonthLabel(selectedMonth)}
+            {" · "}
+            {filteredProjects.length} project{filteredProjects.length === 1 ? "" : "s"}
+          </p>
         </div>
 
         {/* Unified filter pill: month picker + status toggle */}
-        <div className="flex w-full shrink-0 items-stretch overflow-x-auto rounded-md border border-input bg-background scrollbar-none sm:rounded-lg md:w-auto md:max-w-[50%]">
+        <div className="-mx-2 flex flex-shrink-0 items-stretch overflow-x-auto px-2 scrollbar-none sm:-mx-0 sm:px-0 md:max-w-[50%]">
+          <div className="flex items-stretch rounded-md border border-input bg-background sm:rounded-lg">
           <Select value={selectedMonth} onValueChange={setSelectedMonth}>
             <SelectTrigger className="h-6 min-w-[5.5rem] gap-0.5 rounded-none border-0 px-1.5 text-[10px] shadow-none focus:ring-0 sm:h-7 sm:min-w-[6.5rem] sm:gap-1 sm:px-2 sm:text-[11px] md:h-8 md:min-w-[7.5rem] md:px-3 md:text-xs">
               <SelectValue placeholder="All Months" />
@@ -249,6 +248,7 @@ function ActiveProjectsLWCChart({ projects, className, ...props }: ActiveProject
               {STATUS_META[statusKey].label}
             </button>
           ))}
+          </div>
         </div>
       </div>
 
@@ -431,16 +431,16 @@ function MobileCompactLWCChart({ columns }: { columns: ColumnData[] }) {
   }
   
   return (
-    <div className="w-full max-w-full space-y-1.5 overflow-hidden">
+    <div className="space-y-1.5">
       {/* Stacked horizontal bar */}
-      <div className="flex h-6 w-full max-w-full overflow-hidden rounded-md border">
+      <div className="flex h-6 w-full rounded-md border">
         {columns.map((col, idx) => {
           const percentage = (col.value / total) * 100
           if (percentage === 0) return null
           return (
             <div
               key={idx}
-              className={cn("flex shrink-0 items-center justify-center", col.className)}
+              className={cn("flex items-center justify-center", col.className)}
               style={{ width: `${percentage}%`, minWidth: percentage > 0 ? '1rem' : 0 }}
             >
               {percentage >= 15 && (
@@ -451,11 +451,11 @@ function MobileCompactLWCChart({ columns }: { columns: ColumnData[] }) {
         })}
       </div>
       
-      {/* Legend row - horizontal scroll on mobile */}
-      <div className="flex w-full gap-x-2 overflow-x-auto pb-0.5 scrollbar-none sm:flex-wrap sm:gap-x-3 sm:gap-y-0.5 sm:overflow-visible sm:pb-0">
+      {/* Legend row - horizontal scroll */}
+      <div className="-mx-2 flex gap-x-2 overflow-x-auto px-2 pb-0.5 scrollbar-none">
         {columns.map((col, idx) => (
-          <div key={idx} className="flex shrink-0 items-center gap-1">
-            <div className={cn("h-2 w-2 shrink-0 rounded-sm", col.className, col.topBorderClassName && "border-t-2", col.topBorderClassName)} />
+          <div key={idx} className="flex flex-shrink-0 items-center gap-1">
+            <div className={cn("h-2 w-2 rounded-sm", col.className, col.topBorderClassName && "border-t-2", col.topBorderClassName)} />
             <span className="whitespace-nowrap text-[9px] text-muted-foreground">{col.title}</span>
             <span className="text-[10px] font-medium tabular-nums">{col.value}</span>
           </div>

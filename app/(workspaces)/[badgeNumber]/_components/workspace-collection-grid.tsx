@@ -43,10 +43,10 @@ export function WorkspaceCollectionGrid({
     }
 
     return (
-        <div className="grid w-full max-w-full grid-cols-1 gap-2 overflow-hidden sm:grid-cols-2 sm:gap-3 xl:grid-cols-3">
+        <div className="grid w-full flex-1 grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3 xl:grid-cols-3">
             {items.map((item) =>
                 renderCard ? (
-                    <div key={item.id} className="min-w-0 max-w-full overflow-hidden">
+                    <div key={item.id} className="min-w-0">
                         {renderCard({ item, selected: selectedItemId === item.id, onSelect })}
                     </div>
                 ) : (
@@ -55,7 +55,6 @@ export function WorkspaceCollectionGrid({
                         item={item}
                         selected={selectedItemId === item.id}
                         onSelect={onSelect}
-                        className="min-w-0 max-w-full"
                     />
                 )
             )}

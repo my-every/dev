@@ -37,7 +37,7 @@ export function WorkspaceCollectionToolbar({
   className,
 }: WorkspaceCollectionToolbarProps) {
   return (
-    <div className={cn("w-full max-w-full space-y-1.5 sm:space-y-2 md:space-y-3", className)}>
+    <div className={cn("flex w-full flex-shrink-0 flex-col space-y-1.5 sm:space-y-2 md:space-y-3", className)}>
       {/* Row 1: Search + View toggle — always side by side, compact on mobile */}
       <div className="flex w-full items-center gap-1.5 sm:gap-2 md:gap-3">
         <div className="relative min-w-0 flex-1">
@@ -52,16 +52,17 @@ export function WorkspaceCollectionToolbar({
         <WorkspaceCollectionViewToggle
           value={view}
           onValueChange={onViewChange}
+          className="flex-shrink-0"
         />
       </div>
       {/* Row 2: Filters - horizontal scroll on mobile */}
       {filters.length > 0 && (
-        <div className="w-full overflow-x-auto pb-0.5 scrollbar-none sm:pb-1">
+        <div className="-mx-2 overflow-x-auto px-2 pb-0.5 scrollbar-none sm:-mx-3 sm:px-3 sm:pb-1 md:-mx-4 md:px-4">
           <WorkspaceCollectionFilters
             filters={filters}
             values={filterValues}
             onValueChange={onFilterChange}
-            className="w-max flex-nowrap gap-1.5 sm:gap-2"
+            className="inline-flex w-auto flex-nowrap gap-1.5 sm:gap-2"
           />
         </div>
       )}

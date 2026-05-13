@@ -420,12 +420,14 @@ export default function ProjectsWorkspacePage({
         </div>
       }
     >
-      <div className="box-border min-h-0 w-full max-w-full flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-3 md:p-4 lg:p-6">
-        <ProjectsCollection
-          badgeNumber={params.badgeNumber}
-          projects={projects}
-          mode={mode}
-        />
+      <div className="box-border flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden p-2 sm:p-3 md:p-4 lg:p-6">
+        <div className="mx-auto w-full max-w-[calc(100vw-1rem)] flex-1 sm:max-w-[calc(100vw-1.5rem)] md:max-w-[calc(100vw-2rem)] lg:max-w-4xl xl:max-w-5xl">
+          <ProjectsCollection
+            badgeNumber={params.badgeNumber}
+            projects={projects}
+            mode={mode}
+          />
+        </div>
       </div>
     </PageContent>
   );
