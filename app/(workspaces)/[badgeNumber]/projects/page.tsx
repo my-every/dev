@@ -2,7 +2,7 @@
 
 import { use, useEffect, useMemo, useState } from "react";
 
-import { Activity, FolderKanban, RefreshCw } from "lucide-react";
+import { FolderKanban, RefreshCw } from "lucide-react";
 import { PageContent } from "@/components/layout/page-content";
 import { ActivityTimelineContextPanel } from "@/components/activity";
 import { Button } from "@/components/ui/button";
@@ -49,7 +49,6 @@ export default function ProjectsWorkspacePage({
   const [viewerSettings, setViewerSettings] = useState<UserSettings | null>(null);
   const [state, setState] = useState<LoadState>("loading");
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [showActivityPanel, setShowActivityPanel] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -366,6 +365,7 @@ export default function ProjectsWorkspacePage({
         />
       }
       showAside={true}
+      asideTitle="Activity"
       aside={
         <ActivityTimelineContextPanel
           badge={params.badgeNumber}
@@ -416,61 +416,16 @@ export default function ProjectsWorkspacePage({
               <RefreshCw className={`h-3.5 w-3.5 ${isRefreshing ? "animate-spin" : ""}`} />
               <span className="hidden xs:inline">Refresh</span>
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-7 gap-1.5 px-2 text-xs sm:hidden"
-              onClick={() => setShowActivityPanel(!showActivityPanel)}
-            >
-              <Activity className="h-3.5 w-3.5" />
-            </Button>
           </div>
         </div>
       }
     >
-      {/* Mobile activity panel - slides in from right */}
-      {showActivityPanel && (
-        <div className="fixed inset-0 z-50 sm:hidden">
-          <div 
-            className="absolute inset-0 bg-background/80 backdrop-blur-sm"
-            onClick={() => setShowActivityPanel(false)}
-          />
-          <div className="absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-card border-l border-border shadow-xl overflow-y-auto">
-            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card/95 backdrop-blur-sm px-3 py-2">
-              <span className="text-sm font-medium">Activity</span>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-7 w-7 p-0"
-                onClick={() => setShowActivityPanel(false)}
-              >
-                <span className="sr-only">Close</span>
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </Button>
-            </div>
-            <ActivityTimelineContextPanel
-              badge={params.badgeNumber}
-              shift={user?.currentShift || "1st"}
-            />
-          </div>
-        </div>
-      )}
-      
       <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-3 md:p-4 lg:p-6">
-        <div className="flex items-start gap-3 md:gap-4 lg:gap-6">
-          {/* Main collection — fills available width */}
-          <div className="min-w-0 flex-1">
-            <ProjectsCollection
-              badgeNumber={params.badgeNumber}
-              projects={projects}
-              mode={mode}
-            />
-          </div>
-
-          {/* Worklog widget temporarily hidden */}
-        </div>
+        <ProjectsCollection
+          badgeNumber={params.badgeNumber}
+          projects={projects}
+          mode={mode}
+        />
       </div>
     </PageContent>
   );
