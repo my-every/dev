@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { Sparkles, ChevronLeft, ChevronRight, Activity } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import {
   CompositeAside,
@@ -80,13 +81,15 @@ export function PageContent({
   selectedEntity,
 }: LayoutPageProps) {
   const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
   const { isSidePanelOpen, closeSidePanel, toggleSidePanel, toggleAside, isAsideOpen } = useLayoutUI();
 
   return (
     <>
       <div
         className={cn(
-          "flex min-h-0 relative flex-1 flex-wrap rounded-xl border border-border lg:flex-nowrap ",
+          "relative flex flex-1 flex-wrap rounded-xl border border-border lg:flex-nowrap",
+          isMobile ? "min-h-0 overflow-hidden" : "min-h-0",
           classNames?.main,
         )}
       >
@@ -104,7 +107,8 @@ export function PageContent({
 
         <div
           className={cn(
-            "flex min-h-0 flex-1 flex-col mx-auto lg:max-w-none lg:mx-0 ",
+            "flex flex-1 flex-col",
+            isMobile ? "min-h-0 w-full" : "min-h-0 mx-auto lg:max-w-none lg:mx-0",
             classNames?.mainInner,
           )}
         >
@@ -227,7 +231,14 @@ export function PageContent({
             <div className="text-lg">{subHeader}</div>
           ) : null}
 
-          <div className="flex min-h-0 w-full max-w-full flex-1 flex-col overflow-x-hidden overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border">
+          <div 
+            className={cn(
+              "flex flex-1 flex-col scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border",
+              isMobile 
+                ? "min-h-0 w-full overflow-y-auto overflow-x-hidden" 
+                : "min-h-0 w-full max-w-full overflow-x-hidden overflow-y-auto"
+            )}
+          >
             {children}
           </div>
         </div>
