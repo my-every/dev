@@ -420,7 +420,7 @@ export default function ProjectsWorkspacePage({
         </div>
       }
     >
-      <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-3 md:p-4 lg:p-6">
+      <div className="box-border min-h-0 w-full max-w-full flex-1 overflow-y-auto overflow-x-hidden p-2 sm:p-3 md:p-4 lg:p-6">
         <ProjectsCollection
           badgeNumber={params.badgeNumber}
           projects={projects}
