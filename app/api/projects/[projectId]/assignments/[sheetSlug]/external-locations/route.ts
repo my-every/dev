@@ -46,14 +46,20 @@ export async function PATCH(
   );
 
   const merged = parsed.data.locations
-    .map(({ location, wireListVisible, brandingVisible }) => {
+    .map(({ location, wireListVisible, brandingVisible, crossWireVisible }) => {
       const key = location.trim().toUpperCase();
       const existing = existingByLocation.get(key);
       if (!existing) {
         // Reject patches for locations not in the manifest
         return null;
       }
-      return { location: existing.location, wireListVisible, brandingVisible };
+      return {
+        location: existing.location,
+        wireListVisible,
+        brandingVisible,
+        // Include crossWireVisible if provided, otherwise preserve existing or default to wireListVisible
+        ...(crossWireVisible !== undefined && { crossWireVisible }),
+      };
     })
     .filter((loc): loc is NonNullable<typeof loc> => loc !== null);
 
