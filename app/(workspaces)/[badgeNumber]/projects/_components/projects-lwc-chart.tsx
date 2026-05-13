@@ -6,6 +6,7 @@ import { motion, useInView, useAnimationControls } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 type LWCChartBucket = "NEW_FLEX" | "ONSKID" | "OFFSKID" | "OTHER"
 
@@ -214,11 +215,10 @@ function ActiveProjectsLWCChart({ projects, className, ...props }: ActiveProject
           </p>
         </div>
 
-        {/* Unified filter pill: month picker + status toggle */}
-        <div className="-mx-2 flex flex-shrink-0 items-stretch overflow-x-auto px-2 scrollbar-none sm:-mx-0 sm:px-0 md:max-w-[50%]">
-          <div className="flex items-stretch rounded-md border border-input bg-background sm:rounded-lg">
+        {/* Filters: month picker + status tabs */}
+        <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-2">
           <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-            <SelectTrigger className="h-6 min-w-[5.5rem] gap-0.5 rounded-none border-0 px-1.5 text-[10px] shadow-none focus:ring-0 sm:h-7 sm:min-w-[6.5rem] sm:gap-1 sm:px-2 sm:text-[11px] md:h-8 md:min-w-[7.5rem] md:px-3 md:text-xs">
+            <SelectTrigger className="h-7 w-[110px] gap-1 text-[10px] sm:h-8 sm:w-[120px] sm:text-xs">
               <SelectValue placeholder="All Months" />
             </SelectTrigger>
             <SelectContent>
@@ -231,24 +231,19 @@ function ActiveProjectsLWCChart({ projects, className, ...props }: ActiveProject
             </SelectContent>
           </Select>
 
-          <div className="my-1 w-px bg-border sm:my-1.5" />
-
-          {(Object.keys(STATUS_META) as ChartStatusFilter[]).map((statusKey) => (
-            <button
-              key={statusKey}
-              type="button"
-              onClick={() => setSelectedStatus(statusKey)}
-              className={cn(
-                "h-6 whitespace-nowrap px-1.5 text-[10px] font-medium transition-colors sm:h-7 sm:px-2 sm:text-[11px] md:h-8 md:px-3 md:text-xs",
-                selectedStatus === statusKey
-                  ? "bg-foreground text-background"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
-              )}
-            >
-              {STATUS_META[statusKey].label}
-            </button>
-          ))}
-          </div>
+          <Tabs value={selectedStatus} onValueChange={(v) => setSelectedStatus(v as ChartStatusFilter)} className="w-full sm:w-auto">
+            <TabsList className="h-7 w-full gap-0.5 p-0.5 sm:h-8 sm:w-auto sm:gap-1 sm:p-1">
+              {(Object.keys(STATUS_META) as ChartStatusFilter[]).map((statusKey) => (
+                <TabsTrigger 
+                  key={statusKey} 
+                  value={statusKey}
+                  className="h-full flex-1 px-2 text-[10px] sm:flex-none sm:px-3 sm:text-xs"
+                >
+                  {STATUS_META[statusKey].label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
         </div>
       </div>
 

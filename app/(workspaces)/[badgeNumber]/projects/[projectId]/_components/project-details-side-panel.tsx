@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 import { WorkspaceSidePanelHeader } from "@/app/(workspaces)/[badgeNumber]/_components";
 import { ProjectSidePanelLifecycle } from "@/app/(workspaces)/[badgeNumber]/projects/[projectId]/_components/project-side-panel-lifecycle";
@@ -11,6 +12,17 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import type { BoardAssignmentView, BoardDataResponse } from "@/lib/board/types";
 import type { ProjectManifest } from "@/types/project-manifest";
 
@@ -31,9 +43,11 @@ interface ProjectDetailsSidePanelProps {
 }
 
 export function ProjectDetailsSidePanel({ project, badgeNumber, statusLabel }: ProjectDetailsSidePanelProps) {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<SidePanelTab>("assignments");
   const [managerAssignmentId, setManagerAssignmentId] = useState<string | null>(null);
   const [assignmentFilter, setAssignmentFilter] = useState<AssignmentFilter>("unassigned");
+  const [isDeleting, setIsDeleting] = useState(false);
   const [boardState, setBoardState] = useState<{
     isLoading: boolean;
     data: BoardDataResponse | null;
@@ -139,6 +153,22 @@ export function ProjectDetailsSidePanel({ project, badgeNumber, statusLabel }: P
   const managerBoardAssignment = managerAssignment
     ? boardAssignmentsById.get(managerAssignment.boardAssignmentId) ?? null
     : null;
+
+  const handleDeleteProject = async () => {
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/projects/${project.id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        router.push(`/${badgeNumber}/projects`);
+      }
+    } catch (error) {
+      console.error("Failed to delete project:", error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
@@ -247,6 +277,44 @@ export function ProjectDetailsSidePanel({ project, badgeNumber, statusLabel }: P
           )}
         </div>
       </ScrollArea>
+
+      {/* Delete Project Button */}
+      <div className="border-t border-border px-3 py-3">
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button 
+              variant="destructive" 
+              size="sm" 
+              className="w-full gap-2"
+              disabled={isDeleting}
+            >
+              {isDeleting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Trash2 className="h-4 w-4" />
+              )}
+              Delete Project
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Project</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete &quot;{project.name}&quot;? This action cannot be undone and will remove all associated data.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDeleteProject}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
 
       <ProjectAssignmentManagerDialog
         open={Boolean(managerAssignment)}

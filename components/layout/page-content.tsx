@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { Sparkles, ChevronLeft, ChevronRight, Activity } from "lucide-react";
+import { Sparkles, ChevronLeft, ChevronRight, Bell } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 import {
@@ -203,7 +203,7 @@ export function PageContent({
                       className="relative rounded-xl border border-border bg-card p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                       aria-label={isAsideOpen ? "Close activity panel" : "Open activity panel"}
                     >
-                      <Activity className="h-4 w-4" />
+                      <Bell className="h-4 w-4" />
                       <span className="absolute -right-0.5 -top-0.5 flex h-2 w-2">
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
                         <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
@@ -233,11 +233,12 @@ export function PageContent({
 
           <div 
             className={cn(
-              "flex flex-1 flex-col scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border",
+              "flex-1 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border",
               isMobile 
-                ? "min-h-0 w-full overflow-y-auto overflow-x-hidden" 
+                ? "h-0 min-h-0 grow overflow-y-auto overflow-x-hidden -webkit-overflow-scrolling-touch" 
                 : "min-h-0 w-full max-w-full overflow-x-hidden overflow-y-auto"
             )}
+            style={isMobile ? { WebkitOverflowScrolling: 'touch' } : undefined}
           >
             {children}
           </div>
