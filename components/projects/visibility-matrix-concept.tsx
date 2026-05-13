@@ -3,7 +3,7 @@
 import { useMemo, useCallback, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Loader2, Download, FileArchive, FileText, Settings2 } from "lucide-react";
+import { Loader2, Download, FileArchive, FileText, Settings2, HelpCircle, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { UnitTypePopover } from "./unit-type-popover";
 import { BoxSideCell } from "./box-side-cell";
@@ -18,6 +18,12 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { BoxSideConfig, getDefaultExternalLocationSettings } from "@/boxSide";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 // Visibility Matrix: Unified table for Wire List, Brand List, Cross Wire settings
@@ -347,11 +353,29 @@ export function VisibilityMatrixConcept({
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="text-sm font-semibold text-foreground">Visibility Matrix</h3>
-          <p className="text-xs text-muted-foreground">
-            Configure visibility for Wire List, Brand List, and Cross Wire per external location
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-foreground">Settings</h3>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button type="button" className="text-muted-foreground hover:text-foreground transition-colors">
+                    <Info className="h-4 w-4" />
+                    <span className="sr-only">About Settings</span>
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="right" className="max-w-xs">
+                  <p className="text-xs">
+                    Configure which external locations appear in generated Wire Lists, Brand Lists, and Cross Wire documents. 
+                    These settings control print output visibility based on box side installation order.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">
+            Manage external location visibility for Wire List, Brand List, and Cross Wire outputs per assignment.
           </p>
         </div>
         {/* Default Settings Drawer - only show when editing */}
@@ -414,30 +438,80 @@ export function VisibilityMatrixConcept({
       </div>
 
       {/* Matrix Table */}
+      <TooltipProvider>
       <div className="overflow-x-auto rounded-lg border border-border">
         <table className="w-full min-w-[700px] text-sm border-collapse">
           <thead>
             <tr className="border-b border-border bg-muted/50">
               <th className="w-16 px-2 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Unit
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="cursor-help border-b border-dashed border-muted-foreground/50">Unit</span>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-xs">
+                    <p className="text-xs">The unit type identifier (e.g., JB71) extracted from external location references.</p>
+                  </TooltipContent>
+                </Tooltip>
               </th>
               <th className="px-3 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Assignment
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="cursor-help border-b border-dashed border-muted-foreground/50">Assignment</span>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-xs">
+                    <p className="text-xs">The sheet assignment name representing a wiring harness or panel connection point.</p>
+                  </TooltipContent>
+                </Tooltip>
               </th>
               <th className="w-28 px-2 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Box Side
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="cursor-help border-b border-dashed border-muted-foreground/50">Box Side</span>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-xs">
+                    <p className="text-xs">Physical installation location on the control box (e.g., Left Door, Right Side, Back Side). Determines default visibility based on installation sequence.</p>
+                  </TooltipContent>
+                </Tooltip>
               </th>
               <th className="px-3 py-2.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Ext. Location
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="cursor-help border-b border-dashed border-muted-foreground/50">Ext. Location</span>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-xs">
+                    <p className="text-xs">External location reference where the wire terminates outside this assignment (e.g., JB71 B, PNL DC PWR).</p>
+                  </TooltipContent>
+                </Tooltip>
               </th>
               <th className="w-16 px-2 py-2.5 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Wire
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="cursor-help border-b border-dashed border-muted-foreground/50">Wire</span>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-xs">
+                    <p className="text-xs">Include this location in Wire List PDF printouts. Wire lists show detailed wire routing information for assembly.</p>
+                  </TooltipContent>
+                </Tooltip>
               </th>
               <th className="w-16 px-2 py-2.5 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Brand
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="cursor-help border-b border-dashed border-muted-foreground/50">Brand</span>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-xs">
+                    <p className="text-xs">Include this location in Brand List outputs. Brand lists are used for wire marking and labeling operations.</p>
+                  </TooltipContent>
+                </Tooltip>
               </th>
               <th className="w-16 px-2 py-2.5 text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Cross
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="cursor-help border-b border-dashed border-muted-foreground/50">Cross</span>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="max-w-xs">
+                    <p className="text-xs">Include this location in Cross Wire PDF reports. Cross wire documents show inter-panel connections for verification.</p>
+                  </TooltipContent>
+                </Tooltip>
               </th>
             </tr>
           </thead>
@@ -712,6 +786,7 @@ export function VisibilityMatrixConcept({
           </tfoot>
         </table>
       </div>
+      </TooltipProvider>
     </div>
   );
 }

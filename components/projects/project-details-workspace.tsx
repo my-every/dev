@@ -178,7 +178,7 @@ const PROJECT_SECTIONS: ScrollspySection[] = [
 { id: "brand-lists", label: "Brand Lists", icon: <FileSpreadsheet className="h-4 w-4" /> },
     { id: "wire-lists", label: "Wire Lists", icon: <Layers className="h-4 w-4" /> },
     { id: "cross-wire", label: "Cross Wire", icon: <ExternalLink className="h-4 w-4" /> },
-    { id: "visibility-matrix", label: "Vis Matrix", icon: <Grid3X3 className="h-4 w-4" /> },
+    { id: "visibility-matrix", label: "Settings", icon: <Grid3X3 className="h-4 w-4" /> },
 ];
 
 const PROJECT_STATUS_OPTIONS = [
@@ -3067,12 +3067,12 @@ export function ProjectDetailsWorkspace({
               </div>
             </section>
 
-            {/* ─── Visibility Matrix Concept Section ──────────────────────────── */}
+            {/* ─── Settings Section ──────────────────────────── */}
             <section data-section="visibility-matrix" className="scroll-mt-6">
               <SectionHeader
                 icon={Grid3X3}
-                title="Visibility Matrix (Concept)"
-                description="Experimental unified view of Wire List, Brand List, and Cross Wire visibility settings."
+                title="Settings"
+                description="Configure external location visibility for Wire List, Brand List, and Cross Wire document outputs per assignment."
               />
               <div className="mt-4">
                 <VisibilityMatrixConcept
