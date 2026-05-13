@@ -3,7 +3,7 @@
 import { useMemo, useCallback, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Loader2, Download, FileArchive, FileText, Settings2, HelpCircle, Info } from "lucide-react";
+import { Loader2, Download, FileArchive, FileText, Settings2, HelpCircle, Info, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { UnitTypePopover } from "./unit-type-popover";
 import { BoxSideCell } from "./box-side-cell";
@@ -64,8 +64,8 @@ interface VisibilityMatrixProps {
   loading?: boolean;
 }
 
-type GeneratingState = "idle" | "generating" | "ready" | "error";
-type BulkGeneratingState = { state: GeneratingState; downloadUrl: string | null };
+type GeneratingState = "idle" | "generating" | "ready" | "error" | "print-fallback";
+  type BulkGeneratingState = { state: GeneratingState; downloadUrl: string | null; printUrl?: string | null };
 
 // ─── Helper: Infer boxSide key from string ───────────────────────────────────
 
@@ -314,7 +314,26 @@ export function VisibilityMatrixConcept({
     setCrossWireBulk({ state: "generating", downloadUrl: null });
     try {
       const url = await onSaveAndGenerateCrossWire();
-      setCrossWireBulk({ state: "ready", downloadUrl: url });
+      if (!url) {
+        setCrossWireBulk({ state: "error", downloadUrl: null });
+        return;
+      }
+      // Check if PDF generation is available by making a HEAD request
+      const response = await fetch(url, { method: "HEAD" });
+      if (response.ok) {
+        setCrossWireBulk({ state: "ready", downloadUrl: url });
+      } else if (response.status === 503) {
+        // PDF generation not available, get the print URL from the error response
+        const fullResponse = await fetch(url);
+        const data = await fullResponse.json();
+        setCrossWireBulk({ 
+          state: "print-fallback", 
+          downloadUrl: null, 
+          printUrl: data.printUrl || url.replace("/api/projects/", "/print/project-context/").replace("/cross-wire-pdf", "/cross-wire")
+        });
+      } else {
+        setCrossWireBulk({ state: "error", downloadUrl: null });
+      }
     } catch {
       setCrossWireBulk({ state: "error", downloadUrl: null });
     }
@@ -776,6 +795,25 @@ export function VisibilityMatrixConcept({
                       DL
                     </a>
                   </Button>
+                ) : crossWireBulk.state === "print-fallback" && crossWireBulk.printUrl ? (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        size="sm"
+                        variant="default"
+                        className="h-7 gap-1 px-2 text-[10px] bg-blue-600 hover:bg-blue-700"
+                        asChild
+                      >
+                        <a href={crossWireBulk.printUrl} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="h-3 w-3" />
+                          Print
+                        </a>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-xs">
+                      <p className="text-xs">Opens print preview. Use Ctrl/Cmd+P to print or save as PDF.</p>
+                    </TooltipContent>
+                  </Tooltip>
                 ) : (
                   <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-[10px] text-destructive" disabled>
                     Error
