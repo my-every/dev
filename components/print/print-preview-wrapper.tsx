@@ -111,16 +111,25 @@ export function PrintPreviewWrapper({ children, title = "Print Preview" }: Print
         </Button>
       </div>
 
-      {/* Content with zoom transform */}
-      <div 
-        className="print:transform-none print:p-0"
-        style={{
-          transform: `scale(${zoom / 100})`,
-          transformOrigin: "top center",
-          padding: "2rem",
-        }}
-      >
-        {children}
+      {/* Content container - handles overflow and centering */}
+      <div className="overflow-auto print:overflow-visible py-6 print:py-0">
+        {/* Inner wrapper that scales content */}
+        <div 
+          className="mx-auto print:transform-none print:mx-0"
+          style={{
+            width: `${100 / (zoom / 100)}%`,
+            maxWidth: "none",
+          }}
+        >
+          <div
+            style={{
+              transform: `scale(${zoom / 100})`,
+              transformOrigin: "top left",
+            }}
+          >
+            {children}
+          </div>
+        </div>
       </div>
     </div>
   );
