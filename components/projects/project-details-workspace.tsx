@@ -1393,7 +1393,9 @@ export function ProjectDetailsWorkspace({
               if (key) {
                 newWireSettings[slug][key] = loc.wireListVisible !== false;
                 newBrandSettings[slug][key] = loc.brandingVisible !== false;
-                newCrossSettings[slug][key] = loc.wireListVisible !== false; // Cross wire follows wire list
+                // Use crossWireVisible if set, otherwise fall back to wireListVisible
+                const crossWireVisible = (loc as { crossWireVisible?: boolean }).crossWireVisible;
+                newCrossSettings[slug][key] = crossWireVisible ?? loc.wireListVisible !== false;
               }
             }
           }
@@ -1602,12 +1604,15 @@ export function ProjectDetailsWorkspace({
         // Check if there are explicit user-set values (wireListVisible/brandingVisible explicitly set)
         const hasExplicitWire = loc.wireListVisible !== undefined;
         const hasExplicitBrand = loc.brandingVisible !== undefined;
+        const hasExplicitCross = (loc as { crossWireVisible?: boolean }).crossWireVisible !== undefined;
         
         if (hasExplicitWire && hasExplicitBrand) {
           // User has customized these settings - use them
           newWireSettings[slug][locationKey] = loc.wireListVisible!;
           newBrandSettings[slug][locationKey] = loc.brandingVisible!;
-          newCrossSettings[slug][locationKey] = loc.wireListVisible !== false;
+          // Use crossWireVisible if set, otherwise fall back to wireListVisible
+          const crossWireVisible = (loc as { crossWireVisible?: boolean }).crossWireVisible;
+          newCrossSettings[slug][locationKey] = crossWireVisible ?? loc.wireListVisible !== false;
         } else {
           // Compute defaults from boxSide logic
           let targetBoxSideKey = locationToBoxSide[locationKey];
@@ -1634,7 +1639,9 @@ export function ProjectDetailsWorkspace({
           
           newWireSettings[slug][locationKey] = hasExplicitWire ? loc.wireListVisible! : defaults.wire_list;
           newBrandSettings[slug][locationKey] = hasExplicitBrand ? loc.brandingVisible! : defaults.brand_list;
-          newCrossSettings[slug][locationKey] = defaults.cross_wire;
+          // Use crossWireVisible if explicitly set, otherwise use defaults
+          const crossWireVisible = (loc as { crossWireVisible?: boolean }).crossWireVisible;
+          newCrossSettings[slug][locationKey] = hasExplicitCross ? crossWireVisible! : defaults.cross_wire;
         }
       }
     }
@@ -1706,7 +1713,7 @@ export function ProjectDetailsWorkspace({
     }
   }, [project?.id, brandListSettingsMatrix, refreshBrandingExports]);
 
-  // ─── Wire List Settings Handlers ────────────────────────────────────────────
+  // ─── Wire List Settings Handlers ───────────────────────────��────────────────
 
   const setWireListVisibility = useCallback((sheetSlug: string, key: string, visible: boolean) => {
     setWireListSettingsMatrix((prev) => ({
@@ -1767,7 +1774,7 @@ export function ProjectDetailsWorkspace({
     }
   }, [project?.id, wireListSettingsMatrix, refreshWireExports]);
 
-  // ─── Render Loading/Error States ──────────────────��──���──────────────────────
+  // ─── Render Loading/Error States ──────────────────��──���────���─────────────────
 
   if (loading) {
     return (

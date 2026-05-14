@@ -16,7 +16,7 @@ export default async function CrossWirePrintPage({
   searchParams,
 }: {
   params: Promise<{ projectId: string }>;
-  searchParams: Promise<{ swapLocations?: string; swapSheets?: string }>;
+  searchParams: Promise<{ swapLocations?: string; swapSheets?: string; print?: string }>;
 }) {
   const { projectId } = await params;
   const resolvedSearchParams = await searchParams;
