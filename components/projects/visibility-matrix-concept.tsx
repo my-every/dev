@@ -318,26 +318,31 @@ export function VisibilityMatrixConcept({
         setCrossWireBulk({ state: "error", downloadUrl: null });
         return;
       }
-      // Check if PDF generation is available by making a HEAD request
-      const response = await fetch(url, { method: "HEAD" });
-      if (response.ok) {
+      // Check if PDF generation is available by making a GET request
+      const response = await fetch(url);
+      const contentType = response.headers.get("content-type") || "";
+      
+      if (response.ok && contentType.includes("application/pdf")) {
+        // PDF generated successfully
         setCrossWireBulk({ state: "ready", downloadUrl: url });
-      } else if (response.status === 503) {
+      } else if (response.status === 503 || (response.status >= 400 && contentType.includes("application/json"))) {
         // PDF generation not available, get the print URL from the error response
-        const fullResponse = await fetch(url);
-        const data = await fullResponse.json();
+        const data = contentType.includes("application/json") ? await response.json() : {};
+        const printUrl = data.printUrl || url.replace("/api/projects/", "/print/project-context/").replace("/cross-wire-pdf", "/cross-wire");
         setCrossWireBulk({ 
           state: "print-fallback", 
           downloadUrl: null, 
-          printUrl: data.printUrl || url.replace("/api/projects/", "/print/project-context/").replace("/cross-wire-pdf", "/cross-wire")
+          printUrl
         });
       } else {
         setCrossWireBulk({ state: "error", downloadUrl: null });
       }
     } catch {
-      setCrossWireBulk({ state: "error", downloadUrl: null });
+      // On network error, fall back to print preview URL
+      const printUrl = `/print/project-context/${encodeURIComponent(projectId ?? "")}/cross-wire`;
+      setCrossWireBulk({ state: "print-fallback", downloadUrl: null, printUrl });
     }
-  }, [onSaveAndGenerateCrossWire]);
+  }, [onSaveAndGenerateCrossWire, projectId]);
 
   // Default settings popover state - must be before early returns
   // Default to overwrite=true since applying defaults should reset to standard values
