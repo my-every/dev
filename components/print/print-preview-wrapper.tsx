@@ -4,8 +4,6 @@ import { useEffect, useState, useCallback, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import { Printer, ZoomIn, ZoomOut, RotateCcw, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
-import { Separator } from "@/components/ui/separator";
 
 interface PrintPreviewWrapperProps {
   children: ReactNode;
@@ -50,10 +48,6 @@ export function PrintPreviewWrapper({ children, title = "Print Preview" }: Print
     setZoom(100);
   }, []);
 
-  const handleFitWidth = useCallback(() => {
-    setZoom(50);
-  }, []);
-
   const handleClose = useCallback(() => {
     // Try to close the window, fallback to going back in history
     if (window.opener) {
@@ -65,9 +59,12 @@ export function PrintPreviewWrapper({ children, title = "Print Preview" }: Print
 
   // Calculate the scale factor
   const scale = zoom / 100;
+  
+  // Fixed page width in pixels (matches print width for letter size content)
+  const PAGE_WIDTH = 860;
 
   return (
-    <div className="min-h-screen bg-neutral-200 print:bg-white print:min-h-0">
+    <div className="min-h-screen bg-neutral-400 print:bg-white print:min-h-0">
       {/* Toolbar - hidden during print */}
       <div className="print:hidden sticky top-0 z-50 flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border-b bg-white shadow-sm">
         {/* Close Button */}
@@ -98,24 +95,32 @@ export function PrintPreviewWrapper({ children, title = "Print Preview" }: Print
         </Button>
       </div>
 
-      {/* Content container - scrollable viewport */}
-      <div className="overflow-auto print:overflow-visible">
+      {/* Scrollable viewport */}
+      <div className="overflow-auto print:overflow-visible min-h-[calc(100vh-52px)]">
         {/* 
-          Scaling container: Uses CSS zoom for consistent scaling that respects layout.
-          CSS zoom is widely supported and scales both visual appearance AND layout dimensions.
+          Transform-based scaling: The page content has a fixed width and layout.
+          CSS transform scales the visual appearance without affecting internal layout.
+          This works like a PDF viewer - zoom changes the visual size, not the page layout.
         */}
         <div 
-          className="p-4 sm:p-6 print:p-0 print:!zoom-100"
+          className="flex justify-center py-6 print:py-0 print:block"
           style={{
-            zoom: scale,
-            // Fallback for Firefox which doesn't support zoom
-            // @ts-expect-error - MozTransform for Firefox fallback
-            MozTransform: `scale(${scale})`,
-            MozTransformOrigin: "top center",
+            // Ensure container is wide enough for scaled content + padding
+            minWidth: PAGE_WIDTH * scale + 48,
           }}
         >
-          {/* Center the content */}
-          <div className="mx-auto print:mx-0">
+          {/* Fixed-width page container that gets visually scaled */}
+          <div
+            className="bg-white shadow-lg print:shadow-none print:transform-none"
+            style={{
+              // Fixed page width - internal layout is always the same
+              width: PAGE_WIDTH,
+              minWidth: PAGE_WIDTH,
+              // Visual scaling via CSS transform
+              transform: `scale(${scale})`,
+              transformOrigin: "top center",
+            }}
+          >
             {children}
           </div>
         </div>
