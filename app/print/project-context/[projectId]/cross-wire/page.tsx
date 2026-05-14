@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { WireListPrintDocument } from "@/components/wire-list/print-modal";
+import { PrintPreviewWrapper } from "@/components/print/print-preview-wrapper";
 import { buildProjectSheetPrintDocument } from "@/lib/wire-list-print/build-project-sheet-print-document";
 import { readProjectManifest } from "@/lib/project-state/share-project-state-handlers";
 import { buildPrintPreviewPageCount, buildVisiblePreviewSections } from "@/lib/wire-list-print/model";
@@ -206,13 +208,21 @@ export default async function CrossWirePrintPage({
 
   if (combinedDocs.length === 0) notFound();
 
+  const unitTitle = combinedDocs.length === 1 
+    ? combinedDocs[0].currentSheetName 
+    : `${combinedDocs.length} Units`;
+
   return (
-    <main className="min-h-screen bg-white px-6 py-8 print:p-0 print:bg-white">
-      <div className="print-content mx-auto max-w-215 space-y-8">
-        {combinedDocs.map((doc, i) => (
-          <WireListPrintDocument key={i} data={doc} />
-        ))}
-      </div>
-    </main>
+    <Suspense fallback={<div className="p-8 text-center">Loading print preview...</div>}>
+      <PrintPreviewWrapper title={`Cross Wire List — ${unitTitle}`}>
+        <main className="bg-white px-6 py-8 print:p-0 print:bg-white">
+          <div className="print-content mx-auto max-w-215 space-y-8">
+            {combinedDocs.map((doc, i) => (
+              <WireListPrintDocument key={i} data={doc} />
+            ))}
+          </div>
+        </main>
+      </PrintPreviewWrapper>
+    </Suspense>
   );
 }

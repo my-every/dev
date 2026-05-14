@@ -64,7 +64,7 @@ interface VisibilityMatrixProps {
   loading?: boolean;
 }
 
-type GeneratingState = "idle" | "generating" | "ready" | "error" | "print-fallback";
+type GeneratingState = "idle" | "generating" | "ready" | "error";
   type BulkGeneratingState = { state: GeneratingState; downloadUrl: string | null; printUrl?: string | null };
 
 // ─── Helper: Infer boxSide key from string ───────────────────────────────────
@@ -313,34 +313,13 @@ export function VisibilityMatrixConcept({
     if (!onSaveAndGenerateCrossWire) return;
     setCrossWireBulk({ state: "generating", downloadUrl: null });
     try {
-      const url = await onSaveAndGenerateCrossWire();
-      if (!url) {
-        setCrossWireBulk({ state: "error", downloadUrl: null });
-        return;
-      }
-      // Check if PDF generation is available by making a GET request
-      const response = await fetch(url);
-      const contentType = response.headers.get("content-type") || "";
-      
-      if (response.ok && contentType.includes("application/pdf")) {
-        // PDF generated successfully
-        setCrossWireBulk({ state: "ready", downloadUrl: url });
-      } else if (response.status === 503 || (response.status >= 400 && contentType.includes("application/json"))) {
-        // PDF generation not available, get the print URL from the error response
-        const data = contentType.includes("application/json") ? await response.json() : {};
-        const printUrl = data.printUrl || url.replace("/api/projects/", "/print/project-context/").replace("/cross-wire-pdf", "/cross-wire");
-        setCrossWireBulk({ 
-          state: "print-fallback", 
-          downloadUrl: null, 
-          printUrl
-        });
-      } else {
-        setCrossWireBulk({ state: "error", downloadUrl: null });
-      }
+      // Save settings and get the print preview URL
+      await onSaveAndGenerateCrossWire();
+      // Construct print URL with auto-print parameter
+      const printUrl = `/print/project-context/${encodeURIComponent(projectId ?? "")}/cross-wire?print=1`;
+      setCrossWireBulk({ state: "ready", downloadUrl: null, printUrl });
     } catch {
-      // On network error, fall back to print preview URL
-      const printUrl = `/print/project-context/${encodeURIComponent(projectId ?? "")}/cross-wire`;
-      setCrossWireBulk({ state: "print-fallback", downloadUrl: null, printUrl });
+      setCrossWireBulk({ state: "error", downloadUrl: null });
     }
   }, [onSaveAndGenerateCrossWire, projectId]);
 
@@ -782,41 +761,29 @@ export function VisibilityMatrixConcept({
                     disabled={!onSaveAndGenerateCrossWire}
                   >
                     <FileText className="h-3 w-3" />
-                    PDF
+                    Print
                   </Button>
                 ) : crossWireBulk.state === "generating" ? (
                   <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-[10px]" disabled>
                     <Loader2 className="h-3 w-3 animate-spin" />
                   </Button>
-                ) : crossWireBulk.state === "ready" && crossWireBulk.downloadUrl ? (
-                  <Button
-                    size="sm"
-                    variant="default"
-                    className="h-7 gap-1 px-2 text-[10px] bg-green-600 hover:bg-green-700"
-                    asChild
-                  >
-                    <a href={crossWireBulk.downloadUrl} download>
-                      <Download className="h-3 w-3" />
-                      DL
-                    </a>
-                  </Button>
-                ) : crossWireBulk.state === "print-fallback" && crossWireBulk.printUrl ? (
+                ) : crossWireBulk.state === "ready" && crossWireBulk.printUrl ? (
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
                         size="sm"
                         variant="default"
-                        className="h-7 gap-1 px-2 text-[10px] bg-blue-600 hover:bg-blue-700"
+                        className="h-7 gap-1 px-2 text-[10px] bg-green-600 hover:bg-green-700"
                         asChild
                       >
                         <a href={crossWireBulk.printUrl} target="_blank" rel="noopener noreferrer">
                           <ExternalLink className="h-3 w-3" />
-                          Print
+                          Open
                         </a>
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent side="top" className="max-w-xs">
-                      <p className="text-xs">Opens print preview. Use Ctrl/Cmd+P to print or save as PDF.</p>
+                      <p className="text-xs">Opens print preview with print dialog. Save as PDF from the print menu.</p>
                     </TooltipContent>
                   </Tooltip>
                 ) : (
