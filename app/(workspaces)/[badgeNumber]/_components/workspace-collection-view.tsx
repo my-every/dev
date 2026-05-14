@@ -128,7 +128,7 @@ export function WorkspaceCollectionView({
     }, [filterValues, filters, items, searchValue]);
 
     return (
-        <div className="w-full max-w-full space-y-2 overflow-hidden sm:space-y-3 md:space-y-4">
+        <div className="flex w-full flex-1 flex-col space-y-2 sm:space-y-3 md:space-y-4">
         <WorkspaceCollectionToolbar
             searchValue={searchValue}
             onSearchChange={setSearchValue}

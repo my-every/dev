@@ -56,6 +56,8 @@ export interface ExternalLocationConfig {
   wireListVisible: boolean
   /** Whether this external location appears in the branding print output */
   brandingVisible: boolean
+  /** Whether this external location appears in cross-wire print output (defaults to wireListVisible if not set) */
+  crossWireVisible?: boolean
 }
 
 // ─── Index entry types ────────────────────────────────────────────────────────
@@ -140,11 +142,13 @@ export function buildUbpReferenceIndex(raw: unknown): UbpReferenceIndex {
                   return loc ? { location: loc, wireListVisible: true, brandingVisible: true } : null
                 }
                 const loc = normalizeKey(item?.location)
+                const crossWireVisible = (item as { crossWireVisible?: boolean })?.crossWireVisible;
                 return loc
                   ? {
                       location: loc,
                       wireListVisible: item.wireListVisible ?? true,
                       brandingVisible: item.brandingVisible ?? true,
+                      ...(crossWireVisible !== undefined && { crossWireVisible }),
                     }
                   : null
               })

@@ -161,6 +161,17 @@ export async function renderCrossWirePdfFromRoute(options: {
   return renderPdfFromUrl(targetUrl);
 }
 
+/** Custom error class for PDF generation failures that includes a print URL */
+export class PDFGenerationError extends Error {
+  public readonly printUrl: string;
+  
+  constructor(message: string, printUrl: string) {
+    super(message);
+    this.name = "PDFGenerationError";
+    this.printUrl = printUrl;
+  }
+}
+
 async function renderPdfFromUrl(targetUrl: URL): Promise<Uint8Array> {
   let browser;
   try {
@@ -168,14 +179,23 @@ async function renderPdfFromUrl(targetUrl: URL): Promise<Uint8Array> {
   } catch (launchError) {
     const fallbackExecutablePath = await resolveChromiumExecutablePath();
     if (fallbackExecutablePath) {
-      browser = await chromium.launch({
-        headless: true,
-        executablePath: fallbackExecutablePath,
-      });
+      try {
+        browser = await chromium.launch({
+          headless: true,
+          executablePath: fallbackExecutablePath,
+        });
+      } catch {
+        // If fallback executable also fails, throw with print URL
+        throw new PDFGenerationError(
+          "PDF generation requires Playwright/Chromium. Use browser print (Ctrl/Cmd+P) on the print preview page instead.",
+          targetUrl.toString()
+        );
+      }
     } else {
-      const message = launchError instanceof Error ? launchError.message : String(launchError);
-      throw new Error(
-        `Playwright Chromium browser is not available. Run "npx playwright install chromium" to install it. (${message})`,
+      // No browser available, throw with print URL for manual printing
+      throw new PDFGenerationError(
+        "PDF generation requires Playwright/Chromium. Use browser print (Ctrl/Cmd+P) on the print preview page instead.",
+        targetUrl.toString()
       );
     }
   }

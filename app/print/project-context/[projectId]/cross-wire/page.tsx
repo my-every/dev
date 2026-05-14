@@ -44,7 +44,9 @@ export default async function CrossWirePrintPage({
     for (const location of assignment.externalLocations ?? []) {
       const key = normalizeLocationKey(String(location.location ?? ""));
       if (!key) continue;
-      visibility.set(key, location.wireListVisible ?? true);
+      // Use crossWireVisible if explicitly set, otherwise fall back to wireListVisible
+      const crossWireVisible = (location as { crossWireVisible?: boolean }).crossWireVisible;
+      visibility.set(key, crossWireVisible ?? location.wireListVisible ?? true);
     }
     assignmentVisibilityBySlug.set(slug, visibility);
   }

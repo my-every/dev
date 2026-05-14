@@ -80,6 +80,7 @@ export const ExternalLocationVisibilityItemSchema = z.object({
   location: z.string().min(1),
   wireListVisible: z.boolean(),
   brandingVisible: z.boolean(),
+  crossWireVisible: z.boolean().optional(),
 });
 
 export const ExternalLocationsPatchSchema = z.object({

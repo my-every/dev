@@ -6,6 +6,7 @@ import { motion, useInView, useAnimationControls } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 type LWCChartBucket = "NEW_FLEX" | "ONSKID" | "OFFSKID" | "OTHER"
 
@@ -199,27 +200,25 @@ function ActiveProjectsLWCChart({ projects, className, ...props }: ActiveProject
   }, [columns])
 
   return (
-    <section className={cn("rounded-lg border border-border bg-card p-2 sm:p-2.5 md:p-3", className)} {...props}>
+    <section className={cn("w-full flex-shrink-0 rounded-lg border border-border bg-card p-2 sm:p-2.5 md:p-3", className)} {...props}>
       {/* Header - compact on mobile */}
       <div className="mb-2 flex flex-col gap-1.5 sm:mb-2.5 sm:gap-2 md:mb-3 md:flex-row md:items-start md:justify-between md:gap-3">
         {/* Title — always visible */}
-        <div className="min-w-0 flex items-center justify-between gap-2 sm:block">
-          <div>
-            <p className="text-[11px] font-semibold text-foreground sm:text-xs md:text-sm">Projects by LWC</p>
-            <p className="text-[9px] text-muted-foreground sm:text-[10px] md:text-xs">
-              {STATUS_META[selectedStatus].label}
-              {" · "}
-              {selectedMonth === "all" ? "All months" : formatMonthLabel(selectedMonth)}
-              {" · "}
-              {filteredProjects.length} project{filteredProjects.length === 1 ? "" : "s"}
-            </p>
-          </div>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-[11px] font-semibold text-foreground sm:text-xs md:text-sm">Projects by LWC</p>
+          <p className="truncate text-[9px] text-muted-foreground sm:text-[10px] md:text-xs">
+            {STATUS_META[selectedStatus].label}
+            {" · "}
+            {selectedMonth === "all" ? "All months" : formatMonthLabel(selectedMonth)}
+            {" · "}
+            {filteredProjects.length} project{filteredProjects.length === 1 ? "" : "s"}
+          </p>
         </div>
 
-        {/* Unified filter pill: month picker + status toggle */}
-        <div className="flex w-full shrink-0 items-stretch overflow-x-auto rounded-md border border-input bg-background scrollbar-none sm:rounded-lg md:w-auto">
+        {/* Filters: month picker + status tabs */}
+        <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-2">
           <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-            <SelectTrigger className="h-6 min-w-[5.5rem] gap-0.5 rounded-none border-0 px-1.5 text-[10px] shadow-none focus:ring-0 sm:h-7 sm:min-w-[6.5rem] sm:gap-1 sm:px-2 sm:text-[11px] md:h-8 md:min-w-[7.5rem] md:px-3 md:text-xs">
+            <SelectTrigger className="h-7 w-[110px] gap-1 text-[10px] sm:h-8 sm:w-[120px] sm:text-xs">
               <SelectValue placeholder="All Months" />
             </SelectTrigger>
             <SelectContent>
@@ -232,23 +231,19 @@ function ActiveProjectsLWCChart({ projects, className, ...props }: ActiveProject
             </SelectContent>
           </Select>
 
-          <div className="my-1 w-px bg-border sm:my-1.5" />
-
-          {(Object.keys(STATUS_META) as ChartStatusFilter[]).map((statusKey) => (
-            <button
-              key={statusKey}
-              type="button"
-              onClick={() => setSelectedStatus(statusKey)}
-              className={cn(
-                "h-6 whitespace-nowrap px-1.5 text-[10px] font-medium transition-colors sm:h-7 sm:px-2 sm:text-[11px] md:h-8 md:px-3 md:text-xs",
-                selectedStatus === statusKey
-                  ? "bg-foreground text-background"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
-              )}
-            >
-              {STATUS_META[statusKey].label}
-            </button>
-          ))}
+          <Tabs value={selectedStatus} onValueChange={(v) => setSelectedStatus(v as ChartStatusFilter)} className="w-full sm:w-auto">
+            <TabsList className="h-7 w-full gap-0.5 p-0.5 sm:h-8 sm:w-auto sm:gap-1 sm:p-1">
+              {(Object.keys(STATUS_META) as ChartStatusFilter[]).map((statusKey) => (
+                <TabsTrigger 
+                  key={statusKey} 
+                  value={statusKey}
+                  className="h-full flex-1 px-2 text-[10px] sm:flex-none sm:px-3 sm:text-xs"
+                >
+                  {STATUS_META[statusKey].label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
         </div>
       </div>
 
@@ -433,7 +428,7 @@ function MobileCompactLWCChart({ columns }: { columns: ColumnData[] }) {
   return (
     <div className="space-y-1.5">
       {/* Stacked horizontal bar */}
-      <div className="flex h-6 w-full overflow-hidden rounded-md border">
+      <div className="flex h-6 w-full rounded-md border">
         {columns.map((col, idx) => {
           const percentage = (col.value / total) * 100
           if (percentage === 0) return null
@@ -441,7 +436,7 @@ function MobileCompactLWCChart({ columns }: { columns: ColumnData[] }) {
             <div
               key={idx}
               className={cn("flex items-center justify-center", col.className)}
-              style={{ width: `${percentage}%` }}
+              style={{ width: `${percentage}%`, minWidth: percentage > 0 ? '1rem' : 0 }}
             >
               {percentage >= 15 && (
                 <span className="text-[10px] font-semibold tabular-nums">{col.value}</span>
@@ -451,12 +446,12 @@ function MobileCompactLWCChart({ columns }: { columns: ColumnData[] }) {
         })}
       </div>
       
-      {/* Legend row */}
-      <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+      {/* Legend row - horizontal scroll */}
+      <div className="-mx-2 flex gap-x-2 overflow-x-auto px-2 pb-0.5 scrollbar-none">
         {columns.map((col, idx) => (
-          <div key={idx} className="flex items-center gap-1">
+          <div key={idx} className="flex flex-shrink-0 items-center gap-1">
             <div className={cn("h-2 w-2 rounded-sm", col.className, col.topBorderClassName && "border-t-2", col.topBorderClassName)} />
-            <span className="text-[9px] text-muted-foreground">{col.title}</span>
+            <span className="whitespace-nowrap text-[9px] text-muted-foreground">{col.title}</span>
             <span className="text-[10px] font-medium tabular-nums">{col.value}</span>
           </div>
         ))}

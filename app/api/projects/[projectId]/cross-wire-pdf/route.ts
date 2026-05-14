@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { renderCrossWirePdfFromRoute } from "@/lib/project-exports/render-wire-list-pdf";
+import { renderCrossWirePdfFromRoute, PDFGenerationError } from "@/lib/project-exports/render-wire-list-pdf";
 import { readProjectManifest } from "@/lib/project-state/share-project-state-handlers";
 
 export const dynamic = "force-dynamic";
@@ -37,6 +37,18 @@ export async function GET(
       },
     });
   } catch (error) {
+    // Handle PDFGenerationError specially - return print URL for manual printing
+    if (error instanceof PDFGenerationError) {
+      return NextResponse.json(
+        { 
+          error: error.message, 
+          printUrl: error.printUrl,
+          instructions: "Open the print URL in your browser and use Ctrl/Cmd+P to print to PDF."
+        }, 
+        { status: 503 }
+      );
+    }
+    
     const message =
       error instanceof Error ? error.message : "Failed to render cross wire PDF.";
     return NextResponse.json({ error: message }, { status: 500 });

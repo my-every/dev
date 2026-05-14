@@ -2,7 +2,8 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { Sparkles, ChevronLeft, ChevronRight, Activity } from "lucide-react";
+import { Sparkles, ChevronLeft, ChevronRight, Bell } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import {
   CompositeAside,
@@ -80,13 +81,15 @@ export function PageContent({
   selectedEntity,
 }: LayoutPageProps) {
   const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
   const { isSidePanelOpen, closeSidePanel, toggleSidePanel, toggleAside, isAsideOpen } = useLayoutUI();
 
   return (
     <>
       <div
         className={cn(
-          "flex min-h-0 relative flex-1 flex-wrap rounded-xl border border-border lg:flex-nowrap ",
+          "relative flex flex-1 flex-wrap rounded-xl border border-border lg:flex-nowrap",
+          isMobile ? "min-h-0 overflow-hidden" : "min-h-0",
           classNames?.main,
         )}
       >
@@ -104,7 +107,8 @@ export function PageContent({
 
         <div
           className={cn(
-            "flex min-h-0 flex-1 flex-col mx-auto lg:max-w-none lg:mx-0 ",
+            "flex flex-1 flex-col",
+            isMobile ? "min-h-0 w-full" : "min-h-0 mx-auto lg:max-w-none lg:mx-0",
             classNames?.mainInner,
           )}
         >
@@ -199,7 +203,7 @@ export function PageContent({
                       className="relative rounded-xl border border-border bg-card p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                       aria-label={isAsideOpen ? "Close activity panel" : "Open activity panel"}
                     >
-                      <Activity className="h-4 w-4" />
+                      <Bell className="h-4 w-4" />
                       <span className="absolute -right-0.5 -top-0.5 flex h-2 w-2">
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
                         <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
@@ -227,7 +231,15 @@ export function PageContent({
             <div className="text-lg">{subHeader}</div>
           ) : null}
 
-          <div className="flex min-h-0 flex-1 flex-col overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border">
+          <div 
+            className={cn(
+              "flex-1 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border",
+              isMobile 
+                ? "h-0 min-h-0 grow overflow-y-auto overflow-x-hidden -webkit-overflow-scrolling-touch" 
+                : "min-h-0 w-full max-w-full overflow-x-hidden overflow-y-auto"
+            )}
+            style={isMobile ? { WebkitOverflowScrolling: 'touch' } : undefined}
+          >
             {children}
           </div>
         </div>

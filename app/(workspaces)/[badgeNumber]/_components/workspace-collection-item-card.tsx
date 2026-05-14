@@ -22,7 +22,7 @@ export function WorkspaceCollectionItemCard({
     const content = (
         <div
             className={cn(
-                "group relative flex h-full flex-col gap-2 rounded-lg border bg-card/60 p-2.5 text-left transition-colors sm:gap-3 sm:rounded-xl sm:p-3.5",
+                "group relative flex h-full w-full flex-col gap-2 rounded-lg border bg-card/60 p-2.5 text-left transition-colors sm:gap-3 sm:rounded-xl sm:p-3.5",
                 selected
                     ? "border-primary/50 bg-primary/5 shadow-sm"
                     : "border-border hover:bg-accent/50 hover:border-border/80",
@@ -47,8 +47,8 @@ export function WorkspaceCollectionItemCard({
             {item.metadata?.length ? (
                 <div className="grid grid-cols-2 gap-1 text-xs text-muted-foreground">
                     {item.metadata.slice(0, 4).map((entry) => (
-                        <div key={`${item.id}-${entry.label}`} className="space-y-0.5 rounded-md border border-border/60 bg-background/70 px-1.5 py-1 sm:rounded-lg sm:px-2 sm:py-1.5">
-                            <div className="text-[8px] uppercase tracking-[0.12em] sm:text-[9px]">{entry.label}</div>
+                        <div key={`${item.id}-${entry.label}`} className="min-w-0 space-y-0.5 rounded-md border border-border/60 bg-background/70 px-1.5 py-1 sm:rounded-lg sm:px-2 sm:py-1.5">
+                            <div className="truncate text-[8px] uppercase tracking-[0.12em] sm:text-[9px]">{entry.label}</div>
                             <div className="truncate text-[9px] font-medium text-foreground sm:text-[10px]">{entry.value}</div>
                         </div>
                     ))}
