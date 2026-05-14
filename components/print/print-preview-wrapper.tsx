@@ -55,49 +55,37 @@ export function PrintPreviewWrapper({ children, title = "Print Preview" }: Print
   }, []);
 
   const handleClose = useCallback(() => {
-    window.close();
+    // Try to close the window, fallback to going back in history
+    if (window.opener) {
+      window.close();
+    } else {
+      window.history.back();
+    }
   }, []);
 
+  // Calculate the scale factor
+  const scale = zoom / 100;
+
   return (
-    <div className="min-h-screen bg-neutral-100 print:bg-white print:min-h-0">
+    <div className="min-h-screen bg-neutral-200 print:bg-white print:min-h-0">
       {/* Toolbar - hidden during print */}
-      <div className="print:hidden sticky top-0 z-50 flex items-center gap-2 px-4 py-2 border-b bg-white shadow-sm">
+      <div className="print:hidden sticky top-0 z-50 flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border-b bg-white shadow-sm">
         {/* Close Button */}
-        <Button variant="ghost" size="sm" onClick={handleClose} className="gap-1.5">
+        <Button variant="ghost" size="icon" onClick={handleClose} className="h-8 w-8" title="Close">
           <X className="h-4 w-4" />
-          <span className="hidden sm:inline">Close</span>
         </Button>
 
-        <Separator orientation="vertical" className="h-6" />
-
-        {/* Title */}
-        <span className="text-sm font-medium text-muted-foreground hidden md:block">{title}</span>
-
-        <Separator orientation="vertical" className="h-6 hidden md:block" />
-
         {/* Zoom Controls */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5 sm:gap-1">
           <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleZoomOut} title="Zoom out">
             <ZoomOut className="h-4 w-4" />
           </Button>
-          <div className="w-24 px-2 hidden sm:block">
-            <Slider
-              value={[zoom]}
-              min={25}
-              max={200}
-              step={5}
-              onValueChange={([value]) => setZoom(value)}
-            />
-          </div>
           <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleZoomIn} title="Zoom in">
             <ZoomIn className="h-4 w-4" />
           </Button>
-          <span className="text-xs text-muted-foreground w-10 text-center">{zoom}%</span>
-          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleResetZoom} title="Reset to 100%">
+          <span className="text-xs font-medium text-muted-foreground w-10 text-center tabular-nums">{zoom}%</span>
+          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleResetZoom} title="Reset zoom">
             <RotateCcw className="h-3.5 w-3.5" />
-          </Button>
-          <Button variant="ghost" size="sm" onClick={handleFitWidth} className="text-xs hidden sm:flex">
-            Fit
           </Button>
         </div>
 
@@ -105,28 +93,29 @@ export function PrintPreviewWrapper({ children, title = "Print Preview" }: Print
         <div className="flex-1" />
 
         {/* Print Button */}
-        <Button onClick={handlePrint} size="sm" className="gap-2">
+        <Button onClick={handlePrint} size="icon" className="h-9 w-9 rounded-full" title="Print">
           <Printer className="h-4 w-4" />
-          <span className="hidden sm:inline">Print</span>
         </Button>
       </div>
 
-      {/* Content container - handles overflow and centering */}
-      <div className="overflow-auto print:overflow-visible py-6 print:py-0">
-        {/* Inner wrapper that scales content */}
+      {/* Content container - scrollable viewport */}
+      <div className="overflow-auto print:overflow-visible">
+        {/* 
+          Scaling container: Uses CSS zoom for consistent scaling that respects layout.
+          CSS zoom is widely supported and scales both visual appearance AND layout dimensions.
+        */}
         <div 
-          className="mx-auto print:transform-none print:mx-0"
+          className="p-4 sm:p-6 print:p-0 print:!zoom-100"
           style={{
-            width: `${100 / (zoom / 100)}%`,
-            maxWidth: "none",
+            zoom: scale,
+            // Fallback for Firefox which doesn't support zoom
+            // @ts-expect-error - MozTransform for Firefox fallback
+            MozTransform: `scale(${scale})`,
+            MozTransformOrigin: "top center",
           }}
         >
-          <div
-            style={{
-              transform: `scale(${zoom / 100})`,
-              transformOrigin: "top left",
-            }}
-          >
+          {/* Center the content */}
+          <div className="mx-auto print:mx-0">
             {children}
           </div>
         </div>
