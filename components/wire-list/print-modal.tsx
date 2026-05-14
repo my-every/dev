@@ -201,7 +201,8 @@ interface PrintSubsection {
   deviceToDeviceSubsections?: { label: string; rows: SemanticWireListRow[] }[];
 }
 
-function getLocationSectionTypeLabel(isExternal: boolean): string {
+function getLocationSectionTypeLabel(isExternal: boolean, boxSide?: string): string {
+  if (boxSide) return boxSide;
   return isExternal ? "EXTERNAL" : "INTERNAL";
 }
 
@@ -1976,7 +1977,9 @@ function TableOfContentsPage({
                   <tr className="bg-muted/20">
                     <td colSpan={showEstTime ? 5 : 4} className="py-1.5 px-1.5 border-t border-border text-left">
                       <div className="text-[10px] font-normal uppercase tracking-wide text-muted-foreground">
-                        {crossWireSections.has(`loc-${groupIndex}`) ? "EXTERNAL — CROSSWIRE" : getLocationSectionTypeLabel(group.isExternal)}
+                        {crossWireSections.has(`loc-${groupIndex}`)
+                          ? (group.boxSide ? `${group.boxSide} — CROSSWIRE` : "EXTERNAL — CROSSWIRE")
+                          : getLocationSectionTypeLabel(group.isExternal, group.boxSide)}
                       </div>
                       <div className="text-xs font-bold text-foreground">
                         {group.location}
@@ -2357,7 +2360,7 @@ function PrintTableRow({
         </td>
       )}
       {showFromLocation && (
-        <td className="w-[120px] px-1.5 py-0 text-[11px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{displayEndpoints.fromLocation || currentSheetName || "-"}</td>
+        <td className="px-1.5 py-1 text-[11px] font-medium">{displayEndpoints.fromLocation || currentSheetName || "-"}</td>
       )}
       {showPartNumber && (
         <td className="px-1.5 py-0 text-[11px] font-medium text-muted-foreground">{fromReference?.partNumber || ""}</td>
@@ -2411,7 +2414,7 @@ function PrintTableRow({
         <td className="px-1.5 py-0 text-[11px] text-muted-foreground">{toReference?.description || ""}</td>
       )}
       {showToLocation && (
-        <td className="w-[120px] px-1.5 py-0 text-[11px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{displayEndpoints.toLocation || currentSheetName || "-"}</td>
+        <td className="px-1.5 py-1 text-[11px] font-medium">{displayEndpoints.toLocation || currentSheetName || "-"}</td>
       )}
       {showIPV && (
         <td className="px-1.5 py-0 w-5 text-center">
@@ -2777,7 +2780,7 @@ function PrintPreviewTable({
             <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Est.</th>
           )}
           {showFromLocation && (
-            <th className="w-[120px] px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Location</th>
+            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Location</th>
           )}
           {showPartNumberColumn && (
             <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Part No</th>
@@ -2815,7 +2818,7 @@ function PrintPreviewTable({
             <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Desc</th>
           )}
           {showToLocation && (
-            <th className="w-[120px] px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Location</th>
+            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Location</th>
           )}
           {showIPV && (
             <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">IPV</th>
@@ -4438,6 +4441,18 @@ export function SingleSheetPrintWorkspace({
 
   const effectivePartNumberMap = schemaHydration?.partNumberMap ?? partNumberMap;
 
+  // Pre-compute locationBoxSideByName for use in both location groups and context
+  const locationBoxSideByName = useMemo(() => {
+    return assignmentMappings.reduce<Record<string, string>>((acc, mapping) => {
+      const sheetNameKey = mapping.sheetName?.trim().toUpperCase();
+      const mappedBoxSide = currentProject?.assignments?.[mapping.sheetSlug]?.boxSide;
+      if (sheetNameKey && mappedBoxSide) {
+        acc[sheetNameKey] = mappedBoxSide;
+      }
+      return acc;
+    }, {});
+  }, [assignmentMappings, currentProject?.assignments]);
+
   // Print preview should follow the same section membership as the live identity filter.
   // When a saved schema is loaded, use its hydrated groups instead.
   const processedLocationGroups = useMemo((): PrintLocationGroup[] => {
@@ -4451,18 +4466,12 @@ export function SingleSheetPrintWorkspace({
       blueLabels: effectiveBlueLabels,
       partNumberMap: effectivePartNumberMap,
       sortMode: settings.mode === "branding" ? settings.brandingSortMode : settings.wireListSortMode,
+      locationBoxSideByName,
     }) as PrintLocationGroup[];
-  }, [schemaHydration, rows, settings.mode, settings.enabledSections, settings.sectionOrder, settings.brandingSortMode, settings.wireListSortMode, currentSheetName, effectiveBlueLabels, effectivePartNumberMap]);
+  }, [schemaHydration, rows, settings.mode, settings.enabledSections, settings.sectionOrder, settings.brandingSortMode, settings.wireListSortMode, currentSheetName, effectiveBlueLabels, effectivePartNumberMap, locationBoxSideByName]);
 
   const externalSectionContext = useMemo(() => ({
-    locationBoxSideByName: assignmentMappings.reduce<Record<string, string>>((acc, mapping) => {
-      const sheetNameKey = mapping.sheetName?.trim().toUpperCase();
-      const mappedBoxSide = currentProject?.assignments?.[mapping.sheetSlug]?.boxSide;
-      if (sheetNameKey && mappedBoxSide) {
-        acc[sheetNameKey] = mappedBoxSide;
-      }
-      return acc;
-    }, {}),
+    locationBoxSideByName,
     currentBoxSide: sheetSlug
       ? currentProject?.assignments?.[sheetSlug]?.boxSide
       : undefined,
@@ -6657,14 +6666,14 @@ export function SingleSheetPrintWorkspace({
                                         renderSection={(section, sectionIdx, showLocationHeader) => (
                                           <div key={`${section.group.location}-${section.subsection.label}-${sectionIdx}`} className={sectionIdx > 0 ? "mt-5" : ""}>
                                             {showLocationHeader && (
-                                              <SectionHeaderBlock
-                                                title={section.group.location}
-                                                subtitle="EXTERNAL — CROSSWIRE"
-                                                subtitleFirst
-                                                className="mb-3 border-b border-foreground/10 pb-2"
-                                                titleClassName="text-[13px] font-bold text-foreground"
-                                                subtitleClassName="text-[10px] font-normal uppercase tracking-wide text-muted-foreground"
-                                              />
+                  <SectionHeaderBlock
+                    title={section.group.location}
+                    subtitle={section.group.boxSide ? `${section.group.boxSide} — CROSSWIRE` : "EXTERNAL — CROSSWIRE"}
+                    subtitleFirst
+                    className="mb-3 border-b border-foreground/10 pb-2"
+                    titleClassName="text-[13px] font-bold text-foreground"
+                    subtitleClassName="text-[10px] font-normal uppercase tracking-wide text-muted-foreground"
+                  />
                                             )}
                                             <SectionHeaderBlock
                                               title={section.subsection.label}

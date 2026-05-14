@@ -36,6 +36,8 @@ export interface PrintSubsection {
 export interface PrintLocationGroup {
   location: string;
   isExternal: boolean;
+  /** Box side value from assignment (e.g., "LEFT DOOR", "CENTER BACK") */
+  boxSide?: string;
   subsections: PrintSubsection[];
   totalRows: number;
 }
@@ -854,6 +856,8 @@ export function buildProcessedPrintLocationGroups(options: {
   blueLabels: BlueLabelSequenceMap | null;
   partNumberMap?: Map<string, PartNumberLookupResult> | null;
   sortMode?: BrandingSortMode;
+  /** Destination sheet name (uppercase) -> box side mapping for external groups. */
+  locationBoxSideByName?: Record<string, string>;
 }): PrintLocationGroup[] {
   const sortMode = options.sortMode ?? "device-prefix";
   const skipSingletonMerge = sortMode === "device-prefix" || sortMode === "device-prefix-part-number";
@@ -942,9 +946,13 @@ export function buildProcessedPrintLocationGroups(options: {
         }];
       });
 
+      // Lookup boxSide from the mapping using uppercase location name
+      const boxSide = options.locationBoxSideByName?.[group.label.toUpperCase()];
+
       return {
         location: group.label,
         isExternal: group.isExternal,
+        boxSide,
         subsections,
         totalRows: subsections.reduce(
           (sum, subsection) => sum + subsection.rows.filter(isPrintableConnectionRow).length,
