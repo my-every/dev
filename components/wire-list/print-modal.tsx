@@ -1627,7 +1627,7 @@ export function WireListPrintDocument({
             {content}
           </PrintPage>
         )}
-        renderSection={({ subsection, visibleRows }) => (
+        renderSection={({ group, subsection, visibleRows }) => (
           <div className="rounded-sm overflow-hidden w-full">
             <PrintPreviewTable
               rows={visibleRows}
@@ -1642,6 +1642,7 @@ export function WireListPrintDocument({
               cablePartNumberMap={cablePartNumberMap}
               getRowLength={getRowLength}
               locationNormalizedTitleByName={data.locationNormalizedTitleByName}
+              isExternal={group.isExternal}
             />
           </div>
         )}
@@ -2527,6 +2528,7 @@ function PrintPreviewTable({
   hiddenRows,
   onToggleRowHidden,
   locationNormalizedTitleByName,
+  isExternal = false,
 }: {
   rows: SemanticWireListRow[];
   settings: PrintSettings;
@@ -2543,6 +2545,7 @@ function PrintPreviewTable({
   hiddenRows?: Set<string>;
   onToggleRowHidden?: (rowId: string) => void;
   locationNormalizedTitleByName?: Record<string, string>;
+  isExternal?: boolean;
 }) {
   const { showFromCheckbox, showToCheckbox, showIPV, showComments, showLength, showEstTime, showDeviceSubheaders } = settings;
 
@@ -2564,7 +2567,8 @@ function PrintPreviewTable({
   const showWireId = sectionColumns.wireId;
   const showWireType = sectionColumns.wireType;
   const showGaugeSize = sectionColumns.gaugeSize;
-  const showFromLocation = true;
+  // Only show FROM location column for external (cross-wire) sections
+  const showFromLocation = isExternal;
   const showToLocation = true;
   const swapFromTo = sectionColumns.swapFromTo ?? false;
   const preserveSequentialRunOrder = shouldPreservePrintSubsectionOrder(sectionKind);
@@ -2776,18 +2780,18 @@ function PrintPreviewTable({
 
   // Column width definitions (in pixels) for print table
   const colWidths = {
-    checkbox: 18,      // Checkmark columns (FROM, TO, IPV)
-    estTime: 28,       // Est. time
-    location: 70,      // Location names
-    partNumber: 50,    // Part number
-    deviceId: 72,      // Device ID
-    description: 60,   // Description
-    wireType: 28,      // Wire type (SC, etc)
-    wireNo: 52,        // Wire number
-    wireId: 48,        // Wire ID
-    gaugeSize: 28,     // Gauge size
-    length: 36,        // Length
-    notes: 60,         // Notes column
+    checkbox: 20,      // Checkmark columns (FROM, TO, IPV)
+    estTime: 30,       // Est. time
+    location: 72,      // Location names
+    partNumber: 52,    // Part number
+    deviceId: 74,      // Device ID
+    description: 62,   // Description
+    wireType: 30,      // Wire type (SC, etc)
+    wireNo: 54,        // Wire number
+    wireId: 50,        // Wire ID
+    gaugeSize: 30,     // Gauge size
+    length: 38,        // Length
+    notes: 62,         // Notes column
   };
 
   return (
@@ -2856,66 +2860,66 @@ function PrintPreviewTable({
             <th className="px-0.5 py-1 text-center text-[8px] font-normal text-muted-foreground whitespace-nowrap" title="Complete">&#10003;</th>
           )}
           {showEstTime && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Est.</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Est.</th>
           )}
           {showFromLocation && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Location</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Location</th>
           )}
           {showPartNumberColumn && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Part No</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Part No</th>
           )}
           <th className={cn(
-            "px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap",
+            "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
             !showDescriptionColumn && "border-r border-foreground/20"
           )}>Device ID</th>
           {showDescriptionColumn && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap border-r border-foreground/20">Desc</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap border-r border-foreground/20">Desc</th>
           )}
           {/* Connection group columns (no header label) */}
           {showWireType && (
             <th className={cn(
-              "px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap",
+              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
               !showWireNo && !showWireId && !showGaugeSize && !showLength && "border-r border-foreground/20"
             )}>Type</th>
           )}
           {showWireNo && (
             <th className={cn(
-              "px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap",
+              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
               !showWireId && !showGaugeSize && !showLength && "border-r border-foreground/20"
             )}>No.</th>
           )}
           {showWireId && (
             <th className={cn(
-              "px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap",
+              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
               !showGaugeSize && !showLength && "border-r border-foreground/20"
             )}>Wire ID</th>
           )}
           {showGaugeSize && (
             <th className={cn(
-              "px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap",
+              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
               !showLength && "border-r border-foreground/20"
             )}>Size</th>
           )}
           {showLength && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap border-r border-foreground/20">Length</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap border-r border-foreground/20">Length</th>
           )}
           {/* TO group columns */}
           {showToCheckbox && (
             <th className="px-0.5 py-1 text-center text-[8px] font-normal text-muted-foreground whitespace-nowrap" title="Complete">&#10003;</th>
           )}
           {showEstTime && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Est.</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Est.</th>
           )}
           {showPartNumberColumn && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Part No</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Part No</th>
           )}
-          <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Device ID</th>
+          <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Device ID</th>
           {showDescriptionColumn && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Desc</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Desc</th>
           )}
           {showToLocation && (
             <th className={cn(
-              "px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap",
+              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
               (showIPV || showComments) && "border-r border-foreground/20"
             )}>Location</th>
           )}
@@ -2924,7 +2928,7 @@ function PrintPreviewTable({
             <th className="px-0.5 py-1 text-center text-[8px] font-normal text-muted-foreground whitespace-nowrap">IPV</th>
           )}
           {showComments && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Notes</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Notes</th>
           )}
         </tr>
       </thead>
@@ -6674,7 +6678,7 @@ export function SingleSheetPrintWorkspace({
                                           {content}
                                         </PrintPage>
                                       )}
-                                      renderSection={({ subsection, visibleRows }) => (
+                                      renderSection={({ group, subsection, visibleRows }) => (
                                         <div className="rounded-sm overflow-hidden w-full">
                                           <PrintPreviewTable
                                             rows={visibleRows}
@@ -6694,6 +6698,7 @@ export function SingleSheetPrintWorkspace({
                                             hiddenRows={settings.hiddenRows}
                                             onToggleRowHidden={toggleRowHidden}
                                             locationNormalizedTitleByName={locationNormalizedTitleByName}
+                                            isExternal={group.isExternal}
                                           />
                                         </div>
                                       )}
@@ -6821,6 +6826,7 @@ export function SingleSheetPrintWorkspace({
                                                 cablePartNumberMap={cablePartNumberMap}
                                                 getRowLength={effectiveGetRowLength}
                                                 locationNormalizedTitleByName={locationNormalizedTitleByName}
+                                                isExternal={true}
                                               />
                                             </div>
                                           </div>
