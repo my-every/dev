@@ -90,7 +90,7 @@ export function PrintPreviewWrapper({ children, title = "Print Preview" }: Print
         <div className="flex-1" />
 
         {/* Print Button */}
-        <Button onClick={handlePrint} size="icon" className="h-9 w-9 rounded-full" title="Print">
+        <Button type="button" onClick={handlePrint} size="icon" className="h-9 w-9 rounded-full" title="Print">
           <Printer className="h-4 w-4" />
         </Button>
       </div>

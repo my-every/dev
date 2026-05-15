@@ -409,7 +409,6 @@ export function ProjectDetailsWorkspace({
   const [hasLoadedWireExports, setHasLoadedWireExports] = useState(false);
   const [loadingBrandingExports, setLoadingBrandingExports] = useState(false);
   const [loadingWireExports, setLoadingWireExports] = useState(false);
-  const [regeneratingBranding, setRegeneratingBranding] = useState(false);
   const [regeneratingWire, setRegeneratingWire] = useState(false);
 
   const [wireGeneratingSheets, setWireGeneratingSheets] = useState<Record<string, "idle" | "generating" | "done" | "error">>({});
@@ -437,7 +436,6 @@ export function ProjectDetailsWorkspace({
   const [crossWireSchema, setCrossWireSchema] = useState<CrossWireSchemaSummary | null>(null);
   const [hasLoadedCrossWireSchema, setHasLoadedCrossWireSchema] = useState(false);
   const [loadingCrossWireSchema, setLoadingCrossWireSchema] = useState(false);
-  const [regeneratingCrossWireSchema, setRegeneratingCrossWireSchema] = useState(false);
   const [savingCrossWireSettingsBySheet, setSavingCrossWireSettingsBySheet] = useState<Record<string, boolean>>({});
   const [crossWireSettingsMessage, setCrossWireSettingsMessage] = useState<string | null>(null);
   const [crossWireSwapLocationsAll, setCrossWireSwapLocationsAll] = useState(false);
@@ -2547,32 +2545,6 @@ export function ProjectDetailsWorkspace({
                     <Upload className="mr-2 h-3.5 w-3.5" />
                     Import & Merge Brand List
                   </Button>
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    disabled={regeneratingBranding}
-                    onClick={() => void handleRegenerateBrandingExports(false)}
-                  >
-                    {regeneratingBranding ? (
-                      <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
-                    ) : (
-                      <Download className="mr-2 h-3.5 w-3.5" />
-                    )}
-                    Generate
-                  </Button>
-                  <Button 
-                    size="sm" 
-                    variant="default"
-                    disabled={regeneratingBranding}
-                    onClick={() => void handleRegenerateBrandingExports(true)}
-                  >
-                    {regeneratingBranding ? (
-                      <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
-                    ) : (
-                      <FileSpreadsheet className="mr-2 h-3.5 w-3.5" />
-                    )}
-                    Generate & Combine
-                  </Button>
                 </div>
 
                 {/* Combined download link */}
@@ -2763,19 +2735,6 @@ export function ProjectDetailsWorkspace({
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    disabled={regeneratingCrossWireSchema}
-                    onClick={() => void handleRegenerateCrossWireSchema()}
-                  >
-                    {regeneratingCrossWireSchema ? (
-                      <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
-                    ) : (
-                      <GitBranch className="mr-2 h-3.5 w-3.5" />
-                    )}
-                    Generate
-                  </Button>
                   <Button size="sm" variant="outline" asChild>
                     <a
                       href={`/api/projects/${encodeURIComponent(project?.id ?? "")}/cross-wire-pdf`}

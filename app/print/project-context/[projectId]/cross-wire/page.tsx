@@ -74,6 +74,7 @@ export default async function CrossWirePrintPage({
           showTableOfContents: true,
           showFeedbackSection: false,
           showIPVCodes: false,
+          showComments: false,
         },
       });
       if (!doc) return null;
@@ -202,6 +203,7 @@ export default async function CrossWirePrintPage({
         showTableOfContents: true,
         showFeedbackSection: false,
         showIPVCodes: false,
+        showComments: false,
       },
     });
   }
