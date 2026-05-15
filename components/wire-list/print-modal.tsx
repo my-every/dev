@@ -2349,7 +2349,7 @@ function PrintTableRow({
     <tr className={["border-b w-full border-foreground/10 group/row relative", rowClassName ?? ""].join(" ").trim()}>
       {/* FROM group */}
       {showFrom && (
-        <td className="w-6 px-1 py-1 text-center">
+        <td className="w-4 px-0.5 py-1 text-center">
           {showFrom && eyeButtonEl}
           <FromCheckboxCell
             rowId={row.__rowId}
@@ -2412,7 +2412,7 @@ function PrintTableRow({
       )}
       {/* TO group */}
       {showTo && (
-        <td className="w-6 px-1 py-1 text-center">
+        <td className="w-4 px-0.5 py-1 text-center">
           <ToCheckboxCell
             rowId={row.__rowId}
             checked={false}
@@ -2443,7 +2443,7 @@ function PrintTableRow({
       )}
       {/* Review group */}
       {showIPV && (
-        <td className="w-6 px-1 py-1 text-center">
+        <td className="w-4 px-0.5 py-1 text-center">
           <IPVCheckboxCell
             rowId={row.__rowId}
             checked={false}
@@ -2811,7 +2811,7 @@ function PrintPreviewTable({
         <tr className="border-b border-foreground/20">
           {/* FROM group columns */}
           {showFromCheckbox && (
-            <th className="w-6 px-1 py-1 text-center text-[9px] font-normal text-muted-foreground whitespace-nowrap" title="Complete">&#10003;</th>
+            <th className="w-4 px-0.5 py-1 text-center text-[8px] font-normal text-muted-foreground whitespace-nowrap" title="Complete">&#10003;</th>
           )}
           {showEstTime && (
             <th className="px-1.5 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Est.</th>
@@ -2859,7 +2859,7 @@ function PrintPreviewTable({
           )}
           {/* TO group columns */}
           {showToCheckbox && (
-            <th className="w-6 px-1 py-1 text-center text-[9px] font-normal text-muted-foreground whitespace-nowrap" title="Complete">&#10003;</th>
+            <th className="w-4 px-0.5 py-1 text-center text-[8px] font-normal text-muted-foreground whitespace-nowrap" title="Complete">&#10003;</th>
           )}
           {showEstTime && (
             <th className="px-1.5 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Est.</th>
@@ -2879,7 +2879,7 @@ function PrintPreviewTable({
           )}
           {/* Review group columns (no header label) */}
           {showIPV && (
-            <th className="px-1.5 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">IPV</th>
+            <th className="w-4 px-0.5 py-1 text-center text-[8px] font-normal text-muted-foreground whitespace-nowrap">IPV</th>
           )}
           {showComments && (
             <th className="px-1.5 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Notes</th>
