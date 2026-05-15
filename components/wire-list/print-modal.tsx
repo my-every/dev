@@ -6584,7 +6584,10 @@ export function SingleSheetPrintWorkspace({
                                         <div className="rounded-sm overflow-hidden w-full">
                                           <PrintPreviewTable
                                             rows={visibleRows}
-                                            settings={settings}
+                                            settings={{
+                                              ...settings,
+                                              showComments: false,
+                                            }}
                                             currentSheetName={currentSheetName}
                                             comments={comments}
                                             onCommentChange={handleCommentChange}
