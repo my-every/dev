@@ -2347,6 +2347,7 @@ function PrintTableRow({
 
   return (
     <tr className={["border-b w-full border-foreground/10 group/row relative", rowClassName ?? ""].join(" ").trim()}>
+      {/* FROM group */}
       {showFrom && (
         <td className="px-1.5 py-1 w-5 text-center">
           {showFrom && eyeButtonEl}
@@ -2369,30 +2370,47 @@ function PrintTableRow({
       {showPartNumber && (
         <td className="px-1.5 py-0 text-[11px] font-medium text-muted-foreground">{fromReference?.partNumber || ""}</td>
       )}
-      <td className="px-1.5 py-1 text-[11px] font-medium">
+      <td className={cn(
+        "px-1.5 py-1 text-[11px] font-medium",
+        !showDescription && "border-r-2 border-foreground/30"
+      )}>
         {!showFrom && eyeButtonEl}
         <BlueDeviceID deviceId={displayEndpoints.fromDeviceId} enabled={enableBlueDeviceID} />
       </td>
       {showDescription && (
-        <td className="px-1.5 py-0 text-[11px] text-muted-foreground">{fromReference?.description || ""}</td>
+        <td className="px-1.5 py-0 text-[11px] text-muted-foreground border-r-2 border-foreground/30">{fromReference?.description || ""}</td>
       )}
+      {/* Connection group */}
       {showWireType && (
-        <td className="px-1.5 py-1 text-center text-[11px] font-medium">{row.wireType}</td>
+        <td className={cn(
+          "px-1.5 py-1 text-center text-[11px] font-medium",
+          !showWireNo && !showWireId && !showGaugeSize && !showLength && "border-r-2 border-foreground/30"
+        )}>{row.wireType}</td>
       )}
       {showWireNo && (
-        <td className="px-1.5 py-0 font-mono text-[11px] font-medium">{row.wireNo}</td>
+        <td className={cn(
+          "px-1.5 py-0 font-mono text-[11px] font-medium",
+          !showWireId && !showGaugeSize && !showLength && "border-r-2 border-foreground/30"
+        )}>{row.wireNo}</td>
       )}
       {showWireId && (
-        <td className="px-1.5 py-0 text-[11px] font-medium">{row.wireId}</td>
+        <td className={cn(
+          "px-1.5 py-0 text-[11px] font-medium",
+          !showGaugeSize && !showLength && "border-r-2 border-foreground/30"
+        )}>{row.wireId}</td>
       )}
       {showGaugeSize && (
-        <td className="px-1.5 py-0 text-center text-[11px] font-medium">{row.gaugeSize}</td>
+        <td className={cn(
+          "px-1.5 py-0 text-center text-[11px] font-medium",
+          !showLength && "border-r-2 border-foreground/30"
+        )}>{row.gaugeSize}</td>
       )}
       {showLength && (
-        <td className="px-1.5 py-0 text-center text-[11px] font-medium font-mono">
+        <td className="px-1.5 py-0 text-center text-[11px] font-medium font-mono border-r-2 border-foreground/30">
           {lengthDisplay || "—"}
         </td>
       )}
+      {/* TO group */}
       {showTo && (
         <td className="px-1.5 py-0 w-5 text-center">
           <ToCheckboxCell
@@ -2418,8 +2436,12 @@ function PrintTableRow({
         <td className="px-1.5 py-0 text-[11px] text-muted-foreground">{toReference?.description || ""}</td>
       )}
       {showToLocation && (
-        <td className="px-1.5 py-1 text-[11px] font-medium">{locationNormalizedTitleByName?.[displayEndpoints.toLocation.toUpperCase()] || displayEndpoints.toLocation || currentSheetName || "-"}</td>
+        <td className={cn(
+          "px-1.5 py-1 text-[11px] font-medium",
+          (showIPV || showComments) && "border-r-2 border-foreground/30"
+        )}>{locationNormalizedTitleByName?.[displayEndpoints.toLocation.toUpperCase()] || displayEndpoints.toLocation || currentSheetName || "-"}</td>
       )}
+      {/* Review group */}
       {showIPV && (
         <td className="px-1.5 py-0 w-5 text-center">
           <IPVCheckboxCell
@@ -2731,54 +2753,63 @@ function PrintPreviewTable({
   }, [renderPlan, reorderedRows]);
 
   // Base columns: Device ID is always shown, others depend on visibility
-  // FROM side: Part Number (optional) + Device ID + Description (optional) + Type/No/Wire ID/Gauge + From Location (optional)
-  const fromBaseCount = 1 + (showPartNumberColumn ? 1 : 0) + (showDescriptionColumn ? 1 : 0) + (showWireType ? 1 : 0) + (showWireNo ? 1 : 0) + (showWireId ? 1 : 0) + (showGaugeSize ? 1 : 0) + (showFromLocation ? 1 : 0);
-  // TO side: Part Number (optional) + Device ID + Description (optional) + Location (optional)
-  const toBaseCount = 1 + (showPartNumberColumn ? 1 : 0) + (showDescriptionColumn ? 1 : 0) + (showToLocation ? 1 : 0);
+  // FROM group: Complete (checkbox) + Est + Location + Part No + Device ID + Desc
+  const fromGroupCount = (showFromCheckbox ? 1 : 0) + (showEstTime ? 1 : 0) + (showFromLocation ? 1 : 0) + (showPartNumberColumn ? 1 : 0) + 1 + (showDescriptionColumn ? 1 : 0);
+  // Connection group (middle): Type + No + Wire ID + Size + Length
+  const connectionGroupCount = (showWireType ? 1 : 0) + (showWireNo ? 1 : 0) + (showWireId ? 1 : 0) + (showGaugeSize ? 1 : 0) + (showLength ? 1 : 0);
+  // TO group: Complete (checkbox) + Est + Part No + Device ID + Desc + Location
+  const toGroupCount = (showToCheckbox ? 1 : 0) + (showEstTime ? 1 : 0) + (showPartNumberColumn ? 1 : 0) + 1 + (showDescriptionColumn ? 1 : 0) + (showToLocation ? 1 : 0);
+  // Review group: IPV + Notes
+  const reviewGroupCount = (showIPV ? 1 : 0) + (showComments ? 1 : 0);
 
-  const extraColumns =
-    (showFromCheckbox ? 1 : 0) +
-    (showToCheckbox ? 1 : 0) +
-    (showIPV ? 1 : 0) +
-    (showComments ? 1 : 0) +
-    (showLength ? 1 : 0) +
-    (showEstTime ? 2 : 0);
-  const totalColumns = fromBaseCount + toBaseCount + extraColumns;
+  const totalColumns = fromGroupCount + connectionGroupCount + toGroupCount + reviewGroupCount;
 
   // Calculate column spans for group headers
-  // FROM: checkbox + visible FROM columns + est time (From)
-  const fromColSpan = (showFromCheckbox ? 1 : 0) + fromBaseCount + (showEstTime ? 1 : 0);
-  // Length column (if shown) - standalone between FROM and TO
-  const lengthColSpan = showLength ? 1 : 0;
-  // TO: checkbox + Device ID + Location + IPV + Notes + est time (To)
-  const toColSpan = (showToCheckbox ? 1 : 0) + toBaseCount + (showIPV ? 1 : 0) + (showComments ? 1 : 0) + (showEstTime ? 1 : 0);
+  // FROM: all FROM columns
+  const fromColSpan = fromGroupCount;
+  // Connection (no header label): all connection columns
+  const connectionColSpan = connectionGroupCount;
+  // TO: all TO columns
+  const toColSpan = toGroupCount;
+  // Review (no header label): IPV + Notes
+  const reviewColSpan = reviewGroupCount;
 
   return (
     <table className="w-full table-fixed border-collapse rounded-sm overflow-hidden border border-foreground/30 text-[11px]">
-      <thead className="bg-muted/80" style={{ display: 'table-header-group' }}>
-        {/* Group header row: From | Length (optional) | To */}
+      <thead className="bg-muted/30" style={{ display: 'table-header-group' }}>
+        {/* Group header row: From | (no label for connection) | To | (no label for review) */}
         <tr className="border-b border-foreground/10">
           <th
             colSpan={fromColSpan}
-            className="px-1.5 py-1 text-center text-[10px] font-bold uppercase tracking-wider bg-muted/80 border-r border-foreground/10 whitespace-nowrap"
+            className="px-1.5 py-1 text-center text-[10px] font-bold uppercase tracking-wider border-r-2 border-foreground/30 whitespace-nowrap"
           >
             From
           </th>
-          {showLength && (
+          {connectionColSpan > 0 && (
             <th
-              colSpan={lengthColSpan}
-              className="px-1.5 py-1 text-center text-[10px] font-bold uppercase tracking-wider bg-muted/80 border-r border-foreground/10 whitespace-nowrap"
+              colSpan={connectionColSpan}
+              className="px-1.5 py-1 text-center text-[10px] font-bold uppercase tracking-wider border-r-2 border-foreground/30 whitespace-nowrap"
             />
           )}
           <th
             colSpan={toColSpan}
-            className="px-1.5 py-1 text-center text-[10px] font-bold uppercase tracking-wider bg-muted/80 whitespace-nowrap"
+            className={cn(
+              "px-1.5 py-1 text-center text-[10px] font-bold uppercase tracking-wider whitespace-nowrap",
+              reviewColSpan > 0 && "border-r-2 border-foreground/30"
+            )}
           >
             To
           </th>
+          {reviewColSpan > 0 && (
+            <th
+              colSpan={reviewColSpan}
+              className="px-1.5 py-1 text-center text-[10px] font-bold uppercase tracking-wider whitespace-nowrap"
+            />
+          )}
         </tr>
         {/* Column header row */}
         <tr className="border-b border-foreground/20">
+          {/* FROM group columns */}
           {showFromCheckbox && (
             <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Complete</th>
           )}
@@ -2791,25 +2822,42 @@ function PrintPreviewTable({
           {showPartNumberColumn && (
             <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Part No</th>
           )}
-          <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Device ID</th>
+          <th className={cn(
+            "px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap",
+            !showDescriptionColumn && "border-r-2 border-foreground/30"
+          )}>Device ID</th>
           {showDescriptionColumn && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Desc</th>
+            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap border-r-2 border-foreground/30">Desc</th>
           )}
+          {/* Connection group columns (no header label) */}
           {showWireType && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Type</th>
+            <th className={cn(
+              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
+              !showWireNo && !showWireId && !showGaugeSize && !showLength && "border-r-2 border-foreground/30"
+            )}>Type</th>
           )}
           {showWireNo && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">No.</th>
+            <th className={cn(
+              "px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap",
+              !showWireId && !showGaugeSize && !showLength && "border-r-2 border-foreground/30"
+            )}>No.</th>
           )}
           {showWireId && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Wire ID</th>
+            <th className={cn(
+              "px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap",
+              !showGaugeSize && !showLength && "border-r-2 border-foreground/30"
+            )}>Wire ID</th>
           )}
           {showGaugeSize && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Size</th>
+            <th className={cn(
+              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
+              !showLength && "border-r-2 border-foreground/30"
+            )}>Size</th>
           )}
           {showLength && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Length</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap border-r-2 border-foreground/30">Length</th>
           )}
+          {/* TO group columns */}
           {showToCheckbox && (
             <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Complete</th>
           )}
@@ -2824,8 +2872,12 @@ function PrintPreviewTable({
             <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Desc</th>
           )}
           {showToLocation && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Location</th>
+            <th className={cn(
+              "px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap",
+              (showIPV || showComments) && "border-r-2 border-foreground/30"
+            )}>Location</th>
           )}
+          {/* Review group columns (no header label) */}
           {showIPV && (
             <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">IPV</th>
           )}
