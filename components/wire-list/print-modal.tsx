@@ -2361,53 +2361,53 @@ function PrintTableRow({
         </td>
       )}
       {showEstTime && (
-        <td className="px-1 py-1 text-left text-[10px] font-mono text-muted-foreground">
+        <td className="px-1 py-1 text-center text-[10px] font-mono text-muted-foreground">
           {formatEstTime(estimateWireTime(sectionKind, row.gaugeSize).fromMinutes)}
         </td>
       )}
       {showFromLocation && (
-        <td className="px-1 py-1 text-left text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{locationNormalizedTitleByName?.[displayEndpoints.fromLocation.toUpperCase()] || displayEndpoints.fromLocation || currentSheetName || "-"}</td>
+        <td className="px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{locationNormalizedTitleByName?.[displayEndpoints.fromLocation.toUpperCase()] || displayEndpoints.fromLocation || currentSheetName || "-"}</td>
       )}
       {showPartNumber && (
-        <td className="px-1 py-1 text-left text-[10px] font-medium text-muted-foreground">{fromReference?.partNumber || ""}</td>
+        <td className="px-1 py-1 text-center text-[10px] font-medium text-muted-foreground">{fromReference?.partNumber || ""}</td>
       )}
       <td className={cn(
-        "px-1 py-1 text-left text-[10px] font-medium",
+        "px-1 py-1 text-center text-[10px] font-medium",
         !showDescription && "border-r border-foreground/20"
       )}>
         {!showFrom && eyeButtonEl}
         <BlueDeviceID deviceId={displayEndpoints.fromDeviceId} enabled={enableBlueDeviceID} />
       </td>
       {showDescription && (
-        <td className="px-1 py-1 text-left text-[10px] text-muted-foreground border-r border-foreground/20">{fromReference?.description || ""}</td>
+        <td className="px-1 py-1 text-center text-[10px] text-muted-foreground border-r border-foreground/20">{fromReference?.description || ""}</td>
       )}
       {/* Connection group */}
       {showWireType && (
         <td className={cn(
-          "px-1 py-1 text-left text-[10px] font-medium",
+          "px-1 py-1 text-center text-[10px] font-medium",
           !showWireNo && !showWireId && !showGaugeSize && !showLength && "border-r border-foreground/20"
         )}>{row.wireType}</td>
       )}
       {showWireNo && (
         <td className={cn(
-          "px-1 py-1 text-left font-mono text-[10px] font-medium",
+          "px-1 py-1 text-center font-mono text-[10px] font-medium",
           !showWireId && !showGaugeSize && !showLength && "border-r border-foreground/20"
         )}>{row.wireNo}</td>
       )}
       {showWireId && (
         <td className={cn(
-          "px-1 py-1 text-left text-[10px] font-medium",
+          "px-1 py-1 text-center text-[10px] font-medium",
           !showGaugeSize && !showLength && "border-r border-foreground/20"
         )}>{row.wireId}</td>
       )}
       {showGaugeSize && (
         <td className={cn(
-          "px-1 py-1 text-left text-[10px] font-medium",
+          "px-1 py-1 text-center text-[10px] font-medium",
           !showLength && "border-r border-foreground/20"
         )}>{row.gaugeSize}</td>
       )}
       {showLength && (
-        <td className="px-1 py-1 text-left text-[10px] font-medium font-mono border-r border-foreground/20">
+        <td className="px-1 py-1 text-center text-[10px] font-medium font-mono border-r border-foreground/20">
           {lengthDisplay || "—"}
         </td>
       )}
@@ -2423,22 +2423,22 @@ function PrintTableRow({
         </td>
       )}
       {showEstTime && (
-        <td className="px-1 py-1 text-left text-[10px] font-mono text-muted-foreground">
+        <td className="px-1 py-1 text-center text-[10px] font-mono text-muted-foreground">
           {formatEstTime(estimateWireTime(sectionKind, row.gaugeSize).toMinutes)}
         </td>
       )}
       {showPartNumber && (
-        <td className="px-1 py-1 text-left text-[10px] font-medium text-muted-foreground">{toReference?.partNumber || ""}</td>
+        <td className="px-1 py-1 text-center text-[10px] font-medium text-muted-foreground">{toReference?.partNumber || ""}</td>
       )}
-      <td className="px-1 py-1 text-left text-[10px] font-medium">
+      <td className="px-1 py-1 text-center text-[10px] font-medium">
         <BlueDeviceID deviceId={displayEndpoints.toDeviceId} enabled={enableBlueDeviceID} />
       </td>
       {showDescription && (
-        <td className="px-1 py-1 text-left text-[10px] text-muted-foreground">{toReference?.description || ""}</td>
+        <td className="px-1 py-1 text-center text-[10px] text-muted-foreground">{toReference?.description || ""}</td>
       )}
       {showToLocation && (
         <td className={cn(
-          "px-1 py-1 text-left text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis",
+          "px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis",
           (showIPV || showComments) && "border-r border-foreground/20"
         )}>{locationNormalizedTitleByName?.[displayEndpoints.toLocation.toUpperCase()] || displayEndpoints.toLocation || currentSheetName || "-"}</td>
       )}
@@ -2454,7 +2454,7 @@ function PrintTableRow({
         </td>
       )}
       {showComments && (
-        <td className="px-1 py-1 text-left">
+        <td className="px-1 py-1 text-center">
           <CommentsCell
             rowId={row.__rowId}
             value={comment}
@@ -2937,7 +2937,7 @@ function PrintPreviewTable({
           <tr>
             <td
               colSpan={totalColumns}
-              className="px-1.5 py-2 text-[11px] font-semibold text-muted-foreground uppercase tracking-wide"
+              className="px-1 py-2 text-[11px] font-semibold text-muted-foreground uppercase tracking-wide"
             >
               {groupLabel}
             </td>
