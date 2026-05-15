@@ -329,6 +329,15 @@ export async function buildProjectSheetPrintDocument(options: {
     }
     return acc;
   }, {});
+  // Also compute normalizedTitle mapping for display in location columns
+  const locationNormalizedTitleByName = assignmentMappings.reduce<Record<string, string>>((acc, mapping) => {
+    const sheetNameKey = mapping.sheetName?.trim().toUpperCase();
+    const normalizedTitle = manifest.assignments?.[mapping.sheetSlug]?.normalizedTitle;
+    if (sheetNameKey && normalizedTitle) {
+      acc[sheetNameKey] = normalizedTitle;
+    }
+    return acc;
+  }, {});
   const processedLocationGroups = buildProcessedPrintLocationGroups({
     rows: patchedRows,
     mode: settings.mode,
@@ -339,9 +348,11 @@ export async function buildProjectSheetPrintDocument(options: {
     partNumberMap,
     sortMode: settings.mode === "branding" ? settings.brandingSortMode : settings.wireListSortMode,
     locationBoxSideByName,
+    locationNormalizedTitleByName,
   });
   const externalSectionContext = {
     locationBoxSideByName,
+    locationNormalizedTitleByName,
     currentBoxSide: assignmentNode?.boxSide,
     assignmentMappings,
     currentSheetName: schema.name,
@@ -441,5 +452,6 @@ export async function buildProjectSheetPrintDocument(options: {
     standardVisibleSections,
     includeFeedbackPage: settings.mode !== "branding",
     sheetDocument,
+    locationNormalizedTitleByName,
   };
 }

@@ -858,6 +858,8 @@ export function buildProcessedPrintLocationGroups(options: {
   sortMode?: BrandingSortMode;
   /** Destination sheet name (uppercase) -> box side mapping for external groups. */
   locationBoxSideByName?: Record<string, string>;
+  /** Destination sheet name (uppercase) -> normalized title mapping for display. */
+  locationNormalizedTitleByName?: Record<string, string>;
 }): PrintLocationGroup[] {
   const sortMode = options.sortMode ?? "device-prefix";
   const skipSingletonMerge = sortMode === "device-prefix" || sortMode === "device-prefix-part-number";
@@ -948,9 +950,11 @@ export function buildProcessedPrintLocationGroups(options: {
 
       // Lookup boxSide from the mapping using uppercase location name
       const boxSide = options.locationBoxSideByName?.[group.label.toUpperCase()];
+      // Lookup normalizedTitle for display - use as location label if available
+      const normalizedTitle = options.locationNormalizedTitleByName?.[group.label.toUpperCase()];
 
       return {
-        location: group.label,
+        location: normalizedTitle || group.label,
         isExternal: group.isExternal,
         boxSide,
         subsections,
@@ -980,6 +984,8 @@ export interface ExternalSectionContext {
   currentBoxSide?: string;
   /** Destination sheet name (uppercase) -> box side mapping for external groups. */
   locationBoxSideByName?: Record<string, string>;
+  /** Destination sheet name (uppercase) -> normalized title mapping for display. */
+  locationNormalizedTitleByName?: Record<string, string>;
 }
 
 /** PLC part number used to detect PLC sheets */

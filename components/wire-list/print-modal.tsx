@@ -1641,6 +1641,7 @@ export function WireListPrintDocument({
               partNumberMap={partNumberMap}
               cablePartNumberMap={cablePartNumberMap}
               getRowLength={getRowLength}
+              locationNormalizedTitleByName={data.locationNormalizedTitleByName}
             />
           </div>
         )}
@@ -2271,6 +2272,7 @@ function PrintTableRow({
   rowClassName,
   isRowHidden,
   onToggleRowHidden,
+  locationNormalizedTitleByName,
 }: {
   row: SemanticWireListRow;
   showFrom: boolean;
@@ -2300,6 +2302,8 @@ function PrintTableRow({
   rowClassName?: string;
   isRowHidden?: boolean;
   onToggleRowHidden?: () => void;
+  /** Mapping to transform raw location names to normalized titles */
+  locationNormalizedTitleByName?: Record<string, string>;
 }) {
   // Check if this is a device change row (:J -> :P pattern)
   const deviceChangeInfo = detectDeviceChange(row);
@@ -2360,7 +2364,7 @@ function PrintTableRow({
         </td>
       )}
       {showFromLocation && (
-        <td className="px-1.5 py-1 text-[11px] font-medium">{displayEndpoints.fromLocation || currentSheetName || "-"}</td>
+        <td className="px-1.5 py-1 text-[11px] font-medium">{locationNormalizedTitleByName?.[displayEndpoints.fromLocation.toUpperCase()] || displayEndpoints.fromLocation || currentSheetName || "-"}</td>
       )}
       {showPartNumber && (
         <td className="px-1.5 py-0 text-[11px] font-medium text-muted-foreground">{fromReference?.partNumber || ""}</td>
@@ -2414,7 +2418,7 @@ function PrintTableRow({
         <td className="px-1.5 py-0 text-[11px] text-muted-foreground">{toReference?.description || ""}</td>
       )}
       {showToLocation && (
-        <td className="px-1.5 py-1 text-[11px] font-medium">{displayEndpoints.toLocation || currentSheetName || "-"}</td>
+        <td className="px-1.5 py-1 text-[11px] font-medium">{locationNormalizedTitleByName?.[displayEndpoints.toLocation.toUpperCase()] || displayEndpoints.toLocation || currentSheetName || "-"}</td>
       )}
       {showIPV && (
         <td className="px-1.5 py-0 w-5 text-center">
@@ -2500,6 +2504,7 @@ function PrintPreviewTable({
   getRowLength,
   hiddenRows,
   onToggleRowHidden,
+  locationNormalizedTitleByName,
 }: {
   rows: SemanticWireListRow[];
   settings: PrintSettings;
@@ -2515,6 +2520,7 @@ function PrintPreviewTable({
   getRowLength?: (rowId: string) => { display: string; roundedInches: number; confidence: string } | null;
   hiddenRows?: Set<string>;
   onToggleRowHidden?: (rowId: string) => void;
+  locationNormalizedTitleByName?: Record<string, string>;
 }) {
   const { showFromCheckbox, showToCheckbox, showIPV, showComments, showLength, showEstTime, showDeviceSubheaders } = settings;
 
@@ -2930,6 +2936,7 @@ function PrintPreviewTable({
                 lengthDisplay={getRowLength?.(item.row.__rowId)?.display}
                 isRowHidden={hiddenRows?.has(item.row.__rowId)}
                 onToggleRowHidden={onToggleRowHidden ? () => onToggleRowHidden(item.row.__rowId) : undefined}
+                locationNormalizedTitleByName={locationNormalizedTitleByName}
                 rowClassName={[
                   item.showDeviceSeparator ? "border-t-[2px] border-t-muted" : "",
                   item.isWarningRow ? "border-x-4 border-x-orange-400 bg-orange-50/30" : "",
@@ -4453,6 +4460,18 @@ export function SingleSheetPrintWorkspace({
     }, {});
   }, [assignmentMappings, currentProject?.assignments]);
 
+  // Compute locationNormalizedTitleByName for display in location columns
+  const locationNormalizedTitleByName = useMemo(() => {
+    return assignmentMappings.reduce<Record<string, string>>((acc, mapping) => {
+      const sheetNameKey = mapping.sheetName?.trim().toUpperCase();
+      const normalizedTitle = currentProject?.assignments?.[mapping.sheetSlug]?.normalizedTitle;
+      if (sheetNameKey && normalizedTitle) {
+        acc[sheetNameKey] = normalizedTitle;
+      }
+      return acc;
+    }, {});
+  }, [assignmentMappings, currentProject?.assignments]);
+
   // Print preview should follow the same section membership as the live identity filter.
   // When a saved schema is loaded, use its hydrated groups instead.
   const processedLocationGroups = useMemo((): PrintLocationGroup[] => {
@@ -4467,11 +4486,13 @@ export function SingleSheetPrintWorkspace({
       partNumberMap: effectivePartNumberMap,
       sortMode: settings.mode === "branding" ? settings.brandingSortMode : settings.wireListSortMode,
       locationBoxSideByName,
+      locationNormalizedTitleByName,
     }) as PrintLocationGroup[];
-  }, [schemaHydration, rows, settings.mode, settings.enabledSections, settings.sectionOrder, settings.brandingSortMode, settings.wireListSortMode, currentSheetName, effectiveBlueLabels, effectivePartNumberMap, locationBoxSideByName]);
+  }, [schemaHydration, rows, settings.mode, settings.enabledSections, settings.sectionOrder, settings.brandingSortMode, settings.wireListSortMode, currentSheetName, effectiveBlueLabels, effectivePartNumberMap, locationBoxSideByName, locationNormalizedTitleByName]);
 
   const externalSectionContext = useMemo(() => ({
     locationBoxSideByName,
+    locationNormalizedTitleByName,
     currentBoxSide: sheetSlug
       ? currentProject?.assignments?.[sheetSlug]?.boxSide
       : undefined,
@@ -6575,6 +6596,7 @@ export function SingleSheetPrintWorkspace({
                                             getRowLength={effectiveGetRowLength}
                                             hiddenRows={settings.hiddenRows}
                                             onToggleRowHidden={toggleRowHidden}
+                                            locationNormalizedTitleByName={locationNormalizedTitleByName}
                                           />
                                         </div>
                                       )}
@@ -6701,6 +6723,7 @@ export function SingleSheetPrintWorkspace({
                                                 partNumberMap={effectivePartNumberMap}
                                                 cablePartNumberMap={cablePartNumberMap}
                                                 getRowLength={effectiveGetRowLength}
+                                                locationNormalizedTitleByName={locationNormalizedTitleByName}
                                               />
                                             </div>
                                           </div>
