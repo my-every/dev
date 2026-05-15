@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, type ReactNode } from "react";
+import { useEffect, useState, useCallback, type ReactNode, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Printer, ZoomIn, ZoomOut, RotateCcw, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,8 @@ interface PrintPreviewWrapperProps {
   title?: string;
 }
 
-export function PrintPreviewWrapper({ children, title = "Print Preview" }: PrintPreviewWrapperProps) {
+// Inner component that uses useSearchParams (requires Suspense)
+function PrintPreviewContent({ children, title = "Print Preview" }: PrintPreviewWrapperProps) {
   const searchParams = useSearchParams();
   const [zoom, setZoom] = useState(50); // Start at 50% for better overview
   const [mounted, setMounted] = useState(false);
@@ -126,5 +127,14 @@ export function PrintPreviewWrapper({ children, title = "Print Preview" }: Print
         </div>
       </div>
     </div>
+  );
+}
+
+// Wrapper component that provides Suspense boundary for useSearchParams
+export function PrintPreviewWrapper(props: PrintPreviewWrapperProps) {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Loading print preview...</div>}>
+      <PrintPreviewContent {...props} />
+    </Suspense>
   );
 }

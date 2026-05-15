@@ -1124,6 +1124,78 @@ export function ProjectDetailsWorkspace({
     );
   }, [assignmentEntries]);
 
+  // ─── Auto-save debounce refs ───────────────────────────────────────────────
+  const wireListSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const brandListSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const crossWireSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Auto-save function for wire list settings
+  const autoSaveWireListSettings = useCallback(async () => {
+    if (!project?.id) return;
+    const settingsToSave = wireListSettingsMatrix;
+    await Promise.all(
+      Object.entries(settingsToSave).map(async ([sheetSlug, settings]) => {
+        await fetch(
+          `/api/projects/${encodeURIComponent(project.id)}/assignment-visibility`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sheetSlug,
+              kind: "wire",
+              visibilitySettings: settings,
+            }),
+          }
+        );
+      })
+    );
+  }, [project?.id, wireListSettingsMatrix]);
+
+  // Auto-save function for brand list settings
+  const autoSaveBrandListSettings = useCallback(async () => {
+    if (!project?.id) return;
+    const settingsToSave = brandListSettingsMatrix;
+    await Promise.all(
+      Object.entries(settingsToSave).map(async ([sheetSlug, settings]) => {
+        await fetch(
+          `/api/projects/${encodeURIComponent(project.id)}/assignment-visibility`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sheetSlug,
+              kind: "branding",
+              visibilitySettings: settings,
+            }),
+          }
+        );
+      })
+    );
+  }, [project?.id, brandListSettingsMatrix]);
+
+  // Auto-save function for cross wire settings
+  const autoSaveCrossWireSettings = useCallback(async () => {
+    if (!project?.id) return;
+    const settingsToSave = crossWireSettingsMatrix;
+    await Promise.all(
+      Object.entries(settingsToSave).map(async ([sheetSlug, settings]) => {
+        const isSwapped = crossWireSwapLocationsAll || (crossWireSwapLocationsBySheet[sheetSlug] ?? false);
+        await fetch(
+          `/api/projects/${encodeURIComponent(project.id)}/cross-wire-visibility`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sheetSlug,
+              visibilitySettings: settings,
+              swapLocations: isSwapped,
+            }),
+          }
+        );
+      })
+    );
+  }, [project?.id, crossWireSettingsMatrix, crossWireSwapLocationsAll, crossWireSwapLocationsBySheet]);
+
   // Setter for wire list visibility per location
   const setWireListLocationVisibility = useCallback(
     (sheetSlug: string, locationKey: string, visible: boolean) => {
@@ -1134,8 +1206,15 @@ export function ProjectDetailsWorkspace({
           [locationKey]: visible,
         },
       }));
+      // Debounced auto-save
+      if (wireListSaveTimeoutRef.current) {
+        clearTimeout(wireListSaveTimeoutRef.current);
+      }
+      wireListSaveTimeoutRef.current = setTimeout(() => {
+        void autoSaveWireListSettings();
+      }, 1000);
     },
-    [],
+    [autoSaveWireListSettings],
   );
 
   // Setter for brand list visibility per location
@@ -1148,8 +1227,15 @@ export function ProjectDetailsWorkspace({
           [locationKey]: visible,
         },
       }));
+      // Debounced auto-save
+      if (brandListSaveTimeoutRef.current) {
+        clearTimeout(brandListSaveTimeoutRef.current);
+      }
+      brandListSaveTimeoutRef.current = setTimeout(() => {
+        void autoSaveBrandListSettings();
+      }, 1000);
     },
-    [],
+    [autoSaveBrandListSettings],
   );
 
   // Setter for cross wire visibility per location
@@ -1162,8 +1248,15 @@ export function ProjectDetailsWorkspace({
           [locationKey]: visible,
         },
       }));
+      // Debounced auto-save
+      if (crossWireSaveTimeoutRef.current) {
+        clearTimeout(crossWireSaveTimeoutRef.current);
+      }
+      crossWireSaveTimeoutRef.current = setTimeout(() => {
+        void autoSaveCrossWireSettings();
+      }, 1000);
     },
-    [],
+    [autoSaveCrossWireSettings],
   );
 
   const handleSaveCrossWireSettings = useCallback(async (sheetSlug: string) => {

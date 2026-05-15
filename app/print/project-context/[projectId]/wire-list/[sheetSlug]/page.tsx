@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 
 import { WireListPrintDocument } from "@/components/wire-list/print-modal";
 import { PrintPreviewWrapper } from "@/components/print/print-preview-wrapper";
@@ -46,14 +45,12 @@ export default async function ProjectWireListPrintPage({
     : `Wire List — ${documentData.currentSheetName}`;
 
   return (
-    <Suspense fallback={<div className="p-8 text-center">Loading print preview...</div>}>
-      <PrintPreviewWrapper title={pageTitle}>
-        <main className="bg-white px-6 py-8 print:p-0 print:bg-white">
-          <div className="print-content mx-auto max-w-215">
-            <WireListPrintDocument data={documentData} />
-          </div>
-        </main>
-      </PrintPreviewWrapper>
-    </Suspense>
+    <PrintPreviewWrapper title={pageTitle}>
+      <main className="bg-white px-6 py-8 print:p-0 print:bg-white">
+        <div className="print-content mx-auto max-w-215">
+          <WireListPrintDocument data={documentData} />
+        </div>
+      </main>
+    </PrintPreviewWrapper>
   );
 }
