@@ -2505,7 +2505,7 @@ export function ProjectDetailsWorkspace({
               <SectionHeader
                 icon={FileSpreadsheet}
                 title="Brand Lists"
-                description="Generate, combine, review, and control brand list outputs."
+                description="View brand list documents for each assignment. Configure visibility settings in the Settings tab below."
               />
               <div className="mt-4 space-y-4">
                 {/* Stats header */}
@@ -2598,138 +2598,25 @@ export function ProjectDetailsWorkspace({
                     description="Generate brand list schemas to populate visibility settings."
                   />
                 ) : (
-                  <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                     {brandListAssignments.map((assignment) => {
-                      const isExpanded = expandedBrandAssignments.has(assignment.sheetSlug);
-                      const toggleExpand = () => {
-                        setExpandedBrandAssignments((prev) => {
-                          const next = new Set(prev);
-                          if (next.has(assignment.sheetSlug)) {
-                            next.delete(assignment.sheetSlug);
-                          } else {
-                            next.add(assignment.sheetSlug);
-                          }
-                          return next;
-                        });
-                      };
-                      const locations = schemaExternalLocations[assignment.sheetSlug] ?? [];
-                      const genState = brandGeneratingSheets[assignment.sheetSlug] ?? "idle";
-                      const brandExport = brandingExports?.sheetExports?.find(
-                        (e) => e.sheetSlug === assignment.sheetSlug,
-                      );
-                      const hasPDF = !!brandExport?.relativePath;
                       const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                      const brandListPrintHref = `/print/project-context/${encodeURIComponent(project?.id ?? "")}/wire-list/${encodeURIComponent(assignment.sheetSlug)}?mode=branding`;
 
                       return (
-                        <div key={assignment.sheetSlug} className="rounded-lg border border-border bg-card overflow-hidden">
-                          <div
-                            className="flex items-center gap-2 p-3 cursor-pointer hover:bg-muted/30 transition-colors"
-                            onClick={toggleExpand}
-                          >
-                            <ChevronRight className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-150 shrink-0", isExpanded && "rotate-90")} />
-                            <span className="truncate text-sm font-medium flex-1" title={normalizedTitle}>{normalizedTitle}</span>
-                            {locations.length > 0 && (
-                              <Badge variant="outline" className="h-5 px-1.5 text-[10px] shrink-0">
-                                {locations.length}
-                              </Badge>
-                            )}
-                            <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
-                              {hasPDF && genState !== "generating" && (
-                                <Button
-                                  asChild
-                                  size="sm"
-                                  variant="ghost"
-                                  className="h-7 gap-1 px-2 text-xs"
-                                >
-                                  <a
-                                    href={`/api/projects/${encodeURIComponent(project?.id ?? "")}/brand-list/download?path=${encodeURIComponent(brandExport.relativePath)}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    <Download className="h-3 w-3" />
-                                    PDF
-                                  </a>
-                                </Button>
-                              )}
-                              {genState === "generating" ? (
-                                <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs" disabled>
-                                  <Loader2 className="h-3 w-3 animate-spin" />
-                                  Generating
-                                </Button>
-                              ) : genState === "done" ? (
-                                <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs text-green-600" disabled>
-                                  <Check className="h-3 w-3" />
-                                  Done
-                                </Button>
-                              ) : genState === "error" ? (
-                                <Button
-                                  size="sm"
-                                  variant="destructive"
-                                  className="h-7 gap-1 px-2 text-xs"
-                                  onClick={() => handleSaveAndGenerateBrandList(assignment.sheetSlug)}
-                                >
-                                  Retry
-                                </Button>
-                              ) : null}
-                            </div>
-                          </div>
-                          {isExpanded && (
-                            <div className="border-t border-border/60 bg-muted/20 px-3 py-2 space-y-2">
-                              <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                                External Locations
-                              </div>
-                              {loadingSchemaLocations ? (
-                                <div className="flex items-center gap-2 py-2 text-xs text-muted-foreground">
-                                  <Loader2 className="h-3 w-3 animate-spin" />
-                                  Loading locations...
-                                </div>
-                              ) : locations.length === 0 ? (
-                                <div className="py-2 text-xs text-muted-foreground italic">
-                                  No external locations found for this sheet.
-                                </div>
-                              ) : (
-                                <div className="grid gap-1.5">
-                                  {locations.map((loc) => {
-                                    const key = loc.trim().toUpperCase();
-                                    const isVisible = brandListSettingsMatrix[assignment.sheetSlug]?.[key] ?? true;
-                                    return (
-                                      <div key={key} className="flex items-center justify-between gap-2 py-1">
-                                        <span className="font-mono text-xs text-foreground truncate">{loc}</span>
-                                        <Switch
-                                          checked={isVisible}
-                                          onCheckedChange={(checked) => setBrandListVisibility(assignment.sheetSlug, key, checked)}
-                                          aria-label={`Toggle visibility of ${loc}`}
-                                          className="shrink-0"
-                                        />
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              )}
-                              <div className="pt-2 border-t border-border/40">
-                                <Button
-                                  size="sm"
-                                  variant="default"
-                                  className="w-full h-8 text-xs"
-                                  onClick={() => handleSaveAndGenerateBrandList(assignment.sheetSlug)}
-                                  disabled={genState === "generating"}
-                                >
-                                  {genState === "generating" ? (
-                                    <>
-                                      <Loader2 className="mr-1.5 h-3 w-3 animate-spin" />
-                                      Saving & Generating...
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Check className="mr-1.5 h-3 w-3" />
-                                      Save & Generate
-                                    </>
-                                  )}
-                                </Button>
-                              </div>
-                            </div>
-                          )}
-                        </div>
+                        <a
+                          key={assignment.sheetSlug}
+                          href={brandListPrintHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 rounded-lg border border-border bg-card p-3 hover:bg-muted/50 transition-colors cursor-pointer"
+                        >
+                          <FileSpreadsheet className="h-4 w-4 text-muted-foreground shrink-0" />
+                          <span className="truncate text-sm font-medium flex-1" title={normalizedTitle}>
+                            {normalizedTitle}
+                          </span>
+                          <ExternalLink className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                        </a>
                       );
                     })}
                   </div>
@@ -2766,7 +2653,7 @@ export function ProjectDetailsWorkspace({
               <SectionHeader
                 icon={Layers}
                 title="Wire Lists"
-                description="Manage wire list exports and visibility settings per sheet."
+                description="View wire list documents for each assignment. Configure visibility settings in the Settings tab below."
               />
               <div className="mt-4 space-y-4">
                 {/* Stats header */}
@@ -2819,139 +2706,25 @@ export function ProjectDetailsWorkspace({
                     description="Generate wire list schemas to populate visibility settings."
                   />
                 ) : (
-                  <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                     {assignmentEntries.map((assignment) => {
-                      const isExpanded = expandedAssignments.has(`wire-${assignment.sheetSlug}`);
-                      const toggleExpand = () => {
-                        setExpandedAssignments((prev) => {
-                          const next = new Set(prev);
-                          const key = `wire-${assignment.sheetSlug}`;
-                          if (next.has(key)) {
-                            next.delete(key);
-                          } else {
-                            next.add(key);
-                          }
-                          return next;
-                        });
-                      };
-                      const locations = schemaExternalLocations[assignment.sheetSlug] ?? [];
-                      const genState = wireGeneratingSheets[assignment.sheetSlug] ?? "idle";
-                      const wireExport = wireExports?.sheetExports?.find(
-                        (e) => e.sheetSlug === assignment.sheetSlug,
-                      );
-                      const hasPDF = !!wireExport?.relativePath;
                       const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                      const wireListPrintHref = `/print/project-context/${encodeURIComponent(project?.id ?? "")}/wire-list/${encodeURIComponent(assignment.sheetSlug)}`;
 
                       return (
-                        <div key={assignment.sheetSlug} className="rounded-lg border border-border bg-card overflow-hidden">
-                          <div
-                            className="flex items-center gap-2 p-3 cursor-pointer hover:bg-muted/30 transition-colors"
-                            onClick={toggleExpand}
-                          >
-                            <ChevronRight className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-150 shrink-0", isExpanded && "rotate-90")} />
-                            <span className="truncate text-sm font-medium flex-1" title={normalizedTitle}>{normalizedTitle}</span>
-                            {locations.length > 0 && (
-                              <Badge variant="outline" className="h-5 px-1.5 text-[10px] shrink-0">
-                                {locations.length}
-                              </Badge>
-                            )}
-                            <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
-                              {hasPDF && genState !== "generating" && (
-                                <Button
-                                  asChild
-                                  size="sm"
-                                  variant="ghost"
-                                  className="h-7 gap-1 px-2 text-xs"
-                                >
-                                  <a
-                                    href={`/api/projects/${encodeURIComponent(project?.id ?? "")}/wire-list/download?path=${encodeURIComponent(wireExport.relativePath)}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    <Download className="h-3 w-3" />
-                                    PDF
-                                  </a>
-                                </Button>
-                              )}
-                              {genState === "generating" ? (
-                                <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs" disabled>
-                                  <Loader2 className="h-3 w-3 animate-spin" />
-                                  Generating
-                                </Button>
-                              ) : genState === "done" ? (
-                                <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs text-green-600" disabled>
-                                  <Check className="h-3 w-3" />
-                                  Done
-                                </Button>
-                              ) : genState === "error" ? (
-                                <Button
-                                  size="sm"
-                                  variant="destructive"
-                                  className="h-7 gap-1 px-2 text-xs"
-                                  onClick={() => handleSaveAndGenerateWireList(assignment.sheetSlug)}
-                                >
-                                  Retry
-                                </Button>
-                              ) : null}
-                            </div>
-                          </div>
-                          {isExpanded && (
-                            <div className="border-t border-border/60 bg-muted/20 px-3 py-2 space-y-2">
-                              <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                                External Locations
-                              </div>
-                              {loadingSchemaLocations ? (
-                                <div className="flex items-center gap-2 py-2 text-xs text-muted-foreground">
-                                  <Loader2 className="h-3 w-3 animate-spin" />
-                                  Loading locations...
-                                </div>
-                              ) : locations.length === 0 ? (
-                                <div className="py-2 text-xs text-muted-foreground italic">
-                                  No external locations found for this sheet.
-                                </div>
-                              ) : (
-                                <div className="grid gap-1.5">
-                                  {locations.map((loc) => {
-                                    const key = loc.trim().toUpperCase();
-                                    const isVisible = wireListSettingsMatrix[assignment.sheetSlug]?.[key] ?? true;
-                                    return (
-                                      <div key={key} className="flex items-center justify-between gap-2 py-1">
-                                        <span className="font-mono text-xs text-foreground truncate">{loc}</span>
-                                        <Switch
-                                          checked={isVisible}
-                                          onCheckedChange={(checked) => setWireListVisibility(assignment.sheetSlug, key, checked)}
-                                          aria-label={`Toggle visibility of ${loc}`}
-                                          className="shrink-0"
-                                        />
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              )}
-                              <div className="pt-2 border-t border-border/40">
-                                <Button
-                                  size="sm"
-                                  variant="default"
-                                  className="w-full h-8 text-xs"
-                                  onClick={() => handleSaveAndGenerateWireList(assignment.sheetSlug)}
-                                  disabled={genState === "generating"}
-                                >
-                                  {genState === "generating" ? (
-                                    <>
-                                      <Loader2 className="mr-1.5 h-3 w-3 animate-spin" />
-                                      Saving & Generating...
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Check className="mr-1.5 h-3 w-3" />
-                                      Save & Generate
-                                    </>
-                                  )}
-                                </Button>
-                              </div>
-                            </div>
-                          )}
-                        </div>
+                        <a
+                          key={assignment.sheetSlug}
+                          href={wireListPrintHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 rounded-lg border border-border bg-card p-3 hover:bg-muted/50 transition-colors cursor-pointer"
+                        >
+                          <Layers className="h-4 w-4 text-muted-foreground shrink-0" />
+                          <span className="truncate text-sm font-medium flex-1" title={normalizedTitle}>
+                            {normalizedTitle}
+                          </span>
+                          <ExternalLink className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                        </a>
                       );
                     })}
                   </div>
@@ -2959,12 +2732,12 @@ export function ProjectDetailsWorkspace({
               </div>
             </section>
 
-            {/* ─── Cross Wire Section ────────────────────────────────────��─── */}
+            {/* ─── Cross Wire Section ──────────────────────────────────────── */}
             <section data-section="cross-wire" className="scroll-mt-6">
               <SectionHeader
                 icon={ExternalLink}
                 title="Cross Wire"
-                description="Manage cross-wire schema generation and location visibility."
+                description="View cross-wire documents for each assignment. Configure visibility settings in the Settings tab below."
               />
               <div className="mt-4 space-y-4">
                 {/* Stats header */}
@@ -3050,168 +2823,33 @@ export function ProjectDetailsWorkspace({
                   />
                 ) : (
                   <div className="space-y-3">
-                    {/* Global controls */}
-                    <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-muted/30 p-2.5">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-foreground">Quick Actions:</span>
-                        <Button
-                          type="button"
-                          size="sm"
-                          variant="outline"
-                          className="h-6 gap-1 px-2 text-[10px] sm:h-7 sm:text-xs"
-                          onClick={() => {
-                            setCrossWireSwapLocationsAll(true);
-                            setAllCrossWireSwapBySheet(true);
-                          }}
-                        >
-                          <ArrowLeftRight className="h-3 w-3" />
-                          Swap All
-                        </Button>
-                        <Button
-                          type="button"
-                          size="sm"
-                          variant="outline"
-                          className="h-6 gap-1 px-2 text-[10px] sm:h-7 sm:text-xs"
-                          onClick={() => {
-                            setCrossWireSwapLocationsAll(false);
-                            setAllCrossWireSwapBySheet(false);
-                          }}
-                        >
-                          Clear Swaps
-                        </Button>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] text-muted-foreground sm:text-xs">Swap all locations:</span>
-                        <Switch
-                          checked={crossWireSwapLocationsAll}
-                          onCheckedChange={setCrossWireSwapLocationsAll}
-                          aria-label="Toggle swapped cross wire locations for all assignments"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Expandable rows - matching Brand/Wire List pattern */}
-                    <div className="space-y-2">
+                    {/* Grid of assignment cards linking to cross-wire print preview */}
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                       {crossWireAssignments.map((assignment) => {
-                        const isExpanded = expandedAssignments.has(`cross-${assignment.sheetSlug}`);
-                        const toggleExpand = () => {
-                          setExpandedAssignments((prev) => {
-                            const next = new Set(prev);
-                            const key = `cross-${assignment.sheetSlug}`;
-                            if (next.has(key)) {
-                              next.delete(key);
-                            } else {
-                              next.add(key);
-                            }
-                            return next;
-                          });
-                        };
-                        const locations = schemaExternalLocations[assignment.sheetSlug] ?? [];
-                        const isSavingSheet = savingCrossWireSettingsBySheet[assignment.sheetSlug] ?? false;
-                        const isSwapped = crossWireSwapLocationsAll || (crossWireSwapLocationsBySheet[assignment.sheetSlug] ?? false);
                         const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                        const locations = schemaExternalLocations[assignment.sheetSlug] ?? [];
                         const visibleCount = locations.filter(
                           (loc) => crossWireSettingsMatrix[assignment.sheetSlug]?.[loc.trim().toUpperCase()] ?? true,
                         ).length;
 
                         return (
-                          <div key={assignment.sheetSlug} className="rounded-lg border border-border bg-card overflow-hidden">
-                            <div
-                              className="flex items-center gap-2 p-3 cursor-pointer hover:bg-muted/30 transition-colors"
-                              onClick={toggleExpand}
-                            >
-                              <ChevronRight className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-150 shrink-0", isExpanded && "rotate-90")} />
-                              <span className="truncate text-sm font-medium flex-1" title={normalizedTitle}>{normalizedTitle}</span>
-                              {locations.length > 0 && (
-                                <Badge variant="outline" className="h-5 px-1.5 text-[10px] shrink-0">
-                                  {visibleCount}/{locations.length}
-                                </Badge>
-                              )}
-                              <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
-                                <div className="flex items-center gap-1">
-                                  <span className="text-[9px] text-muted-foreground">Swap</span>
-                                  <Switch
-                                    checked={isSwapped}
-                                    disabled={crossWireSwapLocationsAll}
-                                    onCheckedChange={(checked) => handleCrossWireSwapBySheet(assignment.sheetSlug, checked)}
-                                    aria-label={`Toggle swap for ${normalizedTitle}`}
-                                    className="scale-75"
-                                  />
-                                </div>
-                                {isSavingSheet ? (
-                                  <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs" disabled>
-                                    <Loader2 className="h-3 w-3 animate-spin" />
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    size="sm"
-                                    variant="ghost"
-                                    className="h-7 gap-1 px-2 text-xs"
-                                    onClick={() => void handleSaveCrossWireSettings(assignment.sheetSlug)}
-                                  >
-                                    <Check className="h-3 w-3" />
-                                  </Button>
-                                )}
-                              </div>
-                            </div>
-                            {isExpanded && (
-                              <div className="border-t border-border/60 bg-muted/20 px-3 py-2 space-y-2">
-                                <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                                  External Locations
-                                </div>
-                                {loadingSchemaLocations ? (
-                                  <div className="flex items-center gap-2 py-2 text-xs text-muted-foreground">
-                                    <Loader2 className="h-3 w-3 animate-spin" />
-                                    Loading locations...
-                                  </div>
-                                ) : locations.length === 0 ? (
-                                  <div className="py-2 text-xs text-muted-foreground italic">
-                                    No external locations found for this sheet.
-                                  </div>
-                                ) : (
-                                  <div className="grid gap-1.5">
-                                    {locations.map((loc) => {
-                                      const key = loc.trim().toUpperCase();
-                                      const isVisible = crossWireSettingsMatrix[assignment.sheetSlug]?.[key] ?? true;
-
-                                      return (
-                                        <div key={key} className="flex items-center justify-between gap-2 py-1">
-                                          <span className="font-mono text-xs text-foreground truncate">{loc}</span>
-                                          <Switch
-                                            checked={isVisible}
-                                            onCheckedChange={(checked) => setCrossWireLocationVisibility(assignment.sheetSlug, key, checked)}
-                                            aria-label={`Toggle visibility of ${loc}`}
-                                            className="shrink-0"
-                                          />
-                                        </div>
-                                      );
-                                    })}
-                                  </div>
-                                )}
-                                <div className="pt-2 border-t border-border/40">
-                                  <Button
-                                    size="sm"
-                                    variant="default"
-                                    className="w-full h-8 text-xs"
-                                    onClick={() => void handleSaveCrossWireSettings(assignment.sheetSlug)}
-                                    disabled={isSavingSheet}
-                                  >
-                                    {isSavingSheet ? (
-                                      <>
-                                        <Loader2 className="mr-1.5 h-3 w-3 animate-spin" />
-                                        Saving...
-                                      </>
-                                    ) : (
-                                      <>
-                                        <Check className="mr-1.5 h-3 w-3" />
-                                        Save Settings
-                                      </>
-                                    )}
-                                  </Button>
-                                </div>
-                              </div>
+                          <a
+                            key={assignment.sheetSlug}
+                            href={crossWirePreviewHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 rounded-lg border border-border bg-card p-3 hover:bg-muted/50 transition-colors cursor-pointer"
+                          >
+                            <ExternalLink className="h-4 w-4 text-amber-600 shrink-0" />
+                            <span className="truncate text-sm font-medium flex-1" title={normalizedTitle}>
+                              {normalizedTitle}
+                            </span>
+                            {locations.length > 0 && (
+                              <Badge variant="outline" className="h-5 px-1.5 text-[10px] shrink-0">
+                                {visibleCount}/{locations.length}
+                              </Badge>
                             )}
-                          </div>
+                          </a>
                         );
                       })}
                     </div>
