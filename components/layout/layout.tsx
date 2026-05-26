@@ -100,17 +100,17 @@ const SPRING = {
 
 const VARIANT_STYLES: Record<LayoutVariant, { shell: string; sidePanel: string; aside: string }> = {
     default: {
-        shell: "max-w-[1840px]",
+        shell: "w-[98vw] max-w-[98vw]",
         sidePanel: "lg:w-72 lg:max-w-[300px]",
         aside: "xl:w-80",
     },
     compact: {
-        shell: "max-w-[1520px]",
+        shell: "w-[96vw] max-w-[96vw]",
         sidePanel: "lg:w-64 lg:max-w-[300px]",
         aside: "xl:w-72",
     },
     wide: {
-        shell: "max-w-[1960px]",
+        shell: "w-[98vw] max-w-[98vw]",
         sidePanel: "lg:w-[22rem] lg:max-w-[300px]",
         aside: "xl:w-[23rem]",
     },
