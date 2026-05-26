@@ -1968,7 +1968,7 @@ export function ProjectDetailsWorkspace({
 
         {/* Scrollable content */}
         <div className="flex-1 min-w-0 overflow-y-auto" ref={contentRef}>
-          <div className="mx-auto max-w-4xl px-4 py-6 space-y-12">
+          <div className="w-full px-4 py-6 space-y-12 lg:px-6 xl:px-8">
             
             {/* ─── Details Section ───────────────────────────────��─────────── */}
             <section data-section="details" className="scroll-mt-6">
