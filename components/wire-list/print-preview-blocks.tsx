@@ -50,19 +50,30 @@ export function StandardPreviewBody({
   return (
     <>
       {visibleSections.length > 0 ? (
-        visibleSections.map((section, index) => (
+        visibleSections.map((section, index) => {
+          // Determine if we should show the location header
+          // Only show it for the first section of each unique location
+          const previousSection = index > 0 ? visibleSections[index - 1] : null;
+          const showLocationHeader = 
+            index === 0 || 
+            !previousSection ||
+            previousSection.group.location !== section.group.location;
+          
+          return (
             <div
               key={`${section.group.location}-${section.subsection.label}-${index}`}
               className={`location-group ${index > 0 ? "mt-6 pt-4 border-t border-foreground/20" : ""}`}
             >
-              <SectionHeaderBlock
-                title={section.group.location}
-                subtitle={section.group.boxSide || (section.group.isExternal ? "EXTERNAL" : "INTERNAL")}
-                subtitleFirst
-                className="mb-3 border-b border-foreground/10 pb-2"
-                titleClassName="text-[13px] font-bold text-foreground"
-                subtitleClassName="text-[10px] font-normal uppercase tracking-wide text-muted-foreground"
-              />
+              {showLocationHeader && (
+                <SectionHeaderBlock
+                  title={section.group.location}
+                  subtitle="Location:"
+                  subtitleFirst
+                  className="mb-3 border-b border-foreground/10 pb-2"
+                  titleClassName="text-[13px] font-bold text-foreground"
+                  subtitleClassName="text-[10px] font-normal uppercase tracking-wide text-muted-foreground"
+                />
+              )}
 
               <div className="section-wrapper">
                 <SectionHeaderBlock
@@ -72,7 +83,8 @@ export function StandardPreviewBody({
                 {renderSection(section)}
               </div>
             </div>
-        ))
+          );
+        })
       ) : (
         <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
           <FileText className="h-12 w-12 mb-4 opacity-50" />
