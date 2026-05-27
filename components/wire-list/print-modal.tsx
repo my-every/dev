@@ -1576,7 +1576,7 @@ export function WireListPrintDocument({
           currentSheetName={data.currentSheetName}
           coverImageUrl={data.settings.coverImageUrl}
           swsType={data.swsType}
-          coverSubtitle="Wire List"
+          coverSubtitle={data.currentSheetName}
           pageNumber={1}
           totalPages={data.previewPageCount}
         />
@@ -6626,7 +6626,7 @@ export function SingleSheetPrintWorkspace({
                                       currentSheetName={currentSheetName}
                                       coverImageUrl={settings.coverImageUrl}
                                       swsType={swsType}
-                                      coverSubtitle="Wire List"
+                                      coverSubtitle={currentSheetName}
                                       pageNumber={1}
                                       totalPages={previewPageCount}
                                     />
