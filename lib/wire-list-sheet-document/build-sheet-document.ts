@@ -66,6 +66,7 @@ export function buildWireListSheetDocument(options: Pick<
   const standardTable = buildWireListStandardTableModelFromSections(
     standardVisibleSections,
     options.rowLengthsById,
+    options.currentSheetName,
   );
 
   return {

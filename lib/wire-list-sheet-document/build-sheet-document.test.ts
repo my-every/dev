@@ -82,5 +82,8 @@ describe("buildWireListSheetWorkspaceDocument", () => {
     expect(document.crossWireSections).toHaveLength(1);
     expect(document.crossWireSections[0]?.group.location).toBe("EXT-A");
     expect(document.standardTable.totalRows).toBe(2);
+    const externalStandardRow = document.standardTable.rows.find((row) => row.rowId === "row-2");
+    expect(externalStandardRow?.fromLocation).toBe("UNIT1");
+    expect(externalStandardRow?.toLocation).toBe("EXT-B");
   });
 });

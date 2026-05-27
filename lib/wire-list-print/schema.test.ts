@@ -92,4 +92,54 @@ describe("wire-list print schema", () => {
 
     expect(rows.map((row) => row.wireNo)).toEqual(["-1", "-0V", "XT04001"]);
   });
+
+  it("keeps external section row origin as current sheet when legacy location-only rows are serialized", () => {
+    const externalLegacyRow: SemanticWireListRow = {
+      __rowIndex: 1,
+      __rowId: "ext-row-1",
+      fromDeviceId: "XT1:1",
+      wireType: "WIRE",
+      wireNo: "1",
+      wireId: "BK",
+      gaugeSize: "16",
+      fromLocation: "",
+      fromPageZone: "A1",
+      toDeviceId: "TB9:1",
+      toLocation: "PNL B,SMT130",
+      toPageZone: "A2",
+      location: "PNL B,SMT130",
+    };
+
+    const schema = buildWireListPrintSchema({
+      currentSheetName: "PNL A SMT130",
+      processedLocationGroups: [
+        {
+          location: "PNL B,SMT130",
+          isExternal: true,
+          totalRows: 1,
+          subsections: [
+            {
+              label: "FIELD",
+              sectionKind: "single_connections",
+              rows: [externalLegacyRow],
+            },
+          ],
+        },
+      ],
+      settings: {
+        showCoverPage: false,
+        showTableOfContents: false,
+        showIPVCodes: false,
+        showFeedbackSection: false,
+      },
+    });
+
+    const wireListPage = schema.pages.find(
+      (page): page is WireListPrintSchemaWireListPage => page.pageType === "wire-list",
+    );
+    const row = wireListPage?.locationGroups[0]?.subsections[0]?.rows[0];
+
+    expect(row?.fromLocation).toBe("PNL A SMT130");
+    expect(row?.toLocation).toBe("PNL B,SMT130");
+  });
 });

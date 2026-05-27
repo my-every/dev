@@ -283,12 +283,12 @@ function getDisplayEndpoints(row: SemanticWireListRow): {
   const fromDeviceId = shouldSwap ? (row.toDeviceId || "") : (row.fromDeviceId || "");
   const toDeviceId = shouldSwap ? (row.fromDeviceId || "") : (row.toDeviceId || "");
 
-  // Resolve raw locations — row.location is deprecated but may still be the only value
-  const rawFromLocation = row.fromLocation || row.location || "";
-  const rawToLocation = row.toLocation || "";
+  // Prefer explicit endpoint fields; row.location is legacy fallback only.
+  const rawFromLocation = row.fromLocation || "";
+  const rawToLocation = row.toLocation || row.location || rawFromLocation || "";
 
-  const fromLocation = shouldSwap ? rawToLocation || rawFromLocation : rawFromLocation;
-  const toLocation = shouldSwap ? rawFromLocation : rawToLocation || rawFromLocation;
+  const fromLocation = shouldSwap ? rawToLocation || rawFromLocation : rawFromLocation || rawToLocation;
+  const toLocation = shouldSwap ? rawFromLocation || rawToLocation : rawToLocation || rawFromLocation;
 
   return { fromDeviceId, toDeviceId, fromLocation, toLocation };
 }

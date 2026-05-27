@@ -5613,7 +5613,7 @@ export function SingleSheetPrintWorkspace({
                           <RadioGroup
                             value={settings.mode}
                             onValueChange={(value) => setSettings(prev => ({ ...prev, mode: value as PrintFormatMode }))}
-                            className="space-y-2"
+                            className="space-y-2 w-full"
                           >
                             <div className={`flex items-center space-x-2 p-2.5 rounded-md border cursor-pointer transition-colors ${settings.mode === "standardize" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}>
                               <RadioGroupItem value="standardize" id="standardize" />

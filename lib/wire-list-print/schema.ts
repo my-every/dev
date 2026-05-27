@@ -190,15 +190,18 @@ function isPrintableConnectionRow(row: SemanticWireListRow): boolean {
 
 function getDisplayEndpoints(row: SemanticWireListRow) {
   const shouldSwap = shouldSwapForTargetPair(row.fromDeviceId, row.toDeviceId);
+  const rawFromLocation = row.fromLocation || "";
+  const rawToLocation = row.toLocation || row.location || rawFromLocation || "";
+
   return {
     fromDeviceId: shouldSwap ? (row.toDeviceId || "") : (row.fromDeviceId || ""),
     toDeviceId: shouldSwap ? (row.fromDeviceId || "") : (row.toDeviceId || ""),
     fromLocation: shouldSwap
-      ? (row.toLocation || row.location || row.fromLocation || "")
-      : (row.fromLocation || row.location || row.toLocation || ""),
+      ? (rawToLocation || rawFromLocation)
+      : (rawFromLocation || rawToLocation),
     toLocation: shouldSwap
-      ? (row.fromLocation || row.location || row.toLocation || "")
-      : (row.toLocation || row.location || row.fromLocation || ""),
+      ? (rawFromLocation || rawToLocation)
+      : (rawToLocation || rawFromLocation),
     fromPageZone: shouldSwap ? (row.toPageZone || "") : (row.fromPageZone || ""),
     toPageZone: shouldSwap ? (row.fromPageZone || "") : (row.toPageZone || ""),
   };
@@ -208,10 +211,15 @@ function buildSchemaRow(
   row: SemanticWireListRow,
   sectionKind: IdentificationFilterKind | undefined,
   showEstTime: boolean,
+  currentSheetName: string,
+  isExternalSection: boolean,
   getLengthForRow: ((rowId: string) => { display: string; roundedInches: number } | null) | undefined,
   partNumberMap?: Map<string, PartNumberLookupResult> | null,
 ): WireListPrintSchemaRow {
   const endpoints = getDisplayEndpoints(row);
+  const resolvedFromLocation = isExternalSection
+    ? (currentSheetName || endpoints.fromLocation || endpoints.toLocation)
+    : endpoints.fromLocation;
   const est = showEstTime ? estimateWireTime(sectionKind, row.gaugeSize) : null;
 
   const result: WireListPrintSchemaRow = {
@@ -223,7 +231,7 @@ function buildSchemaRow(
     wireNo: normalizeWireListWireNo(row.wireNo),
     wireId: row.wireId || "",
     gaugeSize: row.gaugeSize || "",
-    fromLocation: endpoints.fromLocation,
+    fromLocation: resolvedFromLocation,
     toLocation: endpoints.toLocation,
     fromPageZone: endpoints.fromPageZone,
     toPageZone: endpoints.toPageZone,
@@ -255,6 +263,8 @@ function buildSchemaRow(
 }
 
 function buildSchemaSubsection(
+  group: PrintLocationGroup,
+  currentSheetName: string,
   subsection: PrintSubsection,
   showEstTime: boolean,
   getLengthForRow: ((rowId: string) => { display: string; roundedInches: number } | null) | undefined,
@@ -262,7 +272,15 @@ function buildSchemaSubsection(
 ): WireListPrintSchemaSubsection {
   const printableRows = subsection.rows.filter(isPrintableConnectionRow);
   const rows = printableRows.map((row) =>
-    buildSchemaRow(row, subsection.sectionKind, showEstTime, getLengthForRow, partNumberMap),
+    buildSchemaRow(
+      row,
+      subsection.sectionKind,
+      showEstTime,
+      currentSheetName,
+      group.isExternal,
+      getLengthForRow,
+      partNumberMap,
+    ),
   );
 
   const result: WireListPrintSchemaSubsection = {
@@ -542,6 +560,8 @@ export function buildWireListPrintSchema(options: BuildPrintSchemaOptions): Wire
 
       schemaSubsections.push(
         buildSchemaSubsection(
+          group,
+          options.currentSheetName,
           subsection,
           settings.showEstTime,
           options.getLengthForRow,

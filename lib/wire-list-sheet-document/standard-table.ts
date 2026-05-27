@@ -9,20 +9,21 @@ function getDisplayEndpoints(row: VisiblePreviewSection["visibleRows"][number]):
   toLocation: string;
 } {
   const shouldSwap = shouldSwapForTargetPair(row.fromDeviceId, row.toDeviceId);
-  const rawFromLocation = row.fromLocation || row.location || "";
-  const rawToLocation = row.toLocation || "";
+  const rawFromLocation = row.fromLocation || "";
+  const rawToLocation = row.toLocation || row.location || rawFromLocation || "";
 
   return {
     fromDeviceId: shouldSwap ? (row.toDeviceId || "") : (row.fromDeviceId || ""),
     toDeviceId: shouldSwap ? (row.fromDeviceId || "") : (row.toDeviceId || ""),
-    fromLocation: shouldSwap ? rawToLocation || rawFromLocation : rawFromLocation,
-    toLocation: shouldSwap ? rawFromLocation : rawToLocation || rawFromLocation,
+    fromLocation: shouldSwap ? rawToLocation || rawFromLocation : rawFromLocation || rawToLocation,
+    toLocation: shouldSwap ? rawFromLocation || rawToLocation : rawToLocation || rawFromLocation,
   };
 }
 
 export function buildWireListStandardTableModelFromSections(
   visiblePreviewSections: VisiblePreviewSection[],
   rowLengthsById: Record<string, { display: string }> = {},
+  currentSheetName?: string,
 ): WireListStandardTableModel {
   const sections: WireListStandardTableSection[] = [];
   const rows: WireListStandardTableRowRecord[] = [];
@@ -39,7 +40,9 @@ export function buildWireListStandardTableModelFromSections(
         sectionLabel: visibleSection.subsection.label,
         sectionKind: visibleSection.subsection.sectionKind,
         fromDeviceId: display.fromDeviceId,
-        fromLocation: display.fromLocation,
+        fromLocation: visibleSection.group.isExternal
+          ? (currentSheetName || display.fromLocation || display.toLocation)
+          : display.fromLocation,
         wireNo: row.wireNo || "",
         wireId: row.wireId || "",
         gaugeSize: row.gaugeSize || "",
