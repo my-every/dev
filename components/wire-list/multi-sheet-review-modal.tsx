@@ -402,6 +402,7 @@ export function MultiSheetReviewModal({
     importSheetDiffs,
     exportResult,
     projectId,
+    resourceMap,
   });
 
   // Derive activeNavigationItem and reviewWorkspaceLocked after navigationItems is available
