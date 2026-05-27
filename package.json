@@ -53,6 +53,10 @@
     "reference:sync-branding-lengths:scoped": "node scripts/sync-branding-label-reference.mjs",
     "reference:compare-wire-brand-lengths": "node scripts/export-wire-brand-length-comparison.mjs",
     "legal:extract-panel-dimensions": "node scripts/extract-panel-dimensions-from-layouts.mjs",
+    "analyze:unused-from-app": "node --experimental-strip-types scripts/find-unused-from-app.ts",
+    "analyze:unused-from-app:safe": "node --experimental-strip-types scripts/find-unused-from-app.ts --quarantine --cleanup-barrels --verify-build --rollback-on-failure",
+    "analyze:unused-from-app:safe:assignment-workspace": "node --experimental-strip-types scripts/find-unused-from-app.ts --quarantine --cleanup-barrels --verify-build --rollback-on-failure --only-dir components/d380/assignment-workspace",
+    "analyze:unused-from-app:restore-latest": "node --experimental-strip-types scripts/find-unused-from-app.ts --restore-latest",
     "legal:reset": "node --no-warnings --experimental-strip-types scripts/legal-drawings-maintenance.ts reset-all",
     "legal:help": "node --no-warnings --experimental-strip-types scripts/legal-drawings-maintenance.ts help"
   },

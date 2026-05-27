@@ -201,8 +201,7 @@ interface PrintSubsection {
   deviceToDeviceSubsections?: { label: string; rows: SemanticWireListRow[] }[];
 }
 
-function getLocationSectionTypeLabel(isExternal: boolean, boxSide?: string): string {
-  if (boxSide) return boxSide;
+function getLocationSectionTypeLabel(isExternal: boolean): string {
   return isExternal ? "EXTERNAL" : "INTERNAL";
 }
 
@@ -258,11 +257,11 @@ function PersonnelSignoffTable({
       <table className="w-full border-collapse text-[10px]">
         <thead>
           <tr className="border-b border-foreground/30 bg-muted/50">
-            <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide text-[9px] border-r border-foreground/20 w-28">Badge #</th>
-            <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide text-[9px] border-r border-foreground/20 w-28">Date</th>
-            <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide text-[9px] border-r border-foreground/20 w-24">Time</th>
-            <th className="px-3 py-2 text-center font-semibold uppercase tracking-wide text-[9px] border-r border-foreground/20 w-24">Wirer</th>
-            <th className="px-3 py-2 text-center font-semibold uppercase tracking-wide text-[9px] w-24">IPV</th>
+            <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide text-[8.5px] border-r border-foreground/20 w-28">Badge #</th>
+            <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide text-[8.5px] border-r border-foreground/20 w-28">Date</th>
+            <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide text-[8.5px] border-r border-foreground/20 w-24">Time</th>
+            <th className="px-3 py-2 text-center font-semibold uppercase tracking-wide text-[8.5px] border-r border-foreground/20 w-24">Wirer</th>
+            <th className="px-3 py-2 text-center font-semibold uppercase tracking-wide text-[8.5px] w-24">IPV</th>
           </tr>
         </thead>
         <tbody>
@@ -1980,13 +1979,13 @@ function TableOfContentsPage({
                     <td colSpan={showEstTime ? 5 : 4} className="py-1.5 px-1.5 border-t border-border text-left">
                       <div className="text-[10px] font-normal uppercase tracking-wide text-muted-foreground">
                         {crossWireSections.has(`loc-${groupIndex}`)
-                          ? (group.boxSide ? `${group.boxSide} — CROSSWIRE` : "EXTERNAL — CROSSWIRE")
-                          : getLocationSectionTypeLabel(group.isExternal, group.boxSide)}
+                          ? "EXTERNAL — CROSSWIRE"
+                          : getLocationSectionTypeLabel(group.isExternal)}
                       </div>
                       <div className="text-xs font-bold text-foreground">
                         {group.location}
                         {crossWireSections.has(`loc-${groupIndex}`) && (
-                          <span className="ml-2 text-[9px] font-semibold text-amber-600 dark:text-amber-400">CrossWire</span>
+                          <span className="ml-2 text-[8.5px] font-semibold text-amber-600 dark:text-amber-400">CrossWire</span>
                         )}
                       </div>
                     </td>
@@ -2011,7 +2010,7 @@ function TableOfContentsPage({
                             if (printableRows.length === 0) return <td className="py-0.5 px-1.5 text-right text-muted-foreground">-</td>;
                             const summary = summarizeSectionTime(printableRows, subsection.sectionKind);
                             return (
-                              <td className="py-0.5 px-1.5 text-right text-muted-foreground font-mono text-[9px]">
+                              <td className="py-0.5 px-1.5 text-right text-muted-foreground font-mono text-[8.5px]">
                                 {formatEstTime(summary.grandTotal)}
                               </td>
                             );
@@ -2052,7 +2051,7 @@ function TableOfContentsPage({
                                     if (d2dPrintable.length === 0) return <td className="py-0.5 px-1.5 text-right text-muted-foreground">-</td>;
                                     const d2dSummary = summarizeSectionTime(d2dPrintable, subsection.sectionKind);
                                     return (
-                                      <td className="py-0.5 px-1.5 text-right text-muted-foreground font-mono text-[9px]">
+                                      <td className="py-0.5 px-1.5 text-right text-muted-foreground font-mono text-[8.5px]">
                                         {formatEstTime(d2dSummary.grandTotal)}
                                       </td>
                                     );
@@ -2366,7 +2365,7 @@ function PrintTableRow({
         </td>
       )}
       {showFromLocation && (
-        <td className="px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{locationNormalizedTitleByName?.[displayEndpoints.fromLocation.toUpperCase()] || displayEndpoints.fromLocation || currentSheetName || "-"}</td>
+        <td className="px-1 py-1 text-center text-[8.5px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{locationNormalizedTitleByName?.[displayEndpoints.fromLocation.toUpperCase()] || displayEndpoints.fromLocation || currentSheetName || "-"}</td>
       )}
       {showPartNumber && (
         <td className="px-1 py-1 text-center text-[10px] font-medium text-muted-foreground">{fromReference?.partNumber || ""}</td>
@@ -2438,7 +2437,7 @@ function PrintTableRow({
       )}
       {showToLocation && (
         <td className={cn(
-          "px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis",
+          "px-1 py-1 text-center text-[8.5px] font-medium whitespace-nowrap overflow-hidden text-ellipsis",
           (showIPV || showComments) && "border-r border-foreground/20"
         )}>{locationNormalizedTitleByName?.[displayEndpoints.toLocation.toUpperCase()] || displayEndpoints.toLocation || currentSheetName || "-"}</td>
       )}
@@ -3060,14 +3059,14 @@ function PrintPreviewTable({
                 return (
                   <tr key={`subgroup-total-${item.row.__rowId}`} className="border-t border-foreground/30">
                     {fromEstSkip > 0 && <td colSpan={fromEstSkip} />}
-                    <td className="px-1.5 py-0.5 text-center text-[9px] font-mono text-muted-foreground">
+                    <td className="px-1.5 py-0.5 text-center text-[8.5px] font-mono text-muted-foreground">
                       {formatEstTime(sub.fromTotal)}
                     </td>
                     <td colSpan={midCols} />
-                    <td className="px-1.5 py-0.5 text-center text-[9px] font-mono text-muted-foreground">
+                    <td className="px-1.5 py-0.5 text-center text-[8.5px] font-mono text-muted-foreground">
                       {formatEstTime(sub.toTotal)}
                     </td>
-                    <td colSpan={trailingCols} className="px-2 py-0.5 text-right text-[9px] text-muted-foreground">
+                    <td colSpan={trailingCols} className="px-2 py-0.5 text-right text-[8.5px] text-muted-foreground">
                       <span className="font-mono">
                         {formatEstTime(sub.grandTotal)}
                       </span>
@@ -3088,11 +3087,11 @@ function PrintPreviewTable({
           return (
             <tr className="border-t border-foreground/20">
               {fromEstSkip > 0 && <td colSpan={fromEstSkip} />}
-              <td className="px-1.5 py-0.5 text-center text-[9px] font-mono font-semibold text-muted-foreground whitespace-nowrap">
+              <td className="px-1.5 py-0.5 text-center text-[8.5px] font-mono font-semibold text-muted-foreground whitespace-nowrap">
                 {formatEstTime(summary.fromTotal)}
               </td>
               <td colSpan={midCols} />
-              <td className="px-1.5 py-0.5 text-center text-[9px] font-mono font-semibold text-muted-foreground whitespace-nowrap">
+              <td className="px-1.5 py-0.5 text-center text-[8.5px] font-mono font-semibold text-muted-foreground whitespace-nowrap">
                 {formatEstTime(summary.toTotal)}
               </td>
               <td colSpan={trailingCols} className="px-2 py-0.5 text-right text-[10px] font-mono font-bold text-foreground whitespace-nowrap">
@@ -3216,7 +3215,7 @@ function BrandingPreviewTable({
       <table className="w-full border-collapse text-[11px]">
         <thead className="bg-muted/80">
           <tr className="border-b border-foreground/20">
-            <th className="w-10 px-1.5 py-1.5 text-center text-[9px] font-semibold print:hidden">
+            <th className="w-10 px-1.5 py-1.5 text-center text-[8.5px] font-semibold print:hidden">
               <Checkbox
                 checked={allRowsSelected}
                 onCheckedChange={(checked) => {
@@ -3229,20 +3228,20 @@ function BrandingPreviewTable({
                 className="mx-auto h-3.5 w-3.5"
               />
             </th>
-            <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">From Device</th>
+            <th className="px-1.5 py-1.5 text-left text-[8.5px] font-semibold">From Device</th>
             {showWireNo && (
-              <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">Wire No.</th>
+              <th className="px-1.5 py-1.5 text-left text-[8.5px] font-semibold">Wire No.</th>
             )}
             {showGaugeSize && (
-              <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">Gauge</th>
+              <th className="px-1.5 py-1.5 text-left text-[8.5px] font-semibold">Gauge</th>
             )}
             {showWireId && (
-              <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">Color</th>
+              <th className="px-1.5 py-1.5 text-left text-[8.5px] font-semibold">Color</th>
             )}
-            <th className="w-[152px] px-1.5 py-1.5 text-center text-[9px] font-semibold">Length</th>
-            <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">To Device</th>
-            <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">To Location</th>
-            <th className="w-[120px] px-1.5 py-1.5 text-left text-[9px] font-semibold">Bundle</th>
+            <th className="w-[152px] px-1.5 py-1.5 text-center text-[8.5px] font-semibold">Length</th>
+            <th className="px-1.5 py-1.5 text-left text-[8.5px] font-semibold">To Device</th>
+            <th className="px-1.5 py-1.5 text-left text-[8.5px] font-semibold">To Location</th>
+            <th className="w-[120px] px-1.5 py-1.5 text-left text-[8.5px] font-semibold">Bundle</th>
           </tr>
         </thead>
         <tbody>
@@ -3407,7 +3406,7 @@ function BrandingPreviewTable({
                               type="button"
                               variant="ghost"
                               size="sm"
-                              className="h-5 w-6 rounded-sm border border-border bg-background px-0 text-[9px] opacity-0 transition-opacity group-hover:opacity-100"
+                              className="h-5 w-6 rounded-sm border border-border bg-background px-0 text-[8.5px] opacity-0 transition-opacity group-hover:opacity-100"
                               onClick={(event) => {
                                 event.stopPropagation();
                                 onResetMeasurement(row.__rowId);
@@ -5777,7 +5776,7 @@ export function SingleSheetPrintWorkspace({
                                             ? resolveLocationSwsType(group.location)
                                             : (swsType && swsType.id !== 'UNDECIDED' ? swsType : undefined);
                                           return groupSwsType ? (
-                                            <Badge variant="outline" className={cn("text-[9px] px-1 py-0 h-4 shrink-0", getSwsBadgeColorClass(groupSwsType.color))}>
+                                            <Badge variant="outline" className={cn("text-[8.5px] px-1 py-0 h-4 shrink-0", getSwsBadgeColorClass(groupSwsType.color))}>
                                               {groupSwsType.shortLabel}
                                             </Badge>
                                           ) : null;
@@ -6054,14 +6053,14 @@ export function SingleSheetPrintWorkspace({
                                                 return (
                                                   <React.Fragment key={`d2d-${d2dIndex}`}>
                                                     {showPrefixHeader && (
-                                                      <div className="flex items-center gap-1.5 px-2 py-0.5 border-b border-border/10 text-[9px]">
+                                                      <div className="flex items-center gap-1.5 px-2 py-0.5 border-b border-border/10 text-[8.5px]">
                                                         <span className="w-5"></span>
                                                         <span className="flex-1 truncate text-foreground/70 pl-2 font-semibold uppercase tracking-wide">
                                                           {prefix}
                                                         </span>
                                                       </div>
                                                     )}
-                                                    <div className="flex items-center gap-1.5 px-2 py-0.5 border-b border-border/10 text-[9px] bg-muted/10">
+                                                    <div className="flex items-center gap-1.5 px-2 py-0.5 border-b border-border/10 text-[8.5px] bg-muted/10">
                                                       <span className="w-5"></span>
                                                       <span className="flex-1 truncate text-muted-foreground pl-2">
                                                         <span className="mr-0.5">└</span>{d2d.label}
@@ -6099,7 +6098,7 @@ export function SingleSheetPrintWorkspace({
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  className="h-5 px-2 text-[9px]"
+                                  className="h-5 px-2 text-[8.5px]"
                                   onClick={clearHiddenRows}
                                 >
                                   Reset
@@ -6397,7 +6396,7 @@ export function SingleSheetPrintWorkspace({
                                                   {section.title}
                                                 </span>
                                                 {sectionQuestions.length > 0 && (
-                                                  <Badge variant="secondary" className="text-[9px] h-4 px-1">
+                                                  <Badge variant="secondary" className="text-[8.5px] h-4 px-1">
                                                     {enabledCount}/{sectionQuestions.length}
                                                   </Badge>
                                                 )}
@@ -6789,10 +6788,10 @@ export function SingleSheetPrintWorkspace({
                                         )}
                                         renderSection={(section, sectionIdx, showLocationHeader) => (
                                           <div key={`${section.group.location}-${section.subsection.label}-${sectionIdx}`} className={sectionIdx > 0 ? "mt-5" : ""}>
-                                            {showLocationHeader && (
+                                            {showLocationHeader && sectionIdx === 0 && (
                   <SectionHeaderBlock
                     title={section.group.location}
-                    subtitle={section.group.boxSide ? `${section.group.boxSide} — CROSSWIRE` : "EXTERNAL — CROSSWIRE"}
+                    subtitle="EXTERNAL — CROSSWIRE"
                     subtitleFirst
                     className="mb-3 border-b border-foreground/10 pb-2"
                     titleClassName="text-[13px] font-bold text-foreground"

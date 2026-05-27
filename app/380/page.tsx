@@ -334,7 +334,7 @@ function AuthenticatedPanel({
             </div>
           </div>
         </div>
-        <Button asChild className="w-full rounded-xl bg-background text-foreground hover:bg-background">
+        <Button  asChild className="w-full rounded-xl   bg-primary text-primary-foreground hover:bg-primary/30">
           <Link href={launchHref}>
             <LogIn className="mr-1.5 size-3.5" />
             Continue to {destination}
@@ -342,7 +342,7 @@ function AuthenticatedPanel({
         </Button>
         <Button
           type="button"
-          variant="ghost"
+          variant="primary"
           className="w-full rounded-xl border border-border bg-transparent text-foreground hover:bg-muted"
           onClick={onSwitch}
         >

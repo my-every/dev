@@ -69,7 +69,7 @@ export function MultiSheetImportReviewPanel({
       return [];
     }
 
-    const grouped = new Map<string, { label: string; pending: number; actionable: number }>();
+  const grouped = new Map<string, { label: string; pending: number; actionable: number }>();
     for (const diff of activeSheetDiff.diffs) {
       if (!grouped.has(diff.sectionKey)) {
         grouped.set(diff.sectionKey, { label: diff.sectionLabel, pending: 0, actionable: 0 });
