@@ -173,175 +173,137 @@ export function MultiWireListPrintWorkspaceDialog({
             </Button>
 
             <div className="grid h-full min-h-0 grid-cols-1 xl:grid-cols-[20rem_minmax(0,1fr)] 2xl:grid-cols-[20rem_minmax(0,1fr)_18rem]">
-          <aside className="flex min-h-0 flex-col border-r border-border/50 bg-card/70">
-            <div className="space-y-3 border-b border-border/50 p-4">
-              <div>
-                <div className="flex items-center gap-3">
-                  <ProjectIcon
-                    name={projectName ?? projectId ?? "Project"}
-                    color={projectColor ?? "#ffcc61"}
-                    interactive={false}
-                  />
+              <aside className="flex min-h-0 flex-col border-r border-border/50 bg-card/70">
+                <div className="space-y-3 border-b border-border/50 p-4">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Wire List Printouts</p>
-                    <h2 className="mt-1 text-2xl font-semibold">Print Workspace</h2>
-                  </div>
-                </div>
-              </div>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Search sheet name or slug..."
-                  className="pl-9"
-                />
-              </div>
-              <p className="text-sm text-muted-foreground">
-                {filteredSheets.length} of {sheets.length} operational sheets
-              </p>
-            </div>
-
-            <ScrollArea className="min-h-0 flex-1">
-              <div className="space-y-2 p-3">
-                {filteredSheets.map((sheet, index) => (
-                  <button
-                    key={`${sheet.slug || sheet.name || "sheet"}-${index}`}
-                    type="button"
-                    onClick={() => setActiveSheetSlug(sheet.slug)}
-                    className={cn(
-                      "w-full rounded-2xl border border-border/50 bg-background/70 px-3 py-3 text-left transition-colors hover:bg-muted/60",
-                      sheet.slug === activeSheetSlug && "border-primary/40 bg-primary/5",
-                    )}
-                  >
-                    <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <ProjectIcon
+                        name={projectName ?? projectId ?? "Project"}
+                        color={projectColor ?? "#ffcc61"}
+                        interactive={false}
+                      />
                       <div>
-                        <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-                          Sheet {index + 1}
-                        </p>
-                        <p className="mt-1 text-sm font-medium">{normalizeSheetLabel(sheet.name)}</p>
+                        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Wire Lists</p>
+                        <h2 className="mt-1 uppercase text-2xl font-semibold">{projectId}</h2>
                       </div>
-                      <span className="min-w-max rounded-full bg-muted px-2 py-0.5 text-[9.5px] text-muted-foreground">
-                        {sheet.rowCount ?? 0} rows
-                      </span>
                     </div>
-                  </button>
-                ))}
-              </div>
-            </ScrollArea>
-          </aside>
-
-          <main className="flex min-h-0 flex-col bg-background">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/50 px-4 py-4">
-              <div className="min-w-0">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Active Printout</p>
-                <h3 className="mt-1 truncate text-2xl font-semibold">
-                  {activeSheet ? normalizeSheetLabel(activeSheet.name) : "Select a wire list sheet"}
-                </h3>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2">
-                <Button variant="outline" size="sm" onClick={handlePrevious} disabled={activeIndex <= 0}>
-                  <ChevronLeft className="mr-1 h-4 w-4" />
-                  Previous
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleNext}
-                  disabled={activeIndex < 0 || activeIndex >= filteredSheets.length - 1}
-                >
-                  Next
-                  <ChevronRight className="ml-1 h-4 w-4" />
-                </Button>
-                <Button variant="outline" size="sm" onClick={handleOpenNewTab} disabled={!activeSheet || !projectId}>
-                  <ExternalLink className="mr-1.5 h-4 w-4" />
-                  Open Tab
-                </Button>
-                <Button size="sm" onClick={handleDownload} disabled={!activeSheet || !projectId}>
-                  <Download className="mr-1.5 h-4 w-4" />
-                  Download
-                </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => setShowExportModal(true)}
-                  disabled={!projectId || sheets.length === 0}
-                >
-                  <Archive className="mr-1.5 h-4 w-4" />
-                  Export All
-                </Button>
-              </div>
-            </div>
-
-            <div className="min-h-0 flex-1 overflow-hidden p-4">
-              {!activeSheet || !activePreviewUrl ? (
-                <div className="flex h-full items-center justify-center rounded-3xl border border-dashed border-border/60 bg-card/30 text-sm text-muted-foreground">
-                  Select a sheet to preview its generated wire list printout.
+                  </div>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      value={query}
+                      onChange={(event) => setQuery(event.target.value)}
+                      placeholder="Search sheet name or slug..."
+                      className="pl-9"
+                    />
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {filteredSheets.length} of {sheets.length} operational sheets
+                  </p>
                 </div>
-              ) : (
-                <div className="relative h-full overflow-hidden rounded-3xl border border-border/60 bg-card/70 shadow-sm">
-                  {!frameLoaded ? (
-                    <div className="absolute inset-0 grid h-full gap-4 p-4 xl:grid-cols-[minmax(0,1fr)] 2xl:grid-cols-[minmax(0,1fr)]">
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                          <Skeleton className="h-6 w-56" />
-                          <Skeleton className="h-9 w-32 rounded-xl" />
+
+                <ScrollArea className="min-h-0 flex-1">
+                  <div className="space-y-2 p-3">
+                    {filteredSheets.map((sheet, index) => (
+                      <button
+                        key={`${sheet.slug || sheet.name || "sheet"}-${index}`}
+                        type="button"
+                        onClick={() => setActiveSheetSlug(sheet.slug)}
+                        className={cn(
+                          "w-full rounded-2xl border border-border/50 bg-background/70 px-3 py-3 text-left transition-colors hover:bg-muted/60",
+                          sheet.slug === activeSheetSlug && "border-primary/40 bg-primary/5",
+                        )}
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+                              Sheet {index + 1}
+                            </p>
+                            <p className="mt-1 text-sm font-medium">{normalizeSheetLabel(sheet.name)}</p>
+                          </div>
+                          <span className="min-w-max rounded-full bg-muted px-2 py-0.5 text-[9.5px] text-muted-foreground">
+                            {sheet.rowCount ?? 0} rows
+                          </span>
                         </div>
-                        <Skeleton className="h-[calc(100%-2.5rem)] w-full rounded-2xl" />
-                      </div>
-                    </div>
-                  ) : null}
-                  <iframe
-                    title={activeSheet.name}
-                    src={activePreviewUrl}
-                    className={cn("h-full w-full", !frameLoaded && "invisible")}
-                    onLoad={() => setFrameLoaded(true)}
-                  />
-                </div>
-              )}
-            </div>
-          </main>
+                      </button>
+                    ))}
+                  </div>
+                </ScrollArea>
+              </aside>
 
-          <aside className="hidden min-h-0 flex-col border-l border-border/50 bg-card/60 2xl:flex">
-            <div className="border-b border-border/50 px-4 py-4">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Details</p>
-              <h3 className="mt-1 text-lg font-semibold">Printout Info</h3>
-            </div>
-            <div className="space-y-4 p-4 text-sm">
-              <div className="rounded-2xl border border-border/50 bg-background/70 p-4">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Sheet</p>
-                <p className="mt-2 font-medium text-foreground">
-                  {activeSheet ? normalizeSheetLabel(activeSheet.name) : "None selected"}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-border/50 bg-background/70 p-4">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Slug</p>
-                <p className="mt-2 break-all font-mono text-foreground">
-                  {activeSheet?.slug ?? "—"}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-border/50 bg-background/70 p-4">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Rows</p>
-                <p className="mt-2 font-medium text-foreground">
-                  {activeSheet?.rowCount ?? 0}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-border/50 bg-background/70 p-4">
-                <div className="flex items-start gap-3">
-                  <div className="mt-0.5 rounded-full border border-border/50 p-2 text-muted-foreground">
-                    <FileText className="h-4 w-4" />
+              <main className="flex min-h-0 flex-col bg-background">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/50 px-4 py-4">
+                  <div className="min-w-0">
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Active Printout</p>
+                    <h3 className="mt-1 truncate text-2xl font-semibold">
+                      {activeSheet ? normalizeSheetLabel(activeSheet.name) : "Select a wire list sheet"}
+                    </h3>
                   </div>
-                  <div>
-                    <p className="font-medium text-foreground">Centered print preview</p>
-                    <p className="mt-1 text-muted-foreground">
-                      Uses the project-context print page for a centered workspace preview, while downloads still use the generated PDF export route.
-                    </p>
+
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Button variant="outline" size="sm" onClick={handlePrevious} disabled={activeIndex <= 0}>
+                      <ChevronLeft className="mr-1 h-4 w-4" />
+                      Previous
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleNext}
+                      disabled={activeIndex < 0 || activeIndex >= filteredSheets.length - 1}
+                    >
+                      Next
+                      <ChevronRight className="ml-1 h-4 w-4" />
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={handleOpenNewTab} disabled={!activeSheet || !projectId}>
+                      <ExternalLink className="mr-1.5 h-4 w-4" />
+                      Open Tab
+                    </Button>
+                    <Button size="sm" onClick={handleDownload} disabled={!activeSheet || !projectId}>
+                      <Download className="mr-1.5 h-4 w-4" />
+                      Download
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => setShowExportModal(true)}
+                      disabled={!projectId || sheets.length === 0}
+                    >
+                      <Archive className="mr-1.5 h-4 w-4" />
+                      Export All
+                    </Button>
                   </div>
                 </div>
-              </div>
-            </div>
-          </aside>
+
+                <div className="min-h-0 flex-1 overflow-hidden p-4">
+                  {!activeSheet || !activePreviewUrl ? (
+                    <div className="flex h-full items-center justify-center rounded-3xl border border-dashed border-border/60 bg-card/30 text-sm text-muted-foreground">
+                      Select a sheet to preview its generated wire list printout.
+                    </div>
+                  ) : (
+                    <div className="relative h-full overflow-hidden rounded-3xl border border-border/60 bg-card/70 shadow-sm">
+                      {!frameLoaded ? (
+                        <div className="absolute inset-0 grid h-full gap-4 p-4 xl:grid-cols-[minmax(0,1fr)] 2xl:grid-cols-[minmax(0,1fr)]">
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                              <Skeleton className="h-6 w-56" />
+                              <Skeleton className="h-9 w-32 rounded-xl" />
+                            </div>
+                            <Skeleton className="h-[calc(100%-2.5rem)] w-full rounded-2xl" />
+                          </div>
+                        </div>
+                      ) : null}
+                      <iframe
+                        title={activeSheet.name}
+                        src={activePreviewUrl}
+                        className={cn("h-full w-full", !frameLoaded && "invisible")}
+                        onLoad={() => setFrameLoaded(true)}
+                      />
+                    </div>
+                  )}
+                </div>
+              </main>
+
+
             </div>
           </motion.div>
         </motion.div>
