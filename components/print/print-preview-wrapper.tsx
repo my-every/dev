@@ -13,7 +13,7 @@ interface PrintPreviewWrapperProps {
 // Inner component that uses useSearchParams (requires Suspense)
 function PrintPreviewContent({ children, title = "Print Preview" }: PrintPreviewWrapperProps) {
   const searchParams = useSearchParams();
-  const [zoom, setZoom] = useState(50); // Start at 50% for better overview
+  const [zoom, setZoom] = useState(100); // Start at 100% for full-size preview
   const [mounted, setMounted] = useState(false);
 
   // Auto-print if ?print=1 is in the URL
