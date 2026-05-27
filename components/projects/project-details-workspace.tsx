@@ -81,6 +81,7 @@ import {
 } from "@/components/projects/fields";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { normalizeDisplayTitle } from "@/lib/workbook/normalize-sheet-name";
 import type { LegalProjectRecord } from "@/types/legal-drawings";
 import type { ProjectManifest } from "@/types/project-manifest";
 import { parseRevisionFromFilename } from "@/lib/revision/types";
@@ -2345,9 +2346,9 @@ export function ProjectDetailsWorkspace({
                                 {groupAssignments.map((assignment, idx) => {
                                   return (
                                     <TableRow key={assignment.sheetSlug} index={idx}>
-                                      <TableCell className="py-2.5 max-w-[160px]">
-                                        <div className="truncate text-sm font-medium text-foreground" title={(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}>
-                                          {(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}
+                                    <TableCell className="py-2.5 max-w-[160px]">
+                                      <div className="truncate text-sm font-medium text-foreground" title={normalizeDisplayTitle(assignment.sheetName)}>
+                                        {normalizeDisplayTitle(assignment.sheetName)}
                                         </div>
                                       </TableCell>
                                       <TableCell className="py-2.5">
@@ -2396,8 +2397,8 @@ export function ProjectDetailsWorkspace({
                               return (
                                 <TableRow key={assignment.sheetSlug} index={idx}>
                                   <TableCell className="py-2.5 max-w-[160px]">
-                                    <div className="truncate text-sm font-medium text-foreground" title={(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}>
-                                      {(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}
+                                    <div className="truncate text-sm font-medium text-foreground" title={normalizeDisplayTitle(assignment.sheetName)}>
+                                      {normalizeDisplayTitle(assignment.sheetName)}
                                     </div>
                                   </TableCell>
                                   <TableCell className="py-2.5">
@@ -2749,7 +2750,7 @@ export function ProjectDetailsWorkspace({
                     </p>
                     <div className="space-y-1.5">
                       {brandListExcluded.map(({ assignment, reason }) => {
-                        const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                        const normalizedTitle = normalizeDisplayTitle(assignment.sheetName);
                         return (
                           <div key={assignment.sheetSlug} className="flex items-center justify-between gap-2 text-xs">
                             <span className="truncate text-foreground/70" title={normalizedTitle}>
@@ -2827,7 +2828,7 @@ export function ProjectDetailsWorkspace({
                 ) : (
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                     {assignmentEntries.map((assignment) => {
-                      const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                      const normalizedTitle = normalizeDisplayTitle(assignment.sheetName);
                       const wireListPrintHref = `/print/project-context/${encodeURIComponent(project?.id ?? "")}/wire-list/${encodeURIComponent(assignment.sheetSlug)}`;
 
                       return (
@@ -2932,7 +2933,7 @@ export function ProjectDetailsWorkspace({
                     {/* Grid of assignment cards linking to cross-wire print preview */}
                     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                       {crossWireAssignments.map((assignment) => {
-                        const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                        const normalizedTitle = normalizeDisplayTitle(assignment.sheetName);
                         const locations = schemaExternalLocations[assignment.sheetSlug] ?? [];
                         const visibleCount = locations.filter(
                           (loc) => crossWireSettingsMatrix[assignment.sheetSlug]?.[loc.trim().toUpperCase()] ?? true,
@@ -2968,7 +2969,7 @@ export function ProjectDetailsWorkspace({
                         </p>
                         <div className="space-y-1.5">
                           {crossWireExcluded.map(({ assignment, reason }) => {
-                            const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                  const normalizedTitle = normalizeDisplayTitle(assignment.sheetName);
                             return (
                               <div key={assignment.sheetSlug} className="flex items-center justify-between gap-2 text-xs">
                                 <span className="truncate text-foreground/70" title={normalizedTitle}>

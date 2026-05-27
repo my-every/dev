@@ -244,7 +244,6 @@ export function MultiSheetReviewWorkspaceShell({
               projectNumber={projectNumber}
               projectRevision={projectRevision}
               projectColor={projectColor}
-              isSavingBrandSchema={pendingBrandSchemaSlugs.length > 0}
               reviewReadOnly={reviewReadOnly}
               selectedBrandRows={selectedBrandRows}
               onOpenLayoutReference={onOpenLayoutReference}

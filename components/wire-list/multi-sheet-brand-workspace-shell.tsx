@@ -355,6 +355,11 @@ export function MultiSheetBrandWorkspaceShell(
                 </Badge>
                 <span>{activeBrandSchema.prefixGroups.length} device groups</span>
                 <span>{statusLabel}</span>
+                {projectRevision && (
+                  <Badge variant="outline" className="text-[11px]">
+                    Rev: {projectRevision}
+                  </Badge>
+                )}
                 {history.entries.length > 0 && (
                   <Badge variant="outline" className="text-[11px]">
                     {history.entries.length} change{history.entries.length !== 1 ? "s" : ""}
