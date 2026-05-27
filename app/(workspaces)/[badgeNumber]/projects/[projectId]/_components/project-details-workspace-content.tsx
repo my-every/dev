@@ -27,10 +27,10 @@ import type { ProjectManifest } from "@/types/project-manifest";
 const TABS = [
   { id: "overview", label: "Overview" },
   { id: "legals", label: "Legals" },
+  { id: "assignments", label: "Assignments" },
   { id: "files", label: "Files" },
   { id: "parts", label: "Part Numbers" },
   { id: "sws", label: "SWS" },
-  { id: "assignments", label: "Assignments" },
   { id: "biq", label: "BIQ" },
   { id: "team", label: "Team" },
   { id: "settings", label: "Settings" },

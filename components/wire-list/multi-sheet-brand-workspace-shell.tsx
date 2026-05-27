@@ -30,6 +30,14 @@ interface MultiSheetBrandWorkspaceShellProps {
   activeBrandSchema: BrandListExportSchema | null;
   /** All loaded schemas for cross-sheet search */
   allBrandSchemas?: Array<{ slug: string; name: string; schema: BrandListExportSchema }>;
+  /** Project name from the project manifest (used for consistent display) */
+  projectName?: string | null;
+  /** Project number (PD number) from the project manifest */
+  projectNumber?: string | null;
+  /** Project revision from the project manifest */
+  projectRevision?: string | null;
+  /** Project color from the project manifest */
+  projectColor?: string | null;
   isSavingBrandSchema: boolean;
   reviewReadOnly: boolean;
   selectedBrandRows: Set<string>;
@@ -57,6 +65,10 @@ export function MultiSheetBrandWorkspaceShell(
     initialLayoutPageNumber,
     activeBrandSchema,
     allBrandSchemas,
+    projectName,
+    projectNumber,
+    projectRevision,
+    projectColor,
     isSavingBrandSchema,
     reviewReadOnly,
     selectedBrandRows,
@@ -319,11 +331,13 @@ export function MultiSheetBrandWorkspaceShell(
               <div className="mb-2 flex items-center gap-3">
                 <ProjectIcon
                   name={
-                    activeBrandSchema.projectInfo.projectName ||
+                    projectNumber ||
+                    projectName ||
                     activeBrandSchema.projectInfo.projectNumber ||
+                    activeBrandSchema.projectInfo.projectName ||
                     "Project"
                   }
-                  color="#ffcc61"
+                  color={projectColor || "#ffcc61"}
                   interactive={false}
                 />
               </div>
@@ -341,6 +355,11 @@ export function MultiSheetBrandWorkspaceShell(
                 </Badge>
                 <span>{activeBrandSchema.prefixGroups.length} device groups</span>
                 <span>{statusLabel}</span>
+                {projectRevision && (
+                  <Badge variant="outline" className="text-[11px]">
+                    Rev: {projectRevision}
+                  </Badge>
+                )}
                 {history.entries.length > 0 && (
                   <Badge variant="outline" className="text-[11px]">
                     {history.entries.length} change{history.entries.length !== 1 ? "s" : ""}
@@ -444,14 +463,14 @@ export function MultiSheetBrandWorkspaceShell(
             </div>
           </div>
 
-          {/* Project metadata fields */}
-          <div className="mt-4 grid gap-3 md:grid-cols-5">
-            <SchemaInput label="Project" value={activeBrandSchema.projectInfo.projectName ?? ""} disabled={reviewReadOnly} onChange={(v) => onUpdateProjectInfo({ projectName: v })} />
-            <SchemaInput label="PD / Project No." value={activeBrandSchema.projectInfo.projectNumber ?? ""} disabled={reviewReadOnly} onChange={(v) => onUpdateProjectInfo({ projectNumber: v })} />
-            <SchemaInput label="Revision" value={activeBrandSchema.projectInfo.revision ?? ""} disabled={reviewReadOnly} onChange={(v) => onUpdateProjectInfo({ revision: v })} />
-            <SchemaInput label="Controls DE" value={activeBrandSchema.projectInfo.controlsDE ?? ""} disabled={reviewReadOnly} onChange={(v) => onUpdateProjectInfo({ controlsDE: v })} />
-            <SchemaInput label="Controls ME" value={activeBrandSchema.projectInfo.controlsME ?? ""} disabled={reviewReadOnly} onChange={(v) => onUpdateProjectInfo({ controlsME: v })} />
-          </div>
+  {/* Project metadata fields */}
+  <div className="mt-4 grid gap-3 md:grid-cols-5">
+    <SchemaInput label="Project" value={(projectName || activeBrandSchema.projectInfo.projectName) ?? ""} disabled={reviewReadOnly} onChange={(v) => onUpdateProjectInfo({ projectName: v })} />
+    <SchemaInput label="PD / Project No." value={(projectNumber || activeBrandSchema.projectInfo.projectNumber) ?? ""} disabled={reviewReadOnly} onChange={(v) => onUpdateProjectInfo({ projectNumber: v })} />
+    <SchemaInput label="Revision" value={(projectRevision || activeBrandSchema.projectInfo.revision) ?? ""} disabled={reviewReadOnly} onChange={(v) => onUpdateProjectInfo({ revision: v })} />
+    <SchemaInput label="Controls DE" value={activeBrandSchema.projectInfo.controlsDE ?? ""} disabled={reviewReadOnly} onChange={(v) => onUpdateProjectInfo({ controlsDE: v })} />
+    <SchemaInput label="Controls ME" value={activeBrandSchema.projectInfo.controlsME ?? ""} disabled={reviewReadOnly} onChange={(v) => onUpdateProjectInfo({ controlsME: v })} />
+  </div>
         </div>
       </div>
 

@@ -1,8 +1,193 @@
 {
   "badge": "75241",
   "shift": "1st",
-  "lastUpdated": "2026-05-27T16:25:38.532Z",
+  "lastUpdated": "2026-05-27T17:54:08.687Z",
   "activities": [
+    {
+      "id": "act_1779904448687_9plb1",
+      "timestamp": "2026-05-27T17:54:08.687Z",
+      "action": "PROJECT_DETAILS_UPDATED",
+      "performedBy": "75241",
+      "metadata": {
+        "fields": [
+          "id",
+          "name",
+          "filename",
+          "pdNumber",
+          "revision",
+          "createdAt",
+          "sheets",
+          "assignments",
+          "referenceSheets",
+          "unitType",
+          "unitTypes",
+          "panducts",
+          "rails",
+          "aggregates",
+          "assignmentsByUnitType",
+          "projectName",
+          "lwcType",
+          "unitNumber",
+          "color",
+          "activeWorkbookRevisionId",
+          "activeLayoutRevisionId",
+          "whiteLabels",
+          "blueLabels",
+          "brandingLabelReference"
+        ],
+        "legalSync": {
+          "synced": true,
+          "message": "Synced 23 assignment setting(s) to legal manifest"
+        },
+        "projectName": "PROP-85",
+        "pdNumber": "4L991"
+      },
+      "projectId": "4l991-prop-85",
+      "result": "success"
+    },
+    {
+      "id": "act_1779904169666_tlfv6",
+      "timestamp": "2026-05-27T17:49:29.666Z",
+      "action": "STARTED",
+      "performedBy": "75241",
+      "metadata": {
+        "projectId": "4l991-prop-85",
+        "projectName": "PROP-85",
+        "pdNumber": "4L991",
+        "projectColor": "#ffcc61",
+        "workflow": "brandlist",
+        "milestone": "start",
+        "automatedFollowUps": []
+      },
+      "projectId": "4l991-prop-85",
+      "result": "success"
+    },
+    {
+      "id": "act_1779904146529_lonuo",
+      "timestamp": "2026-05-27T17:49:06.529Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "source": "legal_instance_create",
+        "pdNumber": "4L991",
+        "revision": "0.1"
+      },
+      "projectId": "4l991-prop-85",
+      "comment": "Created project instance from legal drawing (4L991)",
+      "result": "success"
+    },
+    {
+      "id": "act_1779904099844_knk5z",
+      "timestamp": "2026-05-27T17:48:19.844Z",
+      "action": "PROJECT_DELETED",
+      "performedBy": "75241",
+      "metadata": {
+        "projectName": "PROP-99",
+        "pdNumber": "4M101"
+      },
+      "projectId": "4m101-prop-99",
+      "result": "success"
+    },
+    {
+      "id": "act_1779902386916_9i7yv",
+      "timestamp": "2026-05-27T17:19:46.916Z",
+      "action": "STARTED",
+      "performedBy": "75241",
+      "metadata": {
+        "projectId": "4m101-prop-99",
+        "projectName": "PROP-99",
+        "pdNumber": "4M101",
+        "projectColor": "#ffcc61",
+        "workflow": "brandlist",
+        "milestone": "start",
+        "automatedFollowUps": []
+      },
+      "projectId": "4m101-prop-99",
+      "result": "success"
+    },
+    {
+      "id": "act_1779902323335_o18sc",
+      "timestamp": "2026-05-27T17:18:43.335Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "source": "legal_instance_create",
+        "pdNumber": "4M101",
+        "revision": "B.1"
+      },
+      "projectId": "4m101-prop-99",
+      "comment": "Created project instance from legal drawing (4M101)",
+      "result": "success"
+    },
+    {
+      "id": "act_1779901450604_jfsmo",
+      "timestamp": "2026-05-27T17:04:10.604Z",
+      "action": "STARTED",
+      "performedBy": "75241",
+      "metadata": {
+        "projectId": "4k391-mersol",
+        "projectName": "MERSOL",
+        "pdNumber": "4K391",
+        "projectColor": "#ed4a9b",
+        "workflow": "brandlist",
+        "milestone": "start",
+        "automatedFollowUps": []
+      },
+      "projectId": "4k391-mersol",
+      "result": "success"
+    },
+    {
+      "id": "act_1779901353000_1tuoh",
+      "timestamp": "2026-05-27T17:02:33.000Z",
+      "action": "PROJECT_DELETED",
+      "performedBy": "75241",
+      "metadata": {
+        "projectName": "MERSOL",
+        "pdNumber": "4K391"
+      },
+      "projectId": "4k391-mersol",
+      "result": "success"
+    },
+    {
+      "id": "act_1779901300270_drc54",
+      "timestamp": "2026-05-27T17:01:40.270Z",
+      "action": "STARTED",
+      "performedBy": "75241",
+      "metadata": {
+        "projectId": "4g211-wp-harp",
+        "projectName": "WP-HARP",
+        "pdNumber": "4G211",
+        "projectColor": "#fa7516",
+        "workflow": "brandlist",
+        "milestone": "start",
+        "automatedFollowUps": []
+      },
+      "projectId": "4g211-wp-harp",
+      "result": "success"
+    },
+    {
+      "id": "act_1779900272328_ju9t9",
+      "timestamp": "2026-05-27T16:44:32.328Z",
+      "action": "COMPLETED",
+      "performedBy": "75241",
+      "metadata": {
+        "projectName": "MERSOL",
+        "pdNumber": "4K391",
+        "sheetName": "BECKWITH RELAY,SMT130",
+        "workflow": "READY TO LAY",
+        "before": {
+          "stage": "READY_TO_LAY",
+          "status": "NOT_STARTED"
+        },
+        "after": {
+          "status": "COMPLETE"
+        }
+      },
+      "assignmentId": "beckwith-relay-smt130",
+      "projectId": "4k391-mersol",
+      "stage": "READY_TO_LAY",
+      "result": "success"
+    },
     {
       "id": "act_1779899138532_frpin",
       "timestamp": "2026-05-27T16:25:38.532Z",
@@ -1026,8 +1211,8 @@
     }
   ],
   "stats": {
-    "totalActions": 52,
-    "actionsToday": 3,
-    "lastActionTime": "2026-05-27T16:25:38.532Z"
+    "totalActions": 62,
+    "actionsToday": 13,
+    "lastActionTime": "2026-05-27T17:54:08.687Z"
   }
 }

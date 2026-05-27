@@ -402,12 +402,27 @@ export function MultiSheetReviewModal({
     importSheetDiffs,
     exportResult,
     projectId,
+    resourceMap,
   });
 
   // Derive activeNavigationItem and reviewWorkspaceLocked after navigationItems is available
   const activeNavigationItem = activeSlug
     ? navigationItems.find((item) => item.slug === activeSlug) ?? null
     : null;
+  
+  // Auto-select the first valid sheet if activeSlug doesn't exist in navigationItems
+  // This can happen when a sheet has no external locations and gets filtered out
+  useEffect(() => {
+    if (
+      modalSurface === "review" &&
+      activeSlug &&
+      !activeNavigationItem &&
+      navigationItems.length > 0
+    ) {
+      // The current activeSlug points to a filtered-out sheet, select the first valid one
+      setActiveSlug(navigationItems[0].slug);
+    }
+  }, [modalSurface, activeSlug, activeNavigationItem, navigationItems, setActiveSlug]);
   
   const reviewWorkspaceLocked =
     modalSurface === "review"
@@ -646,8 +661,8 @@ export function MultiSheetReviewModal({
     }
 
     const isFinalSheet = approvedSlugs.includes(activeSlug)
-      ? approvedSlugs.length >= tabs.length
-      : approvedSlugs.length + 1 >= tabs.length;
+      ? approvedSlugs.length >= navigationItems.length
+      : approvedSlugs.length + 1 >= navigationItems.length;
 
     setReviewSequencePhase("processing");
     setReviewSequenceMessage(
@@ -765,7 +780,7 @@ export function MultiSheetReviewModal({
                   title={headerTitle}
                   description={headerDescription}
                   approvedCount={approvedSlugs.length}
-                  totalCount={tabs.length}
+                  totalCount={navigationItems.length}
                   showStandardViewToggle={Boolean(activeWorkspaceMode === "wire-list" && activeTab?.pageNumber && layoutPdfUrl && layoutIndex)}
                   onOpenStateReview={() => setStateReviewOpen(true)}
                   onSetWorkspaceMode={setActiveWorkspaceMode}
@@ -873,6 +888,10 @@ export function MultiSheetReviewModal({
                         : null
                     }
                     projectId={projectId}
+                    projectName={currentProject?.name ?? null}
+                    projectNumber={currentProject?.pdNumber ?? null}
+                    projectRevision={currentProject?.revision ?? null}
+                    projectColor={currentProject?.color ?? null}
                     isAuthenticated={isAuthenticated}
                     userLabel={userLabel}
                     exportReadyHref={exportReadyHref}
@@ -958,12 +977,12 @@ export function MultiSheetReviewModal({
         approvedCount={approvedSlugs.length}
         activeSheetName={activeTab?.name ?? null}
         activeSheetRowCount={activeTab?.rowCount ?? 0}
-        remainingCount={Math.max(tabs.length - approvedSlugs.length, 0)}
+        remainingCount={Math.max(navigationItems.length - approvedSlugs.length, 0)}
         isFinalSheet={
           Boolean(activeSlug) &&
           (activeSlug && approvedSlugs.includes(activeSlug)
-            ? approvedSlugs.length >= tabs.length
-            : approvedSlugs.length + 1 >= tabs.length)
+            ? approvedSlugs.length >= navigationItems.length
+            : approvedSlugs.length + 1 >= navigationItems.length)
         }
         processingMessage={reviewSequenceMessage}
         downloadHref={exportReadyHref}

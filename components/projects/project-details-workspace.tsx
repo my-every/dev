@@ -81,6 +81,7 @@ import {
 } from "@/components/projects/fields";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { normalizeDisplayTitle } from "@/lib/workbook/normalize-sheet-name";
 import type { LegalProjectRecord } from "@/types/legal-drawings";
 import type { ProjectManifest } from "@/types/project-manifest";
 import { parseRevisionFromFilename } from "@/lib/revision/types";
@@ -2317,14 +2318,13 @@ export function ProjectDetailsWorkspace({
                     <Table className="min-w-[600px]">
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="w-8 px-3 py-2" />
                           <TableHead className="py-2 min-w-[160px]">Project</TableHead>
                           <TableHead className="py-2 min-w-[120px]">Stage</TableHead>
                           <TableHead className="py-2 min-w-[100px]">Status</TableHead>
                           {assignmentGroupMode === "flat" ? (
                             <TableHead className="py-2 min-w-[100px]">Unit Type</TableHead>
                           ) : null}
-                          <TableHead className="py-2 w-12" />
+                          <TableHead className="py-2 min-w-[280px]">Exports</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -2344,159 +2344,32 @@ export function ProjectDetailsWorkspace({
                                   </td>
                                 </tr>
                                 {groupAssignments.map((assignment, idx) => {
-                                  const isExpanded = expandedAssignments.has(assignment.sheetSlug);
-                                  const toggleExpand = () => {
-                                    if (isExpanded) {
-                                      setExpandedAssignments(new Set());
-                                      setSelectedAssignmentSlug((prev) =>
-                                        prev === assignment.sheetSlug ? null : prev,
-                                      );
-                                      return;
-                                    }
-                                    setExpandedAssignments(new Set([assignment.sheetSlug]));
-                                    setSelectedAssignmentSlug(assignment.sheetSlug);
-                                  };
                                   return (
-                                    <React.Fragment key={assignment.sheetSlug}>
-                                      <TableRow
-                                        index={idx}
-                                        className={cn("cursor-pointer", isExpanded && "bg-card/20")}
-                                        onClick={toggleExpand}
-                                      >
-                                        <TableCell className="px-3 py-2.5">
-                                          <ChevronRight className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-150", isExpanded && "rotate-90")} />
-                                        </TableCell>
-                                        <TableCell className="py-2.5 max-w-[160px]">
-                                          <div className="truncate text-sm font-medium text-foreground" title={(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}>
-                                            {(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}
-                                          </div>
-                                        </TableCell>
-                                        <TableCell className="py-2.5" onClick={(e) => e.stopPropagation()}>
-                                          <StageSelectorCell
-                                            currentStage={assignment.stage}
-                                            onSave={(newStage) => updateAssignment(assignment.sheetSlug, { stage: newStage })}
-                                          />
-                                        </TableCell>
-                                        <TableCell className="py-2.5" onClick={(e) => e.stopPropagation()}>
-                                          <StatusButtonCell
-                                            currentStatus={assignment.status}
-                                            onSave={(newStatus) => updateAssignment(assignment.sheetSlug, { status: newStatus })}
-                                          />
-                                        </TableCell>
-                                        <TableCell className="py-2.5">
-                                          <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
-                                            {(assignment as Record<string, unknown>).files && ((assignment as Record<string, unknown>).files as Record<string, unknown>).wireListPDFPath ? (
-                                              <Button asChild size="sm" variant="ghost" className="h-7 px-2 text-xs">
-                                                <a href={buildExportFileHref(project?.id ?? "", ((assignment as Record<string, unknown>).files as Record<string, unknown>).wireListPDFPath as string)} target="_blank" rel="noopener noreferrer">
-                                                  <Download className="h-3 w-3" />
-                                                </a>
-                                              </Button>
-                                            ) : null}
-                                          </div>
-                                        </TableCell>
-                                      </TableRow>
-                                      {isExpanded ? (
-                                        <tr className="bg-card/15">
-                                          <td colSpan={10} className="px-4 py-3">
-                                            <div className="grid grid-cols-3 gap-2">
-                                              {(assignment as Record<string, unknown>).blueLabels && ((assignment as Record<string, unknown>).blueLabels as unknown[])?.length ? (
-                                                <AssignmentLabelDownloadButton
-                                                  projectId={project?.id ?? ""}
-                                                  assignmentSlug={assignment.sheetSlug}
-                                                  labelType="blue"
-                                                  className="w-full justify-center"
-                                                />
-                                              ) : null}
-                                              {(assignment as Record<string, unknown>).whiteLabels && ((assignment as Record<string, unknown>).whiteLabels as unknown[])?.length ? (
-                                                <AssignmentLabelDownloadButton
-                                                  projectId={project?.id ?? ""}
-                                                  assignmentSlug={assignment.sheetSlug}
-                                                  labelType="white"
-                                                  className="w-full justify-center"
-                                                />
-                                              ) : null}
-                                              {(assignment as Record<string, unknown>).partNumbers && ((assignment as Record<string, unknown>).partNumbers as unknown[])?.length ? (
-                                                <AssignmentLabelDownloadButton
-                                                  projectId={project?.id ?? ""}
-                                                  assignmentSlug={assignment.sheetSlug}
-                                                  labelType="cable"
-                                                  className="w-full justify-center"
-                                                />
-                                              ) : null}
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      ) : null}
-                                    </React.Fragment>
-                                  );
-                                })}
-                              </React.Fragment>
-                            ))
-                          : assignmentEntries.map((assignment, idx) => {
-                              const isExpanded = expandedAssignments.has(assignment.sheetSlug);
-                              const toggleExpand = () => {
-                                if (isExpanded) {
-                                  setExpandedAssignments(new Set());
-                                  setSelectedAssignmentSlug((prev) =>
-                                    prev === assignment.sheetSlug ? null : prev,
-                                  );
-                                  return;
-                                }
-                                setExpandedAssignments(new Set([assignment.sheetSlug]));
-                                setSelectedAssignmentSlug(assignment.sheetSlug);
-                              };
-                              return (
-                                <React.Fragment key={assignment.sheetSlug}>
-                                  <TableRow
-                                    index={idx}
-                                    className={cn("cursor-pointer", isExpanded && "bg-card/20")}
-                                    onClick={toggleExpand}
-                                  >
-                                    <TableCell className="px-3 py-2.5">
-                                      <ChevronRight className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-150", isExpanded && "rotate-90")} />
-                                    </TableCell>
+                                    <TableRow key={assignment.sheetSlug} index={idx}>
                                     <TableCell className="py-2.5 max-w-[160px]">
-                                      <div className="truncate text-sm font-medium text-foreground" title={(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}>
-                                        {(assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName}
-                                      </div>
-                                    </TableCell>
-                                    <TableCell className="py-2.5" onClick={(e) => e.stopPropagation()}>
-                                      <StageSelectorCell
-                                        currentStage={assignment.stage}
-                                        onSave={(newStage) => updateAssignment(assignment.sheetSlug, { stage: newStage })}
-                                      />
-                                    </TableCell>
-                                    <TableCell className="py-2.5" onClick={(e) => e.stopPropagation()}>
-                                      <StatusButtonCell
-                                        currentStatus={assignment.status}
-                                        onSave={(newStatus) => updateAssignment(assignment.sheetSlug, { status: newStatus })}
-                                      />
-                                    </TableCell>
-                                    <TableCell className="py-2.5">
-                                      {assignment.unitType || "—"}
-                                    </TableCell>
-                                    <TableCell className="py-2.5">
-                                      <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
-                                        {(assignment as Record<string, unknown>).files && ((assignment as Record<string, unknown>).files as Record<string, unknown>).wireListPDFPath ? (
-                                          <Button asChild size="sm" variant="ghost" className="h-7 px-2 text-xs">
-                                            <a href={buildExportFileHref(project?.id ?? "", ((assignment as Record<string, unknown>).files as Record<string, unknown>).wireListPDFPath as string)} target="_blank" rel="noopener noreferrer">
-                                              <Download className="h-3 w-3" />
-                                            </a>
-                                          </Button>
-                                        ) : null}
-                                      </div>
-                                    </TableCell>
-                                  </TableRow>
-                                  {isExpanded ? (
-                                    <tr className="bg-card/15">
-                                      <td colSpan={10} className="px-4 py-3">
-                                        <div className="grid grid-cols-3 gap-2">
+                                      <div className="truncate text-sm font-medium text-foreground" title={normalizeDisplayTitle(assignment.sheetName)}>
+                                        {normalizeDisplayTitle(assignment.sheetName)}
+                                        </div>
+                                      </TableCell>
+                                      <TableCell className="py-2.5">
+                                        <StageSelectorCell
+                                          currentStage={assignment.stage}
+                                          onSave={(newStage) => updateAssignment(assignment.sheetSlug, { stage: newStage })}
+                                        />
+                                      </TableCell>
+                                      <TableCell className="py-2.5">
+                                        <StatusButtonCell
+                                          currentStatus={assignment.status}
+                                          onSave={(newStatus) => updateAssignment(assignment.sheetSlug, { status: newStatus })}
+                                        />
+                                      </TableCell>
+                                      <TableCell className="py-2.5">
+                                        <div className="flex items-center gap-1.5">
                                           {(assignment as Record<string, unknown>).blueLabels && ((assignment as Record<string, unknown>).blueLabels as unknown[])?.length ? (
                                             <AssignmentLabelDownloadButton
                                               projectId={project?.id ?? ""}
                                               assignmentSlug={assignment.sheetSlug}
                                               labelType="blue"
-                                              className="w-full justify-center"
                                             />
                                           ) : null}
                                           {(assignment as Record<string, unknown>).whiteLabels && ((assignment as Record<string, unknown>).whiteLabels as unknown[])?.length ? (
@@ -2504,7 +2377,6 @@ export function ProjectDetailsWorkspace({
                                               projectId={project?.id ?? ""}
                                               assignmentSlug={assignment.sheetSlug}
                                               labelType="white"
-                                              className="w-full justify-center"
                                             />
                                           ) : null}
                                           {(assignment as Record<string, unknown>).partNumbers && ((assignment as Record<string, unknown>).partNumbers as unknown[])?.length ? (
@@ -2512,14 +2384,64 @@ export function ProjectDetailsWorkspace({
                                               projectId={project?.id ?? ""}
                                               assignmentSlug={assignment.sheetSlug}
                                               labelType="cable"
-                                              className="w-full justify-center"
                                             />
                                           ) : null}
                                         </div>
-                                      </td>
-                                    </tr>
-                                  ) : null}
-                                </React.Fragment>
+                                      </TableCell>
+                                    </TableRow>
+                                  );
+                                })}
+                              </React.Fragment>
+                            ))
+                          : assignmentEntries.map((assignment, idx) => {
+                              return (
+                                <TableRow key={assignment.sheetSlug} index={idx}>
+                                  <TableCell className="py-2.5 max-w-[160px]">
+                                    <div className="truncate text-sm font-medium text-foreground" title={normalizeDisplayTitle(assignment.sheetName)}>
+                                      {normalizeDisplayTitle(assignment.sheetName)}
+                                    </div>
+                                  </TableCell>
+                                  <TableCell className="py-2.5">
+                                    <StageSelectorCell
+                                      currentStage={assignment.stage}
+                                      onSave={(newStage) => updateAssignment(assignment.sheetSlug, { stage: newStage })}
+                                    />
+                                  </TableCell>
+                                  <TableCell className="py-2.5">
+                                    <StatusButtonCell
+                                      currentStatus={assignment.status}
+                                      onSave={(newStatus) => updateAssignment(assignment.sheetSlug, { status: newStatus })}
+                                    />
+                                  </TableCell>
+                                  <TableCell className="py-2.5">
+                                    {assignment.unitType || "—"}
+                                  </TableCell>
+                                  <TableCell className="py-2.5">
+                                    <div className="flex items-center gap-1.5">
+                                      {(assignment as Record<string, unknown>).blueLabels && ((assignment as Record<string, unknown>).blueLabels as unknown[])?.length ? (
+                                        <AssignmentLabelDownloadButton
+                                          projectId={project?.id ?? ""}
+                                          assignmentSlug={assignment.sheetSlug}
+                                          labelType="blue"
+                                        />
+                                      ) : null}
+                                      {(assignment as Record<string, unknown>).whiteLabels && ((assignment as Record<string, unknown>).whiteLabels as unknown[])?.length ? (
+                                        <AssignmentLabelDownloadButton
+                                          projectId={project?.id ?? ""}
+                                          assignmentSlug={assignment.sheetSlug}
+                                          labelType="white"
+                                        />
+                                      ) : null}
+                                      {(assignment as Record<string, unknown>).partNumbers && ((assignment as Record<string, unknown>).partNumbers as unknown[])?.length ? (
+                                        <AssignmentLabelDownloadButton
+                                          projectId={project?.id ?? ""}
+                                          assignmentSlug={assignment.sheetSlug}
+                                          labelType="cable"
+                                        />
+                                      ) : null}
+                                    </div>
+                                  </TableCell>
+                                </TableRow>
                               );
                             })}
                       </TableBody>
@@ -2828,7 +2750,7 @@ export function ProjectDetailsWorkspace({
                     </p>
                     <div className="space-y-1.5">
                       {brandListExcluded.map(({ assignment, reason }) => {
-                        const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                        const normalizedTitle = normalizeDisplayTitle(assignment.sheetName);
                         return (
                           <div key={assignment.sheetSlug} className="flex items-center justify-between gap-2 text-xs">
                             <span className="truncate text-foreground/70" title={normalizedTitle}>
@@ -2906,7 +2828,7 @@ export function ProjectDetailsWorkspace({
                 ) : (
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                     {assignmentEntries.map((assignment) => {
-                      const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                      const normalizedTitle = normalizeDisplayTitle(assignment.sheetName);
                       const wireListPrintHref = `/print/project-context/${encodeURIComponent(project?.id ?? "")}/wire-list/${encodeURIComponent(assignment.sheetSlug)}`;
 
                       return (
@@ -3011,7 +2933,7 @@ export function ProjectDetailsWorkspace({
                     {/* Grid of assignment cards linking to cross-wire print preview */}
                     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                       {crossWireAssignments.map((assignment) => {
-                        const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                        const normalizedTitle = normalizeDisplayTitle(assignment.sheetName);
                         const locations = schemaExternalLocations[assignment.sheetSlug] ?? [];
                         const visibleCount = locations.filter(
                           (loc) => crossWireSettingsMatrix[assignment.sheetSlug]?.[loc.trim().toUpperCase()] ?? true,
@@ -3047,7 +2969,7 @@ export function ProjectDetailsWorkspace({
                         </p>
                         <div className="space-y-1.5">
                           {crossWireExcluded.map(({ assignment, reason }) => {
-                            const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                  const normalizedTitle = normalizeDisplayTitle(assignment.sheetName);
                             return (
                               <div key={assignment.sheetSlug} className="flex items-center justify-between gap-2 text-xs">
                                 <span className="truncate text-foreground/70" title={normalizedTitle}>

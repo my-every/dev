@@ -27,6 +27,10 @@ interface MultiSheetReviewWorkspaceShellProps {
   activeBrandRowIds: string[];
   activeSheetSwsType?: string | null;
   projectId?: string;
+  projectName?: string | null;
+  projectNumber?: string | null;
+  projectRevision?: string | null;
+  projectColor?: string | null;
   isAuthenticated: boolean;
   userLabel?: string | null;
   exportReadyHref?: string | null;
@@ -101,6 +105,10 @@ export function MultiSheetReviewWorkspaceShell({
   activeBrandRowIds,
   activeSheetSwsType,
   projectId,
+  projectName,
+  projectNumber,
+  projectRevision,
+  projectColor,
   isAuthenticated,
   userLabel,
   exportReadyHref,
@@ -232,7 +240,10 @@ export function MultiSheetReviewWorkspaceShell({
               initialLayoutPageNumber={activeTab?.pageNumber}
               activeBrandSchema={activeBrandSchema}
               allBrandSchemas={allBrandSchemas}
-              isSavingBrandSchema={pendingBrandSchemaSlugs.length > 0}
+              projectName={projectName}
+              projectNumber={projectNumber}
+              projectRevision={projectRevision}
+              projectColor={projectColor}
               reviewReadOnly={reviewReadOnly}
               selectedBrandRows={selectedBrandRows}
               onOpenLayoutReference={onOpenLayoutReference}

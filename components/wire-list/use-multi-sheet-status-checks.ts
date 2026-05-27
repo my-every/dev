@@ -7,6 +7,7 @@ import type {
   MultiSheetPrintExportResult,
   MultiSheetPrintSheetReview,
   MultiSheetTabItem,
+  LoadedSheetResources,
 } from "@/components/wire-list/use-multi-sheet-brand-review-controller";
 import type {
   MultiSheetImportSession,
@@ -40,6 +41,21 @@ function buildExportHref(projectId: string | undefined, relativePath?: string) {
   return `/api/projects/${encodeURIComponent(projectId)}/exports/files/${encodedSegments}?download=1`;
 }
 
+/**
+ * Check if a print schema has external locations by looking at the TOC page's locationGroups.
+ * This matches the logic used in project-details-workspace.tsx for determining which sheets
+ * have external locations and should appear in the Brand Lists section.
+ */
+function schemaHasExternalLocations(resources: LoadedSheetResources | undefined): boolean {
+  const printSchema = resources?.printSchema;
+  if (!printSchema?.pages) return false;
+  const tocPage = printSchema.pages.find((p: { pageType: string }) => p.pageType === "toc");
+  if (!tocPage) return false;
+  const locationGroups = (tocPage as { locationGroups?: Array<{ location: string; isExternal: boolean }> }).locationGroups;
+  if (!locationGroups) return false;
+  return locationGroups.some((g) => g.isExternal === true);
+}
+
 export function useMultiSheetStatusChecks(options: {
   tabs: MultiSheetTabItem[];
   activeSlug: string | null;
@@ -54,6 +70,8 @@ export function useMultiSheetStatusChecks(options: {
   importSheetDiffs: MultiSheetImportSheetDiff[];
   exportResult: MultiSheetPrintExportResult | null;
   projectId?: string;
+  /** Resource map with loaded brand schemas - used to determine which sheets have external locations */
+  resourceMap?: Record<string, LoadedSheetResources>;
 }) {
   const {
     tabs,
@@ -66,6 +84,7 @@ export function useMultiSheetStatusChecks(options: {
     importSheetDiffs,
     exportResult,
     projectId,
+    resourceMap,
   } = options;
 
   const latestReview = useMemo(() => {
@@ -85,7 +104,16 @@ export function useMultiSheetStatusChecks(options: {
   const navigationItems = useMemo<MultiSheetNavigationItem[]>(
     () =>
       tabs
-        .filter((tab) => tab.hasExternalLocations)
+        .filter((tab) => {
+          // Check if the loaded print schema has external locations
+          // This is the authoritative source (matches project details page behavior)
+          const resources = resourceMap?.[tab.slug];
+          if (resources?.printSchema) {
+            return schemaHasExternalLocations(resources);
+          }
+          // Fall back to the manifest-based check if schema not yet loaded
+          return tab.hasExternalLocations;
+        })
         .map((tab) => {
           const review = sheetReviews[tab.slug];
           const reviewTime = formatReviewTime(review?.reviewedAt);
@@ -99,7 +127,7 @@ export function useMultiSheetStatusChecks(options: {
               : null,
           };
         }),
-    [activeSlug, approvedSlugs, editedAfterApprovalSlugs, sheetReviews, tabs],
+    [activeSlug, approvedSlugs, editedAfterApprovalSlugs, resourceMap, sheetReviews, tabs],
   );
 
   const canViewCompletedReview =
