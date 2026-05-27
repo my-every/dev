@@ -201,11 +201,6 @@ interface PrintSubsection {
   deviceToDeviceSubsections?: { label: string; rows: SemanticWireListRow[] }[];
 }
 
-function getLocationSectionTypeLabel(isExternal: boolean, boxSide?: string): string {
-  if (boxSide) return boxSide;
-  return isExternal ? "EXTERNAL" : "INTERNAL";
-}
-
 function buildSingleConnectionTocSubsections(
   rows: SemanticWireListRow[],
   matchMetadata: Record<string, PatternMatchMetadata> = {},
@@ -1581,7 +1576,7 @@ export function WireListPrintDocument({
           currentSheetName={data.currentSheetName}
           coverImageUrl={data.settings.coverImageUrl}
           swsType={data.swsType}
-          coverSubtitle="Wire List"
+          coverSubtitle={data.currentSheetName}
           pageNumber={1}
           totalPages={data.previewPageCount}
         />
@@ -1979,9 +1974,7 @@ function TableOfContentsPage({
                   <tr className="bg-muted/20">
                     <td colSpan={showEstTime ? 5 : 4} className="py-1.5 px-1.5 border-t border-border text-left">
                       <div className="text-[10px] font-normal uppercase tracking-wide text-muted-foreground">
-                        {crossWireSections.has(`loc-${groupIndex}`)
-                          ? (group.boxSide ? `${group.boxSide} — CROSSWIRE` : "EXTERNAL — CROSSWIRE")
-                          : getLocationSectionTypeLabel(group.isExternal, group.boxSide)}
+                        Location:
                       </div>
                       <div className="text-xs font-bold text-foreground">
                         {group.location}
@@ -6633,7 +6626,7 @@ export function SingleSheetPrintWorkspace({
                                       currentSheetName={currentSheetName}
                                       coverImageUrl={settings.coverImageUrl}
                                       swsType={swsType}
-                                      coverSubtitle="Wire List"
+                                      coverSubtitle={currentSheetName}
                                       pageNumber={1}
                                       totalPages={previewPageCount}
                                     />
@@ -6792,7 +6785,7 @@ export function SingleSheetPrintWorkspace({
                                             {showLocationHeader && (
                   <SectionHeaderBlock
                     title={section.group.location}
-                    subtitle={section.group.boxSide ? `${section.group.boxSide} — CROSSWIRE` : "EXTERNAL — CROSSWIRE"}
+                    subtitle="Location:"
                     subtitleFirst
                     className="mb-3 border-b border-foreground/10 pb-2"
                     titleClassName="text-[13px] font-bold text-foreground"
