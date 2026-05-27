@@ -1,0 +1,65 @@
+{
+  "id": "4g211-wp-harp",
+  "name": "WP-HARP",
+  "filename": "WP-HARP.xlsx",
+  "pdNumber": "4G211",
+  "color": "#fa7516",
+  "status": "legals_pending",
+  "createdAt": "2026-05-27T16:24:16.091Z",
+  "sheets": [],
+  "assignments": {},
+  "referenceSheets": {},
+  "lifecycleGates": [
+    {
+      "gateId": "LEGALS_READY",
+      "status": "LOCKED"
+    },
+    {
+      "gateId": "BRANDLIST_COMPLETE",
+      "status": "LOCKED"
+    },
+    {
+      "gateId": "BRANDING_READY",
+      "status": "LOCKED"
+    },
+    {
+      "gateId": "KITTING_READY",
+      "status": "LOCKED"
+    }
+  ],
+  "whiteLabels": [],
+  "blueLabels": [],
+  "brandingLabelReference": {
+    "whiteLabels": [],
+    "blueLabels": [],
+    "byAssignment": {},
+    "joinHints": {
+      "sourceSheets": [
+        "white-labels",
+        "blue-labels"
+      ],
+      "matchingStrategy": "reference-sheet-header-to-assignment-name",
+      "generatedAt": "2026-05-27T16:25:37.993Z"
+    }
+  },
+  "aggregates": {
+    "totalAssignments": 0,
+    "completedAssignments": 0,
+    "inProgressAssignments": 0,
+    "blockedAssignments": 0,
+    "totalEstimatedMinutes": 0,
+    "totalRemainingMinutes": 0,
+    "totalActualMinutes": 0,
+    "overallProgress": 0,
+    "highestPriority": "low",
+    "priorityCounts": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "stageCounts": {}
+  },
+  "assignmentsByUnitType": {},
+  "dueDate": "2026-05-30"
+}
