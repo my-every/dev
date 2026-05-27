@@ -45,7 +45,7 @@ export function MultiSheetStandardWorkspaceShell({
     <div className="flex h-full min-h-0 flex-col overflow-hidden">
       <div className="min-h-0 flex-1 flex-wrap overflow-hidden">
         {viewMode === "layout" && canRenderLayoutWorkspace ? (
-          <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-background">
+          <div className="relative flex h-full min-h-0 flex-col overflow-hidden bg-background flex-1">
             <div className="flex items-center justify-between border-b bg-background/95 px-4 py-3">
               <div>
                 <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Matched Layout PDF</div>

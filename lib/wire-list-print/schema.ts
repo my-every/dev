@@ -317,12 +317,13 @@ export interface BuildPrintSchemaOptions {
   totalPagesOverride?: number;
   currentSheetName: string;
   settings?: Partial<PrintSettings>;
-  projectInfo?: ProjectInfo;
-  sheetTitle?: string;
-  blueLabels?: BlueLabelSequenceMap | null;
-  partNumberMap?: Map<string, PartNumberLookupResult> | null;
-  hiddenSections?: Set<string>;
   getLengthForRow?: (rowId: string) => { display: string; roundedInches: number } | null;
+  /** Destination sheet name (uppercase) -> box side mapping for external groups. */
+  locationBoxSideByName?: Record<string, string>;
+  /** Blue label sequence map for sorting single connections */
+  blueLabels?: BlueLabelSequenceMap | null;
+  /** Part number lookup map */
+  partNumberMap?: Map<string, PartNumberLookupResult> | null;
 }
 
 function buildLocationGroupsFromVisibleSections(
@@ -402,6 +403,7 @@ export function buildWireListPrintSchema(options: BuildPrintSchemaOptions): Wire
           sortMode: settings.mode === "branding"
             ? settings.brandingSortMode
             : settings.wireListSortMode,
+          locationBoxSideByName: options.locationBoxSideByName,
         }));
 
   // Compute page count

@@ -26,6 +26,7 @@ import {
   Package,
   Palette,
   Pencil,
+  Trash2,
   Upload,
   X,
 } from "lucide-react";
@@ -61,6 +62,16 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import {
   DateField,
   LwcTypeField,
@@ -369,7 +380,7 @@ export function ProjectDetailsWorkspace({
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
-  const { flashAside } = useLayoutUI();
+  const { flashAside, openAside, closeAside } = useLayoutUI();
   
   const contentRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -384,6 +395,8 @@ export function ProjectDetailsWorkspace({
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const [legalDetail, setLegalDetail] = useState<LegalProjectRecord | null>(null);
   const [hasLoadedLegals, setHasLoadedLegals] = useState(false);
@@ -409,7 +422,6 @@ export function ProjectDetailsWorkspace({
   const [hasLoadedWireExports, setHasLoadedWireExports] = useState(false);
   const [loadingBrandingExports, setLoadingBrandingExports] = useState(false);
   const [loadingWireExports, setLoadingWireExports] = useState(false);
-  const [regeneratingBranding, setRegeneratingBranding] = useState(false);
   const [regeneratingWire, setRegeneratingWire] = useState(false);
 
   const [wireGeneratingSheets, setWireGeneratingSheets] = useState<Record<string, "idle" | "generating" | "done" | "error">>({});
@@ -437,7 +449,6 @@ export function ProjectDetailsWorkspace({
   const [crossWireSchema, setCrossWireSchema] = useState<CrossWireSchemaSummary | null>(null);
   const [hasLoadedCrossWireSchema, setHasLoadedCrossWireSchema] = useState(false);
   const [loadingCrossWireSchema, setLoadingCrossWireSchema] = useState(false);
-  const [regeneratingCrossWireSchema, setRegeneratingCrossWireSchema] = useState(false);
   const [savingCrossWireSettingsBySheet, setSavingCrossWireSettingsBySheet] = useState<Record<string, boolean>>({});
   const [crossWireSettingsMessage, setCrossWireSettingsMessage] = useState<string | null>(null);
   const [crossWireSwapLocationsAll, setCrossWireSwapLocationsAll] = useState(false);
@@ -520,11 +531,20 @@ export function ProjectDetailsWorkspace({
     const targetSection = sectionParam || initialSection;
     
     if (targetSection && targetSection !== "details") {
-      const el = contentRef.current.querySelector(`[data-section="${targetSection}"]`);
-      if (el) {
+      const container = contentRef.current;
+      const el = container?.querySelector(`[data-section="${targetSection}"]`);
+      if (el && container) {
         setTimeout(() => {
           isScrollingRef.current = true;
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          // Calculate the element's position relative to the scroll container
+          const containerRect = container.getBoundingClientRect();
+          const elementRect = el.getBoundingClientRect();
+          const relativeTop = elementRect.top - containerRect.top + container.scrollTop;
+          // Scroll within the container with a 24px offset from the top
+          container.scrollTo({
+            top: Math.max(0, relativeTop - 24),
+            behavior: "smooth"
+          });
           setActiveSection(targetSection);
           setTimeout(() => {
             isScrollingRef.current = false;
@@ -537,9 +557,18 @@ export function ProjectDetailsWorkspace({
   const scrollToSection = useCallback((id: string) => {
     setActiveSection(id);
     isScrollingRef.current = true;
-    const el = contentRef.current?.querySelector(`[data-section="${id}"]`);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    const container = contentRef.current;
+    const el = container?.querySelector(`[data-section="${id}"]`);
+    if (el && container) {
+      // Calculate the element's position relative to the scroll container
+      const containerRect = container.getBoundingClientRect();
+      const elementRect = el.getBoundingClientRect();
+      const relativeTop = elementRect.top - containerRect.top + container.scrollTop;
+      // Scroll within the container with a 24px offset from the top
+      container.scrollTo({
+        top: Math.max(0, relativeTop - 24),
+        behavior: "smooth"
+      });
     }
     setTimeout(() => {
       isScrollingRef.current = false;
@@ -765,6 +794,62 @@ export function ProjectDetailsWorkspace({
       setSaving(false);
     }
   }, [editDraft, project, toast, logActivityWithFlash]);
+
+  const handleDelete = useCallback(async () => {
+    if (!project) return;
+    
+    setDeleting(true);
+    setShowDeleteDialog(false);
+    
+    // Capture project info before deletion for activity log
+    const projectName = project.name;
+    const pdNumber = project.pdNumber;
+    
+    try {
+      const res = await fetch(`/api/projects/${encodeURIComponent(project.id)}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error ?? "Delete failed");
+      }
+      
+      // Log the deletion activity
+      try {
+        await activityService.logAction(badgeNumber, "1st", {
+          action: "PROJECT_DELETED",
+          metadata: {
+            projectName,
+            pdNumber,
+          },
+          projectId: project.id,
+          result: "success",
+        });
+      } catch (logErr) {
+        console.error("[v0] Failed to log delete activity:", logErr);
+      }
+      
+      toast({ title: "Project deleted", description: `"${projectName}" has been permanently removed.` });
+      
+      // Open activity aside and auto-close after 5 seconds
+      openAside();
+      setTimeout(() => {
+        closeAside();
+      }, 5000);
+      
+      // Navigate back to projects list after a short delay
+      setTimeout(() => {
+        router.push(`/${badgeNumber}/projects`);
+      }, 500);
+    } catch (err) {
+      toast({ 
+        title: "Delete failed", 
+        description: err instanceof Error ? err.message : "Could not delete project",
+        variant: "destructive"
+      });
+      setDeleting(false);
+    }
+  }, [project, toast, router, badgeNumber, openAside, closeAside]);
 
   // Keyboard shortcuts: e = edit, s = save, c = cancel
   useEffect(() => {
@@ -1126,6 +1211,78 @@ export function ProjectDetailsWorkspace({
     );
   }, [assignmentEntries]);
 
+  // ─── Auto-save debounce refs ───────────────────────────────────────────────
+  const wireListSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const brandListSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const crossWireSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Auto-save function for wire list settings
+  const autoSaveWireListSettings = useCallback(async () => {
+    if (!project?.id) return;
+    const settingsToSave = wireListSettingsMatrix;
+    await Promise.all(
+      Object.entries(settingsToSave).map(async ([sheetSlug, settings]) => {
+        await fetch(
+          `/api/projects/${encodeURIComponent(project.id)}/assignment-visibility`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sheetSlug,
+              kind: "wire",
+              visibilitySettings: settings,
+            }),
+          }
+        );
+      })
+    );
+  }, [project?.id, wireListSettingsMatrix]);
+
+  // Auto-save function for brand list settings
+  const autoSaveBrandListSettings = useCallback(async () => {
+    if (!project?.id) return;
+    const settingsToSave = brandListSettingsMatrix;
+    await Promise.all(
+      Object.entries(settingsToSave).map(async ([sheetSlug, settings]) => {
+        await fetch(
+          `/api/projects/${encodeURIComponent(project.id)}/assignment-visibility`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sheetSlug,
+              kind: "branding",
+              visibilitySettings: settings,
+            }),
+          }
+        );
+      })
+    );
+  }, [project?.id, brandListSettingsMatrix]);
+
+  // Auto-save function for cross wire settings
+  const autoSaveCrossWireSettings = useCallback(async () => {
+    if (!project?.id) return;
+    const settingsToSave = crossWireSettingsMatrix;
+    await Promise.all(
+      Object.entries(settingsToSave).map(async ([sheetSlug, settings]) => {
+        const isSwapped = crossWireSwapLocationsAll || (crossWireSwapLocationsBySheet[sheetSlug] ?? false);
+        await fetch(
+          `/api/projects/${encodeURIComponent(project.id)}/cross-wire-visibility`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              sheetSlug,
+              visibilitySettings: settings,
+              swapLocations: isSwapped,
+            }),
+          }
+        );
+      })
+    );
+  }, [project?.id, crossWireSettingsMatrix, crossWireSwapLocationsAll, crossWireSwapLocationsBySheet]);
+
   // Setter for wire list visibility per location
   const setWireListLocationVisibility = useCallback(
     (sheetSlug: string, locationKey: string, visible: boolean) => {
@@ -1136,8 +1293,15 @@ export function ProjectDetailsWorkspace({
           [locationKey]: visible,
         },
       }));
+      // Debounced auto-save
+      if (wireListSaveTimeoutRef.current) {
+        clearTimeout(wireListSaveTimeoutRef.current);
+      }
+      wireListSaveTimeoutRef.current = setTimeout(() => {
+        void autoSaveWireListSettings();
+      }, 1000);
     },
-    [],
+    [autoSaveWireListSettings],
   );
 
   // Setter for brand list visibility per location
@@ -1150,8 +1314,15 @@ export function ProjectDetailsWorkspace({
           [locationKey]: visible,
         },
       }));
+      // Debounced auto-save
+      if (brandListSaveTimeoutRef.current) {
+        clearTimeout(brandListSaveTimeoutRef.current);
+      }
+      brandListSaveTimeoutRef.current = setTimeout(() => {
+        void autoSaveBrandListSettings();
+      }, 1000);
     },
-    [],
+    [autoSaveBrandListSettings],
   );
 
   // Setter for cross wire visibility per location
@@ -1164,8 +1335,15 @@ export function ProjectDetailsWorkspace({
           [locationKey]: visible,
         },
       }));
+      // Debounced auto-save
+      if (crossWireSaveTimeoutRef.current) {
+        clearTimeout(crossWireSaveTimeoutRef.current);
+      }
+      crossWireSaveTimeoutRef.current = setTimeout(() => {
+        void autoSaveCrossWireSettings();
+      }, 1000);
     },
-    [],
+    [autoSaveCrossWireSettings],
   );
 
   const handleSaveCrossWireSettings = useCallback(async (sheetSlug: string) => {
@@ -1393,7 +1571,9 @@ export function ProjectDetailsWorkspace({
               if (key) {
                 newWireSettings[slug][key] = loc.wireListVisible !== false;
                 newBrandSettings[slug][key] = loc.brandingVisible !== false;
-                newCrossSettings[slug][key] = loc.wireListVisible !== false; // Cross wire follows wire list
+                // Use crossWireVisible if set, otherwise fall back to wireListVisible
+                const crossWireVisible = (loc as { crossWireVisible?: boolean }).crossWireVisible;
+                newCrossSettings[slug][key] = crossWireVisible ?? loc.wireListVisible !== false;
               }
             }
           }
@@ -1602,12 +1782,15 @@ export function ProjectDetailsWorkspace({
         // Check if there are explicit user-set values (wireListVisible/brandingVisible explicitly set)
         const hasExplicitWire = loc.wireListVisible !== undefined;
         const hasExplicitBrand = loc.brandingVisible !== undefined;
+        const hasExplicitCross = (loc as { crossWireVisible?: boolean }).crossWireVisible !== undefined;
         
         if (hasExplicitWire && hasExplicitBrand) {
           // User has customized these settings - use them
           newWireSettings[slug][locationKey] = loc.wireListVisible!;
           newBrandSettings[slug][locationKey] = loc.brandingVisible!;
-          newCrossSettings[slug][locationKey] = loc.wireListVisible !== false;
+          // Use crossWireVisible if set, otherwise fall back to wireListVisible
+          const crossWireVisible = (loc as { crossWireVisible?: boolean }).crossWireVisible;
+          newCrossSettings[slug][locationKey] = crossWireVisible ?? loc.wireListVisible !== false;
         } else {
           // Compute defaults from boxSide logic
           let targetBoxSideKey = locationToBoxSide[locationKey];
@@ -1634,7 +1817,9 @@ export function ProjectDetailsWorkspace({
           
           newWireSettings[slug][locationKey] = hasExplicitWire ? loc.wireListVisible! : defaults.wire_list;
           newBrandSettings[slug][locationKey] = hasExplicitBrand ? loc.brandingVisible! : defaults.brand_list;
-          newCrossSettings[slug][locationKey] = defaults.cross_wire;
+          // Use crossWireVisible if explicitly set, otherwise use defaults
+          const crossWireVisible = (loc as { crossWireVisible?: boolean }).crossWireVisible;
+          newCrossSettings[slug][locationKey] = hasExplicitCross ? crossWireVisible! : defaults.cross_wire;
         }
       }
     }
@@ -1706,7 +1891,7 @@ export function ProjectDetailsWorkspace({
     }
   }, [project?.id, brandListSettingsMatrix, refreshBrandingExports]);
 
-  // ─── Wire List Settings Handlers ────────────────────────────────────────────
+  // ─── Wire List Settings Handlers ───────────────────────────��────────────────
 
   const setWireListVisibility = useCallback((sheetSlug: string, key: string, visible: boolean) => {
     setWireListSettingsMatrix((prev) => ({
@@ -1767,7 +1952,7 @@ export function ProjectDetailsWorkspace({
     }
   }, [project?.id, wireListSettingsMatrix, refreshWireExports]);
 
-  // ─── Render Loading/Error States ──────────────────��──���──────────────────────
+  // ─── Render Loading/Error States ──────────────────��──���────���─────────────────
 
   if (loading) {
     return (
@@ -1792,7 +1977,7 @@ export function ProjectDetailsWorkspace({
   // ─── Main Render ────────────────────────────────────────────────────────────
 
   return (
-    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-background">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-background flex-1">
       {/* Header */}
       <header className="flex items-center justify-between border-b border-border bg-background px-4 py-3">
         <div className="flex items-center gap-3">
@@ -1869,8 +2054,8 @@ export function ProjectDetailsWorkspace({
         </aside>
 
         {/* Scrollable content */}
-        <div className="flex-1 min-w-0 overflow-y-auto" ref={contentRef}>
-          <div className="mx-auto max-w-4xl px-4 py-6 space-y-12">
+        <div className="flex-1 min-w-0 overflow-y-auto overscroll-contain" ref={contentRef}>
+          <div className="w-full px-4 py-6 space-y-12 lg:px-6 xl:px-8">
             
             {/* ─── Details Section ───────────────────────────────��─────────── */}
             <section data-section="details" className="scroll-mt-6">
@@ -1879,119 +2064,165 @@ export function ProjectDetailsWorkspace({
                 title="Project Details"
                 description="View and edit project information and metadata."
               />
-              <div className="mt-4 space-y-3">
+              <div className="mt-4 space-y-6">
                 {isEditing ? (
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <Input
-                      value={editDraft?.name || ""}
-                      onChange={(e) => setProjectField("name", e.target.value)}
-                      placeholder="Project Name"
-                    />
-                    <PdNumberField
-                      mode="create"
-                      label="PD Number"
-                      value={editDraft?.pdNumber || ""}
-                      onChange={(value) => setProjectField("pdNumber", value)}
-                    />
-                    <UnitNumberField
-                      mode="create"
-                      label="Unit Number"
-                      value={editDraft?.unitNumber ?? undefined}
-                      onChange={(value) => setProjectField("unitNumber", value ?? null)}
-                    />
-                    <RevisionField
-                      mode="create"
-                      label="Revision"
-                      value={editDraft?.revision || ""}
-                      onChange={(value) => setProjectField("revision", value)}
-                    />
-                    <LwcTypeField
-                      mode="create"
-                      label="LWC Type"
-                      value={editDraft?.lwcType ?? undefined}
-                      onChange={(value) => setProjectField("lwcType", value)}
-                      showRegistryDescription={false}
-                    />
-                    <DateField
-                      mode="create"
-                      label="Due Date"
-                      value={parseDateInputValue(editDraft?.dueDate)}
-                      onChange={(date) => setProjectField("dueDate", date ? date.toISOString().slice(0, 10) : null)}
-                    />
-                    <div className="grid gap-1.5 sm:col-span-2">
-                      <Label className="text-xs font-medium text-muted-foreground">Status</Label>
-                      <Select
-                        value={editDraft?.status || ""}
-                        onValueChange={(value) => setProjectField("status", value as typeof PROJECT_STATUS_OPTIONS[number]["value"])}
-                      >
-                        <SelectTrigger className="h-9 text-sm">
-                          <SelectValue placeholder="Select status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {PROJECT_STATUS_OPTIONS.map((opt) => (
-                            <SelectItem key={opt.value} value={opt.value}>
-                              <span className="flex items-center gap-2">
-                                <span className={cn("h-2 w-2 rounded-full shrink-0", opt.dot)} />
-                                {opt.label}
-                              </span>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                  <div className="space-y-6">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="grid gap-1.5">
+                        <Label className="text-xs font-medium text-muted-foreground">Project Name</Label>
+                        <Input
+                          value={editDraft?.name || ""}
+                          onChange={(e) => setProjectField("name", e.target.value)}
+                          placeholder="Project Name"
+                        />
+                      </div>
+                      <PdNumberField
+                        mode="create"
+                        label="PD Number"
+                        value={editDraft?.pdNumber || ""}
+                        onChange={(value) => setProjectField("pdNumber", value)}
+                      />
+                      <UnitNumberField
+                        mode="create"
+                        label="Unit Number"
+                        value={editDraft?.unitNumber ?? undefined}
+                        onChange={(value) => setProjectField("unitNumber", value ?? null)}
+                      />
+                      <RevisionField
+                        mode="create"
+                        label="Revision"
+                        value={editDraft?.revision || ""}
+                        onChange={(value) => setProjectField("revision", value)}
+                      />
+                      <LwcTypeField
+                        mode="create"
+                        label="LWC Type"
+                        value={editDraft?.lwcType ?? undefined}
+                        onChange={(value) => setProjectField("lwcType", value)}
+                        showRegistryDescription={false}
+                      />
+                      <DateField
+                        mode="create"
+                        label="Due Date"
+                        value={parseDateInputValue(editDraft?.dueDate)}
+                        onChange={(date) => setProjectField("dueDate", date ? date.toISOString().slice(0, 10) : null)}
+                      />
+                      <div className="grid gap-1.5">
+                        <Label className="text-xs font-medium text-muted-foreground">Status</Label>
+                        <Select
+                          value={editDraft?.status || ""}
+                          onValueChange={(value) => setProjectField("status", value as typeof PROJECT_STATUS_OPTIONS[number]["value"])}
+                        >
+                          <SelectTrigger className="h-9 text-sm">
+                            <SelectValue placeholder="Select status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {PROJECT_STATUS_OPTIONS.map((opt) => (
+                              <SelectItem key={opt.value} value={opt.value}>
+                                <span className="flex items-center gap-2">
+                                  <span className={cn("h-2 w-2 rounded-full shrink-0", opt.dot)} />
+                                  {opt.label}
+                                </span>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="grid gap-1.5">
+                        <Label className="text-xs font-medium text-muted-foreground">Color</Label>
+                        <ColorPicker
+                          value={editDraft?.color || "#ffcc61"}
+                          onValueChange={(value) => setProjectField("color", value)}
+                        >
+                          <ColorPickerTrigger asChild>
+                            <button className="flex h-9 w-full items-center gap-2 rounded-md border border-input bg-background px-3 text-sm shadow-sm transition-colors hover:bg-accent">
+                              <ColorPickerSwatch className="h-5 w-5 rounded-sm border border-border shrink-0" />
+                              <span className="font-mono text-xs">{editDraft?.color || "#ffcc61"}</span>
+                            </button>
+                          </ColorPickerTrigger>
+                          <ColorPickerContent>
+                            <ColorPickerArea />
+                            <ColorPickerHueSlider />
+                            <ColorPickerInput />
+                          </ColorPickerContent>
+                        </ColorPicker>
+                      </div>
                     </div>
-                    <div className="grid gap-1.5 sm:col-span-2">
-                      <Label className="text-xs font-medium text-muted-foreground">Color</Label>
-                      <ColorPicker
-                        value={editDraft?.color || "#ffcc61"}
-                        onValueChange={(value) => setProjectField("color", value)}
-                      >
-                        <ColorPickerTrigger asChild>
-                          <button className="flex h-9 w-full items-center gap-2 rounded-md border border-input bg-background px-3 text-sm shadow-sm transition-colors hover:bg-accent">
-                            <ColorPickerSwatch className="h-5 w-5 rounded-sm border border-border shrink-0" />
-                            <span className="font-mono text-xs">{editDraft?.color || "#ffcc61"}</span>
-                          </button>
-                        </ColorPickerTrigger>
-                        <ColorPickerContent>
-                          <ColorPickerArea />
-                          <ColorPickerHueSlider />
-                          <ColorPickerInput />
-                        </ColorPickerContent>
-                      </ColorPicker>
+                    
+                    <Separator />
+                    
+                    {/* Danger zone - delete project */}
+                    <div className="space-y-2">
+                      <div className="text-xs font-semibold uppercase tracking-wide text-destructive">
+                        Danger Zone
+                      </div>
+                      <div className="rounded-md border border-destructive/30 bg-destructive/5 p-4">
+                        <div className="flex items-center justify-between gap-4">
+                          <div>
+                            <p className="text-sm font-medium">Delete this project</p>
+                            <p className="text-xs text-muted-foreground">
+                              Permanently remove this project and all associated data. This action cannot be undone.
+                            </p>
+                          </div>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => setShowDeleteDialog(true)}
+                            disabled={deleting}
+                            className="shrink-0"
+                          >
+                            {deleting ? (
+                              <>
+                                <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
+                                Deleting...
+                              </>
+                            ) : (
+                              <>
+                                <Trash2 className="mr-2 h-3.5 w-3.5" />
+                                Delete Project
+                              </>
+                            )}
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ) : (
-                  <div className="space-y-2">
-                    <DetailRow icon={FileText} label="Project Name">{currentProject?.name}</DetailRow>
-                    <DetailRow icon={FileText} label="PD Number">{currentProject?.pdNumber || "Not set"}</DetailRow>
-                    <DetailRow icon={Package} label="Unit">{currentProject?.unitNumber ? `Unit ${currentProject.unitNumber}` : "Not set"}</DetailRow>
-                    <DetailRow icon={GitBranch} label="Revision">{currentProject?.revision || "Not set"}</DetailRow>
-                    <DetailRow icon={Layers} label="LWC Type">{String(currentProject?.lwcType || "Not set")}</DetailRow>
-                    <DetailRow icon={Calendar} label="Due Date">{formatDateValue(currentProject?.dueDate)}</DetailRow>
-                    <DetailRow icon={Calendar} label="Ship Date">{formatDateValue(currentProject?.shipDate)}</DetailRow>
-                    <DetailRow icon={FileText} label="Status">
-                      {(() => {
-                        const opt = PROJECT_STATUS_OPTIONS.find((o) => o.value === currentProject?.status);
-                        return (
-                          <span className="flex items-center gap-2">
-                            {opt && <span className={cn("h-2 w-2 rounded-full shrink-0", opt.dot)} />}
-                            {opt ? opt.label : formatTokenLabel(currentProject?.status || "unknown")}
+                  <div className="space-y-6">
+                    {/* 2-column grid for project details */}
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <DetailRow icon={FileText} label="Project Name">{currentProject?.name}</DetailRow>
+                      <DetailRow icon={FileText} label="PD Number">{currentProject?.pdNumber || "Not set"}</DetailRow>
+                      <DetailRow icon={Package} label="Unit">{currentProject?.unitNumber ? `Unit ${currentProject.unitNumber}` : "Not set"}</DetailRow>
+                      <DetailRow icon={GitBranch} label="Revision">{currentProject?.revision || "Not set"}</DetailRow>
+                      <DetailRow icon={Layers} label="LWC Type">{String(currentProject?.lwcType || "Not set")}</DetailRow>
+                      <DetailRow icon={Calendar} label="Due Date">{formatDateValue(currentProject?.dueDate)}</DetailRow>
+                      <DetailRow icon={Calendar} label="Ship Date">{formatDateValue(currentProject?.shipDate)}</DetailRow>
+                      <DetailRow icon={FileText} label="Status">
+                        {(() => {
+                          const opt = PROJECT_STATUS_OPTIONS.find((o) => o.value === currentProject?.status);
+                          return (
+                            <span className="flex items-center gap-2">
+                              {opt && <span className={cn("h-2 w-2 rounded-full shrink-0", opt.dot)} />}
+                              {opt ? opt.label : formatTokenLabel(currentProject?.status || "unknown")}
+                            </span>
+                          );
+                        })()}
+                      </DetailRow>
+                      <DetailRow icon={Palette} label="Color">
+                        <span className="flex items-center gap-2">
+                          <span
+                            className="h-4 w-4 rounded-sm border border-border shrink-0"
+                            style={{ backgroundColor: currentProject?.color || "#ffcc61" }}
+                          />
+                          <span className="font-mono text-xs text-muted-foreground">
+                            {currentProject?.color || "#ffcc61"}
                           </span>
-                        );
-                      })()}
-                    </DetailRow>
-                    <DetailRow icon={Palette} label="Color">
-                      <span className="flex items-center gap-2">
-                        <span
-                          className="h-4 w-4 rounded-sm border border-border shrink-0"
-                          style={{ backgroundColor: currentProject?.color || "#ffcc61" }}
-                        />
-                        <span className="font-mono text-xs text-muted-foreground">
-                          {currentProject?.color || "#ffcc61"}
                         </span>
-                      </span>
-                    </DetailRow>
+                      </DetailRow>
+                    </div>
                     
-                    <Separator className="my-4" />
+                    <Separator />
                     
                     <div className="space-y-2">
                       <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -2498,7 +2729,7 @@ export function ProjectDetailsWorkspace({
               <SectionHeader
                 icon={FileSpreadsheet}
                 title="Brand Lists"
-                description="Generate, combine, review, and control brand list outputs."
+                description="View brand list documents for each assignment. Configure visibility settings in the Settings tab below."
               />
               <div className="mt-4 space-y-4">
                 {/* Stats header */}
@@ -2540,32 +2771,6 @@ export function ProjectDetailsWorkspace({
                     <Upload className="mr-2 h-3.5 w-3.5" />
                     Import & Merge Brand List
                   </Button>
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    disabled={regeneratingBranding}
-                    onClick={() => void handleRegenerateBrandingExports(false)}
-                  >
-                    {regeneratingBranding ? (
-                      <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
-                    ) : (
-                      <Download className="mr-2 h-3.5 w-3.5" />
-                    )}
-                    Generate
-                  </Button>
-                  <Button 
-                    size="sm" 
-                    variant="default"
-                    disabled={regeneratingBranding}
-                    onClick={() => void handleRegenerateBrandingExports(true)}
-                  >
-                    {regeneratingBranding ? (
-                      <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
-                    ) : (
-                      <FileSpreadsheet className="mr-2 h-3.5 w-3.5" />
-                    )}
-                    Generate & Combine
-                  </Button>
                 </div>
 
                 {/* Combined download link */}
@@ -2591,138 +2796,25 @@ export function ProjectDetailsWorkspace({
                     description="Generate brand list schemas to populate visibility settings."
                   />
                 ) : (
-                  <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                     {brandListAssignments.map((assignment) => {
-                      const isExpanded = expandedBrandAssignments.has(assignment.sheetSlug);
-                      const toggleExpand = () => {
-                        setExpandedBrandAssignments((prev) => {
-                          const next = new Set(prev);
-                          if (next.has(assignment.sheetSlug)) {
-                            next.delete(assignment.sheetSlug);
-                          } else {
-                            next.add(assignment.sheetSlug);
-                          }
-                          return next;
-                        });
-                      };
-                      const locations = schemaExternalLocations[assignment.sheetSlug] ?? [];
-                      const genState = brandGeneratingSheets[assignment.sheetSlug] ?? "idle";
-                      const brandExport = brandingExports?.sheetExports?.find(
-                        (e) => e.sheetSlug === assignment.sheetSlug,
-                      );
-                      const hasPDF = !!brandExport?.relativePath;
                       const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                      const brandListPrintHref = `/print/project-context/${encodeURIComponent(project?.id ?? "")}/wire-list/${encodeURIComponent(assignment.sheetSlug)}?mode=branding`;
 
                       return (
-                        <div key={assignment.sheetSlug} className="rounded-lg border border-border bg-card overflow-hidden">
-                          <div
-                            className="flex items-center gap-2 p-3 cursor-pointer hover:bg-muted/30 transition-colors"
-                            onClick={toggleExpand}
-                          >
-                            <ChevronRight className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-150 shrink-0", isExpanded && "rotate-90")} />
-                            <span className="truncate text-sm font-medium flex-1" title={normalizedTitle}>{normalizedTitle}</span>
-                            {locations.length > 0 && (
-                              <Badge variant="outline" className="h-5 px-1.5 text-[10px] shrink-0">
-                                {locations.length}
-                              </Badge>
-                            )}
-                            <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
-                              {hasPDF && genState !== "generating" && (
-                                <Button
-                                  asChild
-                                  size="sm"
-                                  variant="ghost"
-                                  className="h-7 gap-1 px-2 text-xs"
-                                >
-                                  <a
-                                    href={`/api/projects/${encodeURIComponent(project?.id ?? "")}/brand-list/download?path=${encodeURIComponent(brandExport.relativePath)}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    <Download className="h-3 w-3" />
-                                    PDF
-                                  </a>
-                                </Button>
-                              )}
-                              {genState === "generating" ? (
-                                <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs" disabled>
-                                  <Loader2 className="h-3 w-3 animate-spin" />
-                                  Generating
-                                </Button>
-                              ) : genState === "done" ? (
-                                <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs text-green-600" disabled>
-                                  <Check className="h-3 w-3" />
-                                  Done
-                                </Button>
-                              ) : genState === "error" ? (
-                                <Button
-                                  size="sm"
-                                  variant="destructive"
-                                  className="h-7 gap-1 px-2 text-xs"
-                                  onClick={() => handleSaveAndGenerateBrandList(assignment.sheetSlug)}
-                                >
-                                  Retry
-                                </Button>
-                              ) : null}
-                            </div>
-                          </div>
-                          {isExpanded && (
-                            <div className="border-t border-border/60 bg-muted/20 px-3 py-2 space-y-2">
-                              <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                                External Locations
-                              </div>
-                              {loadingSchemaLocations ? (
-                                <div className="flex items-center gap-2 py-2 text-xs text-muted-foreground">
-                                  <Loader2 className="h-3 w-3 animate-spin" />
-                                  Loading locations...
-                                </div>
-                              ) : locations.length === 0 ? (
-                                <div className="py-2 text-xs text-muted-foreground italic">
-                                  No external locations found for this sheet.
-                                </div>
-                              ) : (
-                                <div className="grid gap-1.5">
-                                  {locations.map((loc) => {
-                                    const key = loc.trim().toUpperCase();
-                                    const isVisible = brandListSettingsMatrix[assignment.sheetSlug]?.[key] ?? true;
-                                    return (
-                                      <div key={key} className="flex items-center justify-between gap-2 py-1">
-                                        <span className="font-mono text-xs text-foreground truncate">{loc}</span>
-                                        <Switch
-                                          checked={isVisible}
-                                          onCheckedChange={(checked) => setBrandListVisibility(assignment.sheetSlug, key, checked)}
-                                          aria-label={`Toggle visibility of ${loc}`}
-                                          className="shrink-0"
-                                        />
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              )}
-                              <div className="pt-2 border-t border-border/40">
-                                <Button
-                                  size="sm"
-                                  variant="default"
-                                  className="w-full h-8 text-xs"
-                                  onClick={() => handleSaveAndGenerateBrandList(assignment.sheetSlug)}
-                                  disabled={genState === "generating"}
-                                >
-                                  {genState === "generating" ? (
-                                    <>
-                                      <Loader2 className="mr-1.5 h-3 w-3 animate-spin" />
-                                      Saving & Generating...
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Check className="mr-1.5 h-3 w-3" />
-                                      Save & Generate
-                                    </>
-                                  )}
-                                </Button>
-                              </div>
-                            </div>
-                          )}
-                        </div>
+                        <a
+                          key={assignment.sheetSlug}
+                          href={brandListPrintHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 rounded-lg border border-border bg-card p-3 hover:bg-muted/50 transition-colors cursor-pointer"
+                        >
+                          <FileSpreadsheet className="h-4 w-4 text-muted-foreground shrink-0" />
+                          <span className="truncate text-sm font-medium flex-1" title={normalizedTitle}>
+                            {normalizedTitle}
+                          </span>
+                          <ExternalLink className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                        </a>
                       );
                     })}
                   </div>
@@ -2759,7 +2851,7 @@ export function ProjectDetailsWorkspace({
               <SectionHeader
                 icon={Layers}
                 title="Wire Lists"
-                description="Manage wire list exports and visibility settings per sheet."
+                description="View wire list documents for each assignment. Configure visibility settings in the Settings tab below."
               />
               <div className="mt-4 space-y-4">
                 {/* Stats header */}
@@ -2812,139 +2904,25 @@ export function ProjectDetailsWorkspace({
                     description="Generate wire list schemas to populate visibility settings."
                   />
                 ) : (
-                  <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                     {assignmentEntries.map((assignment) => {
-                      const isExpanded = expandedAssignments.has(`wire-${assignment.sheetSlug}`);
-                      const toggleExpand = () => {
-                        setExpandedAssignments((prev) => {
-                          const next = new Set(prev);
-                          const key = `wire-${assignment.sheetSlug}`;
-                          if (next.has(key)) {
-                            next.delete(key);
-                          } else {
-                            next.add(key);
-                          }
-                          return next;
-                        });
-                      };
-                      const locations = schemaExternalLocations[assignment.sheetSlug] ?? [];
-                      const genState = wireGeneratingSheets[assignment.sheetSlug] ?? "idle";
-                      const wireExport = wireExports?.sheetExports?.find(
-                        (e) => e.sheetSlug === assignment.sheetSlug,
-                      );
-                      const hasPDF = !!wireExport?.relativePath;
                       const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                      const wireListPrintHref = `/print/project-context/${encodeURIComponent(project?.id ?? "")}/wire-list/${encodeURIComponent(assignment.sheetSlug)}`;
 
                       return (
-                        <div key={assignment.sheetSlug} className="rounded-lg border border-border bg-card overflow-hidden">
-                          <div
-                            className="flex items-center gap-2 p-3 cursor-pointer hover:bg-muted/30 transition-colors"
-                            onClick={toggleExpand}
-                          >
-                            <ChevronRight className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-150 shrink-0", isExpanded && "rotate-90")} />
-                            <span className="truncate text-sm font-medium flex-1" title={normalizedTitle}>{normalizedTitle}</span>
-                            {locations.length > 0 && (
-                              <Badge variant="outline" className="h-5 px-1.5 text-[10px] shrink-0">
-                                {locations.length}
-                              </Badge>
-                            )}
-                            <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
-                              {hasPDF && genState !== "generating" && (
-                                <Button
-                                  asChild
-                                  size="sm"
-                                  variant="ghost"
-                                  className="h-7 gap-1 px-2 text-xs"
-                                >
-                                  <a
-                                    href={`/api/projects/${encodeURIComponent(project?.id ?? "")}/wire-list/download?path=${encodeURIComponent(wireExport.relativePath)}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    <Download className="h-3 w-3" />
-                                    PDF
-                                  </a>
-                                </Button>
-                              )}
-                              {genState === "generating" ? (
-                                <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs" disabled>
-                                  <Loader2 className="h-3 w-3 animate-spin" />
-                                  Generating
-                                </Button>
-                              ) : genState === "done" ? (
-                                <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs text-green-600" disabled>
-                                  <Check className="h-3 w-3" />
-                                  Done
-                                </Button>
-                              ) : genState === "error" ? (
-                                <Button
-                                  size="sm"
-                                  variant="destructive"
-                                  className="h-7 gap-1 px-2 text-xs"
-                                  onClick={() => handleSaveAndGenerateWireList(assignment.sheetSlug)}
-                                >
-                                  Retry
-                                </Button>
-                              ) : null}
-                            </div>
-                          </div>
-                          {isExpanded && (
-                            <div className="border-t border-border/60 bg-muted/20 px-3 py-2 space-y-2">
-                              <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                                External Locations
-                              </div>
-                              {loadingSchemaLocations ? (
-                                <div className="flex items-center gap-2 py-2 text-xs text-muted-foreground">
-                                  <Loader2 className="h-3 w-3 animate-spin" />
-                                  Loading locations...
-                                </div>
-                              ) : locations.length === 0 ? (
-                                <div className="py-2 text-xs text-muted-foreground italic">
-                                  No external locations found for this sheet.
-                                </div>
-                              ) : (
-                                <div className="grid gap-1.5">
-                                  {locations.map((loc) => {
-                                    const key = loc.trim().toUpperCase();
-                                    const isVisible = wireListSettingsMatrix[assignment.sheetSlug]?.[key] ?? true;
-                                    return (
-                                      <div key={key} className="flex items-center justify-between gap-2 py-1">
-                                        <span className="font-mono text-xs text-foreground truncate">{loc}</span>
-                                        <Switch
-                                          checked={isVisible}
-                                          onCheckedChange={(checked) => setWireListVisibility(assignment.sheetSlug, key, checked)}
-                                          aria-label={`Toggle visibility of ${loc}`}
-                                          className="shrink-0"
-                                        />
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              )}
-                              <div className="pt-2 border-t border-border/40">
-                                <Button
-                                  size="sm"
-                                  variant="default"
-                                  className="w-full h-8 text-xs"
-                                  onClick={() => handleSaveAndGenerateWireList(assignment.sheetSlug)}
-                                  disabled={genState === "generating"}
-                                >
-                                  {genState === "generating" ? (
-                                    <>
-                                      <Loader2 className="mr-1.5 h-3 w-3 animate-spin" />
-                                      Saving & Generating...
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Check className="mr-1.5 h-3 w-3" />
-                                      Save & Generate
-                                    </>
-                                  )}
-                                </Button>
-                              </div>
-                            </div>
-                          )}
-                        </div>
+                        <a
+                          key={assignment.sheetSlug}
+                          href={wireListPrintHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 rounded-lg border border-border bg-card p-3 hover:bg-muted/50 transition-colors cursor-pointer"
+                        >
+                          <Layers className="h-4 w-4 text-muted-foreground shrink-0" />
+                          <span className="truncate text-sm font-medium flex-1" title={normalizedTitle}>
+                            {normalizedTitle}
+                          </span>
+                          <ExternalLink className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                        </a>
                       );
                     })}
                   </div>
@@ -2952,12 +2930,12 @@ export function ProjectDetailsWorkspace({
               </div>
             </section>
 
-            {/* ─── Cross Wire Section ────────────────────────────────────��─── */}
+            {/* ─── Cross Wire Section ──────────────────────────────────────── */}
             <section data-section="cross-wire" className="scroll-mt-6">
               <SectionHeader
                 icon={ExternalLink}
                 title="Cross Wire"
-                description="Manage cross-wire schema generation and location visibility."
+                description="View cross-wire documents for each assignment. Configure visibility settings in the Settings tab below."
               />
               <div className="mt-4 space-y-4">
                 {/* Stats header */}
@@ -2983,19 +2961,6 @@ export function ProjectDetailsWorkspace({
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    disabled={regeneratingCrossWireSchema}
-                    onClick={() => void handleRegenerateCrossWireSchema()}
-                  >
-                    {regeneratingCrossWireSchema ? (
-                      <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
-                    ) : (
-                      <GitBranch className="mr-2 h-3.5 w-3.5" />
-                    )}
-                    Generate
-                  </Button>
                   <Button size="sm" variant="outline" asChild>
                     <a
                       href={`/api/projects/${encodeURIComponent(project?.id ?? "")}/cross-wire-pdf`}
@@ -3043,168 +3008,33 @@ export function ProjectDetailsWorkspace({
                   />
                 ) : (
                   <div className="space-y-3">
-                    {/* Global controls */}
-                    <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border bg-muted/30 p-2.5">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-foreground">Quick Actions:</span>
-                        <Button
-                          type="button"
-                          size="sm"
-                          variant="outline"
-                          className="h-6 gap-1 px-2 text-[10px] sm:h-7 sm:text-xs"
-                          onClick={() => {
-                            setCrossWireSwapLocationsAll(true);
-                            setAllCrossWireSwapBySheet(true);
-                          }}
-                        >
-                          <ArrowLeftRight className="h-3 w-3" />
-                          Swap All
-                        </Button>
-                        <Button
-                          type="button"
-                          size="sm"
-                          variant="outline"
-                          className="h-6 gap-1 px-2 text-[10px] sm:h-7 sm:text-xs"
-                          onClick={() => {
-                            setCrossWireSwapLocationsAll(false);
-                            setAllCrossWireSwapBySheet(false);
-                          }}
-                        >
-                          Clear Swaps
-                        </Button>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] text-muted-foreground sm:text-xs">Swap all locations:</span>
-                        <Switch
-                          checked={crossWireSwapLocationsAll}
-                          onCheckedChange={setCrossWireSwapLocationsAll}
-                          aria-label="Toggle swapped cross wire locations for all assignments"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Expandable rows - matching Brand/Wire List pattern */}
-                    <div className="space-y-2">
+                    {/* Grid of assignment cards linking to cross-wire print preview */}
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                       {crossWireAssignments.map((assignment) => {
-                        const isExpanded = expandedAssignments.has(`cross-${assignment.sheetSlug}`);
-                        const toggleExpand = () => {
-                          setExpandedAssignments((prev) => {
-                            const next = new Set(prev);
-                            const key = `cross-${assignment.sheetSlug}`;
-                            if (next.has(key)) {
-                              next.delete(key);
-                            } else {
-                              next.add(key);
-                            }
-                            return next;
-                          });
-                        };
-                        const locations = schemaExternalLocations[assignment.sheetSlug] ?? [];
-                        const isSavingSheet = savingCrossWireSettingsBySheet[assignment.sheetSlug] ?? false;
-                        const isSwapped = crossWireSwapLocationsAll || (crossWireSwapLocationsBySheet[assignment.sheetSlug] ?? false);
                         const normalizedTitle = (assignment as Record<string, unknown>).normalizedTitle as string ?? assignment.sheetName;
+                        const locations = schemaExternalLocations[assignment.sheetSlug] ?? [];
                         const visibleCount = locations.filter(
                           (loc) => crossWireSettingsMatrix[assignment.sheetSlug]?.[loc.trim().toUpperCase()] ?? true,
                         ).length;
 
                         return (
-                          <div key={assignment.sheetSlug} className="rounded-lg border border-border bg-card overflow-hidden">
-                            <div
-                              className="flex items-center gap-2 p-3 cursor-pointer hover:bg-muted/30 transition-colors"
-                              onClick={toggleExpand}
-                            >
-                              <ChevronRight className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform duration-150 shrink-0", isExpanded && "rotate-90")} />
-                              <span className="truncate text-sm font-medium flex-1" title={normalizedTitle}>{normalizedTitle}</span>
-                              {locations.length > 0 && (
-                                <Badge variant="outline" className="h-5 px-1.5 text-[10px] shrink-0">
-                                  {visibleCount}/{locations.length}
-                                </Badge>
-                              )}
-                              <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
-                                <div className="flex items-center gap-1">
-                                  <span className="text-[9px] text-muted-foreground">Swap</span>
-                                  <Switch
-                                    checked={isSwapped}
-                                    disabled={crossWireSwapLocationsAll}
-                                    onCheckedChange={(checked) => handleCrossWireSwapBySheet(assignment.sheetSlug, checked)}
-                                    aria-label={`Toggle swap for ${normalizedTitle}`}
-                                    className="scale-75"
-                                  />
-                                </div>
-                                {isSavingSheet ? (
-                                  <Button size="sm" variant="outline" className="h-7 gap-1 px-2 text-xs" disabled>
-                                    <Loader2 className="h-3 w-3 animate-spin" />
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    size="sm"
-                                    variant="ghost"
-                                    className="h-7 gap-1 px-2 text-xs"
-                                    onClick={() => void handleSaveCrossWireSettings(assignment.sheetSlug)}
-                                  >
-                                    <Check className="h-3 w-3" />
-                                  </Button>
-                                )}
-                              </div>
-                            </div>
-                            {isExpanded && (
-                              <div className="border-t border-border/60 bg-muted/20 px-3 py-2 space-y-2">
-                                <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                                  External Locations
-                                </div>
-                                {loadingSchemaLocations ? (
-                                  <div className="flex items-center gap-2 py-2 text-xs text-muted-foreground">
-                                    <Loader2 className="h-3 w-3 animate-spin" />
-                                    Loading locations...
-                                  </div>
-                                ) : locations.length === 0 ? (
-                                  <div className="py-2 text-xs text-muted-foreground italic">
-                                    No external locations found for this sheet.
-                                  </div>
-                                ) : (
-                                  <div className="grid gap-1.5">
-                                    {locations.map((loc) => {
-                                      const key = loc.trim().toUpperCase();
-                                      const isVisible = crossWireSettingsMatrix[assignment.sheetSlug]?.[key] ?? true;
-
-                                      return (
-                                        <div key={key} className="flex items-center justify-between gap-2 py-1">
-                                          <span className="font-mono text-xs text-foreground truncate">{loc}</span>
-                                          <Switch
-                                            checked={isVisible}
-                                            onCheckedChange={(checked) => setCrossWireLocationVisibility(assignment.sheetSlug, key, checked)}
-                                            aria-label={`Toggle visibility of ${loc}`}
-                                            className="shrink-0"
-                                          />
-                                        </div>
-                                      );
-                                    })}
-                                  </div>
-                                )}
-                                <div className="pt-2 border-t border-border/40">
-                                  <Button
-                                    size="sm"
-                                    variant="default"
-                                    className="w-full h-8 text-xs"
-                                    onClick={() => void handleSaveCrossWireSettings(assignment.sheetSlug)}
-                                    disabled={isSavingSheet}
-                                  >
-                                    {isSavingSheet ? (
-                                      <>
-                                        <Loader2 className="mr-1.5 h-3 w-3 animate-spin" />
-                                        Saving...
-                                      </>
-                                    ) : (
-                                      <>
-                                        <Check className="mr-1.5 h-3 w-3" />
-                                        Save Settings
-                                      </>
-                                    )}
-                                  </Button>
-                                </div>
-                              </div>
+                          <a
+                            key={assignment.sheetSlug}
+                            href={crossWirePreviewHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 rounded-lg border border-border bg-card p-3 hover:bg-muted/50 transition-colors cursor-pointer"
+                          >
+                            <ExternalLink className="h-4 w-4 text-amber-600 shrink-0" />
+                            <span className="truncate text-sm font-medium flex-1" title={normalizedTitle}>
+                              {normalizedTitle}
+                            </span>
+                            {locations.length > 0 && (
+                              <Badge variant="outline" className="h-5 px-1.5 text-[10px] shrink-0">
+                                {visibleCount}/{locations.length}
+                              </Badge>
                             )}
-                          </div>
+                          </a>
                         );
                       })}
                     </div>
@@ -3310,6 +3140,40 @@ export function ProjectDetailsWorkspace({
         autoStartImport={autoStartBrandImport}
         onImportStarted={() => setAutoStartBrandImport(false)}
       />
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Project</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete <span className="font-semibold">&quot;{project?.name}&quot;</span>? This will permanently remove the project and all associated data including wire lists, brand lists, and assignments.
+              <br /><br />
+              <span className="text-destructive font-medium">This action cannot be undone.</span>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              disabled={deleting}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deleting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  Delete Project
+                </>
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

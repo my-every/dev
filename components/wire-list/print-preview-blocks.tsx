@@ -57,7 +57,7 @@ export function StandardPreviewBody({
             >
               <SectionHeaderBlock
                 title={section.group.location}
-                subtitle={section.group.isExternal ? "EXTERNAL" : "INTERNAL"}
+                subtitle={section.group.boxSide || (section.group.isExternal ? "EXTERNAL" : "INTERNAL")}
                 subtitleFirst
                 className="mb-3 border-b border-foreground/10 pb-2"
                 titleClassName="text-[13px] font-bold text-foreground"

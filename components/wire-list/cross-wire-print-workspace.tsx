@@ -101,7 +101,7 @@ function PrintPage({
   return (
     <section
       className={cn(
-        "print-page mx-auto print:w-full rounded-md border border-black/10 bg-white print:shadow-none print:border-0 print:rounded-none print:mx-0",
+        "print-page mx-auto print:w-full border border-black/10 bg-white shadow-md print:shadow-none print:border-0 print:mx-0",
         className,
       )}
     >

@@ -319,16 +319,7 @@ export async function buildProjectSheetPrintDocument(options: {
     deserializeSheetPatches(workspaceState?.rowPatches ?? []),
     { computedLengths },
   );
-  const processedLocationGroups = buildProcessedPrintLocationGroups({
-    rows: patchedRows,
-    mode: settings.mode,
-    enabledSections: settings.enabledSections,
-    sectionOrder: settings.sectionOrder,
-    currentSheetName: schema.name,
-    blueLabels,
-    partNumberMap,
-    sortMode: settings.mode === "branding" ? settings.brandingSortMode : settings.wireListSortMode,
-  });
+  // Compute locationBoxSideByName first so it can be passed to processedLocationGroups
   const assignmentMappings = await readAssignmentMappings(options.projectId);
   const locationBoxSideByName = assignmentMappings.reduce<Record<string, string>>((acc, mapping) => {
     const sheetNameKey = mapping.sheetName?.trim().toUpperCase();
@@ -338,8 +329,30 @@ export async function buildProjectSheetPrintDocument(options: {
     }
     return acc;
   }, {});
+  // Also compute normalizedTitle mapping for display in location columns
+  const locationNormalizedTitleByName = assignmentMappings.reduce<Record<string, string>>((acc, mapping) => {
+    const sheetNameKey = mapping.sheetName?.trim().toUpperCase();
+    const normalizedTitle = manifest.assignments?.[mapping.sheetSlug]?.normalizedTitle;
+    if (sheetNameKey && normalizedTitle) {
+      acc[sheetNameKey] = normalizedTitle;
+    }
+    return acc;
+  }, {});
+  const processedLocationGroups = buildProcessedPrintLocationGroups({
+    rows: patchedRows,
+    mode: settings.mode,
+    enabledSections: settings.enabledSections,
+    sectionOrder: settings.sectionOrder,
+    currentSheetName: schema.name,
+    blueLabels,
+    partNumberMap,
+    sortMode: settings.mode === "branding" ? settings.brandingSortMode : settings.wireListSortMode,
+    locationBoxSideByName,
+    locationNormalizedTitleByName,
+  });
   const externalSectionContext = {
     locationBoxSideByName,
+    locationNormalizedTitleByName,
     currentBoxSide: assignmentNode?.boxSide,
     assignmentMappings,
     currentSheetName: schema.name,
@@ -439,5 +452,6 @@ export async function buildProjectSheetPrintDocument(options: {
     standardVisibleSections,
     includeFeedbackPage: settings.mode !== "branding",
     sheetDocument,
+    locationNormalizedTitleByName,
   };
 }

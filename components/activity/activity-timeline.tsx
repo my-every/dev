@@ -95,6 +95,7 @@ const BRAND_LIST_ACTIONS: ActivityAction[] = [
 type FilterMode = ActivityAction | "all" | "brand_list";
 
 const OPERATION_OPTIONS = [
+  "All",
   "Build",
   "Wire",
   "Cross Wire",
@@ -107,8 +108,10 @@ const OPERATION_OPTIONS = [
 ] as const;
 
 const ACTION_OPTIONS = [
+  "All",
   "Initiated",
   "Created",
+  "Deleted",
   "Started",
   "Paused",
   "Assigned",
@@ -119,8 +122,8 @@ const ACTION_OPTIONS = [
 ] as const;
 
 const SCOPE_OPTIONS = [
+  "All",
   "Project",
-  "Assignment",
   "Legal",
   "Brand List",
   "Branding",
@@ -130,6 +133,7 @@ const SCOPE_OPTIONS = [
 ] as const;
 
 const STAGE_OPTIONS = [
+  "All",
   "Kitting",
   "Build Up",
   "Wiring",
@@ -140,6 +144,7 @@ const STAGE_OPTIONS = [
 ] as const;
 
 const MILESTONE_OPTIONS = [
+  "All",
   "Ready To Lay",
   "Ready To Wire",
   "Ready for Visual",
@@ -151,8 +156,10 @@ const MILESTONE_OPTIONS = [
 const SHIFT_FILTER_OPTIONS = ["1st", "2nd"] as const;
 
 const ACTION_FILTER_MAP: Record<string, ActivityAction[]> = {
+  all: [], // Empty array means no filtering - show all
   initiated: ["STARTED"],
   created: ["PROJECT_CREATED"],
+  deleted: ["PROJECT_DELETED"],
   started: ["STARTED"],
   paused: ["BLOCKED"],
   assigned: ["ASSIGNED"],
@@ -380,6 +387,14 @@ function getActivityIcon(action: ActivityAction) {
         bg: "bg-red-50",
         border: "border-red-300",
       };
+    case "PROJECT_DELETED":
+    case "CANCELLED":
+      return {
+        icon: Trash2,
+        color: "text-red-500",
+        bg: "bg-red-50",
+        border: "border-red-300",
+      };
     case "UNBLOCKED":
     case "REOPENED":
       return {
@@ -401,13 +416,6 @@ function getActivityIcon(action: ActivityAction) {
         color: "text-sky-500",
         bg: "bg-sky-50",
         border: "border-sky-300",
-      };
-    case "CANCELLED":
-      return {
-        icon: AlertCircle,
-        color: "text-slate-500",
-        bg: "bg-slate-50",
-        border: "border-slate-300",
       };
     case "SETTINGS_CHANGED":
       return {
@@ -479,6 +487,7 @@ function getActionLabel(
     PERMISSION_GRANTED: "Permission Granted",
     PERMISSION_REVOKED: "Permission Revoked",
     PROJECT_CREATED: "Project Created",
+    PROJECT_DELETED: "Project Deleted",
     PROJECT_ARCHIVED: "Project Archived",
     PROJECT_UNARCHIVED: "Project Restored",
   };
@@ -1446,7 +1455,6 @@ const pushFilterPatch = useCallback(
 
   const hasAdvancedFilters =
     selectedActors.length > 0 ||
-    selectedAssignments.length > 0 ||
     selectedShifts.length > 0 ||
     selectedLwcs.length > 0 ||
     selectedOperations.length > 0 ||
@@ -1620,35 +1628,6 @@ const pushFilterPatch = useCallback(
                     </Collapsible>
 
                     <Collapsible
-                      open={openSections.assignment}
-                      onOpenChange={() => toggleSection("assignment")}
-                    >
-                      <CollapsibleTrigger asChild>
-                        <Button variant="ghost" size="sm" className="h-8 w-full justify-between px-2 text-xs">
-                          Assignment
-                          {openSections.assignment ? <Minus className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
-                        </Button>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="space-y-2 px-2 pb-2">
-                        {assignmentOptions.map((assignmentId) => (
-                          <label key={assignmentId} className="flex items-center gap-2 text-xs">
-                            <Checkbox
-                              checked={selectedAssignments.includes(assignmentId)}
-                              onCheckedChange={() => {
-                                const next = toggleMultiValue(selectedAssignments, assignmentId);
-                                setSelectedAssignments(next);
-                                pushFilterPatch({
-                                  assignmentIds: next.length ? next : undefined,
-                                });
-                              }}
-                            />
-                            <span>{assignmentId}</span>
-                          </label>
-                        ))}
-                      </CollapsibleContent>
-                    </Collapsible>
-
-                    <Collapsible
                       open={openSections.operation}
                       onOpenChange={() => toggleSection("operation")}
                     >
@@ -1661,16 +1640,24 @@ const pushFilterPatch = useCallback(
                       <CollapsibleContent className="space-y-2 px-2 pb-2">
                         {OPERATION_OPTIONS.map((option) => {
                           const value = option.toLowerCase().replace(/\s+/g, "-");
+                          const isAll = value === "all";
+                          const isSelected = isAll ? selectedOperations.length === 0 : selectedOperations.includes(value);
                           return (
                             <label key={option} className="flex items-center gap-2 text-xs">
                               <Checkbox
-                                checked={selectedOperations.includes(value)}
+                                checked={isSelected}
                                 onCheckedChange={() => {
-                                  const next = toggleMultiValue(selectedOperations, value);
-                                  setSelectedOperations(next);
-                                  pushFilterPatch({
-                                    operations: next.length ? next : undefined,
-                                  });
+                                  if (isAll) {
+                                    // Clear all selections
+                                    setSelectedOperations([]);
+                                    pushFilterPatch({ operations: undefined });
+                                  } else {
+                                    const next = toggleMultiValue(selectedOperations, value);
+                                    setSelectedOperations(next);
+                                    pushFilterPatch({
+                                      operations: next.length ? next : undefined,
+                                    });
+                                  }
                                 }}
                               />
                               <span>{option}</span>
@@ -1693,18 +1680,27 @@ const pushFilterPatch = useCallback(
                       <CollapsibleContent className="space-y-2 px-2 pb-2">
                         {ACTION_OPTIONS.map((option) => {
                           const value = option.toLowerCase();
+                          const isAll = value === "all";
+                          const isSelected = isAll ? selectedActionBuckets.length === 0 : selectedActionBuckets.includes(value);
                           return (
                             <label key={option} className="flex items-center gap-2 text-xs">
                               <Checkbox
-                                checked={selectedActionBuckets.includes(value)}
+                                checked={isSelected}
                                 onCheckedChange={() => {
-                                  const next = toggleMultiValue(selectedActionBuckets, value);
-                                  setSelectedActionBuckets(next);
-                                  const mapped = Array.from(new Set(next.flatMap((bucket) => ACTION_FILTER_MAP[bucket] ?? [])));
-                                  setFilterMode("all");
-                                  pushFilterPatch({
-                                    actionTypes: mapped.length ? mapped : undefined,
-                                  });
+                                  if (isAll) {
+                                    // Clear all selections
+                                    setSelectedActionBuckets([]);
+                                    setFilterMode("all");
+                                    pushFilterPatch({ actionTypes: undefined });
+                                  } else {
+                                    const next = toggleMultiValue(selectedActionBuckets, value);
+                                    setSelectedActionBuckets(next);
+                                    const mapped = Array.from(new Set(next.flatMap((bucket) => ACTION_FILTER_MAP[bucket] ?? [])));
+                                    setFilterMode("all");
+                                    pushFilterPatch({
+                                      actionTypes: mapped.length ? mapped : undefined,
+                                    });
+                                  }
                                 }}
                               />
                               <span>{option}</span>
@@ -1727,16 +1723,23 @@ const pushFilterPatch = useCallback(
                       <CollapsibleContent className="space-y-2 px-2 pb-2">
                         {SCOPE_OPTIONS.map((option) => {
                           const value = option.toLowerCase().replace(/\s+/g, "-");
+                          const isAll = value === "all";
+                          const isSelected = isAll ? selectedScopes.length === 0 : selectedScopes.includes(value);
                           return (
                             <label key={option} className="flex items-center gap-2 text-xs">
                               <Checkbox
-                                checked={selectedScopes.includes(value)}
+                                checked={isSelected}
                                 onCheckedChange={() => {
-                                  const next = toggleMultiValue(selectedScopes, value);
-                                  setSelectedScopes(next);
-                                  pushFilterPatch({
-                                    scopes: next.length ? next : undefined,
-                                  });
+                                  if (isAll) {
+                                    setSelectedScopes([]);
+                                    pushFilterPatch({ scopes: undefined });
+                                  } else {
+                                    const next = toggleMultiValue(selectedScopes, value);
+                                    setSelectedScopes(next);
+                                    pushFilterPatch({
+                                      scopes: next.length ? next : undefined,
+                                    });
+                                  }
                                 }}
                               />
                               <span>{option}</span>
@@ -1759,16 +1762,23 @@ const pushFilterPatch = useCallback(
                       <CollapsibleContent className="space-y-2 px-2 pb-2">
                         {STAGE_OPTIONS.map((option) => {
                           const value = option.toLowerCase().replace(/\s+/g, "-");
+                          const isAll = value === "all";
+                          const isSelected = isAll ? selectedStages.length === 0 : selectedStages.includes(value);
                           return (
                             <label key={option} className="flex items-center gap-2 text-xs">
                               <Checkbox
-                                checked={selectedStages.includes(value)}
+                                checked={isSelected}
                                 onCheckedChange={() => {
-                                  const next = toggleMultiValue(selectedStages, value);
-                                  setSelectedStages(next);
-                                  pushFilterPatch({
-                                    stages: next.length ? next : undefined,
-                                  });
+                                  if (isAll) {
+                                    setSelectedStages([]);
+                                    pushFilterPatch({ stages: undefined });
+                                  } else {
+                                    const next = toggleMultiValue(selectedStages, value);
+                                    setSelectedStages(next);
+                                    pushFilterPatch({
+                                      stages: next.length ? next : undefined,
+                                    });
+                                  }
                                 }}
                               />
                               <span>{option}</span>
@@ -1791,16 +1801,23 @@ const pushFilterPatch = useCallback(
                       <CollapsibleContent className="space-y-2 px-2 pb-2">
                         {MILESTONE_OPTIONS.map((option) => {
                           const value = option.toLowerCase().replace(/\s+/g, "-");
+                          const isAll = value === "all";
+                          const isSelected = isAll ? selectedMilestones.length === 0 : selectedMilestones.includes(value);
                           return (
                             <label key={option} className="flex items-center gap-2 text-xs">
                               <Checkbox
-                                checked={selectedMilestones.includes(value)}
+                                checked={isSelected}
                                 onCheckedChange={() => {
-                                  const next = toggleMultiValue(selectedMilestones, value);
-                                  setSelectedMilestones(next);
-                                  pushFilterPatch({
-                                    milestones: next.length ? next : undefined,
-                                  });
+                                  if (isAll) {
+                                    setSelectedMilestones([]);
+                                    pushFilterPatch({ milestones: undefined });
+                                  } else {
+                                    const next = toggleMultiValue(selectedMilestones, value);
+                                    setSelectedMilestones(next);
+                                    pushFilterPatch({
+                                      milestones: next.length ? next : undefined,
+                                    });
+                                  }
                                 }}
                               />
                               <span>{option}</span>
@@ -1910,7 +1927,6 @@ const pushFilterPatch = useCallback(
                 setSearchTerm("");
                 setFilterMode("all");
                 setSelectedActors([]);
-                setSelectedAssignments([]);
                 setSelectedShifts([]);
                 setSelectedLwcs([]);
                 setSelectedOperations([]);
@@ -1921,7 +1937,6 @@ const pushFilterPatch = useCallback(
                 pushFilterPatch({
                   actionTypes: undefined,
                   performedByBadges: undefined,
-                  assignmentIds: undefined,
                   shiftLabels: undefined,
                   lwcSections: undefined,
                   operations: undefined,

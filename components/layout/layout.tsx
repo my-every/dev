@@ -36,6 +36,7 @@ export type PageLayoutShellClassNames = Partial<{
     header: string;
     main: string;
     mainInner: string;
+    contentWrapper: string;
     aside: string;
     bottomRail: string;
 }>;
@@ -100,17 +101,17 @@ const SPRING = {
 
 const VARIANT_STYLES: Record<LayoutVariant, { shell: string; sidePanel: string; aside: string }> = {
     default: {
-        shell: "max-w-[1840px]",
+        shell: "w-[98vw] max-w-[98vw]",
         sidePanel: "lg:w-72 lg:max-w-[300px]",
         aside: "xl:w-80",
     },
     compact: {
-        shell: "max-w-[1520px]",
+        shell: "w-[96vw] max-w-[96vw]",
         sidePanel: "lg:w-64 lg:max-w-[300px]",
         aside: "xl:w-72",
     },
     wide: {
-        shell: "max-w-[1960px]",
+        shell: "w-[98vw] max-w-[98vw]",
         sidePanel: "lg:w-[22rem] lg:max-w-[300px]",
         aside: "xl:w-[23rem]",
     },
@@ -331,7 +332,7 @@ export function LayoutPage({
 
                     {showSubHeader && subHeader ? <div className="text-lg">{subHeader}</div> : null}
 
-                    <div className="flex min-h-0 flex-1 flex-col overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border">
+                    <div className={cn("flex min-h-0 flex-1 flex-col overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border", classNames?.contentWrapper)}>
                         {children}
                     </div>
                 </div>

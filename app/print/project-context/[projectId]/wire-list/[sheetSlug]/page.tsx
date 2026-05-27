@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { WireListPrintDocument } from "@/components/wire-list/print-modal";
+import { PrintPreviewWrapper } from "@/components/print/print-preview-wrapper";
 import { buildProjectSheetPrintDocument } from "@/lib/wire-list-print/build-project-sheet-print-document";
 import type { BrandingSortMode } from "@/lib/wire-list-print/defaults";
 
@@ -25,7 +26,8 @@ export default async function ProjectWireListPrintPage({
   const { projectId, sheetSlug } = await params;
   const resolvedSearchParams = await searchParams;
   const grouping = parseGroupingMode(resolvedSearchParams.grouping);
-  const settings = resolvedSearchParams.mode === "branding"
+  const isBrandingMode = resolvedSearchParams.mode === "branding";
+  const settings = isBrandingMode
     ? { mode: "branding" as const, showCoverPage: false, showTableOfContents: false, showIPVCodes: false, wireListSortMode: grouping }
     : { wireListSortMode: grouping };
   const documentData = await buildProjectSheetPrintDocument({
@@ -38,11 +40,17 @@ export default async function ProjectWireListPrintPage({
     notFound();
   }
 
+  const pageTitle = isBrandingMode 
+    ? `Brand List — ${documentData.currentSheetName}`
+    : `Wire List — ${documentData.currentSheetName}`;
+
   return (
-    <main className="min-h-screen bg-white px-6 py-8 print:p-0 print:bg-white">
-      <div className="print-content mx-auto max-w-[860px]">
-        <WireListPrintDocument data={documentData} />
-      </div>
-    </main>
+    <PrintPreviewWrapper title={pageTitle}>
+      <main className="bg-neutral-100 px-6 py-8 print:p-0 print:bg-white">
+        <div className="print-content mx-auto max-w-215 flex flex-col gap-8 print:gap-0">
+          <WireListPrintDocument data={documentData} />
+        </div>
+      </main>
+    </PrintPreviewWrapper>
   );
 }

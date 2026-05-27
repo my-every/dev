@@ -24,6 +24,7 @@ export const ACTIVITY_ACTIONS = [
     'PERMISSION_REVOKED',
     // Project Management Actions
     'PROJECT_CREATED',
+    'PROJECT_DELETED',
     'PROJECT_ARCHIVED',
     'PROJECT_UNARCHIVED',
     // Project Details Actions

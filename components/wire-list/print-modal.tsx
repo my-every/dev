@@ -201,7 +201,8 @@ interface PrintSubsection {
   deviceToDeviceSubsections?: { label: string; rows: SemanticWireListRow[] }[];
 }
 
-function getLocationSectionTypeLabel(isExternal: boolean): string {
+function getLocationSectionTypeLabel(isExternal: boolean, boxSide?: string): string {
+  if (boxSide) return boxSide;
   return isExternal ? "EXTERNAL" : "INTERNAL";
 }
 
@@ -1626,7 +1627,7 @@ export function WireListPrintDocument({
             {content}
           </PrintPage>
         )}
-        renderSection={({ subsection, visibleRows }) => (
+        renderSection={({ group, subsection, visibleRows }) => (
           <div className="rounded-sm overflow-hidden w-full">
             <PrintPreviewTable
               rows={visibleRows}
@@ -1640,6 +1641,8 @@ export function WireListPrintDocument({
               partNumberMap={partNumberMap}
               cablePartNumberMap={cablePartNumberMap}
               getRowLength={getRowLength}
+              locationNormalizedTitleByName={data.locationNormalizedTitleByName}
+              isExternal={group.isExternal}
             />
           </div>
         )}
@@ -1696,7 +1699,7 @@ function PrintPage({
   totalPages?: number;
 }) {
   return (
-    <section className={["print-page mx-auto print:w-full rounded-md border border-black/10 bg-white print:shadow-none print:border-0 print:rounded-none print:mx-0", className].join(" ")}>
+    <section className={["print-page mx-auto print:w-full border border-black/10 bg-white shadow-md print:shadow-none print:border-0 print:mx-0", className].join(" ")}>
       <div
         className="print-page__inner flex w-full min-h-[1120px] flex-col px-5 py-5 print:w-full print:!min-h-0 print:px-4"
         style={{ minWidth: `${PRINT_PAGE_WIDTH}px`, minHeight: `${PRINT_PAGE_MIN_HEIGHT}px` }}
@@ -1976,7 +1979,9 @@ function TableOfContentsPage({
                   <tr className="bg-muted/20">
                     <td colSpan={showEstTime ? 5 : 4} className="py-1.5 px-1.5 border-t border-border text-left">
                       <div className="text-[10px] font-normal uppercase tracking-wide text-muted-foreground">
-                        {crossWireSections.has(`loc-${groupIndex}`) ? "EXTERNAL — CROSSWIRE" : getLocationSectionTypeLabel(group.isExternal)}
+                        {crossWireSections.has(`loc-${groupIndex}`)
+                          ? (group.boxSide ? `${group.boxSide} — CROSSWIRE` : "EXTERNAL — CROSSWIRE")
+                          : getLocationSectionTypeLabel(group.isExternal, group.boxSide)}
                       </div>
                       <div className="text-xs font-bold text-foreground">
                         {group.location}
@@ -2268,6 +2273,7 @@ function PrintTableRow({
   rowClassName,
   isRowHidden,
   onToggleRowHidden,
+  locationNormalizedTitleByName,
 }: {
   row: SemanticWireListRow;
   showFrom: boolean;
@@ -2297,6 +2303,8 @@ function PrintTableRow({
   rowClassName?: string;
   isRowHidden?: boolean;
   onToggleRowHidden?: () => void;
+  /** Mapping to transform raw location names to normalized titles */
+  locationNormalizedTitleByName?: Record<string, string>;
 }) {
   // Check if this is a device change row (:J -> :P pattern)
   const deviceChangeInfo = detectDeviceChange(row);
@@ -2321,7 +2329,7 @@ function PrintTableRow({
   );
   const displayEndpoints = getDisplayEndpoints(row, swapFromTo);
 
-  // Eye button element — rendered inside the first visible cell to avoid adding an extra table column
+  // Eye button element ��� rendered inside the first visible cell to avoid adding an extra table column
   const eyeButtonEl = onToggleRowHidden ? (
     <button
       type="button"
@@ -2340,8 +2348,9 @@ function PrintTableRow({
 
   return (
     <tr className={["border-b w-full border-foreground/10 group/row relative", rowClassName ?? ""].join(" ").trim()}>
+      {/* FROM group */}
       {showFrom && (
-        <td className="px-1.5 py-1 w-5 text-center">
+        <td className="px-0.5 py-1 text-center">
           {showFrom && eyeButtonEl}
           <FromCheckboxCell
             rowId={row.__rowId}
@@ -2352,42 +2361,59 @@ function PrintTableRow({
         </td>
       )}
       {showEstTime && (
-        <td className="px-1.5 py-0 text-center text-[10px] font-mono text-muted-foreground">
+        <td className="px-1 py-1 text-center text-[10px] font-mono text-muted-foreground">
           {formatEstTime(estimateWireTime(sectionKind, row.gaugeSize).fromMinutes)}
         </td>
       )}
       {showFromLocation && (
-        <td className="w-[120px] px-1.5 py-0 text-[11px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{displayEndpoints.fromLocation || currentSheetName || "-"}</td>
+        <td className="px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{locationNormalizedTitleByName?.[displayEndpoints.fromLocation.toUpperCase()] || displayEndpoints.fromLocation || currentSheetName || "-"}</td>
       )}
       {showPartNumber && (
-        <td className="px-1.5 py-0 text-[11px] font-medium text-muted-foreground">{fromReference?.partNumber || ""}</td>
+        <td className="px-1 py-1 text-center text-[10px] font-medium text-muted-foreground">{fromReference?.partNumber || ""}</td>
       )}
-      <td className="px-1.5 py-1 text-[11px] font-medium">
+      <td className={cn(
+        "px-1 py-1 text-center text-[10px] font-medium",
+        !showDescription && "border-r border-foreground/20"
+      )}>
         {!showFrom && eyeButtonEl}
         <BlueDeviceID deviceId={displayEndpoints.fromDeviceId} enabled={enableBlueDeviceID} />
       </td>
       {showDescription && (
-        <td className="px-1.5 py-0 text-[11px] text-muted-foreground">{fromReference?.description || ""}</td>
+        <td className="px-1 py-1 text-center text-[10px] text-muted-foreground border-r border-foreground/20">{fromReference?.description || ""}</td>
       )}
+      {/* Connection group */}
       {showWireType && (
-        <td className="px-1.5 py-1 text-center text-[11px] font-medium">{row.wireType}</td>
+        <td className={cn(
+          "px-1 py-1 text-center text-[10px] font-medium",
+          !showWireNo && !showWireId && !showGaugeSize && !showLength && "border-r border-foreground/20"
+        )}>{row.wireType}</td>
       )}
       {showWireNo && (
-        <td className="px-1.5 py-0 font-mono text-[11px] font-medium">{row.wireNo}</td>
+        <td className={cn(
+          "px-1 py-1 text-center font-mono text-[10px] font-medium",
+          !showWireId && !showGaugeSize && !showLength && "border-r border-foreground/20"
+        )}>{row.wireNo}</td>
       )}
       {showWireId && (
-        <td className="px-1.5 py-0 text-[11px] font-medium">{row.wireId}</td>
+        <td className={cn(
+          "px-1 py-1 text-center text-[10px] font-medium",
+          !showGaugeSize && !showLength && "border-r border-foreground/20"
+        )}>{row.wireId}</td>
       )}
       {showGaugeSize && (
-        <td className="px-1.5 py-0 text-center text-[11px] font-medium">{row.gaugeSize}</td>
+        <td className={cn(
+          "px-1 py-1 text-center text-[10px] font-medium",
+          !showLength && "border-r border-foreground/20"
+        )}>{row.gaugeSize}</td>
       )}
       {showLength && (
-        <td className="px-1.5 py-0 text-center text-[11px] font-medium font-mono">
+        <td className="px-1 py-1 text-center text-[10px] font-medium font-mono border-r border-foreground/20">
           {lengthDisplay || "—"}
         </td>
       )}
+      {/* TO group */}
       {showTo && (
-        <td className="px-1.5 py-0 w-5 text-center">
+        <td className="px-0.5 py-1 text-center">
           <ToCheckboxCell
             rowId={row.__rowId}
             checked={false}
@@ -2397,24 +2423,28 @@ function PrintTableRow({
         </td>
       )}
       {showEstTime && (
-        <td className="px-1.5 py-0 text-center text-[10px] font-mono text-muted-foreground">
+        <td className="px-1 py-1 text-center text-[10px] font-mono text-muted-foreground">
           {formatEstTime(estimateWireTime(sectionKind, row.gaugeSize).toMinutes)}
         </td>
       )}
       {showPartNumber && (
-        <td className="px-1.5 py-0 text-[11px] font-medium text-muted-foreground">{toReference?.partNumber || ""}</td>
+        <td className="px-1 py-1 text-center text-[10px] font-medium text-muted-foreground">{toReference?.partNumber || ""}</td>
       )}
-      <td className="px-1.5 py-0 text-[11px] font-medium">
+      <td className="px-1 py-1 text-center text-[10px] font-medium">
         <BlueDeviceID deviceId={displayEndpoints.toDeviceId} enabled={enableBlueDeviceID} />
       </td>
       {showDescription && (
-        <td className="px-1.5 py-0 text-[11px] text-muted-foreground">{toReference?.description || ""}</td>
+        <td className="px-1 py-1 text-center text-[10px] text-muted-foreground">{toReference?.description || ""}</td>
       )}
       {showToLocation && (
-        <td className="w-[120px] px-1.5 py-0 text-[11px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{displayEndpoints.toLocation || currentSheetName || "-"}</td>
+        <td className={cn(
+          "px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis",
+          (showIPV || showComments) && "border-r border-foreground/20"
+        )}>{locationNormalizedTitleByName?.[displayEndpoints.toLocation.toUpperCase()] || displayEndpoints.toLocation || currentSheetName || "-"}</td>
       )}
+      {/* Review group */}
       {showIPV && (
-        <td className="px-1.5 py-0 w-5 text-center">
+        <td className="px-0.5 py-1 text-center">
           <IPVCheckboxCell
             rowId={row.__rowId}
             checked={false}
@@ -2424,7 +2454,7 @@ function PrintTableRow({
         </td>
       )}
       {showComments && (
-        <td className="px-1.5 py-0 min-w-[50px]">
+        <td className="px-1 py-1 text-center">
           <CommentsCell
             rowId={row.__rowId}
             value={comment}
@@ -2497,6 +2527,8 @@ function PrintPreviewTable({
   getRowLength,
   hiddenRows,
   onToggleRowHidden,
+  locationNormalizedTitleByName,
+  isExternal = false,
 }: {
   rows: SemanticWireListRow[];
   settings: PrintSettings;
@@ -2512,6 +2544,8 @@ function PrintPreviewTable({
   getRowLength?: (rowId: string) => { display: string; roundedInches: number; confidence: string } | null;
   hiddenRows?: Set<string>;
   onToggleRowHidden?: (rowId: string) => void;
+  locationNormalizedTitleByName?: Record<string, string>;
+  isExternal?: boolean;
 }) {
   const { showFromCheckbox, showToCheckbox, showIPV, showComments, showLength, showEstTime, showDeviceSubheaders } = settings;
 
@@ -2533,7 +2567,8 @@ function PrintPreviewTable({
   const showWireId = sectionColumns.wireId;
   const showWireType = sectionColumns.wireType;
   const showGaugeSize = sectionColumns.gaugeSize;
-  const showFromLocation = true;
+  // Only show FROM location column for external (cross-wire) sections
+  const showFromLocation = isExternal;
   const showToLocation = true;
   const swapFromTo = sectionColumns.swapFromTo ?? false;
   const preserveSequentialRunOrder = shouldPreservePrintSubsectionOrder(sectionKind);
@@ -2722,106 +2757,178 @@ function PrintPreviewTable({
   }, [renderPlan, reorderedRows]);
 
   // Base columns: Device ID is always shown, others depend on visibility
-  // FROM side: Part Number (optional) + Device ID + Description (optional) + Type/No/Wire ID/Gauge + From Location (optional)
-  const fromBaseCount = 1 + (showPartNumberColumn ? 1 : 0) + (showDescriptionColumn ? 1 : 0) + (showWireType ? 1 : 0) + (showWireNo ? 1 : 0) + (showWireId ? 1 : 0) + (showGaugeSize ? 1 : 0) + (showFromLocation ? 1 : 0);
-  // TO side: Part Number (optional) + Device ID + Description (optional) + Location (optional)
-  const toBaseCount = 1 + (showPartNumberColumn ? 1 : 0) + (showDescriptionColumn ? 1 : 0) + (showToLocation ? 1 : 0);
+  // FROM group: Complete (checkbox) + Est + Location + Part No + Device ID + Desc
+  const fromGroupCount = (showFromCheckbox ? 1 : 0) + (showEstTime ? 1 : 0) + (showFromLocation ? 1 : 0) + (showPartNumberColumn ? 1 : 0) + 1 + (showDescriptionColumn ? 1 : 0);
+  // Connection group (middle): Type + No + Wire ID + Size + Length
+  const connectionGroupCount = (showWireType ? 1 : 0) + (showWireNo ? 1 : 0) + (showWireId ? 1 : 0) + (showGaugeSize ? 1 : 0) + (showLength ? 1 : 0);
+  // TO group: Complete (checkbox) + Est + Part No + Device ID + Desc + Location
+  const toGroupCount = (showToCheckbox ? 1 : 0) + (showEstTime ? 1 : 0) + (showPartNumberColumn ? 1 : 0) + 1 + (showDescriptionColumn ? 1 : 0) + (showToLocation ? 1 : 0);
+  // Review group: IPV + Notes
+  const reviewGroupCount = (showIPV ? 1 : 0) + (showComments ? 1 : 0);
 
-  const extraColumns =
-    (showFromCheckbox ? 1 : 0) +
-    (showToCheckbox ? 1 : 0) +
-    (showIPV ? 1 : 0) +
-    (showComments ? 1 : 0) +
-    (showLength ? 1 : 0) +
-    (showEstTime ? 2 : 0);
-  const totalColumns = fromBaseCount + toBaseCount + extraColumns;
+  const totalColumns = fromGroupCount + connectionGroupCount + toGroupCount + reviewGroupCount;
 
   // Calculate column spans for group headers
-  // FROM: checkbox + visible FROM columns + est time (From)
-  const fromColSpan = (showFromCheckbox ? 1 : 0) + fromBaseCount + (showEstTime ? 1 : 0);
-  // Length column (if shown) - standalone between FROM and TO
-  const lengthColSpan = showLength ? 1 : 0;
-  // TO: checkbox + Device ID + Location + IPV + Notes + est time (To)
-  const toColSpan = (showToCheckbox ? 1 : 0) + toBaseCount + (showIPV ? 1 : 0) + (showComments ? 1 : 0) + (showEstTime ? 1 : 0);
+  // FROM: all FROM columns
+  const fromColSpan = fromGroupCount;
+  // Connection (no header label): all connection columns
+  const connectionColSpan = connectionGroupCount;
+  // TO: all TO columns
+  const toColSpan = toGroupCount;
+  // Review (no header label): IPV + Notes
+  const reviewColSpan = reviewGroupCount;
+
+  // Column width definitions (in pixels) for print table
+  const colWidths = {
+    checkbox: 20,      // Checkmark columns (FROM, TO, IPV)
+    estTime: 30,       // Est. time
+    location: 72,      // Location names
+    partNumber: 52,    // Part number
+    deviceId: 74,      // Device ID
+    description: 62,   // Description
+    wireType: 30,      // Wire type (SC, etc)
+    wireNo: 54,        // Wire number
+    wireId: 50,        // Wire ID
+    gaugeSize: 30,     // Gauge size
+    length: 38,        // Length
+    notes: 62,         // Notes column
+  };
 
   return (
-    <table className="w-full table-fixed border-collapse rounded-sm overflow-hidden border border-foreground/30 text-[11px]">
-      <thead className="bg-muted/80" style={{ display: 'table-header-group' }}>
-        {/* Group header row: From | Length (optional) | To */}
+    <table className="w-full border-collapse rounded-sm border border-foreground/20 text-[11px]" style={{ tableLayout: 'fixed' }}>
+      {/* Define column widths */}
+      <colgroup>
+        {/* FROM group */}
+        {showFromCheckbox && <col style={{ width: colWidths.checkbox, minWidth: colWidths.checkbox, maxWidth: colWidths.checkbox }} />}
+        {showEstTime && <col style={{ width: colWidths.estTime, minWidth: colWidths.estTime, maxWidth: colWidths.estTime }} />}
+        {showFromLocation && <col style={{ width: colWidths.location }} />}
+        {showPartNumberColumn && <col style={{ width: colWidths.partNumber }} />}
+        <col style={{ width: colWidths.deviceId }} /> {/* Device ID always shown */}
+        {showDescriptionColumn && <col style={{ width: colWidths.description }} />}
+        {/* Connection group */}
+        {showWireType && <col style={{ width: colWidths.wireType, minWidth: colWidths.wireType, maxWidth: colWidths.wireType }} />}
+        {showWireNo && <col style={{ width: colWidths.wireNo }} />}
+        {showWireId && <col style={{ width: colWidths.wireId }} />}
+        {showGaugeSize && <col style={{ width: colWidths.gaugeSize, minWidth: colWidths.gaugeSize, maxWidth: colWidths.gaugeSize }} />}
+        {showLength && <col style={{ width: colWidths.length, minWidth: colWidths.length, maxWidth: colWidths.length }} />}
+        {/* TO group */}
+        {showToCheckbox && <col style={{ width: colWidths.checkbox, minWidth: colWidths.checkbox, maxWidth: colWidths.checkbox }} />}
+        {showEstTime && <col style={{ width: colWidths.estTime, minWidth: colWidths.estTime, maxWidth: colWidths.estTime }} />}
+        {showPartNumberColumn && <col style={{ width: colWidths.partNumber }} />}
+        <col style={{ width: colWidths.deviceId }} /> {/* Device ID always shown */}
+        {showDescriptionColumn && <col style={{ width: colWidths.description }} />}
+        {showToLocation && <col style={{ width: colWidths.location }} />}
+        {/* Review group */}
+        {showIPV && <col style={{ width: colWidths.checkbox, minWidth: colWidths.checkbox, maxWidth: colWidths.checkbox }} />}
+        {showComments && <col style={{ width: colWidths.notes }} />}
+      </colgroup>
+      <thead className="bg-muted/30" style={{ display: 'table-header-group' }}>
+        {/* Group header row: From | (no label for connection) | To | (no label for review) */}
         <tr className="border-b border-foreground/10">
           <th
             colSpan={fromColSpan}
-            className="px-1.5 py-1 text-center text-[10px] font-bold uppercase tracking-wider bg-muted/80 border-r border-foreground/10 whitespace-nowrap"
+            className="px-1 py-1 text-center text-[10px] font-bold uppercase tracking-wider border-r border-foreground/20 whitespace-nowrap"
           >
             From
           </th>
-          {showLength && (
+          {connectionColSpan > 0 && (
             <th
-              colSpan={lengthColSpan}
-              className="px-1.5 py-1 text-center text-[10px] font-bold uppercase tracking-wider bg-muted/80 border-r border-foreground/10 whitespace-nowrap"
+              colSpan={connectionColSpan}
+              className="px-1 py-1 text-center text-[10px] font-bold uppercase tracking-wider border-r border-foreground/20 whitespace-nowrap"
             />
           )}
           <th
             colSpan={toColSpan}
-            className="px-1.5 py-1 text-center text-[10px] font-bold uppercase tracking-wider bg-muted/80 whitespace-nowrap"
+            className={cn(
+              "px-1 py-1 text-center text-[10px] font-bold uppercase tracking-wider whitespace-nowrap",
+              reviewColSpan > 0 && "border-r border-foreground/20"
+            )}
           >
             To
           </th>
+          {reviewColSpan > 0 && (
+            <th
+              colSpan={reviewColSpan}
+              className="px-1 py-1 text-center text-[10px] font-bold uppercase tracking-wider whitespace-nowrap"
+            />
+          )}
         </tr>
         {/* Column header row */}
         <tr className="border-b border-foreground/20">
+          {/* FROM group columns */}
           {showFromCheckbox && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Complete</th>
+            <th className="px-0.5 py-1 text-center text-[8px] font-normal text-muted-foreground whitespace-nowrap" title="Complete">&#10003;</th>
           )}
           {showEstTime && (
             <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Est.</th>
           )}
           {showFromLocation && (
-            <th className="w-[120px] px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Location</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Location</th>
           )}
           {showPartNumberColumn && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Part No</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Part No</th>
           )}
-          <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Device ID</th>
+          <th className={cn(
+            "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
+            !showDescriptionColumn && "border-r border-foreground/20"
+          )}>Device ID</th>
           {showDescriptionColumn && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Desc</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap border-r border-foreground/20">Desc</th>
           )}
+          {/* Connection group columns (no header label) */}
           {showWireType && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Type</th>
+            <th className={cn(
+              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
+              !showWireNo && !showWireId && !showGaugeSize && !showLength && "border-r border-foreground/20"
+            )}>Type</th>
           )}
           {showWireNo && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">No.</th>
+            <th className={cn(
+              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
+              !showWireId && !showGaugeSize && !showLength && "border-r border-foreground/20"
+            )}>No.</th>
           )}
           {showWireId && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Wire ID</th>
+            <th className={cn(
+              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
+              !showGaugeSize && !showLength && "border-r border-foreground/20"
+            )}>Wire ID</th>
           )}
           {showGaugeSize && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Size</th>
+            <th className={cn(
+              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
+              !showLength && "border-r border-foreground/20"
+            )}>Size</th>
           )}
           {showLength && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Length</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap border-r border-foreground/20">Length</th>
           )}
+          {/* TO group columns */}
           {showToCheckbox && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Complete</th>
+            <th className="px-0.5 py-1 text-center text-[8px] font-normal text-muted-foreground whitespace-nowrap" title="Complete">&#10003;</th>
           )}
           {showEstTime && (
             <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Est.</th>
           )}
           {showPartNumberColumn && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Part No</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Part No</th>
           )}
-          <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Device ID</th>
+          <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Device ID</th>
           {showDescriptionColumn && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Desc</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Desc</th>
           )}
           {showToLocation && (
-            <th className="w-[120px] px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Location</th>
+            <th className={cn(
+              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
+              (showIPV || showComments) && "border-r border-foreground/20"
+            )}>Location</th>
           )}
+          {/* Review group columns (no header label) */}
           {showIPV && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">IPV</th>
+            <th className="px-0.5 py-1 text-center text-[8px] font-normal text-muted-foreground whitespace-nowrap">IPV</th>
           )}
           {showComments && (
-            <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase whitespace-nowrap">Notes</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Notes</th>
           )}
         </tr>
       </thead>
@@ -2830,7 +2937,7 @@ function PrintPreviewTable({
           <tr>
             <td
               colSpan={totalColumns}
-              className="px-2 py-2 text-[11px] font-semibold text-muted-foreground uppercase tracking-wide"
+              className="px-1 py-2 text-[11px] font-semibold text-muted-foreground uppercase tracking-wide"
             >
               {groupLabel}
             </td>
@@ -2927,6 +3034,7 @@ function PrintPreviewTable({
                 lengthDisplay={getRowLength?.(item.row.__rowId)?.display}
                 isRowHidden={hiddenRows?.has(item.row.__rowId)}
                 onToggleRowHidden={onToggleRowHidden ? () => onToggleRowHidden(item.row.__rowId) : undefined}
+                locationNormalizedTitleByName={locationNormalizedTitleByName}
                 rowClassName={[
                   item.showDeviceSeparator ? "border-t-[2px] border-t-muted" : "",
                   item.isWarningRow ? "border-x-4 border-x-orange-400 bg-orange-50/30" : "",
@@ -4438,6 +4546,30 @@ export function SingleSheetPrintWorkspace({
 
   const effectivePartNumberMap = schemaHydration?.partNumberMap ?? partNumberMap;
 
+  // Pre-compute locationBoxSideByName for use in both location groups and context
+  const locationBoxSideByName = useMemo(() => {
+    return assignmentMappings.reduce<Record<string, string>>((acc, mapping) => {
+      const sheetNameKey = mapping.sheetName?.trim().toUpperCase();
+      const mappedBoxSide = currentProject?.assignments?.[mapping.sheetSlug]?.boxSide;
+      if (sheetNameKey && mappedBoxSide) {
+        acc[sheetNameKey] = mappedBoxSide;
+      }
+      return acc;
+    }, {});
+  }, [assignmentMappings, currentProject?.assignments]);
+
+  // Compute locationNormalizedTitleByName for display in location columns
+  const locationNormalizedTitleByName = useMemo(() => {
+    return assignmentMappings.reduce<Record<string, string>>((acc, mapping) => {
+      const sheetNameKey = mapping.sheetName?.trim().toUpperCase();
+      const normalizedTitle = currentProject?.assignments?.[mapping.sheetSlug]?.normalizedTitle;
+      if (sheetNameKey && normalizedTitle) {
+        acc[sheetNameKey] = normalizedTitle;
+      }
+      return acc;
+    }, {});
+  }, [assignmentMappings, currentProject?.assignments]);
+
   // Print preview should follow the same section membership as the live identity filter.
   // When a saved schema is loaded, use its hydrated groups instead.
   const processedLocationGroups = useMemo((): PrintLocationGroup[] => {
@@ -4451,18 +4583,14 @@ export function SingleSheetPrintWorkspace({
       blueLabels: effectiveBlueLabels,
       partNumberMap: effectivePartNumberMap,
       sortMode: settings.mode === "branding" ? settings.brandingSortMode : settings.wireListSortMode,
+      locationBoxSideByName,
+      locationNormalizedTitleByName,
     }) as PrintLocationGroup[];
-  }, [schemaHydration, rows, settings.mode, settings.enabledSections, settings.sectionOrder, settings.brandingSortMode, settings.wireListSortMode, currentSheetName, effectiveBlueLabels, effectivePartNumberMap]);
+  }, [schemaHydration, rows, settings.mode, settings.enabledSections, settings.sectionOrder, settings.brandingSortMode, settings.wireListSortMode, currentSheetName, effectiveBlueLabels, effectivePartNumberMap, locationBoxSideByName, locationNormalizedTitleByName]);
 
   const externalSectionContext = useMemo(() => ({
-    locationBoxSideByName: assignmentMappings.reduce<Record<string, string>>((acc, mapping) => {
-      const sheetNameKey = mapping.sheetName?.trim().toUpperCase();
-      const mappedBoxSide = currentProject?.assignments?.[mapping.sheetSlug]?.boxSide;
-      if (sheetNameKey && mappedBoxSide) {
-        acc[sheetNameKey] = mappedBoxSide;
-      }
-      return acc;
-    }, {}),
+    locationBoxSideByName,
+    locationNormalizedTitleByName,
     currentBoxSide: sheetSlug
       ? currentProject?.assignments?.[sheetSlug]?.boxSide
       : undefined,
@@ -6550,11 +6678,14 @@ export function SingleSheetPrintWorkspace({
                                           {content}
                                         </PrintPage>
                                       )}
-                                      renderSection={({ subsection, visibleRows }) => (
+                                      renderSection={({ group, subsection, visibleRows }) => (
                                         <div className="rounded-sm overflow-hidden w-full">
                                           <PrintPreviewTable
                                             rows={visibleRows}
-                                            settings={settings}
+                                            settings={{
+                                              ...settings,
+                                              showComments: false,
+                                            }}
                                             currentSheetName={currentSheetName}
                                             comments={comments}
                                             onCommentChange={handleCommentChange}
@@ -6566,6 +6697,8 @@ export function SingleSheetPrintWorkspace({
                                             getRowLength={effectiveGetRowLength}
                                             hiddenRows={settings.hiddenRows}
                                             onToggleRowHidden={toggleRowHidden}
+                                            locationNormalizedTitleByName={locationNormalizedTitleByName}
+                                            isExternal={group.isExternal}
                                           />
                                         </div>
                                       )}
@@ -6657,14 +6790,14 @@ export function SingleSheetPrintWorkspace({
                                         renderSection={(section, sectionIdx, showLocationHeader) => (
                                           <div key={`${section.group.location}-${section.subsection.label}-${sectionIdx}`} className={sectionIdx > 0 ? "mt-5" : ""}>
                                             {showLocationHeader && (
-                                              <SectionHeaderBlock
-                                                title={section.group.location}
-                                                subtitle="EXTERNAL — CROSSWIRE"
-                                                subtitleFirst
-                                                className="mb-3 border-b border-foreground/10 pb-2"
-                                                titleClassName="text-[13px] font-bold text-foreground"
-                                                subtitleClassName="text-[10px] font-normal uppercase tracking-wide text-muted-foreground"
-                                              />
+                  <SectionHeaderBlock
+                    title={section.group.location}
+                    subtitle={section.group.boxSide ? `${section.group.boxSide} — CROSSWIRE` : "EXTERNAL — CROSSWIRE"}
+                    subtitleFirst
+                    className="mb-3 border-b border-foreground/10 pb-2"
+                    titleClassName="text-[13px] font-bold text-foreground"
+                    subtitleClassName="text-[10px] font-normal uppercase tracking-wide text-muted-foreground"
+                  />
                                             )}
                                             <SectionHeaderBlock
                                               title={section.subsection.label}
@@ -6692,6 +6825,8 @@ export function SingleSheetPrintWorkspace({
                                                 partNumberMap={effectivePartNumberMap}
                                                 cablePartNumberMap={cablePartNumberMap}
                                                 getRowLength={effectiveGetRowLength}
+                                                locationNormalizedTitleByName={locationNormalizedTitleByName}
+                                                isExternal={true}
                                               />
                                             </div>
                                           </div>
