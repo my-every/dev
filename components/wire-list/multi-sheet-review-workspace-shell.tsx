@@ -23,6 +23,7 @@ interface MultiSheetReviewWorkspaceShellProps {
   activeTab: MultiSheetNavigationItem | null;
   activeResources: LoadedSheetResources | undefined;
   activeBrandSchema: BrandListExportSchema | null;
+  allBrandSchemas?: Array<{ slug: string; name: string; schema: BrandListExportSchema }>;
   activeBrandRowIds: string[];
   activeSheetSwsType?: string | null;
   projectId?: string;
@@ -96,6 +97,7 @@ export function MultiSheetReviewWorkspaceShell({
   activeTab,
   activeResources,
   activeBrandSchema,
+  allBrandSchemas,
   activeBrandRowIds,
   activeSheetSwsType,
   projectId,
@@ -166,7 +168,7 @@ export function MultiSheetReviewWorkspaceShell({
     (activeSlug ? !pendingBrandSchemaSlugs.includes(activeSlug) : false);
 
   return (
-    <div className="relative flex h-full flex-col" aria-busy={disabled}>
+    <div className="relative flex min-h-0 flex-1 flex-col" aria-busy={disabled}>
       <div className={`flex min-h-0 flex-1 flex-col${disabled ? " pointer-events-none select-none opacity-60" : ""}`}>
       <MultiSheetReviewNavigatorRail
         items={items}
@@ -229,6 +231,7 @@ export function MultiSheetReviewWorkspaceShell({
               layoutWorkspaceEndpoint={layoutWorkspaceEndpoint}
               initialLayoutPageNumber={activeTab?.pageNumber}
               activeBrandSchema={activeBrandSchema}
+              allBrandSchemas={allBrandSchemas}
               isSavingBrandSchema={pendingBrandSchemaSlugs.length > 0}
               reviewReadOnly={reviewReadOnly}
               selectedBrandRows={selectedBrandRows}

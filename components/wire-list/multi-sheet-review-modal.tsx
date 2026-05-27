@@ -211,6 +211,7 @@ export function MultiSheetReviewModal({
     activeResources,
     activeBrandSchema,
     activeBrandRowIds,
+    resourceMap,
     reviewState,
     refreshSheetResources,
     refreshSavedBrandSchemas,
@@ -229,6 +230,19 @@ export function MultiSheetReviewModal({
     handleUnapproveSheet,
     handleCombine,
   } = controller;
+
+  // Build the flat list of all loaded schemas for cross-sheet search
+  const allBrandSchemas = useMemo(
+    () =>
+      tabs
+        .map((tab) => {
+          const schema = resourceMap[tab.slug]?.brandSchema;
+          if (!schema) return null;
+          return { slug: tab.slug, name: tab.name, schema };
+        })
+        .filter((s): s is { slug: string; name: string; schema: NonNullable<typeof s>["schema"] } => s !== null),
+    [resourceMap, tabs],
+  );
 
   const {
     workspaceMode: activeWorkspaceMode,
@@ -851,6 +865,7 @@ export function MultiSheetReviewModal({
                     activeTab={activeNavigationItem}
                     activeResources={activeResources}
                     activeBrandSchema={activeBrandSchema}
+                    allBrandSchemas={allBrandSchemas}
                     activeBrandRowIds={activeBrandRowIds}
                     activeSheetSwsType={
                       typeof activeAssignment?.swsType === "string"
