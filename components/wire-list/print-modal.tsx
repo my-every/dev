@@ -1699,7 +1699,7 @@ function PrintPage({
   totalPages?: number;
 }) {
   return (
-    <section className={["print-page mx-auto print:w-full rounded-md border border-black/10 bg-white print:shadow-none print:border-0 print:rounded-none print:mx-0", className].join(" ")}>
+    <section className={["print-page mx-auto print:w-full border border-black/10 bg-white shadow-md print:shadow-none print:border-0 print:mx-0", className].join(" ")}>
       <div
         className="print-page__inner flex w-full min-h-[1120px] flex-col px-5 py-5 print:w-full print:!min-h-0 print:px-4"
         style={{ minWidth: `${PRINT_PAGE_WIDTH}px`, minHeight: `${PRINT_PAGE_MIN_HEIGHT}px` }}

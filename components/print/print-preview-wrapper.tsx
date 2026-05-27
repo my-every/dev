@@ -104,7 +104,7 @@ function PrintPreviewContent({ children, title = "Print Preview" }: PrintPreview
           This works like a PDF viewer - zoom changes the visual size, not the page layout.
         */}
         <div 
-          className="flex justify-center py-6 print:py-0 print:block"
+          className="flex justify-center py-8 print:py-0 print:block"
           style={{
             // Ensure container is wide enough for scaled content + padding
             minWidth: PAGE_WIDTH * scale + 48,
@@ -112,7 +112,7 @@ function PrintPreviewContent({ children, title = "Print Preview" }: PrintPreview
         >
           {/* Fixed-width page container that gets visually scaled */}
           <div
-            className="bg-white shadow-lg print:shadow-none print:transform-none"
+            className="print:transform-none"
             style={{
               // Fixed page width - internal layout is always the same
               width: PAGE_WIDTH,

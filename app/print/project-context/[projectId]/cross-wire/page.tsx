@@ -217,8 +217,8 @@ export default async function CrossWirePrintPage({
   return (
     <Suspense fallback={<div className="p-8 text-center">Loading print preview...</div>}>
       <PrintPreviewWrapper title={`Cross Wire List — ${unitTitle}`}>
-        <main className="bg-white px-6 py-8 print:p-0 print:bg-white">
-          <div className="print-content mx-auto max-w-215 space-y-8">
+        <main className="bg-neutral-100 px-6 py-8 print:p-0 print:bg-white">
+          <div className="print-content mx-auto max-w-215 flex flex-col gap-8 print:gap-0">
             {combinedDocs.map((doc, i) => (
               <WireListPrintDocument key={i} data={doc} />
             ))}

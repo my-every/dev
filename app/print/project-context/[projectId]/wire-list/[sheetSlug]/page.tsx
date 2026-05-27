@@ -46,8 +46,8 @@ export default async function ProjectWireListPrintPage({
 
   return (
     <PrintPreviewWrapper title={pageTitle}>
-      <main className="bg-white px-6 py-8 print:p-0 print:bg-white">
-        <div className="print-content mx-auto max-w-215">
+      <main className="bg-neutral-100 px-6 py-8 print:p-0 print:bg-white">
+        <div className="print-content mx-auto max-w-215 flex flex-col gap-8 print:gap-0">
           <WireListPrintDocument data={documentData} />
         </div>
       </main>
