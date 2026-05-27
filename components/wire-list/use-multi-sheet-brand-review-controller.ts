@@ -246,10 +246,24 @@ export function useMultiSheetBrandReviewController({
     const payload = await response.json() as MultiSheetSessionPayload;
     const session = payload.session;
     if (session) {
-      setActiveSlug(session.activeSheetSlug ?? preferredSheetSlug ?? null);
-      setApprovedSlugs(Array.isArray(session.approvedSheetSlugs) ? session.approvedSheetSlugs : []);
+      // Validate stored activeSheetSlug against available tabs to prevent stale references
+      const validTabSlugs = new Set(tabs.map((tab) => tab.slug));
+      const validActiveSlug = session.activeSheetSlug && validTabSlugs.has(session.activeSheetSlug)
+        ? session.activeSheetSlug
+        : preferredSheetSlug && validTabSlugs.has(preferredSheetSlug)
+          ? preferredSheetSlug
+          : tabs[0]?.slug ?? null;
+      setActiveSlug(validActiveSlug);
+      // Also filter approved/edited slugs against valid tabs
+      setApprovedSlugs(
+        Array.isArray(session.approvedSheetSlugs)
+          ? session.approvedSheetSlugs.filter((slug) => validTabSlugs.has(slug))
+          : [],
+      );
       setEditedAfterApprovalSlugs(
-        Array.isArray(session.editedAfterApprovalSheetSlugs) ? session.editedAfterApprovalSheetSlugs : [],
+        Array.isArray(session.editedAfterApprovalSheetSlugs)
+          ? session.editedAfterApprovalSheetSlugs.filter((slug) => validTabSlugs.has(slug))
+          : [],
       );
       setSheetReviews(session.sheetReviews ?? {});
       setExportFileState(payload.exportFiles ?? null);
@@ -270,7 +284,7 @@ export function useMultiSheetBrandReviewController({
     setExportFileState(null);
     setEntryMode("cover");
     setImportSession(null);
-  }, [preferredSheetSlug, projectId]);
+  }, [preferredSheetSlug, projectId, tabs]);
 
   const refreshSavedBrandSchemas = useCallback(async () => {
     if (!projectId) {
