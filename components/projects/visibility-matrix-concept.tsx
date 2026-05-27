@@ -5,6 +5,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Loader2, Download, FileArchive, FileText, Settings2, HelpCircle, Info, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { normalizeDisplayTitle } from "@/lib/workbook/normalize-sheet-name";
 import { UnitTypePopover } from "./unit-type-popover";
 import { BoxSideCell } from "./box-side-cell";
 import {
@@ -31,7 +32,6 @@ import {
 interface Assignment {
   sheetSlug: string;
   sheetName: string;
-  normalizedTitle?: string;
   unitType?: string;
   boxSide?: string;
 }
@@ -235,9 +235,6 @@ export function VisibilityMatrixConcept({
       if (!boxSideKey) continue;
       if (assignment.sheetName) {
         map[assignment.sheetName.trim().toUpperCase()] = boxSideKey;
-      }
-      if (assignment.normalizedTitle) {
-        map[assignment.normalizedTitle.trim().toUpperCase()] = boxSideKey;
       }
       // Add sheet slug variations
       map[assignment.sheetSlug.toUpperCase()] = boxSideKey;
@@ -535,7 +532,7 @@ export function VisibilityMatrixConcept({
               const crossVisible = row.locKey 
                 ? (crossWireSettings[row.assignment.sheetSlug]?.[row.locKey] ?? defaults.cross) 
                 : true;
-              const displayTitle = row.assignment.normalizedTitle ?? row.assignment.sheetName;
+              const displayTitle = normalizeDisplayTitle(row.assignment.sheetName);
 
               return (
                 <tr 

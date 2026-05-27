@@ -80,6 +80,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { SemanticWireListRow } from "@/lib/workbook/types";
+import { normalizeDisplayTitle } from "@/lib/workbook/normalize-sheet-name";
 import type { CablePartNumberLookupResult, PartNumberLookupResult } from "@/lib/part-number-list";
 import { lookupPartNumber } from "@/lib/part-number-list";
 import type { BlueLabelSequenceMap, IdentificationFilterKind, PatternMatchMetadata } from "@/lib/wiring-identification/types";
@@ -1977,7 +1978,7 @@ function TableOfContentsPage({
                         Location:
                       </div>
                       <div className="text-xs font-bold text-foreground">
-                        {group.location}
+                        {normalizeDisplayTitle(group.location)}
                         {crossWireSections.has(`loc-${groupIndex}`) && (
                           <span className="ml-2 text-[9px] font-semibold text-amber-600 dark:text-amber-400">CrossWire</span>
                         )}
@@ -2359,7 +2360,7 @@ function PrintTableRow({
         </td>
       )}
       {showFromLocation && (
-        <td className="px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{locationNormalizedTitleByName?.[displayEndpoints.fromLocation.toUpperCase()] || displayEndpoints.fromLocation || currentSheetName || "-"}</td>
+        <td className="px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{locationNormalizedTitleByName?.[displayEndpoints.fromLocation.toUpperCase()] || normalizeDisplayTitle(displayEndpoints.fromLocation) || currentSheetName || "-"}</td>
       )}
       {showPartNumber && (
         <td className="px-1 py-1 text-center text-[10px] font-medium text-muted-foreground">{fromReference?.partNumber || ""}</td>
@@ -2433,7 +2434,7 @@ function PrintTableRow({
         <td className={cn(
           "px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis",
           (showIPV || showComments) && "border-r border-foreground/20"
-        )}>{locationNormalizedTitleByName?.[displayEndpoints.toLocation.toUpperCase()] || displayEndpoints.toLocation || currentSheetName || "-"}</td>
+        )}>{locationNormalizedTitleByName?.[displayEndpoints.toLocation.toUpperCase()] || normalizeDisplayTitle(displayEndpoints.toLocation) || currentSheetName || "-"}</td>
       )}
       {/* Review group */}
       {showIPV && (
@@ -3420,7 +3421,7 @@ function BrandingPreviewTable({
                     </div>
                   </td>
                   <td className="px-1.5 py-0 font-mono text-[11px] font-semibold">{displayTo ? displayTo.trim().replace(/:$/, "") : "-"}</td>
-                  <td className="px-1.5 py-0 text-[11px]">{row.toLocation || row.fromLocation || "-"}</td>
+                  <td className="px-1.5 py-0 text-[11px]">{normalizeDisplayTitle(row.toLocation || row.fromLocation || "")}</td>
                   <td className="px-1.5 py-0 text-[11px]" />
                 </tr>
               </Fragment>
