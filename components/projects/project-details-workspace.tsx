@@ -63,6 +63,16 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   DateField,
   LwcTypeField,
   PdNumberField,
@@ -370,7 +380,7 @@ export function ProjectDetailsWorkspace({
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
-  const { flashAside } = useLayoutUI();
+  const { flashAside, openAside, closeAside } = useLayoutUI();
   
   const contentRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -386,6 +396,7 @@ export function ProjectDetailsWorkspace({
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const [legalDetail, setLegalDetail] = useState<LegalProjectRecord | null>(null);
   const [hasLoadedLegals, setHasLoadedLegals] = useState(false);
@@ -787,12 +798,13 @@ export function ProjectDetailsWorkspace({
   const handleDelete = useCallback(async () => {
     if (!project) return;
     
-    const confirmed = window.confirm(
-      `Are you sure you want to delete "${project.name}"? This will permanently remove the project and all associated data. This action cannot be undone.`
-    );
-    if (!confirmed) return;
-    
     setDeleting(true);
+    setShowDeleteDialog(false);
+    
+    // Capture project info before deletion for activity log
+    const projectName = project.name;
+    const pdNumber = project.pdNumber;
+    
     try {
       const res = await fetch(`/api/projects/${encodeURIComponent(project.id)}`, {
         method: "DELETE",
@@ -801,9 +813,34 @@ export function ProjectDetailsWorkspace({
         const errData = await res.json().catch(() => ({}));
         throw new Error(errData.error ?? "Delete failed");
       }
-      toast({ title: "Project deleted", description: "Redirecting to projects list..." });
-      // Navigate back to projects list
-      router.push(`/${badgeNumber}/projects`);
+      
+      // Log the deletion activity
+      try {
+        await activityService.logAction(badgeNumber, "1st", {
+          action: "PROJECT_DELETED",
+          metadata: {
+            projectName,
+            pdNumber,
+          },
+          projectId: project.id,
+          result: "success",
+        });
+      } catch (logErr) {
+        console.error("[v0] Failed to log delete activity:", logErr);
+      }
+      
+      toast({ title: "Project deleted", description: `"${projectName}" has been permanently removed.` });
+      
+      // Open activity aside and auto-close after 5 seconds
+      openAside();
+      setTimeout(() => {
+        closeAside();
+      }, 5000);
+      
+      // Navigate back to projects list after a short delay
+      setTimeout(() => {
+        router.push(`/${badgeNumber}/projects`);
+      }, 500);
     } catch (err) {
       toast({ 
         title: "Delete failed", 
@@ -812,7 +849,7 @@ export function ProjectDetailsWorkspace({
       });
       setDeleting(false);
     }
-  }, [project, toast, router, badgeNumber]);
+  }, [project, toast, router, badgeNumber, openAside, closeAside]);
 
   // Keyboard shortcuts: e = edit, s = save, c = cancel
   useEffect(() => {
@@ -2130,7 +2167,7 @@ export function ProjectDetailsWorkspace({
                           <Button
                             variant="destructive"
                             size="sm"
-                            onClick={handleDelete}
+                            onClick={() => setShowDeleteDialog(true)}
                             disabled={deleting}
                             className="shrink-0"
                           >
@@ -3103,6 +3140,40 @@ export function ProjectDetailsWorkspace({
         autoStartImport={autoStartBrandImport}
         onImportStarted={() => setAutoStartBrandImport(false)}
       />
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Project</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete <span className="font-semibold">&quot;{project?.name}&quot;</span>? This will permanently remove the project and all associated data including wire lists, brand lists, and assignments.
+              <br /><br />
+              <span className="text-destructive font-medium">This action cannot be undone.</span>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              disabled={deleting}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deleting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  Delete Project
+                </>
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
