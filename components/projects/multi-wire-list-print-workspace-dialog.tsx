@@ -210,18 +210,17 @@ export function MultiWireListPrintWorkspaceDialog({
                         type="button"
                         onClick={() => setActiveSheetSlug(sheet.slug)}
                         className={cn(
-                          "w-full rounded-2xl border border-border/50 bg-background/70 px-3 py-3 text-left transition-colors hover:bg-muted/60",
+                          "w-full rounded-2xl border border-border/50 bg-background/70 px-3 py-3 transition-colors hover:bg-muted/60",
                           sheet.slug === activeSheetSlug && "border-primary/40 bg-primary/5",
                         )}
                       >
                         <div className="flex items-center justify-start gap-3">
                           
-                            <p className="text-[11px] border w-8 h-8 text-center rounded-full uppercase  text-muted-foreground">
+                            <p className="text-[11px] p-1 px-2 border text-center rounded-full uppercase  text-muted-foreground">
                                {index + 1}
                             </p>
                             <p className="mt-1 text-sm font-medium">{normalizeSheetLabel(sheet.name)}</p>
                          
-                        
                         </div>
                       </button>
                     ))}
