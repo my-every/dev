@@ -23,6 +23,7 @@ interface MultiSheetReviewWorkspaceShellProps {
   activeTab: MultiSheetNavigationItem | null;
   activeResources: LoadedSheetResources | undefined;
   activeBrandSchema: BrandListExportSchema | null;
+  allBrandSchemas?: Array<{ slug: string; name: string; schema: BrandListExportSchema }>;
   activeBrandRowIds: string[];
   activeSheetSwsType?: string | null;
   projectId?: string;
@@ -96,6 +97,7 @@ export function MultiSheetReviewWorkspaceShell({
   activeTab,
   activeResources,
   activeBrandSchema,
+  allBrandSchemas,
   activeBrandRowIds,
   activeSheetSwsType,
   projectId,
@@ -166,8 +168,8 @@ export function MultiSheetReviewWorkspaceShell({
     (activeSlug ? !pendingBrandSchemaSlugs.includes(activeSlug) : false);
 
   return (
-    <div className="relative h-full" aria-busy={disabled}>
-      <div className={disabled ? "pointer-events-none select-none opacity-60" : ""}>
+    <div className="relative flex min-h-0 flex-1 flex-col" aria-busy={disabled}>
+      <div className={`flex min-h-0 flex-1 flex-col${disabled ? " pointer-events-none select-none opacity-60" : ""}`}>
       <MultiSheetReviewNavigatorRail
         items={items}
         isAuthenticated={isAuthenticated}
@@ -178,7 +180,7 @@ export function MultiSheetReviewWorkspaceShell({
         onOpenLogin={onOpenLogin}
       />
 
-      <div className="flex-1 min-h-0 flex xl:flex-row">
+      <div className="flex min-h-0 flex-1 xl:flex-row overflow-hidden">
         <MultiSheetReviewNavigatorRail
           items={items}
           isAuthenticated={isAuthenticated}
@@ -191,7 +193,7 @@ export function MultiSheetReviewWorkspaceShell({
           onToggleCollapse={() => setIsDesktopRailCollapsed((current) => !current)}
         />
 
-        <div className="relative min-h-0 flex-1">
+        <div className="relative min-h-0 flex-1 overflow-hidden">
         
           {isWireListMode ? (
             <MultiSheetStandardWorkspaceShell
@@ -229,6 +231,7 @@ export function MultiSheetReviewWorkspaceShell({
               layoutWorkspaceEndpoint={layoutWorkspaceEndpoint}
               initialLayoutPageNumber={activeTab?.pageNumber}
               activeBrandSchema={activeBrandSchema}
+              allBrandSchemas={allBrandSchemas}
               isSavingBrandSchema={pendingBrandSchemaSlugs.length > 0}
               reviewReadOnly={reviewReadOnly}
               selectedBrandRows={selectedBrandRows}
@@ -244,6 +247,7 @@ export function MultiSheetReviewWorkspaceShell({
             />
           )}
         </div>
+      </div>
       </div>
 
       <MultiSheetReviewFooterActions
@@ -273,7 +277,6 @@ export function MultiSheetReviewWorkspaceShell({
         onUnapprove={onUnapprove}
         onCombine={onCombine}
       />
-      </div>
       {disabled ? (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-background/70 backdrop-blur-[1px]">
           <div className="rounded-md border border-border/70 bg-card px-3 py-2 text-sm text-muted-foreground">

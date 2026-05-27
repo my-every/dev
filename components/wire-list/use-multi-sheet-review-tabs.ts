@@ -24,6 +24,7 @@ export function useMultiSheetReviewTabs(options: {
     const items = operationalSheets.map((sheet) => {
       const assignment = assignments[sheet.slug] as
         | {
+            externalLocations?: Array<unknown>;
             layout?:
               | {
                   primaryPage?: {
@@ -67,6 +68,7 @@ export function useMultiSheetReviewTabs(options: {
         slug: sheet.slug,
         name: normalizeDisplayTitle(sheet.name),
         rowCount: sheet.rowCount,
+        hasExternalLocations: Array.isArray(assignment?.externalLocations) && assignment.externalLocations.length > 0,
         pageNumber: resolvedPage?.pageNumber ?? primaryPage?.pageNumber,
         pageTitle: normalizeDisplayTitle(resolvedPage?.title ?? primaryPage?.title ?? sheet.name),
         imageUrl: resolvedPage?.imageUrl,

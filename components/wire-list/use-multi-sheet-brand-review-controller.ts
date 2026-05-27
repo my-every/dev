@@ -17,6 +17,7 @@ export interface MultiSheetTabItem {
   slug: string;
   name: string;
   rowCount: number;
+  hasExternalLocations: boolean;
   pageNumber?: number;
   pageTitle?: string;
   imageUrl?: string;

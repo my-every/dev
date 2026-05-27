@@ -84,19 +84,21 @@ export function useMultiSheetStatusChecks(options: {
 
   const navigationItems = useMemo<MultiSheetNavigationItem[]>(
     () =>
-      tabs.map((tab) => {
-        const review = sheetReviews[tab.slug];
-        const reviewTime = formatReviewTime(review?.reviewedAt);
-        return {
-          ...tab,
-          isActive: tab.slug === activeSlug,
-          isApproved: approvedSlugs.includes(tab.slug),
-          wasEditedAfterApproval: editedAfterApprovalSlugs.includes(tab.slug),
-          reviewLabel: review
-            ? `${review.reviewedByName || review.reviewedByBadge || "Reviewed"}${reviewTime ? ` · ${reviewTime}` : ""}`
-            : null,
-        };
-      }),
+      tabs
+        .filter((tab) => tab.hasExternalLocations)
+        .map((tab) => {
+          const review = sheetReviews[tab.slug];
+          const reviewTime = formatReviewTime(review?.reviewedAt);
+          return {
+            ...tab,
+            isActive: tab.slug === activeSlug,
+            isApproved: approvedSlugs.includes(tab.slug),
+            wasEditedAfterApproval: editedAfterApprovalSlugs.includes(tab.slug),
+            reviewLabel: review
+              ? `${review.reviewedByName || review.reviewedByBadge || "Reviewed"}${reviewTime ? ` · ${reviewTime}` : ""}`
+              : null,
+          };
+        }),
     [activeSlug, approvedSlugs, editedAfterApprovalSlugs, sheetReviews, tabs],
   );
 
