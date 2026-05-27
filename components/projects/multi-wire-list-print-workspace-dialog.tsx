@@ -214,16 +214,14 @@ export function MultiWireListPrintWorkspaceDialog({
                           sheet.slug === activeSheetSlug && "border-primary/40 bg-primary/5",
                         )}
                       >
-                        <div className="flex items-start justify-between gap-3">
-                          <div>
-                            <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-                              Sheet {index + 1}
+                        <div className="flex items-center justify-start gap-3">
+                          
+                            <p className="text-[11px] border w-8 h-8 text-center rounded-full uppercase  text-muted-foreground">
+                               {index + 1}
                             </p>
                             <p className="mt-1 text-sm font-medium">{normalizeSheetLabel(sheet.name)}</p>
-                          </div>
-                          <span className="min-w-max rounded-full bg-muted px-2 py-0.5 text-[9.5px] text-muted-foreground">
-                            {sheet.rowCount ?? 0} rows
-                          </span>
+                         
+                        
                         </div>
                       </button>
                     ))}
