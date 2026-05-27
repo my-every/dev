@@ -26,6 +26,7 @@ import {
   Package,
   Palette,
   Pencil,
+  Trash2,
   Upload,
   X,
 } from "lucide-react";
@@ -384,6 +385,7 @@ export function ProjectDetailsWorkspace({
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const [legalDetail, setLegalDetail] = useState<LegalProjectRecord | null>(null);
   const [hasLoadedLegals, setHasLoadedLegals] = useState(false);
@@ -781,6 +783,36 @@ export function ProjectDetailsWorkspace({
       setSaving(false);
     }
   }, [editDraft, project, toast, logActivityWithFlash]);
+
+  const handleDelete = useCallback(async () => {
+    if (!project) return;
+    
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${project.name}"? This will permanently remove the project and all associated data. This action cannot be undone.`
+    );
+    if (!confirmed) return;
+    
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/projects/${encodeURIComponent(project.id)}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error ?? "Delete failed");
+      }
+      toast({ title: "Project deleted", description: "Redirecting to projects list..." });
+      // Navigate back to projects list
+      router.push(`/${badgeNumber}/projects`);
+    } catch (err) {
+      toast({ 
+        title: "Delete failed", 
+        description: err instanceof Error ? err.message : "Could not delete project",
+        variant: "destructive"
+      });
+      setDeleting(false);
+    }
+  }, [project, toast, router, badgeNumber]);
 
   // Keyboard shortcuts: e = edit, s = save, c = cancel
   useEffect(() => {
@@ -1995,119 +2027,165 @@ export function ProjectDetailsWorkspace({
                 title="Project Details"
                 description="View and edit project information and metadata."
               />
-              <div className="mt-4 space-y-3">
+              <div className="mt-4 space-y-6">
                 {isEditing ? (
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <Input
-                      value={editDraft?.name || ""}
-                      onChange={(e) => setProjectField("name", e.target.value)}
-                      placeholder="Project Name"
-                    />
-                    <PdNumberField
-                      mode="create"
-                      label="PD Number"
-                      value={editDraft?.pdNumber || ""}
-                      onChange={(value) => setProjectField("pdNumber", value)}
-                    />
-                    <UnitNumberField
-                      mode="create"
-                      label="Unit Number"
-                      value={editDraft?.unitNumber ?? undefined}
-                      onChange={(value) => setProjectField("unitNumber", value ?? null)}
-                    />
-                    <RevisionField
-                      mode="create"
-                      label="Revision"
-                      value={editDraft?.revision || ""}
-                      onChange={(value) => setProjectField("revision", value)}
-                    />
-                    <LwcTypeField
-                      mode="create"
-                      label="LWC Type"
-                      value={editDraft?.lwcType ?? undefined}
-                      onChange={(value) => setProjectField("lwcType", value)}
-                      showRegistryDescription={false}
-                    />
-                    <DateField
-                      mode="create"
-                      label="Due Date"
-                      value={parseDateInputValue(editDraft?.dueDate)}
-                      onChange={(date) => setProjectField("dueDate", date ? date.toISOString().slice(0, 10) : null)}
-                    />
-                    <div className="grid gap-1.5 sm:col-span-2">
-                      <Label className="text-xs font-medium text-muted-foreground">Status</Label>
-                      <Select
-                        value={editDraft?.status || ""}
-                        onValueChange={(value) => setProjectField("status", value as typeof PROJECT_STATUS_OPTIONS[number]["value"])}
-                      >
-                        <SelectTrigger className="h-9 text-sm">
-                          <SelectValue placeholder="Select status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {PROJECT_STATUS_OPTIONS.map((opt) => (
-                            <SelectItem key={opt.value} value={opt.value}>
-                              <span className="flex items-center gap-2">
-                                <span className={cn("h-2 w-2 rounded-full shrink-0", opt.dot)} />
-                                {opt.label}
-                              </span>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                  <div className="space-y-6">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="grid gap-1.5">
+                        <Label className="text-xs font-medium text-muted-foreground">Project Name</Label>
+                        <Input
+                          value={editDraft?.name || ""}
+                          onChange={(e) => setProjectField("name", e.target.value)}
+                          placeholder="Project Name"
+                        />
+                      </div>
+                      <PdNumberField
+                        mode="create"
+                        label="PD Number"
+                        value={editDraft?.pdNumber || ""}
+                        onChange={(value) => setProjectField("pdNumber", value)}
+                      />
+                      <UnitNumberField
+                        mode="create"
+                        label="Unit Number"
+                        value={editDraft?.unitNumber ?? undefined}
+                        onChange={(value) => setProjectField("unitNumber", value ?? null)}
+                      />
+                      <RevisionField
+                        mode="create"
+                        label="Revision"
+                        value={editDraft?.revision || ""}
+                        onChange={(value) => setProjectField("revision", value)}
+                      />
+                      <LwcTypeField
+                        mode="create"
+                        label="LWC Type"
+                        value={editDraft?.lwcType ?? undefined}
+                        onChange={(value) => setProjectField("lwcType", value)}
+                        showRegistryDescription={false}
+                      />
+                      <DateField
+                        mode="create"
+                        label="Due Date"
+                        value={parseDateInputValue(editDraft?.dueDate)}
+                        onChange={(date) => setProjectField("dueDate", date ? date.toISOString().slice(0, 10) : null)}
+                      />
+                      <div className="grid gap-1.5">
+                        <Label className="text-xs font-medium text-muted-foreground">Status</Label>
+                        <Select
+                          value={editDraft?.status || ""}
+                          onValueChange={(value) => setProjectField("status", value as typeof PROJECT_STATUS_OPTIONS[number]["value"])}
+                        >
+                          <SelectTrigger className="h-9 text-sm">
+                            <SelectValue placeholder="Select status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {PROJECT_STATUS_OPTIONS.map((opt) => (
+                              <SelectItem key={opt.value} value={opt.value}>
+                                <span className="flex items-center gap-2">
+                                  <span className={cn("h-2 w-2 rounded-full shrink-0", opt.dot)} />
+                                  {opt.label}
+                                </span>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="grid gap-1.5">
+                        <Label className="text-xs font-medium text-muted-foreground">Color</Label>
+                        <ColorPicker
+                          value={editDraft?.color || "#ffcc61"}
+                          onValueChange={(value) => setProjectField("color", value)}
+                        >
+                          <ColorPickerTrigger asChild>
+                            <button className="flex h-9 w-full items-center gap-2 rounded-md border border-input bg-background px-3 text-sm shadow-sm transition-colors hover:bg-accent">
+                              <ColorPickerSwatch className="h-5 w-5 rounded-sm border border-border shrink-0" />
+                              <span className="font-mono text-xs">{editDraft?.color || "#ffcc61"}</span>
+                            </button>
+                          </ColorPickerTrigger>
+                          <ColorPickerContent>
+                            <ColorPickerArea />
+                            <ColorPickerHueSlider />
+                            <ColorPickerInput />
+                          </ColorPickerContent>
+                        </ColorPicker>
+                      </div>
                     </div>
-                    <div className="grid gap-1.5 sm:col-span-2">
-                      <Label className="text-xs font-medium text-muted-foreground">Color</Label>
-                      <ColorPicker
-                        value={editDraft?.color || "#ffcc61"}
-                        onValueChange={(value) => setProjectField("color", value)}
-                      >
-                        <ColorPickerTrigger asChild>
-                          <button className="flex h-9 w-full items-center gap-2 rounded-md border border-input bg-background px-3 text-sm shadow-sm transition-colors hover:bg-accent">
-                            <ColorPickerSwatch className="h-5 w-5 rounded-sm border border-border shrink-0" />
-                            <span className="font-mono text-xs">{editDraft?.color || "#ffcc61"}</span>
-                          </button>
-                        </ColorPickerTrigger>
-                        <ColorPickerContent>
-                          <ColorPickerArea />
-                          <ColorPickerHueSlider />
-                          <ColorPickerInput />
-                        </ColorPickerContent>
-                      </ColorPicker>
+                    
+                    <Separator />
+                    
+                    {/* Danger zone - delete project */}
+                    <div className="space-y-2">
+                      <div className="text-xs font-semibold uppercase tracking-wide text-destructive">
+                        Danger Zone
+                      </div>
+                      <div className="rounded-md border border-destructive/30 bg-destructive/5 p-4">
+                        <div className="flex items-center justify-between gap-4">
+                          <div>
+                            <p className="text-sm font-medium">Delete this project</p>
+                            <p className="text-xs text-muted-foreground">
+                              Permanently remove this project and all associated data. This action cannot be undone.
+                            </p>
+                          </div>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={handleDelete}
+                            disabled={deleting}
+                            className="shrink-0"
+                          >
+                            {deleting ? (
+                              <>
+                                <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
+                                Deleting...
+                              </>
+                            ) : (
+                              <>
+                                <Trash2 className="mr-2 h-3.5 w-3.5" />
+                                Delete Project
+                              </>
+                            )}
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ) : (
-                  <div className="space-y-2">
-                    <DetailRow icon={FileText} label="Project Name">{currentProject?.name}</DetailRow>
-                    <DetailRow icon={FileText} label="PD Number">{currentProject?.pdNumber || "Not set"}</DetailRow>
-                    <DetailRow icon={Package} label="Unit">{currentProject?.unitNumber ? `Unit ${currentProject.unitNumber}` : "Not set"}</DetailRow>
-                    <DetailRow icon={GitBranch} label="Revision">{currentProject?.revision || "Not set"}</DetailRow>
-                    <DetailRow icon={Layers} label="LWC Type">{String(currentProject?.lwcType || "Not set")}</DetailRow>
-                    <DetailRow icon={Calendar} label="Due Date">{formatDateValue(currentProject?.dueDate)}</DetailRow>
-                    <DetailRow icon={Calendar} label="Ship Date">{formatDateValue(currentProject?.shipDate)}</DetailRow>
-                    <DetailRow icon={FileText} label="Status">
-                      {(() => {
-                        const opt = PROJECT_STATUS_OPTIONS.find((o) => o.value === currentProject?.status);
-                        return (
-                          <span className="flex items-center gap-2">
-                            {opt && <span className={cn("h-2 w-2 rounded-full shrink-0", opt.dot)} />}
-                            {opt ? opt.label : formatTokenLabel(currentProject?.status || "unknown")}
+                  <div className="space-y-6">
+                    {/* 2-column grid for project details */}
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <DetailRow icon={FileText} label="Project Name">{currentProject?.name}</DetailRow>
+                      <DetailRow icon={FileText} label="PD Number">{currentProject?.pdNumber || "Not set"}</DetailRow>
+                      <DetailRow icon={Package} label="Unit">{currentProject?.unitNumber ? `Unit ${currentProject.unitNumber}` : "Not set"}</DetailRow>
+                      <DetailRow icon={GitBranch} label="Revision">{currentProject?.revision || "Not set"}</DetailRow>
+                      <DetailRow icon={Layers} label="LWC Type">{String(currentProject?.lwcType || "Not set")}</DetailRow>
+                      <DetailRow icon={Calendar} label="Due Date">{formatDateValue(currentProject?.dueDate)}</DetailRow>
+                      <DetailRow icon={Calendar} label="Ship Date">{formatDateValue(currentProject?.shipDate)}</DetailRow>
+                      <DetailRow icon={FileText} label="Status">
+                        {(() => {
+                          const opt = PROJECT_STATUS_OPTIONS.find((o) => o.value === currentProject?.status);
+                          return (
+                            <span className="flex items-center gap-2">
+                              {opt && <span className={cn("h-2 w-2 rounded-full shrink-0", opt.dot)} />}
+                              {opt ? opt.label : formatTokenLabel(currentProject?.status || "unknown")}
+                            </span>
+                          );
+                        })()}
+                      </DetailRow>
+                      <DetailRow icon={Palette} label="Color">
+                        <span className="flex items-center gap-2">
+                          <span
+                            className="h-4 w-4 rounded-sm border border-border shrink-0"
+                            style={{ backgroundColor: currentProject?.color || "#ffcc61" }}
+                          />
+                          <span className="font-mono text-xs text-muted-foreground">
+                            {currentProject?.color || "#ffcc61"}
                           </span>
-                        );
-                      })()}
-                    </DetailRow>
-                    <DetailRow icon={Palette} label="Color">
-                      <span className="flex items-center gap-2">
-                        <span
-                          className="h-4 w-4 rounded-sm border border-border shrink-0"
-                          style={{ backgroundColor: currentProject?.color || "#ffcc61" }}
-                        />
-                        <span className="font-mono text-xs text-muted-foreground">
-                          {currentProject?.color || "#ffcc61"}
                         </span>
-                      </span>
-                    </DetailRow>
+                      </DetailRow>
+                    </div>
                     
-                    <Separator className="my-4" />
+                    <Separator />
                     
                     <div className="space-y-2">
                       <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
