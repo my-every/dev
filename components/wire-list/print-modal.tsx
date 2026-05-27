@@ -80,6 +80,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { SemanticWireListRow } from "@/lib/workbook/types";
+import { normalizeDisplayTitle, normalizeSheetName } from "@/lib/workbook/normalize-sheet-name";
 import type { CablePartNumberLookupResult, PartNumberLookupResult } from "@/lib/part-number-list";
 import { lookupPartNumber } from "@/lib/part-number-list";
 import type { BlueLabelSequenceMap, IdentificationFilterKind, PatternMatchMetadata } from "@/lib/wiring-identification/types";
@@ -395,6 +396,38 @@ function getSectionColumnVisibilityKey(
   sectionKind?: IdentificationFilterKind,
 ): string {
   return sectionLabel || sectionKind || "default";
+}
+
+function getLocationLookupKeys(location: string | undefined): string[] {
+  const raw = String(location ?? "").trim();
+  if (!raw) return [];
+
+  const keys = new Set<string>();
+  keys.add(raw.toUpperCase());
+  keys.add(normalizeDisplayTitle(raw).toUpperCase());
+  keys.add(normalizeSheetName(raw).toUpperCase());
+  keys.add(raw.toUpperCase().replace(/[\s,_-]+/g, " ").trim());
+
+  return Array.from(keys).filter(Boolean);
+}
+
+function resolveLocationDisplayTitle(
+  location: string | undefined,
+  locationNormalizedTitleByName?: Record<string, string>,
+  fallbackTitle?: string,
+): string {
+  for (const key of getLocationLookupKeys(location)) {
+    const mapped = locationNormalizedTitleByName?.[key];
+    if (mapped && mapped.trim()) {
+      return normalizeDisplayTitle(mapped);
+    }
+  }
+
+  if (location && location.trim()) {
+    return normalizeDisplayTitle(location);
+  }
+
+  return fallbackTitle ? normalizeDisplayTitle(fallbackTitle) : "-";
 }
 
 function escapePrintPreviewCsvValue(value: string | number | null | undefined): string {
@@ -1623,7 +1656,7 @@ export function WireListPrintDocument({
           </PrintPage>
         )}
         renderSection={({ group, subsection, visibleRows }) => (
-          <div className="rounded-sm overflow-hidden w-full">
+          <div className="rounded-sm w-full">
             <PrintPreviewTable
               rows={visibleRows}
               settings={data.settings}
@@ -1927,7 +1960,7 @@ function TableOfContentsPage({
         </div>
 
         {/* TOC Table */}
-        <table className="w-full text-[10px] border-collapse rounded-lg overflow-hidden border border-border/30">
+        <table className="w-full text-[10px] border-collapse rounded-sm overflow-hidden border border-border/30">
           <thead>
             <tr className="border-b border-border bg-muted/30">
               <th className="text-left py-1 px-1.5 font-semibold w-6">#</th>
@@ -1977,7 +2010,7 @@ function TableOfContentsPage({
                         Location:
                       </div>
                       <div className="text-xs font-bold text-foreground">
-                        {group.location}
+                        {normalizeDisplayTitle(group.location)}
                         {crossWireSections.has(`loc-${groupIndex}`) && (
                           <span className="ml-2 text-[9px] font-semibold text-amber-600 dark:text-amber-400">CrossWire</span>
                         )}
@@ -2359,7 +2392,7 @@ function PrintTableRow({
         </td>
       )}
       {showFromLocation && (
-        <td className="px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{locationNormalizedTitleByName?.[displayEndpoints.fromLocation.toUpperCase()] || displayEndpoints.fromLocation || currentSheetName || "-"}</td>
+        <td className="px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{resolveLocationDisplayTitle(displayEndpoints.fromLocation, locationNormalizedTitleByName, currentSheetName)}</td>
       )}
       {showPartNumber && (
         <td className="px-1 py-1 text-center text-[10px] font-medium text-muted-foreground">{fromReference?.partNumber || ""}</td>
@@ -2433,7 +2466,7 @@ function PrintTableRow({
         <td className={cn(
           "px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis",
           (showIPV || showComments) && "border-r border-foreground/20"
-        )}>{locationNormalizedTitleByName?.[displayEndpoints.toLocation.toUpperCase()] || displayEndpoints.toLocation || currentSheetName || "-"}</td>
+        )}>{resolveLocationDisplayTitle(displayEndpoints.toLocation, locationNormalizedTitleByName, currentSheetName)}</td>
       )}
       {/* Review group */}
       {showIPV && (
@@ -2787,34 +2820,31 @@ function PrintPreviewTable({
     notes: 62,         // Notes column
   };
 
+  const colStyles: Array<CSSProperties> = [];
+  if (showFromCheckbox) colStyles.push({ width: colWidths.checkbox, minWidth: colWidths.checkbox, maxWidth: colWidths.checkbox });
+  if (showEstTime) colStyles.push({ width: colWidths.estTime, minWidth: colWidths.estTime, maxWidth: colWidths.estTime });
+  if (showFromLocation) colStyles.push({ width: colWidths.location });
+  if (showPartNumberColumn) colStyles.push({ width: colWidths.partNumber });
+  colStyles.push({ width: colWidths.deviceId });
+  if (showDescriptionColumn) colStyles.push({ width: colWidths.description });
+  if (showWireType) colStyles.push({ width: colWidths.wireType, minWidth: colWidths.wireType, maxWidth: colWidths.wireType });
+  if (showWireNo) colStyles.push({ width: colWidths.wireNo });
+  if (showWireId) colStyles.push({ width: colWidths.wireId });
+  if (showGaugeSize) colStyles.push({ width: colWidths.gaugeSize, minWidth: colWidths.gaugeSize, maxWidth: colWidths.gaugeSize });
+  if (showLength) colStyles.push({ width: colWidths.length, minWidth: colWidths.length, maxWidth: colWidths.length });
+  if (showToCheckbox) colStyles.push({ width: colWidths.checkbox, minWidth: colWidths.checkbox, maxWidth: colWidths.checkbox });
+  if (showEstTime) colStyles.push({ width: colWidths.estTime, minWidth: colWidths.estTime, maxWidth: colWidths.estTime });
+  if (showPartNumberColumn) colStyles.push({ width: colWidths.partNumber });
+  colStyles.push({ width: colWidths.deviceId });
+  if (showDescriptionColumn) colStyles.push({ width: colWidths.description });
+  if (showToLocation) colStyles.push({ width: colWidths.location });
+  if (showIPV) colStyles.push({ width: colWidths.checkbox, minWidth: colWidths.checkbox, maxWidth: colWidths.checkbox });
+  if (showComments) colStyles.push({ width: colWidths.notes });
+
   return (
     <table className="w-full border-collapse rounded-sm border border-foreground/20 text-[11px]" style={{ tableLayout: 'fixed' }}>
       {/* Define column widths */}
-      <colgroup>
-        {/* FROM group */}
-        {showFromCheckbox && <col style={{ width: colWidths.checkbox, minWidth: colWidths.checkbox, maxWidth: colWidths.checkbox }} />}
-        {showEstTime && <col style={{ width: colWidths.estTime, minWidth: colWidths.estTime, maxWidth: colWidths.estTime }} />}
-        {showFromLocation && <col style={{ width: colWidths.location }} />}
-        {showPartNumberColumn && <col style={{ width: colWidths.partNumber }} />}
-        <col style={{ width: colWidths.deviceId }} /> {/* Device ID always shown */}
-        {showDescriptionColumn && <col style={{ width: colWidths.description }} />}
-        {/* Connection group */}
-        {showWireType && <col style={{ width: colWidths.wireType, minWidth: colWidths.wireType, maxWidth: colWidths.wireType }} />}
-        {showWireNo && <col style={{ width: colWidths.wireNo }} />}
-        {showWireId && <col style={{ width: colWidths.wireId }} />}
-        {showGaugeSize && <col style={{ width: colWidths.gaugeSize, minWidth: colWidths.gaugeSize, maxWidth: colWidths.gaugeSize }} />}
-        {showLength && <col style={{ width: colWidths.length, minWidth: colWidths.length, maxWidth: colWidths.length }} />}
-        {/* TO group */}
-        {showToCheckbox && <col style={{ width: colWidths.checkbox, minWidth: colWidths.checkbox, maxWidth: colWidths.checkbox }} />}
-        {showEstTime && <col style={{ width: colWidths.estTime, minWidth: colWidths.estTime, maxWidth: colWidths.estTime }} />}
-        {showPartNumberColumn && <col style={{ width: colWidths.partNumber }} />}
-        <col style={{ width: colWidths.deviceId }} /> {/* Device ID always shown */}
-        {showDescriptionColumn && <col style={{ width: colWidths.description }} />}
-        {showToLocation && <col style={{ width: colWidths.location }} />}
-        {/* Review group */}
-        {showIPV && <col style={{ width: colWidths.checkbox, minWidth: colWidths.checkbox, maxWidth: colWidths.checkbox }} />}
-        {showComments && <col style={{ width: colWidths.notes }} />}
-      </colgroup>
+      <colgroup>{colStyles.map((style, index) => <col key={`col-${index}`} style={style} />)}</colgroup>
       <thead className="bg-muted/30" style={{ display: 'table-header-group' }}>
         {/* Group header row: From | (no label for connection) | To | (no label for review) */}
         <tr className="border-b border-foreground/10">
@@ -3420,7 +3450,7 @@ function BrandingPreviewTable({
                     </div>
                   </td>
                   <td className="px-1.5 py-0 font-mono text-[11px] font-semibold">{displayTo ? displayTo.trim().replace(/:$/, "") : "-"}</td>
-                  <td className="px-1.5 py-0 text-[11px]">{row.toLocation || row.fromLocation || "-"}</td>
+                  <td className="px-1.5 py-0 text-[11px]">{normalizeDisplayTitle(row.toLocation || row.fromLocation || "")}</td>
                   <td className="px-1.5 py-0 text-[11px]" />
                 </tr>
               </Fragment>
@@ -4554,11 +4584,31 @@ export function SingleSheetPrintWorkspace({
   // Compute locationNormalizedTitleByName for display in location columns
   const locationNormalizedTitleByName = useMemo(() => {
     return assignmentMappings.reduce<Record<string, string>>((acc, mapping) => {
-      const sheetNameKey = mapping.sheetName?.trim().toUpperCase();
       const normalizedTitle = currentProject?.assignments?.[mapping.sheetSlug]?.normalizedTitle;
-      if (sheetNameKey && normalizedTitle) {
-        acc[sheetNameKey] = normalizedTitle;
+      if (!normalizedTitle) {
+        return acc;
       }
+
+      const baseKeys = new Set<string>([
+        ...getLocationLookupKeys(mapping.sheetName),
+        ...getLocationLookupKeys(mapping.sheetSlug),
+      ]);
+
+      const normalizedTitleLabel = normalizeDisplayTitle(normalizedTitle);
+      baseKeys.add(normalizedTitleLabel.toUpperCase());
+
+      // Alias short panel locations (e.g. "B") to the assignment normalized title.
+      const panelAliasMatch = normalizedTitleLabel.match(/^PNL\s+([A-Z0-9]+)/);
+      if (panelAliasMatch?.[1]) {
+        baseKeys.add(panelAliasMatch[1].toUpperCase());
+      }
+
+      for (const key of baseKeys) {
+        if (key) {
+          acc[key] = normalizedTitleLabel;
+        }
+      }
+
       return acc;
     }, {});
   }, [assignmentMappings, currentProject?.assignments]);
@@ -5760,7 +5810,9 @@ export function SingleSheetPrintWorkspace({
                                       {/* Location Group Header */}
                                       <div className="flex items-center gap-1 px-2 py-1.5 bg-muted/30 border-b border-t border-border/50">
                                         <span className="flex-1 text-[10px] font-regular text-foreground truncate">
-                                          {group.isExternal ? `${group.location} - External` : group.location}
+                                          {group.isExternal
+                                            ? `${resolveLocationDisplayTitle(group.location, locationNormalizedTitleByName)} - External`
+                                            : resolveLocationDisplayTitle(group.location, locationNormalizedTitleByName)}
                                           {!group.isExternal && currentSheetName && (
                                             <span className="ml-1 text-[10px] font-normal text-foreground">Internal</span>
                                           )}
@@ -6672,7 +6724,7 @@ export function SingleSheetPrintWorkspace({
                                         </PrintPage>
                                       )}
                                       renderSection={({ group, subsection, visibleRows }) => (
-                                        <div className="rounded-sm overflow-hidden w-full">
+                                        <div className="rounded-sm w-full">
                                           <PrintPreviewTable
                                             rows={visibleRows}
                                             settings={{
@@ -6784,7 +6836,7 @@ export function SingleSheetPrintWorkspace({
                                           <div key={`${section.group.location}-${section.subsection.label}-${sectionIdx}`} className={sectionIdx > 0 ? "mt-5" : ""}>
                                             {showLocationHeader && (
                   <SectionHeaderBlock
-                    title={section.group.location}
+                                            title={resolveLocationDisplayTitle(section.group.location, locationNormalizedTitleByName)}
                     subtitle="Location:"
                     subtitleFirst
                     className="mb-3 border-b border-foreground/10 pb-2"
@@ -6796,7 +6848,7 @@ export function SingleSheetPrintWorkspace({
                                               title={section.subsection.label}
                                               count={section.visibleRows.length}
                                             />
-                                            <div className="rounded-sm overflow-hidden w-full">
+                                            <div className="rounded-sm w-full">
                                               <PrintPreviewTable
                                                 rows={section.visibleRows}
                                                 settings={{
