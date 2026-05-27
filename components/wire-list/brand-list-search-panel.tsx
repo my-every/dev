@@ -275,11 +275,9 @@ export function BrandListSearchPanel({
                   {isReplace && (
                     <Badge
                       variant={
-                        preview.status === "safe"
-                          ? "default"
-                          : preview.status === "blocked"
-                            ? "destructive"
-                            : "secondary"
+                        preview.status === "blocked"
+                          ? "solid"
+                          : "outline"
                       }
                       className="shrink-0 text-[10px]"
                     >
