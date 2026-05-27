@@ -518,11 +518,20 @@ export function ProjectDetailsWorkspace({
     const targetSection = sectionParam || initialSection;
     
     if (targetSection && targetSection !== "details") {
-      const el = contentRef.current.querySelector(`[data-section="${targetSection}"]`);
-      if (el) {
+      const container = contentRef.current;
+      const el = container?.querySelector(`[data-section="${targetSection}"]`);
+      if (el && container) {
         setTimeout(() => {
           isScrollingRef.current = true;
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          // Calculate the element's position relative to the scroll container
+          const containerRect = container.getBoundingClientRect();
+          const elementRect = el.getBoundingClientRect();
+          const relativeTop = elementRect.top - containerRect.top + container.scrollTop;
+          // Scroll within the container with a 24px offset from the top
+          container.scrollTo({
+            top: Math.max(0, relativeTop - 24),
+            behavior: "smooth"
+          });
           setActiveSection(targetSection);
           setTimeout(() => {
             isScrollingRef.current = false;
@@ -535,9 +544,18 @@ export function ProjectDetailsWorkspace({
   const scrollToSection = useCallback((id: string) => {
     setActiveSection(id);
     isScrollingRef.current = true;
-    const el = contentRef.current?.querySelector(`[data-section="${id}"]`);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    const container = contentRef.current;
+    const el = container?.querySelector(`[data-section="${id}"]`);
+    if (el && container) {
+      // Calculate the element's position relative to the scroll container
+      const containerRect = container.getBoundingClientRect();
+      const elementRect = el.getBoundingClientRect();
+      const relativeTop = elementRect.top - containerRect.top + container.scrollTop;
+      // Scroll within the container with a 24px offset from the top
+      container.scrollTo({
+        top: Math.max(0, relativeTop - 24),
+        behavior: "smooth"
+      });
     }
     setTimeout(() => {
       isScrollingRef.current = false;
