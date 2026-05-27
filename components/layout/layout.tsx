@@ -36,6 +36,7 @@ export type PageLayoutShellClassNames = Partial<{
     header: string;
     main: string;
     mainInner: string;
+    contentWrapper: string;
     aside: string;
     bottomRail: string;
 }>;
@@ -331,7 +332,7 @@ export function LayoutPage({
 
                     {showSubHeader && subHeader ? <div className="text-lg">{subHeader}</div> : null}
 
-                    <div className="flex min-h-0 flex-1 flex-col overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border">
+                    <div className={cn("flex min-h-0 flex-1 flex-col overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border", classNames?.contentWrapper)}>
                         {children}
                     </div>
                 </div>
