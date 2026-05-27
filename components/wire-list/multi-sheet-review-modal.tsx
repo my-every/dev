@@ -409,6 +409,20 @@ export function MultiSheetReviewModal({
     ? navigationItems.find((item) => item.slug === activeSlug) ?? null
     : null;
   
+  // Auto-select the first valid sheet if activeSlug doesn't exist in navigationItems
+  // This can happen when a sheet has no external locations and gets filtered out
+  useEffect(() => {
+    if (
+      modalSurface === "review" &&
+      activeSlug &&
+      !activeNavigationItem &&
+      navigationItems.length > 0
+    ) {
+      // The current activeSlug points to a filtered-out sheet, select the first valid one
+      setActiveSlug(navigationItems[0].slug);
+    }
+  }, [modalSurface, activeSlug, activeNavigationItem, navigationItems, setActiveSlug]);
+  
   const reviewWorkspaceLocked =
     modalSurface === "review"
     && (!activeSlug || !activeNavigationItem || (!isWireListMode && !activeBrandSchema));
