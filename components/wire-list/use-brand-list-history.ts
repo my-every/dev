@@ -122,24 +122,23 @@ export function useBrandListHistory(): UseBrandListHistoryReturn {
     });
     if (!popped) return null;
     const tx = popped as BrandListUndoRedoTransaction;
-    // Record the undo action in history
-    const undoEntries: BrandListHistoryEntry[] = tx.changes.map((c) => ({
-      ...c,
-      id: uuidv4(),
-      timestamp: new Date().toISOString(),
-      source: "undo" as BrandListChangeSource,
-      previousValue: c.nextValue,
-      nextValue: c.previousValue,
-      columnLabel: c.columnLabel,
-    }));
-    setEntries((prev) => [...prev, ...undoEntries]);
+    
+    // When undoing, remove the original entries from history instead of adding undo entries
+    // This keeps history clean and shows only the current effective state
+    setEntries((prev) => {
+      const filtered = prev.filter(
+        (e) => !tx.changes.some((c) => c.id === e.id),
+      );
+      return filtered;
+    });
+    
     setRedoStack((prev) => {
       const redoTx: BrandListUndoRedoTransaction = {
         ...tx,
         id: uuidv4(),
         timestamp: new Date().toISOString(),
         source: "redo",
-        label: `Undo: ${tx.label}`,
+        label: `Redo: ${tx.label}`,
         // For redo: swap previousValue/nextValue
         changes: tx.changes.map((c) => ({
           ...c,
@@ -162,6 +161,8 @@ export function useBrandListHistory(): UseBrandListHistoryReturn {
     });
     if (!popped) return null;
     const tx = popped as BrandListUndoRedoTransaction;
+    
+    // When redoing, add the entries back to history with redo source
     const redoEntries: BrandListHistoryEntry[] = tx.changes.map((c) => ({
       ...c,
       id: uuidv4(),
@@ -170,13 +171,14 @@ export function useBrandListHistory(): UseBrandListHistoryReturn {
       columnLabel: c.columnLabel,
     }));
     setEntries((prev) => [...prev, ...redoEntries]);
+    
     setUndoStack((prev) => {
       const undoTx: BrandListUndoRedoTransaction = {
         ...tx,
         id: uuidv4(),
         timestamp: new Date().toISOString(),
         source: "undo",
-        label: `Redo: ${tx.label}`,
+        label: `Undo: Redo ${tx.label}`,
         changes: tx.changes.map((c) => ({
           ...c,
           previousValue: c.nextValue,

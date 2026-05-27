@@ -242,6 +242,7 @@ export function MultiSheetReviewWorkspaceShell({
               allBrandSchemas={allBrandSchemas}
               projectName={projectName}
               projectNumber={projectNumber}
+              projectRevision={projectRevision}
               projectColor={projectColor}
               isSavingBrandSchema={pendingBrandSchemaSlugs.length > 0}
               reviewReadOnly={reviewReadOnly}
