@@ -660,8 +660,8 @@ export function MultiSheetReviewModal({
     }
 
     const isFinalSheet = approvedSlugs.includes(activeSlug)
-      ? approvedSlugs.length >= tabs.length
-      : approvedSlugs.length + 1 >= tabs.length;
+      ? approvedSlugs.length >= navigationItems.length
+      : approvedSlugs.length + 1 >= navigationItems.length;
 
     setReviewSequencePhase("processing");
     setReviewSequenceMessage(
@@ -779,7 +779,7 @@ export function MultiSheetReviewModal({
                   title={headerTitle}
                   description={headerDescription}
                   approvedCount={approvedSlugs.length}
-                  totalCount={tabs.length}
+                  totalCount={navigationItems.length}
                   showStandardViewToggle={Boolean(activeWorkspaceMode === "wire-list" && activeTab?.pageNumber && layoutPdfUrl && layoutIndex)}
                   onOpenStateReview={() => setStateReviewOpen(true)}
                   onSetWorkspaceMode={setActiveWorkspaceMode}
@@ -887,6 +887,9 @@ export function MultiSheetReviewModal({
                         : null
                     }
                     projectId={projectId}
+                    projectName={currentProject?.name ?? null}
+                    projectNumber={currentProject?.pdNumber ?? null}
+                    projectColor={currentProject?.color ?? null}
                     isAuthenticated={isAuthenticated}
                     userLabel={userLabel}
                     exportReadyHref={exportReadyHref}
@@ -972,12 +975,12 @@ export function MultiSheetReviewModal({
         approvedCount={approvedSlugs.length}
         activeSheetName={activeTab?.name ?? null}
         activeSheetRowCount={activeTab?.rowCount ?? 0}
-        remainingCount={Math.max(tabs.length - approvedSlugs.length, 0)}
+        remainingCount={Math.max(navigationItems.length - approvedSlugs.length, 0)}
         isFinalSheet={
           Boolean(activeSlug) &&
           (activeSlug && approvedSlugs.includes(activeSlug)
-            ? approvedSlugs.length >= tabs.length
-            : approvedSlugs.length + 1 >= tabs.length)
+            ? approvedSlugs.length >= navigationItems.length
+            : approvedSlugs.length + 1 >= navigationItems.length)
         }
         processingMessage={reviewSequenceMessage}
         downloadHref={exportReadyHref}

@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-05-05T13:11:59.050Z",
+  "generatedAt": "2026-05-27T16:52:51.589Z",
   "sheetName": "CONTROL 2 BAY",
   "mode": "standardize",
   "totalPages": 3,
-  "totalRows": 0,
+  "totalRows": 2,
   "settings": {
     "showEstTime": false,
     "showFromCheckbox": true,
@@ -82,9 +82,7 @@
     ],
     "crossWireSections": [],
     "hiddenRows": [],
-    "hiddenSections": [
-      "loc-0"
-    ],
+    "hiddenSections": [],
     "brandingSortMode": "device-prefix",
     "wireListSortMode": "device-prefix"
   },
@@ -94,10 +92,10 @@
       "pageNumber": 1,
       "projectInfo": {
         "projectNumber": "4K391",
-        "projectName": "4K391",
+        "projectName": "MERSOL",
         "revision": "0.2",
         "pdNumber": "4K391",
-        "unitNumber": "",
+        "unitNumber": "2",
         "preparedBy": "",
         "badgeNumber": "",
         "date": "",
@@ -153,7 +151,95 @@
           }
         ]
       },
-      "sheetTitle": "CONTROL,2-BAY"
+      "sheetTitle": "Wire List"
+    },
+    {
+      "pageType": "toc",
+      "pageNumber": 2,
+      "locationGroups": [
+        {
+          "location": "PWR DST,DR,SMT130",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Single Connections",
+              "rowCount": 2,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "EL0273",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "locations": 1,
+        "sections": 2,
+        "rows": 2,
+        "pages": 3
+      }
+    },
+    {
+      "pageType": "wire-list",
+      "pageNumber": 3,
+      "locationGroups": [
+        {
+          "location": "PWR DST,DR,SMT130",
+          "isExternal": true,
+          "totalRows": 2,
+          "subsections": [
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-1",
+                  "rowIndex": 11,
+                  "fromDeviceId": "EL0273:SW+",
+                  "toDeviceId": "FU0273:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU0273",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "PWR DST,DR,SMT130",
+                  "toLocation": "PWR DST,DR,SMT130",
+                  "fromPageZone": "35.B4",
+                  "toPageZone": "35.B3",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-0",
+                  "rowIndex": 10,
+                  "fromDeviceId": "EL0273:SW-",
+                  "toDeviceId": "XT0562:2",
+                  "wireType": "SC",
+                  "wireNo": "-0V",
+                  "wireId": "WHT",
+                  "gaugeSize": "16",
+                  "fromLocation": "PWR DST,DR,SMT130",
+                  "toLocation": "PWR DST,DR,SMT130",
+                  "fromPageZone": "35.B4",
+                  "toPageZone": "35.B2",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "EL0273",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }

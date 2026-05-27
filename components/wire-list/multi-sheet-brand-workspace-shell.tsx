@@ -30,6 +30,12 @@ interface MultiSheetBrandWorkspaceShellProps {
   activeBrandSchema: BrandListExportSchema | null;
   /** All loaded schemas for cross-sheet search */
   allBrandSchemas?: Array<{ slug: string; name: string; schema: BrandListExportSchema }>;
+  /** Project name from the project manifest (used for consistent display) */
+  projectName?: string | null;
+  /** Project number (PD number) from the project manifest */
+  projectNumber?: string | null;
+  /** Project color from the project manifest */
+  projectColor?: string | null;
   isSavingBrandSchema: boolean;
   reviewReadOnly: boolean;
   selectedBrandRows: Set<string>;
@@ -57,6 +63,9 @@ export function MultiSheetBrandWorkspaceShell(
     initialLayoutPageNumber,
     activeBrandSchema,
     allBrandSchemas,
+    projectName,
+    projectNumber,
+    projectColor,
     isSavingBrandSchema,
     reviewReadOnly,
     selectedBrandRows,
@@ -319,11 +328,13 @@ export function MultiSheetBrandWorkspaceShell(
               <div className="mb-2 flex items-center gap-3">
                 <ProjectIcon
                   name={
-                    activeBrandSchema.projectInfo.projectName ||
+                    projectNumber ||
+                    projectName ||
                     activeBrandSchema.projectInfo.projectNumber ||
+                    activeBrandSchema.projectInfo.projectName ||
                     "Project"
                   }
-                  color="#ffcc61"
+                  color={projectColor || "#ffcc61"}
                   interactive={false}
                 />
               </div>
