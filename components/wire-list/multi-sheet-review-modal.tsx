@@ -890,6 +890,7 @@ export function MultiSheetReviewModal({
                     projectId={projectId}
                     projectName={currentProject?.name ?? null}
                     projectNumber={currentProject?.pdNumber ?? null}
+                    projectRevision={currentProject?.revision ?? null}
                     projectColor={currentProject?.color ?? null}
                     isAuthenticated={isAuthenticated}
                     userLabel={userLabel}

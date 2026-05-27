@@ -29,6 +29,7 @@ interface MultiSheetReviewWorkspaceShellProps {
   projectId?: string;
   projectName?: string | null;
   projectNumber?: string | null;
+  projectRevision?: string | null;
   projectColor?: string | null;
   isAuthenticated: boolean;
   userLabel?: string | null;
@@ -106,6 +107,7 @@ export function MultiSheetReviewWorkspaceShell({
   projectId,
   projectName,
   projectNumber,
+  projectRevision,
   projectColor,
   isAuthenticated,
   userLabel,
