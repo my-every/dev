@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import { CheckCircle2, ChevronDown, FileSpreadsheet, FolderOpen, Loader2, RefreshCw } from "lucide-react";
 
@@ -99,6 +99,10 @@ export function LegalSourceIndexPanel({
   const [selectedFileKeys, setSelectedFileKeys] = useState<Set<string>>(new Set());
   const [refreshWindowDays, setRefreshWindowDays] = useState<number>(90);
   const [isRefreshingIndex, setIsRefreshingIndex] = useState(false);
+  const [sourceRootDraft, setSourceRootDraft] = useState("");
+  const [isSavingSourceRoot, setIsSavingSourceRoot] = useState(false);
+  const [sourceFeedback, setSourceFeedback] = useState<string | null>(null);
+  const [sourceFeedbackKind, setSourceFeedbackKind] = useState<"success" | "error" | "info">("info");
   const [isCreatingFromSelected, setIsCreatingFromSelected] = useState(false);
   const [createFromSelectedError, setCreateFromSelectedError] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -106,7 +110,7 @@ export function LegalSourceIndexPanel({
 
   const indexUrl = useMemo(() => `/api/runtime/legal-drawings-index?fromDays=${refreshWindowDays}`, [refreshWindowDays]);
 
-  const { data, error, isLoading, mutate, isValidating } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR(
     indexUrl,
     fetcher,
     {
@@ -115,6 +119,12 @@ export function LegalSourceIndexPanel({
       errorRetryCount: 0,
     },
   );
+
+  useEffect(() => {
+    if (typeof data?.sourceRoot === "string") {
+      setSourceRootDraft(data.sourceRoot);
+    }
+  }, [data?.sourceRoot]);
 
   const filteredProjects = useMemo(() => {
     const normalized = query.trim().toLowerCase();
@@ -162,17 +172,32 @@ export function LegalSourceIndexPanel({
 
   const refreshIndex = useCallback(async () => {
     setIsRefreshingIndex(true);
+    setSourceFeedback("Refreshing index...");
+    setSourceFeedbackKind("info");
+    console.info("[legal-source-index-panel] refresh:start", { fromDays: refreshWindowDays });
     try {
-      await fetch("/api/runtime/legal-drawings-index", {
+      const response = await fetch("/api/runtime/legal-drawings-index", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fromDays: refreshWindowDays }),
       });
+      const payload = (await response.json().catch(() => ({}))) as { error?: string; message?: string | null };
+      if (!response.ok) {
+        throw new Error(payload.error || "Failed to refresh legal drawings index.");
+      }
       await mutate();
+      setSourceFeedback(payload.message || `Index refreshed for ${refreshWindowLabel}.`);
+      setSourceFeedbackKind("success");
+      console.info("[legal-source-index-panel] refresh:success", { fromDays: refreshWindowDays });
+    } catch (refreshError) {
+      const message = refreshError instanceof Error ? refreshError.message : "Failed to refresh legal drawings index.";
+      setSourceFeedback(message);
+      setSourceFeedbackKind("error");
+      console.error("[legal-source-index-panel] refresh:failed", { message, fromDays: refreshWindowDays });
     } finally {
       setIsRefreshingIndex(false);
     }
-  }, [mutate, refreshWindowDays]);
+  }, [mutate, refreshWindowDays, refreshWindowLabel]);
 
   const refreshWindowLabel = useMemo(
     () => REFRESH_WINDOWS.find((window) => window.days === refreshWindowDays)?.label ?? `${refreshWindowDays} days`,
@@ -192,20 +217,57 @@ export function LegalSourceIndexPanel({
       return;
     }
 
-    await fetch("/api/runtime/path-settings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ legalDrawingsPath: selected }),
-    });
-
-    await fetch("/api/runtime/legal-drawings-index", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ sourceRoot: selected }),
-    });
-
-    await mutate();
+    setSourceRootDraft(selected);
+    setSourceFeedback("Directory selected. Click Save Source Root to apply.");
+    setSourceFeedbackKind("info");
   }, [chooseDirectory, isElectron, mutate]);
+
+  const saveSourceRoot = useCallback(async () => {
+    const nextRoot = sourceRootDraft.trim();
+    if (!nextRoot) {
+      setSourceFeedback("Source root cannot be empty.");
+      setSourceFeedbackKind("error");
+      return;
+    }
+
+    setIsSavingSourceRoot(true);
+    setSourceFeedback("Saving source root...");
+    setSourceFeedbackKind("info");
+    console.info("[legal-source-index-panel] source-root:save:start", { sourceRoot: nextRoot });
+    try {
+      const settingsResponse = await fetch("/api/runtime/path-settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ legalDrawingsPath: nextRoot }),
+      });
+      if (!settingsResponse.ok) {
+        const settingsPayload = (await settingsResponse.json().catch(() => ({}))) as { error?: string };
+        throw new Error(settingsPayload.error || "Failed to save legal drawings path.");
+      }
+
+      const refreshResponse = await fetch("/api/runtime/legal-drawings-index", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sourceRoot: nextRoot, fromDays: refreshWindowDays }),
+      });
+      const refreshPayload = (await refreshResponse.json().catch(() => ({}))) as { error?: string; message?: string | null };
+      if (!refreshResponse.ok) {
+        throw new Error(refreshPayload.error || "Failed to refresh legal drawings index.");
+      }
+
+      await mutate();
+      setSourceFeedback(refreshPayload.message || "Source root saved and index refreshed.");
+      setSourceFeedbackKind("success");
+      console.info("[legal-source-index-panel] source-root:save:success", { sourceRoot: nextRoot });
+    } catch (saveError) {
+      const message = saveError instanceof Error ? saveError.message : "Failed to save source root.";
+      setSourceFeedback(message);
+      setSourceFeedbackKind("error");
+      console.error("[legal-source-index-panel] source-root:save:failed", { message, sourceRoot: nextRoot });
+    } finally {
+      setIsSavingSourceRoot(false);
+    }
+  }, [mutate, refreshWindowDays, sourceRootDraft]);
 
   const toggleFile = useCallback((projectFolderName: string, relativePath: string, checked: boolean) => {
     const key = `${projectFolderName}::${relativePath}`;
@@ -329,10 +391,10 @@ export function LegalSourceIndexPanel({
                 size="sm"
                 variant="outline"
                 onClick={() => void pickSourceRoot()}
-                disabled={isSelectingWorkspace}
+                disabled={isSelectingWorkspace || isSavingSourceRoot}
               >
                 <FolderOpen className="mr-1.5 h-3.5 w-3.5" />
-                {isSelectingWorkspace ? "Picking..." : "Set Source Root"}
+                {isSelectingWorkspace ? "Picking..." : "Browse Source Root"}
               </Button>
             ) : null}
           </div>
@@ -342,11 +404,43 @@ export function LegalSourceIndexPanel({
           Source: {data?.sourceRoot || "Not configured"}
           {data?.scannedAt ? ` | Last scan: ${new Date(data.scannedAt).toLocaleString()}` : ""}
           {data?.fromDays ? ` | Window: ${data.fromDays} days` : ""}
+          {` | Refresh mode: manual`}
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <Input
+            value={sourceRootDraft}
+            onChange={(event) => setSourceRootDraft(event.target.value)}
+            placeholder="Set legal drawings source root"
+            className="h-8 min-w-64 flex-1"
+          />
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => void saveSourceRoot()}
+            disabled={isSavingSourceRoot || isRefreshingIndex}
+          >
+            {isSavingSourceRoot ? "Saving..." : "Save Source Root"}
+          </Button>
         </div>
 
         {data?.configured === false && data?.message ? (
           <div className="rounded-md border border-amber-400/30 bg-amber-100/40 px-3 py-2 text-xs text-amber-800">
             {data.message}
+          </div>
+        ) : null}
+
+        {sourceFeedback ? (
+          <div
+            className={
+              sourceFeedbackKind === "error"
+                ? "rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs text-destructive"
+                : sourceFeedbackKind === "success"
+                  ? "rounded-md border border-emerald-400/30 bg-emerald-100/40 px-3 py-2 text-xs text-emerald-800"
+                  : "rounded-md border border-border/40 bg-muted/30 px-3 py-2 text-xs text-muted-foreground"
+            }
+          >
+            {sourceFeedback}
           </div>
         ) : null}
 

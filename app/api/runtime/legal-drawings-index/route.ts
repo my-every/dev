@@ -64,6 +64,7 @@ function parseOptionalPositiveInt(value: string | null): number | undefined {
 }
 
 export async function GET(request: NextRequest) {
+  const startedAt = Date.now()
   try {
     const sourceRootParam = request.nextUrl.searchParams.get('sourceRoot')
     const sourceRoot = sourceRootParam?.trim() || await resolveLegalDrawingsSourceRoot()
@@ -72,7 +73,17 @@ export async function GET(request: NextRequest) {
     const refreshFlag = request.nextUrl.searchParams.get('refresh')
     const refresh = refreshFlag === '1' || refreshFlag === 'true'
 
+    console.info('[legal-drawings-index:get] start', {
+      sourceRoot,
+      fromYear,
+      fromDays,
+      refresh,
+    })
+
     if (!sourceRoot) {
+      console.info('[legal-drawings-index:get] not-configured', {
+        elapsedMs: Date.now() - startedAt,
+      })
       return NextResponse.json(buildEmptyIndexResponse({
         sourceRoot: '',
         fromYear,
@@ -89,6 +100,15 @@ export async function GET(request: NextRequest) {
       refresh,
     })
 
+    console.info('[legal-drawings-index:get] success', {
+      sourceRoot: index.sourceRoot,
+      fromYear: index.fromYear,
+      fromDays: index.fromDays ?? null,
+      projectCount: index.projectCount,
+      updatedProjectCount: index.updatedProjectCount,
+      elapsedMs: Date.now() - startedAt,
+    })
+
     return NextResponse.json({
       ...index,
       configured: true,
@@ -96,6 +116,10 @@ export async function GET(request: NextRequest) {
     })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to load legal drawings index'
+    console.error('[legal-drawings-index:get] failed', {
+      message,
+      elapsedMs: Date.now() - startedAt,
+    })
     if (message.toLowerCase().includes('not configured')) {
       return NextResponse.json(buildEmptyIndexResponse({ message }))
     }
@@ -108,6 +132,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const startedAt = Date.now()
   try {
     const body = await request.json() as {
       sourceRoot?: string
@@ -119,7 +144,16 @@ export async function POST(request: NextRequest) {
     const fromYear = Number.isInteger(body.fromYear) ? body.fromYear : undefined
     const fromDays = Number.isInteger(body.fromDays) && body.fromDays > 0 ? body.fromDays : undefined
 
+    console.info('[legal-drawings-index:post] start', {
+      sourceRoot,
+      fromYear,
+      fromDays,
+    })
+
     if (!sourceRoot) {
+      console.info('[legal-drawings-index:post] not-configured', {
+        elapsedMs: Date.now() - startedAt,
+      })
       return NextResponse.json(buildEmptyIndexResponse({
         sourceRoot: '',
         fromYear,
@@ -135,6 +169,15 @@ export async function POST(request: NextRequest) {
       fromDays,
     })
 
+    console.info('[legal-drawings-index:post] success', {
+      sourceRoot: index.sourceRoot,
+      fromYear: index.fromYear,
+      fromDays: index.fromDays ?? null,
+      projectCount: index.projectCount,
+      updatedProjectCount: index.updatedProjectCount,
+      elapsedMs: Date.now() - startedAt,
+    })
+
     return NextResponse.json({
       ...index,
       configured: true,
@@ -142,6 +185,10 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to refresh legal drawings index'
+    console.error('[legal-drawings-index:post] failed', {
+      message,
+      elapsedMs: Date.now() - startedAt,
+    })
     if (message.toLowerCase().includes('not configured')) {
       return NextResponse.json(buildEmptyIndexResponse({ message }))
     }
