@@ -103,6 +103,7 @@ interface ProjectDetailsWorkspaceProps {
   projectId: string;
   badgeNumber: string;
   initialSection?: string;
+  initialProject?: ProjectManifest | null;
 }
 
 interface BrandingExportResult {
@@ -377,6 +378,7 @@ export function ProjectDetailsWorkspace({
   projectId,
   badgeNumber,
   initialSection = "details",
+  initialProject = null,
 }: ProjectDetailsWorkspaceProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -388,8 +390,8 @@ export function ProjectDetailsWorkspace({
   const isScrollingRef = useRef(false);
   
   const [activeSection, setActiveSection] = useState(initialSection);
-  const [project, setProject] = useState<ProjectManifest | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [project, setProject] = useState<ProjectManifest | null>(initialProject);
+  const [loading, setLoading] = useState(!initialProject);
   const [error, setError] = useState<string | null>(null);
   
   const [editDraft, setEditDraft] = useState<ProjectManifest | null>(null);
@@ -464,24 +466,31 @@ export function ProjectDetailsWorkspace({
   // ─── Fetch Project Data ─────────────────────────────────────────────────────
 
   useEffect(() => {
-  async function fetchProject() {
-  try {
-  setLoading(true);
-  const res = await fetch(`/api/projects/${encodeURIComponent(projectId)}`);
-  if (!res.ok) {
-  throw new Error("Failed to fetch project");
-  }
-  const data = await res.json();
-  setProject(data.manifest ?? data.project ?? data);
-  setError(null);
-  } catch (err) {
-  setError(err instanceof Error ? err.message : "Failed to load project");
+    if (initialProject?.id === projectId) {
+      setProject(initialProject);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
+    async function fetchProject() {
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/projects/${encodeURIComponent(projectId)}`);
+        if (!res.ok) {
+          throw new Error("Failed to fetch project");
+        }
+        const data = await res.json();
+        setProject(data.manifest ?? data.project ?? data);
+        setError(null);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load project");
       } finally {
         setLoading(false);
       }
     }
     fetchProject();
-  }, [projectId]);
+  }, [initialProject, projectId]);
 
   // ─── Scrollspy IntersectionObserver Setup ───────────────────────────────────
 
@@ -1653,40 +1662,19 @@ export function ProjectDetailsWorkspace({
 
     setLoadingSchemaLocations(true);
     try {
-      const results = await Promise.allSettled(
-        assignmentEntries.map(async (assignment) => {
-          const response = await fetch(
-            `/api/projects/${encodeURIComponent(project.id)}/wire-list-print-schemas?sheet=${encodeURIComponent(assignment.sheetSlug)}`,
-            { cache: "no-store" },
-          );
-          if (!response.ok)
-            return [assignment.sheetSlug, [] as string[]] as const;
-          const schema = (await response.json()) as {
-            pages?: Array<{
-              pageType: string;
-              locationGroups?: Array<{ location: string; isExternal: boolean }>;
-            }>;
-          };
-          const tocPage = schema.pages?.find((p) => p.pageType === "toc");
-          const locations = (tocPage?.locationGroups ?? [])
-            .filter((g) => g.isExternal === true)
-            .map((g) => String(g.location ?? "").trim())
-            .filter(Boolean);
-          return [
-            assignment.sheetSlug,
-            [...new Set(locations)].sort(),
-          ] as const;
-        }),
+      const response = await fetch(
+        `/api/projects/${encodeURIComponent(project.id)}/schema-locations`,
+        { cache: "no-store" },
       );
-
-      const newMap: Record<string, string[]> = {};
-      for (const r of results) {
-        if (r.status === "fulfilled") {
-          const [slug, locs] = r.value;
-          newMap[slug] = locs;
-        }
+      if (!response.ok) {
+        setSchemaExternalLocations({});
+        return;
       }
-      setSchemaExternalLocations(newMap);
+
+      const payload = (await response.json()) as {
+        bySheet?: Record<string, string[]>;
+      };
+      setSchemaExternalLocations(payload.bySheet ?? {});
     } finally {
       setLoadingSchemaLocations(false);
     }
@@ -1719,12 +1707,10 @@ export function ProjectDetailsWorkspace({
   ]);
 
   // ─── Initialize Visibility Settings from boxSide logic ─────────────────────
-  // This ensures the matrix uses boxSide-based defaults on load rather than all enabled
-  
-  const [hasInitializedVisibilityDefaults, setHasInitializedVisibilityDefaults] = useState(false);
-  
+  // Rebuild matrix state whenever assignment metadata or extracted schema locations change.
+
   useEffect(() => {
-    if (hasInitializedVisibilityDefaults || !project?.assignments || loading) return;
+    if (!project?.assignments || loading) return;
     
     // Helper to infer box side key from string
     const inferBoxSideKey = (boxSide: string | undefined): string | undefined => {
@@ -1774,24 +1760,43 @@ export function ProjectDetailsWorkspace({
       newCrossSettings[slug] = {};
       
       const assignmentBoxSideKey = inferBoxSideKey(assignment.boxSide);
-      const extLocs = assignment.externalLocations ?? [];
+      const explicitLocations = new Map(
+        (assignment.externalLocations ?? [])
+          .map((location) => {
+            const key = location.location?.trim().toUpperCase();
+            return key ? [key, location] : null;
+          })
+          .filter(
+            (
+              entry,
+            ): entry is [
+              string,
+              NonNullable<typeof assignment.externalLocations>[number],
+            ] => entry !== null,
+          ),
+      );
+      const schemaLocations = schemaExternalLocations[slug] ?? [];
+      const fallbackAssignmentLocations = Array.from(explicitLocations.keys());
+      const locationKeys = Array.from(
+        new Set([...schemaLocations.map((location) => location.trim().toUpperCase()), ...fallbackAssignmentLocations]),
+      );
       
-      for (const loc of extLocs) {
-        const locationKey = loc.location?.trim().toUpperCase();
+      for (const locationKey of locationKeys) {
         if (!locationKey) continue;
+        const loc = explicitLocations.get(locationKey);
         
         // Check if there are explicit user-set values (wireListVisible/brandingVisible explicitly set)
-        const hasExplicitWire = loc.wireListVisible !== undefined;
-        const hasExplicitBrand = loc.brandingVisible !== undefined;
-        const hasExplicitCross = (loc as { crossWireVisible?: boolean }).crossWireVisible !== undefined;
+        const hasExplicitWire = loc?.wireListVisible !== undefined;
+        const hasExplicitBrand = loc?.brandingVisible !== undefined;
+        const hasExplicitCross = (loc as { crossWireVisible?: boolean } | undefined)?.crossWireVisible !== undefined;
         
         if (hasExplicitWire && hasExplicitBrand) {
           // User has customized these settings - use them
-          newWireSettings[slug][locationKey] = loc.wireListVisible!;
-          newBrandSettings[slug][locationKey] = loc.brandingVisible!;
+          newWireSettings[slug][locationKey] = loc!.wireListVisible!;
+          newBrandSettings[slug][locationKey] = loc!.brandingVisible!;
           // Use crossWireVisible if set, otherwise fall back to wireListVisible
           const crossWireVisible = (loc as { crossWireVisible?: boolean }).crossWireVisible;
-          newCrossSettings[slug][locationKey] = crossWireVisible ?? loc.wireListVisible !== false;
+          newCrossSettings[slug][locationKey] = crossWireVisible ?? loc!.wireListVisible !== false;
         } else {
           // Compute defaults from boxSide logic
           let targetBoxSideKey = locationToBoxSide[locationKey];
@@ -1816,10 +1821,10 @@ export function ProjectDetailsWorkspace({
             ? getDefaultExternalLocationSettings(assignmentBoxSideKey, targetBoxSideKey)
             : { wire_list: true, brand_list: true, cross_wire: true };
           
-          newWireSettings[slug][locationKey] = hasExplicitWire ? loc.wireListVisible! : defaults.wire_list;
-          newBrandSettings[slug][locationKey] = hasExplicitBrand ? loc.brandingVisible! : defaults.brand_list;
+          newWireSettings[slug][locationKey] = hasExplicitWire ? loc!.wireListVisible! : defaults.wire_list;
+          newBrandSettings[slug][locationKey] = hasExplicitBrand ? loc!.brandingVisible! : defaults.brand_list;
           // Use crossWireVisible if explicitly set, otherwise use defaults
-          const crossWireVisible = (loc as { crossWireVisible?: boolean }).crossWireVisible;
+          const crossWireVisible = (loc as { crossWireVisible?: boolean } | undefined)?.crossWireVisible;
           newCrossSettings[slug][locationKey] = hasExplicitCross ? crossWireVisible! : defaults.cross_wire;
         }
       }
@@ -1828,8 +1833,7 @@ export function ProjectDetailsWorkspace({
     setWireListSettingsMatrix(newWireSettings);
     setBrandListSettingsMatrix(newBrandSettings);
     setCrossWireSettingsMatrix(newCrossSettings);
-    setHasInitializedVisibilityDefaults(true);
-  }, [project?.assignments, loading, hasInitializedVisibilityDefaults]);
+  }, [project?.assignments, loading, schemaExternalLocations]);
 
   // ─── Brand List Settings Handlers ───────────────────────────────────────────
 
@@ -3075,11 +3079,11 @@ export function ProjectDetailsWorkspace({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel  className="rounded-md" disabled={deleting}>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={deleting}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-destructive rounded-md text-destructive-foreground hover:bg-destructive/90"
             >
               {deleting ? (
                 <>

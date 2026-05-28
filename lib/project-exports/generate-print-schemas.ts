@@ -135,6 +135,8 @@ export async function generateAllPrintSchemas(
                 sheetTitle: schema.name,
                 hiddenSections: new Set(standardizeDocument.hiddenSectionKeys ?? []),
                 getLengthForRow: (rowId) => standardizeDocument.rowLengthsById?.[rowId] ?? null,
+                locationBoxSideByName: standardizeDocument.locationBoxSideByName,
+                locationNormalizedTitleByName: standardizeDocument.locationNormalizedTitleByName,
             });
             standardizeSchema.sheetName = normalizeDisplayTitle(standardizeSchema.sheetName);
             await saveWireListPrintSchemaToDirectory(printSchemaDirectory, sheet.slug, standardizeSchema);

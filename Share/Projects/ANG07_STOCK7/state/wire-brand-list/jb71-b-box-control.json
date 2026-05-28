@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-27T21:19:25.198Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb71-b-box-control",
+  "sheetName": "JB71 B BOX CONTROL",
+  "totalRows": 4,
+  "header": {
+    "locationTitle": "JB71 B BOX CONTROL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "ANG07",
+    "projectName": "ANG07",
+    "revision": "A.6_M.2",
+    "controlsDE": "Poovarasan M"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB71 B,BOX CONTROL",
+    "normalizedSheetName": "jb71-b-box-control",
+    "bundleNames": [
+      "EL0100",
+      "EL0101"
+    ],
+    "bundleDisplays": [
+      "EL0100 - B - PNL DC PWR",
+      "EL0101 - B - PNL DC PWR"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "EL",
+      "bundles": [
+        {
+          "bundleName": "EL0100",
+          "toLocation": "JB71 B,PNL DC PWR",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "EL0100:1+",
+              "fromTerminal": "1+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0005",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 220,
+              "toDeviceId": "XT0005:2",
+              "toTerminal": "2",
+              "toLocation": "JB71 B,PNL DC PWR",
+              "bundleName": "EL0100",
+              "bundleDisplay": "EL0100 - B - PNL DC PWR",
+              "devicePrefix": "EL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "EL0100:2-",
+              "fromTerminal": "2-",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0005:4",
+              "toTerminal": "4",
+              "toLocation": "JB71 B,PNL DC PWR",
+              "bundleName": "EL0100",
+              "bundleDisplay": "",
+              "devicePrefix": "EL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        },
+        {
+          "bundleName": "EL0101",
+          "toLocation": "JB71 B,PNL DC PWR",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "EL0101:1+",
+              "fromTerminal": "1+",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU0005",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0005:1",
+              "toTerminal": "1",
+              "toLocation": "JB71 B,PNL DC PWR",
+              "bundleName": "EL0101",
+              "bundleDisplay": "EL0101 - B - PNL DC PWR",
+              "devicePrefix": "EL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "EL0101:2-",
+              "fromTerminal": "2-",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "16",
+              "length": 120,
+              "toDeviceId": "XT0005:3",
+              "toTerminal": "3",
+              "toLocation": "JB71 B,PNL DC PWR",
+              "bundleName": "EL0101",
+              "bundleDisplay": "",
+              "devicePrefix": "EL",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "7d586d6f34f2fda3fb8ca76484d98ebbb96f28825a38ab8debc662ad1be52877"
+}

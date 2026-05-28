@@ -42,6 +42,7 @@
     "legal:clear-orphans": "node --no-warnings --experimental-strip-types scripts/legal-drawings-maintenance.ts clear-orphans",
     "legal:restore-root-sources": "node --no-warnings --experimental-strip-types scripts/legal-drawings-maintenance.ts restore-root-sources",
     "legal:rebuild-layout-references": "node scripts/rebuild-layout-references-from-legals.mjs",
+    "legal:fix-from-location-schema": "node --no-warnings --experimental-strip-types scripts/fix-legal-drawings-from-location.ts",
     "legal:rebuild-unit-box-reference": "node scripts/rebuild-layout-references-from-legals.mjs",
     "legal:rebuild-layout-references:scoped": "node scripts/rebuild-layout-references-from-legals.mjs",
     "legal:group-assignments-by-box": "node scripts/group-assignments-by-unit-type-from-box-number.mjs",

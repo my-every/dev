@@ -264,10 +264,17 @@ function HistoryEntryRow({
       </div>
 
       {/* Value diff */}
-      <button
-        type="button"
+      <div
+        role="button"
+        tabIndex={0}
         className="mt-1 flex w-full items-start gap-2 text-left"
         onClick={() => setExpanded((v) => !v)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            setExpanded((v) => !v);
+          }
+        }}
       >
         <div className="min-w-0 flex-1 space-y-0.5">
           <div className="flex items-center gap-1 truncate text-muted-foreground">
@@ -309,7 +316,7 @@ function HistoryEntryRow({
             </button>
           </div>
         </div>
-      </button>
+      </div>
     </div>
   );
 }

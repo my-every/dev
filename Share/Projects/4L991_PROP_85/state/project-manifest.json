@@ -219,7 +219,7 @@
       "hasData": true,
       "swsType": "UNDECIDED",
       "stage": "READY_TO_LAY",
-      "status": "NOT_STARTED",
+      "status": "COMPLETE",
       "unitType": "2BAY",
       "boxSide": "topBackSide",
       "normalizedTitle": "BECK RELAY",
@@ -621,17 +621,20 @@
         {
           "location": "GEN CMPNT",
           "wireListVisible": false,
-          "brandingVisible": false
+          "brandingVisible": false,
+          "crossWireVisible": false
         },
         {
           "location": "PLC PANEL",
           "wireListVisible": false,
-          "brandingVisible": false
+          "brandingVisible": false,
+          "crossWireVisible": false
         },
         {
           "location": "POWERDIST PANEL",
           "wireListVisible": false,
-          "brandingVisible": false
+          "brandingVisible": false,
+          "crossWireVisible": false
         }
       ],
       "whiteLabels": [
@@ -784,7 +787,8 @@
       "workflowStatus": "pending",
       "linkedOperationCode": null,
       "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "actualMinutes": 0,
+      "crossWireSwapLocations": false
     },
     "gen-cmpnt": {
       "sheetSlug": "gen-cmpnt",
@@ -1287,7 +1291,7 @@
       "swsType": "PANEL",
       "stage": "READY_TO_LAY",
       "status": "NOT_STARTED",
-      "unitType": "2BAY",
+      "unitType": "JB774",
       "boxSide": "topBackSide",
       "normalizedTitle": "PLC PANEL",
       "boxNumber": "1901271-101",
@@ -1296,13 +1300,13 @@
       "externalLocations": [
         {
           "location": "FG E CTRL SMT130",
-          "wireListVisible": false,
-          "brandingVisible": false
+          "wireListVisible": true,
+          "brandingVisible": true
         },
         {
           "location": "GEN CMPNT",
-          "wireListVisible": false,
-          "brandingVisible": false
+          "wireListVisible": true,
+          "brandingVisible": true
         },
         {
           "location": "JB774",
@@ -2722,19 +2726,20 @@
   "unitTypes": [
     "2BAY",
     "JB70",
-    "JB5"
+    "JB5",
+    "JB774"
   ],
   "panducts": 14,
   "rails": 11,
   "aggregates": {
     "totalAssignments": 14,
-    "completedAssignments": 0,
+    "completedAssignments": 1,
     "inProgressAssignments": 0,
     "blockedAssignments": 0,
     "totalEstimatedMinutes": 3258,
     "totalRemainingMinutes": 3258,
     "totalActualMinutes": 0,
-    "overallProgress": 0,
+    "overallProgress": 7,
     "highestPriority": "low",
     "priorityCounts": {
       "critical": 0,
@@ -2752,7 +2757,6 @@
       "fg-e-ctrl-smt130",
       "gen-cmpnt",
       "mcc-pnl-smt130",
-      "plc-panel",
       "pnl-a-smt130",
       "pnl-b-smt130",
       "pnl-door-2-bay",
@@ -2763,6 +2767,9 @@
     "JB70": [
       "control-2-bay",
       "control-jb70"
+    ],
+    "JB774": [
+      "plc-panel"
     ],
     "JB5": [
       "prox-turb"
@@ -4034,7 +4041,17 @@
         "blue-labels"
       ],
       "matchingStrategy": "reference-sheet-header-to-assignment-name",
-      "generatedAt": "2026-05-27T17:54:08.152Z"
+      "generatedAt": "2026-05-27T20:36:07.771Z"
+    }
+  }
+}-labels"
+      ],
+      "matchingStrategy": "reference-sheet-header-to-assignment-name",
+      "generatedAt": "2026-05-27T20:36:07.771Z"
+    }
+  }
+}ignment-name",
+      "generatedAt": "2026-05-27T20:36:07.771Z"
     }
   }
 }

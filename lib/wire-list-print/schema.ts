@@ -79,6 +79,10 @@ export interface WireListPrintSchemaSubsection {
 export interface WireListPrintSchemaLocationGroup {
   location: string;
   isExternal: boolean;
+  /** Normalized display title for location, mainly for external sections. */
+  normalizedTitle?: string;
+  /** Box side token derived from assignment mappings, mainly for external sections. */
+  boxSide?: string;
   totalRows: number;
   subsections: WireListPrintSchemaSubsection[];
 }
@@ -338,10 +342,57 @@ export interface BuildPrintSchemaOptions {
   getLengthForRow?: (rowId: string) => { display: string; roundedInches: number } | null;
   /** Destination sheet name (uppercase) -> box side mapping for external groups. */
   locationBoxSideByName?: Record<string, string>;
+  /** Destination sheet name (uppercase) -> normalized title mapping for display. */
+  locationNormalizedTitleByName?: Record<string, string>;
   /** Blue label sequence map for sorting single connections */
   blueLabels?: BlueLabelSequenceMap | null;
   /** Part number lookup map */
   partNumberMap?: Map<string, PartNumberLookupResult> | null;
+}
+
+function getLocationLookupKeys(location: string | undefined): string[] {
+  const raw = String(location ?? "").trim();
+  if (!raw) return [];
+
+  const keys = new Set<string>();
+  keys.add(raw.toUpperCase());
+  keys.add(raw.toUpperCase().replace(/[\s,_-]+/g, " ").trim());
+
+  return Array.from(keys).filter(Boolean);
+}
+
+function resolveLocationMetadata(
+  location: string,
+  locationBoxSideByName?: Record<string, string>,
+  locationNormalizedTitleByName?: Record<string, string>,
+): { boxSide?: string; normalizedTitle?: string } {
+  let resolvedBoxSide: string | undefined;
+  let resolvedNormalizedTitle: string | undefined;
+
+  for (const key of getLocationLookupKeys(location)) {
+    if (!resolvedBoxSide) {
+      const maybeBoxSide = locationBoxSideByName?.[key];
+      if (maybeBoxSide && maybeBoxSide.trim()) {
+        resolvedBoxSide = maybeBoxSide;
+      }
+    }
+
+    if (!resolvedNormalizedTitle) {
+      const maybeTitle = locationNormalizedTitleByName?.[key];
+      if (maybeTitle && maybeTitle.trim()) {
+        resolvedNormalizedTitle = maybeTitle;
+      }
+    }
+
+    if (resolvedBoxSide && resolvedNormalizedTitle) {
+      break;
+    }
+  }
+
+  return {
+    boxSide: resolvedBoxSide,
+    normalizedTitle: resolvedNormalizedTitle,
+  };
 }
 
 function buildLocationGroupsFromVisibleSections(
@@ -422,6 +473,7 @@ export function buildWireListPrintSchema(options: BuildPrintSchemaOptions): Wire
             ? settings.brandingSortMode
             : settings.wireListSortMode,
           locationBoxSideByName: options.locationBoxSideByName,
+          locationNormalizedTitleByName: options.locationNormalizedTitleByName,
         }));
 
   // Compute page count
@@ -571,9 +623,19 @@ export function buildWireListPrintSchema(options: BuildPrintSchemaOptions): Wire
     }
 
     if (schemaSubsections.length > 0) {
+      const locationMetadata = group.isExternal
+        ? resolveLocationMetadata(
+            group.location,
+            options.locationBoxSideByName,
+            options.locationNormalizedTitleByName,
+          )
+        : {};
+
       schemaLocationGroups.push({
         location: group.location,
         isExternal: group.isExternal,
+        normalizedTitle: locationMetadata.normalizedTitle,
+        boxSide: locationMetadata.boxSide ?? group.boxSide,
         totalRows: schemaSubsections.reduce((s, sub) => s + sub.rowCount, 0),
         subsections: schemaSubsections,
       });
@@ -713,6 +775,7 @@ export function hydrateSchemaForRender(schema: WireListPrintSchema): SchemaHydra
     ? wireListPage.locationGroups.map((g) => ({
       location: g.location,
       isExternal: g.isExternal,
+      boxSide: g.boxSide,
       totalRows: g.totalRows,
       subsections: g.subsections.map(schemaSubsectionToPrint),
     }))

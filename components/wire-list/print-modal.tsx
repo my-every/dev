@@ -1797,11 +1797,7 @@ function CoverPage({
           <h2 className="text-2xl font-semibold text-foreground/80">
             {sheetTitle || currentSheetName}
           </h2>
-          {coverSubtitle && (
-            <p className="text-lg font-medium text-muted-foreground">
-              {coverSubtitle}
-            </p>
-          )}
+        
           {/* SWS Type Badge */}
           {swsType && swsType.id !== 'UNDECIDED' && (
             <div className="pt-2">
@@ -2300,6 +2296,7 @@ function PrintTableRow({
   isRowHidden,
   onToggleRowHidden,
   locationNormalizedTitleByName,
+  isExternal = false,
 }: {
   row: SemanticWireListRow;
   showFrom: boolean;
@@ -2331,6 +2328,7 @@ function PrintTableRow({
   onToggleRowHidden?: () => void;
   /** Mapping to transform raw location names to normalized titles */
   locationNormalizedTitleByName?: Record<string, string>;
+  isExternal?: boolean;
 }) {
   // Check if this is a device change row (:J -> :P pattern)
   const deviceChangeInfo = detectDeviceChange(row);
@@ -2392,7 +2390,7 @@ function PrintTableRow({
         </td>
       )}
       {showFromLocation && (
-        <td className="px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{resolveLocationDisplayTitle(displayEndpoints.fromLocation, locationNormalizedTitleByName, currentSheetName)}</td>
+        <td className="px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{resolveLocationDisplayTitle(displayEndpoints.fromLocation, locationNormalizedTitleByName, isExternal ? undefined : currentSheetName)}</td>
       )}
       {showPartNumber && (
         <td className="px-1 py-1 text-center text-[10px] font-medium text-muted-foreground">{fromReference?.partNumber || ""}</td>
@@ -2466,7 +2464,7 @@ function PrintTableRow({
         <td className={cn(
           "px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis",
           (showIPV || showComments) && "border-r border-foreground/20"
-        )}>{resolveLocationDisplayTitle(displayEndpoints.toLocation, locationNormalizedTitleByName, currentSheetName)}</td>
+        )}>{resolveLocationDisplayTitle(displayEndpoints.toLocation, locationNormalizedTitleByName, isExternal ? undefined : currentSheetName)}</td>
       )}
       {/* Review group */}
       {showIPV && (
@@ -3058,6 +3056,7 @@ function PrintPreviewTable({
                 isRowHidden={hiddenRows?.has(item.row.__rowId)}
                 onToggleRowHidden={onToggleRowHidden ? () => onToggleRowHidden(item.row.__rowId) : undefined}
                 locationNormalizedTitleByName={locationNormalizedTitleByName}
+                isExternal={isExternal}
                 rowClassName={[
                   item.showDeviceSeparator ? "border-t-[2px] border-t-muted" : "",
                   item.isWarningRow ? "border-x-4 border-x-orange-400 bg-orange-50/30" : "",

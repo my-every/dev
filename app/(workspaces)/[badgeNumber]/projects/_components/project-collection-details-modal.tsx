@@ -1519,40 +1519,19 @@ export function ProjectCollectionDetailsModal({
 
     setLoadingSchemaLocations(true);
     try {
-      const results = await Promise.allSettled(
-        assignmentEntries.map(async (assignment) => {
-          const response = await fetch(
-            `/api/projects/${encodeURIComponent(projectState.id)}/wire-list-print-schemas?sheet=${encodeURIComponent(assignment.sheetSlug)}`,
-            { cache: "no-store" },
-          );
-          if (!response.ok)
-            return [assignment.sheetSlug, [] as string[]] as const;
-          const schema = (await response.json()) as {
-            pages?: Array<{
-              pageType: string;
-              locationGroups?: Array<{ location: string; isExternal: boolean }>;
-            }>;
-          };
-          const tocPage = schema.pages?.find((p) => p.pageType === "toc");
-          const locations = (tocPage?.locationGroups ?? [])
-            .filter((g) => g.isExternal === true)
-            .map((g) => String(g.location ?? "").trim())
-            .filter(Boolean);
-          return [
-            assignment.sheetSlug,
-            [...new Set(locations)].sort(),
-          ] as const;
-        }),
+      const response = await fetch(
+        `/api/projects/${encodeURIComponent(projectState.id)}/schema-locations`,
+        { cache: "no-store" },
       );
-
-      const next: Record<string, string[]> = {};
-      for (const result of results) {
-        if (result.status === "fulfilled") {
-          const [slug, locations] = result.value;
-          next[slug] = locations;
-        }
+      if (!response.ok) {
+        setSchemaExternalLocations({});
+        return;
       }
-      setSchemaExternalLocations(next);
+
+      const payload = (await response.json()) as {
+        bySheet?: Record<string, string[]>;
+      };
+      setSchemaExternalLocations(payload.bySheet ?? {});
     } finally {
       setLoadingSchemaLocations(false);
     }

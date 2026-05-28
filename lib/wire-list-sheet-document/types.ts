@@ -136,6 +136,8 @@ export interface WireListPrintDocumentData {
   crossWireSectionKeys?: string[];
   sheetDocument?: WireListSheetDocument;
   standardVisibleSections?: VisiblePreviewSection[];
+  /** Destination sheet name (uppercase) -> box side mapping for external groups. */
+  locationBoxSideByName?: Record<string, string>;
   /** Destination sheet name (uppercase) -> normalized title mapping for display in location columns. */
   locationNormalizedTitleByName?: Record<string, string>;
 }

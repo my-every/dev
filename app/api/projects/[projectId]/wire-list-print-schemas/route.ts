@@ -110,6 +110,8 @@ export async function POST(
         sheetTitle: document.sheetTitle,
         hiddenSections: new Set(document.hiddenSectionKeys ?? []),
         getLengthForRow: (rowId) => document.rowLengthsById?.[rowId] ?? null,
+        locationBoxSideByName: document.locationBoxSideByName,
+        locationNormalizedTitleByName: document.locationNormalizedTitleByName,
       })
       schema.sheetName = normalizeDisplayTitle(schema.sheetName)
 

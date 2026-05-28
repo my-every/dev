@@ -452,6 +452,7 @@ export async function buildProjectSheetPrintDocument(options: {
     standardVisibleSections,
     includeFeedbackPage: settings.mode !== "branding",
     sheetDocument,
+    locationBoxSideByName,
     locationNormalizedTitleByName,
   };
 }

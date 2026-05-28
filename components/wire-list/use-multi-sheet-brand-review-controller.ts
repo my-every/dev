@@ -159,6 +159,29 @@ async function fetchBrandListSchema(
   return response.json() as Promise<BrandListExportSchema>;
 }
 
+async function generateBrandListSchema(
+  projectId: string,
+  sheetSlug: string,
+): Promise<BrandListExportSchema | null> {
+  const response = await fetch(
+    `/api/projects/${encodeURIComponent(projectId)}/wire-brand-list-schemas`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ sheetSlug, save: true }),
+    },
+  );
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const payload = await response.json() as { schema?: BrandListExportSchema };
+  return payload.schema ?? null;
+}
+
 export function useMultiSheetBrandReviewController({
   projectId,
   isOpen,
@@ -368,16 +391,28 @@ export function useMultiSheetBrandReviewController({
 
     setLoadingSlug(sheetSlug);
     try {
+      const brandSchemaPromise = shouldFetchBrandSchema
+        ? (async () => {
+            const existing = await fetchBrandListSchema(projectId, sheetSlug);
+            if (existing) {
+              return existing;
+            }
+            // Fallback to lazy generation when no saved branding schema exists yet.
+            return generateBrandListSchema(projectId, sheetSlug);
+          })()
+        : Promise.resolve(null);
+
       const [sheet, printSchema, brandSchema] = await Promise.all([
         fetchSheetSchema(projectId, sheetSlug),
         fetchWireListPrintSchema(projectId, sheetSlug),
-        shouldFetchBrandSchema
-          ? fetchBrandListSchema(projectId, sheetSlug)
-          : Promise.resolve(null),
+        brandSchemaPromise,
       ]);
 
       if (brandSchema) {
         missingBrandSchemaSlugsRef.current.delete(sheetSlug);
+        setSavedBrandSchemaSlugs((prev) =>
+          prev.includes(sheetSlug) ? prev : [...prev, sheetSlug],
+        );
       } else if (!savedSchemaSet.has(sheetSlug)) {
         missingBrandSchemaSlugsRef.current.add(sheetSlug);
       }

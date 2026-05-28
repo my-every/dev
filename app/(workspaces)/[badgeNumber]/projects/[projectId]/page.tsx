@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { readProjectManifest } from "@/lib/project-state/share-project-state-handlers";
 import { ProjectDetailsWorkspace } from "@/components/projects/project-details-workspace";
+import type { ProjectManifest } from "@/types/project-manifest";
 
 type ProjectDetailsWorkspacePageProps = {
   params: Promise<{
@@ -40,6 +41,7 @@ export default async function ProjectDetailsWorkspacePage({
         projectId={projectId}
         badgeNumber={badgeNumber}
         initialSection={section || "details"}
+        initialProject={project as ProjectManifest}
       />
     </Suspense>
   );
