@@ -170,6 +170,11 @@ export function LegalSourceIndexPanel({
     return Array.from(projectNumbers);
   }, [filteredProjects, selectedFileKeys]);
 
+  const refreshWindowLabel = useMemo(
+    () => REFRESH_WINDOWS.find((window) => window.days === refreshWindowDays)?.label ?? `${refreshWindowDays} days`,
+    [refreshWindowDays],
+  );
+
   const refreshIndex = useCallback(async () => {
     setIsRefreshingIndex(true);
     setSourceFeedback("Refreshing index...");
@@ -198,11 +203,6 @@ export function LegalSourceIndexPanel({
       setIsRefreshingIndex(false);
     }
   }, [mutate, refreshWindowDays, refreshWindowLabel]);
-
-  const refreshWindowLabel = useMemo(
-    () => REFRESH_WINDOWS.find((window) => window.days === refreshWindowDays)?.label ?? `${refreshWindowDays} days`,
-    [refreshWindowDays],
-  );
 
   const pickSourceRoot = useCallback(async () => {
     if (!isElectron) return;
