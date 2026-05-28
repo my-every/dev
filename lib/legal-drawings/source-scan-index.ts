@@ -42,6 +42,7 @@ export interface LegalDrawingsSourceIndexSchema {
   sourceRoot: string
   scannedAt: string
   fromYear: number
+  fromDays?: number
   projectCount: number
   updatedProjectCount: number
   projects: LegalDrawingIndexedProject[]
@@ -229,14 +230,20 @@ export async function resolveLegalDrawingsSourceRoot(): Promise<string> {
 export async function buildLegalDrawingsSourceIndex(options?: {
   sourceRoot?: string
   fromYear?: number
+  fromDays?: number
   previousIndex?: LegalDrawingsSourceIndexSchema | null
 }): Promise<LegalDrawingsSourceIndexSchema> {
   const sourceRoot = normalizeConfiguredSourceRoot(options?.sourceRoot)
   if (!sourceRoot) {
     throw new Error('Legal Drawings source root is not configured. Set it in Startup or Path Settings.')
   }
-  const fromYear = Number.isInteger(options?.fromYear) ? Number(options?.fromYear) : 2026
-  const fromTimeMs = new Date(fromYear, 0, 1).getTime()
+  const fromDays = Number.isInteger(options?.fromDays) && Number(options?.fromDays) > 0
+    ? Number(options?.fromDays)
+    : undefined
+  const fromTimeMs = fromDays
+    ? Date.now() - fromDays * 24 * 60 * 60 * 1000
+    : new Date(Number.isInteger(options?.fromYear) ? Number(options?.fromYear) : 2026, 0, 1).getTime()
+  const fromYear = new Date(fromTimeMs).getFullYear()
 
   const previousIndex = options?.previousIndex ?? await readSavedSourceIndex()
   const previousSnapshot = buildPreviousSnapshot(previousIndex)
@@ -316,6 +323,7 @@ export async function buildLegalDrawingsSourceIndex(options?: {
     sourceRoot,
     scannedAt: new Date().toISOString(),
     fromYear,
+    ...(fromDays ? { fromDays } : {}),
     projectCount: projects.length,
     updatedProjectCount: projects.filter(project => project.hasUpdates).length,
     projects,
@@ -327,6 +335,7 @@ export async function buildLegalDrawingsSourceIndex(options?: {
 export async function refreshLegalDrawingsSourceIndex(options?: {
   sourceRoot?: string
   fromYear?: number
+  fromDays?: number
 }): Promise<LegalDrawingsSourceIndexSchema> {
   const previousIndex = await readSavedSourceIndex()
   const index = await buildLegalDrawingsSourceIndex({
@@ -340,6 +349,7 @@ export async function refreshLegalDrawingsSourceIndex(options?: {
 export async function getLegalDrawingsSourceIndex(options?: {
   sourceRoot?: string
   fromYear?: number
+  fromDays?: number
   refresh?: boolean
 }): Promise<LegalDrawingsSourceIndexSchema> {
   if (options?.refresh) {

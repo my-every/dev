@@ -2,11 +2,17 @@
 
 import { useCallback, useMemo, useState } from "react";
 import useSWR from "swr";
-import { CheckCircle2, FileSpreadsheet, FolderOpen, Loader2, RefreshCw } from "lucide-react";
+import { CheckCircle2, ChevronDown, FileSpreadsheet, FolderOpen, Loader2, RefreshCw } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { CreateProjectDialog } from "@/components/projects/create-project-dialog";
 import { useAppRuntime } from "@/components/providers/app-runtime-provider";
@@ -38,10 +44,18 @@ interface LegalDrawingsIndexPayload {
   sourceRoot: string;
   scannedAt: string;
   fromYear: number;
+  fromDays?: number;
   projectCount: number;
   updatedProjectCount: number;
   projects: IndexedProject[];
 }
+
+const REFRESH_WINDOWS = [
+  { label: "30 days", days: 30 },
+  { label: "3 mo", days: 90 },
+  { label: "6 mo", days: 180 },
+  { label: "12 mo", days: 365 },
+] as const;
 
 const fetcher = async (url: string): Promise<LegalDrawingsIndexPayload> => {
   const response = await fetch(url, { cache: "no-store" });
@@ -81,13 +95,16 @@ export function LegalSourceIndexPanel({
   const { isElectron, chooseDirectory, isSelectingWorkspace } = useAppRuntime();
   const [query, setQuery] = useState("");
   const [selectedFileKeys, setSelectedFileKeys] = useState<Set<string>>(new Set());
+  const [refreshWindowDays, setRefreshWindowDays] = useState<number>(90);
   const [isCreatingFromSelected, setIsCreatingFromSelected] = useState(false);
   const [createFromSelectedError, setCreateFromSelectedError] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [seedPdNumber, setSeedPdNumber] = useState<string | null>(null);
 
+  const indexUrl = useMemo(() => `/api/runtime/legal-drawings-index?fromDays=${refreshWindowDays}`, [refreshWindowDays]);
+
   const { data, error, isLoading, mutate, isValidating } = useSWR(
-    "/api/runtime/legal-drawings-index",
+    indexUrl,
     fetcher,
   );
 
@@ -139,10 +156,15 @@ export function LegalSourceIndexPanel({
     await fetch("/api/runtime/legal-drawings-index", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({}),
+      body: JSON.stringify({ fromDays: refreshWindowDays }),
     });
     await mutate();
-  }, [mutate]);
+  }, [mutate, refreshWindowDays]);
+
+  const refreshWindowLabel = useMemo(
+    () => REFRESH_WINDOWS.find((window) => window.days === refreshWindowDays)?.label ?? `${refreshWindowDays} days`,
+    [refreshWindowDays],
+  );
 
   const pickSourceRoot = useCallback(async () => {
     if (!isElectron) return;
@@ -252,15 +274,43 @@ export function LegalSourceIndexPanel({
         <div className="flex flex-wrap items-center justify-between gap-2">
           <CardTitle className="text-sm">Legal Source Index</CardTitle>
           <div className="flex items-center gap-2">
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => void refreshIndex()}
-              disabled={isValidating}
-            >
-              {isValidating ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="mr-1.5 h-3.5 w-3.5" />}
-              Refresh Index
-            </Button>
+            <div className="flex items-center">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => void refreshIndex()}
+                disabled={isValidating}
+                className="rounded-r-none"
+              >
+                {isValidating ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="mr-1.5 h-3.5 w-3.5" />}
+                Refresh {refreshWindowLabel}
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={isValidating}
+                    className="rounded-l-none border-l-0 px-2"
+                    aria-label="Select refresh duration"
+                  >
+                    <ChevronDown className="h-3.5 w-3.5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-36">
+                  {REFRESH_WINDOWS.map((window) => (
+                    <DropdownMenuItem
+                      key={window.days}
+                      onClick={() => setRefreshWindowDays(window.days)}
+                      className="text-xs"
+                    >
+                      {window.label}
+                      {refreshWindowDays === window.days ? " (selected)" : ""}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
             {isElectron ? (
               <Button
                 size="sm"
