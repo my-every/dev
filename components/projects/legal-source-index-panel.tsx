@@ -100,6 +100,7 @@ export function LegalSourceIndexPanel({
   const [refreshWindowDays, setRefreshWindowDays] = useState<number>(90);
   const [isRefreshingIndex, setIsRefreshingIndex] = useState(false);
   const [sourceRootDraft, setSourceRootDraft] = useState("");
+  const [configuredSourceRoot, setConfiguredSourceRoot] = useState("");
   const [isSavingSourceRoot, setIsSavingSourceRoot] = useState(false);
   const [sourceRootSaveState, setSourceRootSaveState] = useState<"idle" | "saved">("idle");
   const [sourceFeedback, setSourceFeedback] = useState<string | null>(null);
@@ -109,7 +110,14 @@ export function LegalSourceIndexPanel({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [seedPdNumber, setSeedPdNumber] = useState<string | null>(null);
 
-  const indexUrl = useMemo(() => `/api/runtime/legal-drawings-index?fromDays=${refreshWindowDays}`, [refreshWindowDays]);
+  const indexUrl = useMemo(() => {
+    const params = new URLSearchParams({ fromDays: String(refreshWindowDays) });
+    const sourceRoot = configuredSourceRoot.trim();
+    if (sourceRoot) {
+      params.set("sourceRoot", sourceRoot);
+    }
+    return `/api/runtime/legal-drawings-index?${params.toString()}`;
+  }, [configuredSourceRoot, refreshWindowDays]);
 
   const { data, error, isLoading, mutate } = useSWR(
     indexUrl,
@@ -124,8 +132,45 @@ export function LegalSourceIndexPanel({
   useEffect(() => {
     if (typeof data?.sourceRoot === "string") {
       setSourceRootDraft(data.sourceRoot);
+      if (data.sourceRoot.trim().length > 0) {
+        setConfiguredSourceRoot(data.sourceRoot);
+      }
     }
   }, [data?.sourceRoot]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadConfiguredPath = async () => {
+      try {
+        const { response, payload } = await fetchJsonWithTimeout("/api/runtime/path-settings", {
+          cache: "no-store",
+        }, 12000);
+        if (!mounted || !response.ok) {
+          return;
+        }
+
+        const pathPayload = payload as { legalDrawingsPath?: string | null };
+        const startupPath = String(pathPayload.legalDrawingsPath ?? "").trim();
+        if (!startupPath) {
+          return;
+        }
+
+        setConfiguredSourceRoot(startupPath);
+        setSourceRootDraft(startupPath);
+        setSourceFeedback("Loaded Legal Drawings source root from startup settings.");
+        setSourceFeedbackKind("info");
+      } catch {
+        // Keep panel usable even if path-settings fetch fails.
+      }
+    };
+
+    void loadConfiguredPath();
+
+    return () => {
+      mounted = false;
+    };
+  }, [fetchJsonWithTimeout]);
 
   const fetchJsonWithTimeout = useCallback(async (
     url: string,
@@ -202,10 +247,14 @@ export function LegalSourceIndexPanel({
     setSourceFeedbackKind("info");
     console.info("[legal-source-index-panel] refresh:start", { fromDays: refreshWindowDays });
     try {
+      const sourceRoot = configuredSourceRoot.trim();
       const { response, payload } = await fetchJsonWithTimeout("/api/runtime/legal-drawings-index", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fromDays: refreshWindowDays }),
+        body: JSON.stringify({
+          fromDays: refreshWindowDays,
+          ...(sourceRoot ? { sourceRoot } : {}),
+        }),
       });
       const typedPayload = payload as { error?: string; message?: string | null };
       if (!response.ok) {
@@ -214,16 +263,16 @@ export function LegalSourceIndexPanel({
       await mutate();
       setSourceFeedback(typedPayload.message || `Index refreshed for ${refreshWindowLabel}.`);
       setSourceFeedbackKind("success");
-      console.info("[legal-source-index-panel] refresh:success", { fromDays: refreshWindowDays });
+      console.info("[legal-source-index-panel] refresh:success", { fromDays: refreshWindowDays, sourceRoot: sourceRoot || null });
     } catch (refreshError) {
       const message = refreshError instanceof Error ? refreshError.message : "Failed to refresh legal drawings index.";
       setSourceFeedback(message);
       setSourceFeedbackKind("error");
-      console.error("[legal-source-index-panel] refresh:failed", { message, fromDays: refreshWindowDays });
+      console.error("[legal-source-index-panel] refresh:failed", { message, fromDays: refreshWindowDays, sourceRoot: sourceRoot || null });
     } finally {
       setIsRefreshingIndex(false);
     }
-  }, [fetchJsonWithTimeout, mutate, refreshWindowDays, refreshWindowLabel]);
+  }, [configuredSourceRoot, fetchJsonWithTimeout, mutate, refreshWindowDays, refreshWindowLabel]);
 
   const pickAndSaveSourceRoot = useCallback(async () => {
     if (!isElectron) return;
@@ -256,6 +305,12 @@ export function LegalSourceIndexPanel({
         throw new Error(typedSettingsPayload.error || "Failed to save legal drawings path.");
       }
 
+      // Path save succeeded; persist local configured source immediately.
+      setConfiguredSourceRoot(selected);
+      setSourceRootSaveState("saved");
+      setSourceFeedback("Source root saved. Refreshing index...");
+      setSourceFeedbackKind("info");
+
       const { response: refreshResponse, payload: refreshPayload } = await fetchJsonWithTimeout("/api/runtime/legal-drawings-index", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -263,11 +318,19 @@ export function LegalSourceIndexPanel({
       });
       const typedRefreshPayload = refreshPayload as { error?: string; message?: string | null };
       if (!refreshResponse.ok) {
-        throw new Error(typedRefreshPayload.error || "Failed to refresh legal drawings index.");
+        setSourceFeedback(
+          `Source root saved, but index refresh failed: ${typedRefreshPayload.error || "Failed to refresh legal drawings index."}`,
+        );
+        setSourceFeedbackKind("error");
+        console.error("[legal-source-index-panel] source-root:refresh-after-save:failed", {
+          sourceRoot: selected,
+          error: typedRefreshPayload.error || "Failed to refresh legal drawings index.",
+        });
+        await mutate();
+        return;
       }
 
       await mutate();
-      setSourceRootSaveState("saved");
       setSourceFeedback(typedRefreshPayload.message || "Source root saved and index refreshed.");
       setSourceFeedbackKind("success");
       console.info("[legal-source-index-panel] source-root:save:success", { sourceRoot: selected });
