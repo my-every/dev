@@ -8,6 +8,35 @@ import {
 
 export const dynamic = 'force-dynamic'
 
+function buildEmptyIndexResponse(input?: {
+  sourceRoot?: string
+  fromYear?: number
+  fromDays?: number
+  configured?: boolean
+  message?: string
+}) {
+  const nowIso = new Date().toISOString()
+  const fallbackFromDays = Number.isInteger(input?.fromDays) && (input?.fromDays ?? 0) > 0
+    ? Number(input?.fromDays)
+    : 90
+  const fallbackFromYear = Number.isInteger(input?.fromYear)
+    ? Number(input?.fromYear)
+    : new Date().getFullYear()
+
+  return {
+    version: 1 as const,
+    sourceRoot: input?.sourceRoot ?? '',
+    scannedAt: nowIso,
+    fromYear: fallbackFromYear,
+    ...(fallbackFromDays ? { fromDays: fallbackFromDays } : {}),
+    projectCount: 0,
+    updatedProjectCount: 0,
+    projects: [],
+    configured: input?.configured ?? false,
+    message: input?.message ?? 'Legal Drawings source root is not configured.',
+  }
+}
+
 function parseOptionalYear(value: string | null): number | undefined {
   if (!value) {
     return undefined
@@ -36,11 +65,22 @@ function parseOptionalPositiveInt(value: string | null): number | undefined {
 
 export async function GET(request: NextRequest) {
   try {
-    const sourceRoot = request.nextUrl.searchParams.get('sourceRoot') ?? await resolveLegalDrawingsSourceRoot()
+    const sourceRootParam = request.nextUrl.searchParams.get('sourceRoot')
+    const sourceRoot = sourceRootParam?.trim() || await resolveLegalDrawingsSourceRoot()
     const fromYear = parseOptionalYear(request.nextUrl.searchParams.get('fromYear'))
     const fromDays = parseOptionalPositiveInt(request.nextUrl.searchParams.get('fromDays'))
     const refreshFlag = request.nextUrl.searchParams.get('refresh')
     const refresh = refreshFlag === '1' || refreshFlag === 'true'
+
+    if (!sourceRoot) {
+      return NextResponse.json(buildEmptyIndexResponse({
+        sourceRoot: '',
+        fromYear,
+        fromDays,
+        configured: false,
+        message: 'Legal Drawings source root is not configured. Set it in Startup or Path Settings.',
+      }))
+    }
 
     const index = await getLegalDrawingsSourceIndex({
       sourceRoot,
@@ -49,10 +89,19 @@ export async function GET(request: NextRequest) {
       refresh,
     })
 
-    return NextResponse.json(index)
+    return NextResponse.json({
+      ...index,
+      configured: true,
+      message: null,
+    })
   } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to load legal drawings index'
+    if (message.toLowerCase().includes('not configured')) {
+      return NextResponse.json(buildEmptyIndexResponse({ message }))
+    }
+
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Failed to load legal drawings index' },
+      { error: message },
       { status: 500 },
     )
   }
@@ -70,16 +119,35 @@ export async function POST(request: NextRequest) {
     const fromYear = Number.isInteger(body.fromYear) ? body.fromYear : undefined
     const fromDays = Number.isInteger(body.fromDays) && body.fromDays > 0 ? body.fromDays : undefined
 
+    if (!sourceRoot) {
+      return NextResponse.json(buildEmptyIndexResponse({
+        sourceRoot: '',
+        fromYear,
+        fromDays,
+        configured: false,
+        message: 'Legal Drawings source root is not configured. Set it in Startup or Path Settings.',
+      }))
+    }
+
     const index = await refreshLegalDrawingsSourceIndex({
       sourceRoot,
       fromYear,
       fromDays,
     })
 
-    return NextResponse.json(index)
+    return NextResponse.json({
+      ...index,
+      configured: true,
+      message: null,
+    })
   } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to refresh legal drawings index'
+    if (message.toLowerCase().includes('not configured')) {
+      return NextResponse.json(buildEmptyIndexResponse({ message }))
+    }
+
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Failed to refresh legal drawings index' },
+      { error: message },
       { status: 500 },
     )
   }

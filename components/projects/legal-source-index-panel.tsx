@@ -48,6 +48,8 @@ interface LegalDrawingsIndexPayload {
   projectCount: number;
   updatedProjectCount: number;
   projects: IndexedProject[];
+  configured?: boolean;
+  message?: string | null;
 }
 
 const REFRESH_WINDOWS = [
@@ -96,6 +98,7 @@ export function LegalSourceIndexPanel({
   const [query, setQuery] = useState("");
   const [selectedFileKeys, setSelectedFileKeys] = useState<Set<string>>(new Set());
   const [refreshWindowDays, setRefreshWindowDays] = useState<number>(90);
+  const [isRefreshingIndex, setIsRefreshingIndex] = useState(false);
   const [isCreatingFromSelected, setIsCreatingFromSelected] = useState(false);
   const [createFromSelectedError, setCreateFromSelectedError] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -106,6 +109,11 @@ export function LegalSourceIndexPanel({
   const { data, error, isLoading, mutate, isValidating } = useSWR(
     indexUrl,
     fetcher,
+    {
+      revalidateOnFocus: false,
+      shouldRetryOnError: false,
+      errorRetryCount: 0,
+    },
   );
 
   const filteredProjects = useMemo(() => {
@@ -153,12 +161,17 @@ export function LegalSourceIndexPanel({
   }, [filteredProjects, selectedFileKeys]);
 
   const refreshIndex = useCallback(async () => {
-    await fetch("/api/runtime/legal-drawings-index", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ fromDays: refreshWindowDays }),
-    });
-    await mutate();
+    setIsRefreshingIndex(true);
+    try {
+      await fetch("/api/runtime/legal-drawings-index", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fromDays: refreshWindowDays }),
+      });
+      await mutate();
+    } finally {
+      setIsRefreshingIndex(false);
+    }
   }, [mutate, refreshWindowDays]);
 
   const refreshWindowLabel = useMemo(
@@ -279,10 +292,10 @@ export function LegalSourceIndexPanel({
                 size="sm"
                 variant="outline"
                 onClick={() => void refreshIndex()}
-                disabled={isValidating}
+                disabled={isRefreshingIndex}
                 className="rounded-r-none"
               >
-                {isValidating ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="mr-1.5 h-3.5 w-3.5" />}
+                {isRefreshingIndex ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="mr-1.5 h-3.5 w-3.5" />}
                 Refresh {refreshWindowLabel}
               </Button>
               <DropdownMenu>
@@ -290,7 +303,7 @@ export function LegalSourceIndexPanel({
                   <Button
                     size="sm"
                     variant="outline"
-                    disabled={isValidating}
+                    disabled={isRefreshingIndex}
                     className="rounded-l-none border-l-0 px-2"
                     aria-label="Select refresh duration"
                   >
@@ -328,7 +341,14 @@ export function LegalSourceIndexPanel({
         <div className="text-xs text-muted-foreground">
           Source: {data?.sourceRoot || "Not configured"}
           {data?.scannedAt ? ` | Last scan: ${new Date(data.scannedAt).toLocaleString()}` : ""}
+          {data?.fromDays ? ` | Window: ${data.fromDays} days` : ""}
         </div>
+
+        {data?.configured === false && data?.message ? (
+          <div className="rounded-md border border-amber-400/30 bg-amber-100/40 px-3 py-2 text-xs text-amber-800">
+            {data.message}
+          </div>
+        ) : null}
 
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="outline">Projects: {data?.projectCount ?? 0}</Badge>

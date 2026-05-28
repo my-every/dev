@@ -94,8 +94,13 @@ function normalizeConfiguredSourceRoot(value: string | null | undefined): string
     return ''
   }
 
-  const wildcardIndex = raw.indexOf('*')
-  const withoutWildcard = wildcardIndex >= 0 ? raw.slice(0, wildcardIndex) : raw
+  const unquoted = raw.replace(/^['\"]+|['\"]+$/g, '').trim()
+  if (!unquoted) {
+    return ''
+  }
+
+  const wildcardIndex = unquoted.indexOf('*')
+  const withoutWildcard = wildcardIndex >= 0 ? unquoted.slice(0, wildcardIndex) : unquoted
 
   const withoutTemplate = withoutWildcard
     .replace(/<P#_ProjectName>/gi, '')
@@ -106,6 +111,11 @@ function normalizeConfiguredSourceRoot(value: string | null | undefined): string
     .trim()
 
   if (!cleaned) {
+    return ''
+  }
+
+  // Ignore drive-only values like "S:" which are not valid roots for scanning.
+  if (/^[a-zA-Z]:$/.test(cleaned)) {
     return ''
   }
 
