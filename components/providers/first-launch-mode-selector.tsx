@@ -244,7 +244,7 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
     isAppModeLoading,
     setAppMode,
     isElectron,
-    chooseWorkspaceRoot,
+    chooseDirectory,
     isSelectingWorkspace,
   } = useAppRuntime()
   const router = useRouter()
@@ -254,6 +254,7 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
   const [isSaving, setIsSaving] = useState(false)
   const [setupSource, setSetupSource] = useState<DepartmentSetupSource>('import-existing')
   const [shareDirectory, setShareDirectory] = useState('')
+  const [legalDrawingsDirectory, setLegalDrawingsDirectory] = useState('')
   const [seedBadge, setSeedBadge] = useState('')
   const [seedLegalName, setSeedLegalName] = useState('')
   const [seedPreferredName, setSeedPreferredName] = useState('')
@@ -278,10 +279,11 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
     if (hasCompletedFirstLaunch && !allowRevisit) return
     const load = async () => {
       try {
-        const res = await fetch('/api/runtime/share-directory', { cache: 'no-store' })
+        const res = await fetch('/api/runtime/path-settings', { cache: 'no-store' })
         if (!res.ok) return
-        const payload = (await res.json()) as { shareDirectory?: string }
+        const payload = (await res.json()) as { shareDirectory?: string; legalDrawingsPath?: string | null }
         if (payload.shareDirectory) setShareDirectory(payload.shareDirectory)
+        if (payload.legalDrawingsPath) setLegalDrawingsDirectory(payload.legalDrawingsPath)
       } catch { /* optional */ }
     }
     void load()
@@ -307,6 +309,7 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
   const canGoBack = stepIndex > 0
   const isDepartmentSetupValid =
     shareDirectory.trim().length > 0 &&
+    legalDrawingsDirectory.trim().length > 0 &&
     (setupSource === 'import-existing' ||
       (/^\d+$/.test(seedBadge) && /^\d{4}$/.test(seedPin) && seedLegalName.trim().length > 1))
 
@@ -314,10 +317,23 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
     (step.id !== 'MODE' || Boolean(selectedMode)) &&
     (step.id !== 'DEPARTMENT_SETUP' || isDepartmentSetupValid)
 
-  const browseForFolder = async () => {
+  const browseForShareFolder = async () => {
     if (!isElectron) return
-    const selected = await chooseWorkspaceRoot()
+    const selected = await chooseDirectory({
+      title: 'Select Share Directory',
+      createDirectory: true,
+    })
     if (selected) setShareDirectory(selected)
+  }
+
+  const browseForLegalDrawingsFolder = async () => {
+    if (!isElectron) return
+    const selected = await chooseDirectory({
+      title: 'Select Legal Drawings Root (Drawings)',
+      defaultPath: String.raw`S:\Legal Drawings\Drawings`,
+      createDirectory: false,
+    })
+    if (selected) setLegalDrawingsDirectory(selected)
   }
 
   const runDepartmentSetup = async () => {
@@ -325,6 +341,7 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
     setSetupSuccessMessage(null)
     const payload = {
       shareDirectory: shareDirectory.trim(),
+      legalDrawingsPath: legalDrawingsDirectory.trim(),
       source: setupSource,
       seedUser:
         setupSource === 'create-new'
@@ -504,7 +521,7 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
                                 variant='outline'
                                 size='sm'
                                 className='shrink-0 rounded-xl'
-                                onClick={() => void browseForFolder()}
+                                onClick={() => void browseForShareFolder()}
                                 disabled={isSelectingWorkspace}
                               >
                                 <FolderOpen className='mr-1 size-3.5' />
@@ -514,6 +531,37 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
                           </div>
                           <p className='text-xs text-muted-foreground'>
                             Stores users, credentials, settings, and runtime profile files.
+                          </p>
+                        </div>
+
+                        <div className='space-y-2'>
+                          <Label htmlFor='dept-legal-dir' className='text-sm font-medium text-foreground'>
+                            Legal Drawings Directory
+                          </Label>
+                          <div className='flex gap-2'>
+                            <Input
+                              id='dept-legal-dir'
+                              value={legalDrawingsDirectory}
+                              onChange={(e) => setLegalDrawingsDirectory(e.target.value)}
+                              placeholder='/absolute/path/to/Legal Drawings/Drawings'
+                              className='rounded-xl'
+                            />
+                            {isElectron && (
+                              <Button
+                                type='button'
+                                variant='outline'
+                                size='sm'
+                                className='shrink-0 rounded-xl'
+                                onClick={() => void browseForLegalDrawingsFolder()}
+                                disabled={isSelectingWorkspace}
+                              >
+                                <FolderOpen className='mr-1 size-3.5' />
+                                {isSelectingWorkspace ? '...' : 'Browse'}
+                              </Button>
+                            )}
+                          </div>
+                          <p className='text-xs text-muted-foreground'>
+                            Used only for indexing and importing legal source files (UCP/LAY). This is separate from Share.
                           </p>
                         </div>
 
@@ -648,7 +696,7 @@ export function FirstLaunchModeSelector({ allowRevisit = false }: { allowRevisit
                           }
                           description={
                             selectedMode === 'DEPARTMENT'
-                              ? shareDirectory || 'Share directory not selected.'
+                              ? `Share: ${shareDirectory || 'not selected'} | Legal Drawings: ${legalDrawingsDirectory || 'not selected'}`
                               : 'Workspace and standalone modes skip the department bootstrap step.'
                           }
                         />

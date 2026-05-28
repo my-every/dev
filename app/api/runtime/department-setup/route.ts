@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { createProfileInShare } from '@/lib/profile/share-profile-store'
 import { setShareDirectorySettings } from '@/lib/runtime/share-directory'
+import { setPathSettings } from '@/lib/runtime/share-directory'
 import {
   upsertUserSettings,
   writeUserSettings,
@@ -61,6 +62,7 @@ interface DepartmentSeedUserInput {
 
 interface DepartmentSetupRequest {
   shareDirectory: string
+  legalDrawingsPath?: string
   source: DepartmentSetupSource
   seedUser?: DepartmentSeedUserInput
 }
@@ -257,6 +259,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    if (!body.legalDrawingsPath || !path.isAbsolute(body.legalDrawingsPath)) {
+      return NextResponse.json(
+        { error: 'legalDrawingsPath must be an absolute path' },
+        { status: 400 },
+      )
+    }
+
     if (body.source !== 'import-existing' && body.source !== 'create-new') {
       return NextResponse.json(
         { error: 'source must be import-existing or create-new' },
@@ -265,6 +274,7 @@ export async function POST(request: NextRequest) {
     }
 
     const resolvedShareDirectory = await setShareDirectorySettings(body.shareDirectory)
+    await setPathSettings({ legalDrawingsPath: body.legalDrawingsPath })
     const usersDir = path.join(resolvedShareDirectory, 'users')
     await fs.mkdir(usersDir, { recursive: true })
 

@@ -90,7 +90,7 @@ function getMatchKind(fileName: string): LegalDrawingFileKind | null {
 function normalizeConfiguredSourceRoot(value: string | null | undefined): string {
   const raw = String(value ?? '').trim()
   if (!raw) {
-    return path.normalize(DEFAULT_LEGAL_DRAWINGS_SOURCE_ROOT)
+    return ''
   }
 
   const wildcardIndex = raw.indexOf('*')
@@ -105,7 +105,7 @@ function normalizeConfiguredSourceRoot(value: string | null | undefined): string
     .trim()
 
   if (!cleaned) {
-    return path.normalize(DEFAULT_LEGAL_DRAWINGS_SOURCE_ROOT)
+    return ''
   }
 
   return path.normalize(cleaned)
@@ -223,7 +223,7 @@ async function writeSourceIndex(index: LegalDrawingsSourceIndexSchema): Promise<
 export async function resolveLegalDrawingsSourceRoot(): Promise<string> {
   const pathSettings = await getPathSettings()
   const configured = normalizeConfiguredSourceRoot(pathSettings.legalDrawingsPath)
-  return configured || path.normalize(DEFAULT_LEGAL_DRAWINGS_SOURCE_ROOT)
+  return configured
 }
 
 export async function buildLegalDrawingsSourceIndex(options?: {
@@ -232,6 +232,9 @@ export async function buildLegalDrawingsSourceIndex(options?: {
   previousIndex?: LegalDrawingsSourceIndexSchema | null
 }): Promise<LegalDrawingsSourceIndexSchema> {
   const sourceRoot = normalizeConfiguredSourceRoot(options?.sourceRoot)
+  if (!sourceRoot) {
+    throw new Error('Legal Drawings source root is not configured. Set it in Startup or Path Settings.')
+  }
   const fromYear = Number.isInteger(options?.fromYear) ? Number(options?.fromYear) : 2026
   const fromTimeMs = new Date(fromYear, 0, 1).getTime()
 
