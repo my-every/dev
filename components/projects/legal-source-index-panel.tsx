@@ -99,8 +99,7 @@ export function LegalSourceIndexPanel({
   const [selectedFileKeys, setSelectedFileKeys] = useState<Set<string>>(new Set());
   const [refreshWindowDays, setRefreshWindowDays] = useState<number>(90);
   const [isRefreshingIndex, setIsRefreshingIndex] = useState(false);
-  const [sourceRootDraft, setSourceRootDraft] = useState("");
-  const [configuredSourceRoot, setConfiguredSourceRoot] = useState("");
+  const [sourceRoot, setSourceRoot] = useState("");
   const [isSavingSourceRoot, setIsSavingSourceRoot] = useState(false);
   const [sourceRootSaveState, setSourceRootSaveState] = useState<"idle" | "saved">("idle");
   const [sourceFeedback, setSourceFeedback] = useState<string | null>(null);
@@ -110,14 +109,34 @@ export function LegalSourceIndexPanel({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [seedPdNumber, setSeedPdNumber] = useState<string | null>(null);
 
+  const fetchJsonWithTimeout = useCallback(async (
+    url: string,
+    init?: RequestInit,
+    timeoutMs = 20000,
+  ) => {
+    const controller = new AbortController();
+    const timerId = window.setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      const response = await fetch(url, {
+        ...init,
+        signal: controller.signal,
+      });
+      const payload = (await response.json().catch(() => ({}))) as Record<string, unknown>;
+      return { response, payload };
+    } finally {
+      window.clearTimeout(timerId);
+    }
+  }, []);
+
   const indexUrl = useMemo(() => {
     const params = new URLSearchParams({ fromDays: String(refreshWindowDays) });
-    const sourceRoot = configuredSourceRoot.trim();
-    if (sourceRoot) {
-      params.set("sourceRoot", sourceRoot);
+    const trimmedSourceRoot = sourceRoot.trim();
+    if (trimmedSourceRoot) {
+      params.set("sourceRoot", trimmedSourceRoot);
     }
     return `/api/runtime/legal-drawings-index?${params.toString()}`;
-  }, [configuredSourceRoot, refreshWindowDays]);
+  }, [refreshWindowDays, sourceRoot]);
 
   const { data, error, isLoading, mutate } = useSWR(
     indexUrl,
@@ -173,301 +192,308 @@ export function LegalSourceIndexPanel({
   }, [fetchJsonWithTimeout]);
 
   const fetchJsonWithTimeout = useCallback(async (
-    url: string,
-    init?: RequestInit,
-    timeoutMs = 20000,
-  ) => {
-    const controller = new AbortController();
-    const timerId = window.setTimeout(() => controller.abort(), timeoutMs);
-
-    try {
-      const response = await fetch(url, {
-        ...init,
-        signal: controller.signal,
-      });
-      const payload = (await response.json().catch(() => ({}))) as Record<string, unknown>;
-      return { response, payload };
-    } finally {
-      window.clearTimeout(timerId);
-    }
-  }, []);
-
-  const filteredProjects = useMemo(() => {
-    const normalized = query.trim().toLowerCase();
-    if (!normalized) return data?.projects ?? [];
-
-    return (data?.projects ?? []).filter((project) => {
-      if (
-        project.projectNumber.toLowerCase().includes(normalized)
-        || project.projectFolderName.toLowerCase().includes(normalized)
-        || project.projectName.toLowerCase().includes(normalized)
-      ) {
-        return true;
+        setSourceRoot(data.sourceRoot);
       }
+    }, [data?.sourceRoot]);
 
-      return project.files.some((file) => file.fileName.toLowerCase().includes(normalized));
-    });
-  }, [data?.projects, query]);
-
-  const selectedUpdatedCount = useMemo(() => {
-    let count = 0;
-    for (const project of filteredProjects) {
-      for (const file of project.files) {
-        const key = `${project.projectFolderName}::${file.relativePath}`;
-        if (selectedFileKeys.has(key) && (file.status === "new" || file.status === "updated")) {
-          count += 1;
-        }
-      }
-    }
-    return count;
-  }, [filteredProjects, selectedFileKeys]);
-
-  const selectedProjectNumbers = useMemo(() => {
-    const projectNumbers = new Set<string>();
-    for (const project of filteredProjects) {
-      const hasSelectedFile = project.files.some((file) => {
-        const key = `${project.projectFolderName}::${file.relativePath}`;
-        return selectedFileKeys.has(key);
-      });
-      if (hasSelectedFile) {
-        projectNumbers.add(project.projectNumber);
-      }
-    }
-    return Array.from(projectNumbers);
-  }, [filteredProjects, selectedFileKeys]);
-
-  const refreshWindowLabel = useMemo(
-    () => REFRESH_WINDOWS.find((window) => window.days === refreshWindowDays)?.label ?? `${refreshWindowDays} days`,
-    [refreshWindowDays],
-  );
-
-  const refreshIndex = useCallback(async () => {
-    setIsRefreshingIndex(true);
-    setSourceFeedback("Refreshing index...");
-    setSourceFeedbackKind("info");
-    console.info("[legal-source-index-panel] refresh:start", { fromDays: refreshWindowDays });
-    try {
-      const sourceRoot = configuredSourceRoot.trim();
-      const { response, payload } = await fetchJsonWithTimeout("/api/runtime/legal-drawings-index", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fromDays: refreshWindowDays,
-          ...(sourceRoot ? { sourceRoot } : {}),
-        }),
-      });
-      const typedPayload = payload as { error?: string; message?: string | null };
-      if (!response.ok) {
-        throw new Error(typedPayload.error || "Failed to refresh legal drawings index.");
-      }
-      await mutate();
-      setSourceFeedback(typedPayload.message || `Index refreshed for ${refreshWindowLabel}.`);
-      setSourceFeedbackKind("success");
-      console.info("[legal-source-index-panel] refresh:success", { fromDays: refreshWindowDays, sourceRoot: sourceRoot || null });
-    } catch (refreshError) {
-      const message = refreshError instanceof Error ? refreshError.message : "Failed to refresh legal drawings index.";
-      setSourceFeedback(message);
-      setSourceFeedbackKind("error");
-      console.error("[legal-source-index-panel] refresh:failed", { message, fromDays: refreshWindowDays, sourceRoot: sourceRoot || null });
-    } finally {
-      setIsRefreshingIndex(false);
-    }
-  }, [configuredSourceRoot, fetchJsonWithTimeout, mutate, refreshWindowDays, refreshWindowLabel]);
-
-  const pickAndSaveSourceRoot = useCallback(async () => {
-    if (!isElectron) return;
-
-    const selected = await chooseDirectory({
-      title: "Select Legal Drawings Root (Drawings)",
-      defaultPath: String.raw`S:\Legal Drawings\Drawings`,
-      createDirectory: false,
-    });
-
-    if (!selected) {
-      return;
-    }
-
-    setSourceRootDraft(selected);
-    setSourceRootSaveState("idle");
-
-    setIsSavingSourceRoot(true);
-    setSourceFeedback("Saving source root...");
-    setSourceFeedbackKind("info");
-    console.info("[legal-source-index-panel] source-root:save:start", { sourceRoot: selected });
-    try {
-      const { response: settingsResponse, payload: settingsPayload } = await fetchJsonWithTimeout("/api/runtime/path-settings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ legalDrawingsPath: selected }),
-      });
-      if (!settingsResponse.ok) {
-        const typedSettingsPayload = settingsPayload as { error?: string };
-        throw new Error(typedSettingsPayload.error || "Failed to save legal drawings path.");
-      }
-
-      // Path save succeeded; persist local configured source immediately.
-      setConfiguredSourceRoot(selected);
-      setSourceRootSaveState("saved");
-      setSourceFeedback("Source root saved. Refreshing index...");
-      setSourceFeedbackKind("info");
-
-      const { response: refreshResponse, payload: refreshPayload } = await fetchJsonWithTimeout("/api/runtime/legal-drawings-index", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sourceRoot: selected, fromDays: refreshWindowDays }),
-      });
-      const typedRefreshPayload = refreshPayload as { error?: string; message?: string | null };
-      if (!refreshResponse.ok) {
-        setSourceFeedback(
-          `Source root saved, but index refresh failed: ${typedRefreshPayload.error || "Failed to refresh legal drawings index."}`,
-        );
-        setSourceFeedbackKind("error");
-        console.error("[legal-source-index-panel] source-root:refresh-after-save:failed", {
-          sourceRoot: selected,
-          error: typedRefreshPayload.error || "Failed to refresh legal drawings index.",
-        });
-        await mutate();
+    useEffect(() => {
+      if (sourceRootSaveState !== "saved") {
         return;
       }
 
-      await mutate();
-      setSourceFeedback(typedRefreshPayload.message || "Source root saved and index refreshed.");
-      setSourceFeedbackKind("success");
-      console.info("[legal-source-index-panel] source-root:save:success", { sourceRoot: selected });
-    } catch (saveError) {
-      const message = saveError instanceof Error
-        ? saveError.name === "AbortError"
-          ? "Saving source root timed out. Please retry."
-          : saveError.message
-        : "Failed to save source root.";
-      setSourceRootSaveState("idle");
-      setSourceFeedback(message);
-      setSourceFeedbackKind("error");
-      console.error("[legal-source-index-panel] source-root:save:failed", { message, sourceRoot: selected });
-    } finally {
-      setIsSavingSourceRoot(false);
-    }
-  }, [chooseDirectory, fetchJsonWithTimeout, isElectron, mutate, refreshWindowDays]);
+      const timeoutId = window.setTimeout(() => {
+        setSourceRootSaveState("idle");
+      }, 3000);
 
-  const toggleFile = useCallback((projectFolderName: string, relativePath: string, checked: boolean) => {
-    const key = `${projectFolderName}::${relativePath}`;
-    setSelectedFileKeys((previous) => {
-      const next = new Set(previous);
-      if (checked) {
-        next.add(key);
-      } else {
-        next.delete(key);
-      }
-      return next;
-    });
-  }, []);
+      return () => {
+        window.clearTimeout(timeoutId);
+      };
+    }, [sourceRootSaveState]);
 
-  const openCreateDialogForProject = useCallback((pdNumber: string) => {
-    setSeedPdNumber(pdNumber);
-    setDialogOpen(true);
-  }, []);
+    useEffect(() => {
+      let mounted = true;
 
-  const createFromSelected = useCallback(async () => {
-    if (!data || selectedProjectNumbers.length !== 1) {
-      return;
-    }
+      const loadConfiguredPath = async () => {
+        try {
+          const { response, payload } = await fetchJsonWithTimeout(
+            "/api/runtime/path-settings",
+            { cache: "no-store" },
+            12000,
+          );
 
-    const targetProjectNumber = selectedProjectNumbers[0]!;
-    const selectedFiles = data.projects
-      .filter((project) => project.projectNumber === targetProjectNumber)
-      .flatMap((project) =>
-        project.files
-          .filter((file) => selectedFileKeys.has(`${project.projectFolderName}::${file.relativePath}`))
-          .map((file) => ({
-            fullPath: file.fullPath,
-            fileName: file.fileName,
-            kind: file.kind,
-            mtimeMs: file.mtimeMs,
-          })),
-      );
+          if (!mounted || !response.ok) {
+            return;
+          }
 
-    if (selectedFiles.length === 0) {
-      setCreateFromSelectedError("No selected files were found for the chosen project.");
-      return;
-    }
+          const pathPayload = payload as { legalDrawingsPath?: string | null };
+          const startupPath = String(pathPayload.legalDrawingsPath ?? "").trim();
+          if (!startupPath) {
+            return;
+          }
 
-    setCreateFromSelectedError(null);
-    setIsCreatingFromSelected(true);
-    try {
-      const response = await fetch("/api/runtime/legal-drawings-index/instantiate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          pdNumber: targetProjectNumber,
-          selectedFiles,
-        }),
-      });
-
-      const payload = (await response.json().catch(() => ({}))) as {
-        error?: string;
-        manifest?: { id?: string };
+          setSourceRoot(startupPath);
+          setSourceFeedback("Loaded Legal Drawings source root from startup settings.");
+          setSourceFeedbackKind("info");
+        } catch {
+          // Keep panel usable even if path-settings fetch fails.
+        }
       };
 
-      if (!response.ok || !payload.manifest?.id) {
-        throw new Error(payload.error || "Failed to create project from selected files.");
+      void loadConfiguredPath();
+
+      return () => {
+        mounted = false;
+      };
+    }, [fetchJsonWithTimeout]);
+
+    const filteredProjects = useMemo(() => {
+      const normalized = query.trim().toLowerCase();
+      if (!normalized) return data?.projects ?? [];
+
+      return (data?.projects ?? []).filter((project) => {
+        if (
+          project.projectNumber.toLowerCase().includes(normalized)
+          || project.projectFolderName.toLowerCase().includes(normalized)
+          || project.projectName.toLowerCase().includes(normalized)
+        ) {
+          return true;
+        }
+
+        return project.files.some((file) => file.fileName.toLowerCase().includes(normalized));
+      });
+    }, [data?.projects, query]);
+
+    const selectedUpdatedCount = useMemo(() => {
+      let count = 0;
+      for (const project of filteredProjects) {
+        for (const file of project.files) {
+          const key = `${project.projectFolderName}::${file.relativePath}`;
+          if (selectedFileKeys.has(key) && (file.status === "new" || file.status === "updated")) {
+            count += 1;
+          }
+        }
+      }
+      return count;
+    }, [filteredProjects, selectedFileKeys]);
+
+    const selectedProjectNumbers = useMemo(() => {
+      const projectNumbers = new Set<string>();
+      for (const project of filteredProjects) {
+        const hasSelectedFile = project.files.some((file) => {
+          const key = `${project.projectFolderName}::${file.relativePath}`;
+          return selectedFileKeys.has(key);
+        });
+        if (hasSelectedFile) {
+          projectNumbers.add(project.projectNumber);
+        }
+      }
+      return Array.from(projectNumbers);
+    }, [filteredProjects, selectedFileKeys]);
+
+    const refreshWindowLabel = useMemo(
+      () => REFRESH_WINDOWS.find((window) => window.days === refreshWindowDays)?.label ?? `${refreshWindowDays} days`,
+      [refreshWindowDays],
+    );
+
+    const refreshIndex = useCallback(async () => {
+      setIsRefreshingIndex(true);
+      setSourceFeedback("Refreshing index...");
+      setSourceFeedbackKind("info");
+
+      const trimmedSourceRoot = sourceRoot.trim();
+      console.info("[legal-source-index-panel] refresh:start", {
+        fromDays: refreshWindowDays,
+        sourceRoot: trimmedSourceRoot || null,
+      });
+
+      try {
+        const { response, payload } = await fetchJsonWithTimeout("/api/runtime/legal-drawings-index", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fromDays: refreshWindowDays,
+            ...(trimmedSourceRoot ? { sourceRoot: trimmedSourceRoot } : {}),
+          }),
+        });
+
+        const typedPayload = payload as { error?: string; message?: string | null };
+        if (!response.ok) {
+          throw new Error(typedPayload.error || "Failed to refresh legal drawings index.");
+        }
+
+        await mutate();
+        setSourceFeedback(typedPayload.message || `Index refreshed for ${refreshWindowLabel}.`);
+        setSourceFeedbackKind("success");
+
+        console.info("[legal-source-index-panel] refresh:success", {
+          fromDays: refreshWindowDays,
+          sourceRoot: trimmedSourceRoot || null,
+        });
+      } catch (refreshError) {
+        const message = refreshError instanceof Error ? refreshError.message : "Failed to refresh legal drawings index.";
+        setSourceFeedback(message);
+        setSourceFeedbackKind("error");
+
+        console.error("[legal-source-index-panel] refresh:failed", {
+          message,
+          fromDays: refreshWindowDays,
+          sourceRoot: trimmedSourceRoot || null,
+        });
+      } finally {
+        setIsRefreshingIndex(false);
+      }
+    }, [fetchJsonWithTimeout, mutate, refreshWindowDays, refreshWindowLabel, sourceRoot]);
+
+    const pickAndSaveSourceRoot = useCallback(async () => {
+      if (!isElectron) return;
+
+      const selected = await chooseDirectory({
+        title: "Select Legal Drawings Root (Drawings)",
+        defaultPath: String.raw`S:\Legal Drawings\Drawings`,
+        createDirectory: false,
+      });
+
+      if (!selected) {
+        return;
       }
 
-      setSelectedFileKeys(new Set());
-      onCreated?.(payload.manifest.id);
-    } catch (error) {
-      setCreateFromSelectedError(
-        error instanceof Error ? error.message : "Failed to create project from selected files.",
-      );
-    } finally {
-      setIsCreatingFromSelected(false);
-    }
-  }, [data, onCreated, selectedFileKeys, selectedProjectNumbers]);
+      setSourceRootSaveState("idle");
+      setIsSavingSourceRoot(true);
+      setSourceFeedback("Saving source root...");
+      setSourceFeedbackKind("info");
 
-  return (
-    <Card className="mb-4 border-border/60 bg-card/70">
-      <CardHeader className="space-y-2">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <CardTitle className="text-sm">Legal Source Index</CardTitle>
-          <div className="flex items-center gap-2">
-            <div className="flex items-center">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => void refreshIndex()}
-                disabled={isRefreshingIndex}
-                className="rounded-r-none"
-              >
-                {isRefreshingIndex ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="mr-1.5 h-3.5 w-3.5" />}
-                Refresh {refreshWindowLabel}
-              </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    disabled={isRefreshingIndex}
-                    className="rounded-l-none border-l-0 px-2"
-                    aria-label="Select refresh duration"
-                  >
-                    <ChevronDown className="h-3.5 w-3.5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-36">
-                  {REFRESH_WINDOWS.map((window) => (
-                    <DropdownMenuItem
-                      key={window.days}
-                      onClick={() => setRefreshWindowDays(window.days)}
-                      className="text-xs"
-                    >
-                      {window.label}
-                      {refreshWindowDays === window.days ? " (selected)" : ""}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            {isElectron ? (
-              <Button
+      console.info("[legal-source-index-panel] source-root:save:start", { sourceRoot: selected });
+
+      try {
+        const { response: settingsResponse, payload: settingsPayload } = await fetchJsonWithTimeout("/api/runtime/path-settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ legalDrawingsPath: selected }),
+        });
+
+        if (!settingsResponse.ok) {
+          const typedSettingsPayload = settingsPayload as { error?: string };
+          throw new Error(typedSettingsPayload.error || "Failed to save legal drawings path.");
+        }
+
+        setSourceRoot(selected);
+        setSourceRootSaveState("saved");
+        setSourceFeedback("Source root saved. Refreshing index...");
+        setSourceFeedbackKind("info");
+
+        const { response: refreshResponse, payload: refreshPayload } = await fetchJsonWithTimeout("/api/runtime/legal-drawings-index", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sourceRoot: selected, fromDays: refreshWindowDays }),
+        });
+
+        const typedRefreshPayload = refreshPayload as { error?: string; message?: string | null };
+        if (!refreshResponse.ok) {
+          setSourceFeedback(
+            `Source root saved, but index refresh failed: ${typedRefreshPayload.error || "Failed to refresh legal drawings index."}`,
+          );
+          setSourceFeedbackKind("error");
+          console.error("[legal-source-index-panel] source-root:refresh-after-save:failed", {
+            sourceRoot: selected,
+            error: typedRefreshPayload.error || "Failed to refresh legal drawings index.",
+          });
+          await mutate();
+          return;
+        }
+
+        await mutate();
+        setSourceFeedback(typedRefreshPayload.message || "Source root saved and index refreshed.");
+        setSourceFeedbackKind("success");
+        console.info("[legal-source-index-panel] source-root:save:success", { sourceRoot: selected });
+      } catch (saveError) {
+        const message = saveError instanceof Error
+          ? saveError.name === "AbortError"
+            ? "Saving source root timed out. Please retry."
+            : saveError.message
+          : "Failed to save source root.";
+
+        setSourceRootSaveState("idle");
+        setSourceFeedback(message);
+        setSourceFeedbackKind("error");
+        console.error("[legal-source-index-panel] source-root:save:failed", { message, sourceRoot: selected });
+      } finally {
+        setIsSavingSourceRoot(false);
+      }
+    }, [chooseDirectory, fetchJsonWithTimeout, isElectron, mutate, refreshWindowDays]);
+
+    const toggleFile = useCallback((projectFolderName: string, relativePath: string, checked: boolean) => {
+      const key = `${projectFolderName}::${relativePath}`;
+      setSelectedFileKeys((previous) => {
+        const next = new Set(previous);
+        if (checked) {
+          next.add(key);
+        } else {
+          next.delete(key);
+        }
+        return next;
+      });
+    }, []);
+
+    const openCreateDialogForProject = useCallback((pdNumber: string) => {
+      setSeedPdNumber(pdNumber);
+      setDialogOpen(true);
+    }, []);
+
+    const createFromSelected = useCallback(async () => {
+      if (!data || selectedProjectNumbers.length !== 1) {
+        return;
+      }
+
+      const targetProjectNumber = selectedProjectNumbers[0]!;
+      const selectedFiles = data.projects
+        .filter((project) => project.projectNumber === targetProjectNumber)
+        .flatMap((project) =>
+          project.files
+            .filter((file) => selectedFileKeys.has(`${project.projectFolderName}::${file.relativePath}`))
+            .map((file) => ({
+              fullPath: file.fullPath,
+              fileName: file.fileName,
+              kind: file.kind,
+              mtimeMs: file.mtimeMs,
+            })),
+        );
+
+      if (selectedFiles.length === 0) {
+        setCreateFromSelectedError("No selected files were found for the chosen project.");
+        return;
+      }
+
+      setCreateFromSelectedError(null);
+      setIsCreatingFromSelected(true);
+      try {
+        const response = await fetch("/api/runtime/legal-drawings-index/instantiate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            pdNumber: targetProjectNumber,
+            selectedFiles,
+          }),
+        });
+
+        const payload = (await response.json().catch(() => ({}))) as {
+          error?: string;
+          manifest?: { id?: string };
+        };
+
+        if (!response.ok || !payload.manifest?.id) {
+          throw new Error(payload.error || "Failed to create project from selected files.");
+        }
+
+        setSelectedFileKeys(new Set());
+        onCreated?.(payload.manifest.id);
+      } catch (createError) {
+        setCreateFromSelectedError(
+          createError instanceof Error ? createError.message : "Failed to create project from selected files.",
+        );
+      } finally {
+        setIsCreatingFromSelected(false);
+      }
+    }, [data, onCreated, selectedFileKeys, selectedProjectNumbers]);
                 size="sm"
                 variant="outline"
                 onClick={() => void pickAndSaveSourceRoot()}
@@ -501,7 +527,7 @@ export function LegalSourceIndexPanel({
 
         <div className="flex flex-wrap items-center gap-2">
           <Input
-            value={sourceRootDraft}
+            value={sourceRoot}
             readOnly
             placeholder="Set legal drawings source root"
             className="h-8 min-w-64 flex-1"
