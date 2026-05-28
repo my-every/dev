@@ -11,6 +11,12 @@ let nextServerProcess: ChildProcess | null = null
 let packagedServerFailure: string | null = null
 let packagedServerStderr = ''
 
+interface DirectoryPickerOptions {
+  title?: string
+  defaultPath?: string
+  createDirectory?: boolean
+}
+
 function getPreloadPath(): string {
   return path.join(__dirname, 'preload.js')
 }
@@ -222,6 +228,22 @@ async function createMainWindow(): Promise<void> {
 }
 
 function registerIpcHandlers(): void {
+  async function chooseDirectory(options: DirectoryPickerOptions = {}): Promise<string | null> {
+    const result = await dialog.showOpenDialog({
+      title: options.title ?? 'Select Folder',
+      defaultPath: options.defaultPath,
+      properties: options.createDirectory
+        ? ['openDirectory', 'createDirectory']
+        : ['openDirectory'],
+    })
+
+    if (result.canceled || result.filePaths.length === 0) {
+      return null
+    }
+
+    return result.filePaths[0] ?? null
+  }
+
   ipcMain.handle('d380:get-runtime-info', async () => {
     return {
       isElectron: true,
@@ -231,17 +253,15 @@ function registerIpcHandlers(): void {
     }
   })
 
+  ipcMain.handle('d380:choose-directory', async (_event, options?: DirectoryPickerOptions) => {
+    return chooseDirectory(options ?? {})
+  })
+
   ipcMain.handle('d380:choose-workspace-root', async () => {
-    const result = await dialog.showOpenDialog({
+    return chooseDirectory({
       title: 'Select D380 Share Root',
-      properties: ['openDirectory', 'createDirectory'],
+      createDirectory: true,
     })
-
-    if (result.canceled || result.filePaths.length === 0) {
-      return null
-    }
-
-    return result.filePaths[0] ?? null
   })
 }
 

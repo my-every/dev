@@ -38,6 +38,7 @@ interface AppRuntimeContextValue {
   refreshRuntimeInfo: () => Promise<void>
   refreshAppModeSettings: () => Promise<void>
   setAppMode: (nextMode: AppLaunchMode) => Promise<void>
+  chooseDirectory: (options?: { title?: string; defaultPath?: string; createDirectory?: boolean }) => Promise<string | null>
   chooseWorkspaceRoot: () => Promise<string | null>
 }
 
@@ -58,6 +59,7 @@ const defaultContextValue: AppRuntimeContextValue = {
   refreshRuntimeInfo: async () => {},
   refreshAppModeSettings: async () => {},
   setAppMode: async () => {},
+  chooseDirectory: async () => null,
   chooseWorkspaceRoot: async () => null,
 }
 
@@ -187,6 +189,77 @@ export function AppRuntimeProvider({ children }: { children: ReactNode }) {
     }
   }, [bridge])
 
+  const chooseDirectory = useCallback(async (options?: { title?: string; defaultPath?: string; createDirectory?: boolean }) => {
+    if (!bridge?.chooseDirectory) {
+      return chooseWorkspaceRoot()
+    }
+
+    setIsSelectingWorkspace(true)
+
+    try {
+      return await bridge.chooseDirectory(options)
+    } finally {
+      setIsSelectingWorkspace(false)
+    }
+  }, [bridge, chooseWorkspaceRoot])
+
+  useEffect(() => {
+    if (!bridge?.chooseDirectory || dataMode !== 'electron') {
+      return
+    }
+
+    const promptKey = 'd380.legalDrawings.prompted'
+    if (typeof window !== 'undefined' && window.sessionStorage.getItem(promptKey) === '1') {
+      return
+    }
+
+    let cancelled = false
+
+    const ensureLegalRootConfigured = async () => {
+      try {
+        const response = await fetch('/api/runtime/path-settings', { cache: 'no-store' })
+        if (!response.ok) {
+          return
+        }
+
+        const payload = await response.json() as { legalDrawingsPath?: string | null }
+        if (payload.legalDrawingsPath && payload.legalDrawingsPath.trim().length > 0) {
+          return
+        }
+
+        if (typeof window !== 'undefined') {
+          window.sessionStorage.setItem(promptKey, '1')
+        }
+
+        const selected = await chooseDirectory({
+          title: 'Select Legal Drawings Root (Drawings)',
+          defaultPath: String.raw`S:\Legal Drawings\Drawings`,
+          createDirectory: false,
+        })
+
+        if (!selected || cancelled) {
+          return
+        }
+
+        await fetch('/api/runtime/path-settings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ legalDrawingsPath: selected }),
+        })
+      } catch (error) {
+        console.warn('[runtime] Failed to auto-configure legal drawings root', error)
+      }
+    }
+
+    void ensureLegalRootConfigured()
+
+    return () => {
+      cancelled = true
+    }
+  }, [bridge, chooseDirectory, dataMode])
+
   const value: AppRuntimeContextValue = {
     dataMode,
     isElectron: dataMode === 'electron',
@@ -202,6 +275,7 @@ export function AppRuntimeProvider({ children }: { children: ReactNode }) {
     refreshRuntimeInfo,
     refreshAppModeSettings,
     setAppMode,
+    chooseDirectory,
     chooseWorkspaceRoot,
   }
 

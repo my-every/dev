@@ -25,7 +25,7 @@ const DEFAULT_PATHS: PathSettings = {
 
 export function PathSettingsForm() {
   const router = useRouter();
-  const { isElectron, chooseWorkspaceRoot, isSelectingWorkspace } = useAppRuntime();
+  const { isElectron, chooseDirectory, isSelectingWorkspace } = useAppRuntime();
 
   const [paths, setPaths] = useState<PathSettings>(DEFAULT_PATHS);
   const [isLoading, setIsLoading] = useState(true);
@@ -99,11 +99,22 @@ export function PathSettingsForm() {
 
   const browsePath = useCallback(async (field: keyof PathSettings) => {
     if (!isElectron) return;
-    const selected = await chooseWorkspaceRoot();
+    const selected = await chooseDirectory(
+      field === "legalDrawingsPath"
+        ? {
+            title: "Select Legal Drawings Root (Drawings)",
+            defaultPath: String.raw`S:\Legal Drawings\Drawings`,
+            createDirectory: false,
+          }
+        : {
+            title: "Select Folder",
+            createDirectory: true,
+          },
+    );
     if (selected) {
       setPaths((prev) => ({ ...prev, [field]: selected }));
     }
-  }, [isElectron, chooseWorkspaceRoot]);
+  }, [chooseDirectory, isElectron]);
 
   return (
     <div className="flex min-h-screen flex-col bg-background">

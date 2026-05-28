@@ -5,8 +5,15 @@ export interface D380ElectronRuntimeInfo {
   version: string
 }
 
+export interface D380DirectoryPickerOptions {
+  title?: string
+  defaultPath?: string
+  createDirectory?: boolean
+}
+
 export interface D380ElectronBridge {
   getRuntimeInfo(): Promise<D380ElectronRuntimeInfo>
+  chooseDirectory(options?: D380DirectoryPickerOptions): Promise<string | null>
   chooseWorkspaceRoot(): Promise<string | null>
 }
 

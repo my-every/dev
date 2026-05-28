@@ -302,3 +302,8 @@ export async function setAppModeSettings(appMode: AppLaunchMode): Promise<{
     }
   }
 
+export async function resolveRuntimeStorageDirectoryPath(): Promise<string> {
+  await fs.mkdir(RUNTIME_STORAGE_DIRECTORY, { recursive: true })
+  return RUNTIME_STORAGE_DIRECTORY
+}
+
