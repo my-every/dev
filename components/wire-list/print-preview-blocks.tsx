@@ -193,6 +193,7 @@ interface StandardWorkspacePreviewProps {
   showCoverPage: boolean;
   showTableOfContents: boolean;
   showIPVCodes: boolean;
+  showIPVWireList: boolean;
   showFeedbackSection: boolean;
   hasVisibleSections: boolean;
   renderCoverPage: () => React.ReactNode;
@@ -200,6 +201,9 @@ interface StandardWorkspacePreviewProps {
   renderIpvCodesPage: () => React.ReactNode;
   renderPreviewDocument: () => React.ReactNode;
   renderFeedbackPage: () => React.ReactNode;
+  renderIPVCoverPage: () => React.ReactNode;
+  renderIPVReferencePage: () => React.ReactNode;
+  renderIPVWireListPage: () => React.ReactNode;
 }
 
 export function StandardWorkspacePreviewDocument({
@@ -207,6 +211,7 @@ export function StandardWorkspacePreviewDocument({
   showCoverPage,
   showTableOfContents,
   showIPVCodes,
+  showIPVWireList,
   showFeedbackSection,
   hasVisibleSections,
   renderCoverPage,
@@ -214,6 +219,9 @@ export function StandardWorkspacePreviewDocument({
   renderIpvCodesPage,
   renderPreviewDocument,
   renderFeedbackPage,
+  renderIPVCoverPage,
+  renderIPVReferencePage,
+  renderIPVWireListPage,
 }: StandardWorkspacePreviewProps) {
   if (!enabled) {
     return null;
@@ -226,6 +234,9 @@ export function StandardWorkspacePreviewDocument({
       {showIPVCodes ? renderIpvCodesPage() : null}
       {renderPreviewDocument()}
       {showFeedbackSection ? renderFeedbackPage() : null}
+      {showIPVWireList ? renderIPVCoverPage() : null}
+      {showIPVWireList ? renderIPVReferencePage() : null}
+      {showIPVWireList ? renderIPVWireListPage() : null}
     </>
   );
 }

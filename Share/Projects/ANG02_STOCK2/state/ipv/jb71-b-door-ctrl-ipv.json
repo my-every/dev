@@ -1,0 +1,171 @@
+{
+  "generatedAt": "2026-05-29T18:31:33.603Z",
+  "sheetSlug": "jb71-b-door-ctrl",
+  "sheetName": "JB71 B DOOR CTRL",
+  "totalRows": 5,
+  "references": {
+    "assignmentName": "JB71 B,DOOR CTRL",
+    "whiteLabels": [],
+    "blueLabels": [
+      "AT1100K",
+      "AT1100"
+    ],
+    "heatShrinkLabels": [],
+    "partNumbers": [
+      "1068334",
+      "1577354-5101"
+    ],
+    "panducts": [],
+    "rails": [],
+    "identityFilters": [
+      {
+        "title": "Grounds",
+        "sectionKind": "grounds",
+        "rowCount": 1,
+        "rows": [
+          {
+            "fromDeviceId": "AT1100:GND",
+            "toDeviceId": "FRAME",
+            "wireNo": "AT1100G",
+            "wireId": "GRN/YEL",
+            "gaugeSize": "14",
+            "location": "JB71 B,DOOR CTRL"
+          }
+        ]
+      },
+      {
+        "title": "Cables",
+        "sectionKind": "cables",
+        "rowCount": 2,
+        "rows": [
+          {
+            "fromDeviceId": "AT1100:USB1",
+            "toDeviceId": "AT1100K",
+            "wireNo": "AT1100K",
+            "wireId": "CABLE",
+            "gaugeSize": "USB",
+            "location": "JB71 B,DOOR CTRL"
+          },
+          {
+            "fromDeviceId": "AT1100:L1",
+            "toDeviceId": "AP0605:L2",
+            "wireNo": "AP0605L2",
+            "wireId": "ENET",
+            "gaugeSize": "CABLE",
+            "location": "JB71 B,PNL CTRL1"
+          }
+        ]
+      },
+      {
+        "title": "Single Connections",
+        "sectionKind": "single_connections",
+        "rowCount": 2,
+        "rows": [
+          {
+            "fromDeviceId": "AT1100:NEG",
+            "toDeviceId": "XT0070:12",
+            "wireNo": "-0V",
+            "wireId": "WHT",
+            "gaugeSize": "14",
+            "location": "JB71 B,PNL CTRL1"
+          },
+          {
+            "fromDeviceId": "AT1100:POS",
+            "toDeviceId": "FU1100:LD",
+            "wireNo": "FU1100",
+            "wireId": "WHT",
+            "gaugeSize": "14",
+            "location": "JB71 B,PNL CTRL1"
+          }
+        ]
+      }
+    ]
+  },
+  "groups": [
+    {
+      "deviceId": "AT1100",
+      "rows": [
+        {
+          "rowId": "row-0",
+          "rowIndex": 10,
+          "fromDeviceId": "AT1100:GND",
+          "toDeviceId": "FRAME",
+          "wireType": "SC",
+          "wireNo": "AT1100G",
+          "wireId": "GRN/YEL",
+          "gaugeSize": "14",
+          "fromLocation": "JB71 B,DOOR CTRL",
+          "toLocation": "JB71 B,DOOR CTRL",
+          "fromPageZone": "39.A1",
+          "toPageZone": "39.B2",
+          "lengthDisplay": "60 in",
+          "lengthInches": 60
+        },
+        {
+          "rowId": "row-1",
+          "rowIndex": 11,
+          "fromDeviceId": "AT1100:USB1",
+          "toDeviceId": "AT1100K",
+          "wireType": "SC",
+          "wireNo": "AT1100K",
+          "wireId": "CABLE",
+          "gaugeSize": "USB",
+          "fromLocation": "JB71 B,DOOR CTRL",
+          "toLocation": "JB71 B,DOOR CTRL",
+          "fromPageZone": "39.A1",
+          "toPageZone": "39.A2",
+          "lengthDisplay": "60 in",
+          "lengthInches": 60
+        },
+        {
+          "rowId": "row-2",
+          "rowIndex": 12,
+          "fromDeviceId": "AT1100:NEG",
+          "toDeviceId": "XT0070:12",
+          "wireType": "SC",
+          "wireNo": "-0V",
+          "wireId": "WHT",
+          "gaugeSize": "14",
+          "fromLocation": "JB71 B,DOOR CTRL",
+          "toLocation": "JB71 B,PNL CTRL1",
+          "fromPageZone": "39.A1",
+          "toPageZone": "8.D1",
+          "lengthDisplay": "120 in",
+          "lengthInches": 120
+        },
+        {
+          "rowId": "row-3",
+          "rowIndex": 13,
+          "fromDeviceId": "AT1100:POS",
+          "toDeviceId": "FU1100:LD",
+          "wireType": "SC",
+          "wireNo": "FU1100",
+          "wireId": "WHT",
+          "gaugeSize": "14",
+          "fromLocation": "JB71 B,DOOR CTRL",
+          "toLocation": "JB71 B,PNL CTRL1",
+          "fromPageZone": "39.A1",
+          "toPageZone": "8.D1",
+          "lengthDisplay": "120 in",
+          "lengthInches": 120
+        },
+        {
+          "rowId": "row-4",
+          "rowIndex": 14,
+          "fromDeviceId": "AT1100:L1",
+          "toDeviceId": "AP0605:L2",
+          "wireType": "WC0011",
+          "wireNo": "AP0605L2",
+          "wireId": "ENET",
+          "gaugeSize": "CABLE",
+          "fromLocation": "JB71 B,DOOR CTRL",
+          "toLocation": "JB71 B,PNL CTRL1",
+          "fromPageZone": "39.A1",
+          "toPageZone": "7.A6",
+          "lengthDisplay": "120 in",
+          "lengthInches": 120
+        }
+      ]
+    }
+  ]
+}

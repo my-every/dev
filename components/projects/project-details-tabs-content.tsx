@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { RefreshCw } from "lucide-react";
 
 import { useProjectContext } from "@/contexts/project-context";
 import type { ProjectManifest } from "@/types/project-manifest";
@@ -18,6 +19,7 @@ import {
 } from "@/components/projects/tabs";
 import type { ProjectTabId } from "@/components/projects/tabs/project-tab-types";
 import { MultiSheetReviewModal } from "@/components/wire-list/multi-sheet-review-modal";
+import { Button } from "@/components/ui/button";
 
 const TABS = [
   { id: "overview", label: "Overview" },
@@ -47,6 +49,7 @@ export function ProjectDetailsTabsContent({
   const [liveProject, setLiveProject] = useState(project);
   const [brandReviewOpen, setBrandReviewOpen] = useState(false);
   const [actionStateRefreshKey, setActionStateRefreshKey] = useState(0);
+  const [manifestRefreshing, setManifestRefreshing] = useState(false);
   const { saveProject } = useProjectContext();
 
   const model = liveProject;
@@ -61,6 +64,17 @@ export function ProjectDetailsTabsContent({
     setActiveTab(initialTab);
   }, [initialTab]);
 
+  const applyProjectManifest = useCallback(
+    (manifest: ProjectManifest) => {
+      setLiveProject(manifest);
+      saveProject(manifest);
+      onProjectUpdated?.(manifest);
+      setActionStateRefreshKey((prev) => prev + 1);
+      return manifest;
+    },
+    [onProjectUpdated, saveProject],
+  );
+
   const refreshProjectState = useCallback(async () => {
     const response = await fetch(`/api/projects/${encodeURIComponent(project.id)}`, {
       cache: "no-store",
@@ -74,12 +88,36 @@ export function ProjectDetailsTabsContent({
       return null;
     }
 
-    setLiveProject(payload.manifest);
-    saveProject(payload.manifest);
-    onProjectUpdated?.(payload.manifest);
-    setActionStateRefreshKey((prev) => prev + 1);
-    return payload.manifest;
-  }, [onProjectUpdated, project.id, saveProject]);
+    return applyProjectManifest(payload.manifest);
+  }, [applyProjectManifest, project.id]);
+
+  const regenerateProjectManifest = useCallback(async () => {
+    if (!project.id) {
+      return null;
+    }
+
+    setManifestRefreshing(true);
+
+    try {
+      const response = await fetch(
+        `/api/projects/${encodeURIComponent(project.id)}/manifest/regenerate`,
+        { method: "POST" },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to regenerate manifest");
+      }
+
+      const payload = (await response.json()) as { manifest?: ProjectManifest };
+      if (payload.manifest) {
+        return applyProjectManifest(payload.manifest);
+      }
+
+      return refreshProjectState();
+    } finally {
+      setManifestRefreshing(false);
+    }
+  }, [applyProjectManifest, project.id, refreshProjectState]);
 
   return (
     <>
@@ -91,6 +129,23 @@ export function ProjectDetailsTabsContent({
         tabs={TABS}
         onTabChange={setActiveTab}
         mode={mode}
+        headerSlot={
+          <div className="flex justify-end">
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              className="gap-2"
+              disabled={manifestRefreshing || !project.id}
+              onClick={() => void regenerateProjectManifest()}
+            >
+              <RefreshCw
+                className={`h-3.5 w-3.5 ${manifestRefreshing ? "animate-spin" : ""}`}
+              />
+              Regenerate Manifest
+            </Button>
+          </div>
+        }
       >
         {activeTab === "overview" ? (
           <ProjectOverviewTab

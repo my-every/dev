@@ -109,6 +109,7 @@ export async function POST(
         projectInfo: document.projectInfo,
         sheetTitle: document.sheetTitle,
         hiddenSections: new Set(document.hiddenSectionKeys ?? []),
+        blueLabels: document.blueLabels ?? null,
         getLengthForRow: (rowId) => document.rowLengthsById?.[rowId] ?? null,
         locationBoxSideByName: document.locationBoxSideByName,
         locationNormalizedTitleByName: document.locationNormalizedTitleByName,

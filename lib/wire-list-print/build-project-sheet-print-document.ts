@@ -433,6 +433,9 @@ export async function buildProjectSheetPrintDocument(options: {
   });
   const brandingVisibleSections = sheetDocument.brandingSections;
   const standardVisibleSections = sheetDocument.standardSections;
+  const externalLocations = (assignmentNode?.externalLocations ?? [])
+    .map((location) => String(location.location ?? "").trim())
+    .filter(Boolean);
 
   return {
     settings,
@@ -452,6 +455,13 @@ export async function buildProjectSheetPrintDocument(options: {
     standardVisibleSections,
     includeFeedbackPage: settings.mode !== "branding",
     sheetDocument,
+    blueLabels,
+    panducts: assignmentNode?.panducts ?? [],
+    rails: assignmentNode?.rails ?? [],
+    externalLocations,
+    whiteLabels: assignmentNode?.whiteLabels ?? [],
+    heatShrinkLabels: assignmentNode?.heatShrinkLabels ?? [],
+    partNumbers: assignmentNode?.partNumbers ?? [],
     locationBoxSideByName,
     locationNormalizedTitleByName,
   };

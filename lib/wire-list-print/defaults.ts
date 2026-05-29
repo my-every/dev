@@ -4,6 +4,8 @@ import type { IdentificationFilterKind } from "@/lib/wiring-identification/types
 
 export type PrintFormatMode = "standardize" | "branding";
 
+export type PrintPaperSize = "letter" | "tabloid";
+
 export type BrandingSortMode = "default" | "device-prefix" | "device-prefix-part-number" | "blue-label-sequence";
 
 export type JumperSection =
@@ -65,6 +67,7 @@ export interface SectionColumnVisibility {
 
 export interface PrintSettings {
   mode: PrintFormatMode;
+  paperSize: PrintPaperSize;
   enabledSections: JumperSection[];
   sectionOrder: JumperSection[];
   customSettings: {
@@ -86,6 +89,7 @@ export interface PrintSettings {
   coverImageUrl?: string;
   showTableOfContents: boolean;
   showIPVCodes: boolean;
+  showIPVWireList: boolean;
   showFeedbackSection: boolean;
   feedbackRenderMode: "PREFILLED" | "BLANK";
   feedbackSections: WireListFeedbackSection[];
@@ -207,36 +211,38 @@ export function createDefaultPrintSettings(): PrintSettings {
 
   return {
     mode: "standardize",
+    paperSize: "tabloid",
     enabledSections: [...DEFAULT_SECTION_ORDER],
     sectionOrder: [...DEFAULT_SECTION_ORDER],
     customSettings: {
       sortByGauge: "none",
       groupByLocation: true,
-      includeGrounds: true,
-      includeJumpers: true,
-      includeClips: true,
+      includeGrounds: false,
+      includeJumpers: false,
+      includeClips: false,
     },
-    showFromCheckbox: true,
-    showToCheckbox: true,
-    showIPV: true,
+    showFromCheckbox: false,
+    showToCheckbox: false,
+    showIPV: false,
     showComments: true,
     showLength: false,
     showEstTime: false,
     showDeviceSubheaders: false,
     enableBlueDeviceIDColumns: false,
-    showCoverPage: true,
+    showCoverPage: false,
     coverImageUrl: undefined,
-    showTableOfContents: true,
+    showTableOfContents: false,
     showIPVCodes: false,
+    showIPVWireList: true,
     showFeedbackSection: false,
     feedbackRenderMode: "BLANK",
     feedbackSections: [...DEFAULT_WIRE_LIST_FEEDBACK_SECTIONS],
     customQuestions: questions,
     sectionColumnVisibility: {},
     standardHiddenSections: new Set<string>(),
-    standardHiddenSectionsCustomized: false,
+    standardHiddenSectionsCustomized: true,
     brandingHiddenSections: new Set<string>(),
-    brandingHiddenSectionsCustomized: false,
+    brandingHiddenSectionsCustomized: true,
     hiddenRows: new Set<string>(),
     crossWireSections: new Set<string>(),
     brandingSortMode: "device-prefix",

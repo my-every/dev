@@ -1424,6 +1424,7 @@ export function buildPrintPreviewPageCount(options: {
   showCoverPage: boolean;
   showTableOfContents: boolean;
   showIPVCodes: boolean;
+  showIPVWireList?: boolean;
 }): number {
   if (options.mode === "branding") {
     return 1;
@@ -1435,8 +1436,9 @@ export function buildPrintPreviewPageCount(options: {
   const tocPageCount = options.showTableOfContents && options.processedLocationGroups.length > 0 ? 1 : 0;
   const ipvCodesPageCount = options.showIPVCodes ? 1 : 0;
   const feedbackPageCount = options.showFeedbackSection ? 1 : 0;
+  const ipvWireListPageCount = options.showIPVWireList ? 3 : 0;
 
-  return coverPageCount + tocPageCount + ipvCodesPageCount + wireListPageCount + feedbackPageCount;
+  return coverPageCount + tocPageCount + ipvCodesPageCount + wireListPageCount + feedbackPageCount + ipvWireListPageCount;
 }
 
 export function buildBrandingSectionRenderPlan(

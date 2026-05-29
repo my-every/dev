@@ -26,10 +26,12 @@ import {
   Package,
   Palette,
   Pencil,
+  RefreshCw,
   Trash2,
   Upload,
   X,
 } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -88,6 +90,7 @@ import { parseRevisionFromFilename } from "@/lib/revision/types";
 import { LayoutPdfWorkspaceDialog } from "@/components/projects/layout-pdf-workspace-dialog";
 import { MultiWireListPrintWorkspaceDialog } from "@/components/projects/multi-wire-list-print-workspace-dialog";
 import { MultiSheetReviewModal } from "@/components/wire-list/multi-sheet-review-modal";
+import { ProjectCrossWirePrintWorkspace, SingleSheetPrintWorkspace } from "@/components/wire-list/print-modal";
 import { AssignmentLabelDownloadButton } from "@/components/projects/assignment-label-download-button";
 import { StageSelectorCell } from "@/components/projects/assignment-stage-selector-cell";
 import { StatusButtonCell } from "@/components/projects/assignment-status-button-cell";
@@ -96,6 +99,9 @@ import { activityService } from "@/lib/services/activity-service";
 import type { ActivityAction } from "@/types/activity";
 import { VisibilityMatrixConcept } from "@/components/projects/visibility-matrix-concept";
 import { BoxSideConfig, getDefaultExternalLocationSettings } from "@/boxSide";
+import type { SemanticWireListRow } from "@/lib/workbook/types";
+import type { WireListPrintSchema } from "@/lib/wire-list-print/schema";
+import { ProjectIcon } from "@/app/(workspaces)/[badgeNumber]/projects/_components/project-icon";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -426,6 +432,7 @@ export function ProjectDetailsWorkspace({
   const [loadingBrandingExports, setLoadingBrandingExports] = useState(false);
   const [loadingWireExports, setLoadingWireExports] = useState(false);
   const [regeneratingWire, setRegeneratingWire] = useState(false);
+  const [regeneratingManifest, setRegeneratingManifest] = useState(false);
 
   const [wireGeneratingSheets, setWireGeneratingSheets] = useState<Record<string, "idle" | "generating" | "done" | "error">>({});
   const [brandGeneratingSheets, setBrandGeneratingSheets] = useState<Record<string, "idle" | "generating" | "done" | "error">>({});
@@ -456,9 +463,17 @@ export function ProjectDetailsWorkspace({
   const [crossWireSettingsMessage, setCrossWireSettingsMessage] = useState<string | null>(null);
   const [crossWireSwapLocationsAll, setCrossWireSwapLocationsAll] = useState(false);
   const [crossWireSwapLocationsBySheet, setCrossWireSwapLocationsBySheet] = useState<Record<string, boolean>>({});
+  const [crossWirePrintModalOpen, setCrossWirePrintModalOpen] = useState(false);
 
   const [layoutWorkspaceOpen, setLayoutWorkspaceOpen] = useState(false);
   const [wireReviewOpen, setWireReviewOpen] = useState(false);
+  const [wirePrintModalOpen, setWirePrintModalOpen] = useState(false);
+  const [wirePrintActiveSheetSlug, setWirePrintActiveSheetSlug] = useState<string | null>(null);
+  const [wirePrintActiveSheetName, setWirePrintActiveSheetName] = useState<string>("");
+  const [wirePrintRows, setWirePrintRows] = useState<SemanticWireListRow[]>([]);
+  const [wirePrintLoadedSchema, setWirePrintLoadedSchema] = useState<WireListPrintSchema | null>(null);
+  const [wirePrintLoading, setWirePrintLoading] = useState(false);
+  const [wirePrintError, setWirePrintError] = useState<string | null>(null);
   const [brandReviewOpen, setBrandReviewOpen] = useState(false);
   const [autoStartBrandImport, setAutoStartBrandImport] = useState(false);
   const [applyingDefaults, setApplyingDefaults] = useState(false);
@@ -741,7 +756,9 @@ export function ProjectDetailsWorkspace({
     for (const file of files) {
       if (!file) continue;
       const parsed = parseRevisionFromFilename(file.name);
-      if (parsed) return parsed;
+      if (parsed?.displayVersion && parsed.displayVersion.toLowerCase() !== "unknown") {
+        return parsed.displayVersion;
+      }
     }
     return null;
   }
@@ -804,6 +821,37 @@ export function ProjectDetailsWorkspace({
       setSaving(false);
     }
   }, [editDraft, project, toast, logActivityWithFlash]);
+
+  const handleRegenerateManifest = useCallback(async () => {
+    if (!project?.id) return;
+
+    setRegeneratingManifest(true);
+    try {
+      const res = await fetch(`/api/projects/${encodeURIComponent(project.id)}/manifest/regenerate`, {
+        method: "POST",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to regenerate manifest");
+      }
+
+      const data = await res.json();
+      const updatedProject = data.manifest ?? data.project ?? data;
+      setProject(updatedProject);
+      if (isEditing) {
+        setEditDraft(updatedProject);
+      }
+      toast({ title: "Manifest regenerated" });
+    } catch (err) {
+      toast({
+        title: "Manifest regeneration failed",
+        description: err instanceof Error ? err.message : "Failed to regenerate manifest",
+        variant: "destructive",
+      });
+    } finally {
+      setRegeneratingManifest(false);
+    }
+  }, [isEditing, project?.id, toast]);
 
   const handleDelete = useCallback(async () => {
     if (!project) return;
@@ -1058,6 +1106,87 @@ export function ProjectDetailsWorkspace({
     setWireReviewOpen(true);
   }, []);
 
+  const openWirePrintModal = useCallback((sheetSlug: string, sheetName: string) => {
+    setWirePrintActiveSheetSlug(sheetSlug);
+    setWirePrintActiveSheetName(sheetName);
+    setWirePrintRows([]);
+    setWirePrintLoadedSchema(null);
+    setWirePrintError(null);
+    setWirePrintModalOpen(true);
+  }, []);
+
+  const closeWirePrintModal = useCallback(() => {
+    setWirePrintModalOpen(false);
+    setWirePrintActiveSheetSlug(null);
+  }, []);
+
+  useEffect(() => {
+    if (!wirePrintModalOpen || !project?.id || !wirePrintActiveSheetSlug) {
+      return;
+    }
+
+    let cancelled = false;
+
+    async function loadWirePrintPayload() {
+      setWirePrintLoading(true);
+      setWirePrintError(null);
+
+      try {
+        const projectIdEncoded = encodeURIComponent(project.id);
+        const sheetSlugEncoded = encodeURIComponent(wirePrintActiveSheetSlug);
+
+        const [sheetRes, printSchemaRes] = await Promise.all([
+          fetch(`/api/projects/${projectIdEncoded}/sheets/${sheetSlugEncoded}`),
+          fetch(`/api/projects/${projectIdEncoded}/wire-list-print-schemas?sheet=${sheetSlugEncoded}`),
+        ]);
+
+        if (!sheetRes.ok) {
+          throw new Error("Failed to load sheet data for print modal.");
+        }
+
+        const sheetJson = await sheetRes.json() as {
+          schema?: {
+            rows?: SemanticWireListRow[];
+            name?: string;
+          };
+        };
+
+        const nextRows = Array.isArray(sheetJson?.schema?.rows) ? sheetJson.schema.rows : [];
+        const nextSheetName = typeof sheetJson?.schema?.name === "string"
+          ? sheetJson.schema.name
+          : wirePrintActiveSheetName;
+
+        let nextLoadedSchema: WireListPrintSchema | null = null;
+        if (printSchemaRes.ok) {
+          const printSchemaJson = await printSchemaRes.json() as WireListPrintSchema;
+          if (printSchemaJson && typeof printSchemaJson === "object") {
+            nextLoadedSchema = printSchemaJson;
+          }
+        }
+
+        if (!cancelled) {
+          setWirePrintRows(nextRows);
+          setWirePrintActiveSheetName(nextSheetName);
+          setWirePrintLoadedSchema(nextLoadedSchema);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setWirePrintError(err instanceof Error ? err.message : "Failed to load print modal data.");
+        }
+      } finally {
+        if (!cancelled) {
+          setWirePrintLoading(false);
+        }
+      }
+    }
+
+    void loadWirePrintPayload();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [project?.id, wirePrintActiveSheetSlug, wirePrintModalOpen]);
+
   const openBrandListApprovalEditor = useCallback(() => {
     setAutoStartBrandImport(false);
     setBrandReviewOpen(true);
@@ -1071,6 +1200,48 @@ export function ProjectDetailsWorkspace({
   const openLayoutWorkspace = useCallback(() => {
     setLayoutWorkspaceOpen(true);
   }, []);
+
+  const openCrossWirePrintModal = useCallback(() => {
+    setCrossWirePrintModalOpen(true);
+  }, []);
+
+  const closeCrossWirePrintModal = useCallback(() => {
+    setCrossWirePrintModalOpen(false);
+  }, []);
+
+  const refreshCrossWireSchema = useCallback(async () => {
+    if (!project?.id) {
+      setCrossWireSchema(null);
+      setHasLoadedCrossWireSchema(false);
+      return;
+    }
+
+    setLoadingCrossWireSchema(true);
+    try {
+      const response = await fetch(
+        `/api/projects/${encodeURIComponent(project.id)}/cross-wire-schema`,
+        { cache: "no-store" },
+      );
+
+      if (!response.ok) {
+        setCrossWireSchema(null);
+        return;
+      }
+
+      setCrossWireSchema((await response.json()) as CrossWireSchemaSummary);
+    } finally {
+      setLoadingCrossWireSchema(false);
+      setHasLoadedCrossWireSchema(true);
+    }
+  }, [project?.id]);
+
+  useEffect(() => {
+    if (!project?.id || hasLoadedCrossWireSchema || loadingCrossWireSchema) {
+      return;
+    }
+
+    void refreshCrossWireSchema();
+  }, [hasLoadedCrossWireSchema, loadingCrossWireSchema, project?.id, refreshCrossWireSchema]);
 
   // Stable project ID ref — avoids recreating updateAssignment on every state change.
   const projectIdRef = useRef<string | null>(null);
@@ -1485,32 +1656,6 @@ export function ProjectDetailsWorkspace({
     // Return the cross-wire PDF download URL
     return `/api/projects/${encodeURIComponent(project.id)}/cross-wire-pdf`;
   }, [project?.id, assignmentEntries, crossWireSettingsMatrix, crossWireSwapLocationsAll, crossWireSwapLocationsBySheet]);
-
-  // Memoized cross-wire preview href with swap parameters
-  const selectedCrossWireSwapSheetSlugs = useMemo(
-    () =>
-      Object.entries(crossWireSwapLocationsBySheet)
-        .filter(([, checked]) => checked)
-        .map(([sheetSlug]) => sheetSlug),
-    [crossWireSwapLocationsBySheet],
-  );
-
-  const crossWirePreviewHref = useMemo(() => {
-    const baseHref = `/print/project-context/${encodeURIComponent(project?.id ?? "")}/cross-wire`;
-    if (!project?.id) {
-      return baseHref;
-    }
-    
-    const params = new URLSearchParams();
-    if (crossWireSwapLocationsAll) {
-      params.set("swapLocations", "1");
-    } else if (selectedCrossWireSwapSheetSlugs.length > 0) {
-      params.set("swapSheets", selectedCrossWireSwapSheetSlugs.join(","));
-    }
-    
-    const queryString = params.toString();
-    return queryString ? `${baseHref}?${queryString}` : baseHref;
-  }, [project?.id, crossWireSwapLocationsAll, selectedCrossWireSwapSheetSlugs]);
 
   // Handler for applying default visibility settings based on box side installation order
   const handleApplyDefaultSettings = useCallback(async (options: { overwriteExisting: boolean }) => {
@@ -1990,12 +2135,12 @@ export function ProjectDetailsWorkspace({
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div className="flex items-center gap-2">
-            <div
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-xs font-bold text-white"
-              style={{ backgroundColor: currentProject?.color || "#6b7280" }}
-            >
-              {currentProject?.name?.slice(0, 2).toUpperCase() || "PR"}
-            </div>
+            <ProjectIcon
+              name={currentProject?.name || "Project"}
+              color={currentProject?.color || "#6b7280"}
+              size="sm"
+              interactive={false}
+            />
             <div>
               <h1 className="text-sm font-semibold text-foreground">{currentProject?.name || "Project"}</h1>
               <p className="text-xs text-muted-foreground">
@@ -2005,6 +2150,16 @@ export function ProjectDetailsWorkspace({
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => void handleRegenerateManifest()}
+            disabled={regeneratingManifest || !project}
+            title="Regenerate Manifest"
+          >
+            <RefreshCw className={cn("mr-2 h-3 w-3", regeneratingManifest && "animate-spin")} />
+            Regenerate Manifest
+          </Button>
           {isEditing ? (
             <>
               <Button variant="ghost" size="sm" onClick={cancelEditMode} disabled={saving} title="Cancel (C)">
@@ -2041,7 +2196,7 @@ export function ProjectDetailsWorkspace({
       />
 
       {/* Desktop layout */}
-      <div className="flex flex-1 min-h-0 overflow-hidden">
+      <div className="flex flex-1 min-h-full overflow-hidden">
         {/* Left sidebar nav */}
         <aside className="hidden w-48 shrink-0 border-r border-border lg:block">
           <ScrollArea className="h-full">
@@ -2833,14 +2988,12 @@ export function ProjectDetailsWorkspace({
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                     {assignmentEntries.map((assignment) => {
                       const normalizedTitle = normalizeDisplayTitle(assignment.sheetName);
-                      const wireListPrintHref = `/print/project-context/${encodeURIComponent(project?.id ?? "")}/wire-list/${encodeURIComponent(assignment.sheetSlug)}`;
 
                       return (
-                        <a
+                        <button
+                          type="button"
                           key={assignment.sheetSlug}
-                          href={wireListPrintHref}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          onClick={() => openWirePrintModal(assignment.sheetSlug, normalizedTitle)}
                           className="flex items-center gap-2 rounded-lg border border-border bg-card p-3 hover:bg-muted/50 transition-colors cursor-pointer"
                         >
                           <Layers className="h-4 w-4 text-muted-foreground shrink-0" />
@@ -2848,7 +3001,7 @@ export function ProjectDetailsWorkspace({
                             {normalizedTitle}
                           </span>
                           <ExternalLink className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                        </a>
+                        </button>
                       );
                     })}
                   </div>
@@ -2896,15 +3049,9 @@ export function ProjectDetailsWorkspace({
                       PDF
                     </a>
                   </Button>
-                  <Button size="sm" variant="outline" asChild>
-                    <a
-                      href={crossWirePreviewHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                  <Button size="sm" variant="outline" onClick={openCrossWirePrintModal}>
                       <ExternalLink className="mr-2 h-3.5 w-3.5" />
                       Print Preview
-                    </a>
                   </Button>
                 </div>
 
@@ -2944,11 +3091,10 @@ export function ProjectDetailsWorkspace({
                         ).length;
 
                         return (
-                          <a
+                          <button
+                            type="button"
                             key={assignment.sheetSlug}
-                            href={crossWirePreviewHref}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            onClick={openCrossWirePrintModal}
                             className="flex items-center gap-2 rounded-lg border border-border bg-card p-3 hover:bg-muted/50 transition-colors cursor-pointer"
                           >
                             <ExternalLink className="h-4 w-4 text-amber-600 shrink-0" />
@@ -2960,7 +3106,7 @@ export function ProjectDetailsWorkspace({
                                 {visibleCount}/{locations.length}
                               </Badge>
                             )}
-                          </a>
+                          </button>
                         );
                       })}
                     </div>
@@ -3050,6 +3196,93 @@ export function ProjectDetailsWorkspace({
   projectColor={project.color ?? undefined}
   sheets={assignmentEntries.map((a) => ({ slug: a.sheetSlug, name: a.sheetName, rowCount: 0 }))}
   />
+      <AnimatePresence>
+        {wirePrintModalOpen ? (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+              onClick={closeWirePrintModal}
+            />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="fixed inset-0 z-50 pointer-events-none"
+            >
+              <div className="h-screen w-screen pointer-events-auto bg-background">
+                {wirePrintLoading ? (
+                  <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Loading print sheet...
+                  </div>
+                ) : wirePrintError ? (
+                  <div className="flex h-full w-full flex-col items-center justify-center gap-3 px-6 text-center">
+                    <p className="text-sm text-destructive">{wirePrintError}</p>
+                    <Button size="sm" variant="outline" onClick={closeWirePrintModal}>
+                      Close
+                    </Button>
+                  </div>
+                ) : (
+                  <SingleSheetPrintWorkspace
+                    rows={wirePrintRows}
+                    currentSheetName={wirePrintActiveSheetName}
+                    projectId={project.id}
+                    sheetSlug={wirePrintActiveSheetSlug ?? undefined}
+                    sheetTitle={wirePrintActiveSheetName}
+                    metadata={{
+                      projectNumber: project.pdNumber,
+                      projectName: project.name,
+                      revision: project.revision,
+                      pdNumber: project.pdNumber,
+                      unitNumber: project.unitNumber,
+                    }}
+                    initialLoadedSchema={wirePrintLoadedSchema}
+                    initialMode="standardize"
+                    workspaceActive={wirePrintModalOpen}
+                    onRequestClose={closeWirePrintModal}
+                  />
+                )}
+              </div>
+            </motion.div>
+          </>
+        ) : null}
+      </AnimatePresence>
+      <AnimatePresence>
+        {crossWirePrintModalOpen ? (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+              onClick={closeCrossWirePrintModal}
+            />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="fixed inset-0 z-50 pointer-events-none"
+            >
+              <div className="pointer-events-auto h-screen w-screen overflow-hidden bg-background">
+                <ProjectCrossWirePrintWorkspace
+                  projectId={project.id}
+                  workspaceActive={crossWirePrintModalOpen}
+                  onRequestClose={closeCrossWirePrintModal}
+                />
+              </div>
+            </motion.div>
+          </>
+        ) : null}
+      </AnimatePresence>
       <MultiSheetReviewModal
         projectId={project.id}
         open={brandReviewOpen}
@@ -3079,7 +3312,7 @@ export function ProjectDetailsWorkspace({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel  className="rounded-md" disabled={deleting}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel  className="" disabled={deleting}>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={deleting}

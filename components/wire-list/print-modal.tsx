@@ -12,7 +12,15 @@
  * - De-duplication of rows when settings change
  */
 
-import React, { useState, useMemo, useCallback, useRef, useEffect, Fragment, type ReactNode } from "react";
+import React, {
+  useState,
+  useMemo,
+  useCallback,
+  useRef,
+  useEffect,
+  Fragment,
+  type ReactNode,
+} from "react";
 import { useReactToPrint } from "react-to-print";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -43,6 +51,7 @@ import {
   EyeOff,
   Trash2,
   Minus,
+  Loader2,
   ChevronRight,
   Download,
   BookOpen,
@@ -57,6 +66,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import {
   Collapsible,
@@ -80,11 +90,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { SemanticWireListRow } from "@/lib/workbook/types";
-import { normalizeDisplayTitle, normalizeSheetName } from "@/lib/workbook/normalize-sheet-name";
-import type { CablePartNumberLookupResult, PartNumberLookupResult } from "@/lib/part-number-list";
+import {
+  normalizeDisplayTitle,
+  normalizeSheetName,
+} from "@/lib/workbook/normalize-sheet-name";
+import type {
+  CablePartNumberLookupResult,
+  PartNumberLookupResult,
+} from "@/lib/part-number-list";
 import { lookupPartNumber } from "@/lib/part-number-list";
-import type { BlueLabelSequenceMap, IdentificationFilterKind, PatternMatchMetadata } from "@/lib/wiring-identification/types";
-import { parseGaugeNumeric, sortRowsByGaugeSize } from "@/lib/wiring-identification/gauge-filter";
+import type {
+  BlueLabelSequenceMap,
+  IdentificationFilterKind,
+  PatternMatchMetadata,
+} from "@/lib/wiring-identification/types";
+import {
+  parseGaugeNumeric,
+  sortRowsByGaugeSize,
+} from "@/lib/wiring-identification/gauge-filter";
 import { extractGrounds } from "@/lib/wiring-identification/extract-grounds";
 import { extractAfJumpers } from "@/lib/wiring-identification/extract-af-jumpers";
 import { extractKaJumpers } from "@/lib/wiring-identification/extract-ka-jumpers";
@@ -93,7 +116,10 @@ import { extractKaRelayPluginJumperRows } from "@/lib/wiring-identification/extr
 import { extractKtJumpers } from "@/lib/wiring-identification/extract-kt-jumpers";
 import { extractFuJumpers } from "@/lib/wiring-identification/extract-fu-jumpers";
 import { extractClips } from "@/lib/wiring-identification/extract-clips";
-import { extractCables, isCableType } from "@/lib/wiring-identification/extract-cables";
+import {
+  extractCables,
+  isCableType,
+} from "@/lib/wiring-identification/extract-cables";
 import { extractSingleConnections } from "@/lib/wiring-identification/extract-single-connections";
 import { isResistorRow } from "@/lib/wiring-identification/extract-resistors";
 import {
@@ -109,13 +135,31 @@ import {
   PrintFeedbackSignoff,
   PrintFooter,
 } from "@/components/wire-list/print-feedback";
-import type { PrintFeedbackConfig, WireListFeedbackSection, WireListFeedbackFormValues, FeedbackQuestion } from "@/lib/wire-list-feedback/types";
-import { DEFAULT_WIRE_LIST_FEEDBACK_SECTIONS, FEEDBACK_SECTION_QUESTIONS } from "@/lib/wire-list-feedback/types";
-import { useMultiIdentityFilter, type MultiFilterEntry, type FilterGroup } from "@/hooks/use-multi-identity-filter";
-import { useProjectLookups, useProjectPartNumbers } from "@/hooks/use-project-lookups";
+import type {
+  PrintFeedbackConfig,
+  WireListFeedbackSection,
+  WireListFeedbackFormValues,
+  FeedbackQuestion,
+} from "@/lib/wire-list-feedback/types";
+import {
+  DEFAULT_WIRE_LIST_FEEDBACK_SECTIONS,
+  FEEDBACK_SECTION_QUESTIONS,
+} from "@/lib/wire-list-feedback/types";
+import {
+  useMultiIdentityFilter,
+  type MultiFilterEntry,
+  type FilterGroup,
+} from "@/hooks/use-multi-identity-filter";
+import {
+  useProjectLookups,
+  useProjectPartNumbers,
+} from "@/hooks/use-project-lookups";
 import { useProjectContext } from "@/contexts/project-context";
 import { useCurrentUser } from "@/hooks/use-session";
-import { SWS_TYPE_REGISTRY, type SwsTypeId } from "@/lib/assignment/sws-detection";
+import {
+  SWS_TYPE_REGISTRY,
+  type SwsTypeId,
+} from "@/lib/assignment/sws-detection";
 import {
   buildRenderableSectionSubgroups,
   buildSubgroupStartMap,
@@ -127,7 +171,10 @@ import {
   type WireListCompiledSubgroup,
   type WireListRenderPlanItem,
 } from "@/lib/wire-list-sections";
-import { SectionHeaderBlock, TableSubgroupHeaderRow } from "@/components/wire-list/sections";
+import {
+  SectionHeaderBlock,
+  TableSubgroupHeaderRow,
+} from "@/components/wire-list/sections";
 import { WiringExecutionMode } from "@/components/wire-list/wiring-execution-mode";
 import { DeviceProperty } from "@/components/device/device-property";
 import { downloadWireListCSV } from "@/lib/workbook/types";
@@ -139,18 +186,30 @@ import {
   type SheetBrandingEdits,
 } from "@/lib/persistence/project-storage";
 import { hasMechanicalRelayPartNumber } from "@/lib/wiring-identification/jumper-part-number";
-import { getSheetDeviceSequence, parseBlueLabelSheet } from "@/lib/wiring-identification/blue-label-sequence";
+import {
+  getSheetDeviceSequence,
+  parseBlueLabelSheet,
+} from "@/lib/wiring-identification/blue-label-sequence";
 import {
   createDefaultPrintSettings,
   createDefaultProjectInfo,
   type BrandingSortMode,
   type JumperSection,
   type PersonnelEntry,
+  type PrintPaperSize,
   type PrintFormatMode,
 } from "@/lib/wire-list-print/defaults";
 import type { ProjectManifest } from "@/types/project-manifest";
-import { estimateWireTime, formatEstTime, formatEstTimeLong, summarizeSectionTime } from "@/lib/wire-list-print/time-estimation";
-import { hydrateSchemaForRender, type WireListPrintSchema } from "@/lib/wire-list-print/schema";
+import {
+  estimateWireTime,
+  formatEstTime,
+  formatEstTimeLong,
+  summarizeSectionTime,
+} from "@/lib/wire-list-print/time-estimation";
+import {
+  hydrateSchemaForRender,
+  type WireListPrintSchema,
+} from "@/lib/wire-list-print/schema";
 import {
   buildProcessedPrintLocationGroups,
   type BrandingPreviewRow,
@@ -160,7 +219,10 @@ import {
   buildPrintPreviewPageCount,
   buildBrandingCsvContent,
 } from "@/lib/wire-list-print/model";
-import { SemanticWireList, type WireListFeatureConfig } from "./semantic-wire-list";
+import {
+  SemanticWireList,
+  type WireListFeatureConfig,
+} from "./semantic-wire-list";
 import {
   BrandingPreviewContent,
   CrossWirePreviewDocument,
@@ -208,7 +270,13 @@ function buildSingleConnectionTocSubsections(
   partNumberMap?: Map<string, PartNumberLookupResult> | null,
   skipSingletonMerge = false,
 ): { label: string; rows: SemanticWireListRow[] }[] {
-  return buildTocSubsections("single_connections", rows, matchMetadata, partNumberMap, skipSingletonMerge);
+  return buildTocSubsections(
+    "single_connections",
+    rows,
+    matchMetadata,
+    partNumberMap,
+    skipSingletonMerge,
+  );
 }
 
 function buildTocSubsections(
@@ -218,17 +286,31 @@ function buildTocSubsections(
   partNumberMap?: Map<string, PartNumberLookupResult> | null,
   skipSingletonMerge = false,
 ): { label: string; rows: SemanticWireListRow[] }[] {
-  const subgroups = buildRenderableSectionSubgroups(sectionKind, rows, matchMetadata, partNumberMap, skipSingletonMerge);
+  const subgroups = buildRenderableSectionSubgroups(
+    sectionKind,
+    rows,
+    matchMetadata,
+    partNumberMap,
+    skipSingletonMerge,
+  );
   const rowsById = new Map(rows.map((row) => [row.__rowId, row]));
 
   // Sort subgroups by device prefix when singleton merge is skipped
   if (skipSingletonMerge) {
     subgroups.sort((a, b) => {
-      const aFirstRow = a.rowIds.length > 0 ? rowsById.get(a.rowIds[0]) : undefined;
-      const bFirstRow = b.rowIds.length > 0 ? rowsById.get(b.rowIds[0]) : undefined;
-      const aPrefix = getDevicePrefixValue(aFirstRow ? getDisplayEndpoints(aFirstRow).fromDeviceId : undefined);
-      const bPrefix = getDevicePrefixValue(bFirstRow ? getDisplayEndpoints(bFirstRow).fromDeviceId : undefined);
-      const prefixCompare = aPrefix.localeCompare(bPrefix, undefined, { numeric: true });
+      const aFirstRow =
+        a.rowIds.length > 0 ? rowsById.get(a.rowIds[0]) : undefined;
+      const bFirstRow =
+        b.rowIds.length > 0 ? rowsById.get(b.rowIds[0]) : undefined;
+      const aPrefix = getDevicePrefixValue(
+        aFirstRow ? getDisplayEndpoints(aFirstRow).fromDeviceId : undefined,
+      );
+      const bPrefix = getDevicePrefixValue(
+        bFirstRow ? getDisplayEndpoints(bFirstRow).fromDeviceId : undefined,
+      );
+      const prefixCompare = aPrefix.localeCompare(bPrefix, undefined, {
+        numeric: true,
+      });
       if (prefixCompare !== 0) return prefixCompare;
       return a.order - b.order;
     });
@@ -250,22 +332,41 @@ function PersonnelSignoffTable({
   className?: string;
 }) {
   return (
-    <div className={cn("border border-foreground/30 rounded-md overflow-hidden", className)}>
+    <div
+      className={cn(
+        "border border-foreground/30 rounded-md overflow-hidden",
+        className,
+      )}
+    >
       <table className="w-full border-collapse text-[10px]">
         <thead>
           <tr className="border-b border-foreground/30 bg-muted/50">
-            <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide text-[9px] border-r border-foreground/20 w-28">Badge #</th>
-            <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide text-[9px] border-r border-foreground/20 w-28">Date</th>
-            <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide text-[9px] border-r border-foreground/20 w-24">Time</th>
-            <th className="px-3 py-2 text-center font-semibold uppercase tracking-wide text-[9px] border-r border-foreground/20 w-24">Wirer</th>
-            <th className="px-3 py-2 text-center font-semibold uppercase tracking-wide text-[9px] w-24">IPV</th>
+            <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide text-[9px] border-r border-foreground/20 w-28">
+              Badge #
+            </th>
+            <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide text-[9px] border-r border-foreground/20 w-28">
+              Date
+            </th>
+            <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide text-[9px] border-r border-foreground/20 w-24">
+              Time
+            </th>
+
           </tr>
         </thead>
         <tbody>
           {personnel.map((entry, index) => (
-            <tr key={entry.id} className={index < personnel.length - 1 ? "border-b border-foreground/20" : ""}>
+            <tr
+              key={entry.id}
+              className={
+                index < personnel.length - 1
+                  ? "border-b border-foreground/20"
+                  : ""
+              }
+            >
               <td className="px-3 py-3 font-mono border-r border-foreground/20">
-                {entry.badgeNumber || <span className="text-foreground/30">_________</span>}
+                {entry.badgeNumber || (
+                  <span className="text-foreground/30">_________</span>
+                )}
               </td>
               <td className="px-3 py-3 border-r border-foreground/20">
                 {entry.date ? (
@@ -275,30 +376,348 @@ function PersonnelSignoffTable({
                 )}
               </td>
               <td className="px-3 py-3 border-r border-foreground/20">
-                {entry.time || <span className="text-foreground/30">__:__ __</span>}
+                {entry.time || (
+                  <span className="text-foreground/30">__:__ __</span>
+                )}
               </td>
-              <td className="px-3 py-3 text-center border-r border-foreground/20">
-                <div className={`w-5 h-5 border-2 border-foreground/50 mx-auto flex items-center justify-center ${entry.isAssembler ? "bg-foreground" : "bg-transparent"}`}>
-                  {entry.isAssembler && (
-                    <svg className="w-3.5 h-3.5 text-background" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  )}
-                </div>
-              </td>
-              <td className="px-3 py-3 text-center">
-                <div className={`w-5 h-5 border-2 border-foreground/50 mx-auto flex items-center justify-center ${entry.isInspector ? "bg-foreground" : "bg-transparent"}`}>
-                  {entry.isInspector && (
-                    <svg className="w-3.5 h-3.5 text-background" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  )}
-                </div>
-              </td>
+   
             </tr>
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+function IPVReferenceListCard({
+  title,
+  values,
+  emptyLabel,
+  className,
+  expandContent = true,
+}: {
+  title: string;
+  values: string[];
+  emptyLabel?: string;
+  className?: string;
+  expandContent?: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        "overflow-hidden bg-background",
+        className,
+      )}
+    >
+      <div className="flex items-center justify-between gap-4 border-b border-foreground/20 px-2 py-1.5">
+        <span className="text-[9px] font-semibold uppercase tracking-wide text-foreground/80">
+          {title}
+        </span>
+        <span className="text-[9px] font-mono text-muted-foreground">
+          {values.length}
+        </span>
+      </div>
+      {expandContent ? (
+        <div className="flex-1 min-h-0 overflow-hidden px-2 py-1.5">
+          {values.length > 0 ? (
+            <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[8px] leading-tight">
+              {values.map((value, index) => (
+                <div
+                  key={`${title}-${index}-${value}`}
+                  className="font-mono font-medium text-foreground break-all"
+                >
+                  {value}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="py-2 text-center text-[8px] text-muted-foreground">
+              {emptyLabel ?? "No entries"}
+            </div>
+          )}
+        </div>
+      ) : (
+        <table className="w-full border-collapse text-[9px]">
+          <tbody>
+            {values.length > 0 ? (
+              values.map((value, index) => (
+                <tr
+                  key={`${title}-${index}-${value}`}
+                  className="border-b border-foreground/10 last:border-b-0"
+                >
+                  <td className="px-2 py-1 font-mono text-[9px] text-foreground break-all">
+                    {value}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td className="px-2 py-3 text-center text-[9px] text-muted-foreground">
+                  {emptyLabel ?? "No entries"}
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
+
+interface IPVReferenceCardGroup {
+  title: string;
+  values: string[];
+  emptyLabel: string;
+}
+
+type IdentityFilterReferenceRow = {
+  fromDeviceId: string;
+  wireNo: string;
+  wireId: string;
+  gaugeSize: string;
+  toDeviceId: string;
+  location: string;
+};
+
+type IdentityFilterSummaryRow = {
+  title: string;
+  rowCount: number;
+};
+
+type IdentityFilterReferenceGroup = {
+  title: string;
+  sectionKind?: IdentificationFilterKind;
+  rowCount: number;
+  rows: IdentityFilterReferenceRow[];
+};
+
+function collapseReferenceValuesWithQty(values?: string[]): string[] {
+  if (!values || values.length === 0) {
+    return [];
+  }
+
+  const counts = new Map<string, number>();
+  const order: string[] = [];
+
+  for (const rawValue of values) {
+    const value = String(rawValue ?? "").trim();
+    if (!value) continue;
+    if (!counts.has(value)) {
+      counts.set(value, 1);
+      order.push(value);
+    } else {
+      counts.set(value, (counts.get(value) ?? 0) + 1);
+    }
+  }
+
+  return order.map((value) => {
+    const qty = counts.get(value) ?? 0;
+    return qty > 1 ? `${value} x${qty}` : value;
+  });
+}
+
+function buildIdentityFilterSummaryRows(
+  locationGroups: PrintLocationGroup[],
+): IdentityFilterSummaryRow[] {
+  return buildIdentityFilterReferenceGroups(locationGroups).map((group) => ({
+    title: group.title,
+    rowCount: group.rowCount,
+  }));
+}
+
+function buildIdentityFilterReferenceGroups(
+  locationGroups: PrintLocationGroup[],
+): IdentityFilterReferenceGroup[] {
+  const groupsByFilter = new Map<string, IdentityFilterReferenceGroup>();
+
+  for (const group of locationGroups) {
+    for (const subsection of group.subsections) {
+      const sectionKind = String(subsection.sectionKind ?? "").trim().toLowerCase();
+      const normalizedTitle = String(subsection.label ?? "").trim().toLowerCase();
+      if (sectionKind === "single_connections" || normalizedTitle === "single connections") {
+        continue;
+      }
+
+      const printableCount = subsection.rows.filter(isPrintableConnectionRow).length;
+      if (printableCount === 0) {
+        continue;
+      }
+
+      const key = `${sectionKind}:${subsection.label}`;
+      const mappedRows = subsection.rows
+        .filter(isPrintableConnectionRow)
+        .map((row) => {
+          const endpoints = getDisplayEndpoints(row);
+          return {
+            fromDeviceId: endpoints.fromDeviceId || "—",
+            wireNo: row.wireNo || "—",
+            wireId: row.wireId || "—",
+            gaugeSize: row.gaugeSize || "—",
+            toDeviceId: endpoints.toDeviceId || "—",
+            location:
+              endpoints.toLocation || endpoints.fromLocation || row.location || "—",
+          };
+        });
+
+      const existing = groupsByFilter.get(key);
+      if (existing) {
+        existing.rows.push(...mappedRows);
+        existing.rowCount = existing.rows.length;
+      } else {
+        groupsByFilter.set(key, {
+          title: subsection.label,
+          sectionKind: subsection.sectionKind,
+          rowCount: mappedRows.length,
+          rows: mappedRows,
+        });
+      }
+    }
+  }
+
+  return Array.from(groupsByFilter.values());
+}
+
+function buildIPVReferenceCardGroups({
+  currentSheetName,
+  blueLabels,
+  blueLabelReferences,
+  panducts,
+  rails,
+  externalLocations,
+  whiteLabels,
+  heatShrinkLabels,
+  partNumbers,
+}: {
+  currentSheetName: string;
+  blueLabels: BlueLabelSequenceMap | null;
+  blueLabelReferences?: string[];
+  panducts?: string[];
+  rails?: string[];
+  externalLocations?: string[];
+  whiteLabels?: string[];
+  heatShrinkLabels?: string[];
+  partNumbers?: string[];
+}): IPVReferenceCardGroup[] {
+  const resolvedBlueLabelReferences =
+    blueLabelReferences && blueLabelReferences.length > 0
+      ? blueLabelReferences
+      : buildBlueLabelReferenceRows(currentSheetName, blueLabels);
+  const resolvedPanducts = collapseReferenceValuesWithQty(panducts);
+  const resolvedRails = collapseReferenceValuesWithQty(rails);
+
+  return [
+    {
+      title: "Blue Labels",
+      values: resolvedBlueLabelReferences,
+      emptyLabel: "No blue labels",
+    },
+    {
+      title: "White Labels",
+      values: whiteLabels ?? [],
+      emptyLabel: "No white labels",
+    },
+    {
+      title: "Panducts",
+      values: resolvedPanducts,
+      emptyLabel: "No panducts",
+    },
+    {
+      title: "Heat Shrink Labels",
+      values: heatShrinkLabels ?? [],
+      emptyLabel: "No heat shrink labels",
+    },
+    {
+      title: "Part Numbers",
+      values: partNumbers ?? [],
+      emptyLabel: "No part numbers",
+    },
+    {
+      title: "Rails",
+      values: resolvedRails,
+      emptyLabel: "No rails",
+    },
+    {
+      title: "External Locations",
+      values: externalLocations ?? [],
+      emptyLabel: "No external locations",
+    },
+  ];
+}
+
+function IPVIdentityFilterReferenceCard({
+  group,
+  className,
+}: {
+  group: IdentityFilterReferenceGroup;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "flex min-h-0 flex-col overflow-hidden border border-foreground/30 bg-background",
+        className,
+      )}
+    >
+      <div className="flex items-center justify-between gap-3 border-b border-foreground/20 bg-muted/40 px-2 py-1.5">
+        <span className="text-[9px] font-semibold uppercase tracking-wide text-foreground/80">
+          {group.title}
+        </span>
+        <span className="text-[9px] font-mono text-muted-foreground">
+          {group.rowCount}
+        </span>
+      </div>
+
+      <div className="min-h-0 overflow-hidden">
+        <table className="w-full border-collapse text-[8px] leading-tight">
+          <thead className="bg-muted/20">
+            <tr className="border-b border-foreground/10">
+              <th className="px-1.5 py-1 text-left font-semibold uppercase tracking-wide">
+                From
+              </th>
+              <th className="px-1 py-1 text-left font-semibold uppercase tracking-wide">
+                No
+              </th>
+              <th className="px-1 py-1 text-left font-semibold uppercase tracking-wide">
+                Wire ID
+              </th>
+              <th className="px-1 py-1 text-left font-semibold uppercase tracking-wide">
+                Size
+              </th>
+              <th className="px-1.5 py-1 text-left font-semibold uppercase tracking-wide">
+                To
+              </th>
+              <th className="px-1.5 py-1 text-left font-semibold uppercase tracking-wide">
+                Location
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {group.rows.map((row, index) => (
+              <tr
+                key={`${group.title}-${index}-${row.fromDeviceId}-${row.wireNo}`}
+                className="border-b border-foreground/10 last:border-b-0"
+              >
+                <td className="px-1.5 py-0.5 font-medium">{row.fromDeviceId}</td>
+                <td className="px-1 py-0.5 font-mono">{row.wireNo}</td>
+                <td className="px-1 py-0.5">{row.wireId}</td>
+                <td className="px-1 py-0.5">{row.gaugeSize}</td>
+                <td className="px-1.5 py-0.5 font-medium">{row.toDeviceId}</td>
+                <td className="px-1.5 py-0.5">{row.location}</td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr className="border-t border-foreground/20 bg-muted/30">
+              <td colSpan={5} className="px-1.5 py-1 text-right text-[8px] font-semibold uppercase tracking-wide text-foreground/80">
+                Total Rows
+              </td>
+              <td className="px-1.5 py-1 text-left font-mono text-[8px] font-semibold">
+                {group.rowCount}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
   );
 }
@@ -323,7 +742,13 @@ interface PrintSection {
 interface CustomQuestion {
   key: string;
   label: string;
-  type: "boolean" | "text" | "number" | "difficulty" | "quality" | "improvement";
+  type:
+    | "boolean"
+    | "text"
+    | "number"
+    | "difficulty"
+    | "quality"
+    | "improvement";
   enabled: boolean;
   sectionId: string;
   isCustom?: boolean;
@@ -348,12 +773,14 @@ const DEFAULT_SECTION_COLUMNS: SectionColumnVisibility = {
   wireId: true,
   wireType: false,
   gaugeSize: true,
-  fromLocation: true,
+  fromLocation: false,
   toLocation: true,
   swapFromTo: false,
 };
 
-function getDefaultSectionColumns(sectionKind?: IdentificationFilterKind): SectionColumnVisibility {
+function getDefaultSectionColumns(
+  sectionKind?: IdentificationFilterKind,
+): SectionColumnVisibility {
   if (sectionKind === "cables") {
     return {
       ...DEFAULT_SECTION_COLUMNS,
@@ -406,7 +833,12 @@ function getLocationLookupKeys(location: string | undefined): string[] {
   keys.add(raw.toUpperCase());
   keys.add(normalizeDisplayTitle(raw).toUpperCase());
   keys.add(normalizeSheetName(raw).toUpperCase());
-  keys.add(raw.toUpperCase().replace(/[\s,_-]+/g, " ").trim());
+  keys.add(
+    raw
+      .toUpperCase()
+      .replace(/[\s,_-]+/g, " ")
+      .trim(),
+  );
 
   return Array.from(keys).filter(Boolean);
 }
@@ -430,11 +862,17 @@ function resolveLocationDisplayTitle(
   return fallbackTitle ? normalizeDisplayTitle(fallbackTitle) : "-";
 }
 
-function escapePrintPreviewCsvValue(value: string | number | null | undefined): string {
+function escapePrintPreviewCsvValue(
+  value: string | number | null | undefined,
+): string {
   if (value === null || value === undefined) return "";
 
   const stringValue = String(value);
-  if (stringValue.includes(",") || stringValue.includes("\"") || stringValue.includes("\n")) {
+  if (
+    stringValue.includes(",") ||
+    stringValue.includes('"') ||
+    stringValue.includes("\n")
+  ) {
     return `"${stringValue.replace(/\"/g, '""')}"`;
   }
 
@@ -450,7 +888,11 @@ function createEmptyBrandingSelection(): BrandingSelectionState {
 }
 
 function formatBrandingMeasurement(value: number | undefined): string {
-  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+  if (
+    typeof value !== "number" ||
+    Number.isNaN(value) ||
+    !Number.isFinite(value)
+  ) {
     return "-";
   }
 
@@ -468,7 +910,9 @@ function getDeviceTerminalValue(deviceId: string | undefined): string {
 function getDevicePrefixValue(deviceId: string | undefined): string {
   const baseDeviceId = getBaseDeviceIdValue(deviceId);
   const match = baseDeviceId.match(/^([A-Za-z]+)/);
-  return match ? match[1].toUpperCase() : baseDeviceId.toUpperCase() || "Unknown";
+  return match
+    ? match[1].toUpperCase()
+    : baseDeviceId.toUpperCase() || "Unknown";
 }
 
 function getBlueLabelSequenceIndex(
@@ -476,21 +920,12 @@ function getBlueLabelSequenceIndex(
   sequenceIndexMap: Map<string, number>,
 ): number | null {
   const endpoints = getDisplayEndpoints(row);
-  const candidates = [
-    getBaseDeviceIdValue(endpoints.fromDeviceId),
-    getBaseDeviceIdValue(endpoints.toDeviceId),
-  ];
-
-  for (const candidate of candidates) {
-    const normalized = candidate.trim().toUpperCase();
-    if (!normalized) continue;
-    const index = sequenceIndexMap.get(normalized);
-    if (index !== undefined) {
-      return index;
-    }
-  }
-
-  return null;
+  const fromBase = getBaseDeviceIdValue(endpoints.fromDeviceId)
+    .trim()
+    .toUpperCase();
+  if (!fromBase) return null;
+  const index = sequenceIndexMap.get(fromBase);
+  return index !== undefined ? index : null;
 }
 
 function sortSingleConnectionsByBlueLabelSequence(
@@ -525,7 +960,11 @@ function sortSingleConnectionsByBlueLabelSequence(
       const leftSequence = left.sequenceIndex;
       const rightSequence = right.sequenceIndex;
 
-      if (leftSequence !== null && rightSequence !== null && leftSequence !== rightSequence) {
+      if (
+        leftSequence !== null &&
+        rightSequence !== null &&
+        leftSequence !== rightSequence
+      ) {
         return leftSequence - rightSequence;
       }
       if (leftSequence !== null && rightSequence === null) {
@@ -540,6 +979,159 @@ function sortSingleConnectionsByBlueLabelSequence(
     .map((entry) => entry.row);
 }
 
+type IPVSchemaItem =
+  | { type: "header"; deviceId: string }
+  | { type: "row"; row: SemanticWireListRow; isUnique: boolean; seq: number };
+
+function buildIPVSchema(
+  rows: SemanticWireListRow[],
+  currentSheetName: string,
+  blueLabels: BlueLabelSequenceMap | null,
+  ipvChecklistGroups?: Array<{
+    deviceId: string;
+    rows: SemanticWireListRow[];
+  }>,
+): IPVSchemaItem[] {
+  const printableRows = rows.filter(isPrintableConnectionRow);
+
+  if (ipvChecklistGroups && ipvChecklistGroups.length > 0) {
+    const allRows = ipvChecklistGroups.flatMap((group) =>
+      group.rows.filter(isPrintableConnectionRow),
+    );
+
+    const wireNoCounts = new Map<string, number>();
+    for (const row of allRows) {
+      const wireNo = (row.wireNo || "").trim();
+      if (wireNo) wireNoCounts.set(wireNo, (wireNoCounts.get(wireNo) ?? 0) + 1);
+    }
+
+    const items: IPVSchemaItem[] = [];
+    let seq = 0;
+
+    for (const group of ipvChecklistGroups) {
+      items.push({ type: "header", deviceId: group.deviceId });
+      for (const row of group.rows) {
+        if (!isPrintableConnectionRow(row)) continue;
+        items.push({
+          type: "row",
+          row,
+          isUnique: wireNoCounts.get((row.wireNo || "").trim()) === 1,
+          seq: ++seq,
+        });
+      }
+    }
+
+    return items;
+  }
+
+  // Build wireNo count map for isUnique determination
+  const wireNoCounts = new Map<string, number>();
+  for (const row of printableRows) {
+    const wireNo = (row.wireNo || "").trim();
+    if (wireNo) wireNoCounts.set(wireNo, (wireNoCounts.get(wireNo) ?? 0) + 1);
+  }
+
+  // Group rows by FROM device base ID (preserving original order within each group)
+  const rowsByDevice = new Map<string, SemanticWireListRow[]>();
+  const deviceOrder: string[] = []; // preserve insertion order for unmatched devices
+  for (const row of printableRows) {
+    const endpoints = getDisplayEndpoints(row);
+    const deviceBase =
+      getBaseDeviceIdValue(endpoints.fromDeviceId).trim().toUpperCase() ||
+      "__UNKNOWN__";
+    if (!rowsByDevice.has(deviceBase)) {
+      rowsByDevice.set(deviceBase, []);
+      deviceOrder.push(deviceBase);
+    }
+    rowsByDevice.get(deviceBase)!.push(row);
+  }
+
+  const items: IPVSchemaItem[] = [];
+  let seq = 0;
+
+  const makeRowItem = (row: SemanticWireListRow): IPVSchemaItem => ({
+    type: "row",
+    row,
+    isUnique: wireNoCounts.get((row.wireNo || "").trim()) === 1,
+    seq: ++seq,
+  });
+
+  const visited = new Set<string>();
+
+  // Walk the blue label sequence first
+  if (blueLabels?.isValid) {
+    const sequence = getSheetDeviceSequence(currentSheetName, blueLabels);
+    for (const deviceId of sequence) {
+      const key = deviceId.trim().toUpperCase();
+      const deviceRows = rowsByDevice.get(key);
+      if (deviceRows && deviceRows.length > 0) {
+        items.push({ type: "header", deviceId: deviceId.trim() });
+        for (const row of deviceRows) {
+          items.push(makeRowItem(row));
+        }
+      }
+      visited.add(key);
+    }
+  }
+
+  // Append any rows whose FROM device was not in the sequence
+  for (const key of deviceOrder) {
+    if (!visited.has(key)) {
+      const deviceRows = rowsByDevice.get(key)!;
+      const label = key === "__UNKNOWN__" ? "—" : key;
+      items.push({ type: "header", deviceId: label });
+      for (const row of deviceRows) {
+        items.push(makeRowItem(row));
+      }
+    }
+  }
+
+  return items;
+}
+
+function splitIntoTwoColumns<T>(items: T[]): [T[], T[]] {
+  const midpoint = Math.ceil(items.length / 2);
+  return [items.slice(0, midpoint), items.slice(midpoint)];
+}
+
+function buildBlueLabelReferenceRows(
+  currentSheetName: string,
+  blueLabels: BlueLabelSequenceMap | null,
+): string[] {
+  if (!blueLabels?.isValid) {
+    return [];
+  }
+
+  return getSheetDeviceSequence(currentSheetName, blueLabels).map(
+    (deviceId, index) =>
+      `${String(index + 1).padStart(2, "0")}. ${deviceId.trim()}`,
+  );
+}
+
+function isInternalIPVRow(
+  row: SemanticWireListRow,
+  currentSheetName: string,
+): boolean {
+  const normalizedSheetName = currentSheetName.trim().toUpperCase();
+  const locations = [row.fromLocation, row.toLocation, row.location]
+    .map((value) =>
+      String(value ?? "")
+        .trim()
+        .toUpperCase(),
+    )
+    .filter(Boolean);
+
+  if (locations.length === 0) {
+    return true;
+  }
+
+  return locations.every(
+    (location) =>
+      location === normalizedSheetName ||
+      location.includes(normalizedSheetName),
+  );
+}
+
 function buildBlueLabelRenderSubgroups(
   rows: SemanticWireListRow[],
   sectionSwapFromTo = false,
@@ -547,9 +1139,14 @@ function buildBlueLabelRenderSubgroups(
   const groups = new Map<string, WireListCompiledSubgroup>();
 
   rows.forEach((row, index) => {
-    const label = getBaseDeviceIdValue(getDisplayEndpoints(row, sectionSwapFromTo).fromDeviceId)
-      || getBaseDeviceIdValue(getDisplayEndpoints(row, sectionSwapFromTo).toDeviceId)
-      || "Unsequenced";
+    const label =
+      getBaseDeviceIdValue(
+        getDisplayEndpoints(row, sectionSwapFromTo).fromDeviceId,
+      ) ||
+      getBaseDeviceIdValue(
+        getDisplayEndpoints(row, sectionSwapFromTo).toDeviceId,
+      ) ||
+      "Unsequenced";
     const normalizedLabel = label.trim() || "Unsequenced";
     const key = normalizedLabel.toUpperCase();
     const existing = groups.get(key);
@@ -570,10 +1167,15 @@ function buildBlueLabelRenderSubgroups(
     });
   });
 
-  return Array.from(groups.values()).sort((left, right) => left.order - right.order);
+  return Array.from(groups.values()).sort(
+    (left, right) => left.order - right.order,
+  );
 }
 
-function getDisplayEndpoints(row: SemanticWireListRow, sectionSwapFromTo = false): {
+function getDisplayEndpoints(
+  row: SemanticWireListRow,
+  sectionSwapFromTo = false,
+): {
   fromDeviceId: string;
   toDeviceId: string;
   fromLocation: string;
@@ -582,15 +1184,21 @@ function getDisplayEndpoints(row: SemanticWireListRow, sectionSwapFromTo = false
   const autoSwap = shouldSwapForTargetPair(row.fromDeviceId, row.toDeviceId);
   // XOR: if both auto-swap and manual swap are true, they cancel out
   const shouldSwap = sectionSwapFromTo ? !autoSwap : autoSwap;
-  const fromDeviceId = shouldSwap ? (row.toDeviceId || "") : (row.fromDeviceId || "");
-  const toDeviceId = shouldSwap ? (row.fromDeviceId || "") : (row.toDeviceId || "");
+  const fromDeviceId = shouldSwap
+    ? row.toDeviceId || ""
+    : row.fromDeviceId || "";
+  const toDeviceId = shouldSwap ? row.fromDeviceId || "" : row.toDeviceId || "";
 
   // Resolve raw locations — row.location is deprecated but may still be the only value
   const rawFromLocation = row.fromLocation || row.location || "";
   const rawToLocation = row.toLocation || "";
 
-  const fromLocation = shouldSwap ? rawToLocation || rawFromLocation : rawFromLocation;
-  const toLocation = shouldSwap ? rawFromLocation : rawToLocation || rawFromLocation;
+  const fromLocation = shouldSwap
+    ? rawToLocation || rawFromLocation
+    : rawFromLocation;
+  const toLocation = shouldSwap
+    ? rawFromLocation
+    : rawToLocation || rawFromLocation;
 
   return { fromDeviceId, toDeviceId, fromLocation, toLocation };
 }
@@ -610,9 +1218,9 @@ function getAfTerminalGroupOrder(terminal: string): number {
   // AF terminals grouped by ranges: 63-48, 47-32, 31-16, 15-0
   // Non-numeric terminals are mapped to their ranges
   const terminalMap: Record<string, number> = {
-    SH: 0,     // 63-48 range
-    "V+": 1,   // 47-32 range
-    COM: 2,    // 31-16 range
+    SH: 0, // 63-48 range
+    "V+": 1, // 47-32 range
+    COM: 2, // 31-16 range
   };
 
   if (terminalMap[terminal] !== undefined) {
@@ -622,16 +1230,19 @@ function getAfTerminalGroupOrder(terminal: string): number {
   const isNumeric = /^\d+$/.test(terminal);
   if (isNumeric) {
     const value = Number.parseInt(terminal, 10);
-    if (value >= 48 && value <= 63) return 0;    // 63-48 group
-    if (value >= 32 && value <= 47) return 1;    // 47-32 group
-    if (value >= 16 && value <= 31) return 2;    // 31-16 group
-    if (value >= 0 && value <= 15) return 3;     // 15-0 group
+    if (value >= 48 && value <= 63) return 0; // 63-48 group
+    if (value >= 32 && value <= 47) return 1; // 47-32 group
+    if (value >= 16 && value <= 31) return 2; // 31-16 group
+    if (value >= 0 && value <= 15) return 3; // 15-0 group
   }
 
   return 4; // Unknown terminals go last
 }
 
-function compareAfTerminalsDescending(leftTerminal: string, rightTerminal: string): number {
+function compareAfTerminalsDescending(
+  leftTerminal: string,
+  rightTerminal: string,
+): number {
   const leftGroup = getAfTerminalGroupOrder(leftTerminal);
   const rightGroup = getAfTerminalGroupOrder(rightTerminal);
 
@@ -652,10 +1263,15 @@ function compareAfTerminalsDescending(leftTerminal: string, rightTerminal: strin
     }
   }
 
-  return rightTerminal.localeCompare(leftTerminal, undefined, { numeric: true });
+  return rightTerminal.localeCompare(leftTerminal, undefined, {
+    numeric: true,
+  });
 }
 
-function compareAtTerminalsAscending(leftTerminal: string, rightTerminal: string): number {
+function compareAtTerminalsAscending(
+  leftTerminal: string,
+  rightTerminal: string,
+): number {
   const isLeftNumeric = /^\d+$/.test(leftTerminal);
   const isRightNumeric = /^\d+$/.test(rightTerminal);
 
@@ -667,7 +1283,9 @@ function compareAtTerminalsAscending(leftTerminal: string, rightTerminal: string
     }
   }
 
-  return leftTerminal.localeCompare(rightTerminal, undefined, { numeric: true });
+  return leftTerminal.localeCompare(rightTerminal, undefined, {
+    numeric: true,
+  });
 }
 
 const KA_RELAY_TERMINAL_ORDER: Record<string, number> = {
@@ -702,11 +1320,14 @@ function normalizePartNumberForSort(partNumber: string | undefined): string {
     .replace(/\s+/g, "");
 }
 
-function hasMatchingSortPartNumber(partNumber: string | undefined, allowedPartNumbers: Set<string>): boolean {
+function hasMatchingSortPartNumber(
+  partNumber: string | undefined,
+  allowedPartNumbers: Set<string>,
+): boolean {
   return String(partNumber ?? "")
     .split(/[\n,;]+/)
-    .map(value => normalizePartNumberForSort(value))
-    .some(value => value.length > 0 && allowedPartNumbers.has(value));
+    .map((value) => normalizePartNumberForSort(value))
+    .some((value) => value.length > 0 && allowedPartNumbers.has(value));
 }
 
 function getKaRelayTerminalRank(
@@ -722,13 +1343,18 @@ function getKaRelayTerminalRank(
     return null;
   }
 
-  const partNumber = lookupPartNumber(partNumberMap, row.fromDeviceId)?.partNumber;
+  const partNumber = lookupPartNumber(
+    partNumberMap,
+    row.fromDeviceId,
+  )?.partNumber;
   if (!partNumber || !KA_RELAY_PART_NUMBERS.has(partNumber)) {
     return null;
   }
 
   const terminal = getDeviceTerminalValue(row.fromDeviceId);
-  return terminal in KA_RELAY_TERMINAL_ORDER ? KA_RELAY_TERMINAL_ORDER[terminal] : null;
+  return terminal in KA_RELAY_TERMINAL_ORDER
+    ? KA_RELAY_TERMINAL_ORDER[terminal]
+    : null;
 }
 
 function getQfTerminalRank(
@@ -744,7 +1370,10 @@ function getQfTerminalRank(
     return null;
   }
 
-  const partNumber = lookupPartNumber(partNumberMap, row.fromDeviceId)?.partNumber;
+  const partNumber = lookupPartNumber(
+    partNumberMap,
+    row.fromDeviceId,
+  )?.partNumber;
   if (!hasMatchingSortPartNumber(partNumber, QF_PART_NUMBERS)) {
     return null;
   }
@@ -761,14 +1390,22 @@ function compareClipRowsByTerminal(
   const leftKaRank = getKaRelayTerminalRank(left, partNumberMap);
   const rightKaRank = getKaRelayTerminalRank(right, partNumberMap);
 
-  if (leftKaRank !== null && rightKaRank !== null && leftKaRank !== rightKaRank) {
+  if (
+    leftKaRank !== null &&
+    rightKaRank !== null &&
+    leftKaRank !== rightKaRank
+  ) {
     return leftKaRank - rightKaRank;
   }
 
   const leftQfRank = getQfTerminalRank(left, partNumberMap);
   const rightQfRank = getQfTerminalRank(right, partNumberMap);
 
-  if (leftQfRank !== null && rightQfRank !== null && leftQfRank !== rightQfRank) {
+  if (
+    leftQfRank !== null &&
+    rightQfRank !== null &&
+    leftQfRank !== rightQfRank
+  ) {
     return leftQfRank - rightQfRank;
   }
 
@@ -785,7 +1422,9 @@ function compareClipRowsByTerminal(
     }
   }
 
-  return leftTerminal.localeCompare(rightTerminal, undefined, { numeric: true });
+  return leftTerminal.localeCompare(rightTerminal, undefined, {
+    numeric: true,
+  });
 }
 
 /**
@@ -795,7 +1434,10 @@ function compareClipRowsByTerminal(
  * should be "KA:A1" (device prefix + terminal).  For all other section kinds
  * the standard device-prefix extraction is used.
  */
-function getTocSubsectionPrefix(label: string, sectionKind?: IdentificationFilterKind): string {
+function getTocSubsectionPrefix(
+  label: string,
+  sectionKind?: IdentificationFilterKind,
+): string {
   if (sectionKind === "ka_relay_plugin_jumpers") {
     // label format: "A1: KA0131 → KA0141" or "A2: KA0131 → KA0141"
     const terminalMatch = label.match(/^([A-Za-z0-9]+)\s*:/);
@@ -810,16 +1452,16 @@ function getTocSubsectionPrefix(label: string, sectionKind?: IdentificationFilte
 }
 
 function normalizeReferenceLookupKey(value: string | undefined): string {
-  return value
-    ?.trim()
-    .toUpperCase()
-    .replace(/\s+/g, "")
-    .split(":")[0]
-    .trim() || "";
+  return (
+    value?.trim().toUpperCase().replace(/\s+/g, "").split(":")[0].trim() || ""
+  );
 }
 
 function lookupReferenceEntry(
-  lookupMap: Map<string, PartNumberLookupResult | CablePartNumberLookupResult> | null | undefined,
+  lookupMap:
+    | Map<string, PartNumberLookupResult | CablePartNumberLookupResult>
+    | null
+    | undefined,
   lookupKey: string | undefined,
 ): PartNumberLookupResult | CablePartNumberLookupResult | undefined {
   const normalizedLookupKey = normalizeReferenceLookupKey(lookupKey);
@@ -838,7 +1480,10 @@ function getPrintPreviewReferences(
   swapFromTo = false,
 ) {
   if (isCablesSection) {
-    const cableReference = lookupReferenceEntry(cablePartNumberMap, row.wireType);
+    const cableReference = lookupReferenceEntry(
+      cablePartNumberMap,
+      row.wireType,
+    );
     return {
       fromReference: cableReference,
       toReference: cableReference,
@@ -895,7 +1540,6 @@ function createBrandingEditDraft(
   return nextEdit;
 }
 
-
 function buildBrandingSectionRenderPlan(
   rows: SemanticWireListRow[],
   currentSheetName: string,
@@ -908,18 +1552,28 @@ function buildBrandingSectionRenderPlan(
   const orderedRows = shouldPreservePrintSubsectionOrder(sectionKind)
     ? filterEmptyDeviceChangeSections(rows).filter(isPrintableConnectionRow)
     : sortRowsForDeviceGroupedPreview(
-      filterEmptyDeviceChangeSections(rows).filter(isPrintableConnectionRow),
-      currentSheetName,
-      isCablesSection,
-      partNumberMap,
-      sectionKind,
-    );
+        filterEmptyDeviceChangeSections(rows).filter(isPrintableConnectionRow),
+        currentSheetName,
+        isCablesSection,
+        partNumberMap,
+        sectionKind,
+      );
   const effectiveSubgroups = !sectionKind
     ? []
-    : buildRenderableSectionSubgroups(sectionKind, orderedRows, matchMetadata, partNumberMap, brandingSortMode !== "default");
+    : buildRenderableSectionSubgroups(
+        sectionKind,
+        orderedRows,
+        matchMetadata,
+        partNumberMap,
+        brandingSortMode !== "default",
+      );
 
   // For single_connections branding, sort subgroups by device prefix (and optionally part number)
-  if (sectionKind === "single_connections" && brandingSortMode !== "default" && effectiveSubgroups.length > 0) {
+  if (
+    sectionKind === "single_connections" &&
+    brandingSortMode !== "default" &&
+    effectiveSubgroups.length > 0
+  ) {
     const rowsById = new Map(orderedRows.map((row) => [row.__rowId, row]));
 
     effectiveSubgroups.sort((a, b) => {
@@ -930,25 +1584,43 @@ function buildBrandingSectionRenderPlan(
         return aIsTarget ? -1 : 1;
       }
 
-      const aFirstRow = a.rowIds.length > 0 ? rowsById.get(a.rowIds[0]) : undefined;
-      const bFirstRow = b.rowIds.length > 0 ? rowsById.get(b.rowIds[0]) : undefined;
-      const aDisplayFrom = aFirstRow ? getDisplayEndpoints(aFirstRow).fromDeviceId : undefined;
-      const bDisplayFrom = bFirstRow ? getDisplayEndpoints(bFirstRow).fromDeviceId : undefined;
+      const aFirstRow =
+        a.rowIds.length > 0 ? rowsById.get(a.rowIds[0]) : undefined;
+      const bFirstRow =
+        b.rowIds.length > 0 ? rowsById.get(b.rowIds[0]) : undefined;
+      const aDisplayFrom = aFirstRow
+        ? getDisplayEndpoints(aFirstRow).fromDeviceId
+        : undefined;
+      const bDisplayFrom = bFirstRow
+        ? getDisplayEndpoints(bFirstRow).fromDeviceId
+        : undefined;
 
       // For target groups, derive prefix from the subgroup label (device base)
-      const aEffectivePrefix = aIsTarget ? getDevicePrefixValue(a.label) : getDevicePrefixValue(aDisplayFrom);
-      const bEffectivePrefix = bIsTarget ? getDevicePrefixValue(b.label) : getDevicePrefixValue(bDisplayFrom);
+      const aEffectivePrefix = aIsTarget
+        ? getDevicePrefixValue(a.label)
+        : getDevicePrefixValue(aDisplayFrom);
+      const bEffectivePrefix = bIsTarget
+        ? getDevicePrefixValue(b.label)
+        : getDevicePrefixValue(bDisplayFrom);
 
       // 1) Sort by device prefix
-      const prefixCompare = aEffectivePrefix.localeCompare(bEffectivePrefix, undefined, { numeric: true });
+      const prefixCompare = aEffectivePrefix.localeCompare(
+        bEffectivePrefix,
+        undefined,
+        { numeric: true },
+      );
       if (prefixCompare !== 0) return prefixCompare;
 
       // 2) Within same prefix, sort by part number (only for device-prefix-part-number mode)
       if (brandingSortMode === "device-prefix-part-number" && partNumberMap) {
-        const aPartNumber = lookupPartNumber(partNumberMap, aDisplayFrom)?.partNumber ?? "";
-        const bPartNumber = lookupPartNumber(partNumberMap, bDisplayFrom)?.partNumber ?? "";
+        const aPartNumber =
+          lookupPartNumber(partNumberMap, aDisplayFrom)?.partNumber ?? "";
+        const bPartNumber =
+          lookupPartNumber(partNumberMap, bDisplayFrom)?.partNumber ?? "";
 
-        const partCompare = aPartNumber.localeCompare(bPartNumber, undefined, { numeric: true });
+        const partCompare = aPartNumber.localeCompare(bPartNumber, undefined, {
+          numeric: true,
+        });
         if (partCompare !== 0) return partCompare;
       }
 
@@ -974,7 +1646,7 @@ function buildBrandingSectionRenderPlan(
 
   for (const sg of effectiveSubgroups) {
     const memberSet = new Set(sg.rowIds);
-    const first = reorderedRows.find(r => memberSet.has(r.__rowId));
+    const first = reorderedRows.find((r) => memberSet.has(r.__rowId));
     if (first) {
       sg.startRowId = first.__rowId;
     }
@@ -995,20 +1667,30 @@ function buildBrandingSectionRenderPlan(
   });
 
   // Inject prefix-category headers when sorting by device prefix
-  if (sectionKind === "single_connections" && brandingSortMode !== "default" && plan.length > 0) {
+  if (
+    sectionKind === "single_connections" &&
+    brandingSortMode !== "default" &&
+    plan.length > 0
+  ) {
     const rowsById = new Map(reorderedRows.map((row) => [row.__rowId, row]));
     const enriched: WireListRenderPlanItem[] = [];
     let lastPrefix = "";
 
     for (const item of plan) {
       if (item.type === "group-header" && item.group.groupKind === "subgroup") {
-        const matchingSg = effectiveSubgroups.find((sg) => `subgroup-${sg.id}` === item.group.key || sg.label === item.group.label);
+        const matchingSg = effectiveSubgroups.find(
+          (sg) =>
+            `subgroup-${sg.id}` === item.group.key ||
+            sg.label === item.group.label,
+        );
         const firstRowId = matchingSg?.rowIds[0];
         const firstRow = firstRowId ? rowsById.get(firstRowId) : undefined;
         // For target device pair groups, derive prefix from the subgroup label
         const prefix = matchingSg?.id.startsWith("single-target-pair:")
           ? getDevicePrefixValue(matchingSg.label)
-          : getDevicePrefixValue(firstRow ? getDisplayEndpoints(firstRow).fromDeviceId : undefined);
+          : getDevicePrefixValue(
+              firstRow ? getDisplayEndpoints(firstRow).fromDeviceId : undefined,
+            );
 
         if (prefix && prefix !== lastPrefix) {
           enriched.push({
@@ -1041,12 +1723,18 @@ function sortRowsForDeviceGroupedPreview(
 ): SemanticWireListRow[] {
   const normalizedSheetName = currentSheetName.toUpperCase().trim();
   const indexedRows = rows.map((row, index) => ({ row, index }));
-  const getDisplayFromDeviceId = (row: SemanticWireListRow) => getDisplayEndpoints(row).fromDeviceId;
-  const getDisplayToDeviceId = (row: SemanticWireListRow) => getDisplayEndpoints(row).toDeviceId;
-  const getFromDeviceGroup = (row: SemanticWireListRow) => getSingleConnectionDeviceGroup(getDisplayFromDeviceId(row), partNumberMap);
-  const getToDeviceGroup = (row: SemanticWireListRow) => getDevicePrefixValue(getDisplayToDeviceId(row));
-  const getBaseDeviceId = (row: SemanticWireListRow) => getBaseDeviceIdValue(getDisplayFromDeviceId(row));
-  const getLocation = (row: SemanticWireListRow) => getDisplayEndpoints(row).fromLocation || row.location || "";
+  const getDisplayFromDeviceId = (row: SemanticWireListRow) =>
+    getDisplayEndpoints(row).fromDeviceId;
+  const getDisplayToDeviceId = (row: SemanticWireListRow) =>
+    getDisplayEndpoints(row).toDeviceId;
+  const getFromDeviceGroup = (row: SemanticWireListRow) =>
+    getSingleConnectionDeviceGroup(getDisplayFromDeviceId(row), partNumberMap);
+  const getToDeviceGroup = (row: SemanticWireListRow) =>
+    getDevicePrefixValue(getDisplayToDeviceId(row));
+  const getBaseDeviceId = (row: SemanticWireListRow) =>
+    getBaseDeviceIdValue(getDisplayFromDeviceId(row));
+  const getLocation = (row: SemanticWireListRow) =>
+    getDisplayEndpoints(row).fromLocation || row.location || "";
   const sourceCounts = new Map<string, Map<string, number>>();
   const pairCounts = new Map<string, Map<string, number>>();
   const fallbackPrefixCounts = new Map<string, Map<string, number>>();
@@ -1054,19 +1742,30 @@ function sortRowsForDeviceGroupedPreview(
   rows.forEach((row) => {
     const location = getLocation(row).toUpperCase();
     const fromBase = getBaseDeviceId(row).toUpperCase();
-    const toBase = getBaseDeviceIdValue(getDisplayToDeviceId(row)).toUpperCase();
+    const toBase = getBaseDeviceIdValue(
+      getDisplayToDeviceId(row),
+    ).toUpperCase();
     const fromPrefix = getFromDeviceGroup(row);
     const toPrefix = getToDeviceGroup(row);
-    const locationSourceCounts = sourceCounts.get(location) ?? new Map<string, number>();
-    locationSourceCounts.set(fromBase, (locationSourceCounts.get(fromBase) ?? 0) + 1);
+    const locationSourceCounts =
+      sourceCounts.get(location) ?? new Map<string, number>();
+    locationSourceCounts.set(
+      fromBase,
+      (locationSourceCounts.get(fromBase) ?? 0) + 1,
+    );
     sourceCounts.set(location, locationSourceCounts);
-    const locationPairCounts = pairCounts.get(location) ?? new Map<string, number>();
+    const locationPairCounts =
+      pairCounts.get(location) ?? new Map<string, number>();
     const pairKey = `${fromBase}->${toBase}`;
     locationPairCounts.set(pairKey, (locationPairCounts.get(pairKey) ?? 0) + 1);
     pairCounts.set(location, locationPairCounts);
-    const locationFallbackCounts = fallbackPrefixCounts.get(location) ?? new Map<string, number>();
+    const locationFallbackCounts =
+      fallbackPrefixCounts.get(location) ?? new Map<string, number>();
     const fallbackKey = `${fromPrefix}->${toPrefix}`;
-    locationFallbackCounts.set(fallbackKey, (locationFallbackCounts.get(fallbackKey) ?? 0) + 1);
+    locationFallbackCounts.set(
+      fallbackKey,
+      (locationFallbackCounts.get(fallbackKey) ?? 0) + 1,
+    );
     fallbackPrefixCounts.set(location, locationFallbackCounts);
   });
 
@@ -1077,23 +1776,53 @@ function sortRowsForDeviceGroupedPreview(
     const fromPrefix = getFromDeviceGroup(row);
     const toPrefix = getToDeviceGroup(row);
     const sourceCount = sourceCounts.get(location)?.get(fromBase) ?? 0;
-    const pairCount = pairCounts.get(location)?.get(`${fromBase}->${toBase}`) ?? 0;
-    const fallbackCount = fallbackPrefixCounts.get(location)?.get(`${fromPrefix}->${toPrefix}`) ?? 0;
+    const pairCount =
+      pairCounts.get(location)?.get(`${fromBase}->${toBase}`) ?? 0;
+    const fallbackCount =
+      fallbackPrefixCounts.get(location)?.get(`${fromPrefix}->${toPrefix}`) ??
+      0;
 
     if (sourceCount > 2) {
-      return { category: 0, primary: fromBase, secondary: "", tertiary: "", quaternary: "" };
+      return {
+        category: 0,
+        primary: fromBase,
+        secondary: "",
+        tertiary: "",
+        quaternary: "",
+      };
     }
 
     if (pairCount >= 2) {
-      return { category: 1, primary: fromBase, secondary: toBase, tertiary: "", quaternary: "" };
+      return {
+        category: 1,
+        primary: fromBase,
+        secondary: toBase,
+        tertiary: "",
+        quaternary: "",
+      };
     }
 
     return fallbackCount === 1
-      ? { category: 2, primary: fromPrefix, secondary: "", tertiary: toPrefix, quaternary: fromBase }
-      : { category: 2, primary: fromPrefix, secondary: toPrefix, tertiary: fromBase, quaternary: "" };
+      ? {
+          category: 2,
+          primary: fromPrefix,
+          secondary: "",
+          tertiary: toPrefix,
+          quaternary: fromBase,
+        }
+      : {
+          category: 2,
+          primary: fromPrefix,
+          secondary: toPrefix,
+          tertiary: fromBase,
+          quaternary: "",
+        };
   };
 
-  const compareGauge = (left: SemanticWireListRow, right: SemanticWireListRow) => {
+  const compareGauge = (
+    left: SemanticWireListRow,
+    right: SemanticWireListRow,
+  ) => {
     const leftGauge = parseGaugeNumeric(left.gaugeSize || "");
     const rightGauge = parseGaugeNumeric(right.gaugeSize || "");
 
@@ -1111,8 +1840,12 @@ function sortRowsForDeviceGroupedPreview(
     .sort((left, right) => {
       const leftLocation = getLocation(left.row);
       const rightLocation = getLocation(right.row);
-      const leftMatchesSheet = normalizedSheetName ? leftLocation.toUpperCase().includes(normalizedSheetName) : false;
-      const rightMatchesSheet = normalizedSheetName ? rightLocation.toUpperCase().includes(normalizedSheetName) : false;
+      const leftMatchesSheet = normalizedSheetName
+        ? leftLocation.toUpperCase().includes(normalizedSheetName)
+        : false;
+      const rightMatchesSheet = normalizedSheetName
+        ? rightLocation.toUpperCase().includes(normalizedSheetName)
+        : false;
 
       if (leftMatchesSheet !== rightMatchesSheet) {
         return leftMatchesSheet ? -1 : 1;
@@ -1125,8 +1858,12 @@ function sortRowsForDeviceGroupedPreview(
 
       // For AF rows on the same base device, enforce terminal ordering high -> low
       // before subgroup/category logic can shuffle the sequence.
-      const leftFromPrefix = getDevicePrefixValue(getDisplayFromDeviceId(left.row));
-      const rightFromPrefix = getDevicePrefixValue(getDisplayFromDeviceId(right.row));
+      const leftFromPrefix = getDevicePrefixValue(
+        getDisplayFromDeviceId(left.row),
+      );
+      const rightFromPrefix = getDevicePrefixValue(
+        getDisplayFromDeviceId(right.row),
+      );
       const leftBaseDevice = getBaseDeviceId(left.row);
       const rightBaseDevice = getBaseDeviceId(right.row);
       if (
@@ -1158,7 +1895,9 @@ function sortRowsForDeviceGroupedPreview(
       }
 
       if (isCablesSection) {
-        const cableTypeCompare = (left.row.wireType || "").localeCompare(right.row.wireType || "");
+        const cableTypeCompare = (left.row.wireType || "").localeCompare(
+          right.row.wireType || "",
+        );
         if (cableTypeCompare !== 0) {
           return cableTypeCompare;
         }
@@ -1172,33 +1911,57 @@ function sortRowsForDeviceGroupedPreview(
           return leftMeta.category - rightMeta.category;
         }
 
-        const primaryCompare = leftMeta.primary.localeCompare(rightMeta.primary, undefined, { numeric: true });
+        const primaryCompare = leftMeta.primary.localeCompare(
+          rightMeta.primary,
+          undefined,
+          { numeric: true },
+        );
         if (primaryCompare !== 0) {
           return primaryCompare;
         }
 
-        const secondaryCompare = leftMeta.secondary.localeCompare(rightMeta.secondary, undefined, { numeric: true });
+        const secondaryCompare = leftMeta.secondary.localeCompare(
+          rightMeta.secondary,
+          undefined,
+          { numeric: true },
+        );
         if (secondaryCompare !== 0) {
           return secondaryCompare;
         }
 
-        const tertiaryCompare = leftMeta.tertiary.localeCompare(rightMeta.tertiary, undefined, { numeric: true });
+        const tertiaryCompare = leftMeta.tertiary.localeCompare(
+          rightMeta.tertiary,
+          undefined,
+          { numeric: true },
+        );
         if (tertiaryCompare !== 0) {
           return tertiaryCompare;
         }
 
-        const quaternaryCompare = leftMeta.quaternary.localeCompare(rightMeta.quaternary, undefined, { numeric: true });
+        const quaternaryCompare = leftMeta.quaternary.localeCompare(
+          rightMeta.quaternary,
+          undefined,
+          { numeric: true },
+        );
         if (quaternaryCompare !== 0) {
           return quaternaryCompare;
         }
       }
 
-      const fromDeviceGroupCompare = getFromDeviceGroup(left.row).localeCompare(getFromDeviceGroup(right.row), undefined, { numeric: true });
+      const fromDeviceGroupCompare = getFromDeviceGroup(left.row).localeCompare(
+        getFromDeviceGroup(right.row),
+        undefined,
+        { numeric: true },
+      );
       if (fromDeviceGroupCompare !== 0) {
         return fromDeviceGroupCompare;
       }
 
-      const toDeviceGroupCompare = getToDeviceGroup(left.row).localeCompare(getToDeviceGroup(right.row), undefined, { numeric: true });
+      const toDeviceGroupCompare = getToDeviceGroup(left.row).localeCompare(
+        getToDeviceGroup(right.row),
+        undefined,
+        { numeric: true },
+      );
       if (toDeviceGroupCompare !== 0) {
         return toDeviceGroupCompare;
       }
@@ -1209,7 +1972,11 @@ function sortRowsForDeviceGroupedPreview(
       }
 
       if (sectionKind === "clips") {
-        const clipTerminalCompare = compareClipRowsByTerminal(left.row, right.row, partNumberMap);
+        const clipTerminalCompare = compareClipRowsByTerminal(
+          left.row,
+          right.row,
+          partNumberMap,
+        );
         if (clipTerminalCompare !== 0) {
           return clipTerminalCompare;
         }
@@ -1230,12 +1997,16 @@ function sortRowsForDeviceGroupedPreview(
         }
       }
 
-      const fullDeviceCompare = getDisplayFromDeviceId(left.row).localeCompare(getDisplayFromDeviceId(right.row));
+      const fullDeviceCompare = getDisplayFromDeviceId(left.row).localeCompare(
+        getDisplayFromDeviceId(right.row),
+      );
       if (fullDeviceCompare !== 0) {
         return fullDeviceCompare;
       }
 
-      const wireNoCompare = (left.row.wireNo || "").localeCompare(right.row.wireNo || "");
+      const wireNoCompare = (left.row.wireNo || "").localeCompare(
+        right.row.wireNo || "",
+      );
       if (wireNoCompare !== 0) {
         return wireNoCompare;
       }
@@ -1245,7 +2016,10 @@ function sortRowsForDeviceGroupedPreview(
     .map(({ row }) => row);
 }
 
-function locationMatchesCurrentSheet(location: string, currentSheetName: string): boolean {
+function locationMatchesCurrentSheet(
+  location: string,
+  currentSheetName: string,
+): boolean {
   if (!location || !currentSheetName) {
     return false;
   }
@@ -1262,8 +2036,15 @@ function sortRowsForPrintSubsection(
   blueLabels?: BlueLabelSequenceMap | null,
   sortMode: BrandingSortMode = "default",
 ): SemanticWireListRow[] {
-  if (sectionKind === "single_connections" && sortMode === "blue-label-sequence") {
-    const blueLabelSortedRows = sortSingleConnectionsByBlueLabelSequence(rows, currentSheetName, blueLabels ?? null);
+  if (
+    sectionKind === "single_connections" &&
+    sortMode === "blue-label-sequence"
+  ) {
+    const blueLabelSortedRows = sortSingleConnectionsByBlueLabelSequence(
+      rows,
+      currentSheetName,
+      blueLabels ?? null,
+    );
     if (blueLabelSortedRows) {
       return blueLabelSortedRows;
     }
@@ -1271,8 +2052,12 @@ function sortRowsForPrintSubsection(
 
   if (sectionKind === "ka_twin_ferrules") {
     return [...rows].sort((left, right) => {
-      const leftGroupKey = String(matchMetadata[left.__rowId]?.meta.groupKey ?? "");
-      const rightGroupKey = String(matchMetadata[right.__rowId]?.meta.groupKey ?? "");
+      const leftGroupKey = String(
+        matchMetadata[left.__rowId]?.meta.groupKey ?? "",
+      );
+      const rightGroupKey = String(
+        matchMetadata[right.__rowId]?.meta.groupKey ?? "",
+      );
 
       if (leftGroupKey !== rightGroupKey) {
         return leftGroupKey.localeCompare(rightGroupKey);
@@ -1280,7 +2065,8 @@ function sortRowsForPrintSubsection(
 
       const leftDestination = left.toDeviceId.toUpperCase().trim();
       const rightDestination = right.toDeviceId.toUpperCase().trim();
-      const destinationCompare = leftDestination.localeCompare(rightDestination);
+      const destinationCompare =
+        leftDestination.localeCompare(rightDestination);
       if (destinationCompare !== 0) {
         return destinationCompare;
       }
@@ -1291,10 +2077,18 @@ function sortRowsForPrintSubsection(
 
   if (sectionKind === "resistors") {
     return [...rows].sort((left, right) => {
-      const leftLocation = left.toLocation || left.fromLocation || left.location || "";
-      const rightLocation = right.toLocation || right.fromLocation || right.location || "";
-      const leftMatchesCurrentSheet = locationMatchesCurrentSheet(leftLocation, currentSheetName);
-      const rightMatchesCurrentSheet = locationMatchesCurrentSheet(rightLocation, currentSheetName);
+      const leftLocation =
+        left.toLocation || left.fromLocation || left.location || "";
+      const rightLocation =
+        right.toLocation || right.fromLocation || right.location || "";
+      const leftMatchesCurrentSheet = locationMatchesCurrentSheet(
+        leftLocation,
+        currentSheetName,
+      );
+      const rightMatchesCurrentSheet = locationMatchesCurrentSheet(
+        rightLocation,
+        currentSheetName,
+      );
 
       if (leftMatchesCurrentSheet !== rightMatchesCurrentSheet) {
         return leftMatchesCurrentSheet ? -1 : 1;
@@ -1305,14 +2099,22 @@ function sortRowsForPrintSubsection(
         return locationCompare;
       }
 
-      const leftRunOrder = Number(matchMetadata[left.__rowId]?.meta.runOrder ?? Number.MAX_SAFE_INTEGER);
-      const rightRunOrder = Number(matchMetadata[right.__rowId]?.meta.runOrder ?? Number.MAX_SAFE_INTEGER);
+      const leftRunOrder = Number(
+        matchMetadata[left.__rowId]?.meta.runOrder ?? Number.MAX_SAFE_INTEGER,
+      );
+      const rightRunOrder = Number(
+        matchMetadata[right.__rowId]?.meta.runOrder ?? Number.MAX_SAFE_INTEGER,
+      );
       if (leftRunOrder !== rightRunOrder) {
         return leftRunOrder - rightRunOrder;
       }
 
-      const leftRowOrder = Number(matchMetadata[left.__rowId]?.meta.rowOrder ?? left.__rowIndex);
-      const rightRowOrder = Number(matchMetadata[right.__rowId]?.meta.rowOrder ?? right.__rowIndex);
+      const leftRowOrder = Number(
+        matchMetadata[left.__rowId]?.meta.rowOrder ?? left.__rowIndex,
+      );
+      const rightRowOrder = Number(
+        matchMetadata[right.__rowId]?.meta.rowOrder ?? right.__rowIndex,
+      );
       if (leftRowOrder !== rightRowOrder) {
         return leftRowOrder - rightRowOrder;
       }
@@ -1337,7 +2139,11 @@ function sortRowsForPrintSubsection(
         return leftCurrent ? -1 : 1;
       }
 
-      const locationCompare = leftLocation.localeCompare(rightLocation, undefined, { numeric: true });
+      const locationCompare = leftLocation.localeCompare(
+        rightLocation,
+        undefined,
+        { numeric: true },
+      );
       if (locationCompare !== 0) {
         return locationCompare;
       }
@@ -1351,7 +2157,11 @@ function sortRowsForPrintSubsection(
         return baseCompare;
       }
 
-      const terminalCompare = compareClipRowsByTerminal(left, right, partNumberMap);
+      const terminalCompare = compareClipRowsByTerminal(
+        left,
+        right,
+        partNumberMap,
+      );
       if (terminalCompare !== 0) {
         return terminalCompare;
       }
@@ -1362,14 +2172,22 @@ function sortRowsForPrintSubsection(
 
   if (sectionKind === "single_connections") {
     return [...rows].sort((left, right) => {
-      const leftRunOrder = Number(matchMetadata[left.__rowId]?.meta.runOrder ?? Number.MAX_SAFE_INTEGER);
-      const rightRunOrder = Number(matchMetadata[right.__rowId]?.meta.runOrder ?? Number.MAX_SAFE_INTEGER);
+      const leftRunOrder = Number(
+        matchMetadata[left.__rowId]?.meta.runOrder ?? Number.MAX_SAFE_INTEGER,
+      );
+      const rightRunOrder = Number(
+        matchMetadata[right.__rowId]?.meta.runOrder ?? Number.MAX_SAFE_INTEGER,
+      );
       if (leftRunOrder !== rightRunOrder) {
         return leftRunOrder - rightRunOrder;
       }
 
-      const leftRowOrder = Number(matchMetadata[left.__rowId]?.meta.rowOrder ?? left.__rowIndex);
-      const rightRowOrder = Number(matchMetadata[right.__rowId]?.meta.rowOrder ?? right.__rowIndex);
+      const leftRowOrder = Number(
+        matchMetadata[left.__rowId]?.meta.rowOrder ?? left.__rowIndex,
+      );
+      const rightRowOrder = Number(
+        matchMetadata[right.__rowId]?.meta.rowOrder ?? right.__rowIndex,
+      );
       if (leftRowOrder !== rightRowOrder) {
         return leftRowOrder - rightRowOrder;
       }
@@ -1394,21 +2212,27 @@ function sortRowsForPrintSubsection(
   return sortRowsByGaugeSize([...rows], "smallest-first");
 }
 
-function shouldPreservePrintSubsectionOrder(sectionKind?: IdentificationFilterKind): boolean {
-  return Boolean(sectionKind && [
-    "cables",
-    "vio_jumpers",
-    "resistors",
-    "fu_jumpers",
-    "ka_jumpers",
-    "kt_jumpers",
-    "ka_twin_ferrules",
-    "ka_relay_plugin_jumpers",
-  ].includes(sectionKind));
+function shouldPreservePrintSubsectionOrder(
+  sectionKind?: IdentificationFilterKind,
+): boolean {
+  return Boolean(
+    sectionKind &&
+    [
+      "cables",
+      "vio_jumpers",
+      "resistors",
+      "fu_jumpers",
+      "ka_jumpers",
+      "kt_jumpers",
+      "ka_twin_ferrules",
+      "ka_relay_plugin_jumpers",
+    ].includes(sectionKind),
+  );
 }
 
 interface PrintSettings {
   mode: PrintFormatMode;
+  paperSize: PrintPaperSize;
   // Sections to include, in order (always sorted smallest-to-largest, same-location-first by default)
   enabledSections: JumperSection[];
   sectionOrder: JumperSection[];
@@ -1434,6 +2258,7 @@ interface PrintSettings {
   showTableOfContents: boolean;
   // IPV Codes Reference section
   showIPVCodes: boolean;
+  showIPVWireList: boolean;
   // Feedback section settings
   showFeedbackSection: boolean;
   feedbackRenderMode: "PREFILLED" | "BLANK";
@@ -1470,7 +2295,9 @@ interface PrintModalProps {
     unitNumber?: string;
     controlsDE?: string;
   };
-  getRowLength?: (rowId: string) => { display: string; roundedInches: number; confidence: string } | null;
+  getRowLength?: (
+    rowId: string,
+  ) => { display: string; roundedInches: number; confidence: string } | null;
   /** SWS type for the assignment (Panel, Box, etc.) */
   swsType?: {
     id: string;
@@ -1488,8 +2315,152 @@ export interface SingleSheetPrintWorkspaceProps extends PrintModalProps {
   extraHeaderActions?: ReactNode;
   initialLoadedSchema?: WireListPrintSchema | null;
   initialMode?: PrintFormatMode;
+  initialPrintViewTab?: "wire-list" | "cross-wire";
+  crossWireOnly?: boolean;
+  initializeAllLocationGroupsAsCrossWire?: boolean;
+  hideSchemaActions?: boolean;
   reviewModeCompact?: boolean;
   reviewModeShowSettings?: boolean;
+}
+
+interface ProjectCrossWireSchemaRow {
+  fromDeviceId: string;
+  fromLocation?: string;
+  wireType?: string;
+  wireNo: string;
+  wireId: string;
+  gaugeSize: string;
+  length: number | null;
+  toDeviceId: string;
+  toLocation: string;
+  bundleName: string;
+  bundleDisplay: string;
+}
+
+interface ProjectCrossWireSchemaDestinationGroup {
+  toLocation: string;
+  rows: ProjectCrossWireSchemaRow[];
+}
+
+interface ProjectCrossWireSchemaAssignmentGroup {
+  sheetSlug: string;
+  sheetName: string;
+  unitType: string;
+  destinationGroups: ProjectCrossWireSchemaDestinationGroup[];
+}
+
+interface ProjectCrossWireSchemaUnitTypeGroup {
+  unitType: string;
+  assignments: ProjectCrossWireSchemaAssignmentGroup[];
+  totalRows: number;
+}
+
+interface ProjectCrossWireSchemaDocument {
+  generatedAt: string;
+  totalCrossWireRows: number;
+  projectInfo?: {
+    projectNumber?: string;
+    projectName?: string;
+    revision?: string;
+    unitNumber?: string;
+  };
+  unitTypeGroups: ProjectCrossWireSchemaUnitTypeGroup[];
+}
+
+interface ProjectCrossWirePrintWorkspaceProps {
+  projectId?: string;
+  workspaceActive?: boolean;
+  onRequestClose?: () => void;
+  headerTitle?: string;
+  hideCloseButton?: boolean;
+}
+
+function crossWireSchemaNeedsRefresh(
+  schema: ProjectCrossWireSchemaDocument | null,
+): boolean {
+  if (!schema) {
+    return true;
+  }
+
+  return schema.unitTypeGroups.some((unitTypeGroup) =>
+    unitTypeGroup.assignments.some((assignment) =>
+      assignment.destinationGroups.some((destinationGroup) =>
+        destinationGroup.rows.some((row) => {
+          const wireType = String(row.wireType ?? "").trim();
+          const fromLocation = String(row.fromLocation ?? "").trim();
+          const toLocation = String(row.toLocation ?? "").trim();
+          return (
+            wireType.length === 0 ||
+            fromLocation.length === 0 ||
+            toLocation.length === 0
+          );
+        }),
+      ),
+    ),
+  );
+}
+
+function buildProjectCrossWireWorkspaceData(
+  unitTypeGroup: ProjectCrossWireSchemaUnitTypeGroup | null | undefined,
+): {
+  rows: SemanticWireListRow[];
+  rowLengthsById: Record<
+    string,
+    { display: string; roundedInches: number; confidence: string }
+  >;
+} {
+  if (!unitTypeGroup) {
+    return { rows: [], rowLengthsById: {} };
+  }
+
+  const rows: SemanticWireListRow[] = [];
+  const rowLengthsById: Record<
+    string,
+    { display: string; roundedInches: number; confidence: string }
+  > = {};
+  let rowIndex = 0;
+
+  for (const assignment of unitTypeGroup.assignments) {
+    for (const destinationGroup of assignment.destinationGroups) {
+      for (const row of destinationGroup.rows) {
+        const rowId = [
+          "cross-wire",
+          assignment.sheetSlug,
+          destinationGroup.toLocation,
+          row.wireId || row.wireNo || `${row.fromDeviceId}-${row.toDeviceId}`,
+          String(rowIndex),
+        ].join(":");
+
+        rows.push({
+          __rowIndex: rowIndex,
+          __rowId: rowId,
+          fromDeviceId: row.fromDeviceId ?? "",
+          wireType: row.wireType ?? "",
+          wireNo: row.wireNo ?? "",
+          wireId: row.wireId ?? "",
+          gaugeSize: row.gaugeSize ?? "",
+          fromLocation: row.fromLocation ?? assignment.sheetName ?? "",
+          fromPageZone: "",
+          toDeviceId: row.toDeviceId ?? "",
+          toLocation: row.toLocation ?? destinationGroup.toLocation ?? "",
+          toPageZone: "",
+          location: row.toLocation ?? destinationGroup.toLocation ?? "",
+        });
+
+        if (typeof row.length === "number" && Number.isFinite(row.length)) {
+          rowLengthsById[rowId] = {
+            display: row.length.toFixed(1),
+            roundedInches: row.length,
+            confidence: "saved",
+          };
+        }
+
+        rowIndex += 1;
+      }
+    }
+  }
+
+  return { rows, rowLengthsById };
 }
 
 export type { WireListPrintDocumentData } from "@/lib/wire-list-sheet-document/types";
@@ -1497,19 +2468,55 @@ export type { WireListPrintDocumentData } from "@/lib/wire-list-sheet-document/t
 /** Map SWS color names to compact Tailwind badge classes */
 function getSwsBadgeColorClass(color?: string): string {
   const map: Record<string, string> = {
-    slate: 'bg-slate-100 text-slate-700 border-slate-300',
-    cyan: 'bg-cyan-100 text-cyan-700 border-cyan-300',
-    amber: 'bg-amber-100 text-amber-700 border-amber-300',
-    indigo: 'bg-indigo-100 text-indigo-700 border-indigo-300',
-    teal: 'bg-teal-100 text-teal-700 border-teal-300',
-    orange: 'bg-orange-100 text-orange-700 border-orange-300',
+    slate: "bg-slate-100 text-slate-700 border-slate-300",
+    cyan: "bg-cyan-100 text-cyan-700 border-cyan-300",
+    amber: "bg-amber-100 text-amber-700 border-amber-300",
+    indigo: "bg-indigo-100 text-indigo-700 border-indigo-300",
+    teal: "bg-teal-100 text-teal-700 border-teal-300",
+    orange: "bg-orange-100 text-orange-700 border-orange-300",
   };
-  return map[color || ''] || 'bg-muted text-muted-foreground border-border';
+  return map[color || ""] || "bg-muted text-muted-foreground border-border";
 }
 
-const PRINT_PAGE_WIDTH = 800;
-const PRINT_PAGE_MIN_HEIGHT = 1120;
 const PRINT_PAGE_FOOTER_TEXT = "Caterpillar: Confidential Green";
+
+type PrintPaperLayout = {
+  width: number;
+  height: number;
+  previewPadding: string;
+  pagePaddingClass: string;
+  pageInnerPaddingClass: string;
+  fontSizeClass: string;
+  printPageSize: string;
+  printMargin: string;
+};
+
+const PRINT_PAPER_LAYOUTS: Record<PrintPaperSize, PrintPaperLayout> = {
+  letter: {
+    width: 800,
+    height: 1120,
+    previewPadding: "48px",
+    pagePaddingClass: "px-5 py-5",
+    pageInnerPaddingClass: "px-5 py-5",
+    fontSizeClass: "text-[13px]",
+    printPageSize: "letter portrait",
+    printMargin: "0.4in 0.4in 0.8in 0.4in",
+  },
+  tabloid: {
+    width: 1120,
+    height: 800,
+    previewPadding: "56px",
+    pagePaddingClass: "px-6 py-6",
+    pageInnerPaddingClass: "px-6 py-6",
+    fontSizeClass: "text-[14px]",
+    printPageSize: "tabloid landscape",
+    printMargin: "0.35in 0.35in 0.7in 0.35in",
+  },
+};
+
+function getPaperLayout(paperSize: PrintPaperSize): PrintPaperLayout {
+  return PRINT_PAPER_LAYOUTS[paperSize] ?? PRINT_PAPER_LAYOUTS.letter;
+}
 
 export function WireListPrintDocument({
   data,
@@ -1543,28 +2550,41 @@ export function WireListPrintDocument({
     [data.hiddenSectionKeys],
   );
   const comments = data.comments ?? {};
-  const brandingVisibleSections = data.sheetDocument?.brandingSections ?? data.brandingVisibleSections ?? [];
-  const standardVisibleSections = data.sheetDocument?.wireListSections ?? data.sheetDocument?.standardSections ?? data.standardVisibleSections ?? [];
-  const brandingSelection = data.brandingSelection ?? createEmptyBrandingSelection();
+  const brandingVisibleSections =
+    data.sheetDocument?.brandingSections ?? data.brandingVisibleSections ?? [];
+  const standardVisibleSections =
+    data.sheetDocument?.wireListSections ??
+    data.sheetDocument?.standardSections ??
+    data.standardVisibleSections ??
+    [];
+  const brandingSelection =
+    data.brandingSelection ?? createEmptyBrandingSelection();
   const getRowLength = useCallback(
     (rowId: string) => data.rowLengthsById?.[rowId] ?? null,
     [data.rowLengthsById],
   );
-  const handleCommentChange = onCommentChange ?? (() => { });
-  const handleToggleBrandingSelection = onToggleBrandingSelection ?? (() => { });
-  const handleSelectBrandingRows = onSelectBrandingRows ?? (() => { });
-  const handleClearBrandingSelection = onClearBrandingSelection ?? (() => { });
-  const handleUpdateBrandingMeasurement = onUpdateBrandingMeasurement ?? (() => { });
-  const handleAdjustBrandingMeasurement = onAdjustBrandingMeasurement ?? (() => { });
-  const handleResetBrandingMeasurement = onResetBrandingMeasurement ?? (() => { });
+  const handleCommentChange = onCommentChange ?? (() => {});
+  const handleToggleBrandingSelection = onToggleBrandingSelection ?? (() => {});
+  const handleSelectBrandingRows = onSelectBrandingRows ?? (() => {});
+  const handleClearBrandingSelection = onClearBrandingSelection ?? (() => {});
+  const handleUpdateBrandingMeasurement =
+    onUpdateBrandingMeasurement ?? (() => {});
+  const handleAdjustBrandingMeasurement =
+    onAdjustBrandingMeasurement ?? (() => {});
+  const handleResetBrandingMeasurement =
+    onResetBrandingMeasurement ?? (() => {});
 
   if (data.settings.mode === "branding") {
-    const brandingRowCount = brandingVisibleSections.reduce((sum, s) => sum + s.rows.length, 0);
+    const brandingRowCount = brandingVisibleSections.reduce(
+      (sum, s) => sum + s.rows.length,
+      0,
+    );
     return (
       <PrintPage
         className="shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
         pageNumber={1}
         totalPages={1}
+        paperSize={data.settings.paperSize}
       >
         <ProjectInfoHeader
           projectInfo={data.projectInfo}
@@ -1612,28 +2632,36 @@ export function WireListPrintDocument({
           coverSubtitle={data.currentSheetName}
           pageNumber={1}
           totalPages={data.previewPageCount}
+          paperSize={data.settings.paperSize}
         />
       )}
 
-      {data.settings.showTableOfContents && data.processedLocationGroups.length > 0 && (
-        <TableOfContentsPage
-          locationGroups={data.processedLocationGroups}
-          showFeedbackSection={data.settings.showFeedbackSection}
-          showCoverPage={data.settings.showCoverPage}
-          showTableOfContents={data.settings.showTableOfContents}
-          showIPVCodes={data.settings.showIPVCodes}
-          totalPages={data.previewPageCount}
-          currentSheetName={data.currentSheetName}
-          hiddenSections={activeHiddenSections}
-          crossWireSections={new Set(data.crossWireSectionKeys ?? [])}
-          wireListSortMode={data.settings.wireListSortMode}
-        />
-      )}
+      {data.settings.showTableOfContents &&
+        data.processedLocationGroups.length > 0 && (
+          <TableOfContentsPage
+            locationGroups={data.processedLocationGroups}
+            showFeedbackSection={data.settings.showFeedbackSection}
+            showCoverPage={data.settings.showCoverPage}
+            showTableOfContents={data.settings.showTableOfContents}
+            showIPVCodes={data.settings.showIPVCodes}
+            totalPages={data.previewPageCount}
+            currentSheetName={data.currentSheetName}
+            hiddenSections={activeHiddenSections}
+            crossWireSections={new Set(data.crossWireSectionKeys ?? [])}
+            wireListSortMode={data.settings.wireListSortMode}
+            paperSize={data.settings.paperSize}
+          />
+        )}
 
       {data.settings.showIPVCodes && (
         <IPVCodesPage
-          pageNumber={(data.settings.showCoverPage ? 1 : 0) + (data.settings.showTableOfContents ? 1 : 0) + 1}
+          pageNumber={
+            (data.settings.showCoverPage ? 1 : 0) +
+            (data.settings.showTableOfContents ? 1 : 0) +
+            1
+          }
           totalPages={data.previewPageCount}
+          paperSize={data.settings.paperSize}
         />
       )}
 
@@ -1642,14 +2670,28 @@ export function WireListPrintDocument({
         renderPage={(content) => (
           <PrintPage
             className="shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
-            pageNumber={(data.settings.showCoverPage ? 1 : 0) + (data.settings.showTableOfContents ? 1 : 0) + (data.settings.showIPVCodes ? 1 : 0) + 1}
+            pageNumber={
+              (data.settings.showCoverPage ? 1 : 0) +
+              (data.settings.showTableOfContents ? 1 : 0) +
+              (data.settings.showIPVCodes ? 1 : 0) +
+              1
+            }
             totalPages={data.previewPageCount}
+            paperSize={data.settings.paperSize}
           >
             <ProjectInfoHeader
               projectInfo={data.projectInfo}
               sheetTitle={data.sheetTitle}
-              totalRows={data.processedLocationGroups.reduce((sum, group) => sum + group.totalRows, 0)}
-              pageNumber={(data.settings.showCoverPage ? 1 : 0) + (data.settings.showTableOfContents ? 1 : 0) + (data.settings.showIPVCodes ? 1 : 0) + 1}
+              totalRows={data.processedLocationGroups.reduce(
+                (sum, group) => sum + group.totalRows,
+                0,
+              )}
+              pageNumber={
+                (data.settings.showCoverPage ? 1 : 0) +
+                (data.settings.showTableOfContents ? 1 : 0) +
+                (data.settings.showIPVCodes ? 1 : 0) +
+                1
+              }
               totalPages={data.previewPageCount}
             />
             {content}
@@ -1685,8 +2727,11 @@ export function WireListPrintDocument({
       {data.includeFeedbackPage && data.settings.showFeedbackSection && (
         <PrintPage
           className="feedback-page shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
-          pageNumber={data.previewPageCount}
+          pageNumber={
+            data.previewPageCount - (data.settings.showIPVWireList ? 3 : 0)
+          }
           totalPages={data.previewPageCount}
+          paperSize={data.settings.paperSize}
         >
           <div className="pt-4">
             <PrintFeedbackSection
@@ -1709,6 +2754,54 @@ export function WireListPrintDocument({
           </div>
         </PrintPage>
       )}
+
+      {data.settings.showIPVWireList && (
+        <IPVCoverPage
+          projectInfo={data.projectInfo}
+          sheetTitle={data.sheetTitle}
+          currentSheetName={data.currentSheetName}
+          blueLabels={data.blueLabels ?? null}
+          identityFilterSummaryRows={buildIdentityFilterSummaryRows(data.processedLocationGroups)}
+          pageNumber={data.previewPageCount - 2}
+          totalPages={data.previewPageCount}
+          paperSize={data.settings.paperSize}
+        />
+      )}
+
+      {data.settings.showIPVWireList && (
+        <IPVReferenceListsPage
+          currentSheetName={data.currentSheetName}
+          blueLabels={data.blueLabels ?? null}
+          panducts={data.panducts}
+          rails={data.rails}
+          externalLocations={data.externalLocations}
+          whiteLabels={data.whiteLabels}
+          heatShrinkLabels={data.heatShrinkLabels}
+          partNumbers={data.partNumbers}
+          identityFilterLocationGroups={data.processedLocationGroups}
+          pageNumber={data.previewPageCount - 1}
+          totalPages={data.previewPageCount}
+          paperSize={data.settings.paperSize}
+        />
+      )}
+
+      {data.settings.showIPVWireList &&
+        (() => {
+          const allRows = data.processedLocationGroups.flatMap((g) =>
+            g.subsections.flatMap((s) => s.rows),
+          );
+          return (
+            <WireListIPVPage
+              rows={allRows}
+              currentSheetName={data.currentSheetName}
+              blueLabels={data.blueLabels ?? null}
+              sheetTitle={data.sheetTitle}
+              pageNumber={data.previewPageCount}
+              totalPages={data.previewPageCount}
+              paperSize={data.settings.paperSize}
+            />
+          );
+        })()}
     </>
   );
 }
@@ -1719,24 +2812,39 @@ function PrintPage({
   footerText = PRINT_PAGE_FOOTER_TEXT,
   pageNumber,
   totalPages,
+  paperSize = "letter",
 }: {
   children: ReactNode;
   className?: string;
   footerText?: string;
   pageNumber?: number;
   totalPages?: number;
+  paperSize?: PrintPaperSize;
 }) {
+  const paperLayout = getPaperLayout(paperSize);
+
   return (
-    <section className={["print-page mx-auto print:w-full border border-black/10 bg-white shadow-md print:shadow-none print:border-0 print:mx-0", className].join(" ")}>
+    <section
+      className={[
+        "print-page mx-auto print:w-full border border-black/10 bg-white shadow-md print:shadow-none print:border-0 print:mx-0 transition-all duration-200 ease-out",
+        paperLayout.fontSizeClass,
+        className,
+      ].join(" ")}
+    >
       <div
-        className="print-page__inner flex w-full min-h-[1120px] flex-col px-5 py-5 print:w-full print:!min-h-0 print:px-4"
-        style={{ minWidth: `${PRINT_PAGE_WIDTH}px`, minHeight: `${PRINT_PAGE_MIN_HEIGHT}px` }}
+        className={`print-page__inner flex w-full flex-col ${paperLayout.pageInnerPaddingClass} print:w-full print:min-h-0! print:px-4 transition-all duration-200 ease-out`}
+        style={{
+          minWidth: `${paperLayout.width}px`,
+          minHeight: `${paperLayout.height}px`,
+        }}
       >
         <div className="print-page__content flex-1 pb-4">{children}</div>
         <div className="print-footer flex items-center justify-between text-[10px] text-muted-foreground border-t border-foreground/20 pt-3 mt-4">
           <span>{footerText}</span>
           <span className="font-medium text-muted-foreground">
-            {pageNumber && totalPages ? `Page ${pageNumber} of ${totalPages}` : ""}
+            {pageNumber && totalPages
+              ? `Page ${pageNumber} of ${totalPages}`
+              : ""}
           </span>
         </div>
       </div>
@@ -1757,6 +2865,7 @@ function CoverPage({
   coverSubtitle,
   pageNumber = 1,
   totalPages = 1,
+  paperSize = "letter",
 }: {
   projectInfo: ProjectInfo;
   sheetTitle: string;
@@ -1766,11 +2875,21 @@ function CoverPage({
   coverSubtitle?: string;
   pageNumber?: number;
   totalPages?: number;
+  paperSize?: PrintPaperSize;
 }) {
-
   return (
-    <PrintPage className="print-cover-page shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]" pageNumber={pageNumber} totalPages={totalPages}>
-      <div className="flex flex-col items-center py-12 px-4 w-full">
+    <PrintPage
+      className="print-cover-page shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
+      pageNumber={pageNumber}
+      totalPages={totalPages}
+      paperSize={paperSize}
+    >
+      <div
+        className={cn(
+          "flex flex-col items-center w-full",
+          paperSize === "tabloid" ? "py-14 px-6" : "py-12 px-4",
+        )}
+      >
         {/* Logo - Centered */}
         <div className="mb-6 flex justify-center w-full">
           <img
@@ -1793,15 +2912,21 @@ function CoverPage({
 
         {/* Title Block - Centered */}
         <div className="space-y-3 mb-6 text-center">
-
-          <h2 className="text-2xl font-semibold text-foreground/80">
+          <h2
+            className={cn(
+              "font-semibold text-foreground/80",
+              paperSize === "tabloid" ? "text-[28px]" : "text-2xl",
+            )}
+          >
             {sheetTitle || currentSheetName}
           </h2>
-        
+
           {/* SWS Type Badge */}
-          {swsType && swsType.id !== 'UNDECIDED' && (
+          {swsType && swsType.id !== "UNDECIDED" && (
             <div className="pt-2">
-              <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-sm font-semibold border`}>
+              <span
+                className={`inline-flex items-center px-4 py-1.5 rounded-full text-sm font-semibold border`}
+              >
                 SWS: {swsType.label}
               </span>
             </div>
@@ -1809,39 +2934,65 @@ function CoverPage({
         </div>
 
         {/* Project Information - Centered */}
-        <div className="border border-border  rounded-lg p-8 bg-muted/10 w-full flex-col flex justify-center max-w-[450px] space-y-4">
+        <div
+          className={cn(
+            "border border-border rounded-lg bg-muted/10 w-full flex-col flex justify-center space-y-4",
+            paperSize === "tabloid"
+              ? "max-w-[560px] p-10"
+              : "max-w-[450px] p-8",
+          )}
+        >
           {projectInfo.pdNumber && (
             <div className="flex justify-between items-center border-b border-border/30 pb-3">
-              <span className="text-sm font-medium text-muted-foreground">PD/Unit Number:</span>
-              <span className="text-sm font-semibold">{projectInfo.pdNumber}{projectInfo.unitNumber ? ` / ${projectInfo.unitNumber}` : ""}</span>
+              <span className="text-sm font-medium text-muted-foreground">
+                PD/Unit Number:
+              </span>
+              <span className="text-sm font-semibold">
+                {projectInfo.pdNumber}
+                {projectInfo.unitNumber ? ` / ${projectInfo.unitNumber}` : ""}
+              </span>
             </div>
           )}
           {projectInfo.projectName && (
             <div className="flex justify-between items-center border-b border-border/30 pb-3">
-              <span className="text-sm font-medium text-muted-foreground">Project Name:</span>
-              <span className="text-sm font-semibold">{projectInfo.projectName}</span>
+              <span className="text-sm font-medium text-muted-foreground">
+                Project Name:
+              </span>
+              <span className="text-sm font-semibold">
+                {projectInfo.projectName}
+              </span>
             </div>
           )}
           <div className="flex justify-between items-center border-b border-border/30 pb-3">
-            <span className="text-sm font-medium text-muted-foreground">Sheet Name:</span>
+            <span className="text-sm font-medium text-muted-foreground">
+              Layout:
+            </span>
             <span className="text-sm font-semibold">{currentSheetName}</span>
           </div>
           {/* SWS Type row */}
-          {swsType && swsType.id !== 'UNDECIDED' && (
+          {swsType && swsType.id !== "UNDECIDED" && (
             <div className="flex justify-between items-center border-b border-border/30 pb-3">
-              <span className="text-sm font-medium text-muted-foreground">SWS Type:</span>
+              <span className="text-sm font-medium text-muted-foreground">
+                SWS Type:
+              </span>
               <span className="text-sm font-semibold">{swsType.label}</span>
             </div>
           )}
           {projectInfo.revision && (
             <div className="flex justify-between items-center border-b border-border/30 pb-3">
-              <span className="text-sm font-medium text-muted-foreground">Revision:</span>
-              <span className="text-sm font-semibold">{projectInfo.revision}</span>
+              <span className="text-sm font-medium text-muted-foreground">
+                Revision:
+              </span>
+              <span className="text-sm font-semibold">
+                {projectInfo.revision}
+              </span>
             </div>
           )}
           {projectInfo.date && (
             <div className="flex justify-between items-center">
-              <span className="text-sm font-medium text-muted-foreground">Date:</span>
+              <span className="text-sm font-medium text-muted-foreground">
+                Date:
+              </span>
               <span className="text-sm font-semibold">{projectInfo.date}</span>
             </div>
           )}
@@ -1850,8 +3001,18 @@ function CoverPage({
         {/* Spacer to push personnel table toward bottom */}
         <div className="flex-1" />
 
-        <div className="mt-5 w-full flex-col flex justify-center self-stretch">
-          <div className="mb-2 text-left text-[10px] font-normal uppercase tracking-wide text-muted-foreground">
+        <div
+          className={cn(
+            "mt-5 w-full flex-col flex justify-center self-stretch",
+            paperSize === "tabloid" ? "mt-6" : "",
+          )}
+        >
+          <div
+            className={cn(
+              "mb-2 text-left font-normal uppercase tracking-wide text-muted-foreground",
+              paperSize === "tabloid" ? "text-[11px]" : "text-[10px]",
+            )}
+          >
             PERSONNEL / SWS SIGN-IN
           </div>
           <PersonnelSignoffTable personnel={projectInfo.personnel} />
@@ -1877,6 +3038,7 @@ function TableOfContentsPage({
   hiddenSections = new Set<string>(),
   crossWireSections = new Set<string>(),
   wireListSortMode = "default",
+  paperSize = "letter",
 }: {
   locationGroups: PrintLocationGroup[];
   showFeedbackSection: boolean;
@@ -1889,9 +3051,13 @@ function TableOfContentsPage({
   hiddenSections?: Set<string>;
   crossWireSections?: Set<string>;
   wireListSortMode?: BrandingSortMode;
+  paperSize?: PrintPaperSize;
 }) {
   // Page offset: Cover (if enabled) + TOC (if enabled) + IPV Codes (if enabled)
-  const pageOffset = (showCoverPage ? 1 : 0) + (showTableOfContents ? 1 : 0) + (showIPVCodes ? 1 : 0);
+  const pageOffset =
+    (showCoverPage ? 1 : 0) +
+    (showTableOfContents ? 1 : 0) +
+    (showIPVCodes ? 1 : 0);
 
   // Estimate page numbers based on row count (~30 rows per page)
   let runningRowCount = 0;
@@ -1924,7 +3090,8 @@ function TableOfContentsPage({
     if (visibleSubs.length > 0) {
       visibleLocationCount++;
       visibleSubsectionCount += visibleSubs.reduce(
-        (sum, subsection) => sum + 1 + (subsection.deviceToDeviceSubsections?.length ?? 0),
+        (sum, subsection) =>
+          sum + 1 + (subsection.deviceToDeviceSubsections?.length ?? 0),
         0,
       );
       visibleRowCount += visibleSubs.reduce(
@@ -1935,7 +3102,10 @@ function TableOfContentsPage({
         for (const sub of visibleSubs) {
           const printable = sub.rows.filter(isPrintableConnectionRow);
           if (printable.length > 0) {
-            visibleTotalTime += summarizeSectionTime(printable, sub.sectionKind).grandTotal;
+            visibleTotalTime += summarizeSectionTime(
+              printable,
+              sub.sectionKind,
+            ).grandTotal;
           }
         }
       }
@@ -1943,15 +3113,32 @@ function TableOfContentsPage({
   });
 
   return (
-    <PrintPage className="print-toc-page shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]" pageNumber={tocPageNumber} totalPages={totalPages}>
-      <div className="py-4 w-full">
+    <PrintPage
+      className="print-toc-page shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
+      pageNumber={tocPageNumber}
+      totalPages={totalPages}
+      paperSize={paperSize}
+    >
+      <div className={cn("w-full", paperSize === "tabloid" ? "py-5" : "py-4")}>
         {/* Logo */}
-        <div className="flex items-center justify-between mb-4 pb-3 border-b border-border">
-          <h1 className="text-lg font-bold text-foreground">Table of Contents</h1>
+        <div
+          className={cn(
+            "flex items-center justify-between mb-4 pb-3 border-b border-border",
+            paperSize === "tabloid" ? "mb-5 pb-4" : "",
+          )}
+        >
+          <h1
+            className={cn(
+              "font-bold text-foreground",
+              paperSize === "tabloid" ? "text-xl" : "text-lg",
+            )}
+          >
+            Table of Contents
+          </h1>
           <img
             src="/SolarTurbines-Light.svg"
             alt="Solar Turbines"
-            className="h-6 w-auto"
+            className={paperSize === "tabloid" ? "h-7 w-auto" : "h-6 w-auto"}
           />
         </div>
 
@@ -1961,11 +3148,17 @@ function TableOfContentsPage({
             <tr className="border-b border-border bg-muted/30">
               <th className="text-left py-1 px-1.5 font-semibold w-6">#</th>
               <th className="text-left py-1 px-1.5 font-semibold">Section</th>
-              <th className="text-right py-1 px-1.5 font-semibold w-12">Rows</th>
+              <th className="text-right py-1 px-1.5 font-semibold w-12">
+                Rows
+              </th>
               {showEstTime && (
-                <th className="text-right py-1 px-1.5 font-semibold w-14">Est. Time</th>
+                <th className="text-right py-1 px-1.5 font-semibold w-14">
+                  Est. Time
+                </th>
               )}
-              <th className="text-right py-1 px-1.5 font-semibold w-10">Page</th>
+              <th className="text-right py-1 px-1.5 font-semibold w-10">
+                Page
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -1973,10 +3166,20 @@ function TableOfContentsPage({
             {showIPVCodes && (
               <tr className="bg-muted/20 border-b border-border/20">
                 <td className="py-1 px-1.5 text-muted-foreground">-</td>
-                <td className="py-1 px-1.5 font-medium">IPV Discrepancy Codes Reference</td>
-                <td className="py-1 px-1.5 text-right text-muted-foreground">-</td>
-                {showEstTime && <td className="py-1 px-1.5 text-right text-muted-foreground">-</td>}
-                <td className="py-1 px-1.5 text-right text-muted-foreground">{(showCoverPage ? 1 : 0) + (showTableOfContents ? 1 : 0) + 1}</td>
+                <td className="py-1 px-1.5 font-medium">
+                  IPV Discrepancy Codes Reference
+                </td>
+                <td className="py-1 px-1.5 text-right text-muted-foreground">
+                  -
+                </td>
+                {showEstTime && (
+                  <td className="py-1 px-1.5 text-right text-muted-foreground">
+                    -
+                  </td>
+                )}
+                <td className="py-1 px-1.5 text-right text-muted-foreground">
+                  {(showCoverPage ? 1 : 0) + (showTableOfContents ? 1 : 0) + 1}
+                </td>
               </tr>
             )}
 
@@ -1988,10 +3191,12 @@ function TableOfContentsPage({
               if (crossWireSections.has(locationKey)) return null;
 
               // Filter out hidden subsections
-              const visibleSubsections = group.subsections.filter((_, subIndex) => {
-                const sectionKey = `${groupIndex}-${subIndex}`;
-                return !hiddenSections.has(sectionKey);
-              });
+              const visibleSubsections = group.subsections.filter(
+                (_, subIndex) => {
+                  const sectionKey = `${groupIndex}-${subIndex}`;
+                  return !hiddenSections.has(sectionKey);
+                },
+              );
 
               // Skip if no visible subsections
               if (visibleSubsections.length === 0) return null;
@@ -2001,14 +3206,19 @@ function TableOfContentsPage({
                 <React.Fragment key={groupIndex}>
                   {/* Location Group Header */}
                   <tr className="bg-muted/20">
-                    <td colSpan={showEstTime ? 5 : 4} className="py-1.5 px-1.5 border-t border-border text-left">
+                    <td
+                      colSpan={showEstTime ? 5 : 4}
+                      className="py-1.5 px-1.5 border-t border-border text-left"
+                    >
                       <div className="text-[10px] font-normal uppercase tracking-wide text-muted-foreground">
                         Location:
                       </div>
                       <div className="text-xs font-bold text-foreground">
                         {normalizeDisplayTitle(group.location)}
                         {crossWireSections.has(`loc-${groupIndex}`) && (
-                          <span className="ml-2 text-[9px] font-semibold text-amber-600 dark:text-amber-400">CrossWire</span>
+                          <span className="ml-2 text-[9px] font-semibold text-amber-600 dark:text-amber-400">
+                            CrossWire
+                          </span>
                         )}
                       </div>
                     </td>
@@ -2017,74 +3227,125 @@ function TableOfContentsPage({
                   {/* Subsections - only visible ones */}
                   {visibleSubsections.map((subsection, subIndex) => {
                     sectionCounter++;
-                    const subsectionRows = subsection.rows.filter(isPrintableConnectionRow).length;
+                    const subsectionRows = subsection.rows.filter(
+                      isPrintableConnectionRow,
+                    ).length;
                     const page = getEstimatedPage(subsectionRows);
 
                     return (
                       <React.Fragment key={subIndex}>
                         <tr className="border-b border-border/20 hover:bg-muted/10">
-                          <td className="py-0.5 px-1.5 text-muted-foreground">{sectionCounter}</td>
+                          <td className="py-0.5 px-1.5 text-muted-foreground">
+                            {sectionCounter}
+                          </td>
                           <td className="py-0.5 px-1.5">{subsection.label}</td>
                           <td className="py-0.5 px-1.5 text-right text-muted-foreground">
                             {subsectionRows > 0 ? subsectionRows : "-"}
                           </td>
-                          {showEstTime && (() => {
-                            const printableRows = subsection.rows.filter(isPrintableConnectionRow);
-                            if (printableRows.length === 0) return <td className="py-0.5 px-1.5 text-right text-muted-foreground">-</td>;
-                            const summary = summarizeSectionTime(printableRows, subsection.sectionKind);
-                            return (
-                              <td className="py-0.5 px-1.5 text-right text-muted-foreground font-mono text-[9px]">
-                                {formatEstTime(summary.grandTotal)}
-                              </td>
-                            );
-                          })()}
-                          <td className="py-0.5 px-1.5 text-right text-muted-foreground">{page}</td>
+                          {showEstTime &&
+                            (() => {
+                              const printableRows = subsection.rows.filter(
+                                isPrintableConnectionRow,
+                              );
+                              if (printableRows.length === 0)
+                                return (
+                                  <td className="py-0.5 px-1.5 text-right text-muted-foreground">
+                                    -
+                                  </td>
+                                );
+                              const summary = summarizeSectionTime(
+                                printableRows,
+                                subsection.sectionKind,
+                              );
+                              return (
+                                <td className="py-0.5 px-1.5 text-right text-muted-foreground font-mono text-[9px]">
+                                  {formatEstTime(summary.grandTotal)}
+                                </td>
+                              );
+                            })()}
+                          <td className="py-0.5 px-1.5 text-right text-muted-foreground">
+                            {page}
+                          </td>
                         </tr>
 
                         {/* Device-to-Device subsections under sections with prefix grouping */}
-                        {subsection.deviceToDeviceSubsections && (() => {
-                          const d2ds = subsection.deviceToDeviceSubsections!;
-                          let lastPrefix = "";
-                          const showGroupedPrefixHeader = wireListSortMode !== "blue-label-sequence";
-                          return d2ds.map((d2d, d2dIndex) => {
-                            const firstRow = d2d.rows[0];
-                            const prefix = firstRow
-                              ? getDevicePrefixValue(getDisplayEndpoints(firstRow).fromDeviceId)
-                              : getTocSubsectionPrefix(d2d.label, subsection.sectionKind);
-                            const showPrefixHeader = showGroupedPrefixHeader && prefix !== lastPrefix;
-                            lastPrefix = prefix;
-                            return (
-                              <React.Fragment key={`d2d-${d2dIndex}`}>
-                                {showPrefixHeader && (
-                                  <tr className="border-b border-border/10">
+                        {subsection.deviceToDeviceSubsections &&
+                          (() => {
+                            const d2ds = subsection.deviceToDeviceSubsections!;
+                            let lastPrefix = "";
+                            const showGroupedPrefixHeader =
+                              wireListSortMode !== "blue-label-sequence";
+                            return d2ds.map((d2d, d2dIndex) => {
+                              const firstRow = d2d.rows[0];
+                              const prefix = firstRow
+                                ? getDevicePrefixValue(
+                                    getDisplayEndpoints(firstRow).fromDeviceId,
+                                  )
+                                : getTocSubsectionPrefix(
+                                    d2d.label,
+                                    subsection.sectionKind,
+                                  );
+                              const showPrefixHeader =
+                                showGroupedPrefixHeader &&
+                                prefix !== lastPrefix;
+                              lastPrefix = prefix;
+                              return (
+                                <React.Fragment key={`d2d-${d2dIndex}`}>
+                                  {showPrefixHeader && (
+                                    <tr className="border-b border-border/10">
+                                      <td className="py-0.5 px-1.5"></td>
+                                      <td
+                                        colSpan={showEstTime ? 4 : 3}
+                                        className="py-0.5 px-1.5 pl-4 text-[10px] font-semibold text-foreground/70 uppercase tracking-wide"
+                                      >
+                                        {prefix}
+                                      </td>
+                                    </tr>
+                                  )}
+                                  <tr className="border-b border-border/10 hover:bg-muted/10">
                                     <td className="py-0.5 px-1.5"></td>
-                                    <td colSpan={showEstTime ? 4 : 3} className="py-0.5 px-1.5 pl-4 text-[10px] font-semibold text-foreground/70 uppercase tracking-wide">
-                                      {prefix}
+                                    <td className="py-0.5 px-1.5 pl-4 text-muted-foreground italic">
+                                      <span className="mr-0.5">└</span>
+                                      {d2d.label}
+                                    </td>
+                                    <td className="py-0.5 px-1.5 text-right text-muted-foreground">
+                                      {
+                                        d2d.rows.filter(
+                                          isPrintableConnectionRow,
+                                        ).length
+                                      }
+                                    </td>
+                                    {showEstTime &&
+                                      (() => {
+                                        const d2dPrintable = d2d.rows.filter(
+                                          isPrintableConnectionRow,
+                                        );
+                                        if (d2dPrintable.length === 0)
+                                          return (
+                                            <td className="py-0.5 px-1.5 text-right text-muted-foreground">
+                                              -
+                                            </td>
+                                          );
+                                        const d2dSummary = summarizeSectionTime(
+                                          d2dPrintable,
+                                          subsection.sectionKind,
+                                        );
+                                        return (
+                                          <td className="py-0.5 px-1.5 text-right text-muted-foreground font-mono text-[9px]">
+                                            {formatEstTime(
+                                              d2dSummary.grandTotal,
+                                            )}
+                                          </td>
+                                        );
+                                      })()}
+                                    <td className="py-0.5 px-1.5 text-right text-muted-foreground">
+                                      {page}
                                     </td>
                                   </tr>
-                                )}
-                                <tr className="border-b border-border/10 hover:bg-muted/10">
-                                  <td className="py-0.5 px-1.5"></td>
-                                  <td className="py-0.5 px-1.5 pl-4 text-muted-foreground italic">
-                                    <span className="mr-0.5">└</span>{d2d.label}
-                                  </td>
-                                  <td className="py-0.5 px-1.5 text-right text-muted-foreground">{d2d.rows.filter(isPrintableConnectionRow).length}</td>
-                                  {showEstTime && (() => {
-                                    const d2dPrintable = d2d.rows.filter(isPrintableConnectionRow);
-                                    if (d2dPrintable.length === 0) return <td className="py-0.5 px-1.5 text-right text-muted-foreground">-</td>;
-                                    const d2dSummary = summarizeSectionTime(d2dPrintable, subsection.sectionKind);
-                                    return (
-                                      <td className="py-0.5 px-1.5 text-right text-muted-foreground font-mono text-[9px]">
-                                        {formatEstTime(d2dSummary.grandTotal)}
-                                      </td>
-                                    );
-                                  })()}
-                                  <td className="py-0.5 px-1.5 text-right text-muted-foreground">{page}</td>
-                                </tr>
-                              </React.Fragment>
-                            );
-                          });
-                        })()}
+                                </React.Fragment>
+                              );
+                            });
+                          })()}
                       </React.Fragment>
                     );
                   })}
@@ -2095,10 +3356,20 @@ function TableOfContentsPage({
             {/* Feedback Form row */}
             {showFeedbackSection && (
               <tr className="border-t border-border bg-muted/20">
-                <td colSpan={2} className="py-1 px-1.5 font-medium">Wire List Feedback Form</td>
-                <td className="py-1 px-1.5 text-right text-muted-foreground">-</td>
-                {showEstTime && <td className="py-1 px-1.5 text-right text-muted-foreground">-</td>}
-                <td className="py-1 px-1.5 text-right text-muted-foreground">{totalPages}</td>
+                <td colSpan={2} className="py-1 px-1.5 font-medium">
+                  Wire List Feedback Form
+                </td>
+                <td className="py-1 px-1.5 text-right text-muted-foreground">
+                  -
+                </td>
+                {showEstTime && (
+                  <td className="py-1 px-1.5 text-right text-muted-foreground">
+                    -
+                  </td>
+                )}
+                <td className="py-1 px-1.5 text-right text-muted-foreground">
+                  {totalPages}
+                </td>
               </tr>
             )}
           </tbody>
@@ -2106,13 +3377,30 @@ function TableOfContentsPage({
 
         {/* Summary */}
         <div className="mt-3 pt-2 border-t border-border flex justify-between text-[10px] text-muted-foreground">
-          <span>Locations: <strong className="text-foreground">{visibleLocationCount}</strong></span>
-          <span>Sections: <strong className="text-foreground">{visibleSubsectionCount}</strong></span>
-          <span>Rows: <strong className="text-foreground">{visibleRowCount}</strong></span>
+          <span>
+            Locations:{" "}
+            <strong className="text-foreground">{visibleLocationCount}</strong>
+          </span>
+          <span>
+            Sections:{" "}
+            <strong className="text-foreground">
+              {visibleSubsectionCount}
+            </strong>
+          </span>
+          <span>
+            Rows: <strong className="text-foreground">{visibleRowCount}</strong>
+          </span>
           {showEstTime && (
-            <span>Est. Total: <strong className="text-foreground">{formatEstTime(visibleTotalTime)}</strong></span>
+            <span>
+              Est. Total:{" "}
+              <strong className="text-foreground">
+                {formatEstTime(visibleTotalTime)}
+              </strong>
+            </span>
           )}
-          <span>Pages: <strong className="text-foreground">{totalPages}</strong></span>
+          <span>
+            Pages: <strong className="text-foreground">{totalPages}</strong>
+          </span>
         </div>
       </div>
     </PrintPage>
@@ -2126,9 +3414,18 @@ function TableOfContentsPage({
 // IPV Codes data structure
 const IPV_CODES = {
   Component: [
-    { code: "CD", description: "Wrong direction, improperly installed, damaged" },
-    { code: "CH", description: "Component hardware (i.e. star washer wrong screw etc...)" },
-    { code: "CM", description: "Missing Component (not associated with a part shortage)" },
+    {
+      code: "CD",
+      description: "Wrong direction, improperly installed, damaged",
+    },
+    {
+      code: "CH",
+      description: "Component hardware (i.e. star washer wrong screw etc...)",
+    },
+    {
+      code: "CM",
+      description: "Missing Component (not associated with a part shortage)",
+    },
     { code: "CW", description: "Wrong part" },
   ],
   Labels: [
@@ -2137,52 +3434,94 @@ const IPV_CODES = {
     { code: "LI", description: "Incorrect Label, typo, missing information" },
     { code: "LM", description: "Label Missing" },
     { code: "LV", description: "Label Not Visible/covered" },
-    { code: "M", description: "Add M for any metal or label lab supplied labels (incl. sugar cubes)" },
-    { code: "S", description: "Add S to the end of label code for any shop floor created labels (blue, heat shrink, ground wire labels etc...)" },
+    {
+      code: "M",
+      description:
+        "Add M for any metal or label lab supplied labels (incl. sugar cubes)",
+    },
+    {
+      code: "S",
+      description:
+        "Add S to the end of label code for any shop floor created labels (blue, heat shrink, ground wire labels etc...)",
+    },
   ],
   Process: [
     { code: "PC", description: "Change not stamped off" },
     { code: "PH", description: "Highlight Not used, wrong color" },
     { code: "PP", description: "Pan duct not cut, improperly cut" },
-    { code: "PS", description: "SWS not stamped, skipped steps, incorrect sheet used, stamped but not completed" },
+    {
+      code: "PS",
+      description:
+        "SWS not stamped, skipped steps, incorrect sheet used, stamped but not completed",
+    },
     { code: "PT", description: "Torque Paint missing, improper application" },
-    { code: "PTW", description: "Tie Wraps excessive, not removed, not properly cut" },
+    {
+      code: "PTW",
+      description: "Tie Wraps excessive, not removed, not properly cut",
+    },
   ],
   Wiring: [
     { code: "WB", description: "Any Belden related wiring" },
-    { code: "WC", description: "Wire components (ex diodes, resistors, EOL resistors)" },
+    {
+      code: "WC",
+      description: "Wire components (ex diodes, resistors, EOL resistors)",
+    },
     { code: "WE", description: "Exposed Conductor" },
-    { code: "WF", description: "Ferrule, improperly crimped, wrong size, improperly installed" },
+    {
+      code: "WF",
+      description:
+        "Ferrule, improperly crimped, wrong size, improperly installed",
+    },
     { code: "WG", description: "Wrong Gauge/Color Wire" },
-    { code: "WI", description: "Insulation cracked damaged, branding issues etc." },
+    {
+      code: "WI",
+      description: "Insulation cracked damaged, branding issues etc.",
+    },
     { code: "WJ", description: "Metal jumper touching, incorrect wire jumper" },
     { code: "WL", description: "Any loose wiring" },
     { code: "WM", description: "Missing Wire" },
-    { code: "WP", description: "Crimped, birdcage, circuit # not visible (process)" },
-    { code: "WR", description: "Routing -- wire, harness, intertwined, spiral wrap issues" },
-    { code: "WT", description: "Mis-termination -- wire, resistor, diode (including wrong direction)" },
+    {
+      code: "WP",
+      description: "Crimped, birdcage, circuit # not visible (process)",
+    },
+    {
+      code: "WR",
+      description: "Routing -- wire, harness, intertwined, spiral wrap issues",
+    },
+    {
+      code: "WT",
+      description:
+        "Mis-termination -- wire, resistor, diode (including wrong direction)",
+    },
   ],
 };
 
 function IPVCodesPage({
   pageNumber,
   totalPages,
+  paperSize = "letter",
 }: {
   pageNumber: number;
   totalPages: number;
+  paperSize?: PrintPaperSize;
 }) {
   return (
     <PrintPage
       className="print-ipv-codes-page shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
       pageNumber={pageNumber}
       totalPages={totalPages}
+      paperSize={paperSize}
     >
       <div className="py-4 w-full">
         {/* Header */}
         <div className="flex items-center justify-between mb-4 pb-3 border-b border-border">
           <div>
-            <h1 className="text-[15px] font-bold text-foreground">IPV Discrepancy Codes</h1>
-            <p className="text-[10px] text-muted-foreground mt-0.5">REF: WI 5.7.2-01 | Issue No.: 02 | Issue Date: 08/18</p>
+            <h1 className="text-[15px] font-bold text-foreground">
+              IPV Discrepancy Codes
+            </h1>
+            <p className="text-[10px] text-muted-foreground mt-0.5">
+              REF: WI 5.7.2-01 | Issue No.: 02 | Issue Date: 08/18
+            </p>
           </div>
           <img
             src="/SolarTurbines-Light.svg"
@@ -2194,22 +3533,42 @@ function IPVCodesPage({
         {/* IPV Codes Table */}
         <div className="grid grid-cols-2 gap-4">
           {Object.entries(IPV_CODES).map(([category, codes]) => (
-            <div key={category} className="border border-foreground/20 rounded-sm overflow-hidden">
+            <div
+              key={category}
+              className="border border-foreground/20 rounded-sm overflow-hidden"
+            >
               <div className="bg-muted/80 px-2 py-1.5 border-b border-foreground/20">
-                <h2 className="text-[12px] font-bold text-foreground">{category}</h2>
+                <h2 className="text-[12px] font-bold text-foreground">
+                  {category}
+                </h2>
               </div>
               <table className="w-full text-[10px]">
                 <thead>
                   <tr className="border-b border-foreground/10 bg-muted/40">
-                    <th className="px-2 py-1 text-left font-semibold w-12">Code</th>
-                    <th className="px-2 py-1 text-left font-semibold">Description</th>
+                    <th className="px-2 py-1 text-left font-semibold w-12">
+                      Code
+                    </th>
+                    <th className="px-2 py-1 text-left font-semibold">
+                      Description
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {codes.map((item, idx) => (
-                    <tr key={item.code} className={idx < codes.length - 1 ? "border-b border-foreground/5" : ""}>
-                      <td className="px-2 py-1 font-mono font-bold text-foreground">{item.code}</td>
-                      <td className="px-2 py-1 text-muted-foreground">{item.description}</td>
+                    <tr
+                      key={item.code}
+                      className={
+                        idx < codes.length - 1
+                          ? "border-b border-foreground/5"
+                          : ""
+                      }
+                    >
+                      <td className="px-2 py-1 font-mono font-bold text-foreground">
+                        {item.code}
+                      </td>
+                      <td className="px-2 py-1 text-muted-foreground">
+                        {item.description}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -2223,15 +3582,461 @@ function IPVCodesPage({
 }
 
 // ============================================================================
-// Blue Device ID Display (referenced blue label style)
+// Wire List IPV Checklist Page
 // ============================================================================
 
-function BlueDeviceID({ deviceId, enabled }: { deviceId: string; enabled: boolean }) {
+function WireListIPVPage({
+  rows,
+  currentSheetName,
+  blueLabels,
+  ipvChecklistGroups,
+  sheetTitle,
+  pageNumber,
+  totalPages,
+  paperSize = "letter",
+}: {
+  rows: SemanticWireListRow[];
+  currentSheetName: string;
+  blueLabels: BlueLabelSequenceMap | null;
+  ipvChecklistGroups?: Array<{
+    deviceId: string;
+    rows: SemanticWireListRow[];
+  }>;
+  sheetTitle?: string;
+  pageNumber?: number;
+  totalPages?: number;
+  paperSize?: PrintPaperSize;
+}) {
+  const schema = buildIPVSchema(
+    rows,
+    currentSheetName,
+    blueLabels,
+    ipvChecklistGroups,
+  );
+  const totalWires = schema.filter((item) => item.type === "row").length;
+
+  return (
+    <PrintPage
+      className="print-wire-list-ipv-page shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
+      footerText={sheetTitle}
+      pageNumber={pageNumber}
+      totalPages={totalPages}
+      paperSize={paperSize}
+    >
+      <div className="w-full py-2.5">
+        {/* Page Header */}
+        <div className="mb-3 flex items-center justify-between border-b border-border pb-2">
+          <div>
+            <h1 className="text-[14px] font-bold text-foreground">
+              Wire List — IPV Checklist
+            </h1>
+            <p className="text-[10px] text-muted-foreground mt-0.5">
+              Sorted by blue label sequence
+            </p>
+          </div>
+          <div className="text-right text-[10px] text-muted-foreground">
+            <div className="font-medium">{totalWires} wires</div>
+          </div>
+        </div>
+
+        <div className="min-w-0 overflow-hidden rounded border border-border/40">
+          <table className="w-full border-collapse text-[9px] leading-tight">
+            <thead className="bg-muted/80">
+              <tr className="border-b border-foreground/20">
+                <th className="w-9 px-1 py-1 text-center text-[8px] font-semibold print:hidden">
+                  IPV
+                </th>
+                <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase tracking-wide">
+                  FROM DEVICE
+                </th>
+                <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase tracking-wide">
+                  WIRE NO.
+                </th>
+                <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase tracking-wide">
+                  WIRE ID
+                </th>
+                <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase tracking-wide">
+                  SIZE
+                </th>
+                <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase tracking-wide">
+                  TO DEVICE
+                </th>
+                <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase tracking-wide">
+                  LOCATION
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {schema.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={7}
+                    className="px-3 py-5 text-center text-[11px] text-muted-foreground"
+                  >
+                    No wire connections found
+                  </td>
+                </tr>
+              ) : (
+                schema.map((item, idx) => {
+                  if (item.type === "header") {
+                    return (
+                      <tr
+                        key={`header-${item.deviceId}-${idx}`}
+                        className="border-y border-foreground/10 bg-muted/30"
+                      >
+                        <td className="px-1 py-1 print:hidden" />
+                        <td
+                          colSpan={6}
+                          className="px-1 py-1 text-[9px] font-semibold uppercase tracking-wide text-muted-foreground"
+                        >
+                          {item.deviceId}
+                        </td>
+                      </tr>
+                    );
+                  }
+
+                  const { row, seq, isUnique } = item;
+                  const endpoints = getDisplayEndpoints(row);
+                  const isExternal = !isInternalIPVRow(row, currentSheetName);
+                  const toDeviceValue = isUnique ? "" : endpoints.toDeviceId || "—";
+                  const locationValue = isExternal
+                    ? endpoints.toLocation || row.location || "—"
+                    : currentSheetName || endpoints.toLocation || row.location || "—";
+
+                  return (
+                    <Fragment key={row.__rowId}>
+                      <tr
+                        className={cn(
+                          "border-b border-foreground/10",
+                          isExternal
+                            ? "bg-amber-50/60 dark:bg-amber-950/20"
+                            : seq % 2 === 0 && "bg-muted/10",
+                        )}
+                      >
+                        <td className="px-1 py-0.5 text-center print:hidden">
+                          <div className="mx-auto h-3 w-3 rounded-sm border border-foreground/30" />
+                        </td>
+                        <td className="px-1 py-0.5 text-[10px] font-medium leading-tight">
+                          {endpoints.fromDeviceId || "—"}
+                        </td>
+                        <td className="px-1 py-0.5 text-[10px] font-medium tabular-nums leading-tight">
+                          {row.wireNo || "—"}
+                        </td>
+                        <td className="px-1 py-0.5 text-[10px] leading-tight">
+                          {row.wireId || "—"}
+                        </td>
+                        <td className="px-1 py-0.5 text-[10px] leading-tight">
+                          {row.gaugeSize || "—"}
+                        </td>
+                        <td className="px-1 py-0.5 text-[10px] font-medium leading-tight">
+                          {toDeviceValue}
+                        </td>
+                        <td className={cn("px-1 py-0.5 text-[10px] leading-tight", isExternal && "font-semibold text-amber-800 dark:text-amber-300")}>
+                          {locationValue}
+                        </td>
+                      </tr>
+                    </Fragment>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </PrintPage>
+  );
+}
+
+function IPVCoverPage({
+  projectInfo,
+  sheetTitle,
+  currentSheetName,
+  blueLabels,
+  blueLabelReferences,
+  panducts,
+  rails,
+  externalLocations,
+  whiteLabels,
+  heatShrinkLabels,
+  partNumbers,
+  identityFilterSummaryRows,
+  layoutImageUrl,
+  pageNumber,
+  totalPages,
+  paperSize = "tabloid",
+}: {
+  projectInfo: ProjectInfo;
+  sheetTitle?: string;
+  currentSheetName: string;
+  blueLabels: BlueLabelSequenceMap | null;
+  blueLabelReferences?: string[];
+  panducts?: string[];
+  rails?: string[];
+  externalLocations?: string[];
+  whiteLabels?: string[];
+  heatShrinkLabels?: string[];
+  partNumbers?: string[];
+  identityFilterSummaryRows?: IdentityFilterSummaryRow[];
+  layoutImageUrl?: string;
+  pageNumber?: number;
+  totalPages?: number;
+  paperSize?: PrintPaperSize;
+}) {
+  const personnelRows = [
+    {
+      id: "ipv-sign-1",
+      badgeNumber: "",
+      date: "",
+      time: "",
+  
+    },
+    {
+      id: "ipv-sign-2",
+      badgeNumber: "",
+      date: "",
+      time: "",
+    },
+    {
+      id: "ipv-sign-3",
+      badgeNumber: "",
+      date: "",
+      time: "",
+    },
+  ];
+
+  return (
+    <PrintPage
+      className="print-cover-page shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
+      pageNumber={pageNumber}
+      totalPages={totalPages}
+      paperSize={paperSize}
+    >
+      <div
+        className={cn(
+          "flex h-full w-full flex-col",
+          paperSize === "tabloid" ? "gap-3 py-4" : "gap-2.5 py-3",
+        )}
+      >
+        <div className="flex items-center justify-between border-b border-border pb-3">
+          <div>
+            <h1 className="text-[16px] font-bold text-foreground">
+            {currentSheetName}  -  IPV
+            </h1>
+           
+          </div>
+          <div className="text-right text-[10px] text-muted-foreground">
+            <div className="font-medium">Layout + Assignment References</div>
+          </div>
+        </div>
+
+        <div
+          className={cn(
+            "grid flex-1 min-h-0 gap-3 overflow-hidden",
+            paperSize === "tabloid" ? "grid-cols-[0.95fr_1.55fr]" : "grid-cols-1",
+          )}
+        >
+          <div className="flex min-h-0 flex-col gap-2.5">
+            <div className="space-y-1.5">
+              <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                Assignment Details
+              </div>
+              <div className="rounded-md border border-foreground/30 overflow-hidden">
+                <table className="w-full border-collapse text-[10px]">
+                  <tbody>
+                    <tr className="border-b border-foreground/10">
+                      <td className="px-2 py-1 text-muted-foreground">Layout</td>
+                      <td className="px-2 py-1 font-medium text-right">{currentSheetName}</td>
+                    </tr>
+                    <tr className="border-b border-foreground/10">
+                      <td className="px-2 py-1 text-muted-foreground">Project</td>
+                      <td className="px-2 py-1 font-medium text-right">{projectInfo.projectName || "—"}</td>
+                    </tr>
+                    <tr className="border-b border-foreground/10">
+                      <td className="px-2 py-1 text-muted-foreground">PD Number</td>
+                      <td className="px-2 py-1 font-medium text-right">{projectInfo.pdNumber || "—"}</td>
+                    </tr>
+                    <tr>
+                      <td className="px-2 py-1 text-muted-foreground">Revision</td>
+                      <td className="px-2 py-1 font-medium text-right">{projectInfo.revision || "—"}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                Personnel Sign-In
+              </div>
+              <PersonnelSignoffTable personnel={personnelRows} />
+            </div>
+          </div>
+
+          <div className="flex min-h-0 flex-col space-y-1.5">
+            <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+              Layout Reference
+            </div>
+            <div className="flex-1 min-h-0 rounded-md border border-foreground/20 bg-muted/10 p-1.5">
+              {layoutImageUrl ? (
+                <img
+                  src={layoutImageUrl}
+                  alt={`${sheetTitle || currentSheetName} layout`}
+                  className="h-full w-full object-contain"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-[11px] text-muted-foreground text-center px-4">
+                  No layout image available
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </PrintPage>
+  );
+}
+
+function IPVReferenceListsPage({
+  currentSheetName,
+  blueLabels,
+  blueLabelReferences,
+  panducts,
+  rails,
+  externalLocations,
+  whiteLabels,
+  heatShrinkLabels,
+  partNumbers,
+  identityFilterLocationGroups,
+  pageNumber,
+  totalPages,
+  paperSize = "tabloid",
+}: {
+  currentSheetName: string;
+  blueLabels: BlueLabelSequenceMap | null;
+  blueLabelReferences?: string[];
+  panducts?: string[];
+  rails?: string[];
+  externalLocations?: string[];
+  whiteLabels?: string[];
+  heatShrinkLabels?: string[];
+  partNumbers?: string[];
+  identityFilterLocationGroups?: PrintLocationGroup[];
+  pageNumber?: number;
+  totalPages?: number;
+  paperSize?: PrintPaperSize;
+}) {
+  const referenceCards = buildIPVReferenceCardGroups({
+    currentSheetName,
+    blueLabels,
+    blueLabelReferences,
+    panducts,
+    rails,
+    externalLocations,
+    whiteLabels,
+    heatShrinkLabels,
+    partNumbers,
+  });
+  const identityFilterReferenceGroups = buildIdentityFilterReferenceGroups(
+    identityFilterLocationGroups ?? [],
+  );
+
+  return (
+    <PrintPage
+      className="print-cover-page shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
+      pageNumber={pageNumber}
+      totalPages={totalPages}
+      paperSize={paperSize}
+    >
+      <div className={cn("flex h-full w-full flex-col", paperSize === "tabloid" ? "gap-3 py-4" : "gap-2.5 py-3")}>
+        <div className="flex items-center justify-between border-b border-border pb-3">
+          <div>
+            <h1 className="text-[16px] font-bold text-foreground">
+              Assignment Reference Lists
+            </h1>
+            <p className="text-[10px] text-muted-foreground mt-0.5">
+              {currentSheetName}
+            </p>
+          </div>
+          <div className="text-right text-[10px] text-muted-foreground">
+            <div className="font-medium">IPV reference values</div>
+          </div>
+        </div>
+
+        <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden">
+          {identityFilterReferenceGroups.length > 0 ? (
+            <div className="space-y-1.5">
+              <div className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                Identity Filter References
+              </div>
+              <div
+                className={cn(
+                  "grid gap-2 content-start",
+                  paperSize === "tabloid"
+                    ? "grid-cols-[repeat(auto-fit,minmax(360px,1fr))]"
+                    : "grid-cols-1",
+                )}
+              >
+                {identityFilterReferenceGroups.map((group) => (
+                  <IPVIdentityFilterReferenceCard
+                    key={`${group.sectionKind ?? "unknown"}:${group.title}`}
+                    group={group}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          <div className="space-y-1.5">
+            <div className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+              Assignment Reference Values
+            </div>
+            <div
+              className={cn(
+                "grid gap-2 content-start",
+                paperSize === "tabloid"
+                  ? "grid-cols-[repeat(auto-fit,minmax(210px,1fr))]"
+                  : "grid-cols-2 auto-rows-fr",
+              )}
+            >
+              {referenceCards.map((card) => (
+                <div key={card.title} className="min-h-0">
+                  <IPVReferenceListCard
+                    title={card.title}
+                    values={card.values}
+                    emptyLabel={card.emptyLabel}
+                    expandContent
+                    className="max-h-max"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </PrintPage>
+  );
+}
+
+// ============================================================================
+// Blue Device ID Display (referenced blue label style)
+// ============================================================================
+function BlueDeviceID({
+  deviceId,
+  enabled,
+}: {
+  deviceId: string;
+  enabled: boolean;
+}) {
   // Strip trailing colon with no terminal value (e.g. "GR301:" -> "GR301")
   const cleanDeviceId = deviceId ? deviceId.trim().replace(/:$/, "") : deviceId;
 
   if (!enabled || !cleanDeviceId) {
-    return <span className="font-mono text-[11px] font-semibold">{cleanDeviceId}</span>;
+    return (
+      <span className="font-mono text-[11px] font-semibold">
+        {cleanDeviceId}
+      </span>
+    );
   }
 
   // Parse device ID - look for pattern like "KA0561:A1" -> base "KA0561" + suffix ":A1"
@@ -2256,11 +4061,12 @@ function BlueDeviceID({ deviceId, enabled }: { deviceId: string; enabled: boolea
       <span className="bg-[#1e3a5f] text-white text-[11px] font-semibold px-1.5 py-0.5 rounded-full">
         {base}
       </span>
-      <span className="text-[11px] font-semibold text-foreground/80">{suffix}</span>
+      <span className="text-[11px] font-semibold text-foreground/80">
+        {suffix}
+      </span>
     </span>
   );
 }
-
 
 // ============================================================================
 // Print Table Row
@@ -2270,7 +4076,7 @@ function PrintTableRow({
   row,
   showFrom,
   showTo,
-  showIPV,
+  showIPV = false,
   showComments,
   showLength,
   showEstTime = false,
@@ -2361,17 +4167,29 @@ function PrintTableRow({
       className={cn(
         "absolute -left-5 top-1/2 -translate-y-1/2 h-4 w-4 rounded-sm flex items-center justify-center z-10 transition-opacity print:hidden",
         isRowHidden
-          ? "opacity-100 bg-destructive/10 hover:bg-destructive/20"
-          : "opacity-0 group-hover/row:opacity-100 hover:bg-muted"
+          ? "opacity-100  hover:bg-destructive/20"
+          : "opacity-0 group-hover/row:opacity-100 hover:bg-muted/30 text-foreground",
       )}
       title={isRowHidden ? "Unhide row" : "Hide row"}
     >
-      <EyeOff className={cn("h-2.5 w-2.5", isRowHidden ? "text-destructive" : "text-muted-foreground")} />
+      <EyeOff
+        className={cn(
+          "h-2.5 w-2.5",
+          isRowHidden ? "text-red" : "text-foreground",
+        )}
+      />
     </button>
   ) : null;
 
   return (
-    <tr className={["border-b w-full border-foreground/10 group/row relative", rowClassName ?? ""].join(" ").trim()}>
+    <tr
+      className={[
+        "border-b w-full border-foreground/10 group/row relative",
+        rowClassName ?? "",
+      ]
+        .join(" ")
+        .trim()}
+    >
       {/* FROM group */}
       {showFrom && (
         <td className="px-0.5 py-1 text-center">
@@ -2379,56 +4197,96 @@ function PrintTableRow({
           <FromCheckboxCell
             rowId={row.__rowId}
             checked={false}
-            onCheckedChange={() => { }}
+            onCheckedChange={() => {}}
             printVariant={true}
           />
         </td>
       )}
       {showEstTime && (
         <td className="px-1 py-1 text-center text-[10px] font-mono text-muted-foreground">
-          {formatEstTime(estimateWireTime(sectionKind, row.gaugeSize).fromMinutes)}
+          {formatEstTime(
+            estimateWireTime(sectionKind, row.gaugeSize).fromMinutes,
+          )}
         </td>
       )}
       {showFromLocation && (
-        <td className="px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">{resolveLocationDisplayTitle(displayEndpoints.fromLocation, locationNormalizedTitleByName, isExternal ? undefined : currentSheetName)}</td>
+        <td className="px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis">
+          {resolveLocationDisplayTitle(
+            displayEndpoints.fromLocation,
+            locationNormalizedTitleByName,
+            isExternal ? undefined : currentSheetName,
+          )}
+        </td>
       )}
       {showPartNumber && (
-        <td className="px-1 py-1 text-center text-[10px] font-medium text-muted-foreground">{fromReference?.partNumber || ""}</td>
+        <td className="px-1 py-1 text-center text-[10px] font-medium text-muted-foreground">
+          {fromReference?.partNumber || ""}
+        </td>
       )}
-      <td className={cn(
-        "px-1 py-1 text-center text-[10px] font-medium",
-        !showDescription && "border-r border-foreground/20"
-      )}>
+      <td
+        className={cn(
+          "px-1 py-1 text-center text-[10px] font-medium",
+          !showDescription && "border-r border-foreground/20",
+        )}
+      >
         {!showFrom && eyeButtonEl}
-        <BlueDeviceID deviceId={displayEndpoints.fromDeviceId} enabled={enableBlueDeviceID} />
+        <BlueDeviceID
+          deviceId={displayEndpoints.fromDeviceId}
+          enabled={enableBlueDeviceID}
+        />
       </td>
       {showDescription && (
-        <td className="px-1 py-1 text-center text-[10px] text-muted-foreground border-r border-foreground/20">{fromReference?.description || ""}</td>
+        <td className="px-1 py-1 text-center text-[10px] text-muted-foreground border-r border-foreground/20">
+          {fromReference?.description || ""}
+        </td>
       )}
       {/* Connection group */}
       {showWireType && (
-        <td className={cn(
-          "px-1 py-1 text-center text-[10px] font-medium",
-          !showWireNo && !showWireId && !showGaugeSize && !showLength && "border-r border-foreground/20"
-        )}>{row.wireType}</td>
+        <td
+          className={cn(
+            "px-1 py-1 text-center text-[10px] font-medium",
+            !showWireNo &&
+              !showWireId &&
+              !showGaugeSize &&
+              !showLength &&
+              "border-r border-foreground/20",
+          )}
+        >
+          {row.wireType}
+        </td>
       )}
       {showWireNo && (
-        <td className={cn(
-          "px-1 py-1 text-center font-mono text-[10px] font-medium",
-          !showWireId && !showGaugeSize && !showLength && "border-r border-foreground/20"
-        )}>{row.wireNo}</td>
+        <td
+          className={cn(
+            "px-1 py-1 text-center font-mono text-[10px] font-medium",
+            !showWireId &&
+              !showGaugeSize &&
+              !showLength &&
+              "border-r border-foreground/20",
+          )}
+        >
+          {row.wireNo}
+        </td>
       )}
       {showWireId && (
-        <td className={cn(
-          "px-1 py-1 text-center text-[10px] font-medium",
-          !showGaugeSize && !showLength && "border-r border-foreground/20"
-        )}>{row.wireId}</td>
+        <td
+          className={cn(
+            "px-1 py-1 text-center text-[10px] font-medium",
+            !showGaugeSize && !showLength && "border-r border-foreground/20",
+          )}
+        >
+          {row.wireId}
+        </td>
       )}
       {showGaugeSize && (
-        <td className={cn(
-          "px-1 py-1 text-center text-[10px] font-medium",
-          !showLength && "border-r border-foreground/20"
-        )}>{row.gaugeSize}</td>
+        <td
+          className={cn(
+            "px-1 py-1 text-center text-[10px] font-medium",
+            !showLength && "border-r border-foreground/20",
+          )}
+        >
+          {row.gaugeSize}
+        </td>
       )}
       {showLength && (
         <td className="px-1 py-1 text-center text-[10px] font-medium font-mono border-r border-foreground/20">
@@ -2441,30 +4299,47 @@ function PrintTableRow({
           <ToCheckboxCell
             rowId={row.__rowId}
             checked={false}
-            onCheckedChange={() => { }}
+            onCheckedChange={() => {}}
             printVariant={true}
           />
         </td>
       )}
       {showEstTime && (
         <td className="px-1 py-1 text-center text-[10px] font-mono text-muted-foreground">
-          {formatEstTime(estimateWireTime(sectionKind, row.gaugeSize).toMinutes)}
+          {formatEstTime(
+            estimateWireTime(sectionKind, row.gaugeSize).toMinutes,
+          )}
         </td>
       )}
       {showPartNumber && (
-        <td className="px-1 py-1 text-center text-[10px] font-medium text-muted-foreground">{toReference?.partNumber || ""}</td>
+        <td className="px-1 py-1 text-center text-[10px] font-medium text-muted-foreground">
+          {toReference?.partNumber || ""}
+        </td>
       )}
       <td className="px-1 py-1 text-center text-[10px] font-medium">
-        <BlueDeviceID deviceId={displayEndpoints.toDeviceId} enabled={enableBlueDeviceID} />
+        <BlueDeviceID
+          deviceId={displayEndpoints.toDeviceId}
+          enabled={enableBlueDeviceID}
+        />
       </td>
       {showDescription && (
-        <td className="px-1 py-1 text-center text-[10px] text-muted-foreground">{toReference?.description || ""}</td>
+        <td className="px-1 py-1 text-center text-[10px] text-muted-foreground">
+          {toReference?.description || ""}
+        </td>
       )}
       {showToLocation && (
-        <td className={cn(
-          "px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis",
-          (showIPV || showComments) && "border-r border-foreground/20"
-        )}>{resolveLocationDisplayTitle(displayEndpoints.toLocation, locationNormalizedTitleByName, isExternal ? undefined : currentSheetName)}</td>
+        <td
+          className={cn(
+            "px-1 py-1 text-center text-[9px] font-medium whitespace-nowrap overflow-hidden text-ellipsis",
+            (showIPV || showComments) && "border-r border-foreground/20",
+          )}
+        >
+          {resolveLocationDisplayTitle(
+            displayEndpoints.toLocation,
+            locationNormalizedTitleByName,
+            isExternal ? undefined : currentSheetName,
+          )}
+        </td>
       )}
       {/* Review group */}
       {showIPV && (
@@ -2472,7 +4347,7 @@ function PrintTableRow({
           <IPVCheckboxCell
             rowId={row.__rowId}
             checked={false}
-            onCheckedChange={() => { }}
+            onCheckedChange={() => {}}
             printVariant={true}
           />
         </td>
@@ -2482,7 +4357,7 @@ function PrintTableRow({
           <CommentsCell
             rowId={row.__rowId}
             value={comment}
-            onChange={() => { }}
+            onChange={() => {}}
             printVariant={true}
           />
         </td>
@@ -2512,17 +4387,24 @@ function CableReferenceFooterRow({
 
   return (
     <tr className="border-b border-foreground/10 ">
-      <td colSpan={totalColumns} className="px-2 py-1.5 text-[10px] text-muted-foreground">
+      <td
+        colSpan={totalColumns}
+        className="px-2 py-1.5 text-[10px] text-muted-foreground"
+      >
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
           {showPartNumber && cableReference.partNumber ? (
             <span>
-              <span className="font-semibold uppercase tracking-wide text-foreground/80">Part Number:</span>{" "}
+              <span className="font-semibold uppercase tracking-wide text-foreground/80">
+                Part Number:
+              </span>{" "}
               {cableReference.partNumber}
             </span>
           ) : null}
           {showDescription && cableReference.description ? (
             <span>
-              <span className="font-semibold uppercase tracking-wide text-foreground/80">Description:</span>{" "}
+              <span className="font-semibold uppercase tracking-wide text-foreground/80">
+                Description:
+              </span>{" "}
               {cableReference.description}
             </span>
           ) : null}
@@ -2565,13 +4447,23 @@ function PrintPreviewTable({
   matchMetadata?: Record<string, PatternMatchMetadata>;
   partNumberMap?: Map<string, PartNumberLookupResult> | null;
   cablePartNumberMap?: Map<string, CablePartNumberLookupResult> | null;
-  getRowLength?: (rowId: string) => { display: string; roundedInches: number; confidence: string } | null;
+  getRowLength?: (
+    rowId: string,
+  ) => { display: string; roundedInches: number; confidence: string } | null;
   hiddenRows?: Set<string>;
   onToggleRowHidden?: (rowId: string) => void;
   locationNormalizedTitleByName?: Record<string, string>;
   isExternal?: boolean;
 }) {
-  const { showFromCheckbox, showToCheckbox, showIPV, showComments, showLength, showEstTime, showDeviceSubheaders } = settings;
+  const {
+    showFromCheckbox,
+    showToCheckbox,
+    showIPV,
+    showComments,
+    showLength,
+    showEstTime,
+    showDeviceSubheaders,
+  } = settings;
 
   const sectionColumns = getEffectiveSectionColumns(
     settings.sectionColumnVisibility,
@@ -2595,54 +4487,104 @@ function PrintPreviewTable({
   const showFromLocation = isExternal;
   const showToLocation = true;
   const swapFromTo = sectionColumns.swapFromTo ?? false;
-  const preserveSequentialRunOrder = shouldPreservePrintSubsectionOrder(sectionKind);
+  const preserveSequentialRunOrder =
+    shouldPreservePrintSubsectionOrder(sectionKind);
   const wireListSortMode = settings.wireListSortMode;
   const usesDevicePrefixGrouping =
     wireListSortMode === "device-prefix" ||
     wireListSortMode === "device-prefix-part-number";
   const orderedRows = useMemo(
-    () => preserveSequentialRunOrder || (sectionKind === "single_connections" && wireListSortMode === "blue-label-sequence")
-      ? filterEmptyDeviceChangeSections(rows).filter(isPrintableConnectionRow)
-      : sortRowsForDeviceGroupedPreview(
-        filterEmptyDeviceChangeSections(rows).filter(isPrintableConnectionRow),
-        currentSheetName,
-        isCablesSection,
-        partNumberMap,
-        sectionKind,
-      ),
-    [rows, currentSheetName, isCablesSection, partNumberMap, preserveSequentialRunOrder, sectionKind, wireListSortMode],
+    () =>
+      preserveSequentialRunOrder ||
+      (sectionKind === "single_connections" &&
+        wireListSortMode === "blue-label-sequence")
+        ? filterEmptyDeviceChangeSections(rows).filter(isPrintableConnectionRow)
+        : sortRowsForDeviceGroupedPreview(
+            filterEmptyDeviceChangeSections(rows).filter(
+              isPrintableConnectionRow,
+            ),
+            currentSheetName,
+            isCablesSection,
+            partNumberMap,
+            sectionKind,
+          ),
+    [
+      rows,
+      currentSheetName,
+      isCablesSection,
+      partNumberMap,
+      preserveSequentialRunOrder,
+      sectionKind,
+      wireListSortMode,
+    ],
   );
   const effectiveSubgroups = useMemo(
-    () => !sectionKind
-      ? []
-      : buildRenderableSectionSubgroups(sectionKind, orderedRows, matchMetadata, partNumberMap, usesDevicePrefixGrouping),
-    [matchMetadata, orderedRows, partNumberMap, sectionKind, usesDevicePrefixGrouping],
+    () =>
+      !sectionKind
+        ? []
+        : buildRenderableSectionSubgroups(
+            sectionKind,
+            orderedRows,
+            matchMetadata,
+            partNumberMap,
+            usesDevicePrefixGrouping,
+          ),
+    [
+      matchMetadata,
+      orderedRows,
+      partNumberMap,
+      sectionKind,
+      usesDevicePrefixGrouping,
+    ],
   );
 
   // Sort subgroups by device prefix (and optionally part number) for single_connections
   useMemo(() => {
-    if (sectionKind !== "single_connections" || !usesDevicePrefixGrouping || effectiveSubgroups.length === 0) {
+    if (
+      sectionKind !== "single_connections" ||
+      !usesDevicePrefixGrouping ||
+      effectiveSubgroups.length === 0
+    ) {
       return;
     }
     const rowsById = new Map(orderedRows.map((row) => [row.__rowId, row]));
     effectiveSubgroups.sort((a, b) => {
-      const aFirstRow = a.rowIds.length > 0 ? rowsById.get(a.rowIds[0]) : undefined;
-      const bFirstRow = b.rowIds.length > 0 ? rowsById.get(b.rowIds[0]) : undefined;
-      const aDisplayFrom = aFirstRow ? getDisplayEndpoints(aFirstRow).fromDeviceId : undefined;
-      const bDisplayFrom = bFirstRow ? getDisplayEndpoints(bFirstRow).fromDeviceId : undefined;
+      const aFirstRow =
+        a.rowIds.length > 0 ? rowsById.get(a.rowIds[0]) : undefined;
+      const bFirstRow =
+        b.rowIds.length > 0 ? rowsById.get(b.rowIds[0]) : undefined;
+      const aDisplayFrom = aFirstRow
+        ? getDisplayEndpoints(aFirstRow).fromDeviceId
+        : undefined;
+      const bDisplayFrom = bFirstRow
+        ? getDisplayEndpoints(bFirstRow).fromDeviceId
+        : undefined;
       const aPrefix = getDevicePrefixValue(aDisplayFrom);
       const bPrefix = getDevicePrefixValue(bDisplayFrom);
-      const prefixCompare = aPrefix.localeCompare(bPrefix, undefined, { numeric: true });
+      const prefixCompare = aPrefix.localeCompare(bPrefix, undefined, {
+        numeric: true,
+      });
       if (prefixCompare !== 0) return prefixCompare;
       if (wireListSortMode === "device-prefix-part-number" && partNumberMap) {
-        const aPartNumber = lookupPartNumber(partNumberMap, aDisplayFrom)?.partNumber ?? "";
-        const bPartNumber = lookupPartNumber(partNumberMap, bDisplayFrom)?.partNumber ?? "";
-        const partCompare = aPartNumber.localeCompare(bPartNumber, undefined, { numeric: true });
+        const aPartNumber =
+          lookupPartNumber(partNumberMap, aDisplayFrom)?.partNumber ?? "";
+        const bPartNumber =
+          lookupPartNumber(partNumberMap, bDisplayFrom)?.partNumber ?? "";
+        const partCompare = aPartNumber.localeCompare(bPartNumber, undefined, {
+          numeric: true,
+        });
         if (partCompare !== 0) return partCompare;
       }
       return a.order - b.order;
     });
-  }, [effectiveSubgroups, orderedRows, partNumberMap, sectionKind, usesDevicePrefixGrouping, wireListSortMode]);
+  }, [
+    effectiveSubgroups,
+    orderedRows,
+    partNumberMap,
+    sectionKind,
+    usesDevicePrefixGrouping,
+    wireListSortMode,
+  ]);
 
   // Reorder rows so subgroup members are contiguous
   const reorderedRows = useMemo(() => {
@@ -2656,13 +4598,15 @@ function PrintPreviewTable({
       }
     });
     const sorted = [...orderedRows].sort((a, b) => {
-      const aGroup = rowSubgroupIndex.get(a.__rowId) ?? effectiveSubgroups.length;
-      const bGroup = rowSubgroupIndex.get(b.__rowId) ?? effectiveSubgroups.length;
+      const aGroup =
+        rowSubgroupIndex.get(a.__rowId) ?? effectiveSubgroups.length;
+      const bGroup =
+        rowSubgroupIndex.get(b.__rowId) ?? effectiveSubgroups.length;
       return aGroup - bGroup;
     });
     for (const sg of effectiveSubgroups) {
       const memberSet = new Set(sg.rowIds);
-      const first = sorted.find(r => memberSet.has(r.__rowId));
+      const first = sorted.find((r) => memberSet.has(r.__rowId));
       if (first) {
         sg.startRowId = first.__rowId;
       }
@@ -2674,98 +4618,144 @@ function PrintPreviewTable({
     () => buildSubgroupStartMap(effectiveSubgroups),
     [effectiveSubgroups],
   );
-  const renderPlan = useMemo(
-    () => {
-      const plan = buildWireListRenderPlan({
-        rows: reorderedRows,
-        currentSheetName,
-        sectionKind,
-        matchMetadata,
-        subgroupHeaderMap,
-        showDeviceGroupHeader: showDeviceSubheaders,
-        hideDeviceSubheaders:
-          sectionKind === "grounds" ||
-          sectionKind === "ka_relay_plugin_jumpers" ||
-          sectionKind === "ka_jumpers" ||
-          sectionKind === "kt_jumpers" ||
-          sectionKind === "cables" ||
-          sectionKind === "single_connections" ||
-          sectionKind === "fu_jumpers" ||
-          sectionKind === "vio_jumpers" ||
-          sectionKind === "ka_twin_ferrules" ||
-          sectionKind === "resistors",
-        forceDeviceSeparator: sectionKind === "grounds",
-      });
+  const renderPlan = useMemo(() => {
+    const plan = buildWireListRenderPlan({
+      rows: reorderedRows,
+      currentSheetName,
+      sectionKind,
+      matchMetadata,
+      subgroupHeaderMap,
+      showDeviceGroupHeader: showDeviceSubheaders,
+      hideDeviceSubheaders:
+        sectionKind === "grounds" ||
+        sectionKind === "ka_relay_plugin_jumpers" ||
+        sectionKind === "ka_jumpers" ||
+        sectionKind === "kt_jumpers" ||
+        sectionKind === "cables" ||
+        sectionKind === "single_connections" ||
+        sectionKind === "fu_jumpers" ||
+        sectionKind === "vio_jumpers" ||
+        sectionKind === "ka_twin_ferrules" ||
+        sectionKind === "resistors",
+      forceDeviceSeparator: sectionKind === "grounds",
+    });
 
-      // Inject prefix-category headers when sorting by device prefix
-      if (sectionKind === "single_connections" && usesDevicePrefixGrouping && plan.length > 0) {
-        const rowsById = new Map(reorderedRows.map((row) => [row.__rowId, row]));
-        const enriched: WireListRenderPlanItem[] = [];
-        let lastPrefix = "";
+    // Inject prefix-category headers when sorting by device prefix
+    if (
+      sectionKind === "single_connections" &&
+      usesDevicePrefixGrouping &&
+      plan.length > 0
+    ) {
+      const rowsById = new Map(reorderedRows.map((row) => [row.__rowId, row]));
+      const enriched: WireListRenderPlanItem[] = [];
+      let lastPrefix = "";
 
-        for (const item of plan) {
-          if (item.type === "group-header" && item.group.groupKind === "subgroup") {
-            const matchingSg = effectiveSubgroups.find((sg) => `subgroup-${sg.id}` === item.group.key || sg.label === item.group.label);
-            const firstRowId = matchingSg?.rowIds[0];
-            const firstRow = firstRowId ? rowsById.get(firstRowId) : undefined;
-            const prefix = getDevicePrefixValue(firstRow ? getDisplayEndpoints(firstRow).fromDeviceId : undefined);
+      for (const item of plan) {
+        if (
+          item.type === "group-header" &&
+          item.group.groupKind === "subgroup"
+        ) {
+          const matchingSg = effectiveSubgroups.find(
+            (sg) =>
+              `subgroup-${sg.id}` === item.group.key ||
+              sg.label === item.group.label,
+          );
+          const firstRowId = matchingSg?.rowIds[0];
+          const firstRow = firstRowId ? rowsById.get(firstRowId) : undefined;
+          const prefix = getDevicePrefixValue(
+            firstRow ? getDisplayEndpoints(firstRow).fromDeviceId : undefined,
+          );
 
-            if (prefix && prefix !== lastPrefix) {
-              // Collect part numbers for this prefix group
-              const prefixPartNumbers: string[] = [];
-              if (wireListSortMode === "device-prefix-part-number" && partNumberMap) {
-                for (const sg of effectiveSubgroups) {
-                  const sgFirstRowId = sg.rowIds[0];
-                  const sgFirstRow = sgFirstRowId ? rowsById.get(sgFirstRowId) : undefined;
-                  if (getDevicePrefixValue(sgFirstRow?.fromDeviceId) === prefix) {
-                    const pn = lookupPartNumber(partNumberMap, sgFirstRow?.fromDeviceId)?.partNumber;
-                    if (pn && !prefixPartNumbers.includes(pn)) {
-                      prefixPartNumbers.push(pn);
-                    }
+          if (prefix && prefix !== lastPrefix) {
+            // Collect part numbers for this prefix group
+            const prefixPartNumbers: string[] = [];
+            if (
+              wireListSortMode === "device-prefix-part-number" &&
+              partNumberMap
+            ) {
+              for (const sg of effectiveSubgroups) {
+                const sgFirstRowId = sg.rowIds[0];
+                const sgFirstRow = sgFirstRowId
+                  ? rowsById.get(sgFirstRowId)
+                  : undefined;
+                if (getDevicePrefixValue(sgFirstRow?.fromDeviceId) === prefix) {
+                  const pn = lookupPartNumber(
+                    partNumberMap,
+                    sgFirstRow?.fromDeviceId,
+                  )?.partNumber;
+                  if (pn && !prefixPartNumbers.includes(pn)) {
+                    prefixPartNumbers.push(pn);
                   }
                 }
               }
-
-              enriched.push({
-                type: "group-header",
-                key: `prefix-category-${prefix}`,
-                group: {
-                  key: `prefix-category-${prefix}`,
-                  label: prefix,
-                  groupKind: "prefix-category",
-                  description: prefixPartNumbers.length > 0 ? prefixPartNumbers.join(", ") : undefined,
-                },
-              });
-              lastPrefix = prefix;
             }
-          }
-          enriched.push(item);
-        }
 
-        return enriched;
+            enriched.push({
+              type: "group-header",
+              key: `prefix-category-${prefix}`,
+              group: {
+                key: `prefix-category-${prefix}`,
+                label: prefix,
+                groupKind: "prefix-category",
+                description:
+                  prefixPartNumbers.length > 0
+                    ? prefixPartNumbers.join(", ")
+                    : undefined,
+              },
+            });
+            lastPrefix = prefix;
+          }
+        }
+        enriched.push(item);
       }
 
-      return plan;
-    },
-    [currentSheetName, effectiveSubgroups, matchMetadata, orderedRows, partNumberMap, reorderedRows, sectionKind, showDeviceSubheaders, subgroupHeaderMap, usesDevicePrefixGrouping, wireListSortMode],
-  );
+      return enriched;
+    }
+
+    return plan;
+  }, [
+    currentSheetName,
+    effectiveSubgroups,
+    matchMetadata,
+    orderedRows,
+    partNumberMap,
+    reorderedRows,
+    sectionKind,
+    showDeviceSubheaders,
+    subgroupHeaderMap,
+    usesDevicePrefixGrouping,
+    wireListSortMode,
+  ]);
 
   // Build a map of the last row ID in each subgroup for subtotal injection
   const stdSubgroupLastRowMap = useMemo(() => {
-    const map = new Map<string, { label: string; rows: SemanticWireListRow[] }>();
-    let currentSubgroup: { key: string; label: string; rowIds: string[] } | null = null;
+    const map = new Map<
+      string,
+      { label: string; rows: SemanticWireListRow[] }
+    >();
+    let currentSubgroup: {
+      key: string;
+      label: string;
+      rowIds: string[];
+    } | null = null;
     for (const item of renderPlan) {
-      if (item.type === "group-header" && (item.group.groupKind === "subgroup" || item.group.groupKind === "prefix-category")) {
+      if (
+        item.type === "group-header" &&
+        (item.group.groupKind === "subgroup" ||
+          item.group.groupKind === "prefix-category")
+      ) {
         if (currentSubgroup && currentSubgroup.rowIds.length > 0) {
-          const lastId = currentSubgroup.rowIds[currentSubgroup.rowIds.length - 1];
+          const lastId =
+            currentSubgroup.rowIds[currentSubgroup.rowIds.length - 1];
           const subRows = currentSubgroup.rowIds
             .map((id) => reorderedRows.find((r) => r.__rowId === id))
             .filter((r): r is SemanticWireListRow => Boolean(r));
           map.set(lastId, { label: currentSubgroup.label, rows: subRows });
         }
-        currentSubgroup = item.group.groupKind === "subgroup"
-          ? { key: item.key, label: item.group.label, rowIds: [] }
-          : null;
+        currentSubgroup =
+          item.group.groupKind === "subgroup"
+            ? { key: item.key, label: item.group.label, rowIds: [] }
+            : null;
       } else if (item.type === "row" && currentSubgroup) {
         currentSubgroup.rowIds.push(item.rowId);
       }
@@ -2782,15 +4772,33 @@ function PrintPreviewTable({
 
   // Base columns: Device ID is always shown, others depend on visibility
   // FROM group: Complete (checkbox) + Est + Location + Part No + Device ID + Desc
-  const fromGroupCount = (showFromCheckbox ? 1 : 0) + (showEstTime ? 1 : 0) + (showFromLocation ? 1 : 0) + (showPartNumberColumn ? 1 : 0) + 1 + (showDescriptionColumn ? 1 : 0);
+  const fromGroupCount =
+    (showFromCheckbox ? 1 : 0) +
+    (showEstTime ? 1 : 0) +
+    (showFromLocation ? 1 : 0) +
+    (showPartNumberColumn ? 1 : 0) +
+    1 +
+    (showDescriptionColumn ? 1 : 0);
   // Connection group (middle): Type + No + Wire ID + Size + Length
-  const connectionGroupCount = (showWireType ? 1 : 0) + (showWireNo ? 1 : 0) + (showWireId ? 1 : 0) + (showGaugeSize ? 1 : 0) + (showLength ? 1 : 0);
+  const connectionGroupCount =
+    (showWireType ? 1 : 0) +
+    (showWireNo ? 1 : 0) +
+    (showWireId ? 1 : 0) +
+    (showGaugeSize ? 1 : 0) +
+    (showLength ? 1 : 0);
   // TO group: Complete (checkbox) + Est + Part No + Device ID + Desc + Location
-  const toGroupCount = (showToCheckbox ? 1 : 0) + (showEstTime ? 1 : 0) + (showPartNumberColumn ? 1 : 0) + 1 + (showDescriptionColumn ? 1 : 0) + (showToLocation ? 1 : 0);
+  const toGroupCount =
+    (showToCheckbox ? 1 : 0) +
+    (showEstTime ? 1 : 0) +
+    (showPartNumberColumn ? 1 : 0) +
+    1 +
+    (showDescriptionColumn ? 1 : 0) +
+    (showToLocation ? 1 : 0);
   // Review group: IPV + Notes
   const reviewGroupCount = (showIPV ? 1 : 0) + (showComments ? 1 : 0);
 
-  const totalColumns = fromGroupCount + connectionGroupCount + toGroupCount + reviewGroupCount;
+  const totalColumns =
+    fromGroupCount + connectionGroupCount + toGroupCount + reviewGroupCount;
 
   // Calculate column spans for group headers
   // FROM: all FROM columns
@@ -2804,53 +4812,100 @@ function PrintPreviewTable({
 
   // Column width definitions (in pixels) for print table
   const colWidths = {
-    checkbox: 20,      // Checkmark columns (FROM, TO, IPV)
-    estTime: 30,       // Est. time
-    location: 72,      // Location names
-    partNumber: 52,    // Part number
-    deviceId: 74,      // Device ID
-    description: 62,   // Description
-    wireType: 30,      // Wire type (SC, etc)
-    wireNo: 54,        // Wire number
-    wireId: 50,        // Wire ID
-    gaugeSize: 30,     // Gauge size
-    length: 38,        // Length
-    notes: 62,         // Notes column
+    checkbox: 20, // Checkmark columns (FROM, TO, IPV)
+    estTime: 30, // Est. time
+    location: 72, // Location names
+    partNumber: 52, // Part number
+    deviceId: 74, // Device ID
+    description: 62, // Description
+    wireType: 30, // Wire type (SC, etc)
+    wireNo: 54, // Wire number
+    wireId: 50, // Wire ID
+    gaugeSize: 30, // Gauge size
+    length: 38, // Length
+    notes: 62, // Notes column
   };
 
   const colStyles: Array<CSSProperties> = [];
-  if (showFromCheckbox) colStyles.push({ width: colWidths.checkbox, minWidth: colWidths.checkbox, maxWidth: colWidths.checkbox });
-  if (showEstTime) colStyles.push({ width: colWidths.estTime, minWidth: colWidths.estTime, maxWidth: colWidths.estTime });
+  if (showFromCheckbox)
+    colStyles.push({
+      width: colWidths.checkbox,
+      minWidth: colWidths.checkbox,
+      maxWidth: colWidths.checkbox,
+    });
+  if (showEstTime)
+    colStyles.push({
+      width: colWidths.estTime,
+      minWidth: colWidths.estTime,
+      maxWidth: colWidths.estTime,
+    });
   if (showFromLocation) colStyles.push({ width: colWidths.location });
   if (showPartNumberColumn) colStyles.push({ width: colWidths.partNumber });
   colStyles.push({ width: colWidths.deviceId });
   if (showDescriptionColumn) colStyles.push({ width: colWidths.description });
-  if (showWireType) colStyles.push({ width: colWidths.wireType, minWidth: colWidths.wireType, maxWidth: colWidths.wireType });
+  if (showWireType)
+    colStyles.push({
+      width: colWidths.wireType,
+      minWidth: colWidths.wireType,
+      maxWidth: colWidths.wireType,
+    });
   if (showWireNo) colStyles.push({ width: colWidths.wireNo });
   if (showWireId) colStyles.push({ width: colWidths.wireId });
-  if (showGaugeSize) colStyles.push({ width: colWidths.gaugeSize, minWidth: colWidths.gaugeSize, maxWidth: colWidths.gaugeSize });
-  if (showLength) colStyles.push({ width: colWidths.length, minWidth: colWidths.length, maxWidth: colWidths.length });
-  if (showToCheckbox) colStyles.push({ width: colWidths.checkbox, minWidth: colWidths.checkbox, maxWidth: colWidths.checkbox });
-  if (showEstTime) colStyles.push({ width: colWidths.estTime, minWidth: colWidths.estTime, maxWidth: colWidths.estTime });
+  if (showGaugeSize)
+    colStyles.push({
+      width: colWidths.gaugeSize,
+      minWidth: colWidths.gaugeSize,
+      maxWidth: colWidths.gaugeSize,
+    });
+  if (showLength)
+    colStyles.push({
+      width: colWidths.length,
+      minWidth: colWidths.length,
+      maxWidth: colWidths.length,
+    });
+  if (showToCheckbox)
+    colStyles.push({
+      width: colWidths.checkbox,
+      minWidth: colWidths.checkbox,
+      maxWidth: colWidths.checkbox,
+    });
+  if (showEstTime)
+    colStyles.push({
+      width: colWidths.estTime,
+      minWidth: colWidths.estTime,
+      maxWidth: colWidths.estTime,
+    });
   if (showPartNumberColumn) colStyles.push({ width: colWidths.partNumber });
   colStyles.push({ width: colWidths.deviceId });
   if (showDescriptionColumn) colStyles.push({ width: colWidths.description });
   if (showToLocation) colStyles.push({ width: colWidths.location });
-  if (showIPV) colStyles.push({ width: colWidths.checkbox, minWidth: colWidths.checkbox, maxWidth: colWidths.checkbox });
+  if (showIPV)
+    colStyles.push({
+      width: colWidths.checkbox,
+      minWidth: colWidths.checkbox,
+      maxWidth: colWidths.checkbox,
+    });
   if (showComments) colStyles.push({ width: colWidths.notes });
 
   return (
-    <table className="w-full border-collapse rounded-sm border border-foreground/20 text-[11px]" style={{ tableLayout: 'fixed' }}>
+    <table
+      className="w-full border-collapse rounded-sm border border-foreground/20 text-[11px]"
+      style={{ tableLayout: "fixed" }}
+    >
       {/* Define column widths */}
-      <colgroup>{colStyles.map((style, index) => <col key={`col-${index}`} style={style} />)}</colgroup>
-      <thead className="bg-muted/30" style={{ display: 'table-header-group' }}>
+      <colgroup>
+        {colStyles.map((style, index) => (
+          <col key={`col-${index}`} style={style} />
+        ))}
+      </colgroup>
+      <thead className="bg-muted/30" style={{ display: "table-header-group" }}>
         {/* Group header row: From | (no label for connection) | To | (no label for review) */}
         <tr className="border-b border-foreground/10">
           <th
             colSpan={fromColSpan}
             className="px-1 py-1 text-center text-[10px] font-bold uppercase tracking-wider border-r border-foreground/20 whitespace-nowrap"
           >
-            From
+            FROM DEVICE
           </th>
           {connectionColSpan > 0 && (
             <th
@@ -2862,10 +4917,10 @@ function PrintPreviewTable({
             colSpan={toColSpan}
             className={cn(
               "px-1 py-1 text-center text-[10px] font-bold uppercase tracking-wider whitespace-nowrap",
-              reviewColSpan > 0 && "border-r border-foreground/20"
+              reviewColSpan > 0 && "border-r border-foreground/20",
             )}
           >
-            To
+            TO DEVICE
           </th>
           {reviewColSpan > 0 && (
             <th
@@ -2878,78 +4933,143 @@ function PrintPreviewTable({
         <tr className="border-b border-foreground/20">
           {/* FROM group columns */}
           {showFromCheckbox && (
-            <th className="px-0.5 py-1 text-center text-[8px] font-normal text-muted-foreground whitespace-nowrap" title="Complete">&#10003;</th>
+            <th
+              className="px-0.5 py-1 text-center text-[8px] font-normal text-muted-foreground whitespace-nowrap"
+              title="Complete"
+            >
+              &#10003;
+            </th>
           )}
           {showEstTime && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Est.</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">
+              Est.
+            </th>
           )}
           {showFromLocation && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Location</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">
+              Location
+            </th>
           )}
           {showPartNumberColumn && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Part No</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">
+              Part No
+            </th>
           )}
-          <th className={cn(
-            "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
-            !showDescriptionColumn && "border-r border-foreground/20"
-          )}>Device ID</th>
+          <th
+            className={cn(
+              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
+              !showDescriptionColumn && "border-r border-foreground/20",
+            )}
+          >
+            Device ID
+          </th>
           {showDescriptionColumn && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap border-r border-foreground/20">Desc</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap border-r border-foreground/20">
+              Desc
+            </th>
           )}
           {/* Connection group columns (no header label) */}
           {showWireType && (
-            <th className={cn(
-              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
-              !showWireNo && !showWireId && !showGaugeSize && !showLength && "border-r border-foreground/20"
-            )}>Type</th>
+            <th
+              className={cn(
+                "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
+                !showWireNo &&
+                  !showWireId &&
+                  !showGaugeSize &&
+                  !showLength &&
+                  "border-r border-foreground/20",
+              )}
+            >
+              Type
+            </th>
           )}
           {showWireNo && (
-            <th className={cn(
-              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
-              !showWireId && !showGaugeSize && !showLength && "border-r border-foreground/20"
-            )}>No.</th>
+            <th
+              className={cn(
+                "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
+                !showWireId &&
+                  !showGaugeSize &&
+                  !showLength &&
+                  "border-r border-foreground/20",
+              )}
+            >
+             WIRE NO.
+            </th>
           )}
           {showWireId && (
-            <th className={cn(
-              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
-              !showGaugeSize && !showLength && "border-r border-foreground/20"
-            )}>Wire ID</th>
+            <th
+              className={cn(
+                "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
+                !showGaugeSize &&
+                  !showLength &&
+                  "border-r border-foreground/20",
+              )}
+            >
+              WIRE ID
+            </th>
           )}
           {showGaugeSize && (
-            <th className={cn(
-              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
-              !showLength && "border-r border-foreground/20"
-            )}>Size</th>
+            <th
+              className={cn(
+                "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
+                !showLength && "border-r border-foreground/20",
+              )}
+            >
+              SIZE
+            </th>
           )}
           {showLength && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap border-r border-foreground/20">Length</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap border-r border-foreground/20">
+              Length
+            </th>
           )}
           {/* TO group columns */}
           {showToCheckbox && (
-            <th className="px-0.5 py-1 text-center text-[8px] font-normal text-muted-foreground whitespace-nowrap" title="Complete">&#10003;</th>
+            <th
+              className="px-0.5 py-1 text-center text-[8px] font-normal text-muted-foreground whitespace-nowrap"
+              title="Complete"
+            >
+              &#10003;
+            </th>
           )}
           {showEstTime && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Est.</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">
+              Est.
+            </th>
           )}
           {showPartNumberColumn && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Part No</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">
+              Part No
+            </th>
           )}
-          <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Device ID</th>
+          <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">
+            Device ID
+          </th>
           {showDescriptionColumn && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Desc</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">
+              Desc
+            </th>
           )}
           {showToLocation && (
-            <th className={cn(
-              "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
-              (showIPV || showComments) && "border-r border-foreground/20"
-            )}>Location</th>
+            <th
+              className={cn(
+                "px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap",
+                (showIPV || showComments) && "border-r border-foreground/20",
+              )}
+            >
+              Location
+            </th>
           )}
           {/* Review group columns (no header label) */}
           {showIPV && (
-            <th className="px-0.5 py-1 text-center text-[8px] font-normal text-muted-foreground whitespace-nowrap">IPV</th>
+            <th className="px-0.5 py-1 text-center text-[8px] font-normal text-muted-foreground whitespace-nowrap">
+              IPV
+            </th>
           )}
           {showComments && (
-            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">Notes</th>
+            <th className="px-1 py-1 text-center text-[8px] font-semibold uppercase whitespace-nowrap">
+              Notes
+            </th>
           )}
         </tr>
       </thead>
@@ -2966,20 +5086,13 @@ function PrintPreviewTable({
         )}
         {renderPlan.map((item, index) => {
           if (item.type === "location-header") {
-            return (
-              <TableSubgroupHeaderRow
-                key={item.key}
-                colSpan={totalColumns}
-                label={item.label}
-                rowClassName="bg-muted/80 border-t border-foreground/20"
-                cellClassName="px-2 py-1.5 text-[11px] font-bold text-foreground uppercase tracking-wide"
-              />
-            );
+            return null;
           }
 
           if (item.type === "group-header") {
             if (item.group.groupKind === "prefix-category") {
-              const prefixPartNumbers = item.group.description?.split(", ").filter(Boolean) ?? [];
+              const prefixPartNumbers =
+                item.group.description?.split(", ").filter(Boolean) ?? [];
               return (
                 <tr
                   key={item.key}
@@ -2987,7 +5100,9 @@ function PrintPreviewTable({
                 >
                   <td colSpan={totalColumns} className="px-2 py-2 align-middle">
                     <div className="flex flex-wrap justify-between items-center gap-3">
-                      <div className="text-[16px] flex font-bold uppercase tracking-wider text-muted-foreground">{item.group.label} </div>
+                      <div className="text-[16px] flex font-bold uppercase tracking-wider text-muted-foreground">
+                        {item.group.label}{" "}
+                      </div>
 
                       {prefixPartNumbers.length > 0 && (
                         <DeviceProperty
@@ -3011,18 +5126,26 @@ function PrintPreviewTable({
                 label={item.group.label}
                 tone={item.group.tone}
                 description={item.group.description}
-                rowClassName={item.group.groupKind === "device" ? "bg-muted/40" : undefined}
+                rowClassName={
+                  item.group.groupKind === "device" ? "bg-muted/40" : undefined
+                }
                 cellClassName="border-b border-foreground/10 px-2 py-0 text-[10px] font-semibold text-muted-foreground tracking-wide"
               />
             );
           }
 
-          const nextRowItem = renderPlan.slice(index + 1).find((candidate) => candidate.type === "row");
+          const nextRowItem = renderPlan
+            .slice(index + 1)
+            .find((candidate) => candidate.type === "row");
           const isEndOfCableGroup = Boolean(
-            isCablesSection && (
-              !nextRowItem ||
-              String(nextRowItem.row.wireType || "").trim().toUpperCase() !== String(item.row.wireType || "").trim().toUpperCase()
-            )
+            isCablesSection &&
+            (!nextRowItem ||
+              String(nextRowItem.row.wireType || "")
+                .trim()
+                .toUpperCase() !==
+                String(item.row.wireType || "")
+                  .trim()
+                  .toUpperCase()),
           );
 
           return (
@@ -3054,14 +5177,28 @@ function PrintPreviewTable({
                 cablePartNumberMap={cablePartNumberMap}
                 lengthDisplay={getRowLength?.(item.row.__rowId)?.display}
                 isRowHidden={hiddenRows?.has(item.row.__rowId)}
-                onToggleRowHidden={onToggleRowHidden ? () => onToggleRowHidden(item.row.__rowId) : undefined}
+                onToggleRowHidden={
+                  onToggleRowHidden
+                    ? () => onToggleRowHidden(item.row.__rowId)
+                    : undefined
+                }
                 locationNormalizedTitleByName={locationNormalizedTitleByName}
                 isExternal={isExternal}
-                rowClassName={[
-                  item.showDeviceSeparator ? "border-t-[2px] border-t-muted" : "",
-                  item.isWarningRow ? "border-x-4 border-x-orange-400 bg-orange-50/30" : "",
-                  hiddenRows?.has(item.row.__rowId) ? "opacity-30 line-through" : "",
-                ].join(" ").trim() || undefined}
+                rowClassName={
+                  [
+                    item.showDeviceSeparator
+                      ? "border-t-[2px] border-t-muted"
+                      : "",
+                    item.isWarningRow
+                      ? "border-x-4 border-x-orange-400 bg-orange-50/30"
+                      : "",
+                    hiddenRows?.has(item.row.__rowId)
+                      ? "opacity-30 line-through"
+                      : "",
+                  ]
+                    .join(" ")
+                    .trim() || undefined
+                }
               />
               {isEndOfCableGroup ? (
                 <CableReferenceFooterRow
@@ -3072,57 +5209,78 @@ function PrintPreviewTable({
                   cablePartNumberMap={cablePartNumberMap}
                 />
               ) : null}
-              {showEstTime && (() => {
-                const subInfo = stdSubgroupLastRowMap.get(item.row.__rowId);
-                if (!subInfo || subInfo.rows.length <= 1) return null;
-                const sub = summarizeSectionTime(subInfo.rows, sectionKind);
-                const fromEstSkip = showFromCheckbox ? 1 : 0;
-                const midCols = fromBaseCount + (showLength ? 1 : 0) + (showToCheckbox ? 1 : 0);
-                const trailingCols = toBaseCount + (showIPV ? 1 : 0) + (showComments ? 1 : 0);
-                return (
-                  <tr key={`subgroup-total-${item.row.__rowId}`} className="border-t border-foreground/30">
-                    {fromEstSkip > 0 && <td colSpan={fromEstSkip} />}
-                    <td className="px-1.5 py-0.5 text-center text-[9px] font-mono text-muted-foreground">
-                      {formatEstTime(sub.fromTotal)}
-                    </td>
-                    <td colSpan={midCols} />
-                    <td className="px-1.5 py-0.5 text-center text-[9px] font-mono text-muted-foreground">
-                      {formatEstTime(sub.toTotal)}
-                    </td>
-                    <td colSpan={trailingCols} className="px-2 py-0.5 text-right text-[9px] text-muted-foreground">
-                      <span className="font-mono">
-                        {formatEstTime(sub.grandTotal)}
-                      </span>
-                      <span className="ml-1 font-sans text-[8px] text-muted-foreground/60">({sub.rowCount})</span>
-                    </td>
-                  </tr>
-                );
-              })()}
+              {showEstTime &&
+                (() => {
+                  const subInfo = stdSubgroupLastRowMap.get(item.row.__rowId);
+                  if (!subInfo || subInfo.rows.length <= 1) return null;
+                  const sub = summarizeSectionTime(subInfo.rows, sectionKind);
+                  const fromEstSkip = showFromCheckbox ? 1 : 0;
+                  const midCols =
+                    fromBaseCount +
+                    (showLength ? 1 : 0) +
+                    (showToCheckbox ? 1 : 0);
+                  const trailingCols =
+                    toBaseCount + (showIPV ? 1 : 0) + (showComments ? 1 : 0);
+                  return (
+                    <tr
+                      key={`subgroup-total-${item.row.__rowId}`}
+                      className="border-t border-foreground/30"
+                    >
+                      {fromEstSkip > 0 && <td colSpan={fromEstSkip} />}
+                      <td className="px-1.5 py-0.5 text-center text-[9px] font-mono text-muted-foreground">
+                        {formatEstTime(sub.fromTotal)}
+                      </td>
+                      <td colSpan={midCols} />
+                      <td className="px-1.5 py-0.5 text-center text-[9px] font-mono text-muted-foreground">
+                        {formatEstTime(sub.toTotal)}
+                      </td>
+                      <td
+                        colSpan={trailingCols}
+                        className="px-2 py-0.5 text-right text-[9px] text-muted-foreground"
+                      >
+                        <span className="font-mono">
+                          {formatEstTime(sub.grandTotal)}
+                        </span>
+                        <span className="ml-1 font-sans text-[8px] text-muted-foreground/60">
+                          ({sub.rowCount})
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })()}
             </Fragment>
           );
         })}
-        {showEstTime && reorderedRows.length > 0 && (() => {
-          const summary = summarizeSectionTime(reorderedRows, sectionKind);
-          // Column order: [FromCheckbox] [FromEst] [fromBase cols] [Length] [ToCheckbox] [ToEst] [toBase cols] [IPV] [Notes]
-          const fromEstSkip = showFromCheckbox ? 1 : 0; // cols before FROM Est.
-          const midCols = fromBaseCount + (showLength ? 1 : 0) + (showToCheckbox ? 1 : 0); // cols between FROM Est. and TO Est.
-          const trailingCols = toBaseCount + (showIPV ? 1 : 0) + (showComments ? 1 : 0); // cols after TO Est.
-          return (
-            <tr className="border-t border-foreground/20">
-              {fromEstSkip > 0 && <td colSpan={fromEstSkip} />}
-              <td className="px-1.5 py-0.5 text-center text-[9px] font-mono font-semibold text-muted-foreground whitespace-nowrap">
-                {formatEstTime(summary.fromTotal)}
-              </td>
-              <td colSpan={midCols} />
-              <td className="px-1.5 py-0.5 text-center text-[9px] font-mono font-semibold text-muted-foreground whitespace-nowrap">
-                {formatEstTime(summary.toTotal)}
-              </td>
-              <td colSpan={trailingCols} className="px-2 py-0.5 text-right text-[10px] font-mono font-bold text-foreground whitespace-nowrap">
-                Section Est. Completion: {formatEstTimeLong(summary.grandTotal)}
-              </td>
-            </tr>
-          );
-        })()}
+        {showEstTime &&
+          reorderedRows.length > 0 &&
+          (() => {
+            const summary = summarizeSectionTime(reorderedRows, sectionKind);
+            // Column order: [FromCheckbox] [FromEst] [fromBase cols] [Length] [ToCheckbox] [ToEst] [toBase cols] [IPV] [Notes]
+            const fromEstSkip = showFromCheckbox ? 1 : 0; // cols before FROM Est.
+            const midCols =
+              fromBaseCount + (showLength ? 1 : 0) + (showToCheckbox ? 1 : 0); // cols between FROM Est. and TO Est.
+            const trailingCols =
+              toBaseCount + (showIPV ? 1 : 0) + (showComments ? 1 : 0); // cols after TO Est.
+            return (
+              <tr className="border-t border-foreground/20">
+                {fromEstSkip > 0 && <td colSpan={fromEstSkip} />}
+                <td className="px-1.5 py-0.5 text-center text-[9px] font-mono font-semibold text-muted-foreground whitespace-nowrap">
+                  {formatEstTime(summary.fromTotal)}
+                </td>
+                <td colSpan={midCols} />
+                <td className="px-1.5 py-0.5 text-center text-[9px] font-mono font-semibold text-muted-foreground whitespace-nowrap">
+                  {formatEstTime(summary.toTotal)}
+                </td>
+                <td
+                  colSpan={trailingCols}
+                  className="px-2 py-0.5 text-right text-[10px] font-mono font-bold text-foreground whitespace-nowrap"
+                >
+                  Section Est. Completion:{" "}
+                  {formatEstTimeLong(summary.grandTotal)}
+                </td>
+              </tr>
+            );
+          })()}
       </tbody>
     </table>
   );
@@ -3166,30 +5324,47 @@ function BrandingPreviewTable({
   const [editingRowId, setEditingRowId] = useState<string | null>(null);
   const [editingValue, setEditingValue] = useState("");
   const sectionColumns = useMemo(
-    () => getEffectiveSectionColumns(sectionColumnVisibility, sectionLabel, sectionKind),
+    () =>
+      getEffectiveSectionColumns(
+        sectionColumnVisibility,
+        sectionLabel,
+        sectionKind,
+      ),
     [sectionColumnVisibility, sectionKind, sectionLabel],
   );
   const showWireNo = sectionColumns.wireNo;
   const showWireId = sectionColumns.wireId;
   const showGaugeSize = sectionColumns.gaugeSize;
-  const sectionRowIds = useMemo(() => rows.map((entry) => entry.row.__rowId), [rows]);
+  const sectionRowIds = useMemo(
+    () => rows.map((entry) => entry.row.__rowId),
+    [rows],
+  );
   const rowsById = useMemo(
     () => new Map(rows.map((entry) => [entry.row.__rowId, entry])),
     [rows],
   );
   const renderPlan = useMemo(
-    () => buildBrandingSectionRenderPlan(
-      rows.map((entry) => entry.row),
+    () =>
+      buildBrandingSectionRenderPlan(
+        rows.map((entry) => entry.row),
+        currentSheetName,
+        sectionKind,
+        matchMetadata,
+        partNumberMap,
+        brandingSortMode,
+      ),
+    [
+      brandingSortMode,
       currentSheetName,
-      sectionKind,
       matchMetadata,
       partNumberMap,
-      brandingSortMode,
-    ),
-    [brandingSortMode, currentSheetName, matchMetadata, partNumberMap, rows, sectionKind],
+      rows,
+      sectionKind,
+    ],
   );
   const selectedCount = useMemo(
-    () => sectionRowIds.filter((rowId) => selection.selectedIds.has(rowId)).length,
+    () =>
+      sectionRowIds.filter((rowId) => selection.selectedIds.has(rowId)).length,
     [sectionRowIds, selection.selectedIds],
   );
   const allRowsSelected = rows.length > 0 && selectedCount === rows.length;
@@ -3197,17 +5372,30 @@ function BrandingPreviewTable({
   // Build a map of the last row ID in each subgroup for subtotal injection
   const subgroupLastRowMap = useMemo(() => {
     const map = new Map<string, { label: string; rowIds: string[] }>();
-    let currentSubgroup: { key: string; label: string; rowIds: string[] } | null = null;
+    let currentSubgroup: {
+      key: string;
+      label: string;
+      rowIds: string[];
+    } | null = null;
     for (const item of renderPlan) {
-      if (item.type === "group-header" && (item.group.groupKind === "subgroup" || item.group.groupKind === "prefix-category")) {
+      if (
+        item.type === "group-header" &&
+        (item.group.groupKind === "subgroup" ||
+          item.group.groupKind === "prefix-category")
+      ) {
         // Finalize previous subgroup
         if (currentSubgroup && currentSubgroup.rowIds.length > 0) {
-          const lastId = currentSubgroup.rowIds[currentSubgroup.rowIds.length - 1];
-          map.set(lastId, { label: currentSubgroup.label, rowIds: currentSubgroup.rowIds });
+          const lastId =
+            currentSubgroup.rowIds[currentSubgroup.rowIds.length - 1];
+          map.set(lastId, {
+            label: currentSubgroup.label,
+            rowIds: currentSubgroup.rowIds,
+          });
         }
-        currentSubgroup = item.group.groupKind === "subgroup"
-          ? { key: item.key, label: item.group.label, rowIds: [] }
-          : null; // prefix-category resets, doesn't start a subgroup
+        currentSubgroup =
+          item.group.groupKind === "subgroup"
+            ? { key: item.key, label: item.group.label, rowIds: [] }
+            : null; // prefix-category resets, doesn't start a subgroup
       } else if (item.type === "row" && currentSubgroup) {
         currentSubgroup.rowIds.push(item.rowId);
       }
@@ -3215,7 +5403,10 @@ function BrandingPreviewTable({
     // Finalize last subgroup
     if (currentSubgroup && currentSubgroup.rowIds.length > 0) {
       const lastId = currentSubgroup.rowIds[currentSubgroup.rowIds.length - 1];
-      map.set(lastId, { label: currentSubgroup.label, rowIds: currentSubgroup.rowIds });
+      map.set(lastId, {
+        label: currentSubgroup.label,
+        rowIds: currentSubgroup.rowIds,
+      });
     }
     return map;
   }, [renderPlan]);
@@ -3251,210 +5442,259 @@ function BrandingPreviewTable({
                 className="mx-auto h-3.5 w-3.5"
               />
             </th>
-            <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">From Device</th>
+            <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">
+              From Device
+            </th>
             {showWireNo && (
-              <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">Wire No.</th>
+              <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">
+                Wire No.
+              </th>
             )}
             {showGaugeSize && (
-              <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">Gauge</th>
+              <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">
+                Gauge
+              </th>
             )}
             {showWireId && (
-              <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">Color</th>
+              <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">
+                Color
+              </th>
             )}
-            <th className="w-[152px] px-1.5 py-1.5 text-center text-[9px] font-semibold">Length</th>
-            <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">To Device</th>
-            <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">To Location</th>
-            <th className="w-[120px] px-1.5 py-1.5 text-left text-[9px] font-semibold">Bundle</th>
+            <th className="w-[152px] px-1.5 py-1.5 text-center text-[9px] font-semibold">
+              Length
+            </th>
+            <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">
+              To Device
+            </th>
+            <th className="px-1.5 py-1.5 text-left text-[9px] font-semibold">
+              To Location
+            </th>
+            <th className="w-[120px] px-1.5 py-1.5 text-left text-[9px] font-semibold">
+              Bundle
+            </th>
           </tr>
         </thead>
         <tbody>
           {rows.length === 0 ? (
             <tr>
-              <td colSpan={6 + (showWireNo ? 1 : 0) + (showGaugeSize ? 1 : 0) + (showWireId ? 1 : 0)} className="px-3 py-8 text-center text-sm text-muted-foreground">
+              <td
+                colSpan={
+                  6 +
+                  (showWireNo ? 1 : 0) +
+                  (showGaugeSize ? 1 : 0) +
+                  (showWireId ? 1 : 0)
+                }
+                className="px-3 py-8 text-center text-sm text-muted-foreground"
+              >
                 No branding rows available.
               </td>
             </tr>
-          ) : renderPlan.map((item, index) => {
-            if (item.type === "location-header") {
-              return null;
-            }
+          ) : (
+            renderPlan.map((item, index) => {
+              if (item.type === "location-header") {
+                return null;
+              }
 
-            if (item.type === "group-header") {
-              if (item.group.groupKind === "prefix-category") {
+              if (item.type === "group-header") {
+                if (item.group.groupKind === "prefix-category") {
+                  return null;
+                }
+
+                if (item.group.groupKind !== "subgroup") {
+                  return null;
+                }
+
                 return (
                   <tr
                     key={item.key}
                     className={cn(
-                      "border-b border-foreground/20 bg-muted/30",
-                      index > 0 && "border-t-2 border-foreground/15",
+                      "border-b border-foreground/10 bg-muted/50",
+                      index > 0 && "border-t border-foreground/20",
                     )}
                   >
-                    <td className="px-1.5 py-1 print:hidden" />
-                    <td colSpan={5 + (showWireNo ? 1 : 0) + (showGaugeSize ? 1 : 0) + (showWireId ? 1 : 0)} className="px-1.5 py-1 align-middle">
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{item.group.label}</div>
+                    <td className="px-1.5 py-1.5 print:hidden" />
+                    <td
+                      colSpan={
+                        5 +
+                        (showWireNo ? 1 : 0) +
+                        (showGaugeSize ? 1 : 0) +
+                        (showWireId ? 1 : 0)
+                      }
+                      className="px-1.5 py-1.5 align-middle text-left"
+                    >
+                      <div className="text-[11px] font-semibold text-foreground">
+                        {item.group.label}
+                      </div>
                     </td>
                   </tr>
                 );
               }
 
-              if (item.group.groupKind !== "subgroup") {
+              const entry = rowsById.get(item.rowId);
+              if (!entry) {
                 return null;
               }
 
-              return (
-                <tr
-                  key={item.key}
-                  className={cn(
-                    "border-b border-foreground/10 bg-muted/50",
-                    index > 0 && "border-t border-foreground/20",
-                  )}
-                >
-                  <td className="px-1.5 py-1.5 print:hidden" />
-                  <td colSpan={5 + (showWireNo ? 1 : 0) + (showGaugeSize ? 1 : 0) + (showWireId ? 1 : 0)} className="px-1.5 py-1.5 align-middle text-right">
-                    <div className="text-[11px] font-semibold text-foreground">{item.group.label}</div>
-                  </td>
-                </tr>
+              const { row, measurement, isManual } = entry;
+              const isSelected = selection.selectedIds.has(row.__rowId);
+              const isEditing = editingRowId === row.__rowId;
+              const swap = shouldSwapForTargetPair(
+                row.fromDeviceId,
+                row.toDeviceId,
               );
-            }
+              const displayFrom = swap ? row.toDeviceId : row.fromDeviceId;
+              const displayTo = swap ? row.fromDeviceId : row.toDeviceId;
 
-            const entry = rowsById.get(item.rowId);
-            if (!entry) {
-              return null;
-            }
-
-            const { row, measurement, isManual } = entry;
-            const isSelected = selection.selectedIds.has(row.__rowId);
-            const isEditing = editingRowId === row.__rowId;
-            const swap = shouldSwapForTargetPair(row.fromDeviceId, row.toDeviceId);
-            const displayFrom = swap ? row.toDeviceId : row.fromDeviceId;
-            const displayTo = swap ? row.fromDeviceId : row.toDeviceId;
-
-            return (
-              <Fragment key={row.__rowId}>
-                <tr
-                  className={cn(
-                    "border-b border-foreground/10",
-                    index % 2 === 0 && "bg-muted/10",
-                    item.showDeviceSeparator && "border-t-[2px] border-t-muted",
-                    isSelected && "bg-muted/10",
-                  )}
-                  onClick={(event) => {
-                    if (!(event.target as HTMLElement).closest("input, button")) {
-                      onToggleSelection(row.__rowId, event.shiftKey);
-                    }
-                  }}
-                >
-                  <td className="px-1.5 py-0 text-center print:hidden">
-                    <Checkbox
-                      checked={isSelected}
-                      onCheckedChange={() => onToggleSelection(row.__rowId, false)}
-                      onClick={(event) => event.stopPropagation()}
-                      className="mx-auto h-3.5 w-3.5"
-                    />
-                  </td>
-                  <td className="px-1.5 py-0 font-mono text-[11px] font-semibold">{displayFrom ? displayFrom.trim().replace(/:$/, "") : "-"}</td>
-                  {showWireNo && (
-                    <td className="px-1.5 py-0 font-mono text-[11px]">{row.wireNo || "-"}</td>
-                  )}
-                  {showGaugeSize && (
-                    <td className="px-1.5 py-0 text-[11px]">{row.gaugeSize || "-"}</td>
-                  )}
-                  {showWireId && (
-                    <td className="px-1.5 py-0 text-[11px]">{row.wireId || "-"}</td>
-                  )}
-                  <td className="w-[152px] px-1.5 py-0 text-[11px]">
-                    <div className="print:hidden">
-                      {isEditing ? (
-                        <div className="mx-auto inline-grid w-[132px] grid-cols-[20px_56px_20px_24px] items-center gap-1">
-                          <span className="h-5 w-5" aria-hidden="true" />
-                          <Input
-                            type="number"
-                            step="0.5"
-                            min="0"
-                            value={editingValue}
-                            onChange={(event) => setEditingValue(event.target.value)}
-                            onBlur={() => handleSaveEdit(row.__rowId)}
-                            onKeyDown={(event) => {
-                              if (event.key === "Enter") handleSaveEdit(row.__rowId);
-                              if (event.key === "Escape") setEditingRowId(null);
-                            }}
-                            className="h-7 w-14 text-center font-mono tabular-nums"
-                            autoFocus
-                            onClick={(event) => event.stopPropagation()}
-                          />
-                          <span className="h-5 w-5" aria-hidden="true" />
-                          <span className="h-5 w-6" aria-hidden="true" />
-                        </div>
-                      ) : (
-                        <div className="group mx-auto inline-grid w-[132px] grid-cols-[20px_56px_20px_24px] items-center gap-1">
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="h-5 w-5 rounded-sm border border-border bg-background px-0 text-[10px]"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              onAdjustMeasurement(row.__rowId, -0.5);
-                            }}
-                          >
-                            <Minus className="h-3 w-3" />
-                          </Button>
-                          <button
-                            type="button"
-                            className={cn(
-                              "w-14 rounded-sm px-1 text-center font-mono tabular-nums hover:bg-muted hover:underline",
-                              isManual && "font-semibold text-foreground",
-                            )}
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              handleStartEdit(row.__rowId, measurement);
-                            }}
-                          >
-                            {formatBrandingMeasurement(measurement)}
-                          </button>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="h-5 w-5 rounded-sm border border-border bg-background px-0 text-[10px]"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              onAdjustMeasurement(row.__rowId, 0.5);
-                            }}
-                          >
-                            <Plus className="h-3 w-3" />
-                          </Button>
-                          {isManual && (
+              return (
+                <Fragment key={row.__rowId}>
+                  <tr
+                    className={cn(
+                      "border-b border-foreground/10",
+                      index % 2 === 0 && "bg-muted/10",
+                      item.showDeviceSeparator &&
+                        "border-t-[2px] border-t-muted",
+                      isSelected && "bg-muted/10",
+                    )}
+                    onClick={(event) => {
+                      if (
+                        !(event.target as HTMLElement).closest("input, button")
+                      ) {
+                        onToggleSelection(row.__rowId, event.shiftKey);
+                      }
+                    }}
+                  >
+                    <td className="px-1.5 py-0 text-center print:hidden">
+                      <Checkbox
+                        checked={isSelected}
+                        onCheckedChange={() =>
+                          onToggleSelection(row.__rowId, false)
+                        }
+                        onClick={(event) => event.stopPropagation()}
+                        className="mx-auto h-3.5 w-3.5"
+                      />
+                    </td>
+                    <td className="px-1.5 py-0 font-mono text-[11px] font-semibold">
+                      {displayFrom ? displayFrom.trim().replace(/:$/, "") : "-"}
+                    </td>
+                    {showWireNo && (
+                      <td className="px-1.5 py-0 font-mono text-[11px]">
+                        {row.wireNo || "-"}
+                      </td>
+                    )}
+                    {showGaugeSize && (
+                      <td className="px-1.5 py-0 text-[11px]">
+                        {row.gaugeSize || "-"}
+                      </td>
+                    )}
+                    {showWireId && (
+                      <td className="px-1.5 py-0 text-[11px]">
+                        {row.wireId || "-"}
+                      </td>
+                    )}
+                    <td className="w-[152px] px-1.5 py-0 text-[11px]">
+                      <div className="print:hidden">
+                        {isEditing ? (
+                          <div className="mx-auto inline-grid w-[132px] grid-cols-[20px_56px_20px_24px] items-center gap-1">
+                            <span className="h-5 w-5" aria-hidden="true" />
+                            <Input
+                              type="number"
+                              step="0.5"
+                              min="0"
+                              value={editingValue}
+                              onChange={(event) =>
+                                setEditingValue(event.target.value)
+                              }
+                              onBlur={() => handleSaveEdit(row.__rowId)}
+                              onKeyDown={(event) => {
+                                if (event.key === "Enter")
+                                  handleSaveEdit(row.__rowId);
+                                if (event.key === "Escape")
+                                  setEditingRowId(null);
+                              }}
+                              className="h-7 w-14 text-center font-mono tabular-nums"
+                              autoFocus
+                              onClick={(event) => event.stopPropagation()}
+                            />
+                            <span className="h-5 w-5" aria-hidden="true" />
+                            <span className="h-5 w-6" aria-hidden="true" />
+                          </div>
+                        ) : (
+                          <div className="group mx-auto inline-grid w-[132px] grid-cols-[20px_56px_20px_24px] items-center gap-1">
                             <Button
                               type="button"
                               variant="ghost"
                               size="sm"
-                              className="h-5 w-6 rounded-sm border border-border bg-background px-0 text-[9px] opacity-0 transition-opacity group-hover:opacity-100"
+                              className="h-5 w-5 rounded-sm border border-border bg-background px-0 text-[10px]"
                               onClick={(event) => {
                                 event.stopPropagation();
-                                onResetMeasurement(row.__rowId);
+                                onAdjustMeasurement(row.__rowId, -0.5);
                               }}
                             >
-                              R
+                              <Minus className="h-3 w-3" />
                             </Button>
-                          )}
-                          {!isManual && (
-                            <span className="h-5 w-6" aria-hidden="true" />
-                          )}
-                        </div>
+                            <button
+                              type="button"
+                              className={cn(
+                                "w-14 rounded-sm px-1 text-center font-mono tabular-nums hover:bg-muted hover:underline",
+                                isManual && "font-semibold text-foreground",
+                              )}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                handleStartEdit(row.__rowId, measurement);
+                              }}
+                            >
+                              {formatBrandingMeasurement(measurement)}
+                            </button>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="h-5 w-5 rounded-sm border border-border bg-background px-0 text-[10px]"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                onAdjustMeasurement(row.__rowId, 0.5);
+                              }}
+                            >
+                              <Plus className="h-3 w-3" />
+                            </Button>
+                            {isManual && (
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className="h-5 w-6 rounded-sm border border-border bg-background px-0 text-[9px] opacity-0 transition-opacity group-hover:opacity-100"
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  onResetMeasurement(row.__rowId);
+                                }}
+                              >
+                                R
+                              </Button>
+                            )}
+                            {!isManual && (
+                              <span className="h-5 w-6" aria-hidden="true" />
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      <div className="hidden py-1 text-center font-mono tabular-nums print:block">
+                        {formatBrandingMeasurement(measurement)}
+                      </div>
+                    </td>
+                    <td className="px-1.5 py-0 font-mono text-[11px] font-semibold">
+                      {displayTo ? displayTo.trim().replace(/:$/, "") : "-"}
+                    </td>
+                    <td className="px-1.5 py-0 text-[11px]">
+                      {normalizeDisplayTitle(
+                        row.toLocation || row.fromLocation || "",
                       )}
-                    </div>
-                    <div className="hidden py-1 text-center font-mono tabular-nums print:block">
-                      {formatBrandingMeasurement(measurement)}
-                    </div>
-                  </td>
-                  <td className="px-1.5 py-0 font-mono text-[11px] font-semibold">{displayTo ? displayTo.trim().replace(/:$/, "") : "-"}</td>
-                  <td className="px-1.5 py-0 text-[11px]">{normalizeDisplayTitle(row.toLocation || row.fromLocation || "")}</td>
-                  <td className="px-1.5 py-0 text-[11px]" />
-                </tr>
-              </Fragment>
-            );
-          })}
+                    </td>
+                    <td className="px-1.5 py-0 text-[11px]" />
+                  </tr>
+                </Fragment>
+              );
+            })
+          )}
         </tbody>
       </table>
     </div>
@@ -3480,10 +5720,14 @@ function ProjectInfoHeader({
       <div className="flex items-center justify-between border-b-2 border-foreground pb-2 mb-3">
         <div className="flex items-baseline gap-3">
           {projectInfo.pdNumber && (
-            <span className="text-lg font-bold tracking-tight">{projectInfo.pdNumber}</span>
+            <span className="text-lg font-bold tracking-tight">
+              {projectInfo.pdNumber}
+            </span>
           )}
           <span className="text-lg font-bold tracking-tight">
-            {projectInfo.projectName ? `${projectInfo.projectName} - ${sheetTitle}` : sheetTitle}
+            {projectInfo.projectName
+              ? `${projectInfo.projectName} - ${sheetTitle}`
+              : sheetTitle}
           </span>
         </div>
         {pageNumber && totalPages && (
@@ -3497,19 +5741,21 @@ function ProjectInfoHeader({
       <div className="flex flex-wrap items-center gap-x-6 gap-y-1 mb-3 text-sm text-muted-foreground">
         {projectInfo.unitNumber && (
           <span className="meta-item">
-            <span className="font-semibold text-foreground">Unit:</span> {projectInfo.unitNumber}
+            <span className="font-semibold text-foreground">Unit:</span>{" "}
+            {projectInfo.unitNumber}
           </span>
         )}
         {projectInfo.revision && (
           <span className="meta-item">
-            <span className="font-semibold text-foreground">Rev:</span> {projectInfo.revision}
+            <span className="font-semibold text-foreground">Rev:</span>{" "}
+            {projectInfo.revision}
           </span>
         )}
         <span className="meta-item">
-          <span className="font-semibold text-foreground">Rows:</span> {totalRows}
+          <span className="font-semibold text-foreground">Rows:</span>{" "}
+          {totalRows}
         </span>
       </div>
-
     </div>
   );
 }
@@ -3535,13 +5781,21 @@ export function SingleSheetPrintWorkspace({
   extraHeaderActions,
   initialLoadedSchema = null,
   initialMode = "standardize",
+  initialPrintViewTab = "wire-list",
+  crossWireOnly = false,
+  initializeAllLocationGroupsAsCrossWire = false,
+  hideSchemaActions = false,
   reviewModeCompact = false,
   reviewModeShowSettings = false,
 }: SingleSheetPrintWorkspaceProps) {
   const { toast } = useToast();
-  const [brandingSelection, setBrandingSelection] = useState<BrandingSelectionState>(createEmptyBrandingSelection);
-  const [brandingMeasurements, setBrandingMeasurements] = useState<Record<string, number | null>>({});
-  const [persistedBrandingEdits, setPersistedBrandingEdits] = useState<SheetBrandingEdits>({});
+  const [brandingSelection, setBrandingSelection] =
+    useState<BrandingSelectionState>(createEmptyBrandingSelection);
+  const [brandingMeasurements, setBrandingMeasurements] = useState<
+    Record<string, number | null>
+  >({});
+  const [persistedBrandingEdits, setPersistedBrandingEdits] =
+    useState<SheetBrandingEdits>({});
   const [hasLoadedBrandingEdits, setHasLoadedBrandingEdits] = useState(false);
   const [brandingAdjustmentStep, setBrandingAdjustmentStep] = useState("0.5");
   const [brandingSetValue, setBrandingSetValue] = useState("");
@@ -3551,27 +5805,45 @@ export function SingleSheetPrintWorkspace({
   const { blueLabelsSheet, cablePartNumberMap } = useProjectLookups();
 
   /** Resolve SWS type badge info for a location group by matching against assignment mappings */
-  const resolveLocationSwsType = useCallback((location: string): { id: string; label: string; shortLabel: string; color?: string } | undefined => {
-    if (!assignmentMappings || assignmentMappings.length === 0) return undefined;
-    const normalized = location.trim().toUpperCase();
-    // Exact match first
-    let mapping = assignmentMappings.find(m => m.sheetName.trim().toUpperCase() === normalized);
-    // Containment match
-    if (!mapping) {
-      let bestLength = 0;
-      for (const m of assignmentMappings) {
-        const sn = m.sheetName.trim().toUpperCase();
-        if ((normalized.includes(sn) || sn.includes(normalized)) && sn.length > bestLength) {
-          mapping = m;
-          bestLength = sn.length;
+  const resolveLocationSwsType = useCallback(
+    (
+      location: string,
+    ):
+      | { id: string; label: string; shortLabel: string; color?: string }
+      | undefined => {
+      if (!assignmentMappings || assignmentMappings.length === 0)
+        return undefined;
+      const normalized = location.trim().toUpperCase();
+      // Exact match first
+      let mapping = assignmentMappings.find(
+        (m) => m.sheetName.trim().toUpperCase() === normalized,
+      );
+      // Containment match
+      if (!mapping) {
+        let bestLength = 0;
+        for (const m of assignmentMappings) {
+          const sn = m.sheetName.trim().toUpperCase();
+          if (
+            (normalized.includes(sn) || sn.includes(normalized)) &&
+            sn.length > bestLength
+          ) {
+            mapping = m;
+            bestLength = sn.length;
+          }
         }
       }
-    }
-    if (!mapping) return undefined;
-    const info = SWS_TYPE_REGISTRY[mapping.selectedSwsType as SwsTypeId];
-    if (!info || info.id === 'UNDECIDED') return undefined;
-    return { id: info.id, label: info.label, shortLabel: info.shortLabel, color: info.color };
-  }, [assignmentMappings]);
+      if (!mapping) return undefined;
+      const info = SWS_TYPE_REGISTRY[mapping.selectedSwsType as SwsTypeId];
+      if (!info || info.id === "UNDECIDED") return undefined;
+      return {
+        id: info.id,
+        label: info.label,
+        shortLabel: info.shortLabel,
+        color: info.color,
+      };
+    },
+    [assignmentMappings],
+  );
 
   const effectiveBlueLabels = useMemo(() => {
     if (blueLabels?.isValid) {
@@ -3583,10 +5855,7 @@ export function SingleSheetPrintWorkspace({
   }, [blueLabels, blueLabelsSheet]);
 
   // Multi-identity filter hook - manages filter selection and ordering
-  const {
-    getFilteredGroups,
-    hasBlueLabels,
-  } = useMultiIdentityFilter({
+  const { getFilteredGroups, hasBlueLabels } = useMultiIdentityFilter({
     rows,
     blueLabels: effectiveBlueLabels,
     currentSheetName,
@@ -3596,23 +5865,37 @@ export function SingleSheetPrintWorkspace({
   const [settings, setSettings] = useState<PrintSettings>(() => ({
     ...(createDefaultPrintSettings() as PrintSettings),
     mode: initialMode,
+    paperSize: initialMode === "branding" ? "letter" : "tabloid",
   }));
-  const [projectInfo, setProjectInfo] = useState<ProjectInfo>(() => createDefaultProjectInfo({
-    // Source from project API/context first. Avoid seeding from extracted sheet metadata.
-    projectNumber: currentProject?.pdNumber,
-    projectName: currentProject?.name,
-    revision: currentProject?.revision,
-    pdNumber: currentProject?.pdNumber,
-    unitNumber: currentProject?.unitNumber,
-  }) as ProjectInfo);
+  const [projectManifestSnapshot, setProjectManifestSnapshot] =
+    useState<ProjectManifest | null>(null);
+  const [projectInfo, setProjectInfo] = useState<ProjectInfo>(
+    () =>
+      createDefaultProjectInfo({
+        // Source from project API/context first. Avoid seeding from extracted sheet metadata.
+        projectNumber: currentProject?.pdNumber,
+        projectName: currentProject?.name,
+        revision: currentProject?.revision,
+        pdNumber: currentProject?.pdNumber,
+        unitNumber: currentProject?.unitNumber,
+      }) as ProjectInfo,
+  );
   const [comments, setComments] = useState<Record<string, string>>({});
-  const [sectionDescriptions, setSectionDescriptions] = useState<Record<string, string>>({});
+  const [sectionDescriptions, setSectionDescriptions] = useState<
+    Record<string, string>
+  >({});
   const [projectInfoOpen, setProjectInfoOpen] = useState(true);
   const [feedbackOptionsOpen, setFeedbackOptionsOpen] = useState(false);
   const [zoom, setZoom] = useState(100);
-  const [printViewTab, setPrintViewTab] = useState<"wire-list" | "cross-wire">("wire-list");
+  const [printViewTab, setPrintViewTab] = useState<"wire-list" | "cross-wire">(
+    initialPrintViewTab,
+  );
   const [wiringExecutionActive, setWiringExecutionActive] = useState(false);
   const { user } = useCurrentUser();
+  const paperLayout = useMemo(
+    () => getPaperLayout(settings.paperSize),
+    [settings.paperSize],
+  );
 
   // Row map for wiring execution (rowId → SemanticWireListRow)
   const rowMap = useMemo(() => {
@@ -3640,14 +5923,19 @@ export function SingleSheetPrintWorkspace({
     if (!projectId) return;
 
     let cancelled = false;
-    void fetch(`/api/projects/${encodeURIComponent(projectId)}`, { cache: "no-store" })
+    void fetch(`/api/projects/${encodeURIComponent(projectId)}`, {
+      cache: "no-store",
+    })
       .then(async (response) => {
         if (!response.ok) return null;
-        const payload = await response.json() as { manifest?: ProjectManifest };
+        const payload = (await response.json()) as {
+          manifest?: ProjectManifest;
+        };
         return payload.manifest ?? null;
       })
       .then((manifest) => {
         if (cancelled || !manifest) return;
+        setProjectManifestSnapshot(manifest);
         setProjectInfo((prev) => ({
           ...prev,
           pdNumber: manifest.pdNumber || prev.pdNumber || "",
@@ -3720,14 +6008,22 @@ export function SingleSheetPrintWorkspace({
       }
 
       if (typeof measurement === "number") {
-        const nextEdit = createBrandingEditDraft(nextEdits[rowId], row, Math.max(0, measurement));
+        const nextEdit = createBrandingEditDraft(
+          nextEdits[rowId],
+          row,
+          Math.max(0, measurement),
+        );
         if (nextEdit) {
           nextEdits[rowId] = nextEdit;
         }
         continue;
       }
 
-      const nextEdit = createBrandingEditDraft(nextEdits[rowId], row, undefined);
+      const nextEdit = createBrandingEditDraft(
+        nextEdits[rowId],
+        row,
+        undefined,
+      );
       if (nextEdit) {
         delete nextEdit.length;
         delete nextEdit.lengthAdjustment;
@@ -3760,9 +6056,12 @@ export function SingleSheetPrintWorkspace({
   ]);
 
   // Handle section description change
-  const handleDescriptionChange = useCallback((sectionLabel: string, value: string) => {
-    setSectionDescriptions(prev => ({ ...prev, [sectionLabel]: value }));
-  }, []);
+  const handleDescriptionChange = useCallback(
+    (sectionLabel: string, value: string) => {
+      setSectionDescriptions((prev) => ({ ...prev, [sectionLabel]: value }));
+    },
+    [],
+  );
   const printRef = useRef<HTMLDivElement>(null);
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const brandingToastShownRef = useRef(false);
@@ -3786,15 +6085,15 @@ export function SingleSheetPrintWorkspace({
 
   // Handle comment change
   const handleCommentChange = useCallback((rowId: string, value: string) => {
-    setComments(prev => ({ ...prev, [rowId]: value }));
+    setComments((prev) => ({ ...prev, [rowId]: value }));
   }, []);
 
   // Toggle section enabled state
   const toggleSection = useCallback((section: JumperSection) => {
-    setSettings(prev => {
+    setSettings((prev) => {
       const current = prev.enabledSections;
       const newEnabled = current.includes(section)
-        ? current.filter(s => s !== section)
+        ? current.filter((s) => s !== section)
         : [...current, section];
       return { ...prev, enabledSections: newEnabled };
     });
@@ -3802,7 +6101,7 @@ export function SingleSheetPrintWorkspace({
 
   // Move section up in order
   const moveSectionUp = useCallback((section: JumperSection) => {
-    setSettings(prev => {
+    setSettings((prev) => {
       const order = [...prev.sectionOrder];
       const idx = order.indexOf(section);
       if (idx > 0) {
@@ -3814,7 +6113,7 @@ export function SingleSheetPrintWorkspace({
 
   // Move section down in order
   const moveSectionDown = useCallback((section: JumperSection) => {
-    setSettings(prev => {
+    setSettings((prev) => {
       const order = [...prev.sectionOrder];
       const idx = order.indexOf(section);
       if (idx < order.length - 1) {
@@ -3826,9 +6125,9 @@ export function SingleSheetPrintWorkspace({
 
   // Toggle feedback subsection enabled state
   const toggleFeedbackSection = useCallback((sectionId: string) => {
-    setSettings(prev => {
-      const newSections = prev.feedbackSections.map(s =>
-        s.id === sectionId ? { ...s, enabled: !s.enabled } : s
+    setSettings((prev) => {
+      const newSections = prev.feedbackSections.map((s) =>
+        s.id === sectionId ? { ...s, enabled: !s.enabled } : s,
       );
       return { ...prev, feedbackSections: newSections };
     });
@@ -3836,38 +6135,41 @@ export function SingleSheetPrintWorkspace({
 
   // Toggle individual question visibility
   const toggleQuestion = useCallback((questionKey: string) => {
-    setSettings(prev => {
+    setSettings((prev) => {
       const question = prev.customQuestions[questionKey];
       if (!question) return prev;
       return {
         ...prev,
         customQuestions: {
           ...prev.customQuestions,
-          [questionKey]: { ...question, enabled: !question.enabled }
-        }
+          [questionKey]: { ...question, enabled: !question.enabled },
+        },
       };
     });
   }, []);
 
   // Update question label
-  const updateQuestionLabel = useCallback((questionKey: string, newLabel: string) => {
-    setSettings(prev => {
-      const question = prev.customQuestions[questionKey];
-      if (!question) return prev;
-      return {
-        ...prev,
-        customQuestions: {
-          ...prev.customQuestions,
-          [questionKey]: { ...question, label: newLabel }
-        }
-      };
-    });
-  }, []);
+  const updateQuestionLabel = useCallback(
+    (questionKey: string, newLabel: string) => {
+      setSettings((prev) => {
+        const question = prev.customQuestions[questionKey];
+        if (!question) return prev;
+        return {
+          ...prev,
+          customQuestions: {
+            ...prev.customQuestions,
+            [questionKey]: { ...question, label: newLabel },
+          },
+        };
+      });
+    },
+    [],
+  );
 
   // Add custom question to a section
   const addCustomQuestion = useCallback((sectionId: string) => {
     const customKey = `custom_${Date.now()}`;
-    setSettings(prev => ({
+    setSettings((prev) => ({
       ...prev,
       customQuestions: {
         ...prev.customQuestions,
@@ -3878,29 +6180,36 @@ export function SingleSheetPrintWorkspace({
           enabled: true,
           sectionId,
           isCustom: true,
-        }
-      }
+        },
+      },
     }));
   }, []);
 
   // Remove custom question
   const removeCustomQuestion = useCallback((questionKey: string) => {
-    setSettings(prev => {
+    setSettings((prev) => {
       const { [questionKey]: removed, ...rest } = prev.customQuestions;
       return { ...prev, customQuestions: rest };
     });
   }, []);
 
   // Get questions for a feedback section (built-in + custom)
-  const getQuestionsForSection = useCallback((sectionId: string) => {
-    return Object.values(settings.customQuestions).filter(q => q.sectionId === sectionId);
-  }, [settings.customQuestions]);
+  const getQuestionsForSection = useCallback(
+    (sectionId: string) => {
+      return Object.values(settings.customQuestions).filter(
+        (q) => q.sectionId === sectionId,
+      );
+    },
+    [settings.customQuestions],
+  );
 
   // Track which feedback sections are expanded for question editing
-  const [expandedFeedbackSections, setExpandedFeedbackSections] = useState<Set<string>>(new Set());
+  const [expandedFeedbackSections, setExpandedFeedbackSections] = useState<
+    Set<string>
+  >(new Set());
 
   const toggleFeedbackSectionExpanded = useCallback((sectionId: string) => {
-    setExpandedFeedbackSections(prev => {
+    setExpandedFeedbackSections((prev) => {
       const next = new Set(prev);
       if (next.has(sectionId)) {
         next.delete(sectionId);
@@ -3912,16 +6221,24 @@ export function SingleSheetPrintWorkspace({
   }, []);
 
   // Build pattern extraction context
-  const extractionContext = useMemo(() => ({
-    rows,
-    blueLabels: effectiveBlueLabels,
-    currentSheetName,
-    normalizedSheetName: currentSheetName.toUpperCase().trim(),
-    partNumberMap,
-  }), [rows, effectiveBlueLabels, currentSheetName, partNumberMap]);
+  const extractionContext = useMemo(
+    () => ({
+      rows,
+      blueLabels: effectiveBlueLabels,
+      currentSheetName,
+      normalizedSheetName: currentSheetName.toUpperCase().trim(),
+      partNumberMap,
+    }),
+    [rows, effectiveBlueLabels, currentSheetName, partNumberMap],
+  );
 
   const singleConnectionRowIds = useMemo(
-    () => new Set(extractSingleConnections(extractionContext).map((match) => match.row.__rowId)),
+    () =>
+      new Set(
+        extractSingleConnections(extractionContext).map(
+          (match) => match.row.__rowId,
+        ),
+      ),
     [extractionContext],
   );
 
@@ -3943,19 +6260,27 @@ export function SingleSheetPrintWorkspace({
 
   // Default section descriptions for instructional content
   const defaultSectionDescriptions: Record<string, string> = {
-    "Ground Wires (GRN/YEL)": "Connect ground wires from source to destination. Verify proper gauge and continuity.",
-    "Clips": "Install clips according to location specifications. Check for secure fastening.",
-    "Relay Mechanical Jumpers (A1/ESTOP, A2/0V)": "Install relay mechanical jumper bars for A1 (ESTOP) and A2 (0V) circuits. Devices in sequence order.",
+    "Ground Wires (GRN/YEL)":
+      "Connect ground wires from source to destination. Verify proper gauge and continuity.",
+    Clips:
+      "Install clips according to location specifications. Check for secure fastening.",
+    "Relay Mechanical Jumpers (A1/ESTOP, A2/0V)":
+      "Install relay mechanical jumper bars for A1 (ESTOP) and A2 (0V) circuits. Devices in sequence order.",
     "KA Jumpers": "Route KA jumpers as indicated. Maintain proper wire dress.",
-    "KA Twin Ferrule": "Install twin ferrule connections per specification. Same wire number, multiple destinations.",
+    "KA Twin Ferrule":
+      "Install twin ferrule connections per specification. Same wire number, multiple destinations.",
     "KT Jumpers": "Connect KT jumpers between terminal blocks.",
-    "FU Jumpers": "Install fuse jumpers. Verify fuse ratings match requirements.",
+    "FU Jumpers":
+      "Install fuse jumpers. Verify fuse ratings match requirements.",
     "AF Jumpers": "Route AF jumpers as shown. Verify connections.",
     "AU Jumpers": "Connect AU jumpers per wiring diagram.",
     "VIO Jumpers": "Connect VIO identity jumpers per wiring diagram.",
-    "Resistors (LEAD)": "Install resistor leads (LEAD wire ID) per wiring diagram. Typically RR device prefix.",
-    "Single Connections": "Individual wires not part of other identity groups. Sorted by location.",
-    "Cables": "Route cables through designated pathways. Secure with cable ties at intervals.",
+    "Resistors (LEAD)":
+      "Install resistor leads (LEAD wire ID) per wiring diagram. Typically RR device prefix.",
+    "Single Connections":
+      "Individual wires not part of other identity groups. Sorted by location.",
+    Cables:
+      "Route cables through designated pathways. Secure with cable ties at intervals.",
   };
 
   // Detect which sections have matching rows in the data
@@ -3995,15 +6320,19 @@ export function SingleSheetPrintWorkspace({
     if (afMatches.length > 0) available.add("af_jumpers");
 
     // Check VIO jumpers (Wire ID = "VIO")
-    const hasVIO = rows.some(r => (r.wireId || "").trim().toUpperCase() === "VIO");
+    const hasVIO = rows.some(
+      (r) => (r.wireId || "").trim().toUpperCase() === "VIO",
+    );
     if (hasVIO) available.add("vio_jumpers");
 
     // Check resistors (Wire ID = "LEAD" or device prefix RR/VD)
-    const hasResistors = rows.some(r => isResistorRow(
-      (r.wireId || "").trim(),
-      (r.fromDeviceId || "").trim(),
-      (r.toDeviceId || "").trim(),
-    ));
+    const hasResistors = rows.some((r) =>
+      isResistorRow(
+        (r.wireId || "").trim(),
+        (r.fromDeviceId || "").trim(),
+        (r.toDeviceId || "").trim(),
+      ),
+    );
     if (hasResistors) available.add("resistors");
 
     // Check single connections - rows not matching other identity groups
@@ -4022,16 +6351,23 @@ export function SingleSheetPrintWorkspace({
     const wireId = (row.wireId || "").toUpperCase();
     const wireNo = (row.wireNo || "").toUpperCase();
     const type = (row.wireType || "").toUpperCase();
-    return wireId.includes("CABLE") || wireNo.includes("CABLE") || type === "CABLE" || type === "CBL";
+    return (
+      wireId.includes("CABLE") ||
+      wireNo.includes("CABLE") ||
+      type === "CABLE" ||
+      type === "CBL"
+    );
   };
 
   // Helper to group rows by device family connection (for example KA:A1 -> XT)
   // Enhanced: Groups by location within each device mapping, sorts by gauge (smallest first)
   // Cable rows are separated and rendered last
-  const groupByDeviceConnection = (wireRows: SemanticWireListRow[]): PrintSection[] => {
+  const groupByDeviceConnection = (
+    wireRows: SemanticWireListRow[],
+  ): PrintSection[] => {
     // Separate cable rows from regular wires
-    const regularRows = wireRows.filter(r => !isCableRow(r));
-    const cableRows = wireRows.filter(r => isCableRow(r));
+    const regularRows = wireRows.filter((r) => !isCableRow(r));
+    const cableRows = wireRows.filter((r) => isCableRow(r));
 
     const groups = new Map<string, SemanticWireListRow[]>();
 
@@ -4047,9 +6383,11 @@ export function SingleSheetPrintWorkspace({
     }
 
     // Sort groups by the from prefix, then to prefix
-    const sortedKeys = Array.from(groups.keys()).sort((a, b) => a.localeCompare(b));
+    const sortedKeys = Array.from(groups.keys()).sort((a, b) =>
+      a.localeCompare(b),
+    );
 
-    const sections: PrintSection[] = sortedKeys.map(key => {
+    const sections: PrintSection[] = sortedKeys.map((key) => {
       const groupRows = groups.get(key)!;
 
       // Group by location within this device mapping
@@ -4064,21 +6402,25 @@ export function SingleSheetPrintWorkspace({
 
       // Sort locations: current sheet location first, then alphabetically
       const sortedLocations = Array.from(locationMap.keys()).sort((a, b) => {
-        const aIsCurrent = a.toUpperCase().includes(currentSheetName.toUpperCase());
-        const bIsCurrent = b.toUpperCase().includes(currentSheetName.toUpperCase());
+        const aIsCurrent = a
+          .toUpperCase()
+          .includes(currentSheetName.toUpperCase());
+        const bIsCurrent = b
+          .toUpperCase()
+          .includes(currentSheetName.toUpperCase());
         if (aIsCurrent && !bIsCurrent) return -1;
         if (!aIsCurrent && bIsCurrent) return 1;
         return a.localeCompare(b);
       });
 
       // Build location subgroups, each sorted by gauge (smallest first)
-      const locationSubgroups = sortedLocations.map(loc => ({
+      const locationSubgroups = sortedLocations.map((loc) => ({
         location: loc,
         rows: sortRowsByGaugeSize([...locationMap.get(loc)!], "smallest-first"),
       }));
 
       // Flatten for the main rows array (already sorted)
-      const allSortedRows = locationSubgroups.flatMap(lg => lg.rows);
+      const allSortedRows = locationSubgroups.flatMap((lg) => lg.rows);
 
       return {
         label: `${key} (${countNonDeviceChangeRows(groupRows)})`,
@@ -4100,13 +6442,19 @@ export function SingleSheetPrintWorkspace({
         cableLocationMap.get(loc)!.push(row);
       }
 
-      const sortedCableLocations = Array.from(cableLocationMap.keys()).sort((a, b) => {
-        const aIsCurrent = a.toUpperCase().includes(currentSheetName.toUpperCase());
-        const bIsCurrent = b.toUpperCase().includes(currentSheetName.toUpperCase());
-        if (aIsCurrent && !bIsCurrent) return -1;
-        if (!aIsCurrent && bIsCurrent) return 1;
-        return a.localeCompare(b);
-      });
+      const sortedCableLocations = Array.from(cableLocationMap.keys()).sort(
+        (a, b) => {
+          const aIsCurrent = a
+            .toUpperCase()
+            .includes(currentSheetName.toUpperCase());
+          const bIsCurrent = b
+            .toUpperCase()
+            .includes(currentSheetName.toUpperCase());
+          if (aIsCurrent && !bIsCurrent) return -1;
+          if (!aIsCurrent && bIsCurrent) return 1;
+          return a.localeCompare(b);
+        },
+      );
 
       // Sort cable rows by type (WC####) first, then by device ID
       const sortCableRowsByType = (rows: SemanticWireListRow[]) => {
@@ -4119,14 +6467,14 @@ export function SingleSheetPrintWorkspace({
         });
       };
 
-      const cableLocationSubgroups = sortedCableLocations.map(loc => ({
+      const cableLocationSubgroups = sortedCableLocations.map((loc) => ({
         location: loc,
         rows: sortCableRowsByType(cableLocationMap.get(loc)!),
       }));
 
       sections.push({
         label: `Cables (${countNonDeviceChangeRows(cableRows)})`,
-        rows: cableLocationSubgroups.flatMap(lg => lg.rows),
+        rows: cableLocationSubgroups.flatMap((lg) => lg.rows),
         locationSubgroups: cableLocationSubgroups,
         description: "",
         sectionKind: "cables",
@@ -4144,11 +6492,12 @@ export function SingleSheetPrintWorkspace({
     let sorted = sortRowsByGaugeSize([...rows], "smallest-first");
 
     // Apply default grouping: same location first
-    const sameLocationRows = sorted.filter(
-      r => r.location?.toUpperCase().includes(currentSheetName.toUpperCase())
+    const sameLocationRows = sorted.filter((r) =>
+      r.location?.toUpperCase().includes(currentSheetName.toUpperCase()),
     );
     const otherLocationRows = sorted.filter(
-      r => !r.location?.toUpperCase().includes(currentSheetName.toUpperCase())
+      (r) =>
+        !r.location?.toUpperCase().includes(currentSheetName.toUpperCase()),
     );
     sorted = [...sameLocationRows, ...otherLocationRows];
 
@@ -4160,8 +6509,10 @@ export function SingleSheetPrintWorkspace({
 
       // Process each filter group from the multi-identity filter (in user-defined order)
       for (const group of filterGroups) {
-        const sectionRows = group.rows.filter(r => !usedRowIds.has(r.__rowId));
-        sectionRows.forEach(r => usedRowIds.add(r.__rowId));
+        const sectionRows = group.rows.filter(
+          (r) => !usedRowIds.has(r.__rowId),
+        );
+        sectionRows.forEach((r) => usedRowIds.add(r.__rowId));
 
         if (sectionRows.length > 0) {
           // Create location subgroups for each section (use toLocation as primary)
@@ -4173,14 +6524,19 @@ export function SingleSheetPrintWorkspace({
           }
 
           // Sort locations: current sheet location first, then alphabetically
-          const sortedLocations = Array.from(locMap.entries())
-            .sort(([a], [b]) => {
-              const aIsCurrent = a.toUpperCase().includes(currentSheetName.toUpperCase());
-              const bIsCurrent = b.toUpperCase().includes(currentSheetName.toUpperCase());
+          const sortedLocations = Array.from(locMap.entries()).sort(
+            ([a], [b]) => {
+              const aIsCurrent = a
+                .toUpperCase()
+                .includes(currentSheetName.toUpperCase());
+              const bIsCurrent = b
+                .toUpperCase()
+                .includes(currentSheetName.toUpperCase());
               if (aIsCurrent && !bIsCurrent) return -1;
               if (!aIsCurrent && bIsCurrent) return 1;
               return a.localeCompare(b);
-            });
+            },
+          );
 
           // Create a separate section for EACH location within this identity group
           for (const [location, locRows] of sortedLocations) {
@@ -4196,10 +6552,13 @@ export function SingleSheetPrintWorkspace({
             const rowCount = countNonDeviceChangeRows(sortedLocRows);
 
             // Determine if this is an external location (doesn't match current sheet)
-            const isExternal = !location.toUpperCase().includes(currentSheetName.toUpperCase());
+            const isExternal = !location
+              .toUpperCase()
+              .includes(currentSheetName.toUpperCase());
 
             // Include location in label for unique identification
-            const locationSuffix = sortedLocations.length > 1 ? ` - ${location}` : "";
+            const locationSuffix =
+              sortedLocations.length > 1 ? ` - ${location}` : "";
 
             sections.push({
               label: `${group.label}${locationSuffix} (${rowCount})`,
@@ -4217,7 +6576,9 @@ export function SingleSheetPrintWorkspace({
       // Remaining wires that don't match any section - group by device connection
       // Cables are automatically moved to the end by groupByDeviceConnection
       const remaining = sorted.filter(
-        (row) => !usedRowIds.has(row.__rowId) && singleConnectionRowIds.has(row.__rowId),
+        (row) =>
+          !usedRowIds.has(row.__rowId) &&
+          singleConnectionRowIds.has(row.__rowId),
       );
       if (remaining.length > 0) {
         const deviceGroups = groupByDeviceConnection(remaining);
@@ -4231,7 +6592,10 @@ export function SingleSheetPrintWorkspace({
       let filtered = sorted;
 
       if (settings.customSettings.sortByGauge !== "none") {
-        filtered = sortRowsByGaugeSize(filtered, settings.customSettings.sortByGauge);
+        filtered = sortRowsByGaugeSize(
+          filtered,
+          settings.customSettings.sortByGauge,
+        );
       }
 
       if (settings.customSettings.groupByLocation) {
@@ -4248,7 +6612,15 @@ export function SingleSheetPrintWorkspace({
         for (const [loc, locRows] of locationGroups) {
           sections.push({
             label: `Location: ${loc}`,
-            rows: sortRowsForPrintSubsection([...locRows], currentSheetName, undefined, {}, partNumberMap, effectiveBlueLabels, settings.wireListSortMode),
+            rows: sortRowsForPrintSubsection(
+              [...locRows],
+              currentSheetName,
+              undefined,
+              {},
+              partNumberMap,
+              effectiveBlueLabels,
+              settings.wireListSortMode,
+            ),
             description: "",
           });
         }
@@ -4258,15 +6630,29 @@ export function SingleSheetPrintWorkspace({
       // For custom mode without location grouping, just return as single section
       return [{ label: "", rows: filtered, description: "" }];
     }
-  }, [rows, settings, extractionContext, currentSheetName, getFilteredGroups, partNumberMap, singleConnectionRowIds]);
+  }, [
+    rows,
+    settings,
+    extractionContext,
+    currentSheetName,
+    getFilteredGroups,
+    partNumberMap,
+    singleConnectionRowIds,
+  ]);
 
-  const totalRowCount = useMemo(() =>
-    processedRows.reduce((sum, section) => sum + countNonDeviceChangeRows(section.rows), 0),
-    [processedRows]
+  const totalRowCount = useMemo(
+    () =>
+      processedRows.reduce(
+        (sum, section) => sum + countNonDeviceChangeRows(section.rows),
+        0,
+      ),
+    [processedRows],
   );
 
   // ── Schema-driven render mode (state + hydration) ────────────────────
-  const [loadedSchema, setLoadedSchema] = useState<WireListPrintSchema | null>(initialLoadedSchema);
+  const [loadedSchema, setLoadedSchema] = useState<WireListPrintSchema | null>(
+    initialLoadedSchema,
+  );
   const [isLoadingSchema, setIsLoadingSchema] = useState(false);
 
   const schemaHydration = useMemo(() => {
@@ -4279,68 +6665,113 @@ export function SingleSheetPrintWorkspace({
   }, [initialLoadedSchema]);
 
   useEffect(() => {
-    setSettings((prev) => (prev.mode === initialMode ? prev : { ...prev, mode: initialMode }));
+    setSettings((prev) =>
+      prev.mode === initialMode ? prev : { ...prev, mode: initialMode },
+    );
   }, [initialMode]);
 
+  useEffect(() => {
+    setSettings((prev) => {
+      const nextPaperSize: PrintPaperSize =
+        prev.mode === "branding" ? "letter" : "tabloid";
+      return prev.paperSize === nextPaperSize
+        ? prev
+        : { ...prev, paperSize: nextPaperSize };
+    });
+  }, [settings.mode]);
+
+  useEffect(() => {
+    setPrintViewTab(initialPrintViewTab);
+  }, [initialPrintViewTab]);
+
   const effectiveGetRowLength = useCallback(
-    (rowId: string) => schemaHydration?.rowLengthsById?.[rowId] ?? getRowLength?.(rowId) ?? null,
+    (rowId: string) =>
+      schemaHydration?.rowLengthsById?.[rowId] ?? getRowLength?.(rowId) ?? null,
     [getRowLength, schemaHydration?.rowLengthsById],
   );
 
   const brandingPreviewRows = useMemo((): BrandingPreviewRow[] => {
     const sorted = sortRowsByGaugeSize([...rows], "smallest-first");
-    const sameLocationRows = sorted.filter(
-      (row) => row.location?.toUpperCase().includes(currentSheetName.toUpperCase()),
+    const sameLocationRows = sorted.filter((row) =>
+      row.location?.toUpperCase().includes(currentSheetName.toUpperCase()),
     );
     const otherLocationRows = sorted.filter(
-      (row) => !row.location?.toUpperCase().includes(currentSheetName.toUpperCase()),
+      (row) =>
+        !row.location?.toUpperCase().includes(currentSheetName.toUpperCase()),
     );
 
-    return filterEmptyDeviceChangeSections([...sameLocationRows, ...otherLocationRows])
+    return filterEmptyDeviceChangeSections([
+      ...sameLocationRows,
+      ...otherLocationRows,
+    ])
       .filter((row) => !detectDeviceChange(row).isDeviceChange)
       .map((row) => {
         const baseLength = effectiveGetRowLength(row.__rowId)?.roundedInches;
         const localMeasurement = brandingMeasurements[row.__rowId];
         const persistedEdit = persistedBrandingEdits[row.__rowId];
-        const persistedLength = typeof persistedEdit?.length === "number"
-          ? persistedEdit.length
-          : typeof persistedEdit?.lengthAdjustment === "number" && typeof baseLength === "number"
-            ? Math.max(0, baseLength + persistedEdit.lengthAdjustment)
-            : undefined;
-        const overrideLength = Object.prototype.hasOwnProperty.call(brandingMeasurements, row.__rowId)
-          ? localMeasurement ?? baseLength
+        const persistedLength =
+          typeof persistedEdit?.length === "number"
+            ? persistedEdit.length
+            : typeof persistedEdit?.lengthAdjustment === "number" &&
+                typeof baseLength === "number"
+              ? Math.max(0, baseLength + persistedEdit.lengthAdjustment)
+              : undefined;
+        const overrideLength = Object.prototype.hasOwnProperty.call(
+          brandingMeasurements,
+          row.__rowId,
+        )
+          ? (localMeasurement ?? baseLength)
           : persistedLength;
-        const location = row.toLocation || row.fromLocation || row.location || "-";
+        const location =
+          row.toLocation || row.fromLocation || row.location || "-";
         const normalizedSheetName = currentSheetName.toUpperCase().trim();
 
         return {
           row,
           baseLength,
-          measurement: typeof overrideLength === "number" ? overrideLength : baseLength,
-          isManual: Object.prototype.hasOwnProperty.call(brandingMeasurements, row.__rowId)
+          measurement:
+            typeof overrideLength === "number" ? overrideLength : baseLength,
+          isManual: Object.prototype.hasOwnProperty.call(
+            brandingMeasurements,
+            row.__rowId,
+          )
             ? typeof localMeasurement === "number"
             : typeof persistedLength === "number",
           location,
-          isExternal: Boolean(normalizedSheetName) && !location.toUpperCase().includes(normalizedSheetName),
+          isExternal:
+            Boolean(normalizedSheetName) &&
+            !location.toUpperCase().includes(normalizedSheetName),
         };
       });
-  }, [brandingMeasurements, currentSheetName, effectiveGetRowLength, persistedBrandingEdits, rows]);
+  }, [
+    brandingMeasurements,
+    currentSheetName,
+    effectiveGetRowLength,
+    persistedBrandingEdits,
+    rows,
+  ]);
 
   const brandingPreviewRowMap = useMemo(
-    () => new Map(brandingPreviewRows.map((entry) => [entry.row.__rowId, entry])),
+    () =>
+      new Map(brandingPreviewRows.map((entry) => [entry.row.__rowId, entry])),
     [brandingPreviewRows],
   );
 
   useEffect(() => {
     setBrandingSelection((prev) => {
-      const validIds = new Set(brandingPreviewRows.map((entry) => entry.row.__rowId));
+      const validIds = new Set(
+        brandingPreviewRows.map((entry) => entry.row.__rowId),
+      );
       const nextSelectedIds = new Set(
         [...prev.selectedIds].filter((rowId) => validIds.has(rowId)),
       );
-      const nextLastSelectedId = prev.lastSelectedId && validIds.has(prev.lastSelectedId)
-        ? prev.lastSelectedId
-        : null;
-      const allSelected = brandingPreviewRows.length > 0 && nextSelectedIds.size === brandingPreviewRows.length;
+      const nextLastSelectedId =
+        prev.lastSelectedId && validIds.has(prev.lastSelectedId)
+          ? prev.lastSelectedId
+          : null;
+      const allSelected =
+        brandingPreviewRows.length > 0 &&
+        nextSelectedIds.size === brandingPreviewRows.length;
 
       if (
         nextSelectedIds.size === prev.selectedIds.size &&
@@ -4358,164 +6789,203 @@ export function SingleSheetPrintWorkspace({
     });
   }, [brandingPreviewRows]);
 
-  const toggleBrandingSelection = useCallback((rowId: string, shiftKey = false) => {
-    setBrandingSelection((prev) => {
-      const nextSelectedIds = new Set(prev.selectedIds);
+  const toggleBrandingSelection = useCallback(
+    (rowId: string, shiftKey = false) => {
+      setBrandingSelection((prev) => {
+        const nextSelectedIds = new Set(prev.selectedIds);
 
-      if (shiftKey && prev.lastSelectedId) {
-        const orderedIds = brandingPreviewRows.map((entry) => entry.row.__rowId);
-        const lastIndex = orderedIds.indexOf(prev.lastSelectedId);
-        const currentIndex = orderedIds.indexOf(rowId);
+        if (shiftKey && prev.lastSelectedId) {
+          const orderedIds = brandingPreviewRows.map(
+            (entry) => entry.row.__rowId,
+          );
+          const lastIndex = orderedIds.indexOf(prev.lastSelectedId);
+          const currentIndex = orderedIds.indexOf(rowId);
 
-        if (lastIndex >= 0 && currentIndex >= 0) {
-          const start = Math.min(lastIndex, currentIndex);
-          const end = Math.max(lastIndex, currentIndex);
-          for (let index = start; index <= end; index++) {
-            nextSelectedIds.add(orderedIds[index]);
+          if (lastIndex >= 0 && currentIndex >= 0) {
+            const start = Math.min(lastIndex, currentIndex);
+            const end = Math.max(lastIndex, currentIndex);
+            for (let index = start; index <= end; index++) {
+              nextSelectedIds.add(orderedIds[index]);
+            }
           }
+        } else if (nextSelectedIds.has(rowId)) {
+          nextSelectedIds.delete(rowId);
+        } else {
+          nextSelectedIds.add(rowId);
         }
-      } else if (nextSelectedIds.has(rowId)) {
-        nextSelectedIds.delete(rowId);
-      } else {
-        nextSelectedIds.add(rowId);
-      }
 
-      return {
-        selectedIds: nextSelectedIds,
-        lastSelectedId: rowId,
-        allSelected: brandingPreviewRows.length > 0 && nextSelectedIds.size === brandingPreviewRows.length,
-      };
-    });
-  }, [brandingPreviewRows]);
+        return {
+          selectedIds: nextSelectedIds,
+          lastSelectedId: rowId,
+          allSelected:
+            brandingPreviewRows.length > 0 &&
+            nextSelectedIds.size === brandingPreviewRows.length,
+        };
+      });
+    },
+    [brandingPreviewRows],
+  );
 
   const selectAllBrandingRows = useCallback(() => {
     setBrandingSelection({
-      selectedIds: new Set(brandingPreviewRows.map((entry) => entry.row.__rowId)),
+      selectedIds: new Set(
+        brandingPreviewRows.map((entry) => entry.row.__rowId),
+      ),
       lastSelectedId: brandingPreviewRows.at(-1)?.row.__rowId ?? null,
       allSelected: brandingPreviewRows.length > 0,
     });
   }, [brandingPreviewRows]);
 
-  const selectBrandingRows = useCallback((rowIds: string[]) => {
-    setBrandingSelection((prev) => {
-      const nextSelectedIds = new Set(prev.selectedIds);
-      for (const rowId of rowIds) {
-        nextSelectedIds.add(rowId);
+  const selectBrandingRows = useCallback(
+    (rowIds: string[]) => {
+      setBrandingSelection((prev) => {
+        const nextSelectedIds = new Set(prev.selectedIds);
+        for (const rowId of rowIds) {
+          nextSelectedIds.add(rowId);
+        }
+
+        const lastSelectedId = rowIds.at(-1) ?? prev.lastSelectedId;
+
+        return {
+          selectedIds: nextSelectedIds,
+          lastSelectedId,
+          allSelected:
+            brandingPreviewRows.length > 0 &&
+            nextSelectedIds.size === brandingPreviewRows.length,
+        };
+      });
+    },
+    [brandingPreviewRows],
+  );
+
+  const clearBrandingSelection = useCallback(
+    (rowIds?: string[]) => {
+      if (!rowIds || rowIds.length === 0) {
+        setBrandingSelection(createEmptyBrandingSelection());
+        return;
       }
 
-      const lastSelectedId = rowIds.at(-1) ?? prev.lastSelectedId;
+      setBrandingSelection((prev) => {
+        const nextSelectedIds = new Set(prev.selectedIds);
+        for (const rowId of rowIds) {
+          nextSelectedIds.delete(rowId);
+        }
 
-      return {
-        selectedIds: nextSelectedIds,
-        lastSelectedId,
-        allSelected: brandingPreviewRows.length > 0 && nextSelectedIds.size === brandingPreviewRows.length,
-      };
-    });
-  }, [brandingPreviewRows]);
+        const lastSelectedId =
+          prev.lastSelectedId && nextSelectedIds.has(prev.lastSelectedId)
+            ? prev.lastSelectedId
+            : null;
 
-  const clearBrandingSelection = useCallback((rowIds?: string[]) => {
-    if (!rowIds || rowIds.length === 0) {
-      setBrandingSelection(createEmptyBrandingSelection());
-      return;
-    }
+        return {
+          selectedIds: nextSelectedIds,
+          lastSelectedId,
+          allSelected:
+            brandingPreviewRows.length > 0 &&
+            nextSelectedIds.size === brandingPreviewRows.length,
+        };
+      });
+    },
+    [brandingPreviewRows],
+  );
 
-    setBrandingSelection((prev) => {
-      const nextSelectedIds = new Set(prev.selectedIds);
-      for (const rowId of rowIds) {
-        nextSelectedIds.delete(rowId);
+  const updateBrandingMeasurement = useCallback(
+    (rowId: string, value: number) => {
+      setBrandingMeasurements((prev) => ({
+        ...prev,
+        [rowId]: Math.max(0, value),
+      }));
+    },
+    [],
+  );
+
+  const updateBrandingMeasurementWithFeedback = useCallback(
+    (rowId: string, value: number) => {
+      const nextValue = Math.max(0, value);
+      updateBrandingMeasurement(rowId, nextValue);
+
+      const row = brandingPreviewRowMap.get(rowId)?.row;
+      toast({
+        title: "Measurement updated",
+        description: `${row?.fromDeviceId || rowId} set to ${nextValue.toFixed(1)}`,
+        duration: 2500,
+      });
+    },
+    [brandingPreviewRowMap, toast, updateBrandingMeasurement],
+  );
+
+  const adjustBrandingMeasurementWithFeedback = useCallback(
+    (rowId: string, delta: number) => {
+      const currentValue = brandingPreviewRowMap.get(rowId)?.measurement ?? 0;
+      const nextValue = Math.max(0, currentValue + delta);
+      updateBrandingMeasurement(rowId, nextValue);
+
+      const row = brandingPreviewRowMap.get(rowId)?.row;
+      toast({
+        title: delta >= 0 ? "Measurement increased" : "Measurement decreased",
+        description: `${row?.fromDeviceId || rowId} now ${nextValue.toFixed(1)}`,
+        duration: 2200,
+      });
+    },
+    [brandingPreviewRowMap, toast, updateBrandingMeasurement],
+  );
+
+  const resetBrandingMeasurement = useCallback(
+    (rowId: string) => {
+      setBrandingMeasurements((prev) => {
+        const next = { ...prev };
+        if (canPersistBrandingMeasurements) {
+          next[rowId] = null;
+        } else {
+          delete next[rowId];
+        }
+        return next;
+      });
+    },
+    [canPersistBrandingMeasurements],
+  );
+
+  const resetBrandingMeasurementWithFeedback = useCallback(
+    (rowId: string) => {
+      resetBrandingMeasurement(rowId);
+      const row = brandingPreviewRowMap.get(rowId)?.row;
+      toast({
+        title: "Measurement reset",
+        description: `${row?.fromDeviceId || rowId} restored to computed value`,
+        duration: 2200,
+      });
+    },
+    [brandingPreviewRowMap, resetBrandingMeasurement, toast],
+  );
+
+  const updateSelectedBrandingMeasurements = useCallback(
+    (delta: number) => {
+      if (brandingSelection.selectedIds.size === 0) {
+        return;
       }
 
-      const lastSelectedId = prev.lastSelectedId && nextSelectedIds.has(prev.lastSelectedId)
-        ? prev.lastSelectedId
-        : null;
+      setBrandingMeasurements((prev) => {
+        const next = { ...prev };
 
-      return {
-        selectedIds: nextSelectedIds,
-        lastSelectedId,
-        allSelected: brandingPreviewRows.length > 0 && nextSelectedIds.size === brandingPreviewRows.length,
-      };
-    });
-  }, [brandingPreviewRows]);
+        for (const rowId of brandingSelection.selectedIds) {
+          const currentMeasurement =
+            typeof next[rowId] === "number"
+              ? next[rowId]
+              : brandingPreviewRowMap.get(rowId)?.measurement;
 
-  const updateBrandingMeasurement = useCallback((rowId: string, value: number) => {
-    setBrandingMeasurements((prev) => ({
-      ...prev,
-      [rowId]: Math.max(0, value),
-    }));
-  }, []);
+          next[rowId] = Math.max(0, (currentMeasurement ?? 0) + delta);
+        }
 
-  const updateBrandingMeasurementWithFeedback = useCallback((rowId: string, value: number) => {
-    const nextValue = Math.max(0, value);
-    updateBrandingMeasurement(rowId, nextValue);
+        return next;
+      });
 
-    const row = brandingPreviewRowMap.get(rowId)?.row;
-    toast({
-      title: "Measurement updated",
-      description: `${row?.fromDeviceId || rowId} set to ${nextValue.toFixed(1)}`,
-      duration: 2500,
-    });
-  }, [brandingPreviewRowMap, toast, updateBrandingMeasurement]);
-
-  const adjustBrandingMeasurementWithFeedback = useCallback((rowId: string, delta: number) => {
-    const currentValue = brandingPreviewRowMap.get(rowId)?.measurement ?? 0;
-    const nextValue = Math.max(0, currentValue + delta);
-    updateBrandingMeasurement(rowId, nextValue);
-
-    const row = brandingPreviewRowMap.get(rowId)?.row;
-    toast({
-      title: delta >= 0 ? "Measurement increased" : "Measurement decreased",
-      description: `${row?.fromDeviceId || rowId} now ${nextValue.toFixed(1)}`,
-      duration: 2200,
-    });
-  }, [brandingPreviewRowMap, toast, updateBrandingMeasurement]);
-
-  const resetBrandingMeasurement = useCallback((rowId: string) => {
-    setBrandingMeasurements((prev) => {
-      const next = { ...prev };
-      if (canPersistBrandingMeasurements) {
-        next[rowId] = null;
-      } else {
-        delete next[rowId];
-      }
-      return next;
-    });
-  }, [canPersistBrandingMeasurements]);
-
-  const resetBrandingMeasurementWithFeedback = useCallback((rowId: string) => {
-    resetBrandingMeasurement(rowId);
-    const row = brandingPreviewRowMap.get(rowId)?.row;
-    toast({
-      title: "Measurement reset",
-      description: `${row?.fromDeviceId || rowId} restored to computed value`,
-      duration: 2200,
-    });
-  }, [brandingPreviewRowMap, resetBrandingMeasurement, toast]);
-
-  const updateSelectedBrandingMeasurements = useCallback((delta: number) => {
-    if (brandingSelection.selectedIds.size === 0) {
-      return;
-    }
-
-    setBrandingMeasurements((prev) => {
-      const next = { ...prev };
-
-      for (const rowId of brandingSelection.selectedIds) {
-        const currentMeasurement = typeof next[rowId] === "number"
-          ? next[rowId]
-          : brandingPreviewRowMap.get(rowId)?.measurement;
-
-        next[rowId] = Math.max(0, (currentMeasurement ?? 0) + delta);
-      }
-
-      return next;
-    });
-
-    toast({
-      title: delta >= 0 ? "Measurements increased" : "Measurements decreased",
-      description: `${brandingSelection.selectedIds.size} row${brandingSelection.selectedIds.size === 1 ? "" : "s"} updated by ${Math.abs(delta).toFixed(2)}`,
-      duration: 2500,
-    });
-  }, [brandingPreviewRowMap, brandingSelection.selectedIds, toast]);
+      toast({
+        title: delta >= 0 ? "Measurements increased" : "Measurements decreased",
+        description: `${brandingSelection.selectedIds.size} row${brandingSelection.selectedIds.size === 1 ? "" : "s"} updated by ${Math.abs(delta).toFixed(2)}`,
+        duration: 2500,
+      });
+    },
+    [brandingPreviewRowMap, brandingSelection.selectedIds, toast],
+  );
 
   const setSelectedBrandingMeasurements = useCallback(() => {
     if (brandingSelection.selectedIds.size === 0) {
@@ -4566,13 +7036,63 @@ export function SingleSheetPrintWorkspace({
     });
   }, [brandingSelection.selectedIds, canPersistBrandingMeasurements, toast]);
 
-  const effectivePartNumberMap = schemaHydration?.partNumberMap ?? partNumberMap;
+  const effectivePartNumberMap =
+    schemaHydration?.partNumberMap ?? partNumberMap;
+
+  const currentAssignment = useMemo(() => {
+    const assignments =
+      currentProject?.assignments ?? projectManifestSnapshot?.assignments;
+    if (!assignments) {
+      return null;
+    }
+
+    if (sheetSlug && assignments[sheetSlug]) {
+      return assignments[sheetSlug];
+    }
+
+    const normalizedSheetName = currentSheetName.trim().toUpperCase();
+    if (!normalizedSheetName) {
+      return null;
+    }
+
+    return (
+      Object.values(assignments).find(
+        (assignment) =>
+          assignment.sheetName?.trim().toUpperCase() === normalizedSheetName,
+      ) ?? null
+    );
+  }, [
+    currentProject?.assignments,
+    currentSheetName,
+    projectManifestSnapshot?.assignments,
+    sheetSlug,
+  ]);
+
+  const resolveExportImageUrl = useCallback(
+    (relativePath?: string) => {
+      if (!projectId || !relativePath) return undefined;
+      const normalizedPath = relativePath
+        .replace(/\\/g, "/")
+        .replace(/^\/+/, "")
+        .replace(/^exports\//i, "");
+      if (!normalizedPath || normalizedPath.includes("..")) return undefined;
+      const encodedSegments = normalizedPath
+        .split("/")
+        .filter(Boolean)
+        .map((segment) => encodeURIComponent(segment))
+        .join("/");
+      if (!encodedSegments) return undefined;
+      return `/api/projects/${encodeURIComponent(projectId)}/exports/files/${encodedSegments}`;
+    },
+    [projectId],
+  );
 
   // Pre-compute locationBoxSideByName for use in both location groups and context
   const locationBoxSideByName = useMemo(() => {
     return assignmentMappings.reduce<Record<string, string>>((acc, mapping) => {
       const sheetNameKey = mapping.sheetName?.trim().toUpperCase();
-      const mappedBoxSide = currentProject?.assignments?.[mapping.sheetSlug]?.boxSide;
+      const mappedBoxSide =
+        currentProject?.assignments?.[mapping.sheetSlug]?.boxSide;
       if (sheetNameKey && mappedBoxSide) {
         acc[sheetNameKey] = mappedBoxSide;
       }
@@ -4583,7 +7103,8 @@ export function SingleSheetPrintWorkspace({
   // Compute locationNormalizedTitleByName for display in location columns
   const locationNormalizedTitleByName = useMemo(() => {
     return assignmentMappings.reduce<Record<string, string>>((acc, mapping) => {
-      const normalizedTitle = currentProject?.assignments?.[mapping.sheetSlug]?.normalizedTitle;
+      const normalizedTitle =
+        currentProject?.assignments?.[mapping.sheetSlug]?.normalizedTitle;
       if (!normalizedTitle) {
         return acc;
       }
@@ -4624,42 +7145,159 @@ export function SingleSheetPrintWorkspace({
       currentSheetName,
       blueLabels: effectiveBlueLabels,
       partNumberMap: effectivePartNumberMap,
-      sortMode: settings.mode === "branding" ? settings.brandingSortMode : settings.wireListSortMode,
+      sortMode:
+        settings.mode === "branding"
+          ? settings.brandingSortMode
+          : settings.wireListSortMode,
       locationBoxSideByName,
       locationNormalizedTitleByName,
     }) as PrintLocationGroup[];
-  }, [schemaHydration, rows, settings.mode, settings.enabledSections, settings.sectionOrder, settings.brandingSortMode, settings.wireListSortMode, currentSheetName, effectiveBlueLabels, effectivePartNumberMap, locationBoxSideByName, locationNormalizedTitleByName]);
-
-  const externalSectionContext = useMemo(() => ({
+  }, [
+    schemaHydration,
+    rows,
+    settings.mode,
+    settings.enabledSections,
+    settings.sectionOrder,
+    settings.brandingSortMode,
+    settings.wireListSortMode,
+    currentSheetName,
+    effectiveBlueLabels,
+    effectivePartNumberMap,
     locationBoxSideByName,
     locationNormalizedTitleByName,
-    currentBoxSide: sheetSlug
-      ? currentProject?.assignments?.[sheetSlug]?.boxSide
-      : undefined,
-    assignmentMappings: assignmentMappings.length > 0 ? assignmentMappings : undefined,
-    currentSheetName,
-    internalRows: rows,
-    partNumberMap: effectivePartNumberMap,
-    externalLocationConfig: sheetSlug
-      ? (currentProject?.assignments?.[sheetSlug]?.externalLocations ?? undefined)
-      : undefined,
-  }), [assignmentMappings, currentSheetName, rows, effectivePartNumberMap, sheetSlug, currentProject]);
+  ]);
+
+  const ipvCoverReferenceData = useMemo(() => {
+    const pageCandidates = [
+      (currentAssignment?.layout?.primaryPage as { imageUrl?: string } | undefined) ??
+        undefined,
+      ...((currentAssignment?.layout?.pages as Array<{ imageUrl?: string }> | undefined) ??
+        []),
+    ];
+    const assignmentLayoutImage =
+      pageCandidates.find((page) => Boolean(page?.imageUrl))?.imageUrl ??
+      undefined;
+    const assignmentLayoutImagePath =
+      currentAssignment?.layoutImageUrlPath ??
+      currentAssignment?.files?.layoutImagePath;
+    const assignmentLayoutImageFromExport = resolveExportImageUrl(
+      assignmentLayoutImagePath,
+    );
+    const manifestExternalLocations =
+      currentAssignment?.externalLocations
+        ?.map((item) => item.location)
+        .filter((location): location is string => Boolean(location)) ?? [];
+
+    const externalLocations =
+      manifestExternalLocations.length > 0
+        ? manifestExternalLocations
+        : Array.from(
+            new Set(
+              processedLocationGroups
+                .filter((group) => group.isExternal)
+                .map((group) => group.location)
+                .filter((loc): loc is string => Boolean(loc)),
+            ),
+          );
+
+    return {
+      layoutImageUrl:
+        settings.coverImageUrl ||
+        assignmentLayoutImageFromExport ||
+        assignmentLayoutImage,
+      panducts: currentAssignment?.panducts ?? [],
+      rails: currentAssignment?.rails ?? [],
+      externalLocations,
+      whiteLabels: currentAssignment?.whiteLabels ?? [],
+      blueLabels: currentAssignment?.blueLabels ?? [],
+      heatShrinkLabels: currentAssignment?.heatShrinkLabels ?? [],
+      partNumbers: currentAssignment?.partNumbers ?? [],
+    };
+  }, [currentAssignment, processedLocationGroups, resolveExportImageUrl, settings.coverImageUrl]);
+
+  useEffect(() => {
+    if (
+      !initializeAllLocationGroupsAsCrossWire ||
+      processedLocationGroups.length === 0
+    ) {
+      return;
+    }
+
+    setSettings((prev) => {
+      const nextCrossWireSections = new Set(
+        processedLocationGroups
+          .map((group, groupIndex) =>
+            crossWireOnly && !group.isExternal ? null : `loc-${groupIndex}`,
+          )
+          .filter((value): value is string => Boolean(value)),
+      );
+      const alreadyInitialized =
+        prev.crossWireSections.size === nextCrossWireSections.size &&
+        Array.from(nextCrossWireSections).every((sectionKey) =>
+          prev.crossWireSections.has(sectionKey),
+        );
+
+      if (alreadyInitialized) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        crossWireSections: nextCrossWireSections,
+      };
+    });
+  }, [initializeAllLocationGroupsAsCrossWire, processedLocationGroups]);
+
+  const externalSectionContext = useMemo(
+    () => ({
+      locationBoxSideByName,
+      locationNormalizedTitleByName,
+      currentBoxSide: sheetSlug
+        ? currentProject?.assignments?.[sheetSlug]?.boxSide
+        : undefined,
+      assignmentMappings:
+        assignmentMappings.length > 0 ? assignmentMappings : undefined,
+      currentSheetName,
+      internalRows: rows,
+      partNumberMap: effectivePartNumberMap,
+      externalLocationConfig: sheetSlug
+        ? (currentProject?.assignments?.[sheetSlug]?.externalLocations ??
+          undefined)
+        : undefined,
+    }),
+    [
+      assignmentMappings,
+      currentSheetName,
+      rows,
+      effectivePartNumberMap,
+      sheetSlug,
+      currentProject,
+    ],
+  );
 
   const defaultBrandingHiddenSections = useMemo(() => {
-    return buildDefaultBrandingHiddenSections(processedLocationGroups as never, externalSectionContext);
+    return buildDefaultBrandingHiddenSections(
+      processedLocationGroups as never,
+      externalSectionContext,
+    );
   }, [processedLocationGroups, externalSectionContext]);
 
   const defaultStandardHiddenSections = useMemo(() => {
-    return buildDefaultStandardHiddenSections(processedLocationGroups as never, externalSectionContext);
+    return buildDefaultStandardHiddenSections(
+      processedLocationGroups as never,
+      externalSectionContext,
+    );
   }, [processedLocationGroups, externalSectionContext]);
 
   const activeHiddenSections = useMemo(() => {
     return resolveActiveHiddenSections({
       mode: settings.mode,
       standardHiddenSections: settings.standardHiddenSections,
-      standardHiddenSectionsCustomized: settings.standardHiddenSectionsCustomized,
+      standardHiddenSectionsCustomized:
+        settings.standardHiddenSectionsCustomized,
       brandingHiddenSections: settings.brandingHiddenSections,
-      brandingHiddenSectionsCustomized: settings.brandingHiddenSectionsCustomized,
+      brandingHiddenSectionsCustomized:
+        settings.brandingHiddenSectionsCustomized,
       defaultBrandingHiddenSections,
       defaultStandardHiddenSections,
     });
@@ -4674,14 +7312,22 @@ export function SingleSheetPrintWorkspace({
   ]);
 
   const updateActiveHiddenSections = useCallback(
-    (nextHiddenSections: Set<string> | ((current: Set<string>) => Set<string>)) => {
+    (
+      nextHiddenSections: Set<string> | ((current: Set<string>) => Set<string>),
+    ) => {
       setSettings((prev) => {
-        const currentHiddenSections = prev.mode === "branding"
-          ? (prev.brandingHiddenSectionsCustomized ? prev.brandingHiddenSections : defaultBrandingHiddenSections)
-          : (prev.standardHiddenSectionsCustomized ? prev.standardHiddenSections : defaultStandardHiddenSections);
-        const resolvedHiddenSections = nextHiddenSections instanceof Set
-          ? nextHiddenSections
-          : nextHiddenSections(new Set(currentHiddenSections));
+        const currentHiddenSections =
+          prev.mode === "branding"
+            ? prev.brandingHiddenSectionsCustomized
+              ? prev.brandingHiddenSections
+              : defaultBrandingHiddenSections
+            : prev.standardHiddenSectionsCustomized
+              ? prev.standardHiddenSections
+              : defaultStandardHiddenSections;
+        const resolvedHiddenSections =
+          nextHiddenSections instanceof Set
+            ? nextHiddenSections
+            : nextHiddenSections(new Set(currentHiddenSections));
 
         if (prev.mode === "branding") {
           return {
@@ -4709,15 +7355,23 @@ export function SingleSheetPrintWorkspace({
       isVisible: boolean,
     ) => {
       setSettings((prev) => {
-        const sectionKey = getSectionColumnVisibilityKey(sectionLabel, sectionKind);
-        const currentColumns = getEffectiveSectionColumns(prev.sectionColumnVisibility, sectionLabel, sectionKind);
+        const sectionKey = getSectionColumnVisibilityKey(
+          sectionLabel,
+          sectionKind,
+        );
+        const currentColumns = getEffectiveSectionColumns(
+          prev.sectionColumnVisibility,
+          sectionLabel,
+          sectionKind,
+        );
         const nextColumns: SectionColumnVisibility = {
           ...currentColumns,
           [columnKey]: isVisible,
         };
         const defaultColumns = getDefaultSectionColumns(sectionKind);
-        const matchesDefaults = (Object.keys(defaultColumns) as Array<keyof SectionColumnVisibility>)
-          .every((key) => nextColumns[key] === defaultColumns[key]);
+        const matchesDefaults = (
+          Object.keys(defaultColumns) as Array<keyof SectionColumnVisibility>
+        ).every((key) => nextColumns[key] === defaultColumns[key]);
         const nextSectionColumnVisibility = { ...prev.sectionColumnVisibility };
 
         if (matchesDefaults) {
@@ -4736,9 +7390,15 @@ export function SingleSheetPrintWorkspace({
   );
 
   const resetSectionColumnVisibility = useCallback(
-    (sectionLabel: string | undefined, sectionKind: IdentificationFilterKind | undefined) => {
+    (
+      sectionLabel: string | undefined,
+      sectionKind: IdentificationFilterKind | undefined,
+    ) => {
       setSettings((prev) => {
-        const sectionKey = getSectionColumnVisibilityKey(sectionLabel, sectionKind);
+        const sectionKey = getSectionColumnVisibilityKey(
+          sectionLabel,
+          sectionKind,
+        );
         if (!(sectionKey in prev.sectionColumnVisibility)) {
           return prev;
         }
@@ -4755,39 +7415,33 @@ export function SingleSheetPrintWorkspace({
     [],
   );
 
-  const toggleRowHidden = useCallback(
-    (rowId: string) => {
-      setSettings((prev) => {
-        const nextHiddenRows = new Set(prev.hiddenRows);
-        if (nextHiddenRows.has(rowId)) {
-          nextHiddenRows.delete(rowId);
-        } else {
-          nextHiddenRows.add(rowId);
-        }
-        return { ...prev, hiddenRows: nextHiddenRows };
-      });
-    },
-    [],
-  );
+  const toggleRowHidden = useCallback((rowId: string) => {
+    setSettings((prev) => {
+      const nextHiddenRows = new Set(prev.hiddenRows);
+      if (nextHiddenRows.has(rowId)) {
+        nextHiddenRows.delete(rowId);
+      } else {
+        nextHiddenRows.add(rowId);
+      }
+      return { ...prev, hiddenRows: nextHiddenRows };
+    });
+  }, []);
 
   const clearHiddenRows = useCallback(() => {
     setSettings((prev) => ({ ...prev, hiddenRows: new Set<string>() }));
   }, []);
 
-  const toggleCrossWireSection = useCallback(
-    (locationKey: string) => {
-      setSettings((prev) => {
-        const next = new Set(prev.crossWireSections);
-        if (next.has(locationKey)) {
-          next.delete(locationKey);
-        } else {
-          next.add(locationKey);
-        }
-        return { ...prev, crossWireSections: next };
-      });
-    },
-    [],
-  );
+  const toggleCrossWireSection = useCallback((locationKey: string) => {
+    setSettings((prev) => {
+      const next = new Set(prev.crossWireSections);
+      if (next.has(locationKey)) {
+        next.delete(locationKey);
+      } else {
+        next.add(locationKey);
+      }
+      return { ...prev, crossWireSections: next };
+    });
+  }, []);
 
   const toggleGroupSwapFromTo = useCallback(
     (groupIndex: number) => {
@@ -4797,14 +7451,22 @@ export function SingleSheetPrintWorkspace({
 
         // Check current state: are all subsections swapped?
         const allSwapped = group.subsections.every((sub) => {
-          const cols = getEffectiveSectionColumns(prev.sectionColumnVisibility, sub.label, sub.sectionKind);
+          const cols = getEffectiveSectionColumns(
+            prev.sectionColumnVisibility,
+            sub.label,
+            sub.sectionKind,
+          );
           return cols.swapFromTo === true;
         });
 
         const nextVisibility = { ...prev.sectionColumnVisibility };
         for (const sub of group.subsections) {
           const key = getSectionColumnVisibilityKey(sub.label, sub.sectionKind);
-          const current = getEffectiveSectionColumns(prev.sectionColumnVisibility, sub.label, sub.sectionKind);
+          const current = getEffectiveSectionColumns(
+            prev.sectionColumnVisibility,
+            sub.label,
+            sub.sectionKind,
+          );
           nextVisibility[key] = { ...current, swapFromTo: !allSwapped };
         }
         return { ...prev, sectionColumnVisibility: nextVisibility };
@@ -4826,7 +7488,8 @@ export function SingleSheetPrintWorkspace({
     brandingToastShownRef.current = true;
     toast({
       title: "Branding mode enabled",
-      description: "Click any measurement to edit it, use +/- for quick changes, or use bulk controls for selected rows.",
+      description:
+        "Click any measurement to edit it, use +/- for quick changes, or use bulk controls for selected rows.",
       duration: 3500,
     });
   }, [workspaceActive, settings.mode, toast]);
@@ -4839,26 +7502,44 @@ export function SingleSheetPrintWorkspace({
       showCoverPage: settings.showCoverPage,
       showTableOfContents: settings.showTableOfContents,
       showIPVCodes: settings.showIPVCodes,
+      showIPVWireList: settings.showIPVWireList,
     });
-  }, [processedLocationGroups, settings.showFeedbackSection, settings.showCoverPage, settings.showTableOfContents, settings.showIPVCodes]);
+  }, [
+    processedLocationGroups,
+    settings.showFeedbackSection,
+    settings.showCoverPage,
+    settings.showTableOfContents,
+    settings.showIPVCodes,
+    settings.showIPVWireList,
+  ]);
 
   const workspaceSheetDocument = useMemo(
-    () => buildWireListSheetWorkspaceDocument({
-      sheetTitle,
-      currentSheetName,
-      previewPageCount,
-      processedLocationGroups,
-      activeHiddenSections,
-      sectionColumnVisibility: settings.sectionColumnVisibility,
-      hiddenRows: settings.hiddenRows,
-      crossWireSections: settings.crossWireSections,
-      rowLengthsById: Object.fromEntries(
-        rows.map((row) => [row.__rowId, effectiveGetRowLength(row.__rowId)]).filter((entry): entry is [string, { display: string; roundedInches: number; confidence: string }] => Boolean(entry[1])),
-      ),
-      includeFeedbackPage: settings.mode !== "branding",
-      brandingPreviewRowMap,
-      partNumberMap: effectivePartNumberMap ?? undefined,
-    }),
+    () =>
+      buildWireListSheetWorkspaceDocument({
+        sheetTitle,
+        currentSheetName,
+        previewPageCount,
+        processedLocationGroups,
+        activeHiddenSections,
+        sectionColumnVisibility: settings.sectionColumnVisibility,
+        hiddenRows: settings.hiddenRows,
+        crossWireSections: settings.crossWireSections,
+        rowLengthsById: Object.fromEntries(
+          rows
+            .map((row) => [row.__rowId, effectiveGetRowLength(row.__rowId)])
+            .filter(
+              (
+                entry,
+              ): entry is [
+                string,
+                { display: string; roundedInches: number; confidence: string },
+              ] => Boolean(entry[1]),
+            ),
+        ),
+        includeFeedbackPage: settings.mode !== "branding",
+        brandingPreviewRowMap,
+        partNumberMap: effectivePartNumberMap ?? undefined,
+      }),
     [
       activeHiddenSections,
       brandingPreviewRowMap,
@@ -4878,14 +7559,22 @@ export function SingleSheetPrintWorkspace({
   const visiblePreviewSections = workspaceSheetDocument.wireListSections;
 
   const visiblePreviewRowCount = useMemo(
-    () => visiblePreviewSections.reduce((sum, section) => sum + section.visibleRows.length, 0),
+    () =>
+      visiblePreviewSections.reduce(
+        (sum, section) => sum + section.visibleRows.length,
+        0,
+      ),
     [visiblePreviewSections],
   );
 
   const brandingVisibleSections = workspaceSheetDocument.brandingSections;
 
   const brandingVisibleRowCount = useMemo(
-    () => brandingVisibleSections.reduce((sum, section) => sum + section.rows.length, 0),
+    () =>
+      brandingVisibleSections.reduce(
+        (sum, section) => sum + section.rows.length,
+        0,
+      ),
     [brandingVisibleSections],
   );
 
@@ -4905,34 +7594,74 @@ export function SingleSheetPrintWorkspace({
     });
   }, [crossWireVisibleSections]);
 
-  const hasCrossWireSections = crossWireVisibleSections.length > 0 && settings.mode === "standardize";
+  const hasCrossWireSections =
+    crossWireVisibleSections.length > 0 && settings.mode === "standardize";
 
   // Resolve the SWS type for cross-wire sections from the first cross-wire location group
   const crossWireSwsType = useMemo(() => {
-    if (!hasCrossWireSections || crossWireLocationGroups.length === 0) return undefined;
+    if (!hasCrossWireSections || crossWireLocationGroups.length === 0)
+      return undefined;
     return resolveLocationSwsType(crossWireLocationGroups[0].location);
   }, [hasCrossWireSections, crossWireLocationGroups, resolveLocationSwsType]);
 
   // Separate page count for cross-wire printout
   const crossWirePageCount = useMemo(() => {
     if (!hasCrossWireSections) return 0;
-    const totalRows = crossWireVisibleSections.reduce((sum, s) => sum + s.visibleRows.length, 0);
+    const totalRows = crossWireVisibleSections.reduce(
+      (sum, s) => sum + s.visibleRows.length,
+      0,
+    );
     const dataPages = Math.max(Math.ceil(totalRows / 30), 1);
     return 1 + 1 + dataPages; // cover + TOC + data pages
   }, [hasCrossWireSections, crossWireVisibleSections]);
 
   // Auto-switch to wire-list tab if cross-wire sections are removed
   useEffect(() => {
-    if (!hasCrossWireSections && printViewTab === "cross-wire") {
+    if (
+      !crossWireOnly &&
+      !hasCrossWireSections &&
+      printViewTab === "cross-wire"
+    ) {
       setPrintViewTab("wire-list");
     }
-  }, [hasCrossWireSections, printViewTab]);
+  }, [crossWireOnly, hasCrossWireSections, printViewTab]);
+
+  useEffect(() => {
+    if (crossWireOnly && printViewTab !== "cross-wire") {
+      setPrintViewTab("cross-wire");
+    }
+  }, [crossWireOnly, printViewTab]);
 
   // Check if there are any visible non-cross-wire location groups for the main wire list
   const hasNonCrossWireSections = visiblePreviewSections.length > 0;
 
-  const activePreviewRowCount = settings.mode === "branding" ? brandingVisibleRowCount : visiblePreviewRowCount;
-  const activePreviewSectionCount = settings.mode === "branding" ? brandingVisibleSections.length : processedRows.length;
+  const showingCrossWirePreview =
+    crossWireOnly || printViewTab === "cross-wire";
+
+  const activePreviewRowCount =
+    settings.mode === "branding"
+      ? brandingVisibleRowCount
+      : showingCrossWirePreview
+        ? crossWireVisibleSections.reduce(
+            (sum, section) => sum + section.visibleRows.length,
+            0,
+          )
+        : visiblePreviewRowCount;
+  const activePreviewSectionCount =
+    settings.mode === "branding"
+      ? brandingVisibleSections.length
+      : showingCrossWirePreview
+        ? crossWireVisibleSections.length
+        : processedRows.length;
+  const headerRowCount =
+    settings.mode === "branding"
+      ? brandingPreviewRows.length
+      : crossWireOnly
+        ? crossWireVisibleSections.reduce(
+            (sum, section) => sum + section.visibleRows.length,
+            0,
+          )
+        : totalRowCount;
 
   const handleExportPreviewCsv = useCallback(() => {
     if (settings.mode === "branding") {
@@ -4993,7 +7722,8 @@ export function SingleSheetPrintWorkspace({
     ];
 
     const fromToRow = "From,,,,,,To,";
-    const columnHeaders = "Device ID,Wire No.,Wire ID,Gauge/Size,Length,Device ID,Location,Section";
+    const columnHeaders =
+      "Device ID,Wire No.,Wire ID,Gauge/Size,Length,Device ID,Location,Section";
 
     const sectionBlocks: string[][] = [];
 
@@ -5012,7 +7742,9 @@ export function SingleSheetPrintWorkspace({
           row.toDeviceId || "",
           location,
           subsection.label,
-        ].map(v => escapePrintPreviewCsvValue(v)).join(",");
+        ]
+          .map((v) => escapePrintPreviewCsvValue(v))
+          .join(",");
         dataRows.push(csvRow);
       }
 
@@ -5089,7 +7821,10 @@ export function SingleSheetPrintWorkspace({
       import("xlsx-js-style"),
     ]);
     const workbook = buildBrandingWorkbookFromCsv(csvContent, "Brandlist");
-    const xlsxBuffer = XLSX.write(workbook, { type: "array", bookType: "xlsx" });
+    const xlsxBuffer = XLSX.write(workbook, {
+      type: "array",
+      bookType: "xlsx",
+    });
 
     const brandedName = buildBrandingFilename({
       pdNumber: projectInfo.pdNumber,
@@ -5100,7 +7835,9 @@ export function SingleSheetPrintWorkspace({
       extension: "xlsx",
     });
 
-    const blob = new Blob([xlsxBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const blob = new Blob([xlsxBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
@@ -5140,54 +7877,65 @@ export function SingleSheetPrintWorkspace({
     setIsSavingSchema(true);
     try {
       const hiddenSectionKeys = Array.from(activeHiddenSections);
-      const slug = sheetSlug || currentSheetName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const slug =
+        sheetSlug ||
+        currentSheetName
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "");
 
-      const response = await fetch(`/api/projects/${projectId}/wire-list-print-schemas`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          rows,
-          currentSheetName,
-          sheetSlug: slug,
-          settings: {
-            mode: settings.mode,
-            enabledSections: settings.enabledSections,
-            sectionOrder: settings.sectionOrder,
-            showEstTime: settings.showEstTime,
-            showFromCheckbox: settings.showFromCheckbox,
-            showToCheckbox: settings.showToCheckbox,
-            showIPV: settings.showIPV,
-            showComments: settings.showComments,
-            showLength: settings.showLength,
-            showCoverPage: settings.showCoverPage,
-            showTableOfContents: settings.showTableOfContents,
-            showIPVCodes: settings.showIPVCodes,
-            showFeedbackSection: settings.showFeedbackSection,
-            showDeviceSubheaders: settings.showDeviceSubheaders,
-            enableBlueDeviceIDColumns: settings.enableBlueDeviceIDColumns,
-            brandingSortMode: settings.brandingSortMode,
-            wireListSortMode: settings.wireListSortMode,
-            sectionColumnVisibility: settings.sectionColumnVisibility,
-            feedbackRenderMode: settings.feedbackRenderMode,
-            feedbackSections: settings.feedbackSections,
-            customQuestions: settings.customQuestions,
-          },
-          projectInfo,
-          sheetTitle,
-          hiddenSections: hiddenSectionKeys,
-          hiddenRows: Array.from(settings.hiddenRows),
-          crossWireSections: Array.from(settings.crossWireSections),
-          save: true,
-        }),
-      });
+      const response = await fetch(
+        `/api/projects/${projectId}/wire-list-print-schemas`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            rows,
+            currentSheetName,
+            sheetSlug: slug,
+            settings: {
+              mode: settings.mode,
+              enabledSections: settings.enabledSections,
+              sectionOrder: settings.sectionOrder,
+              showEstTime: settings.showEstTime,
+              showFromCheckbox: settings.showFromCheckbox,
+              showToCheckbox: settings.showToCheckbox,
+              showIPV: settings.showIPV,
+              showComments: settings.showComments,
+              showLength: settings.showLength,
+              showCoverPage: settings.showCoverPage,
+              showTableOfContents: settings.showTableOfContents,
+              showIPVCodes: settings.showIPVCodes,
+              showFeedbackSection: settings.showFeedbackSection,
+              showDeviceSubheaders: settings.showDeviceSubheaders,
+              enableBlueDeviceIDColumns: settings.enableBlueDeviceIDColumns,
+              brandingSortMode: settings.brandingSortMode,
+              wireListSortMode: settings.wireListSortMode,
+              sectionColumnVisibility: settings.sectionColumnVisibility,
+              feedbackRenderMode: settings.feedbackRenderMode,
+              feedbackSections: settings.feedbackSections,
+              customQuestions: settings.customQuestions,
+            },
+            projectInfo,
+            sheetTitle,
+            hiddenSections: hiddenSectionKeys,
+            hiddenRows: Array.from(settings.hiddenRows),
+            crossWireSections: Array.from(settings.crossWireSections),
+            save: true,
+          }),
+        },
+      );
 
       if (!response.ok) {
-        const err = await response.json().catch(() => ({ error: "Unknown error" }));
+        const err = await response
+          .json()
+          .catch(() => ({ error: "Unknown error" }));
         throw new Error(err.error || `HTTP ${response.status}`);
       }
 
       const result = await response.json();
       const schema = result.schema;
+      setLoadedSchema(schema);
 
       toast({
         title: "Schema exported",
@@ -5197,7 +7945,10 @@ export function SingleSheetPrintWorkspace({
     } catch (error) {
       toast({
         title: "Export failed",
-        description: error instanceof Error ? error.message : "Failed to export print schema",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to export print schema",
         duration: 4000,
       });
     } finally {
@@ -5238,7 +7989,10 @@ export function SingleSheetPrintWorkspace({
     }
     const slug =
       sheetSlug ||
-      (currentSheetName || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      (currentSheetName || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
     if (!slug) {
       toast({ title: "No sheet slug available", duration: 3000 });
       return;
@@ -5263,7 +8017,8 @@ export function SingleSheetPrintWorkspace({
     } catch (error) {
       toast({
         title: "Load failed",
-        description: error instanceof Error ? error.message : "Failed to load schema",
+        description:
+          error instanceof Error ? error.message : "Failed to load schema",
         duration: 4000,
       });
     } finally {
@@ -5282,8 +8037,8 @@ export function SingleSheetPrintWorkspace({
     documentTitle: `${sheetTitle} - Print`,
     pageStyle: `
       @page {
-        size: auto;
-        margin: 0.4in 0.4in 0.8in 0.4in;
+        size: ${paperLayout.printPageSize};
+        margin: ${paperLayout.printMargin};
         
         @bottom-left {
           content: "Caterpillar: Confidential Green";
@@ -5375,8 +8130,8 @@ export function SingleSheetPrintWorkspace({
   });
 
   // Zoom controls
-  const handleZoomIn = () => setZoom(prev => Math.min(prev + 10, 150));
-  const handleZoomOut = () => setZoom(prev => Math.max(prev - 10, 50));
+  const handleZoomIn = () => setZoom((prev) => Math.min(prev + 10, 150));
+  const handleZoomOut = () => setZoom((prev) => Math.max(prev - 10, 50));
   const handleZoomReset = () => setZoom(100);
 
   return (
@@ -5386,99 +8141,115 @@ export function SingleSheetPrintWorkspace({
     >
       {/* Header */}
       {!reviewModeCompact ? (
-      <div className="px-3 sm:px-5 py-3 border-b flex items-center justify-between flex-shrink-0 bg-muted/30 gap-2">
-                  <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                    <Printer className="h-5 w-5 text-foreground/70 flex-shrink-0 hidden sm:block" />
-                    <h2 className="text-base sm:text-lg font-semibold truncate">{headerTitle}</h2>
-                    <Badge variant="secondary" className="text-xs flex-shrink-0">
-                      {settings.mode === "branding" ? brandingPreviewRows.length : totalRowCount} rows
-                    </Badge>
-               
-                  </div>
-                  <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-                    <Button
-                      onClick={handleExportPreviewCsv}
-                      size="sm"
-                      variant="outline"
-                      className="gap-1.5 sm:gap-2 h-8 px-2 sm:px-3"
-                      disabled={activePreviewRowCount === 0}
-                    >
-                      <Download className="h-4 w-4" />
-                      <span className="hidden sm:inline">Export CSV</span>
-                    </Button>
-                    {settings.mode === "branding" && (
-                      <Button
-                        onClick={handleExportPreviewXlsx}
-                        size="sm"
-                        variant="outline"
-                        className="gap-1.5 sm:gap-2 h-8 px-2 sm:px-3"
-                        disabled={activePreviewRowCount === 0}
-                      >
-                        <FileText className="h-4 w-4" />
-                        <span className="hidden sm:inline">Export Excel</span>
-                      </Button>
-                    )}
-                    {projectId && (
-                      <Button
-                        onClick={handleExportSchema}
-                        size="sm"
-                        variant="outline"
-                        className="gap-1.5 sm:gap-2 h-8 px-2 sm:px-3"
-                        disabled={isSavingSchema || activePreviewRowCount === 0}
-                        title="Export wire list print to project directory"
-                      >
-                        <Save className="h-4 w-4" />
-                        <span className="hidden sm:inline">{isSavingSchema ? "Saving..." : "Save"}</span>
-                      </Button>
-                    )}
-                    {projectId && !loadedSchema && (
-                      <Button
-                        onClick={handleLoadSchema}
-                        size="sm"
-                        variant="outline"
-                        className="gap-1.5 sm:gap-2 h-8 px-2 sm:px-3"
-                        disabled={isLoadingSchema}
-                        title="Load saved schema and render from it"
-                      >
-                        <BookOpen className="h-4 w-4" />
-                        <span className="hidden sm:inline">{isLoadingSchema ? "Loading..." : "Load Wire List"}</span>
-                      </Button>
-                    )}
-                    {loadedSchema && (
-                      <Button
-                        onClick={handleClearSchema}
-                        size="sm"
-                        variant="outline"
-                        className="gap-1.5 sm:gap-2 h-8 px-2 sm:px-3 border-amber-400 text-amber-600 hover:bg-amber-50"
-                        title="Clear loaded schema and return to live data"
-                      >
-                        <X className="h-4 w-4" />
-                        <span className="hidden sm:inline">Reset</span>
-                      </Button>
-                    )}
+        <div className="px-3 sm:px-5 py-3 border-b flex items-center justify-between flex-shrink-0 bg-muted/30 gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <Printer className="h-5 w-5 text-foreground/70 flex-shrink-0 hidden sm:block" />
+            <h2 className="text-base sm:text-lg font-semibold truncate">
+              {headerTitle}
+            </h2>
+            <Badge variant="secondary" className="text-xs flex-shrink-0">
+              {headerRowCount} rows
+            </Badge>
+          </div>
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            {!crossWireOnly && (
+              <Button
+                onClick={handleExportPreviewCsv}
+                size="sm"
+                variant="outline"
+                className="gap-1.5 sm:gap-2 h-8 px-2 sm:px-3"
+                disabled={activePreviewRowCount === 0}
+              >
+                <Download className="h-4 w-4" />
+                <span className="hidden sm:inline">Export CSV</span>
+              </Button>
+            )}
+            {settings.mode === "branding" && (
+              <Button
+                onClick={handleExportPreviewXlsx}
+                size="sm"
+                variant="outline"
+                className="gap-1.5 sm:gap-2 h-8 px-2 sm:px-3"
+                disabled={activePreviewRowCount === 0}
+              >
+                <FileText className="h-4 w-4" />
+                <span className="hidden sm:inline">Export Excel</span>
+              </Button>
+            )}
+            {projectId && !hideSchemaActions && (
+              <Button
+                onClick={handleExportSchema}
+                size="sm"
+                variant="outline"
+                className="gap-1.5 sm:gap-2 h-8 px-2 sm:px-3"
+                disabled={isSavingSchema || activePreviewRowCount === 0}
+                title="Export wire list print to project directory"
+              >
+                <Save className="h-4 w-4" />
+                <span className="hidden sm:inline">
+                  {isSavingSchema ? "Saving..." : "Save"}
+                </span>
+              </Button>
+            )}
+            {projectId && !hideSchemaActions && !loadedSchema && (
+              <Button
+                onClick={handleLoadSchema}
+                size="sm"
+                variant="outline"
+                className="gap-1.5 sm:gap-2 h-8 px-2 sm:px-3"
+                disabled={isLoadingSchema}
+                title="Load saved schema and render from it"
+              >
+                <BookOpen className="h-4 w-4" />
+                <span className="hidden sm:inline">
+                  {isLoadingSchema ? "Loading..." : "Load Wire List"}
+                </span>
+              </Button>
+            )}
+            {loadedSchema && !hideSchemaActions && (
+              <Button
+                onClick={handleClearSchema}
+                size="sm"
+                variant="outline"
+                className="gap-1.5 sm:gap-2 h-8 px-2 sm:px-3 border-amber-400 text-amber-600 hover:bg-amber-50"
+                title="Clear loaded schema and return to live data"
+              >
+                <X className="h-4 w-4" />
+                <span className="hidden sm:inline">Reset</span>
+              </Button>
+            )}
 
-                    {extraHeaderActions}
-                    <Button onClick={handlePrint} size="sm" className="gap-1.5 sm:gap-2 h-8 px-2 sm:px-3">
-                      <Printer className="h-4 w-4" />
-                      <span className="hidden sm:inline">Print</span>
-                    </Button>
-                    <Button
-                      onClick={handlePrint}
-                      size="sm"
-                      variant="outline"
-                      className="gap-1.5 sm:gap-2 h-8 px-2 sm:px-3"
-                      title="Use browser's 'Save as PDF' option in print dialog"
-                    >
-                      <Download className="h-4 w-4" />
-                      <span className="hidden sm:inline">Download PDF</span>
-                    </Button>
-                    {!hideCloseButton && onRequestClose && (
-                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={onRequestClose}>
-                      <X className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-      </div>
+            {extraHeaderActions}
+            <Button
+              onClick={handlePrint}
+              size="sm"
+              className="gap-1.5 sm:gap-2 h-8 px-2 sm:px-3"
+            >
+              <Printer className="h-4 w-4" />
+              <span className="hidden sm:inline">Print</span>
+            </Button>
+            <Button
+              onClick={handlePrint}
+              size="sm"
+              variant="outline"
+              className="gap-1.5 sm:gap-2 h-8 px-2 sm:px-3"
+              title="Use browser's 'Save as PDF' option in print dialog"
+            >
+              <Download className="h-4 w-4" />
+              <span className="hidden sm:inline">Download PDF</span>
+            </Button>
+            {!hideCloseButton && onRequestClose && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={onRequestClose}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+        </div>
       ) : null}
 
       {/* Body */}
@@ -5486,7 +8257,13 @@ export function SingleSheetPrintWorkspace({
         <div className="flex-1 overflow-hidden">
           <WiringExecutionMode
             projectId={projectId || ""}
-            sheetSlug={sheetSlug || currentSheetName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}
+            sheetSlug={
+              sheetSlug ||
+              currentSheetName
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/^-|-$/g, "")
+            }
             sheetName={currentSheetName}
             swsType={swsType?.id || "UNDECIDED"}
             badge={user?.badge || "unknown"}
@@ -5499,1396 +8276,2381 @@ export function SingleSheetPrintWorkspace({
         </div>
       ) : (
         <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
-                    {/* Left: Settings Panel */}
-                    {(!reviewModeCompact || reviewModeShowSettings) ? (
-                    <div className="w-full md:w-[360px] lg:w-[400px] xl:w-[420px] shrink-0 border-b md:border-b-0 md:border-r bg-muted/20 overflow-y-auto max-h-[45vh] md:max-h-none">
-                      <div className="p-4 space-y-5">
-                        {/* Project Information */}
-                        <Collapsible open={projectInfoOpen} onOpenChange={setProjectInfoOpen}>
-                          <CollapsibleTrigger asChild>
-                            <Button variant="ghost" className="w-full justify-between px-0 h-auto py-1">
-                              <Label className="text-sm font-semibold cursor-pointer flex items-center gap-2">
-                                <Building2 className="h-4 w-4" />
-                                Project Information
-                              </Label>
-                              <ChevronDown className={`h-4 w-4 transition-transform ${projectInfoOpen ? "rotate-180" : ""}`} />
-                            </Button>
-                          </CollapsibleTrigger>
-                          <CollapsibleContent className="space-y-3 pt-3">
-                            <div className="space-y-1.5">
-                              <Label className="text-xs text-muted-foreground">Project Name</Label>
-                              <Input
-                                value={projectInfo.projectName}
-                                onChange={(e) => setProjectInfo(prev => ({ ...prev, projectName: e.target.value }))}
-                                placeholder="e.g., Control Panel Assembly"
-                                className="h-8 text-sm"
-                              />
-                            </div>
-                            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                              <div className="space-y-1.5">
-                                <Label className="text-xs text-muted-foreground">PD Number</Label>
-                                <Input
-                                  value={projectInfo.pdNumber}
-                                  onChange={(e) => setProjectInfo(prev => ({ ...prev, pdNumber: e.target.value }))}
-                                  placeholder="e.g., PGMAT03"
-                                  className="h-8 text-sm"
-                                />
-                              </div>
-                              <div className="space-y-1.5">
-                                <Label className="text-xs text-muted-foreground">Unit Number</Label>
-                                <Input
-                                  value={projectInfo.unitNumber}
-                                  onChange={(e) => setProjectInfo(prev => ({ ...prev, unitNumber: e.target.value }))}
-                                  placeholder="e.g., 001"
-                                  className="h-8 text-sm"
-                                />
-                              </div>
-                            </div>
+          {/* Left: Settings Panel */}
+          {!reviewModeCompact || reviewModeShowSettings ? (
+            <div className="w-full md:w-[360px] lg:w-[400px] xl:w-[420px] shrink-0 border-b md:border-b-0 md:border-r bg-muted/20 overflow-y-auto max-h-[45vh] md:max-h-none">
+              <div className="p-4 space-y-5">
+                {/* Project Information */}
+                <Collapsible
+                  open={projectInfoOpen}
+                  onOpenChange={setProjectInfoOpen}
+                >
+                  <CollapsibleTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-between px-0 h-auto py-1"
+                    >
+                      <Label className="text-sm font-semibold cursor-pointer flex items-center gap-2">
+                        <Building2 className="h-4 w-4" />
+                        Project Information
+                      </Label>
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform ${projectInfoOpen ? "rotate-180" : ""}`}
+                      />
+                    </Button>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-3 pt-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-xs text-muted-foreground">
+                        Project Name
+                      </Label>
+                      <Input
+                        value={projectInfo.projectName}
+                        onChange={(e) =>
+                          setProjectInfo((prev) => ({
+                            ...prev,
+                            projectName: e.target.value,
+                          }))
+                        }
+                        placeholder="e.g., Control Panel Assembly"
+                        className="h-8 text-sm"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      <div className="space-y-1.5">
+                        <Label className="text-xs text-muted-foreground">
+                          PD Number
+                        </Label>
+                        <Input
+                          value={projectInfo.pdNumber}
+                          onChange={(e) =>
+                            setProjectInfo((prev) => ({
+                              ...prev,
+                              pdNumber: e.target.value,
+                            }))
+                          }
+                          placeholder="e.g., PGMAT03"
+                          className="h-8 text-sm"
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <Label className="text-xs text-muted-foreground">
+                          Unit Number
+                        </Label>
+                        <Input
+                          value={projectInfo.unitNumber}
+                          onChange={(e) =>
+                            setProjectInfo((prev) => ({
+                              ...prev,
+                              unitNumber: e.target.value,
+                            }))
+                          }
+                          placeholder="e.g., 001"
+                          className="h-8 text-sm"
+                        />
+                      </div>
+                    </div>
 
-                            <div className="space-y-1.5">
-                              <Label className="text-xs text-muted-foreground">Revision</Label>
-                              <Input
-                                value={projectInfo.revision}
-                                onChange={(e) => setProjectInfo(prev => ({ ...prev, revision: e.target.value }))}
-                                placeholder="e.g., A"
-                                className="h-8 text-sm"
-                              />
-                            </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-xs text-muted-foreground">
+                        Revision
+                      </Label>
+                      <Input
+                        value={projectInfo.revision}
+                        onChange={(e) =>
+                          setProjectInfo((prev) => ({
+                            ...prev,
+                            revision: e.target.value,
+                          }))
+                        }
+                        placeholder="e.g., A"
+                        className="h-8 text-sm"
+                      />
+                    </div>
 
-                            {/* Personnel Sign-off Section */}
-                            <div className="space-y-3 pt-3 border-t">
-                              <div className="flex items-center justify-between">
-                                <Label className="text-xs font-medium flex items-center gap-1.5">
-                                  <User className="h-3.5 w-3.5" />
-                                  Standard Worksheet
-                                </Label>
-                                <Select
-                                  value={String(projectInfo.personnel.length)}
-                                  onValueChange={(value) => {
-                                    const count = Number(value);
-                                    setProjectInfo(prev => {
-                                      const current = prev.personnel;
-                                      if (count === current.length) return prev;
-                                      if (count < current.length) {
-                                        return { ...prev, personnel: current.slice(0, count) };
-                                      }
-                                      const now = new Date();
-                                      const additions = Array.from({ length: count - current.length }, (_, i) => ({
-                                        id: `${Date.now()}-${i}`,
-                                        badgeNumber: "",
-                                        date: now.toLocaleDateString(),
-                                        time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                                        isAssembler: false,
-                                        isInspector: false,
-                                      }));
-                                      return { ...prev, personnel: [...current, ...additions] };
-                                    });
-                                  }}
-                                >
-                                  <SelectTrigger className="h-7 w-full sm:w-[120px] text-xs">
-                                    <SelectValue />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    {[1, 2, 3, 4, 5, 6, 7, 8].map(n => (
-                                      <SelectItem key={n} value={String(n)}>
-                                        {n} {n === 1 ? "Row" : "Rows"}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                              </div>
-                            </div>
-                          </CollapsibleContent>
-                        </Collapsible>
+                    {/* Personnel Sign-off Section */}
+                    <div className="space-y-3 pt-3 border-t">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-xs font-medium flex items-center gap-1.5">
+                          <User className="h-3.5 w-3.5" />
+                          Standard Worksheet
+                        </Label>
+                        <Select
+                          value={String(projectInfo.personnel.length)}
+                          onValueChange={(value) => {
+                            const count = Number(value);
+                            setProjectInfo((prev) => {
+                              const current = prev.personnel;
+                              if (count === current.length) return prev;
+                              if (count < current.length) {
+                                return {
+                                  ...prev,
+                                  personnel: current.slice(0, count),
+                                };
+                              }
+                              const now = new Date();
+                              const additions = Array.from(
+                                { length: count - current.length },
+                                (_, i) => ({
+                                  id: `${Date.now()}-${i}`,
+                                  badgeNumber: "",
+                                  date: now.toLocaleDateString(),
+                                  time: now.toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  }),
+                                  isAssembler: false,
+                                  isInspector: false,
+                                }),
+                              );
+                              return {
+                                ...prev,
+                                personnel: [...current, ...additions],
+                              };
+                            });
+                          }}
+                        >
+                          <SelectTrigger className="h-7 w-full sm:w-[120px] text-xs">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+                              <SelectItem key={n} value={String(n)}>
+                                {n} {n === 1 ? "Row" : "Rows"}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
 
-                        <Separator />
+                <Separator />
 
-                        {/* Format Mode Selection */}
-                        <div className="space-y-3">
-                          <Label className="text-sm font-semibold flex items-center gap-2">
-                            <Settings2 className="h-4 w-4" />
-                            Format Mode
-                          </Label>
-                          <RadioGroup
-                            value={settings.mode}
-                            onValueChange={(value) => setSettings(prev => ({ ...prev, mode: value as PrintFormatMode }))}
-                            className="space-y-2 w-full"
+                {/* Format Mode Selection */}
+                <div className="space-y-3">
+                  <Label className="text-sm font-semibold flex items-center gap-2">
+                    <Settings2 className="h-4 w-4" />
+                    Format Mode
+                  </Label>
+                  <RadioGroup
+                    value={settings.mode}
+                    onValueChange={(value) =>
+                      setSettings((prev) => ({
+                        ...prev,
+                        mode: value as PrintFormatMode,
+                      }))
+                    }
+                    className="space-y-2 w-full"
+                  >
+                    <div
+                      className={`flex items-center space-x-2 p-2.5 rounded-md border cursor-pointer transition-colors ${settings.mode === "standardize" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}
+                    >
+                      <RadioGroupItem value="standardize" id="standardize" />
+                      <Label
+                        htmlFor="standardize"
+                        className="flex-1 cursor-pointer"
+                      >
+                        <div className="font-medium text-sm">
+                          Standardize Format
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          Apply preset organization options
+                        </div>
+                      </Label>
+                    </div>
+                    <div
+                      className={`flex items-center space-x-2 p-2.5 rounded-md border cursor-pointer transition-colors ${settings.mode === "branding" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}
+                    >
+                      <RadioGroupItem value="branding" id="branding" />
+                      <Label
+                        htmlFor="branding"
+                        className="flex-1 cursor-pointer"
+                      >
+                        <div className="font-medium text-sm">Branding</div>
+                        <div className="text-xs text-muted-foreground">
+                          Adjust measurements inline for one or many rows
+                        </div>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-4 rounded-md border border-border/60 bg-background px-3 py-2.5">
+                    <div className="space-y-0.5">
+                      <Label className="text-sm font-semibold flex items-center gap-2">
+                        Paper Size
+                      </Label>
+                      <p className="text-xs text-muted-foreground">
+                        Letter is vertical. Tabloid is horizontal and the
+                        default for wire lists.
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span
+                        className={cn(
+                          "text-xs font-medium",
+                          settings.paperSize === "letter"
+                            ? "text-foreground"
+                            : "text-muted-foreground",
+                        )}
+                      >
+                        Letter
+                      </span>
+                      <Switch
+                        checked={settings.paperSize === "tabloid"}
+                        onCheckedChange={(checked) =>
+                          setSettings((prev) => ({
+                            ...prev,
+                            paperSize: checked ? "tabloid" : "letter",
+                          }))
+                        }
+                        aria-label="Toggle paper size between Letter and Tabloid"
+                      />
+                      <span
+                        className={cn(
+                          "text-xs font-medium",
+                          settings.paperSize === "tabloid"
+                            ? "text-foreground"
+                            : "text-muted-foreground",
+                        )}
+                      >
+                        Tabloid
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Branding Sort Mode */}
+                {settings.mode === "branding" && (
+                  <>
+                    <Separator />
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold flex items-center gap-2">
+                        <ArrowUpDown className="h-4 w-4" />
+                        Group Ordering
+                      </Label>
+                      <p className="text-xs text-muted-foreground">
+                        Controls how single connection groups are organized
+                      </p>
+                      <RadioGroup
+                        value={settings.brandingSortMode}
+                        onValueChange={(value) =>
+                          setSettings((prev) => ({
+                            ...prev,
+                            brandingSortMode: value as BrandingSortMode,
+                          }))
+                        }
+                        className="space-y-1.5"
+                      >
+                        <div
+                          className={`flex items-center space-x-2 p-2 rounded-md border cursor-pointer transition-colors ${settings.brandingSortMode === "default" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}
+                        >
+                          <RadioGroupItem value="default" id="sort-default" />
+                          <Label
+                            htmlFor="sort-default"
+                            className="flex-1 cursor-pointer"
                           >
-                            <div className={`flex items-center space-x-2 p-2.5 rounded-md border cursor-pointer transition-colors ${settings.mode === "standardize" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}>
-                              <RadioGroupItem value="standardize" id="standardize" />
-                              <Label htmlFor="standardize" className="flex-1 cursor-pointer">
-                                <div className="font-medium text-sm">Standardize Format</div>
-                                <div className="text-xs text-muted-foreground">Apply preset organization options</div>
-                              </Label>
+                            <div className="font-medium text-xs">Default</div>
+                            <div className="text-[10px] text-muted-foreground">
+                              Original discovery order
                             </div>
-                            <div className={`flex items-center space-x-2 p-2.5 rounded-md border cursor-pointer transition-colors ${settings.mode === "branding" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}>
-                              <RadioGroupItem value="branding" id="branding" />
-                              <Label htmlFor="branding" className="flex-1 cursor-pointer">
-                                <div className="font-medium text-sm">Branding</div>
-                                <div className="text-xs text-muted-foreground">Adjust measurements inline for one or many rows</div>
-                              </Label>
+                          </Label>
+                        </div>
+                        <div
+                          className={`flex items-center space-x-2 p-2 rounded-md border cursor-pointer transition-colors ${settings.brandingSortMode === "device-prefix" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}
+                        >
+                          <RadioGroupItem
+                            value="device-prefix"
+                            id="sort-prefix"
+                          />
+                          <Label
+                            htmlFor="sort-prefix"
+                            className="flex-1 cursor-pointer"
+                          >
+                            <div className="font-medium text-xs">
+                              By Device Prefix
                             </div>
-                          </RadioGroup>
+                            <div className="text-[10px] text-muted-foreground">
+                              KA, CT, XT — grouped by device family
+                            </div>
+                          </Label>
+                        </div>
+                        <div
+                          className={`flex items-center space-x-2 p-2 rounded-md border cursor-pointer transition-colors ${settings.brandingSortMode === "device-prefix-part-number" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}
+                        >
+                          <RadioGroupItem
+                            value="device-prefix-part-number"
+                            id="sort-prefix-pn"
+                          />
+                          <Label
+                            htmlFor="sort-prefix-pn"
+                            className="flex-1 cursor-pointer"
+                          >
+                            <div className="font-medium text-xs">
+                              By Device Prefix + Part Number
+                            </div>
+                            <div className="text-[10px] text-muted-foreground">
+                              Grouped by family then sorted by part number
+                            </div>
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </div>
+                  </>
+                )}
+
+                {/* Wire List Sort Mode */}
+                {settings.mode === "standardize" && (
+                  <>
+                    <Separator />
+                    <div className="space-y-2 w-full">
+                      <Label className="text-sm font-semibold flex items-center gap-2">
+                        <ArrowUpDown className="h-4 w-4" />
+                        Group Ordering
+                      </Label>
+                      <p className="text-xs text-muted-foreground">
+                        Controls how single connection groups are organized
+                      </p>
+                      <RadioGroup
+                        value={settings.wireListSortMode}
+                        onValueChange={(value) =>
+                          setSettings((prev) => ({
+                            ...prev,
+                            wireListSortMode: value as BrandingSortMode,
+                          }))
+                        }
+                        className="space-y-1.5"
+                      >
+                        <div
+                          className={`flex items-center space-x-2 p-2 rounded-md border cursor-pointer transition-colors ${settings.wireListSortMode === "default" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}
+                        >
+                          <RadioGroupItem
+                            value="default"
+                            id="wl-sort-default"
+                          />
+                          <Label
+                            htmlFor="wl-sort-default"
+                            className="flex-1 cursor-pointer"
+                          >
+                            <div className="font-medium text-xs">Default</div>
+                            <div className="text-[10px] text-muted-foreground">
+                              Original discovery order
+                            </div>
+                          </Label>
+                        </div>
+                        <div
+                          className={`flex items-center space-x-2 p-2 rounded-md border cursor-pointer transition-colors ${settings.wireListSortMode === "device-prefix" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}
+                        >
+                          <RadioGroupItem
+                            value="device-prefix"
+                            id="wl-sort-prefix"
+                          />
+                          <Label
+                            htmlFor="wl-sort-prefix"
+                            className="flex-1 cursor-pointer"
+                          >
+                            <div className="font-medium text-xs">
+                              By Device Prefix
+                            </div>
+                            <div className="text-[10px] text-muted-foreground">
+                              KA, CT, XT — grouped by device family
+                            </div>
+                          </Label>
+                        </div>
+                        <div
+                          className={`flex items-center space-x-2 p-2 rounded-md border cursor-pointer transition-colors ${settings.wireListSortMode === "device-prefix-part-number" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}
+                        >
+                          <RadioGroupItem
+                            value="device-prefix-part-number"
+                            id="wl-sort-prefix-pn"
+                          />
+                          <Label
+                            htmlFor="wl-sort-prefix-pn"
+                            className="flex-1 cursor-pointer"
+                          >
+                            <div className="font-medium text-xs">
+                              By Device Prefix + Part Number
+                            </div>
+                            <div className="text-[10px] text-muted-foreground">
+                              Grouped by family then sorted by part number, with
+                              reference images
+                            </div>
+                          </Label>
+                        </div>
+                        <div
+                          className={`flex items-center space-x-2 p-2 rounded-md border cursor-pointer transition-colors ${settings.wireListSortMode === "blue-label-sequence" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}
+                        >
+                          <RadioGroupItem
+                            value="blue-label-sequence"
+                            id="wl-sort-blue-label-sequence"
+                          />
+                          <Label
+                            htmlFor="wl-sort-blue-label-sequence"
+                            className="flex-1 cursor-pointer"
+                          >
+                            <div className="font-medium text-xs">
+                              By Blue Label Sequence
+                            </div>
+                            <div className="text-[10px] text-muted-foreground">
+                              Single connections follow the current sheet's Blue
+                              Labels order
+                            </div>
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </div>
+                  </>
+                )}
+
+                <Separator />
+
+                {/* Section Overview */}
+                {(settings.mode === "standardize" ||
+                  settings.mode === "branding") &&
+                  processedLocationGroups.length > 0 && (
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div>
+                            <Label className="text-sm font-semibold">
+                              {settings.mode === "branding"
+                                ? "Branding Sections"
+                                : "Section Overview"}
+                            </Label>
+                            <p className="text-xs text-muted-foreground mt-0.5">
+                              {settings.mode === "branding"
+                                ? "Single Connections are visible by default. Click eye icon to show or hide other sections."
+                                : "Click eye icon to show/hide sections"}
+                            </p>
+                          </div>
+                          {swsType && swsType.id !== "UNDECIDED" && (
+                            <Badge
+                              variant="outline"
+                              className={cn(
+                                "text-[10px] px-1.5 py-0 h-5 shrink-0",
+                                getSwsBadgeColorClass(swsType.color),
+                              )}
+                            >
+                              {swsType.shortLabel}
+                            </Badge>
+                          )}
+                        </div>
+                        <div className="flex gap-1">
+                          {settings.mode === "branding" && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-6 px-2 text-[10px]"
+                              onClick={() =>
+                                updateActiveHiddenSections(
+                                  new Set(defaultBrandingHiddenSections),
+                                )
+                              }
+                            >
+                              Single Connections Only
+                            </Button>
+                          )}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 px-2 text-[10px]"
+                            onClick={() =>
+                              updateActiveHiddenSections(new Set<string>())
+                            }
+                          >
+                            Show All
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 px-2 text-[10px]"
+                            onClick={() => {
+                              const allSectionKeys = new Set<string>();
+                              processedLocationGroups.forEach((group, gi) => {
+                                allSectionKeys.add(`loc-${gi}`);
+                                group.subsections.forEach((_, si) => {
+                                  allSectionKeys.add(`${gi}-${si}`);
+                                });
+                              });
+                              updateActiveHiddenSections(allSectionKeys);
+                            }}
+                          >
+                            Hide All
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* TOC-style section list */}
+                      <div className="border rounded-md overflow-hidden">
+                        {/* Header */}
+                        <div className="flex items-center gap-2 px-2 py-1.5 bg-muted/50 border-b text-[10px] font-semibold text-muted-foreground">
+                          <span className="w-5 text-center">#</span>
+                          <span className="flex-1">Section</span>
+                          <span className="w-10 text-right">Rows</span>
+                          <span className="w-6"></span>
+                          <span className="w-6"></span>
                         </div>
 
-                        {/* Branding Sort Mode */}
-                        {settings.mode === "branding" && (
-                          <>
-                            <Separator />
-                            <div className="space-y-2">
-                              <Label className="text-sm font-semibold flex items-center gap-2">
-                                <ArrowUpDown className="h-4 w-4" />
-                                Group Ordering
-                              </Label>
-                              <p className="text-xs text-muted-foreground">
-                                Controls how single connection groups are organized
-                              </p>
-                              <RadioGroup
-                                value={settings.brandingSortMode}
-                                onValueChange={(value) => setSettings(prev => ({ ...prev, brandingSortMode: value as BrandingSortMode }))}
-                                className="space-y-1.5"
+                        {/* Section list */}
+                        <div className="max-h-[320px] overflow-y-auto">
+                          {processedLocationGroups.map((group, groupIndex) => {
+                            let sectionCounter = 0;
+                            const locationKey = `loc-${groupIndex}`;
+                            const isLocationHidden =
+                              activeHiddenSections.has(locationKey);
+
+                            return (
+                              <div
+                                key={groupIndex}
+                                className={isLocationHidden ? "opacity-50" : ""}
                               >
-                                <div className={`flex items-center space-x-2 p-2 rounded-md border cursor-pointer transition-colors ${settings.brandingSortMode === "default" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}>
-                                  <RadioGroupItem value="default" id="sort-default" />
-                                  <Label htmlFor="sort-default" className="flex-1 cursor-pointer">
-                                    <div className="font-medium text-xs">Default</div>
-                                    <div className="text-[10px] text-muted-foreground">Original discovery order</div>
-                                  </Label>
-                                </div>
-                                <div className={`flex items-center space-x-2 p-2 rounded-md border cursor-pointer transition-colors ${settings.brandingSortMode === "device-prefix" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}>
-                                  <RadioGroupItem value="device-prefix" id="sort-prefix" />
-                                  <Label htmlFor="sort-prefix" className="flex-1 cursor-pointer">
-                                    <div className="font-medium text-xs">By Device Prefix</div>
-                                    <div className="text-[10px] text-muted-foreground">KA, CT, XT — grouped by device family</div>
-                                  </Label>
-                                </div>
-                                <div className={`flex items-center space-x-2 p-2 rounded-md border cursor-pointer transition-colors ${settings.brandingSortMode === "device-prefix-part-number" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}>
-                                  <RadioGroupItem value="device-prefix-part-number" id="sort-prefix-pn" />
-                                  <Label htmlFor="sort-prefix-pn" className="flex-1 cursor-pointer">
-                                    <div className="font-medium text-xs">By Device Prefix + Part Number</div>
-                                    <div className="text-[10px] text-muted-foreground">Grouped by family then sorted by part number</div>
-                                  </Label>
-                                </div>
-                              </RadioGroup>
-                            </div>
-                          </>
-                        )}
-
-                        {/* Wire List Sort Mode */}
-                        {settings.mode === "standardize" && (
-                          <>
-                            <Separator />
-                            <div className="space-y-2">
-                              <Label className="text-sm font-semibold flex items-center gap-2">
-                                <ArrowUpDown className="h-4 w-4" />
-                                Group Ordering
-                              </Label>
-                              <p className="text-xs text-muted-foreground">
-                                Controls how single connection groups are organized
-                              </p>
-                              <RadioGroup
-                                value={settings.wireListSortMode}
-                                onValueChange={(value) => setSettings(prev => ({ ...prev, wireListSortMode: value as BrandingSortMode }))}
-                                className="space-y-1.5"
-                              >
-                                <div className={`flex items-center space-x-2 p-2 rounded-md border cursor-pointer transition-colors ${settings.wireListSortMode === "default" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}>
-                                  <RadioGroupItem value="default" id="wl-sort-default" />
-                                  <Label htmlFor="wl-sort-default" className="flex-1 cursor-pointer">
-                                    <div className="font-medium text-xs">Default</div>
-                                    <div className="text-[10px] text-muted-foreground">Original discovery order</div>
-                                  </Label>
-                                </div>
-                                <div className={`flex items-center space-x-2 p-2 rounded-md border cursor-pointer transition-colors ${settings.wireListSortMode === "device-prefix" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}>
-                                  <RadioGroupItem value="device-prefix" id="wl-sort-prefix" />
-                                  <Label htmlFor="wl-sort-prefix" className="flex-1 cursor-pointer">
-                                    <div className="font-medium text-xs">By Device Prefix</div>
-                                    <div className="text-[10px] text-muted-foreground">KA, CT, XT — grouped by device family</div>
-                                  </Label>
-                                </div>
-                                <div className={`flex items-center space-x-2 p-2 rounded-md border cursor-pointer transition-colors ${settings.wireListSortMode === "device-prefix-part-number" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}>
-                                  <RadioGroupItem value="device-prefix-part-number" id="wl-sort-prefix-pn" />
-                                  <Label htmlFor="wl-sort-prefix-pn" className="flex-1 cursor-pointer">
-                                    <div className="font-medium text-xs">By Device Prefix + Part Number</div>
-                                    <div className="text-[10px] text-muted-foreground">Grouped by family then sorted by part number, with reference images</div>
-                                  </Label>
-                                </div>
-                                <div className={`flex items-center space-x-2 p-2 rounded-md border cursor-pointer transition-colors ${settings.wireListSortMode === "blue-label-sequence" ? "bg-muted/5 border-muted/50" : "bg-background hover:bg-muted/50"}`}>
-                                  <RadioGroupItem value="blue-label-sequence" id="wl-sort-blue-label-sequence" />
-                                  <Label htmlFor="wl-sort-blue-label-sequence" className="flex-1 cursor-pointer">
-                                    <div className="font-medium text-xs">By Blue Label Sequence</div>
-                                    <div className="text-[10px] text-muted-foreground">Single connections follow the current sheet's Blue Labels order</div>
-                                  </Label>
-                                </div>
-                              </RadioGroup>
-                            </div>
-                          </>
-                        )}
-
-                        <Separator />
-
-                        {/* Section Overview */}
-                        {(settings.mode === "standardize" || settings.mode === "branding") && processedLocationGroups.length > 0 && (
-                          <div className="space-y-3">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <div>
-                                  <Label className="text-sm font-semibold">
-                                    {settings.mode === "branding" ? "Branding Sections" : "Section Overview"}
-                                  </Label>
-                                  <p className="text-xs text-muted-foreground mt-0.5">
-                                    {settings.mode === "branding"
-                                      ? "Single Connections are visible by default. Click eye icon to show or hide other sections."
-                                      : "Click eye icon to show/hide sections"}
-                                  </p>
-                                </div>
-                                {swsType && swsType.id !== 'UNDECIDED' && (
-                                  <Badge variant="outline" className={cn("text-[10px] px-1.5 py-0 h-5 shrink-0", getSwsBadgeColorClass(swsType.color))}>
-                                    {swsType.shortLabel}
-                                  </Badge>
-                                )}
-                              </div>
-                              <div className="flex gap-1">
-                                {settings.mode === "branding" && (
+                                {/* Location Group Header */}
+                                <div className="flex items-center gap-1 px-2 py-1.5 bg-muted/30 border-b border-t border-border/50">
+                                  <span className="flex-1 text-[10px] font-regular text-foreground truncate">
+                                    {group.isExternal
+                                      ? `${resolveLocationDisplayTitle(group.location, locationNormalizedTitleByName)} - External`
+                                      : resolveLocationDisplayTitle(
+                                          group.location,
+                                          locationNormalizedTitleByName,
+                                        )}
+                                    {!group.isExternal && currentSheetName && (
+                                      <span className="ml-1 text-[10px] font-normal text-foreground">
+                                        Internal
+                                      </span>
+                                    )}
+                                  </span>
+                                  {(() => {
+                                    const groupSwsType = group.isExternal
+                                      ? resolveLocationSwsType(group.location)
+                                      : swsType && swsType.id !== "UNDECIDED"
+                                        ? swsType
+                                        : undefined;
+                                    return groupSwsType ? (
+                                      <Badge
+                                        variant="outline"
+                                        className={cn(
+                                          "text-[9px] px-1 py-0 h-4 shrink-0",
+                                          getSwsBadgeColorClass(
+                                            groupSwsType.color,
+                                          ),
+                                        )}
+                                      >
+                                        {groupSwsType.shortLabel}
+                                      </Badge>
+                                    ) : null;
+                                  })()}
                                   <Button
                                     variant="ghost"
-                                    size="sm"
-                                    className="h-6 px-2 text-[10px]"
-                                    onClick={() => updateActiveHiddenSections(new Set(defaultBrandingHiddenSections))}
+                                    size="icon"
+                                    className="h-5 w-5 p-0"
+                                    onClick={() => {
+                                      updateActiveHiddenSections(
+                                        (currentHiddenSections) => {
+                                          const newSet = new Set(
+                                            currentHiddenSections,
+                                          );
+                                          if (newSet.has(locationKey)) {
+                                            newSet.delete(locationKey);
+                                          } else {
+                                            newSet.add(locationKey);
+                                          }
+                                          return newSet;
+                                        },
+                                      );
+                                    }}
                                   >
-                                    Single Connections Only
+                                    {isLocationHidden ? (
+                                      <EyeOff className="h-3 w-3 text-muted-foreground" />
+                                    ) : (
+                                      <Eye className="h-3 w-3 text-muted" />
+                                    )}
                                   </Button>
-                                )}
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-6 px-2 text-[10px]"
-                                  onClick={() => updateActiveHiddenSections(new Set<string>())}
-                                >
-                                  Show All
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-6 px-2 text-[10px]"
-                                  onClick={() => {
-                                    const allSectionKeys = new Set<string>();
-                                    processedLocationGroups.forEach((group, gi) => {
-                                      allSectionKeys.add(`loc-${gi}`);
-                                      group.subsections.forEach((_, si) => {
-                                        allSectionKeys.add(`${gi}-${si}`);
-                                      });
-                                    });
-                                    updateActiveHiddenSections(allSectionKeys);
-                                  }}
-                                >
-                                  Hide All
-                                </Button>
-                              </div>
-                            </div>
-
-                            {/* TOC-style section list */}
-                            <div className="border rounded-md overflow-hidden">
-                              {/* Header */}
-                              <div className="flex items-center gap-2 px-2 py-1.5 bg-muted/50 border-b text-[10px] font-semibold text-muted-foreground">
-                                <span className="w-5 text-center">#</span>
-                                <span className="flex-1">Section</span>
-                                <span className="w-10 text-right">Rows</span>
-                                <span className="w-6"></span>
-                                <span className="w-6"></span>
-                              </div>
-
-                              {/* Section list */}
-                              <div className="max-h-[320px] overflow-y-auto">
-                                {processedLocationGroups.map((group, groupIndex) => {
-                                  let sectionCounter = 0;
-                                  const locationKey = `loc-${groupIndex}`;
-                                  const isLocationHidden = activeHiddenSections.has(locationKey);
-
-                                  return (
-                                    <div key={groupIndex} className={isLocationHidden ? "opacity-50" : ""}>
-                                      {/* Location Group Header */}
-                                      <div className="flex items-center gap-1 px-2 py-1.5 bg-muted/30 border-b border-t border-border/50">
-                                        <span className="flex-1 text-[10px] font-regular text-foreground truncate">
-                                          {group.isExternal
-                                            ? `${resolveLocationDisplayTitle(group.location, locationNormalizedTitleByName)} - External`
-                                            : resolveLocationDisplayTitle(group.location, locationNormalizedTitleByName)}
-                                          {!group.isExternal && currentSheetName && (
-                                            <span className="ml-1 text-[10px] font-normal text-foreground">Internal</span>
-                                          )}
-                                        </span>
-                                        {(() => {
-                                          const groupSwsType = group.isExternal
-                                            ? resolveLocationSwsType(group.location)
-                                            : (swsType && swsType.id !== 'UNDECIDED' ? swsType : undefined);
-                                          return groupSwsType ? (
-                                            <Badge variant="outline" className={cn("text-[9px] px-1 py-0 h-4 shrink-0", getSwsBadgeColorClass(groupSwsType.color))}>
-                                              {groupSwsType.shortLabel}
-                                            </Badge>
-                                          ) : null;
-                                        })()}
-                                        <Button
-                                          variant="ghost"
-                                          size="icon"
-                                          className="h-5 w-5 p-0"
-                                          onClick={() => {
-                                            updateActiveHiddenSections((currentHiddenSections) => {
-                                              const newSet = new Set(currentHiddenSections);
-                                              if (newSet.has(locationKey)) {
-                                                newSet.delete(locationKey);
-                                              } else {
-                                                newSet.add(locationKey);
-                                              }
-                                              return newSet;
-                                            });
-                                          }}
-                                        >
-                                          {isLocationHidden ? (
-                                            <EyeOff className="h-3 w-3 text-muted-foreground" />
-                                          ) : (
-                                            <Eye className="h-3 w-3 text-muted" />
-                                          )}
-                                        </Button>
-                                        {/* Swap From/To for all subsections in this group */}
-                                        {!isLocationHidden && settings.mode === "standardize" && printViewTab === "cross-wire" && (
-                                          (() => {
-                                            const allSwapped = group.subsections.every((sub) => {
-                                              const cols = getEffectiveSectionColumns(settings.sectionColumnVisibility, sub.label, sub.sectionKind);
-                                              return cols.swapFromTo === true;
-                                            });
-                                            return (
-                                              <Button
-                                                variant={allSwapped ? "default" : "outline"}
-                                                size="sm"
-                                                className={cn(
-                                                  "h-4 px-1.5 text-[8px] shrink-0 gap-0.5",
-                                                  allSwapped
-                                                    ? "bg-blue-500 hover:bg-blue-600 text-white border-blue-500"
-                                                    : "text-muted-foreground"
-                                                )}
-                                                onClick={() => toggleGroupSwapFromTo(groupIndex)}
-                                                title={allSwapped ? "Reset From/To for all subsections" : "Swap From/To for all subsections"}
-                                              >
-
-                                                {allSwapped ? "Swapped" : "Swap Locations"}
-                                              </Button>
+                                  {/* Swap From/To for all subsections in this group */}
+                                  {!isLocationHidden &&
+                                    settings.mode === "standardize" &&
+                                    printViewTab === "cross-wire" &&
+                                    (() => {
+                                      const allSwapped =
+                                        group.subsections.every((sub) => {
+                                          const cols =
+                                            getEffectiveSectionColumns(
+                                              settings.sectionColumnVisibility,
+                                              sub.label,
+                                              sub.sectionKind,
                                             );
-                                          })()
+                                          return cols.swapFromTo === true;
+                                        });
+                                      return (
+                                        <Button
+                                          variant={
+                                            allSwapped ? "default" : "outline"
+                                          }
+                                          size="sm"
+                                          className={cn(
+                                            "h-4 px-1.5 text-[8px] shrink-0 gap-0.5",
+                                            allSwapped
+                                              ? "bg-blue-500 hover:bg-blue-600 text-white border-blue-500"
+                                              : "text-muted-foreground",
+                                          )}
+                                          onClick={() =>
+                                            toggleGroupSwapFromTo(groupIndex)
+                                          }
+                                          title={
+                                            allSwapped
+                                              ? "Reset From/To for all subsections"
+                                              : "Swap From/To for all subsections"
+                                          }
+                                        >
+                                          {allSwapped
+                                            ? "Swapped"
+                                            : "Swap Locations"}
+                                        </Button>
+                                      );
+                                    })()}
+                                  {/* Move to CrossWire button for external sections (wire list mode only) */}
+                                  {!crossWireOnly &&
+                                    group.isExternal &&
+                                    settings.mode === "standardize" &&
+                                    !isLocationHidden && (
+                                      <Button
+                                        variant={
+                                          settings.crossWireSections.has(
+                                            locationKey,
+                                          )
+                                            ? "default"
+                                            : "outline"
+                                        }
+                                        size="sm"
+                                        className={cn(
+                                          "h-4 px-1.5 text-[8px] shrink-0",
+                                          settings.crossWireSections.has(
+                                            locationKey,
+                                          )
+                                            ? "bg-amber-500 hover:bg-amber-600 text-white border-amber-500"
+                                            : "text-muted-foreground",
                                         )}
-                                        {/* Move to CrossWire button for external sections (wire list mode only) */}
-                                        {group.isExternal && settings.mode === "standardize" && !isLocationHidden && (
-                                          <Button
-                                            variant={settings.crossWireSections.has(locationKey) ? "default" : "outline"}
-                                            size="sm"
-                                            className={cn(
-                                              "h-4 px-1.5 text-[8px] shrink-0",
-                                              settings.crossWireSections.has(locationKey)
-                                                ? "bg-amber-500 hover:bg-amber-600 text-white border-amber-500"
-                                                : "text-muted-foreground"
-                                            )}
-                                            onClick={() => toggleCrossWireSection(locationKey)}
-                                            title={settings.crossWireSections.has(locationKey) ? "Remove from CrossWire" : "Move to CrossWire section"}
-                                          >
-                                            {settings.crossWireSections.has(locationKey) ? "CrossWire ✓" : "CrossWire"}
-                                          </Button>
-                                        )}
-                                      </div>
+                                        onClick={() =>
+                                          toggleCrossWireSection(locationKey)
+                                        }
+                                        title={
+                                          settings.crossWireSections.has(
+                                            locationKey,
+                                          )
+                                            ? "Remove from CrossWire"
+                                            : "Move to CrossWire section"
+                                        }
+                                      >
+                                        {settings.crossWireSections.has(
+                                          locationKey,
+                                        )
+                                          ? "CrossWire ✓"
+                                          : "CrossWire"}
+                                      </Button>
+                                    )}
+                                </div>
 
-                                      {/* Subsections */}
-                                      {!isLocationHidden && group.subsections.map((subsection, subIndex) => {
-                                        sectionCounter++;
-                                        const sectionKey = `${groupIndex}-${subIndex}`;
-                                        const isSectionHidden = activeHiddenSections.has(sectionKey);
-                                        const sectionColumns = getEffectiveSectionColumns(
+                                {/* Subsections */}
+                                {!isLocationHidden &&
+                                  group.subsections.map(
+                                    (subsection, subIndex) => {
+                                      sectionCounter++;
+                                      const sectionKey = `${groupIndex}-${subIndex}`;
+                                      const isSectionHidden =
+                                        activeHiddenSections.has(sectionKey);
+                                      const sectionColumns =
+                                        getEffectiveSectionColumns(
                                           settings.sectionColumnVisibility,
                                           subsection.label,
                                           subsection.sectionKind,
                                         );
-                                        const defaultColumns = getDefaultSectionColumns(subsection.sectionKind);
-                                        const canShowTypeColumn = settings.mode !== "branding";
+                                      const defaultColumns =
+                                        getDefaultSectionColumns(
+                                          subsection.sectionKind,
+                                        );
+                                      const canShowTypeColumn =
+                                        settings.mode !== "branding";
 
-                                        return (
-                                          <div key={subIndex} className={isSectionHidden ? "opacity-50" : ""}>
-                                            <div className="flex items-center gap-1.5 px-2 py-1 border-b border-border/20 text-[10px]">
-                                              <span className="w-5 text-center text-muted-foreground">{sectionCounter}</span>
-                                              <span className={`flex-1 truncate ${isSectionHidden ? "line-through text-muted-foreground" : ""}`}>
-                                                {subsection.label}
-                                              </span>
-                                              <span className="w-10 text-right text-muted-foreground tabular-nums">
-                                                {subsection.rows.length > 0 ? subsection.rows.length : "-"}
-                                              </span>
-                                              <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                  <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    className="h-4 w-5 p-0"
-                                                    title="Section columns"
-                                                  >
-                                                    <Settings2 className="h-2.5 w-2.5 text-muted-foreground" />
-                                                  </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end" className="w-44">
-                                                  <DropdownMenuLabel>Section Columns</DropdownMenuLabel>
-                                                  {settings.mode !== "branding" && (
-                                                    <DropdownMenuCheckboxItem
-                                                      checked={sectionColumns.partNumber}
-                                                      onCheckedChange={(checked) => updateSectionColumnVisibility(
+                                      return (
+                                        <div
+                                          key={subIndex}
+                                          className={
+                                            isSectionHidden ? "opacity-50" : ""
+                                          }
+                                        >
+                                          <div className="flex items-center gap-1.5 px-2 py-1 border-b border-border/20 text-[10px]">
+                                            <span className="w-5 text-center text-muted-foreground">
+                                              {sectionCounter}
+                                            </span>
+                                            <span
+                                              className={`flex-1 truncate ${isSectionHidden ? "line-through text-muted-foreground" : ""}`}
+                                            >
+                                              {subsection.label}
+                                            </span>
+                                            <span className="w-10 text-right text-muted-foreground tabular-nums">
+                                              {subsection.rows.length > 0
+                                                ? subsection.rows.length
+                                                : "-"}
+                                            </span>
+                                            <DropdownMenu>
+                                              <DropdownMenuTrigger asChild>
+                                                <Button
+                                                  variant="ghost"
+                                                  size="icon"
+                                                  className="h-4 w-5 p-0"
+                                                  title="Section columns"
+                                                >
+                                                  <Settings2 className="h-2.5 w-2.5 text-muted-foreground" />
+                                                </Button>
+                                              </DropdownMenuTrigger>
+                                              <DropdownMenuContent
+                                                align="end"
+                                                className="w-44"
+                                              >
+                                                <DropdownMenuLabel>
+                                                  Section Columns
+                                                </DropdownMenuLabel>
+                                                {settings.mode !==
+                                                  "branding" && (
+                                                  <DropdownMenuCheckboxItem
+                                                    checked={
+                                                      sectionColumns.partNumber
+                                                    }
+                                                    onCheckedChange={(
+                                                      checked,
+                                                    ) =>
+                                                      updateSectionColumnVisibility(
                                                         subsection.label,
                                                         subsection.sectionKind,
                                                         "partNumber",
                                                         Boolean(checked),
-                                                      )}
-                                                    >
-                                                      Part Number
-                                                    </DropdownMenuCheckboxItem>
-                                                  )}
-                                                  {settings.mode !== "branding" && (
-                                                    <DropdownMenuCheckboxItem
-                                                      checked={sectionColumns.description}
-                                                      onCheckedChange={(checked) => updateSectionColumnVisibility(
+                                                      )
+                                                    }
+                                                  >
+                                                    Part Number
+                                                  </DropdownMenuCheckboxItem>
+                                                )}
+                                                {settings.mode !==
+                                                  "branding" && (
+                                                  <DropdownMenuCheckboxItem
+                                                    checked={
+                                                      sectionColumns.description
+                                                    }
+                                                    onCheckedChange={(
+                                                      checked,
+                                                    ) =>
+                                                      updateSectionColumnVisibility(
                                                         subsection.label,
                                                         subsection.sectionKind,
                                                         "description",
                                                         Boolean(checked),
-                                                      )}
-                                                    >
-                                                      Description
-                                                    </DropdownMenuCheckboxItem>
-                                                  )}
-                                                  {canShowTypeColumn && (
-                                                    <DropdownMenuCheckboxItem
-                                                      checked={sectionColumns.wireType}
-                                                      onCheckedChange={(checked) => updateSectionColumnVisibility(
+                                                      )
+                                                    }
+                                                  >
+                                                    Description
+                                                  </DropdownMenuCheckboxItem>
+                                                )}
+                                                {canShowTypeColumn && (
+                                                  <DropdownMenuCheckboxItem
+                                                    checked={
+                                                      sectionColumns.wireType
+                                                    }
+                                                    onCheckedChange={(
+                                                      checked,
+                                                    ) =>
+                                                      updateSectionColumnVisibility(
                                                         subsection.label,
                                                         subsection.sectionKind,
                                                         "wireType",
                                                         Boolean(checked),
-                                                      )}
-                                                    >
-                                                      Type
-                                                    </DropdownMenuCheckboxItem>
-                                                  )}
-                                                  <DropdownMenuCheckboxItem
-                                                    checked={sectionColumns.wireNo}
-                                                    onCheckedChange={(checked) => updateSectionColumnVisibility(
+                                                      )
+                                                    }
+                                                  >
+                                                    Type
+                                                  </DropdownMenuCheckboxItem>
+                                                )}
+                                                <DropdownMenuCheckboxItem
+                                                  checked={
+                                                    sectionColumns.wireNo
+                                                  }
+                                                  onCheckedChange={(checked) =>
+                                                    updateSectionColumnVisibility(
                                                       subsection.label,
                                                       subsection.sectionKind,
                                                       "wireNo",
                                                       Boolean(checked),
-                                                    )}
-                                                  >
-                                                    Wire No.
-                                                  </DropdownMenuCheckboxItem>
-                                                  <DropdownMenuCheckboxItem
-                                                    checked={sectionColumns.wireId}
-                                                    onCheckedChange={(checked) => updateSectionColumnVisibility(
+                                                    )
+                                                  }
+                                                >
+                                                  Wire No.
+                                                </DropdownMenuCheckboxItem>
+                                                <DropdownMenuCheckboxItem
+                                                  checked={
+                                                    sectionColumns.wireId
+                                                  }
+                                                  onCheckedChange={(checked) =>
+                                                    updateSectionColumnVisibility(
                                                       subsection.label,
                                                       subsection.sectionKind,
                                                       "wireId",
                                                       Boolean(checked),
-                                                    )}
-                                                  >
-                                                    {settings.mode === "branding" ? "Color" : "Wire ID"}
-                                                  </DropdownMenuCheckboxItem>
-                                                  <DropdownMenuCheckboxItem
-                                                    checked={sectionColumns.gaugeSize}
-                                                    onCheckedChange={(checked) => updateSectionColumnVisibility(
+                                                    )
+                                                  }
+                                                >
+                                                  {settings.mode === "branding"
+                                                    ? "Color"
+                                                    : "Wire ID"}
+                                                </DropdownMenuCheckboxItem>
+                                                <DropdownMenuCheckboxItem
+                                                  checked={
+                                                    sectionColumns.gaugeSize
+                                                  }
+                                                  onCheckedChange={(checked) =>
+                                                    updateSectionColumnVisibility(
                                                       subsection.label,
                                                       subsection.sectionKind,
                                                       "gaugeSize",
                                                       Boolean(checked),
-                                                    )}
-                                                  >
-                                                    {settings.mode === "branding" ? "Gauge" : "Size"}
-                                                  </DropdownMenuCheckboxItem>
-                                                  {settings.mode !== "branding" && printViewTab === "cross-wire" && (
+                                                    )
+                                                  }
+                                                >
+                                                  {settings.mode === "branding"
+                                                    ? "Gauge"
+                                                    : "Size"}
+                                                </DropdownMenuCheckboxItem>
+                                                {settings.mode !== "branding" &&
+                                                  printViewTab ===
+                                                    "cross-wire" && (
                                                     <DropdownMenuCheckboxItem
-                                                      checked={sectionColumns.fromLocation ?? false}
-                                                      onCheckedChange={(checked) => updateSectionColumnVisibility(
-                                                        subsection.label,
-                                                        subsection.sectionKind,
-                                                        "fromLocation",
-                                                        Boolean(checked),
-                                                      )}
+                                                      checked={
+                                                        sectionColumns.fromLocation ??
+                                                        false
+                                                      }
+                                                      onCheckedChange={(
+                                                        checked,
+                                                      ) =>
+                                                        updateSectionColumnVisibility(
+                                                          subsection.label,
+                                                          subsection.sectionKind,
+                                                          "fromLocation",
+                                                          Boolean(checked),
+                                                        )
+                                                      }
                                                     >
                                                       From Location
                                                     </DropdownMenuCheckboxItem>
                                                   )}
-                                                  {settings.mode !== "branding" && printViewTab === "cross-wire" && (
+                                                {settings.mode !== "branding" &&
+                                                  printViewTab ===
+                                                    "cross-wire" && (
                                                     <DropdownMenuCheckboxItem
-                                                      checked={sectionColumns.toLocation ?? true}
-                                                      onCheckedChange={(checked) => updateSectionColumnVisibility(
-                                                        subsection.label,
-                                                        subsection.sectionKind,
-                                                        "toLocation",
-                                                        Boolean(checked),
-                                                      )}
+                                                      checked={
+                                                        sectionColumns.toLocation ??
+                                                        true
+                                                      }
+                                                      onCheckedChange={(
+                                                        checked,
+                                                      ) =>
+                                                        updateSectionColumnVisibility(
+                                                          subsection.label,
+                                                          subsection.sectionKind,
+                                                          "toLocation",
+                                                          Boolean(checked),
+                                                        )
+                                                      }
                                                     >
                                                       To Location
                                                     </DropdownMenuCheckboxItem>
                                                   )}
-                                                  {printViewTab === "cross-wire" ? (
-                                                    <>
-                                                      <DropdownMenuSeparator />
-                                                      <DropdownMenuCheckboxItem
-                                                        checked={sectionColumns.swapFromTo ?? false}
-                                                        onCheckedChange={(checked) => updateSectionColumnVisibility(
+                                                {printViewTab ===
+                                                "cross-wire" ? (
+                                                  <>
+                                                    <DropdownMenuSeparator />
+                                                    <DropdownMenuCheckboxItem
+                                                      checked={
+                                                        sectionColumns.swapFromTo ??
+                                                        false
+                                                      }
+                                                      onCheckedChange={(
+                                                        checked,
+                                                      ) =>
+                                                        updateSectionColumnVisibility(
                                                           subsection.label,
                                                           subsection.sectionKind,
                                                           "swapFromTo",
                                                           Boolean(checked),
-                                                        )}
-                                                      >
-                                                        Swap From / To
-                                                      </DropdownMenuCheckboxItem>
-                                                    </>
-                                                  ) : null}
-                                                  <DropdownMenuSeparator />
-                                                  <DropdownMenuItem
-                                                    onClick={() => resetSectionColumnVisibility(subsection.label, subsection.sectionKind)}
-                                                    disabled={
-                                                      sectionColumns.partNumber === defaultColumns.partNumber &&
-                                                      sectionColumns.description === defaultColumns.description &&
-                                                      sectionColumns.wireNo === defaultColumns.wireNo &&
-                                                      sectionColumns.wireId === defaultColumns.wireId &&
-                                                      sectionColumns.wireType === defaultColumns.wireType &&
-                                                      sectionColumns.gaugeSize === defaultColumns.gaugeSize &&
-                                                      (sectionColumns.fromLocation ?? false) === (defaultColumns.fromLocation ?? false) &&
-                                                      (sectionColumns.toLocation ?? true) === (defaultColumns.toLocation ?? true) &&
-                                                      (sectionColumns.swapFromTo ?? false) === (defaultColumns.swapFromTo ?? false)
-                                                    }
-                                                  >
-                                                    Reset Defaults
-                                                  </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                              </DropdownMenu>
-                                              <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="h-4 w-5 p-0"
-                                                onClick={() => {
-                                                  updateActiveHiddenSections((currentHiddenSections) => {
-                                                    const newSet = new Set(currentHiddenSections);
-                                                    if (newSet.has(sectionKey)) {
+                                                        )
+                                                      }
+                                                    >
+                                                      Swap From / To
+                                                    </DropdownMenuCheckboxItem>
+                                                  </>
+                                                ) : null}
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem
+                                                  onClick={() =>
+                                                    resetSectionColumnVisibility(
+                                                      subsection.label,
+                                                      subsection.sectionKind,
+                                                    )
+                                                  }
+                                                  disabled={
+                                                    sectionColumns.partNumber ===
+                                                      defaultColumns.partNumber &&
+                                                    sectionColumns.description ===
+                                                      defaultColumns.description &&
+                                                    sectionColumns.wireNo ===
+                                                      defaultColumns.wireNo &&
+                                                    sectionColumns.wireId ===
+                                                      defaultColumns.wireId &&
+                                                    sectionColumns.wireType ===
+                                                      defaultColumns.wireType &&
+                                                    sectionColumns.gaugeSize ===
+                                                      defaultColumns.gaugeSize &&
+                                                    (sectionColumns.fromLocation ??
+                                                      false) ===
+                                                      (defaultColumns.fromLocation ??
+                                                        false) &&
+                                                    (sectionColumns.toLocation ??
+                                                      true) ===
+                                                      (defaultColumns.toLocation ??
+                                                        true) &&
+                                                    (sectionColumns.swapFromTo ??
+                                                      false) ===
+                                                      (defaultColumns.swapFromTo ??
+                                                        false)
+                                                  }
+                                                >
+                                                  Reset Defaults
+                                                </DropdownMenuItem>
+                                              </DropdownMenuContent>
+                                            </DropdownMenu>
+                                            <Button
+                                              variant="ghost"
+                                              size="icon"
+                                              className="h-4 w-5 p-0"
+                                              onClick={() => {
+                                                updateActiveHiddenSections(
+                                                  (currentHiddenSections) => {
+                                                    const newSet = new Set(
+                                                      currentHiddenSections,
+                                                    );
+                                                    if (
+                                                      newSet.has(sectionKey)
+                                                    ) {
                                                       newSet.delete(sectionKey);
                                                     } else {
                                                       newSet.add(sectionKey);
                                                     }
                                                     return newSet;
-                                                  });
-                                                }}
-                                              >
-                                                {isSectionHidden ? (
-                                                  <EyeOff className="h-2.5 w-2.5 text-muted-foreground" />
-                                                ) : (
-                                                  <Eye className="h-2.5 w-2.5 text-muted" />
-                                                )}
-                                              </Button>
-                                            </div>
-
-                                            {/* Device-to-Device subsections */}
-                                            {!isSectionHidden && subsection.deviceToDeviceSubsections && (() => {
-                                              const d2ds = subsection.deviceToDeviceSubsections!;
-                                              let lastPrefix = "";
-                                              const showGroupedPrefixHeader = settings.wireListSortMode !== "blue-label-sequence";
-                                              return d2ds.map((d2d, d2dIndex) => {
-                                                const prefix = getTocSubsectionPrefix(d2d.label, subsection.sectionKind);
-                                                const showPrefixHeader = showGroupedPrefixHeader && prefix !== lastPrefix;
-                                                lastPrefix = prefix;
-                                                return (
-                                                  <React.Fragment key={`d2d-${d2dIndex}`}>
-                                                    {showPrefixHeader && (
-                                                      <div className="flex items-center gap-1.5 px-2 py-0.5 border-b border-border/10 text-[9px]">
-                                                        <span className="w-5"></span>
-                                                        <span className="flex-1 truncate text-foreground/70 pl-2 font-semibold uppercase tracking-wide">
-                                                          {prefix}
-                                                        </span>
-                                                      </div>
-                                                    )}
-                                                    <div className="flex items-center gap-1.5 px-2 py-0.5 border-b border-border/10 text-[9px] bg-muted/10">
-                                                      <span className="w-5"></span>
-                                                      <span className="flex-1 truncate text-muted-foreground pl-2">
-                                                        <span className="mr-0.5">└</span>{d2d.label}
-                                                      </span>
-                                                      <span className="w-10 text-right text-muted-foreground tabular-nums">{d2d.rows.length}</span>
-                                                      <span className="w-6"></span>
-                                                    </div>
-                                                  </React.Fragment>
+                                                  },
                                                 );
-                                              });
-                                            })()}
+                                              }}
+                                            >
+                                              {isSectionHidden ? (
+                                                <EyeOff className="h-2.5 w-2.5 text-muted-foreground" />
+                                              ) : (
+                                                <Eye className="h-2.5 w-2.5 text-muted" />
+                                              )}
+                                            </Button>
                                           </div>
-                                        );
-                                      })}
+
+                                          {/* Device-to-Device subsections */}
+                                          {!isSectionHidden &&
+                                            subsection.deviceToDeviceSubsections &&
+                                            (() => {
+                                              const d2ds =
+                                                subsection.deviceToDeviceSubsections!;
+                                              let lastPrefix = "";
+                                              const showGroupedPrefixHeader =
+                                                settings.wireListSortMode !==
+                                                "blue-label-sequence";
+                                              return d2ds.map(
+                                                (d2d, d2dIndex) => {
+                                                  const prefix =
+                                                    getTocSubsectionPrefix(
+                                                      d2d.label,
+                                                      subsection.sectionKind,
+                                                    );
+                                                  const showPrefixHeader =
+                                                    showGroupedPrefixHeader &&
+                                                    prefix !== lastPrefix;
+                                                  lastPrefix = prefix;
+                                                  return (
+                                                    <React.Fragment
+                                                      key={`d2d-${d2dIndex}`}
+                                                    >
+                                                      {showPrefixHeader && (
+                                                        <div className="flex items-center gap-1.5 px-2 py-0.5 border-b border-border/10 text-[9px]">
+                                                          <span className="w-5"></span>
+                                                          <span className="flex-1 truncate text-foreground/70 pl-2 font-semibold uppercase tracking-wide">
+                                                            {prefix}
+                                                          </span>
+                                                        </div>
+                                                      )}
+                                                      <div className="flex items-center gap-1.5 px-2 py-0.5 border-b border-border/10 text-[9px] bg-muted/10">
+                                                        <span className="w-5"></span>
+                                                        <span className="flex-1 truncate text-muted-foreground pl-2">
+                                                          <span className="mr-0.5">
+                                                            └
+                                                          </span>
+                                                          {d2d.label}
+                                                        </span>
+                                                        <span className="w-10 text-right text-muted-foreground tabular-nums">
+                                                          {d2d.rows.length}
+                                                        </span>
+                                                        <span className="w-6"></span>
+                                                      </div>
+                                                    </React.Fragment>
+                                                  );
+                                                },
+                                              );
+                                            })()}
+                                        </div>
+                                      );
+                                    },
+                                  )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Summary */}
+                      <div className="flex justify-between text-[10px] text-muted-foreground px-1">
+                        <span>
+                          Locations:{" "}
+                          <strong className="text-foreground">
+                            {processedLocationGroups.length}
+                          </strong>
+                        </span>
+                        <span>
+                          Sections:{" "}
+                          <strong className="text-foreground">
+                            {processedLocationGroups.reduce(
+                              (sum, g) => sum + g.subsections.length,
+                              0,
+                            )}
+                          </strong>
+                        </span>
+                        <span>
+                          Rows:{" "}
+                          <strong className="text-foreground">
+                            {processedLocationGroups.reduce(
+                              (sum, g) => sum + g.totalRows,
+                              0,
+                            )}
+                          </strong>
+                        </span>
+                      </div>
+
+                      {/* Hidden rows indicator */}
+                      {settings.hiddenRows.size > 0 && (
+                        <div className="flex items-center justify-between px-1 py-1 rounded-md bg-muted/30 border border-border/50">
+                          <span className="text-[10px] text-muted-foreground">
+                            <EyeOff className="h-3 w-3 inline mr-1" />
+                            {settings.hiddenRows.size} row
+                            {settings.hiddenRows.size !== 1 ? "s" : ""} hidden
+                          </span>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-5 px-2 text-[9px]"
+                            onClick={clearHiddenRows}
+                          >
+                            Reset
+                          </Button>
+                        </div>
+                      )}
+
+                      {/* CrossWire sections summary */}
+                      {!crossWireOnly && hasCrossWireSections && (
+                        <button
+                          type="button"
+                          className="flex items-center gap-1.5 w-full px-1 py-1 rounded-md bg-amber-50 border border-amber-200 dark:bg-amber-950/20 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-950/30 transition-colors cursor-pointer"
+                          onClick={() => setPrintViewTab("cross-wire")}
+                        >
+                          <span className="text-[10px] text-amber-700 dark:text-amber-400">
+                            {crossWireVisibleSections.length} CrossWire section
+                            {crossWireVisibleSections.length !== 1 ? "s" : ""} —
+                            view in Cross Wire tab
+                          </span>
+                        </button>
+                      )}
+                    </div>
+                  )}
+
+                {settings.mode === "branding" && (
+                  <div className="space-y-4">
+                    <div className="space-y-1">
+                      <Label className="text-sm font-semibold">
+                        Branding Controls
+                      </Label>
+                      <p className="text-xs text-muted-foreground">
+                        Select rows in the preview, then adjust measurements in
+                        place or in bulk.
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between rounded-md border bg-background px-3 py-2">
+                      <span className="text-sm font-medium">
+                        {brandingSelection.selectedIds.size} selected
+                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-7 px-2 text-xs"
+                          onClick={selectAllBrandingRows}
+                        >
+                          Select all
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 px-2 text-xs"
+                          onClick={() => clearBrandingSelection()}
+                        >
+                          Clear
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-xs text-muted-foreground">
+                        Adjustment step
+                      </Label>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-8 w-8 p-0"
+                          disabled={brandingSelection.selectedIds.size === 0}
+                          onClick={() =>
+                            updateSelectedBrandingMeasurements(
+                              -parsedBrandingAdjustmentStep,
+                            )
+                          }
+                        >
+                          <Minus className="h-4 w-4" />
+                        </Button>
+                        <Input
+                          type="number"
+                          step="0.25"
+                          min="0.25"
+                          value={brandingAdjustmentStep}
+                          onChange={(event) =>
+                            setBrandingAdjustmentStep(event.target.value)
+                          }
+                          className="h-8 text-center font-mono"
+                        />
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-8 w-8 p-0"
+                          disabled={brandingSelection.selectedIds.size === 0}
+                          onClick={() =>
+                            updateSelectedBrandingMeasurements(
+                              parsedBrandingAdjustmentStep,
+                            )
+                          }
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-xs text-muted-foreground">
+                        Set measurement
+                      </Label>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="number"
+                          step="0.5"
+                          min="0"
+                          value={brandingSetValue}
+                          onChange={(event) =>
+                            setBrandingSetValue(event.target.value)
+                          }
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                              setSelectedBrandingMeasurements();
+                            }
+                          }}
+                          className="h-8 font-mono"
+                          placeholder="24.0"
+                        />
+                        <Button
+                          size="sm"
+                          className="h-8"
+                          disabled={brandingSelection.selectedIds.size === 0}
+                          onClick={setSelectedBrandingMeasurements}
+                        >
+                          Apply
+                        </Button>
+                      </div>
+                    </div>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full h-8"
+                      disabled={brandingSelection.selectedIds.size === 0}
+                      onClick={resetSelectedBrandingMeasurements}
+                    >
+                      Reset selected measurements
+                    </Button>
+                  </div>
+                )}
+
+                {settings.mode !== "branding" && <Separator />}
+
+                {/* Cover Page & Table of Contents */}
+                {settings.mode !== "branding" && (
+                  <div className="space-y-3">
+                    <Label className="text-sm font-semibold flex items-center gap-2">
+                      <BookOpen className="h-4 w-4" />
+                      Document Pages
+                    </Label>
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="showCoverPage"
+                          checked={settings.showCoverPage}
+                          onCheckedChange={(checked) =>
+                            setSettings((prev) => ({
+                              ...prev,
+                              showCoverPage: !!checked,
+                            }))
+                          }
+                        />
+                        <Label htmlFor="showCoverPage" className="text-sm">
+                          Cover Page
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="showTableOfContents"
+                          checked={settings.showTableOfContents}
+                          onCheckedChange={(checked) =>
+                            setSettings((prev) => ({
+                              ...prev,
+                              showTableOfContents: !!checked,
+                            }))
+                          }
+                        />
+                        <Label
+                          htmlFor="showTableOfContents"
+                          className="text-sm"
+                        >
+                          Table of Contents
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="showIPVCodes"
+                          checked={settings.showIPVCodes}
+                          onCheckedChange={(checked) =>
+                            setSettings((prev) => ({
+                              ...prev,
+                              showIPVCodes: !!checked,
+                            }))
+                          }
+                        />
+                        <Label htmlFor="showIPVCodes" className="text-sm">
+                          IPV Discrepancy Codes
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="showIPVWireList"
+                          checked={settings.showIPVWireList}
+                          onCheckedChange={(checked) =>
+                            setSettings((prev) => ({
+                              ...prev,
+                              showIPVWireList: !!checked,
+                            }))
+                          }
+                        />
+                        <Label htmlFor="showIPVWireList" className="text-sm">
+                          IPV Wire List Checklist
+                        </Label>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {settings.mode !== "branding" && <Separator />}
+
+                {/* Column Visibility */}
+                {settings.mode !== "branding" && (
+                  <div className="space-y-3">
+                    <Label className="text-sm font-semibold flex items-center gap-2">
+                      <FileText className="h-4 w-4" />
+                      Print Columns
+                    </Label>
+                    <div className="space-y-2">
+                      <div className="rounded-md border border-border/60 bg-muted/10 p-2.5 space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="showAllCompletionColumns"
+                            checked={
+                              settings.showFromCheckbox &&
+                              settings.showToCheckbox &&
+                              settings.showIPV
+                            }
+                            onCheckedChange={(checked) => {
+                              const nextValue = Boolean(checked);
+                              setSettings((prev) => ({
+                                ...prev,
+                                showFromCheckbox: nextValue,
+                                showToCheckbox: nextValue,
+                                showIPV: nextValue,
+                              }));
+                            }}
+                          />
+                          <Label
+                            htmlFor="showAllCompletionColumns"
+                            className="text-sm font-medium"
+                          >
+                            All completion columns
+                          </Label>
+                        </div>
+                        {[
+                          { id: "showFromCheckbox", label: "From complete" },
+                          { id: "showToCheckbox", label: "To complete" },
+                          { id: "showIPV", label: "IPV complete" },
+                        ].map(({ id, label }) => (
+                          <div
+                            key={id}
+                            className="flex items-center space-x-2 pl-6"
+                          >
+                            <Checkbox
+                              id={id}
+                              checked={
+                                settings[id as keyof PrintSettings] as boolean
+                              }
+                              onCheckedChange={(checked) =>
+                                setSettings((prev) => ({
+                                  ...prev,
+                                  [id]: !!checked,
+                                }))
+                              }
+                            />
+                            <Label htmlFor={id} className="text-sm">
+                              {label}
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
+                      {[
+                        { id: "showComments", label: "Notes" },
+                        { id: "showLength", label: "Length column" },
+                        { id: "showEstTime", label: "Est. Time columns" },
+                        {
+                          id: "showDeviceSubheaders",
+                          label: "Device Subheaders",
+                        },
+                        {
+                          id: "enableBlueDeviceIDColumns",
+                          label: "Blue Device ID style",
+                        },
+                      ].map(({ id, label }) => (
+                        <div key={id} className="flex items-center space-x-2">
+                          <Checkbox
+                            id={id}
+                            checked={
+                              settings[id as keyof PrintSettings] as boolean
+                            }
+                            onCheckedChange={(checked) =>
+                              setSettings((prev) => ({
+                                ...prev,
+                                [id]: !!checked,
+                              }))
+                            }
+                          />
+                          <Label htmlFor={id} className="text-sm">
+                            {label}
+                          </Label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {settings.mode !== "branding" && <Separator />}
+
+                {/* Feedback Section Settings */}
+                {settings.mode !== "branding" && (
+                  <Collapsible
+                    open={feedbackOptionsOpen}
+                    onOpenChange={setFeedbackOptionsOpen}
+                  >
+                    <CollapsibleTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-between px-0 h-auto py-1"
+                      >
+                        <Label className="text-sm font-semibold cursor-pointer flex items-center gap-2">
+                          <ClipboardCheck className="h-4 w-4" />
+                          Feedback Form
+                        </Label>
+                        <ChevronDown
+                          className={`h-4 w-4 transition-transform ${feedbackOptionsOpen ? "rotate-180" : ""}`}
+                        />
+                      </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="space-y-4 pt-3">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="showFeedbackSection"
+                          checked={settings.showFeedbackSection}
+                          onCheckedChange={(checked) =>
+                            setSettings((prev) => ({
+                              ...prev,
+                              showFeedbackSection: !!checked,
+                            }))
+                          }
+                        />
+                        <Label
+                          htmlFor="showFeedbackSection"
+                          className="text-sm font-medium"
+                        >
+                          Include Feedback Form
+                        </Label>
+                      </div>
+
+                      {settings.showFeedbackSection && (
+                        <>
+                          <div className="space-y-2 pl-6">
+                            <Label className="text-xs text-muted-foreground">
+                              Render Mode
+                            </Label>
+                            <RadioGroup
+                              value={settings.feedbackRenderMode}
+                              onValueChange={(value) =>
+                                setSettings((prev) => ({
+                                  ...prev,
+                                  feedbackRenderMode: value as
+                                    | "PREFILLED"
+                                    | "BLANK",
+                                }))
+                              }
+                              className="space-y-1"
+                            >
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem
+                                  value="BLANK"
+                                  id="feedback-blank"
+                                />
+                                <Label
+                                  htmlFor="feedback-blank"
+                                  className="text-sm"
+                                >
+                                  Blank (for handwriting)
+                                </Label>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem
+                                  value="PREFILLED"
+                                  id="feedback-prefilled"
+                                />
+                                <Label
+                                  htmlFor="feedback-prefilled"
+                                  className="text-sm"
+                                >
+                                  Prefilled (with data)
+                                </Label>
+                              </div>
+                            </RadioGroup>
+                          </div>
+
+                          <div className="space-y-2 pl-6">
+                            <Label className="text-xs text-muted-foreground">
+                              Feedback Sections & Questions
+                            </Label>
+                            <p className="text-[10px] text-muted-foreground/70">
+                              Click section to expand and edit/hide questions
+                            </p>
+                            <div className="space-y-1 max-h-[400px] overflow-y-auto pr-1">
+                              {settings.feedbackSections
+                                .filter(
+                                  (s) => s.id !== "header" && s.id !== "footer",
+                                )
+                                .sort((a, b) => a.order - b.order)
+                                .map((section) => {
+                                  const sectionQuestions =
+                                    getQuestionsForSection(section.id);
+                                  const enabledCount = sectionQuestions.filter(
+                                    (q) => q.enabled,
+                                  ).length;
+                                  const isExpanded =
+                                    expandedFeedbackSections.has(section.id);
+
+                                  return (
+                                    <div
+                                      key={section.id}
+                                      className="border rounded-md overflow-hidden"
+                                    >
+                                      {/* Section Header */}
+                                      <div
+                                        className={`flex items-center gap-2 px-2 py-1.5 cursor-pointer transition-colors ${
+                                          section.enabled
+                                            ? "bg-muted/5 hover:bg-muted/10"
+                                            : "bg-muted/30 hover:bg-muted/50"
+                                        }`}
+                                        onClick={() =>
+                                          toggleFeedbackSectionExpanded(
+                                            section.id,
+                                          )
+                                        }
+                                      >
+                                        <Checkbox
+                                          id={`fb-${section.id}`}
+                                          checked={section.enabled}
+                                          onCheckedChange={() => {
+                                            toggleFeedbackSection(section.id);
+                                          }}
+                                          onClick={(e) => e.stopPropagation()}
+                                          className="h-3.5 w-3.5"
+                                        />
+                                        <span
+                                          className={`flex-1 text-xs font-medium ${!section.enabled ? "text-muted-foreground" : ""}`}
+                                        >
+                                          {section.title}
+                                        </span>
+                                        {sectionQuestions.length > 0 && (
+                                          <Badge
+                                            variant="secondary"
+                                            className="text-[9px] h-4 px-1"
+                                          >
+                                            {enabledCount}/
+                                            {sectionQuestions.length}
+                                          </Badge>
+                                        )}
+                                        <ChevronRight
+                                          className={`h-3.5 w-3.5 text-muted-foreground transition-transform ${isExpanded ? "rotate-90" : ""}`}
+                                        />
+                                      </div>
+
+                                      {/* Expandable Questions */}
+                                      {isExpanded && section.enabled && (
+                                        <div className="bg-muted/20 px-2 py-2 space-y-1.5 border-t">
+                                          {sectionQuestions.map((question) => (
+                                            <div
+                                              key={question.key}
+                                              className={`flex items-center gap-1.5 py-1 px-1.5 rounded text-[10px] ${
+                                                question.enabled
+                                                  ? "bg-background"
+                                                  : "bg-muted/50 opacity-60"
+                                              }`}
+                                            >
+                                              <button
+                                                type="button"
+                                                onClick={() =>
+                                                  toggleQuestion(question.key)
+                                                }
+                                                className="flex-shrink-0 p-0.5 rounded hover:bg-muted"
+                                                title={
+                                                  question.enabled
+                                                    ? "Hide question"
+                                                    : "Show question"
+                                                }
+                                              >
+                                                {question.enabled ? (
+                                                  <Eye className="h-3 w-3 text-muted" />
+                                                ) : (
+                                                  <EyeOff className="h-3 w-3 text-muted-foreground" />
+                                                )}
+                                              </button>
+                                              <Input
+                                                value={question.label}
+                                                onChange={(e) =>
+                                                  updateQuestionLabel(
+                                                    question.key,
+                                                    e.target.value,
+                                                  )
+                                                }
+                                                className="flex-1 h-5 text-[10px] px-1.5 py-0"
+                                              />
+                                              {question.isCustom && (
+                                                <button
+                                                  type="button"
+                                                  onClick={() =>
+                                                    removeCustomQuestion(
+                                                      question.key,
+                                                    )
+                                                  }
+                                                  className="flex-shrink-0 p-0.5 rounded hover:bg-destructive/20 text-destructive"
+                                                  title="Remove custom question"
+                                                >
+                                                  <Trash2 className="h-3 w-3" />
+                                                </button>
+                                              )}
+                                            </div>
+                                          ))}
+                                          <button
+                                            type="button"
+                                            onClick={() =>
+                                              addCustomQuestion(section.id)
+                                            }
+                                            className="flex items-center gap-1.5 w-full py-1 px-2 text-[10px] text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded transition-colors"
+                                          >
+                                            <Plus className="h-3 w-3" />
+                                            Add custom question
+                                          </button>
+                                        </div>
+                                      )}
                                     </div>
                                   );
                                 })}
-                              </div>
-                            </div>
-
-                            {/* Summary */}
-                            <div className="flex justify-between text-[10px] text-muted-foreground px-1">
-                              <span>Locations: <strong className="text-foreground">{processedLocationGroups.length}</strong></span>
-                              <span>Sections: <strong className="text-foreground">{processedLocationGroups.reduce((sum, g) => sum + g.subsections.length, 0)}</strong></span>
-                              <span>Rows: <strong className="text-foreground">{processedLocationGroups.reduce((sum, g) => sum + g.totalRows, 0)}</strong></span>
-                            </div>
-
-                            {/* Hidden rows indicator */}
-                            {settings.hiddenRows.size > 0 && (
-                              <div className="flex items-center justify-between px-1 py-1 rounded-md bg-muted/30 border border-border/50">
-                                <span className="text-[10px] text-muted-foreground">
-                                  <EyeOff className="h-3 w-3 inline mr-1" />
-                                  {settings.hiddenRows.size} row{settings.hiddenRows.size !== 1 ? "s" : ""} hidden
-                                </span>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-5 px-2 text-[9px]"
-                                  onClick={clearHiddenRows}
-                                >
-                                  Reset
-                                </Button>
-                              </div>
-                            )}
-
-                            {/* CrossWire sections summary */}
-                            {hasCrossWireSections && (
-                              <button
-                                type="button"
-                                className="flex items-center gap-1.5 w-full px-1 py-1 rounded-md bg-amber-50 border border-amber-200 dark:bg-amber-950/20 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-950/30 transition-colors cursor-pointer"
-                                onClick={() => setPrintViewTab("cross-wire")}
-                              >
-                                <span className="text-[10px] text-amber-700 dark:text-amber-400">
-                                  {crossWireVisibleSections.length} CrossWire section{crossWireVisibleSections.length !== 1 ? "s" : ""} — view in Cross Wire tab
-                                </span>
-                              </button>
-                            )}
-                          </div>
-                        )}
-
-                        {settings.mode === "branding" && (
-                          <div className="space-y-4">
-                            <div className="space-y-1">
-                              <Label className="text-sm font-semibold">Branding Controls</Label>
-                              <p className="text-xs text-muted-foreground">
-                                Select rows in the preview, then adjust measurements in place or in bulk.
-                              </p>
-                            </div>
-
-                            <div className="flex items-center justify-between rounded-md border bg-background px-3 py-2">
-                              <span className="text-sm font-medium">
-                                {brandingSelection.selectedIds.size} selected
-                              </span>
-                              <div className="flex items-center gap-1.5">
-                                <Button variant="outline" size="sm" className="h-7 px-2 text-xs" onClick={selectAllBrandingRows}>
-                                  Select all
-                                </Button>
-                                <Button variant="ghost" size="sm" className="h-7 px-2 text-xs" onClick={() => clearBrandingSelection()}>
-                                  Clear
-                                </Button>
-                              </div>
-                            </div>
-
-                            <div className="space-y-2">
-                              <Label className="text-xs text-muted-foreground">Adjustment step</Label>
-                              <div className="flex items-center gap-2">
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="h-8 w-8 p-0"
-                                  disabled={brandingSelection.selectedIds.size === 0}
-                                  onClick={() => updateSelectedBrandingMeasurements(-parsedBrandingAdjustmentStep)}
-                                >
-                                  <Minus className="h-4 w-4" />
-                                </Button>
-                                <Input
-                                  type="number"
-                                  step="0.25"
-                                  min="0.25"
-                                  value={brandingAdjustmentStep}
-                                  onChange={(event) => setBrandingAdjustmentStep(event.target.value)}
-                                  className="h-8 text-center font-mono"
-                                />
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="h-8 w-8 p-0"
-                                  disabled={brandingSelection.selectedIds.size === 0}
-                                  onClick={() => updateSelectedBrandingMeasurements(parsedBrandingAdjustmentStep)}
-                                >
-                                  <Plus className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </div>
-
-                            <div className="space-y-2">
-                              <Label className="text-xs text-muted-foreground">Set measurement</Label>
-                              <div className="flex items-center gap-2">
-                                <Input
-                                  type="number"
-                                  step="0.5"
-                                  min="0"
-                                  value={brandingSetValue}
-                                  onChange={(event) => setBrandingSetValue(event.target.value)}
-                                  onKeyDown={(event) => {
-                                    if (event.key === "Enter") {
-                                      setSelectedBrandingMeasurements();
-                                    }
-                                  }}
-                                  className="h-8 font-mono"
-                                  placeholder="24.0"
-                                />
-                                <Button
-                                  size="sm"
-                                  className="h-8"
-                                  disabled={brandingSelection.selectedIds.size === 0}
-                                  onClick={setSelectedBrandingMeasurements}
-                                >
-                                  Apply
-                                </Button>
-                              </div>
-                            </div>
-
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="w-full h-8"
-                              disabled={brandingSelection.selectedIds.size === 0}
-                              onClick={resetSelectedBrandingMeasurements}
-                            >
-                              Reset selected measurements
-                            </Button>
-                          </div>
-                        )}
-
-                        {settings.mode !== "branding" && <Separator />}
-
-                        {/* Cover Page & Table of Contents */}
-                        {settings.mode !== "branding" && (
-                          <div className="space-y-3">
-                            <Label className="text-sm font-semibold flex items-center gap-2">
-                              <BookOpen className="h-4 w-4" />
-                              Document Pages
-                            </Label>
-                            <div className="space-y-2">
-                              <div className="flex items-center space-x-2">
-                                <Checkbox
-                                  id="showCoverPage"
-                                  checked={settings.showCoverPage}
-                                  onCheckedChange={(checked) => setSettings(prev => ({ ...prev, showCoverPage: !!checked }))}
-                                />
-                                <Label htmlFor="showCoverPage" className="text-sm">Cover Page</Label>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <Checkbox
-                                  id="showTableOfContents"
-                                  checked={settings.showTableOfContents}
-                                  onCheckedChange={(checked) => setSettings(prev => ({ ...prev, showTableOfContents: !!checked }))}
-                                />
-                                <Label htmlFor="showTableOfContents" className="text-sm">Table of Contents</Label>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <Checkbox
-                                  id="showIPVCodes"
-                                  checked={settings.showIPVCodes}
-                                  onCheckedChange={(checked) => setSettings(prev => ({ ...prev, showIPVCodes: !!checked }))}
-                                />
-                                <Label htmlFor="showIPVCodes" className="text-sm">IPV Discrepancy Codes</Label>
-                              </div>
                             </div>
                           </div>
+                        </>
+                      )}
+                    </CollapsibleContent>
+                  </Collapsible>
+                )}
+              </div>
+            </div>
+          ) : null}
+
+          {/* Right: Preview Panel */}
+          <div className="flex-1 flex flex-col overflow-hidden bg-muted/10">
+            {/* Preview Header with Zoom Controls */}
+            {!reviewModeCompact ? (
+              <div className="px-4 py-2 border-b bg-background flex items-center justify-between flex-shrink-0">
+                <div className="flex items-center gap-2">
+                  {hasCrossWireSections && !crossWireOnly ? (
+                    <div className="flex items-center gap-1 rounded-md bg-muted p-0.5">
+                      <button
+                        type="button"
+                        className={cn(
+                          "px-2.5 py-1 rounded text-xs font-medium transition-colors",
+                          printViewTab === "wire-list"
+                            ? "bg-background text-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-foreground",
                         )}
-
-                        {settings.mode !== "branding" && <Separator />}
-
-                        {/* Column Visibility */}
-                        {settings.mode !== "branding" && (
-                          <div className="space-y-3">
-                            <Label className="text-sm font-semibold flex items-center gap-2">
-                              <FileText className="h-4 w-4" />
-                              Print Columns
-                            </Label>
-                            <div className="space-y-2">
-                              <div className="rounded-md border border-border/60 bg-muted/10 p-2.5 space-y-2">
-                                <div className="flex items-center space-x-2">
-                                  <Checkbox
-                                    id="showAllCompletionColumns"
-                                    checked={settings.showFromCheckbox && settings.showToCheckbox && settings.showIPV}
-                                    onCheckedChange={(checked) => {
-                                      const nextValue = Boolean(checked);
-                                      setSettings((prev) => ({
-                                        ...prev,
-                                        showFromCheckbox: nextValue,
-                                        showToCheckbox: nextValue,
-                                        showIPV: nextValue,
-                                      }));
-                                    }}
-                                  />
-                                  <Label htmlFor="showAllCompletionColumns" className="text-sm font-medium">All completion columns</Label>
-                                </div>
-                                {[
-                                  { id: "showFromCheckbox", label: "From complete" },
-                                  { id: "showToCheckbox", label: "To complete" },
-                                  { id: "showIPV", label: "IPV complete" },
-                                ].map(({ id, label }) => (
-                                  <div key={id} className="flex items-center space-x-2 pl-6">
-                                    <Checkbox
-                                      id={id}
-                                      checked={settings[id as keyof PrintSettings] as boolean}
-                                      onCheckedChange={(checked) => setSettings(prev => ({ ...prev, [id]: !!checked }))}
-                                    />
-                                    <Label htmlFor={id} className="text-sm">{label}</Label>
-                                  </div>
-                                ))}
-                              </div>
-                              {[
-                                { id: "showComments", label: "Notes" },
-                                { id: "showLength", label: "Length column" },
-                                { id: "showEstTime", label: "Est. Time columns" },
-                                { id: "showDeviceSubheaders", label: "Device Subheaders" },
-                                { id: "enableBlueDeviceIDColumns", label: "Blue Device ID style" },
-                              ].map(({ id, label }) => (
-                                <div key={id} className="flex items-center space-x-2">
-                                  <Checkbox
-                                    id={id}
-                                    checked={settings[id as keyof PrintSettings] as boolean}
-                                    onCheckedChange={(checked) => setSettings(prev => ({ ...prev, [id]: !!checked }))}
-                                  />
-                                  <Label htmlFor={id} className="text-sm">{label}</Label>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {settings.mode !== "branding" && <Separator />}
-
-                        {/* Feedback Section Settings */}
-                        {settings.mode !== "branding" && (
-                          <Collapsible open={feedbackOptionsOpen} onOpenChange={setFeedbackOptionsOpen}>
-                            <CollapsibleTrigger asChild>
-                              <Button variant="ghost" className="w-full justify-between px-0 h-auto py-1">
-                                <Label className="text-sm font-semibold cursor-pointer flex items-center gap-2">
-                                  <ClipboardCheck className="h-4 w-4" />
-                                  Feedback Form
-                                </Label>
-                                <ChevronDown className={`h-4 w-4 transition-transform ${feedbackOptionsOpen ? "rotate-180" : ""}`} />
-                              </Button>
-                            </CollapsibleTrigger>
-                            <CollapsibleContent className="space-y-4 pt-3">
-                              <div className="flex items-center space-x-2">
-                                <Checkbox
-                                  id="showFeedbackSection"
-                                  checked={settings.showFeedbackSection}
-                                  onCheckedChange={(checked) => setSettings(prev => ({ ...prev, showFeedbackSection: !!checked }))}
-                                />
-                                <Label htmlFor="showFeedbackSection" className="text-sm font-medium">Include Feedback Form</Label>
-                              </div>
-
-                              {settings.showFeedbackSection && (
-                                <>
-                                  <div className="space-y-2 pl-6">
-                                    <Label className="text-xs text-muted-foreground">Render Mode</Label>
-                                    <RadioGroup
-                                      value={settings.feedbackRenderMode}
-                                      onValueChange={(value) => setSettings(prev => ({
-                                        ...prev,
-                                        feedbackRenderMode: value as "PREFILLED" | "BLANK"
-                                      }))}
-                                      className="space-y-1"
-                                    >
-                                      <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="BLANK" id="feedback-blank" />
-                                        <Label htmlFor="feedback-blank" className="text-sm">Blank (for handwriting)</Label>
-                                      </div>
-                                      <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="PREFILLED" id="feedback-prefilled" />
-                                        <Label htmlFor="feedback-prefilled" className="text-sm">Prefilled (with data)</Label>
-                                      </div>
-                                    </RadioGroup>
-                                  </div>
-
-                                  <div className="space-y-2 pl-6">
-                                    <Label className="text-xs text-muted-foreground">Feedback Sections & Questions</Label>
-                                    <p className="text-[10px] text-muted-foreground/70">Click section to expand and edit/hide questions</p>
-                                    <div className="space-y-1 max-h-[400px] overflow-y-auto pr-1">
-                                      {settings.feedbackSections
-                                        .filter(s => s.id !== "header" && s.id !== "footer")
-                                        .sort((a, b) => a.order - b.order)
-                                        .map((section) => {
-                                          const sectionQuestions = getQuestionsForSection(section.id);
-                                          const enabledCount = sectionQuestions.filter(q => q.enabled).length;
-                                          const isExpanded = expandedFeedbackSections.has(section.id);
-
-                                          return (
-                                            <div key={section.id} className="border rounded-md overflow-hidden">
-                                              {/* Section Header */}
-                                              <div
-                                                className={`flex items-center gap-2 px-2 py-1.5 cursor-pointer transition-colors ${section.enabled ? "bg-muted/5 hover:bg-muted/10" : "bg-muted/30 hover:bg-muted/50"
-                                                  }`}
-                                                onClick={() => toggleFeedbackSectionExpanded(section.id)}
-                                              >
-                                                <Checkbox
-                                                  id={`fb-${section.id}`}
-                                                  checked={section.enabled}
-                                                  onCheckedChange={() => {
-                                                    toggleFeedbackSection(section.id);
-                                                  }}
-                                                  onClick={(e) => e.stopPropagation()}
-                                                  className="h-3.5 w-3.5"
-                                                />
-                                                <span className={`flex-1 text-xs font-medium ${!section.enabled ? "text-muted-foreground" : ""}`}>
-                                                  {section.title}
-                                                </span>
-                                                {sectionQuestions.length > 0 && (
-                                                  <Badge variant="secondary" className="text-[9px] h-4 px-1">
-                                                    {enabledCount}/{sectionQuestions.length}
-                                                  </Badge>
-                                                )}
-                                                <ChevronRight className={`h-3.5 w-3.5 text-muted-foreground transition-transform ${isExpanded ? "rotate-90" : ""}`} />
-                                              </div>
-
-                                              {/* Expandable Questions */}
-                                              {isExpanded && section.enabled && (
-                                                <div className="bg-muted/20 px-2 py-2 space-y-1.5 border-t">
-                                                  {sectionQuestions.map((question) => (
-                                                    <div
-                                                      key={question.key}
-                                                      className={`flex items-center gap-1.5 py-1 px-1.5 rounded text-[10px] ${question.enabled ? "bg-background" : "bg-muted/50 opacity-60"
-                                                        }`}
-                                                    >
-                                                      <button
-                                                        type="button"
-                                                        onClick={() => toggleQuestion(question.key)}
-                                                        className="flex-shrink-0 p-0.5 rounded hover:bg-muted"
-                                                        title={question.enabled ? "Hide question" : "Show question"}
-                                                      >
-                                                        {question.enabled ? (
-                                                          <Eye className="h-3 w-3 text-muted" />
-                                                        ) : (
-                                                          <EyeOff className="h-3 w-3 text-muted-foreground" />
-                                                        )}
-                                                      </button>
-                                                      <Input
-                                                        value={question.label}
-                                                        onChange={(e) => updateQuestionLabel(question.key, e.target.value)}
-                                                        className="flex-1 h-5 text-[10px] px-1.5 py-0"
-                                                      />
-                                                      {question.isCustom && (
-                                                        <button
-                                                          type="button"
-                                                          onClick={() => removeCustomQuestion(question.key)}
-                                                          className="flex-shrink-0 p-0.5 rounded hover:bg-destructive/20 text-destructive"
-                                                          title="Remove custom question"
-                                                        >
-                                                          <Trash2 className="h-3 w-3" />
-                                                        </button>
-                                                      )}
-                                                    </div>
-                                                  ))}
-                                                  <button
-                                                    type="button"
-                                                    onClick={() => addCustomQuestion(section.id)}
-                                                    className="flex items-center gap-1.5 w-full py-1 px-2 text-[10px] text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded transition-colors"
-                                                  >
-                                                    <Plus className="h-3 w-3" />
-                                                    Add custom question
-                                                  </button>
-                                                </div>
-                                              )}
-                                            </div>
-                                          );
-                                        })}
-                                    </div>
-                                  </div>
-                                </>
-                              )}
-                            </CollapsibleContent>
-                          </Collapsible>
-                        )}
-                      </div>
-                    </div>
-                    ) : null}
-
-                    {/* Right: Preview Panel */}
-                    <div className="flex-1 flex flex-col overflow-hidden bg-muted/10">
-                      {/* Preview Header with Zoom Controls */}
-                      {!reviewModeCompact ? (
-                      <div className="px-4 py-2 border-b bg-background flex items-center justify-between flex-shrink-0">
-                        <div className="flex items-center gap-2">
-                          {hasCrossWireSections ? (
-                            <div className="flex items-center gap-1 rounded-md bg-muted p-0.5">
-                              <button
-                                type="button"
-                                className={cn(
-                                  "px-2.5 py-1 rounded text-xs font-medium transition-colors",
-                                  printViewTab === "wire-list"
-                                    ? "bg-background text-foreground shadow-sm"
-                                    : "text-muted-foreground hover:text-foreground",
-                                )}
-                                onClick={() => setPrintViewTab("wire-list")}
-                              >
-                                Wire List
-                              </button>
-                              <button
-                                type="button"
-                                className={cn(
-                                  "px-2.5 py-1 rounded text-xs font-medium transition-colors",
-                                  printViewTab === "cross-wire"
-                                    ? "bg-amber-100 text-amber-900 shadow-sm dark:bg-amber-900/30 dark:text-amber-200"
-                                    : "text-muted-foreground hover:text-foreground",
-                                )}
-                                onClick={() => setPrintViewTab("cross-wire")}
-                              >
-                                Cross Wire
-                              </button>
-                            </div>
-                          ) : (
-                            <span className="text-sm font-medium">Preview</span>
-                          )}
-                          <span className="text-xs text-muted-foreground">
-                            {printViewTab === "cross-wire"
-                              ? `${crossWirePageCount} page${crossWirePageCount !== 1 ? "s" : ""} | ${crossWireVisibleSections.length} section${crossWireVisibleSections.length !== 1 ? "s" : ""} | ${crossWireVisibleSections.reduce((sum, s) => sum + s.visibleRows.length, 0)} rows`
-                              : `${previewPageCount} page${previewPageCount !== 1 ? "s" : ""} | ${activePreviewSectionCount} section${activePreviewSectionCount !== 1 ? "s" : ""} | ${settings.mode === "branding" ? brandingVisibleRowCount : totalRowCount} rows`
-                            }
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {settings.mode !== "branding" && (
-                          <Button
-                            variant={settings.showEstTime ? "secondary" : "ghost"}
-                            size="sm"
-                            className="h-7 gap-1 px-2 text-xs"
-                            onClick={() => setSettings(prev => ({ ...prev, showEstTime: !prev.showEstTime }))}
-                            title={settings.showEstTime ? "Hide Est. Time columns" : "Show Est. Time columns"}
-                          >
-                            <Clock className="h-3.5 w-3.5" />
-                            <span className="hidden sm:inline">Est. Time</span>
-                          </Button>
-                          )}
-                          {(settings.mode === "branding" || printViewTab === "cross-wire" || (settings.mode === "standardize" && printViewTab === "wire-list")) ? (
-                            <>
-                              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={handleZoomOut} disabled={zoom <= 50}>
-                                <ZoomOut className="h-4 w-4" />
-                              </Button>
-                              <div className="flex items-center gap-1.5 min-w-[100px]">
-                                <Slider
-                                  value={zoom}
-                                  onChange={(val) => setZoom(Array.isArray(val) ? val[0] : val)}
-                                  onValueChange={(val) => setZoom(Array.isArray(val) ? val[0] : val)}
-                                  min={50}
-                                  max={150}
-                                  step={5}
-                                  className="w-[100px]"
-                                />
-                                <span className="text-xs text-muted-foreground w-10 text-right">{zoom}%</span>
-                              </div>
-                              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={handleZoomIn} disabled={zoom >= 150}>
-                                <ZoomIn className="h-4 w-4" />
-                              </Button>
-                              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={handleZoomReset}>
-                                <RotateCcw className="h-4 w-4" />
-                              </Button>
-                            </>
-                          ) : null}
-                        </div>
-                      </div>
-                      ) : null}
-
-                      <div
-                        ref={previewContainerRef}
-                        className="flex-1 overflow-auto bg-[repeating-linear-gradient(0deg,transparent,transparent_19px,hsl(var(--border)/0.3)_19px,hsl(var(--border)/0.3)_20px),repeating-linear-gradient(90deg,transparent,transparent_19px,hsl(var(--border)/0.3)_19px,hsl(var(--border)/0.3)_20px)]"
+                        onClick={() => setPrintViewTab("wire-list")}
                       >
-                        {/* Centering wrapper: keep the full page stack centered while scaled */}
-                        <div
-                          className="flex justify-center"
-                          style={{
-                            minWidth: `${PRINT_PAGE_WIDTH * (zoom / 100) + 96}px`,
-                            minHeight: `max(100%, ${PRINT_PAGE_MIN_HEIGHT * (zoom / 100) + 96}px)`,
-                            padding: "48px",
-                          }}
-                        >
-                          <motion.div
-                            ref={printRef}
-                            className="print-pages origin-top flex-shrink-0 flex flex-col gap-6"
-                            animate={{
-                              scale: zoom / 100,
-                            }}
-                            transition={{
-                              type: "spring",
-                              stiffness: 300,
-                              damping: 30,
-                            }}
-                            style={{
-                              width: `${PRINT_PAGE_WIDTH}px`,
-                            }}
-                          >
-                                {settings.mode === "branding" ? (
+                        Wire List
+                      </button>
+                      <button
+                        type="button"
+                        className={cn(
+                          "px-2.5 py-1 rounded text-xs font-medium transition-colors",
+                          printViewTab === "cross-wire"
+                            ? "bg-amber-100 text-amber-900 shadow-sm dark:bg-amber-900/30 dark:text-amber-200"
+                            : "text-muted-foreground hover:text-foreground",
+                        )}
+                        onClick={() => setPrintViewTab("cross-wire")}
+                      >
+                        Cross Wire
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="text-sm font-medium">
+                      {crossWireOnly ? "Cross Wire" : "Preview"}
+                    </span>
+                  )}
+                  <span className="text-xs text-muted-foreground">
+                    {showingCrossWirePreview
+                      ? `${crossWirePageCount} page${crossWirePageCount !== 1 ? "s" : ""} | ${crossWireVisibleSections.length} section${crossWireVisibleSections.length !== 1 ? "s" : ""} | ${crossWireVisibleSections.reduce((sum, s) => sum + s.visibleRows.length, 0)} rows`
+                      : `${previewPageCount} page${previewPageCount !== 1 ? "s" : ""} | ${activePreviewSectionCount} section${activePreviewSectionCount !== 1 ? "s" : ""} | ${settings.mode === "branding" ? brandingVisibleRowCount : totalRowCount} rows`}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {settings.mode !== "branding" && (
+                    <Button
+                      variant={settings.showEstTime ? "secondary" : "ghost"}
+                      size="sm"
+                      className="h-7 gap-1 px-2 text-xs"
+                      onClick={() =>
+                        setSettings((prev) => ({
+                          ...prev,
+                          showEstTime: !prev.showEstTime,
+                        }))
+                      }
+                      title={
+                        settings.showEstTime
+                          ? "Hide Est. Time columns"
+                          : "Show Est. Time columns"
+                      }
+                    >
+                      <Clock className="h-3.5 w-3.5" />
+                      <span className="hidden sm:inline">Est. Time</span>
+                    </Button>
+                  )}
+                  {settings.mode === "branding" ||
+                  printViewTab === "cross-wire" ||
+                  (settings.mode === "standardize" &&
+                    printViewTab === "wire-list") ? (
+                    <>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7"
+                        onClick={handleZoomOut}
+                        disabled={zoom <= 50}
+                      >
+                        <ZoomOut className="h-4 w-4" />
+                      </Button>
+                      <div className="flex items-center gap-1.5 min-w-[100px]">
+                        <Slider
+                          value={zoom}
+                          onChange={(val) =>
+                            setZoom(Array.isArray(val) ? val[0] : val)
+                          }
+                          onValueChange={(val) =>
+                            setZoom(Array.isArray(val) ? val[0] : val)
+                          }
+                          min={50}
+                          max={150}
+                          step={5}
+                          className="w-[100px]"
+                        />
+                        <span className="text-xs text-muted-foreground w-10 text-right">
+                          {zoom}%
+                        </span>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7"
+                        onClick={handleZoomIn}
+                        disabled={zoom >= 150}
+                      >
+                        <ZoomIn className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7"
+                        onClick={handleZoomReset}
+                      >
+                        <RotateCcw className="h-4 w-4" />
+                      </Button>
+                    </>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
+
+            <div
+              ref={previewContainerRef}
+              className="flex-1 overflow-auto bg-[repeating-linear-gradient(0deg,transparent,transparent_19px,hsl(var(--border)/0.3)_19px,hsl(var(--border)/0.3)_20px),repeating-linear-gradient(90deg,transparent,transparent_19px,hsl(var(--border)/0.3)_19px,hsl(var(--border)/0.3)_20px)]"
+            >
+              {/* Centering wrapper: keep the full page stack centered while scaled */}
+              <div
+                className="flex justify-center"
+                style={{
+                  minWidth: `${paperLayout.width * (zoom / 100) + 96}px`,
+                  minHeight: `max(100%, ${paperLayout.height * (zoom / 100) + 96}px)`,
+                  padding: paperLayout.previewPadding,
+                }}
+              >
+                <motion.div
+                  ref={printRef}
+                  className="print-pages origin-top flex-shrink-0 flex flex-col gap-6"
+                  animate={{
+                    scale: zoom / 100,
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 30,
+                  }}
+                  style={{
+                    width: `${paperLayout.width}px`,
+                  }}
+                >
+                  {settings.mode === "branding" ? (
+                    <PrintPage
+                      className="shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
+                      pageNumber={1}
+                      totalPages={1}
+                      paperSize={settings.paperSize}
+                    >
+                      <ProjectInfoHeader
+                        projectInfo={projectInfo}
+                        sheetTitle={`${sheetTitle} - Branding`}
+                        totalRows={brandingVisibleRowCount}
+                        pageNumber={1}
+                        totalPages={1}
+                      />
+
+                      <BrandingPreviewContent
+                        sections={brandingVisibleSections}
+                        renderSection={({ group, subsection, rows }) => (
+                          <BrandingPreviewTable
+                            rows={rows}
+                            currentSheetName={currentSheetName}
+                            location={group.location}
+                            sectionLabel={subsection.label}
+                            sectionKind={subsection.sectionKind}
+                            sectionColumnVisibility={
+                              settings.sectionColumnVisibility
+                            }
+                            partNumberMap={effectivePartNumberMap}
+                            matchMetadata={subsection.matchMetadata}
+                            brandingSortMode={settings.brandingSortMode}
+                            selection={brandingSelection}
+                            onToggleSelection={toggleBrandingSelection}
+                            onSelectAll={selectBrandingRows}
+                            onClearSelection={clearBrandingSelection}
+                            onUpdateMeasurement={
+                              updateBrandingMeasurementWithFeedback
+                            }
+                            onAdjustMeasurement={
+                              adjustBrandingMeasurementWithFeedback
+                            }
+                            onResetMeasurement={
+                              resetBrandingMeasurementWithFeedback
+                            }
+                          />
+                        )}
+                      />
+                    </PrintPage>
+                  ) : (
+                    <>
+                      <StandardWorkspacePreviewDocument
+                        enabled={!crossWireOnly && printViewTab === "wire-list"}
+                        showCoverPage={settings.showCoverPage}
+                        showTableOfContents={
+                          settings.showTableOfContents &&
+                          processedLocationGroups.length > 0
+                        }
+                        showIPVCodes={settings.showIPVCodes}
+                        showIPVWireList={settings.showIPVWireList}
+                        showFeedbackSection={settings.showFeedbackSection}
+                        hasVisibleSections={hasNonCrossWireSections}
+                        renderCoverPage={() => (
+                          <CoverPage
+                            projectInfo={projectInfo}
+                            sheetTitle={sheetTitle}
+                            currentSheetName={currentSheetName}
+                            coverImageUrl={settings.coverImageUrl}
+                            swsType={swsType}
+                            coverSubtitle={currentSheetName}
+                            pageNumber={1}
+                            totalPages={previewPageCount}
+                            paperSize={settings.paperSize}
+                          />
+                        )}
+                        renderTableOfContentsPage={() => (
+                          <TableOfContentsPage
+                            locationGroups={processedLocationGroups}
+                            showFeedbackSection={settings.showFeedbackSection}
+                            showCoverPage={settings.showCoverPage}
+                            showTableOfContents={settings.showTableOfContents}
+                            showIPVCodes={settings.showIPVCodes}
+                            showEstTime={settings.showEstTime}
+                            totalPages={previewPageCount}
+                            currentSheetName={currentSheetName}
+                            hiddenSections={activeHiddenSections}
+                            crossWireSections={settings.crossWireSections}
+                            wireListSortMode={settings.wireListSortMode}
+                            paperSize={settings.paperSize}
+                          />
+                        )}
+                        renderIpvCodesPage={() => (
+                          <IPVCodesPage
+                            pageNumber={
+                              (settings.showCoverPage ? 1 : 0) +
+                              (settings.showTableOfContents ? 1 : 0) +
+                              1
+                            }
+                            totalPages={previewPageCount}
+                            paperSize={settings.paperSize}
+                          />
+                        )}
+                        renderPreviewDocument={() => (
+                          <StandardWireListPreviewDocument
+                            visibleSections={visiblePreviewSections}
+                            renderPage={(content) => (
                               <PrintPage
                                 className="shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
-                                pageNumber={1}
-                                totalPages={1}
+                                pageNumber={
+                                  (settings.showCoverPage ? 1 : 0) +
+                                  (settings.showTableOfContents ? 1 : 0) +
+                                  (settings.showIPVCodes ? 1 : 0) +
+                                  1
+                                }
+                                totalPages={previewPageCount}
+                                paperSize={settings.paperSize}
                               >
                                 <ProjectInfoHeader
                                   projectInfo={projectInfo}
-                                  sheetTitle={`${sheetTitle} - Branding`}
-                                  totalRows={brandingVisibleRowCount}
-                                  pageNumber={1}
-                                  totalPages={1}
-                                />
-
-                                <BrandingPreviewContent
-                                  sections={brandingVisibleSections}
-                                  renderSection={({ group, subsection, rows }) => (
-                                    <BrandingPreviewTable
-                                      rows={rows}
-                                      currentSheetName={currentSheetName}
-                                      location={group.location}
-                                      sectionLabel={subsection.label}
-                                      sectionKind={subsection.sectionKind}
-                                      sectionColumnVisibility={settings.sectionColumnVisibility}
-                                      partNumberMap={effectivePartNumberMap}
-                                      matchMetadata={subsection.matchMetadata}
-                                      brandingSortMode={settings.brandingSortMode}
-                                      selection={brandingSelection}
-                                      onToggleSelection={toggleBrandingSelection}
-                                      onSelectAll={selectBrandingRows}
-                                      onClearSelection={clearBrandingSelection}
-                                      onUpdateMeasurement={updateBrandingMeasurementWithFeedback}
-                                      onAdjustMeasurement={adjustBrandingMeasurementWithFeedback}
-                                      onResetMeasurement={resetBrandingMeasurementWithFeedback}
-                                    />
+                                  sheetTitle={sheetTitle}
+                                  totalRows={processedLocationGroups.reduce(
+                                    (sum, g) => sum + g.totalRows,
+                                    0,
                                   )}
+                                  pageNumber={
+                                    (settings.showCoverPage ? 1 : 0) +
+                                    (settings.showTableOfContents ? 1 : 0) +
+                                    (settings.showIPVCodes ? 1 : 0) +
+                                    1
+                                  }
+                                  totalPages={previewPageCount}
                                 />
+                                {content}
                               </PrintPage>
-                            ) : (
-                              <>
-                                <StandardWorkspacePreviewDocument
-                                  enabled={printViewTab === "wire-list"}
-                                  showCoverPage={settings.showCoverPage}
-                                  showTableOfContents={settings.showTableOfContents && processedLocationGroups.length > 0}
-                                  showIPVCodes={settings.showIPVCodes}
-                                  showFeedbackSection={settings.showFeedbackSection}
-                                  hasVisibleSections={hasNonCrossWireSections}
-                                  renderCoverPage={() => (
-                                    <CoverPage
-                                      projectInfo={projectInfo}
-                                      sheetTitle={sheetTitle}
-                                      currentSheetName={currentSheetName}
-                                      coverImageUrl={settings.coverImageUrl}
-                                      swsType={swsType}
-                                      coverSubtitle={currentSheetName}
-                                      pageNumber={1}
-                                      totalPages={previewPageCount}
-                                    />
-                                  )}
-                                  renderTableOfContentsPage={() => (
-                                    <TableOfContentsPage
-                                      locationGroups={processedLocationGroups}
-                                      showFeedbackSection={settings.showFeedbackSection}
-                                      showCoverPage={settings.showCoverPage}
-                                      showTableOfContents={settings.showTableOfContents}
-                                      showIPVCodes={settings.showIPVCodes}
-                                      showEstTime={settings.showEstTime}
-                                      totalPages={previewPageCount}
-                                      currentSheetName={currentSheetName}
-                                      hiddenSections={activeHiddenSections}
-                                      crossWireSections={settings.crossWireSections}
-                                      wireListSortMode={settings.wireListSortMode}
-                                    />
-                                  )}
-                                  renderIpvCodesPage={() => (
-                                    <IPVCodesPage
-                                      pageNumber={(settings.showCoverPage ? 1 : 0) + (settings.showTableOfContents ? 1 : 0) + 1}
-                                      totalPages={previewPageCount}
-                                    />
-                                  )}
-                                  renderPreviewDocument={() => (
-                                    <StandardWireListPreviewDocument
-                                      visibleSections={visiblePreviewSections}
-                                      renderPage={(content) => (
-                                        <PrintPage
-                                          className="shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
-                                          pageNumber={(settings.showCoverPage ? 1 : 0) + (settings.showTableOfContents ? 1 : 0) + (settings.showIPVCodes ? 1 : 0) + 1}
-                                          totalPages={previewPageCount}
-                                        >
-                                          <ProjectInfoHeader
-                                            projectInfo={projectInfo}
-                                            sheetTitle={sheetTitle}
-                                            totalRows={processedLocationGroups.reduce((sum, g) => sum + g.totalRows, 0)}
-                                            pageNumber={(settings.showCoverPage ? 1 : 0) + (settings.showTableOfContents ? 1 : 0) + (settings.showIPVCodes ? 1 : 0) + 1}
-                                            totalPages={previewPageCount}
-                                          />
-                                          {content}
-                                        </PrintPage>
-                                      )}
-                                      renderSection={({ group, subsection, visibleRows }) => (
-                                        <div className="rounded-sm w-full">
-                                          <PrintPreviewTable
-                                            rows={visibleRows}
-                                            settings={{
-                                              ...settings,
-                                              showComments: false,
-                                            }}
-                                            currentSheetName={currentSheetName}
-                                            comments={comments}
-                                            onCommentChange={handleCommentChange}
-                                            sectionKind={subsection.sectionKind}
-                                            sectionLabel={subsection.label}
-                                            matchMetadata={subsection.matchMetadata}
-                                            partNumberMap={effectivePartNumberMap}
-                                            cablePartNumberMap={cablePartNumberMap}
-                                            getRowLength={effectiveGetRowLength}
-                                            hiddenRows={settings.hiddenRows}
-                                            onToggleRowHidden={toggleRowHidden}
-                                            locationNormalizedTitleByName={locationNormalizedTitleByName}
-                                            isExternal={group.isExternal}
-                                          />
-                                        </div>
-                                      )}
-                                    />
-                                  )}
-                                  renderFeedbackPage={() => (
-                                    <PrintPage
-                                      className="feedback-page shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
-                                      pageNumber={previewPageCount}
-                                      totalPages={previewPageCount}
-                                    >
-                                      <div className="pt-4">
-                                        <PrintFeedbackSection
-                                          config={{
-                                            showFeedbackSection: settings.showFeedbackSection,
-                                            feedbackSections: settings.feedbackSections,
-                                            feedbackRenderMode: settings.feedbackRenderMode,
-                                            feedbackValues: {
-                                              projectName: projectInfo.projectName,
-                                              pdNumber: projectInfo.pdNumber,
-                                              sheetName: currentSheetName,
-                                              revision: projectInfo.revision,
-                                            },
-                                            customQuestions: settings.customQuestions,
-                                          }}
-                                          sheetName={currentSheetName}
-                                          projectName={projectInfo.projectName}
-                                          withLeadingPageBreak={false}
-                                        />
-                                      </div>
-                                    </PrintPage>
-                                  )}
-                                />
-
-                                <CrossWireWorkspacePreviewDocument
-                                  enabled={printViewTab === "cross-wire" && hasCrossWireSections}
-                                  renderPreviewDocument={() => {
-                                    const crossWireHiddenSections = new Set<string>(activeHiddenSections);
-                                    processedLocationGroups.forEach((_, groupIndex) => {
-                                      const locationKey = `loc-${groupIndex}`;
-                                      if (!settings.crossWireSections.has(locationKey)) {
-                                        crossWireHiddenSections.add(locationKey);
-                                      }
-                                    });
-
-                                    return (
-                                      <CrossWirePreviewDocument
-                                        visibleSections={crossWireVisibleSections}
-                                        renderCoverPage={() => (
-                                          <CoverPage
-                                            projectInfo={projectInfo}
-                                            sheetTitle={sheetTitle}
-                                            currentSheetName={currentSheetName}
-                                            coverImageUrl={settings.coverImageUrl}
-                                            swsType={crossWireSwsType}
-                                            coverSubtitle="Cross Wire List"
-                                            pageNumber={1}
-                                            totalPages={crossWirePageCount}
-                                          />
-                                        )}
-                                        renderTableOfContentsPage={() => (
-                                          <TableOfContentsPage
-                                            locationGroups={processedLocationGroups}
-                                            showFeedbackSection={false}
-                                            showCoverPage={true}
-                                            showTableOfContents={true}
-                                            showIPVCodes={false}
-                                            showEstTime={settings.showEstTime}
-                                            totalPages={crossWirePageCount}
-                                            currentSheetName={currentSheetName}
-                                            hiddenSections={crossWireHiddenSections}
-                                            wireListSortMode={settings.wireListSortMode}
-                                          />
-                                        )}
-                                        renderPage={(content) => (
-                                          <PrintPage
-                                            className="shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
-                                            pageNumber={3}
-                                            totalPages={crossWirePageCount}
-                                          >
-                                            <ProjectInfoHeader
-                                              projectInfo={projectInfo}
-                                              sheetTitle={`${sheetTitle} — CrossWire`}
-                                              totalRows={crossWireVisibleSections.reduce((sum, s) => sum + s.visibleRows.length, 0)}
-                                            />
-                                            {content}
-                                          </PrintPage>
-                                        )}
-                                        renderSection={(section, sectionIdx, showLocationHeader) => (
-                                          <div key={`${section.group.location}-${section.subsection.label}-${sectionIdx}`} className={sectionIdx > 0 ? "mt-5" : ""}>
-                                            {showLocationHeader && (
-                  <SectionHeaderBlock
-                                            title={resolveLocationDisplayTitle(section.group.location, locationNormalizedTitleByName)}
-                    subtitle="Location:"
-                    subtitleFirst
-                    className="mb-3 border-b border-foreground/10 pb-2"
-                    titleClassName="text-[13px] font-bold text-foreground"
-                    subtitleClassName="text-[10px] font-normal uppercase tracking-wide text-muted-foreground"
-                  />
-                                            )}
-                                            <SectionHeaderBlock
-                                              title={section.subsection.label}
-                                              count={section.visibleRows.length}
-                                            />
-                                            <div className="rounded-sm w-full">
-                                              <PrintPreviewTable
-                                                rows={section.visibleRows}
-                                                settings={{
-                                                  ...settings,
-                                                  showComments: false,
-                                                  showIPV: false,
-                                                  showLength: false,
-                                                  sectionColumnVisibility: {
-                                                    ...settings.sectionColumnVisibility,
-                                                    [section.subsection.label]: section.sectionColumns,
-                                                  },
-                                                }}
-                                                currentSheetName={currentSheetName}
-                                                comments={{}}
-                                                onCommentChange={handleCommentChange}
-                                                sectionKind={section.subsection.sectionKind}
-                                                sectionLabel={section.subsection.label}
-                                                matchMetadata={section.subsection.matchMetadata}
-                                                partNumberMap={effectivePartNumberMap}
-                                                cablePartNumberMap={cablePartNumberMap}
-                                                getRowLength={effectiveGetRowLength}
-                                                locationNormalizedTitleByName={locationNormalizedTitleByName}
-                                                isExternal={true}
-                                              />
-                                            </div>
-                                          </div>
-                                        )}
-                                      />
-                                    );
-                                  }}
-                                />
-                              </>
                             )}
-                          </motion.div>
-                        </div>
-                      </div>
-                      
-                    </div>
+                            renderSection={({
+                              group,
+                              subsection,
+                              visibleRows,
+                            }) => (
+                              <div className="rounded-sm w-full">
+                                <PrintPreviewTable
+                                  rows={visibleRows}
+                                  settings={{
+                                    ...settings,
+                                    showComments: false,
+                                  }}
+                                  currentSheetName={currentSheetName}
+                                  comments={comments}
+                                  onCommentChange={handleCommentChange}
+                                  sectionKind={subsection.sectionKind}
+                                  sectionLabel={subsection.label}
+                                  matchMetadata={subsection.matchMetadata}
+                                  partNumberMap={effectivePartNumberMap}
+                                  cablePartNumberMap={cablePartNumberMap}
+                                  getRowLength={effectiveGetRowLength}
+                                  hiddenRows={settings.hiddenRows}
+                                  onToggleRowHidden={toggleRowHidden}
+                                  locationNormalizedTitleByName={
+                                    locationNormalizedTitleByName
+                                  }
+                                  isExternal={group.isExternal}
+                                />
+                              </div>
+                            )}
+                          />
+                        )}
+                        renderFeedbackPage={() => (
+                          <PrintPage
+                            className="feedback-page shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
+                            pageNumber={
+                              previewPageCount -
+                              (settings.showIPVWireList ? 3 : 0)
+                            }
+                            totalPages={previewPageCount}
+                            paperSize={settings.paperSize}
+                          >
+                            <div className="pt-4">
+                              <PrintFeedbackSection
+                                config={{
+                                  showFeedbackSection:
+                                    settings.showFeedbackSection,
+                                  feedbackSections: settings.feedbackSections,
+                                  feedbackRenderMode:
+                                    settings.feedbackRenderMode,
+                                  feedbackValues: {
+                                    projectName: projectInfo.projectName,
+                                    pdNumber: projectInfo.pdNumber,
+                                    sheetName: currentSheetName,
+                                    revision: projectInfo.revision,
+                                  },
+                                  customQuestions: settings.customQuestions,
+                                }}
+                                sheetName={currentSheetName}
+                                projectName={projectInfo.projectName}
+                                withLeadingPageBreak={false}
+                              />
+                            </div>
+                          </PrintPage>
+                        )}
+                        renderIPVCoverPage={() => (
+                          <IPVCoverPage
+                            projectInfo={projectInfo}
+                            sheetTitle={sheetTitle}
+                            currentSheetName={currentSheetName}
+                            blueLabels={blueLabels ?? null}
+                            blueLabelReferences={ipvCoverReferenceData.blueLabels}
+                            panducts={ipvCoverReferenceData.panducts}
+                            rails={ipvCoverReferenceData.rails}
+                            externalLocations={
+                              ipvCoverReferenceData.externalLocations
+                            }
+                            whiteLabels={ipvCoverReferenceData.whiteLabels}
+                            heatShrinkLabels={
+                              ipvCoverReferenceData.heatShrinkLabels
+                            }
+                            partNumbers={ipvCoverReferenceData.partNumbers}
+                            layoutImageUrl={ipvCoverReferenceData.layoutImageUrl}
+                            pageNumber={previewPageCount - 2}
+                            totalPages={previewPageCount}
+                            paperSize={settings.paperSize}
+                          />
+                        )}
+                        renderIPVReferencePage={() => (
+                          <IPVReferenceListsPage
+                            currentSheetName={currentSheetName}
+                            blueLabels={blueLabels ?? null}
+                            blueLabelReferences={ipvCoverReferenceData.blueLabels}
+                            panducts={ipvCoverReferenceData.panducts}
+                            rails={ipvCoverReferenceData.rails}
+                            externalLocations={ipvCoverReferenceData.externalLocations}
+                            whiteLabels={ipvCoverReferenceData.whiteLabels}
+                            heatShrinkLabels={ipvCoverReferenceData.heatShrinkLabels}
+                            partNumbers={ipvCoverReferenceData.partNumbers}
+                            identityFilterLocationGroups={processedLocationGroups}
+                            pageNumber={previewPageCount - 1}
+                            totalPages={previewPageCount}
+                            paperSize={settings.paperSize}
+                          />
+                        )}
+                        renderIPVWireListPage={() => (
+                          <WireListIPVPage
+                            rows={rows}
+                            currentSheetName={currentSheetName}
+                            blueLabels={blueLabels ?? null}
+                            ipvChecklistGroups={schemaHydration?.ipvChecklistGroups}
+                            sheetTitle={sheetTitle}
+                            pageNumber={previewPageCount}
+                            totalPages={previewPageCount}
+                            paperSize={settings.paperSize}
+                          />
+                        )}
+                      />
+
+                      <CrossWireWorkspacePreviewDocument
+                        enabled={
+                          crossWireOnly
+                            ? crossWireVisibleSections.length > 0
+                            : printViewTab === "cross-wire" &&
+                              hasCrossWireSections
+                        }
+                        renderPreviewDocument={() => {
+                          const crossWireHiddenSections = new Set<string>(
+                            activeHiddenSections,
+                          );
+                          processedLocationGroups.forEach((_, groupIndex) => {
+                            const locationKey = `loc-${groupIndex}`;
+                            if (!settings.crossWireSections.has(locationKey)) {
+                              crossWireHiddenSections.add(locationKey);
+                            }
+                          });
+
+                          return (
+                            <CrossWirePreviewDocument
+                              visibleSections={crossWireVisibleSections}
+                              renderCoverPage={() => (
+                                <CoverPage
+                                  projectInfo={projectInfo}
+                                  sheetTitle={sheetTitle}
+                                  currentSheetName={currentSheetName}
+                                  coverImageUrl={settings.coverImageUrl}
+                                  swsType={crossWireSwsType}
+                                  coverSubtitle="Cross Wire List"
+                                  pageNumber={1}
+                                  totalPages={crossWirePageCount}
+                                />
+                              )}
+                              renderTableOfContentsPage={() => (
+                                <TableOfContentsPage
+                                  locationGroups={processedLocationGroups}
+                                  showFeedbackSection={false}
+                                  showCoverPage={true}
+                                  showTableOfContents={true}
+                                  showIPVCodes={false}
+                                  showEstTime={settings.showEstTime}
+                                  totalPages={crossWirePageCount}
+                                  currentSheetName={currentSheetName}
+                                  hiddenSections={crossWireHiddenSections}
+                                  wireListSortMode={settings.wireListSortMode}
+                                />
+                              )}
+                              renderPage={(content) => (
+                                <PrintPage
+                                  className="shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
+                                  pageNumber={3}
+                                  totalPages={crossWirePageCount}
+                                  paperSize={settings.paperSize}
+                                >
+                                  <ProjectInfoHeader
+                                    projectInfo={projectInfo}
+                                    sheetTitle={`${sheetTitle} — CrossWire`}
+                                    totalRows={crossWireVisibleSections.reduce(
+                                      (sum, s) => sum + s.visibleRows.length,
+                                      0,
+                                    )}
+                                  />
+                                  {content}
+                                </PrintPage>
+                              )}
+                              renderSection={(
+                                section,
+                                sectionIdx,
+                                showLocationHeader,
+                              ) => (
+                                <div
+                                  key={`${section.group.location}-${section.subsection.label}-${sectionIdx}`}
+                                  className={sectionIdx > 0 ? "mt-5" : ""}
+                                >
+                                  {showLocationHeader && (
+                                    <SectionHeaderBlock
+                                      title={resolveLocationDisplayTitle(
+                                        section.group.location,
+                                        locationNormalizedTitleByName,
+                                      )}
+                                      subtitle="Location:"
+                                      subtitleFirst
+                                      className="mb-3 border-b border-foreground/10 pb-2"
+                                      titleClassName="text-[13px] font-bold text-foreground"
+                                      subtitleClassName="text-[10px] font-normal uppercase tracking-wide text-muted-foreground"
+                                    />
+                                  )}
+                                  <SectionHeaderBlock
+                                    title={section.subsection.label}
+                                    count={section.visibleRows.length}
+                                  />
+                                  <div className="rounded-sm w-full">
+                                    <PrintPreviewTable
+                                      rows={section.visibleRows}
+                                      settings={{
+                                        ...settings,
+                                        showComments: false,
+                                        showIPV: false,
+                                        showLength: false,
+                                        sectionColumnVisibility: {
+                                          ...settings.sectionColumnVisibility,
+                                          [section.subsection.label]:
+                                            section.sectionColumns,
+                                        },
+                                      }}
+                                      currentSheetName={currentSheetName}
+                                      comments={{}}
+                                      onCommentChange={handleCommentChange}
+                                      sectionKind={
+                                        section.subsection.sectionKind
+                                      }
+                                      sectionLabel={section.subsection.label}
+                                      matchMetadata={
+                                        section.subsection.matchMetadata
+                                      }
+                                      partNumberMap={effectivePartNumberMap}
+                                      cablePartNumberMap={cablePartNumberMap}
+                                      getRowLength={effectiveGetRowLength}
+                                      locationNormalizedTitleByName={
+                                        locationNormalizedTitleByName
+                                      }
+                                      isExternal={true}
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                            />
+                          );
+                        }}
+                      />
+                    </>
+                  )}
+                </motion.div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
+  );
+}
+
+export function ProjectCrossWirePrintWorkspace({
+  projectId,
+  workspaceActive = true,
+  onRequestClose,
+  headerTitle = "Print Cross Wire",
+  hideCloseButton = false,
+}: ProjectCrossWirePrintWorkspaceProps) {
+  const [schema, setSchema] = useState<ProjectCrossWireSchemaDocument | null>(
+    null,
+  );
+  const [isLoadingSchema, setIsLoadingSchema] = useState(false);
+  const [schemaError, setSchemaError] = useState<string | null>(null);
+  const [activeUnitType, setActiveUnitType] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!workspaceActive || !projectId) {
+      return;
+    }
+
+    let cancelled = false;
+
+    async function loadCrossWireSchema() {
+      setIsLoadingSchema(true);
+      setSchemaError(null);
+
+      try {
+        let response = await fetch(
+          `/api/projects/${encodeURIComponent(projectId)}/cross-wire-schema`,
+          {
+            cache: "no-store",
+          },
+        );
+
+        let nextSchema: ProjectCrossWireSchemaDocument | null = null;
+        if (response.ok) {
+          nextSchema =
+            (await response.json()) as ProjectCrossWireSchemaDocument;
+        }
+
+        if (!response.ok || crossWireSchemaNeedsRefresh(nextSchema)) {
+          response = await fetch(
+            `/api/projects/${encodeURIComponent(projectId)}/cross-wire-schema`,
+            {
+              method: "POST",
+            },
+          );
+
+          if (!response.ok) {
+            const payload = (await response.json().catch(() => ({}))) as {
+              error?: string;
+            };
+            throw new Error(
+              payload.error ?? "Failed to load cross-wire schema.",
+            );
+          }
+
+          const payload = (await response.json()) as {
+            schema?: ProjectCrossWireSchemaDocument;
+          };
+          nextSchema = payload.schema ?? null;
+        }
+
+        if (!nextSchema) {
+          throw new Error("Cross-wire schema is empty.");
+        }
+
+        if (!cancelled) {
+          setSchema(nextSchema);
+          setActiveUnitType((current) => {
+            if (
+              current &&
+              nextSchema.unitTypeGroups.some(
+                (group) => group.unitType === current,
+              )
+            ) {
+              return current;
+            }
+            return nextSchema.unitTypeGroups[0]?.unitType ?? null;
+          });
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setSchemaError(
+            error instanceof Error
+              ? error.message
+              : "Failed to load cross-wire schema.",
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoadingSchema(false);
+        }
+      }
+    }
+
+    void loadCrossWireSchema();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [projectId, workspaceActive]);
+
+  const activeUnitTypeGroup = useMemo(
+    () =>
+      schema?.unitTypeGroups.find(
+        (group) => group.unitType === activeUnitType,
+      ) ??
+      schema?.unitTypeGroups[0] ??
+      null,
+    [activeUnitType, schema],
+  );
+
+  const workspaceData = useMemo(
+    () => buildProjectCrossWireWorkspaceData(activeUnitTypeGroup),
+    [activeUnitTypeGroup],
+  );
+
+  const extraHeaderActions =
+    schema && schema.unitTypeGroups.length > 1 ? (
+      <label className="hidden sm:flex items-center gap-2 text-xs text-muted-foreground">
+        <span>Unit Type</span>
+        <select
+          value={activeUnitType ?? ""}
+          onChange={(event) => setActiveUnitType(event.target.value)}
+          className="h-8 rounded-md border border-input bg-background px-2 text-sm text-foreground"
+        >
+          {schema.unitTypeGroups.map((group) => (
+            <option key={group.unitType} value={group.unitType}>
+              {group.unitType}
+            </option>
+          ))}
+        </select>
+      </label>
+    ) : null;
+
+  if (isLoadingSchema) {
+    return (
+      <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        Loading cross wire workspace...
+      </div>
+    );
+  }
+
+  if (schemaError) {
+    return (
+      <div className="flex h-full w-full flex-col items-center justify-center gap-3 px-6 text-center">
+        <p className="text-sm text-destructive">{schemaError}</p>
+        {onRequestClose ? (
+          <Button size="sm" variant="outline" onClick={onRequestClose}>
+            Close
+          </Button>
+        ) : null}
+      </div>
+    );
+  }
+
+  if (!schema || !activeUnitTypeGroup) {
+    return (
+      <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">
+        No cross-wire groups available.
+      </div>
+    );
+  }
+
+  return (
+    <SingleSheetPrintWorkspace
+      rows={workspaceData.rows}
+      currentSheetName="__CROSS_WIRE__"
+      projectId={projectId}
+      sheetTitle={`${activeUnitTypeGroup.unitType || "Cross Wire"} — Cross Wire`}
+      metadata={{
+        projectNumber: schema.projectInfo?.projectNumber,
+        projectName: schema.projectInfo?.projectName,
+        revision: schema.projectInfo?.revision,
+        pdNumber: schema.projectInfo?.projectNumber,
+        unitNumber: schema.projectInfo?.unitNumber,
+      }}
+      getRowLength={(rowId) => workspaceData.rowLengthsById[rowId] ?? null}
+      workspaceActive={workspaceActive}
+      onRequestClose={onRequestClose}
+      headerTitle={headerTitle}
+      hideCloseButton={hideCloseButton}
+      extraHeaderActions={extraHeaderActions}
+      initialMode="standardize"
+      initialPrintViewTab="cross-wire"
+      crossWireOnly
+      initializeAllLocationGroupsAsCrossWire
+      hideSchemaActions
+    />
   );
 }
 
@@ -6897,7 +10659,12 @@ export function PrintModal(props: PrintModalProps) {
 
   return (
     <>
-      <Button variant="outline" size="sm" className="gap-2" onClick={() => setIsOpen(true)}>
+      <Button
+        variant="outline"
+        size="sm"
+        className="gap-2"
+        onClick={() => setIsOpen(true)}
+      >
         <Printer className="h-4 w-4" />
         <span className="hidden sm:inline">Print</span>
       </Button>

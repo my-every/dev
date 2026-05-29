@@ -338,9 +338,7 @@ export function getSheetDeviceSequence(
   blueLabels: BlueLabelSequenceMap
 ): string[] {
   if (!blueLabels.isValid) return [];
-  
-  const normalized = normalizeSheetName(sheetName);
-  return blueLabels.sheetSequences.get(normalized) || [];
+  return getResolvedSheetSequence(sheetName, blueLabels);
 }
 
 /**

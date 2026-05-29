@@ -1,6 +1,7 @@
 import type { PartNumberLookupResult, CablePartNumberLookupResult } from "@/lib/part-number-list";
 import type { BrandingVisibleSection, PrintLocationGroup, PrintSubsection, VisiblePreviewSection } from "@/lib/wire-list-print/model";
 import type { PrintSettings, ProjectInfo } from "@/lib/wire-list-print/defaults";
+import type { BlueLabelSequenceMap } from "@/lib/wiring-identification/types";
 
 export interface BrandingSelectionState {
   selectedIds: Set<string>;
@@ -129,6 +130,13 @@ export interface WireListPrintDocumentData {
     shortLabel: string;
     color?: string;
   };
+  blueLabelReferences?: string[];
+  panducts?: string[];
+  rails?: string[];
+  externalLocations?: string[];
+  whiteLabels?: string[];
+  heatShrinkLabels?: string[];
+  partNumbers?: string[];
   brandingVisibleSections?: BrandingVisibleSection[];
   brandingSelection?: BrandingSelectionState;
   includeFeedbackPage?: boolean;
@@ -136,6 +144,7 @@ export interface WireListPrintDocumentData {
   crossWireSectionKeys?: string[];
   sheetDocument?: WireListSheetDocument;
   standardVisibleSections?: VisiblePreviewSection[];
+  blueLabels?: BlueLabelSequenceMap | null;
   /** Destination sheet name (uppercase) -> box side mapping for external groups. */
   locationBoxSideByName?: Record<string, string>;
   /** Destination sheet name (uppercase) -> normalized title mapping for display in location columns. */

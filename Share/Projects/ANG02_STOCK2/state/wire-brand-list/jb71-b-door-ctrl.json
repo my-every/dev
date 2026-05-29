@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-29T18:31:33.708Z",
+  "mode": "branding-export",
+  "sheetSlug": "jb71-b-door-ctrl",
+  "sheetName": "JB71 B DOOR CTRL",
+  "totalRows": 2,
+  "header": {
+    "locationTitle": "JB71 B DOOR CTRL",
+    "fromLabel": "From",
+    "toLabel": "To",
+    "columns": [
+      "Device ID",
+      "Wire No.",
+      "Wire ID",
+      "Gauge/Size",
+      "Length",
+      "Device ID",
+      "To Location",
+      "Bundle Name"
+    ]
+  },
+  "projectInfo": {
+    "projectNumber": "ANG02",
+    "projectName": "STOCK2",
+    "revision": "A.6_M.2",
+    "controlsDE": "Poovarasan M"
+  },
+  "importHints": {
+    "canonicalSheetName": "JB71 B,DOOR CTRL",
+    "normalizedSheetName": "jb71-b-door-ctrl",
+    "bundleNames": [
+      "AT1100"
+    ],
+    "bundleDisplays": [
+      "AT1100 - B - PNL CTRL1"
+    ]
+  },
+  "prefixGroups": [
+    {
+      "prefix": "AT",
+      "bundles": [
+        {
+          "bundleName": "AT1100",
+          "toLocation": "JB71 B,PNL CTRL1",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "AT1100:NEG",
+              "fromTerminal": "NEG",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "-0V",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "XT0070:12",
+              "toTerminal": "12",
+              "toLocation": "JB71 B,PNL CTRL1",
+              "bundleName": "AT1100",
+              "bundleDisplay": "AT1100 - B - PNL CTRL1",
+              "devicePrefix": "AT",
+              "isNegative": true,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            },
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "AT1100:POS",
+              "fromTerminal": "POS",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "FU1100",
+              "wireId": "WHT",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "FU1100:LD",
+              "toTerminal": "LD",
+              "toLocation": "JB71 B,PNL CTRL1",
+              "bundleName": "AT1100",
+              "bundleDisplay": "",
+              "devicePrefix": "AT",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "ad62331aa70b0d797d90e44371005d15d7996ec8ae27c82c6b52711c6588aea3"
+}

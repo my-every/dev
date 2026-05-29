@@ -27,6 +27,7 @@ import { estimateWireTime, formatEstTime, summarizeSectionTime, type SectionTime
 import type { PartNumberLookupResult } from "@/lib/part-number-list";
 import type { BlueLabelSequenceMap } from "@/lib/wiring-identification/types";
 import { detectDeviceChange } from "@/lib/wiring-identification/device-change-pattern";
+import { getSheetDeviceSequence } from "@/lib/wiring-identification/blue-label-sequence";
 import type { VisiblePreviewSection } from "@/lib/wire-list-print/model";
 import type { WireListSheetDocument } from "@/lib/wire-list-sheet-document/types";
 import { normalizeWireListWireNo } from "@/lib/wire-list-print/normalize-wire-no";
@@ -178,6 +179,13 @@ export interface WireListPrintSchema {
     brandingSortMode?: PrintSettings["brandingSortMode"];
     wireListSortMode?: PrintSettings["wireListSortMode"];
   };
+  ipvChecklist?: {
+    totalRows: number;
+    groups: Array<{
+      deviceId: string;
+      rows: WireListPrintSchemaRow[];
+    }>;
+  };
   pages: WireListPrintSchemaPageUnion[];
 }
 
@@ -327,6 +335,133 @@ function buildSchemaSubsection(
   return result;
 }
 
+function getBaseDeviceIdValue(deviceId: string | undefined): string {
+  return deviceId?.split(":")[0]?.trim() || "";
+}
+
+type IPVRowEntry = {
+  row: SemanticWireListRow;
+  sectionKind: IdentificationFilterKind | undefined;
+  isExternalSection: boolean;
+};
+
+function buildIpvChecklistSchema(
+  processedLocationGroups: PrintLocationGroup[],
+  currentSheetName: string,
+  blueLabels: BlueLabelSequenceMap | null,
+  getLengthForRow: ((rowId: string) => { display: string; roundedInches: number } | null) | undefined,
+  partNumberMap?: Map<string, PartNumberLookupResult> | null,
+  assignmentBlueLabels?: string[] | null,
+): NonNullable<WireListPrintSchema["ipvChecklist"]> {
+  const directSequence = assignmentBlueLabels?.length
+    ? assignmentBlueLabels
+    : blueLabels?.isValid
+      ? getSheetDeviceSequence(currentSheetName, blueLabels)
+      : [];
+
+  const normalizedSequence = directSequence
+    .map((deviceId) => getBaseDeviceIdValue(deviceId).trim().toUpperCase())
+    .filter(Boolean);
+  const useStrictBlueLabelWhitelist = normalizedSequence.length > 0;
+  const allowedDeviceIds = new Set(normalizedSequence);
+
+  const entries: IPVRowEntry[] = [];
+  for (const group of processedLocationGroups) {
+    for (const subsection of group.subsections) {
+      for (const row of subsection.rows) {
+        if (!isPrintableConnectionRow(row)) continue;
+
+        if (useStrictBlueLabelWhitelist) {
+          const endpoints = getDisplayEndpoints(row);
+          const fromDeviceBase = getBaseDeviceIdValue(endpoints.fromDeviceId)
+            .trim()
+            .toUpperCase();
+          if (!fromDeviceBase || !allowedDeviceIds.has(fromDeviceBase)) {
+            continue;
+          }
+        }
+
+        entries.push({
+          row,
+          sectionKind: subsection.sectionKind,
+          isExternalSection: group.isExternal,
+        });
+      }
+    }
+  }
+
+  const rowsByDevice = new Map<string, IPVRowEntry[]>();
+  const deviceOrder: string[] = [];
+  for (const entry of entries) {
+    const endpoints = getDisplayEndpoints(entry.row);
+    const deviceBase =
+      getBaseDeviceIdValue(endpoints.fromDeviceId).trim().toUpperCase() ||
+      "__UNKNOWN__";
+
+    if (!rowsByDevice.has(deviceBase)) {
+      rowsByDevice.set(deviceBase, []);
+      deviceOrder.push(deviceBase);
+    }
+    rowsByDevice.get(deviceBase)!.push(entry);
+  }
+
+  const groups: NonNullable<WireListPrintSchema["ipvChecklist"]>["groups"] = [];
+  const visited = new Set<string>();
+
+  if (directSequence.length > 0) {
+    for (const deviceId of directSequence) {
+      const key = getBaseDeviceIdValue(deviceId).trim().toUpperCase();
+      if (!key || visited.has(key)) continue;
+      const deviceEntries = rowsByDevice.get(key);
+      if (deviceEntries?.length) {
+        groups.push({
+          deviceId: getBaseDeviceIdValue(deviceId).trim(),
+          rows: deviceEntries.map((entry) =>
+            buildSchemaRow(
+              entry.row,
+              entry.sectionKind,
+              false,
+              currentSheetName,
+              entry.isExternalSection,
+              getLengthForRow,
+              partNumberMap,
+            ),
+          ),
+        });
+      }
+      visited.add(key);
+    }
+  }
+
+  if (!useStrictBlueLabelWhitelist) {
+    for (const key of deviceOrder) {
+      if (visited.has(key)) continue;
+      const deviceEntries = rowsByDevice.get(key);
+      if (!deviceEntries?.length) continue;
+
+      groups.push({
+        deviceId: key === "__UNKNOWN__" ? "—" : key,
+        rows: deviceEntries.map((entry) =>
+          buildSchemaRow(
+            entry.row,
+            entry.sectionKind,
+            false,
+            currentSheetName,
+            entry.isExternalSection,
+            getLengthForRow,
+            partNumberMap,
+          ),
+        ),
+      });
+    }
+  }
+
+  return {
+    totalRows: entries.length,
+    groups,
+  };
+}
+
 // ============================================================================
 // Main Builder
 // ============================================================================
@@ -346,6 +481,8 @@ export interface BuildPrintSchemaOptions {
   locationNormalizedTitleByName?: Record<string, string>;
   /** Blue label sequence map for sorting single connections */
   blueLabels?: BlueLabelSequenceMap | null;
+  /** Assignment-level blue label device sequence (takes priority over blueLabels sheet sequence for IPV ordering) */
+  assignmentBlueLabels?: string[] | null;
   /** Part number lookup map */
   partNumberMap?: Map<string, PartNumberLookupResult> | null;
 }
@@ -487,6 +624,14 @@ export function buildWireListPrintSchema(options: BuildPrintSchemaOptions): Wire
   });
 
   const totalRows = processedLocationGroups.reduce((sum, g) => sum + g.totalRows, 0);
+  const ipvChecklist = buildIpvChecklistSchema(
+    processedLocationGroups,
+    options.currentSheetName,
+    options.blueLabels ?? null,
+    options.getLengthForRow,
+    options.partNumberMap,
+    options.assignmentBlueLabels ?? null,
+  );
 
   // Build pages in order
   const pages: WireListPrintSchemaPageUnion[] = [];
@@ -689,6 +834,7 @@ export function buildWireListPrintSchema(options: BuildPrintSchemaOptions): Wire
       brandingSortMode: settings.brandingSortMode,
       wireListSortMode: settings.wireListSortMode,
     },
+    ipvChecklist,
     pages,
   };
 }
@@ -759,6 +905,10 @@ export interface SchemaHydrationResult {
   sheetTitle?: string;
   partNumberMap?: Map<string, PartNumberLookupResult>;
   rowLengthsById?: Record<string, { display: string; roundedInches: number; confidence: string }>;
+  ipvChecklistGroups?: Array<{
+    deviceId: string;
+    rows: SemanticWireListRow[];
+  }>;
 }
 
 /**
@@ -827,5 +977,9 @@ export function hydrateSchemaForRender(schema: WireListPrintSchema): SchemaHydra
     sheetTitle: coverPage?.sheetTitle,
     partNumberMap: partNumberMap.size > 0 ? partNumberMap : undefined,
     rowLengthsById: Object.keys(rowLengthsById).length > 0 ? rowLengthsById : undefined,
+    ipvChecklistGroups: schema.ipvChecklist?.groups?.map((group) => ({
+      deviceId: group.deviceId,
+      rows: group.rows.map(schemaRowToSemantic),
+    })),
   };
 }

@@ -96,10 +96,13 @@ export interface ManifestBoardAssignmentMeta {
 
 export interface ManifestAssignmentFiles {
   wireListSchemaPath?: string
+  ipvWireListSchemaPath?: string
   brandListSchemaPath?: string
   buildUpSWSSchemaPath?: string
   wireListPDFPath?: string
   brandListExcelPath?: string
+  layoutImagePath?: string
+  layoutPdfPath?: string
 }
 
 export interface ManifestAssignmentTimeEstimates {
@@ -179,6 +182,8 @@ export interface ManifestAssignment extends ManifestSheetBase {
   panelNumber?: string | null
   /** Box number of the matched primary layout page, promoted from layout.primaryPage.boxNumber */
   boxNumber?: string | null
+  /** Relative path to assignment layout preview image under project exports. */
+  layoutImageUrlPath?: string
   /** Priority level shortcut, promoted from priority.level — avoids null-chaining on every filter/sort */
   priorityLevel?: PriorityLevel
   /** Assigned badge shortcut, promoted from boardAssignment.assignedBadge */
@@ -218,6 +223,7 @@ export interface ManifestAssignment extends ManifestSheetBase {
   }>
   whiteLabels: string[]
   blueLabels: string[]
+  heatShrinkLabels?: string[]
   boardAssignment?: ManifestBoardAssignmentMeta
 }
 

@@ -9,6 +9,15 @@ export const dynamic = 'force-dynamic'
 
 function getContentType(filePath: string): string {
   switch (path.extname(filePath).toLowerCase()) {
+    case '.jpg':
+    case '.jpeg':
+      return 'image/jpeg'
+    case '.png':
+      return 'image/png'
+    case '.webp':
+      return 'image/webp'
+    case '.gif':
+      return 'image/gif'
     case '.csv':
       return 'text/csv; charset=utf-8'
     case '.pdf':

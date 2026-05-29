@@ -3,6 +3,7 @@ import 'server-only'
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 
+import { PDFDocument } from 'pdf-lib'
 import type { SlimLayoutPage } from '@/lib/layout-matching'
 import type {
   ManifestAssignmentNode,
@@ -35,13 +36,26 @@ function normalizePartToken(rawToken: string): string {
     .replace(/\s+/g, ' ')
 }
 
-function formatMinutes(minutes: number): string {
-  const safe = Math.max(0, Math.round(minutes))
-  const hours = Math.floor(safe / 60)
-  const remainder = safe % 60
-  if (hours === 0) return `${remainder}m`
-  if (remainder === 0) return `${hours}h`
-  return `${hours}h ${remainder}m`
+function formatValuesWithQty(values: string[]): string[] {
+  const counts = new Map<string, number>()
+  const order: string[] = []
+
+  for (const rawValue of values) {
+    const value = normalize(rawValue)
+    if (!value) continue
+
+    if (!counts.has(value)) {
+      counts.set(value, 1)
+      order.push(value)
+    } else {
+      counts.set(value, (counts.get(value) ?? 0) + 1)
+    }
+  }
+
+  return order.map((value) => {
+    const qty = counts.get(value) ?? 0
+    return qty > 1 ? `${value} x${qty}` : value
+  })
 }
 
 async function readJson<T>(filePath: string): Promise<T | null> {
@@ -76,6 +90,89 @@ async function readLabelSheetData(stateRoot: string, slug: string): Promise<Labe
 
 async function fileExists(filePath: string): Promise<boolean> {
   return fs.stat(filePath).then(() => true).catch(() => false)
+}
+
+function decodeDataImageUrl(dataUrl: string): { buffer: Buffer; extension: string } | null {
+  const match = /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/i.exec(dataUrl)
+  if (!match) {
+    return null
+  }
+
+  const mimeType = match[1].toLowerCase()
+  const base64 = match[2]
+  const extension = mimeType === 'image/png'
+    ? 'png'
+    : mimeType === 'image/webp'
+      ? 'webp'
+      : mimeType === 'image/gif'
+        ? 'gif'
+        : 'jpg'
+
+  try {
+    return {
+      buffer: Buffer.from(base64, 'base64'),
+      extension,
+    }
+  } catch {
+    return null
+  }
+}
+
+async function persistLayoutPageExports(
+  projectRoot: string,
+  pages: SlimLayoutPage[],
+): Promise<{ imagePathByPage: Map<number, string>; pdfPathByPage: Map<number, string> }> {
+  const exportDir = path.join(projectRoot, 'exports', 'layout-pages')
+  const imagePathByPage = new Map<number, string>()
+  const pdfPathByPage = new Map<number, string>()
+
+  await fs.mkdir(exportDir, { recursive: true })
+
+  for (const page of pages) {
+    const image = decodeDataImageUrl(page.imageUrl)
+    if (!image) {
+      continue
+    }
+
+    const imageFileName = `page-${page.pageNumber}.${image.extension}`
+    const imageFilePath = path.join(exportDir, imageFileName)
+    await fs.writeFile(imageFilePath, image.buffer)
+    imagePathByPage.set(page.pageNumber, `exports/layout-pages/${imageFileName}`)
+
+    const pdfFileName = `page-${page.pageNumber}.pdf`
+    const pdfFilePath = path.join(exportDir, pdfFileName)
+
+    const pdf = await PDFDocument.create()
+    let embeddedImage
+    if (image.extension === 'png') {
+      embeddedImage = await pdf.embedPng(image.buffer)
+    } else {
+      embeddedImage = await pdf.embedJpg(image.buffer)
+    }
+    const pdfPage = pdf.addPage([embeddedImage.width, embeddedImage.height])
+    pdfPage.drawImage(embeddedImage, {
+      x: 0,
+      y: 0,
+      width: embeddedImage.width,
+      height: embeddedImage.height,
+    })
+    await fs.writeFile(pdfFilePath, Buffer.from(await pdf.save()))
+    pdfPathByPage.set(page.pageNumber, `exports/layout-pages/${pdfFileName}`)
+  }
+
+  const keep = new Set([
+    ...Array.from(imagePathByPage.values()).map((value) => path.basename(value)),
+    ...Array.from(pdfPathByPage.values()).map((value) => path.basename(value)),
+  ])
+  const staleEntries = await fs.readdir(exportDir, { withFileTypes: true }).catch(() => [])
+  for (const entry of staleEntries) {
+    if (!entry.isFile()) continue
+    if (!/^page-\d+\.(?:jpg|jpeg|png|webp|gif|pdf)$/i.test(entry.name)) continue
+    if (keep.has(entry.name)) continue
+    await fs.rm(path.join(exportDir, entry.name), { force: true })
+  }
+
+  return { imagePathByPage, pdfPathByPage }
 }
 
 async function resolveArtifactRoot(projectRoot: string): Promise<string> {
@@ -161,17 +258,32 @@ function collectLabelsFromSheetData(
   return Array.from(labels)
 }
 
-function deriveEstimateMinutes(entry: ManifestAssignmentNode): { buildUp: number; wireList: number } {
-  const rowCount = Math.max(0, entry.rowCount || 0)
-  const swsType = normalizeUpper(entry.swsType)
+async function readExternalLocationsFromPrintSchema(
+  artifactRoot: string,
+  assignmentSlug: string,
+): Promise<string[]> {
+  const schema = await readJson<{
+    pages?: Array<{
+      locationGroups?: Array<{ location?: string; isExternal?: boolean }>
+    }>
+  }>(path.join(artifactRoot, 'wire-list-print-schema', `${assignmentSlug}.json`))
 
-  const buildUpFactor = swsType.includes('PANEL') ? 1.7 : swsType.includes('BOX') ? 1.3 : 1.1
-  const wireListFactor = swsType.includes('PANEL') ? 1.1 : swsType.includes('BOX') ? 0.85 : 0.75
-
-  return {
-    buildUp: rowCount * buildUpFactor,
-    wireList: rowCount * wireListFactor,
+  if (!Array.isArray(schema?.pages)) {
+    return []
   }
+
+  const locations = new Set<string>()
+  for (const page of schema.pages) {
+    if (!Array.isArray(page?.locationGroups)) continue
+    for (const group of page.locationGroups) {
+      if (!group?.isExternal) continue
+      const location = normalize(group.location)
+      if (!location) continue
+      locations.add(location)
+    }
+  }
+
+  return Array.from(locations)
 }
 
 function deriveUnmappedLayoutReason(
@@ -198,11 +310,28 @@ export async function buildManifestAssignmentSummaries(
   manifest: ProjectManifest,
 ): Promise<Record<string, ManifestAssignmentNode>> {
   const artifactRoot = await resolveArtifactRoot(projectRoot)
-  const pathPrefix = artifactRoot === projectRoot ? '' : 'state/'
 
   const layoutPagesDoc = await readJson<{ pages?: SlimLayoutPage[] }>(path.join(artifactRoot, 'layout-pages.json'))
-  const layoutPages = Array.isArray(layoutPagesDoc?.pages) ? layoutPagesDoc.pages : []
+  const layoutPagesIndexDoc = await readJson<{ pages?: Array<{ pageNumber?: number; imageUrl?: string }> }>(
+    path.join(artifactRoot, 'layout-pages.index.json'),
+  )
+  const indexedImageByPage = new Map<number, string>()
+  for (const page of layoutPagesIndexDoc?.pages ?? []) {
+    if (typeof page?.pageNumber !== 'number') continue
+    const imageUrl = normalize(page.imageUrl)
+    if (!imageUrl) continue
+    indexedImageByPage.set(page.pageNumber, imageUrl)
+  }
+
+  const layoutPages = Array.isArray(layoutPagesDoc?.pages)
+    ? layoutPagesDoc.pages.map((page) => ({
+      ...page,
+      imageUrl: normalize(page.imageUrl) || indexedImageByPage.get(page.pageNumber) || '',
+    }))
+    : []
   const layoutIndex = buildNormalizedLayoutPageIndex(layoutPages)
+  const { imagePathByPage: layoutImagePathByPage, pdfPathByPage: layoutPdfPathByPage } =
+    await persistLayoutPageExports(projectRoot, layoutPages)
 
   // Load UBP reference index for reference-backed matching (panel/box/unit signals)
   const ubpRefPath = path.join(process.cwd(), 'Share', 'References', 'layout-unit-box-panel-reference.json')
@@ -219,9 +348,10 @@ export async function buildManifestAssignmentSummaries(
   }>(path.join(artifactRoot, 'device-part-numbers.json'))
   const devices = devicePartsDoc?.devices ?? {}
 
-  const [whiteSheetData, blueSheetData] = await Promise.all([
+  const [whiteSheetData, blueSheetData, heatShrinkSheetData] = await Promise.all([
     readLabelSheetData(artifactRoot, 'white-labels'),
     readLabelSheetData(artifactRoot, 'blue-labels'),
+    readLabelSheetData(artifactRoot, 'heat-shrink-labels'),
   ])
 
   const brandingExports = await readJson<{
@@ -247,6 +377,12 @@ export async function buildManifestAssignmentSummaries(
     const primaryPage = matchedLayout?.primaryPage
     const mappedPage = primaryPage
       ? layoutPages.find(page => page.pageNumber === primaryPage.pageNumber)
+      : undefined
+    const layoutImageUrlPath = primaryPage
+      ? layoutImagePathByPage.get(primaryPage.pageNumber)
+      : undefined
+    const layoutPdfPath = primaryPage
+      ? layoutPdfPathByPage.get(primaryPage.pageNumber)
       : undefined
 
     const referenceUnitType = ubpIndex
@@ -289,17 +425,17 @@ export async function buildManifestAssignmentSummaries(
 
     const persistedRailGroups = mappedPage?.railGroups ?? []
 
-    const rails = Array.from(
-      new Set(
-        [
-          ...(mappedPage?.rails ?? []),
-          ...persistedRailGroups.map(group => ({ railLabel: group.railLabel ?? '' })),
-        ]
-          .map(rail => normalize(rail.railLabel))
-          .filter(Boolean),
-      ),
-    )
-    const panducts = Array.from(new Set((mappedPage?.panducts ?? []).map(panduct => normalize(panduct.label)).filter(Boolean)))
+    const railsFromLayout = (mappedPage?.rails ?? []).map((rail) => rail.railLabel ?? '')
+    const railsSource = railsFromLayout.length > 0
+      ? railsFromLayout
+      : persistedRailGroups.map((group) => group.railLabel ?? '')
+    const rails = formatValuesWithQty(railsSource)
+
+    const panductFromLayout = (mappedPage?.panducts ?? []).map((panduct) => panduct.label ?? '')
+    const panductSource = panductFromLayout.length > 0
+      ? panductFromLayout
+      : []
+    const panducts = formatValuesWithQty(panductSource)
 
     const whiteLabels = collectLabelsFromSheetData(
       whiteSheetData,
@@ -309,6 +445,12 @@ export async function buildManifestAssignmentSummaries(
     )
     const blueLabels = collectLabelsFromSheetData(
       blueSheetData,
+      assignment.sheetName,
+      assignment.sheetSlug,
+      unitType,
+    )
+    const heatShrinkLabels = collectLabelsFromSheetData(
+      heatShrinkSheetData,
       assignment.sheetName,
       assignment.sheetSlug,
       unitType,
@@ -327,15 +469,19 @@ export async function buildManifestAssignmentSummaries(
     const wireListPDFPath = wireExports?.sheetExports
       ?.find(entry => normalizeUpper(entry.sheetName) === assignmentSheetUpper)
       ?.relativePath
-    const wireListSchemaRelativePath = `${pathPrefix}sheets/${assignment.sheetSlug}.json`
-    const brandListSchemaRelativePath = `${pathPrefix}wire-brand-list/${assignment.sheetSlug}.json`
-    const buildUpSWSSchemaRelativePath = `${pathPrefix}build-up-sws-schema/${assignment.sheetSlug}.json`
+    const wireListSchemaRelativePath = `state/wire-list-print-schema/${assignment.sheetSlug}.json`
+    const ipvWireListSchemaRelativePath = `state/ipv/${assignment.sheetSlug}-ipv.json`
+    const brandListSchemaRelativePath = `state/wire-brand-list/${assignment.sheetSlug}.json`
+    const buildUpSWSSchemaRelativePath = `state/build-up-sws-schema/${assignment.sheetSlug}.json`
     const [hasBrandListSchema, hasBuildUpSchema] = await Promise.all([
       fileExists(path.join(projectRoot, brandListSchemaRelativePath)),
       fileExists(path.join(projectRoot, buildUpSWSSchemaRelativePath)),
     ])
 
-    const estimates = deriveEstimateMinutes(assignment)
+    const schemaExternalLocations = await readExternalLocationsFromPrintSchema(
+      artifactRoot,
+      assignment.sheetSlug,
+    )
 
     // Look up this assignment in the UBP cross-project reference to get
     // validated swsType and boxSide values (unit-type-scoped, then global fallback).
@@ -360,11 +506,11 @@ export async function buildManifestAssignmentSummaries(
     }
 
     // Use UBP reference for location structure when available; otherwise keep manifest locations.
-    const rawLocations: unknown[] = Array.isArray(ubpEntry?.externalLocations) && ubpEntry.externalLocations.length > 0
-      ? ubpEntry.externalLocations
-      : Array.isArray(assignment.externalLocations)
-        ? assignment.externalLocations
-        : []
+    const rawLocations: unknown[] = [
+      ...schemaExternalLocations.map((location) => ({ location })),
+      ...(Array.isArray(ubpEntry?.externalLocations) ? ubpEntry.externalLocations : []),
+      ...(Array.isArray(assignment.externalLocations) ? assignment.externalLocations : []),
+    ]
     const seenLocations = new Set<string>()
     const resolvedExternalLocations = rawLocations
       .map((item) => {
@@ -395,16 +541,21 @@ export async function buildManifestAssignmentSummaries(
       rails,
       whiteLabels,
       blueLabels,
+      heatShrinkLabels,
       partNumbers: Array.from(devicePartNumbers).sort((a, b) => a.localeCompare(b)),
       files: {
         wireListPDFPath,
         wireListSchemaPath: wireListSchemaRelativePath,
+        ipvWireListSchemaPath: ipvWireListSchemaRelativePath,
         brandListSchemaPath: hasBrandListSchema ? brandListSchemaRelativePath : undefined,
         brandListExcelPath: brandingExports?.combinedRelativePath,
         buildUpSWSSchemaPath: hasBuildUpSchema ? buildUpSWSSchemaRelativePath : undefined,
+        layoutImagePath: layoutImageUrlPath,
+        layoutPdfPath,
       },
-      buildUpEstTime: formatMinutes(estimates.buildUp),
-      wireListEstTime: formatMinutes(estimates.wireList),
+      layoutImageUrlPath,
+      buildUpEstTime: undefined,
+      wireListEstTime: undefined,
       normalizedTitle: normalizedLayout?.primaryPage?.normalizedTitle ?? assignment.normalizedTitle,
       panelNumber: normalizedLayout?.primaryPage?.panelNumber ?? assignment.panelNumber,
       boxNumber: normalizedLayout?.primaryPage?.boxNumber ?? assignment.boxNumber,

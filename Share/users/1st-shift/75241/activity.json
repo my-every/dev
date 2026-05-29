@@ -1,8 +1,340 @@
 {
   "badge": "75241",
   "shift": "1st",
-  "lastUpdated": "2026-05-28T05:14:51.104Z",
+  "lastUpdated": "2026-05-29T15:02:01.738Z",
   "activities": [
+    {
+      "id": "act_1780066921737_5vnlb",
+      "timestamp": "2026-05-29T15:02:01.738Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "workflow": "legal-revision-refresh",
+        "pdNumber": "ANG02",
+        "revision": "A.6 M.2",
+        "jobId": "rev_job_1780066917319_qaf15"
+      },
+      "projectId": "ang02-stock2",
+      "comment": "Legal revision refresh failed.",
+      "result": "failure",
+      "error": "Missing project-manifest.json for legal revision ANG02/A.6 M.2"
+    },
+    {
+      "id": "act_1780066917806_5copd",
+      "timestamp": "2026-05-29T15:01:57.808Z",
+      "action": "LEGAL_UPLOADED",
+      "performedBy": "75241",
+      "metadata": {
+        "files": [
+          "layout"
+        ],
+        "details": {
+          "layout": "4M093_CORE_LAY_A.6_M.2.pdf",
+          "revision": "A.6 M.2"
+        },
+        "projectName": "STOCK2",
+        "pdNumber": "ANG02"
+      },
+      "projectId": "ang02-stock2",
+      "result": "success"
+    },
+    {
+      "id": "act_1780066917597_5n1j3",
+      "timestamp": "2026-05-29T15:01:57.597Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "workflow": "legal-revision-refresh",
+        "pdNumber": "ANG02",
+        "revision": "A.6 M.2",
+        "jobId": "rev_job_1780066917319_qaf15"
+      },
+      "projectId": "ang02-stock2",
+      "comment": "Legal revision refresh started in background.",
+      "result": "pending"
+    },
+    {
+      "id": "act_1780066089019_dbbbv",
+      "timestamp": "2026-05-29T14:48:09.019Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "workflow": "legal-revision-refresh",
+        "pdNumber": "ANG02",
+        "revision": "A.6 M.2",
+        "jobId": "rev_job_1780066082623_c1jww"
+      },
+      "projectId": "ang02-stock2",
+      "comment": "Legal revision refresh failed.",
+      "result": "failure",
+      "error": "Missing project-manifest.json for legal revision ANG02/A.6 M.2"
+    },
+    {
+      "id": "act_1780066088466_isn6d",
+      "timestamp": "2026-05-29T14:48:08.466Z",
+      "action": "LEGAL_UPLOADED",
+      "performedBy": "75241",
+      "metadata": {
+        "files": [
+          "layout"
+        ],
+        "details": {
+          "layout": "4M093_CORE_LAY_A.6_M.2.pdf",
+          "revision": "A.6 M.2"
+        },
+        "projectName": "STOCK2",
+        "pdNumber": "ANG02"
+      },
+      "projectId": "ang02-stock2",
+      "result": "success"
+    },
+    {
+      "id": "act_1780066082627_txuqs",
+      "timestamp": "2026-05-29T14:48:02.627Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "workflow": "legal-revision-refresh",
+        "pdNumber": "ANG02",
+        "revision": "A.6 M.2",
+        "jobId": "rev_job_1780066082623_c1jww"
+      },
+      "projectId": "ang02-stock2",
+      "comment": "Legal revision refresh started in background.",
+      "result": "pending"
+    },
+    {
+      "id": "act_1780064551010_jxjnl",
+      "timestamp": "2026-05-29T14:22:31.010Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "workflow": "legal-revision-refresh",
+        "pdNumber": "ANG02",
+        "revision": "A.6 M.2",
+        "jobId": "rev_job_1780064537788_3h947"
+      },
+      "projectId": "ang02-stock2",
+      "comment": "Legal revision refresh failed.",
+      "result": "failure",
+      "error": "Missing project-manifest.json for legal revision ANG02/A.6 M.2"
+    },
+    {
+      "id": "act_1780064548447_q99x5",
+      "timestamp": "2026-05-29T14:22:28.447Z",
+      "action": "LEGAL_UPLOADED",
+      "performedBy": "75241",
+      "metadata": {
+        "files": [
+          "layout"
+        ],
+        "details": {
+          "layout": "4M093_CORE_LAY_A.6_M.2.pdf",
+          "revision": "A.6 M.2"
+        },
+        "projectName": "STOCK2",
+        "pdNumber": "ANG02"
+      },
+      "projectId": "ang02-stock2",
+      "result": "success"
+    },
+    {
+      "id": "act_1780064537802_apacr",
+      "timestamp": "2026-05-29T14:22:17.802Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "workflow": "legal-revision-refresh",
+        "pdNumber": "ANG02",
+        "revision": "A.6 M.2",
+        "jobId": "rev_job_1780064537788_3h947"
+      },
+      "projectId": "ang02-stock2",
+      "comment": "Legal revision refresh started in background.",
+      "result": "pending"
+    },
+    {
+      "id": "act_1780062893688_4hqtj",
+      "timestamp": "2026-05-29T13:54:53.688Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "source": "legal_instance_create",
+        "pdNumber": "ANG01",
+        "revision": "A.6"
+      },
+      "projectId": "ang01-stock-4",
+      "comment": "Created project instance from legal drawing (ANG01)",
+      "result": "success"
+    },
+    {
+      "id": "act_1780021829323_ufzd7",
+      "timestamp": "2026-05-29T02:30:29.323Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "source": "legal_instance_create",
+        "pdNumber": "ANG02",
+        "revision": "A.6_M.2"
+      },
+      "projectId": "ang02-stock2",
+      "comment": "Created project instance from legal drawing (ANG02)",
+      "result": "success"
+    },
+    {
+      "id": "act_1780021697502_9q85z",
+      "timestamp": "2026-05-29T02:28:17.502Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "source": "legal_instance_create",
+        "pdNumber": "4P101",
+        "revision": "C.4_M.1"
+      },
+      "projectId": "4p101-koc-jpf",
+      "comment": "Created project instance from legal drawing (4P101)",
+      "result": "success"
+    },
+    {
+      "id": "act_1780021547184_zg0ga",
+      "timestamp": "2026-05-29T02:25:47.184Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "source": "legal_instance_create",
+        "pdNumber": "4K761",
+        "revision": "B.2"
+      },
+      "projectId": "4k761-dte-cal",
+      "comment": "Created project instance from legal drawing (4K761)",
+      "result": "success"
+    },
+    {
+      "id": "act_1780021437321_4qr47",
+      "timestamp": "2026-05-29T02:23:57.321Z",
+      "action": "PROJECT_DETAILS_UPDATED",
+      "performedBy": "75241",
+      "metadata": {
+        "fields": [
+          "id",
+          "name",
+          "filename",
+          "pdNumber",
+          "revision",
+          "createdAt",
+          "sheets",
+          "assignments",
+          "referenceSheets",
+          "unitType",
+          "unitTypes",
+          "panducts",
+          "rails",
+          "aggregates",
+          "assignmentsByUnitType",
+          "projectName",
+          "unitNumber",
+          "color",
+          "activeWorkbookRevisionId",
+          "activeLayoutRevisionId",
+          "whiteLabels",
+          "blueLabels",
+          "brandingLabelReference"
+        ],
+        "legalSync": {
+          "synced": false,
+          "message": "No changes to sync"
+        },
+        "projectName": "STOCK7",
+        "pdNumber": "ANG07"
+      },
+      "projectId": "ang07-stock7",
+      "result": "success"
+    },
+    {
+      "id": "act_1780021431387_yess5",
+      "timestamp": "2026-05-29T02:23:51.389Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "settingsType": "default_visibility",
+        "updatedCount": 1,
+        "updatedAssignments": [
+          "jb71-b-box-control"
+        ],
+        "overwriteExisting": true,
+        "legalSync": {
+          "synced": false,
+          "message": "No changes to sync"
+        },
+        "projectName": "STOCK7",
+        "pdNumber": "ANG07"
+      },
+      "projectId": "ang07-stock7",
+      "result": "success"
+    },
+    {
+      "id": "act_1780020811646_i9gbz",
+      "timestamp": "2026-05-29T02:13:31.646Z",
+      "action": "PROJECT_DETAILS_UPDATED",
+      "performedBy": "75241",
+      "metadata": {
+        "fields": [
+          "id",
+          "name",
+          "filename",
+          "pdNumber",
+          "revision",
+          "createdAt",
+          "sheets",
+          "assignments",
+          "referenceSheets",
+          "unitType",
+          "unitTypes",
+          "panducts",
+          "rails",
+          "aggregates",
+          "assignmentsByUnitType",
+          "projectName",
+          "unitNumber",
+          "color",
+          "activeWorkbookRevisionId",
+          "activeLayoutRevisionId",
+          "whiteLabels",
+          "blueLabels",
+          "brandingLabelReference"
+        ],
+        "legalSync": {
+          "synced": false,
+          "message": "No changes to sync"
+        },
+        "projectName": "STOCK7",
+        "pdNumber": "ANG07"
+      },
+      "projectId": "ang07-stock7",
+      "result": "success"
+    },
+    {
+      "id": "act_1780020807953_7u9dv",
+      "timestamp": "2026-05-29T02:13:27.953Z",
+      "action": "SETTINGS_CHANGED",
+      "performedBy": "75241",
+      "metadata": {
+        "settingsType": "default_visibility",
+        "updatedCount": 1,
+        "updatedAssignments": [
+          "jb71-b-box-control"
+        ],
+        "overwriteExisting": true,
+        "legalSync": {
+          "synced": false,
+          "message": "No changes to sync"
+        },
+        "projectName": "STOCK7",
+        "pdNumber": "ANG07"
+      },
+      "projectId": "ang07-stock7",
+      "result": "success"
+    },
     {
       "id": "act_1779945291104_0ch4e",
       "timestamp": "2026-05-28T05:14:51.104Z",
@@ -1858,8 +2190,8 @@
     }
   ],
   "stats": {
-    "totalActions": 86,
-    "actionsToday": 36,
-    "lastActionTime": "2026-05-28T05:14:51.104Z"
+    "totalActions": 103,
+    "actionsToday": 10,
+    "lastActionTime": "2026-05-29T15:02:01.738Z"
   }
 }

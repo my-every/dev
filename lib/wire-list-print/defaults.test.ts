@@ -13,6 +13,7 @@ describe("wire-list print defaults", () => {
     const settings = createDefaultPrintSettings();
 
     expect(settings.mode).toBe("standardize");
+    expect(settings.paperSize).toBe("tabloid");
     expect(settings.enabledSections).toEqual(DEFAULT_SECTION_ORDER);
     expect(settings.sectionOrder).toEqual(DEFAULT_SECTION_ORDER);
     expect(settings.showCoverPage).toBe(true);

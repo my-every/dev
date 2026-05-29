@@ -95,10 +95,12 @@ export function buildManifestAssignmentNode(
         rails: existing?.rails ?? [],
         whiteLabels: existing?.whiteLabels ?? [],
         blueLabels: existing?.blueLabels ?? [],
+        heatShrinkLabels: existing?.heatShrinkLabels ?? [],
         partNumbers: existing?.partNumbers ?? [],
         files: existing?.files ?? {
             wireListSchemaPath: `state/wire-list-print-schema/${slug}.json`,
-            brandListSchemaPath:    `state/wire-brand-list/${slug}.json`,
+            ipvWireListSchemaPath: `state/ipv/${slug}-ipv.json`,
+            brandListSchemaPath: `state/wire-brand-list/${slug}.json`,
             buildUpSWSSchemaPath: `state/build-up-sws-schema/${slug}.json`,
         },
         layout: a.matchedLayoutPage != null

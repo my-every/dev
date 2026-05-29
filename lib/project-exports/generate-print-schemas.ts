@@ -1,5 +1,6 @@
 import "server-only";
 
+import { promises as fs } from "node:fs";
 import path from "node:path";
 
 import {
@@ -38,6 +39,106 @@ export interface GeneratePrintSchemasResult {
     }>;
 }
 
+function buildIpvIdentityFilterReferences(
+    schema: ReturnType<typeof buildWireListPrintSchema>,
+): Array<{
+    title: string;
+    sectionKind?: string;
+    rowCount: number;
+    rows: Array<{
+        fromDeviceId: string;
+        toDeviceId: string;
+        wireNo: string;
+        wireId: string;
+        gaugeSize: string;
+        location: string;
+    }>;
+}> {
+    const wireListPage = schema.pages.find((page) => page.pageType === "wire-list");
+    if (!wireListPage) {
+        return [];
+    }
+
+    const referencesBySection = new Map<string, {
+        title: string;
+        sectionKind?: string;
+        rowCount: number;
+        rows: Array<{
+            fromDeviceId: string;
+            toDeviceId: string;
+            wireNo: string;
+            wireId: string;
+            gaugeSize: string;
+            location: string;
+        }>;
+    }>();
+
+    for (const locationGroup of wireListPage.locationGroups) {
+        for (const subsection of locationGroup.subsections) {
+            const printableRows = subsection.rows.filter((row) => {
+                const from = String(row.fromDeviceId ?? "").trim();
+                const to = String(row.toDeviceId ?? "").trim();
+                return from.length > 0 || to.length > 0;
+            });
+
+            if (printableRows.length === 0) {
+                continue;
+            }
+
+            const sectionKey = `${subsection.sectionKind ?? "unknown"}:${subsection.label}`;
+            const existing = referencesBySection.get(sectionKey);
+            const mappedRows = printableRows.map((row) => ({
+                    fromDeviceId: row.fromDeviceId,
+                    toDeviceId: row.toDeviceId,
+                    wireNo: row.wireNo,
+                    wireId: row.wireId,
+                    gaugeSize: row.gaugeSize,
+                    location: row.toLocation || row.fromLocation || "",
+                }));
+
+            if (existing) {
+                existing.rows.push(...mappedRows);
+                existing.rowCount = existing.rows.length;
+            } else {
+                referencesBySection.set(sectionKey, {
+                    title: subsection.label,
+                    sectionKind: subsection.sectionKind,
+                    rowCount: mappedRows.length,
+                    rows: mappedRows,
+                });
+            }
+        }
+    }
+
+    return Array.from(referencesBySection.values());
+}
+
+function formatReferenceValuesWithQty(values?: string[] | null): string[] {
+    if (!values || values.length === 0) {
+        return [];
+    }
+
+    const counts = new Map<string, number>();
+    const order: string[] = [];
+
+    for (const rawValue of values) {
+        const value = String(rawValue ?? "").trim();
+        if (!value) continue;
+
+        if (!counts.has(value)) {
+            counts.set(value, 1);
+            order.push(value);
+        } else {
+            counts.set(value, (counts.get(value) ?? 0) + 1);
+        }
+    }
+
+    return order.map((value) => {
+        const qty = counts.get(value) ?? 0;
+        return qty > 1 ? `${value} x${qty}` : value;
+    });
+}
+
 /**
  * Generate wire-list-print-schema (standardize mode) and wire-brand-list schema
  * (branding mode) for every operational sheet in the project.
@@ -74,6 +175,8 @@ export async function generateAllPrintSchemas(
     }
     const printSchemaDirectory = path.join(stateDirectory, "wire-list-print-schema");
     const brandListDirectory = path.join(stateDirectory, "wire-brand-list");
+    const ipvDirectory = path.join(stateDirectory, "ipv");
+    await fs.mkdir(ipvDirectory, { recursive: true });
 
     const operationalSheets = manifest.sheets.filter(
         (sheet) => sheet.kind === "operational",
@@ -85,6 +188,7 @@ export async function generateAllPrintSchemas(
     const terminalResolver = projectRoot ? await createProjectPartTerminalResolver(projectRoot) : null;
 
     for (const sheet of operationalSheets) {
+        const assignmentNode = manifest.assignments?.[sheet.slug];
         const schema = await readSheetSchema(projectId, sheet.slug);
         if (!schema) {
             result.skippedSheets.push({
@@ -137,9 +241,38 @@ export async function generateAllPrintSchemas(
                 getLengthForRow: (rowId) => standardizeDocument.rowLengthsById?.[rowId] ?? null,
                 locationBoxSideByName: standardizeDocument.locationBoxSideByName,
                 locationNormalizedTitleByName: standardizeDocument.locationNormalizedTitleByName,
+                assignmentBlueLabels: assignmentNode?.blueLabels ?? [],
             });
             standardizeSchema.sheetName = normalizeDisplayTitle(standardizeSchema.sheetName);
             await saveWireListPrintSchemaToDirectory(printSchemaDirectory, sheet.slug, standardizeSchema);
+            const identityFilterReferences = buildIpvIdentityFilterReferences(standardizeSchema);
+            const panductReferences = formatReferenceValuesWithQty(assignmentNode?.panducts ?? []);
+            const railReferences = formatReferenceValuesWithQty(assignmentNode?.rails ?? []);
+
+            // Persist IPV checklist as a dedicated schema artifact for manifest/file consumers.
+            const ipvPayload = {
+                generatedAt: standardizeSchema.generatedAt,
+                sheetSlug: sheet.slug,
+                sheetName: standardizeSchema.sheetName,
+                totalRows: standardizeSchema.ipvChecklist?.totalRows ?? 0,
+                references: {
+                    assignmentName: assignmentNode?.sheetName ?? sheet.name,
+                    whiteLabels: assignmentNode?.whiteLabels ?? [],
+                    blueLabels: assignmentNode?.blueLabels ?? [],
+                    heatShrinkLabels: assignmentNode?.heatShrinkLabels ?? [],
+                    partNumbers: assignmentNode?.partNumbers ?? [],
+                    panducts: panductReferences,
+                    rails: railReferences,
+                    identityFilters: identityFilterReferences,
+                },
+                groups: standardizeSchema.ipvChecklist?.groups ?? [],
+            };
+            await fs.writeFile(
+                path.join(ipvDirectory, `${encodeURIComponent(sheet.slug)}-ipv.json`),
+                JSON.stringify(ipvPayload, null, 2),
+                "utf-8",
+            );
+
             savedStandardize = true;
         } catch (err) {
             console.error(

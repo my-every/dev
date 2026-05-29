@@ -1,0 +1,999 @@
+{
+  "generatedAt": "2026-05-05T13:13:25.122Z",
+  "sheetName": "CONTROL JB70 TT6",
+  "mode": "standardize",
+  "totalPages": 4,
+  "totalRows": 35,
+  "settings": {
+    "showEstTime": false,
+    "showFromCheckbox": true,
+    "showToCheckbox": true,
+    "showIPV": true,
+    "showComments": true,
+    "showLength": false,
+    "showCoverPage": true,
+    "showTableOfContents": true,
+    "showIPVCodes": false,
+    "showFeedbackSection": false,
+    "showDeviceSubheaders": false,
+    "enableBlueDeviceIDColumns": false,
+    "sectionColumnVisibility": {},
+    "feedbackRenderMode": "BLANK",
+    "feedbackSections": [
+      "Header",
+      "Accuracy & Usability",
+      "Termination Clarity",
+      "Routing & Layout Alignment",
+      "Build Sequence & Efficiency",
+      "Hardware & Materials",
+      "Quality & Rework",
+      "Time & Effort",
+      "Safety & Compliance",
+      "Documentation Quality",
+      "Automation Checks",
+      "Final Sign-Off",
+      "Footer"
+    ],
+    "customQuestions": [
+      "accuracyBlueLabelsClear",
+      "accuracySequenceMatchedLayout",
+      "accuracyMissingDuplicateIncorrectEntries",
+      "accuracyLocationColumnCorrect",
+      "terminationTypesClear",
+      "terminationLengthsAccurate",
+      "terminationReworkDueToInstructionClarity",
+      "terminationJumperRulesEasyToFollow",
+      "routingAlignedWithLayout",
+      "routingLengthFit",
+      "routingConflictsPanduct",
+      "routingConflictsRails",
+      "routingConflictsAdjacentDevices",
+      "routingEfficientOrder",
+      "buildOrderHelpful",
+      "buildRequiredDeviation",
+      "buildDeviationReason",
+      "buildCausedDelays",
+      "materialsFerrulesAvailable",
+      "materialsLugsAvailable",
+      "materialsJumpersAvailable",
+      "materialsWireTypesAvailable",
+      "materialsIssuesNotes",
+      "qualityErrorsCaughtDuringWiring",
+      "qualityReterminatedWires",
+      "qualityReroutedWires",
+      "qualityReplacedWires",
+      "qualityCommonIssues",
+      "estimatedWiringTimeHours",
+      "actualWiringTimeHours",
+      "timeVarianceReason",
+      "safetyGroundsClearlyIdentified",
+      "safetyTerminationsCompliant",
+      "safetyConcernsNotes",
+      "documentationDifficulty",
+      "documentationImprovementAreas",
+      "documentationOtherImprovementArea",
+      "documentationSpecificSuggestions",
+      "automationJumperPredictionCorrect",
+      "automationBlueLabelSequencesCorrect",
+      "automationKtRulesCorrect",
+      "automationReusableTemplateCandidate",
+      "finalQualityRating",
+      "finalComments"
+    ],
+    "crossWireSections": [],
+    "hiddenRows": [],
+    "hiddenSections": [
+      "loc-4"
+    ],
+    "brandingSortMode": "device-prefix",
+    "wireListSortMode": "device-prefix"
+  },
+  "pages": [
+    {
+      "pageType": "cover",
+      "pageNumber": 1,
+      "projectInfo": {
+        "projectNumber": "4K761",
+        "projectName": "DTE-CAL - Unit 1",
+        "revision": "B.2",
+        "pdNumber": "4K761",
+        "unitNumber": "1",
+        "preparedBy": "",
+        "badgeNumber": "",
+        "date": "",
+        "time": "",
+        "personnel": [
+          {
+            "id": "1",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "2",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "3",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "4",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "5",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          },
+          {
+            "id": "6",
+            "badgeNumber": "",
+            "date": "",
+            "time": "",
+            "isAssembler": false,
+            "isInspector": false
+          }
+        ]
+      },
+      "sheetTitle": "CONTROL,JB70;TT6"
+    },
+    {
+      "pageType": "toc",
+      "pageNumber": 2,
+      "locationGroups": [
+        {
+          "location": "CONTROL A",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Grounds",
+              "rowCount": 1,
+              "estimatedPage": 3,
+              "subEntries": []
+            },
+            {
+              "index": 2,
+              "label": "Single Connections",
+              "rowCount": 20,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "SA0471",
+                  "rowCount": 4
+                },
+                {
+                  "label": "SA0472",
+                  "rowCount": 4
+                },
+                {
+                  "label": "SA0473",
+                  "rowCount": 4
+                },
+                {
+                  "label": "SB0471",
+                  "rowCount": 2
+                },
+                {
+                  "label": "SB0472",
+                  "rowCount": 2
+                },
+                {
+                  "label": "SB0473",
+                  "rowCount": 2
+                },
+                {
+                  "label": "SB0474",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "CONTROL B",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Single Connections",
+              "rowCount": 1,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "AT - FU",
+                  "rowCount": 1
+                }
+              ]
+            },
+            {
+              "index": 2,
+              "label": "Cables",
+              "rowCount": 1,
+              "estimatedPage": 3,
+              "subEntries": []
+            }
+          ]
+        },
+        {
+          "location": "F&G EDIO ONSK",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Single Connections",
+              "rowCount": 2,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "SA0170",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "F&G PWR,ONSK",
+          "isExternal": true,
+          "sections": [
+            {
+              "index": 1,
+              "label": "Single Connections",
+              "rowCount": 10,
+              "estimatedPage": 3,
+              "subEntries": [
+                {
+                  "label": "HL0171",
+                  "rowCount": 2
+                },
+                {
+                  "label": "HL0172",
+                  "rowCount": 2
+                },
+                {
+                  "label": "HL0173",
+                  "rowCount": 2
+                },
+                {
+                  "label": "SA0170",
+                  "rowCount": 2
+                },
+                {
+                  "label": "SB0170",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "locations": 4,
+        "sections": 20,
+        "rows": 35,
+        "pages": 4
+      }
+    },
+    {
+      "pageType": "wire-list",
+      "pageNumber": 3,
+      "locationGroups": [
+        {
+          "location": "CONTROL A",
+          "isExternal": true,
+          "totalRows": 21,
+          "subsections": [
+            {
+              "label": "Grounds",
+              "sectionKind": "grounds",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-0",
+                  "rowIndex": 10,
+                  "fromDeviceId": "AT1100:GND",
+                  "toDeviceId": "PEG0130:2",
+                  "wireType": "SC",
+                  "wireNo": "AT1100G",
+                  "wireId": "GRN/YEL",
+                  "gaugeSize": "14",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "43.D3",
+                  "toPageZone": "43.D5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            },
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 20,
+              "rows": [
+                {
+                  "rowId": "row-1",
+                  "rowIndex": 11,
+                  "fromDeviceId": "SA0471:B1-13",
+                  "toDeviceId": "AF0087:40",
+                  "wireType": "SC",
+                  "wireNo": "SA0471B113",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "39.B1",
+                  "toPageZone": "39.B7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-2",
+                  "rowIndex": 12,
+                  "fromDeviceId": "SA0471:B1-14",
+                  "toDeviceId": "AF0087:08",
+                  "wireType": "SC",
+                  "wireNo": "SA0471B114",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "39.B1",
+                  "toPageZone": "39.B7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-3",
+                  "rowIndex": 13,
+                  "fromDeviceId": "SA0471:B2-13",
+                  "toDeviceId": "AF0087:39",
+                  "wireType": "SC",
+                  "wireNo": "SA0471B213",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "39.A1",
+                  "toPageZone": "39.A7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-4",
+                  "rowIndex": 14,
+                  "fromDeviceId": "SA0471:B2-14",
+                  "toDeviceId": "AF0087:07",
+                  "wireType": "SC",
+                  "wireNo": "SA0471B214",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "39.A1",
+                  "toPageZone": "39.A7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-5",
+                  "rowIndex": 15,
+                  "fromDeviceId": "SA0472:B1-13",
+                  "toDeviceId": "AF0091:47",
+                  "wireType": "SC",
+                  "wireNo": "SA0472B113",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "42.C1",
+                  "toPageZone": "42.C7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-6",
+                  "rowIndex": 16,
+                  "fromDeviceId": "SA0472:B1-14",
+                  "toDeviceId": "AF0091:15",
+                  "wireType": "SC",
+                  "wireNo": "SA0472B114",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "42.C1",
+                  "toPageZone": "42.C7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-7",
+                  "rowIndex": 17,
+                  "fromDeviceId": "SA0472:B2-13",
+                  "toDeviceId": "AF0091:46",
+                  "wireType": "SC",
+                  "wireNo": "SA0472B213",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "42.C1",
+                  "toPageZone": "42.C7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-8",
+                  "rowIndex": 18,
+                  "fromDeviceId": "SA0472:B2-14",
+                  "toDeviceId": "AF0091:14",
+                  "wireType": "SC",
+                  "wireNo": "SA0472B214",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "42.C1",
+                  "toPageZone": "42.C7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-9",
+                  "rowIndex": 19,
+                  "fromDeviceId": "SA0473:11",
+                  "toDeviceId": "AF0087:37",
+                  "wireType": "SC",
+                  "wireNo": "SA047311",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "40.D1",
+                  "toPageZone": "40.D7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-10",
+                  "rowIndex": 20,
+                  "fromDeviceId": "SA0473:12",
+                  "toDeviceId": "AF0087:05",
+                  "wireType": "SC",
+                  "wireNo": "SA047312",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "40.D1",
+                  "toPageZone": "40.D7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-11",
+                  "rowIndex": 21,
+                  "fromDeviceId": "SA0473:13",
+                  "toDeviceId": "AF0087:38",
+                  "wireType": "SC",
+                  "wireNo": "SA047313",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "40.D1",
+                  "toPageZone": "40.D7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-12",
+                  "rowIndex": 22,
+                  "fromDeviceId": "SA0473:14",
+                  "toDeviceId": "AF0087:06",
+                  "wireType": "SC",
+                  "wireNo": "SA047314",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "40.D1",
+                  "toPageZone": "40.D7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-13",
+                  "rowIndex": 23,
+                  "fromDeviceId": "SB0471:11",
+                  "toDeviceId": "AF0087:34",
+                  "wireType": "SC",
+                  "wireNo": "SB047111",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "38.D1",
+                  "toPageZone": "38.D7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-14",
+                  "rowIndex": 24,
+                  "fromDeviceId": "SB0471:12",
+                  "toDeviceId": "AF0087:02",
+                  "wireType": "SC",
+                  "wireNo": "SB047112",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "38.D1",
+                  "toPageZone": "38.D7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-15",
+                  "rowIndex": 25,
+                  "fromDeviceId": "SB0472:B2-11",
+                  "toDeviceId": "AF0081:36",
+                  "wireType": "SC",
+                  "wireNo": "SB0472B211",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "39.B1",
+                  "toPageZone": "39.B7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-16",
+                  "rowIndex": 26,
+                  "fromDeviceId": "SB0472:B2-12",
+                  "toDeviceId": "AF0081:04",
+                  "wireType": "SC",
+                  "wireNo": "SB0472B212",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "39.B1",
+                  "toPageZone": "39.B7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-17",
+                  "rowIndex": 27,
+                  "fromDeviceId": "SB0473:13",
+                  "toDeviceId": "AF0087:35",
+                  "wireType": "SC",
+                  "wireNo": "SB047313",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "38.D1",
+                  "toPageZone": "38.D7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-18",
+                  "rowIndex": 28,
+                  "fromDeviceId": "SB0473:14",
+                  "toDeviceId": "AF0087:03",
+                  "wireType": "SC",
+                  "wireNo": "SB047314",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "38.D1",
+                  "toPageZone": "38.D7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-19",
+                  "rowIndex": 29,
+                  "fromDeviceId": "SB0474:13",
+                  "toDeviceId": "AF0087:36",
+                  "wireType": "SC",
+                  "wireNo": "SB047413",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "39.A1",
+                  "toPageZone": "39.A7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-20",
+                  "rowIndex": 30,
+                  "fromDeviceId": "SB0474:14",
+                  "toDeviceId": "AF0087:04",
+                  "wireType": "SC",
+                  "wireNo": "SB047414",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL A",
+                  "fromPageZone": "39.A1",
+                  "toPageZone": "39.A7",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "SA0471",
+                  "rowCount": 4
+                },
+                {
+                  "label": "SA0472",
+                  "rowCount": 4
+                },
+                {
+                  "label": "SA0473",
+                  "rowCount": 4
+                },
+                {
+                  "label": "SB0471",
+                  "rowCount": 2
+                },
+                {
+                  "label": "SB0472",
+                  "rowCount": 2
+                },
+                {
+                  "label": "SB0473",
+                  "rowCount": 2
+                },
+                {
+                  "label": "SB0474",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "CONTROL B",
+          "isExternal": true,
+          "totalRows": 2,
+          "subsections": [
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-21",
+                  "rowIndex": 31,
+                  "fromDeviceId": "AT1100:POS",
+                  "toDeviceId": "FU1100:LD",
+                  "wireType": "SC",
+                  "wireNo": "FU1100",
+                  "wireId": "WHT",
+                  "gaugeSize": "14",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL B",
+                  "fromPageZone": "43.D3",
+                  "toPageZone": "43.D3",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "AT - FU",
+                  "rowCount": 1
+                }
+              ]
+            },
+            {
+              "label": "Cables",
+              "sectionKind": "cables",
+              "rowCount": 1,
+              "rows": [
+                {
+                  "rowId": "row-22",
+                  "rowIndex": 32,
+                  "fromDeviceId": "AT1100:L1",
+                  "toDeviceId": "BA1100:DEVICE",
+                  "wireType": "WC0101",
+                  "wireNo": "BA1100DEVICE",
+                  "wireId": "ENET",
+                  "gaugeSize": "CABLE",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "CONTROL B",
+                  "fromPageZone": "43.D3",
+                  "toPageZone": "43.D1",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": []
+            }
+          ]
+        },
+        {
+          "location": "F&G EDIO ONSK",
+          "isExternal": true,
+          "totalRows": 2,
+          "subsections": [
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 2,
+              "rows": [
+                {
+                  "rowId": "row-23",
+                  "rowIndex": 33,
+                  "fromDeviceId": "SA0170:B1-13",
+                  "toDeviceId": "AT0175:4P1",
+                  "wireType": "SC",
+                  "wireNo": "AT01754P1",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "F&G EDIO ONSK",
+                  "fromPageZone": "37.C1",
+                  "toPageZone": "36.B5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-24",
+                  "rowIndex": 34,
+                  "fromDeviceId": "SA0170:B1-14",
+                  "toDeviceId": "KA6510:A1",
+                  "wireType": "SC",
+                  "wireNo": "SA0170B114",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "F&G EDIO ONSK",
+                  "fromPageZone": "37.C1",
+                  "toPageZone": "37.C5",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "SA0170",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "F&G PWR,ONSK",
+          "isExternal": true,
+          "totalRows": 10,
+          "subsections": [
+            {
+              "label": "Single Connections",
+              "sectionKind": "single_connections",
+              "rowCount": 10,
+              "rows": [
+                {
+                  "rowId": "row-25",
+                  "rowIndex": 35,
+                  "fromDeviceId": "HL0171:X1",
+                  "toDeviceId": "XT0173:3",
+                  "wireType": "SC",
+                  "wireNo": "HL0171X1",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "F&G PWR,ONSK",
+                  "fromPageZone": "37.A1",
+                  "toPageZone": "37.A4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-26",
+                  "rowIndex": 36,
+                  "fromDeviceId": "HL0171:X2",
+                  "toDeviceId": "XT0173:1",
+                  "wireType": "SC",
+                  "wireNo": "HL0171X2",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "F&G PWR,ONSK",
+                  "fromPageZone": "37.A1",
+                  "toPageZone": "37.A4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-27",
+                  "rowIndex": 37,
+                  "fromDeviceId": "HL0172:X1",
+                  "toDeviceId": "XT0173:6",
+                  "wireType": "SC",
+                  "wireNo": "HL0172X1",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "F&G PWR,ONSK",
+                  "fromPageZone": "37.A1",
+                  "toPageZone": "37.A4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-28",
+                  "rowIndex": 38,
+                  "fromDeviceId": "HL0172:X2",
+                  "toDeviceId": "XT0173:4",
+                  "wireType": "SC",
+                  "wireNo": "HL0172X2",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "F&G PWR,ONSK",
+                  "fromPageZone": "37.A1",
+                  "toPageZone": "37.A4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-29",
+                  "rowIndex": 39,
+                  "fromDeviceId": "HL0173:X1",
+                  "toDeviceId": "XT0173:9",
+                  "wireType": "SC",
+                  "wireNo": "HL0173X1",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "F&G PWR,ONSK",
+                  "fromPageZone": "37.B1",
+                  "toPageZone": "37.B4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-30",
+                  "rowIndex": 40,
+                  "fromDeviceId": "HL0173:X2",
+                  "toDeviceId": "XT0173:7",
+                  "wireType": "SC",
+                  "wireNo": "HL0173X2",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "F&G PWR,ONSK",
+                  "fromPageZone": "37.B1",
+                  "toPageZone": "37.B4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-31",
+                  "rowIndex": 41,
+                  "fromDeviceId": "SA0170:B2-13",
+                  "toDeviceId": "XT0173:10",
+                  "wireType": "SC",
+                  "wireNo": "SA0170B213",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "F&G PWR,ONSK",
+                  "fromPageZone": "37.B1",
+                  "toPageZone": "37.B4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-32",
+                  "rowIndex": 42,
+                  "fromDeviceId": "SA0170:B2-14",
+                  "toDeviceId": "XT0173:11",
+                  "wireType": "SC",
+                  "wireNo": "SA0170B214",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "F&G PWR,ONSK",
+                  "fromPageZone": "37.B1",
+                  "toPageZone": "37.B4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-33",
+                  "rowIndex": 43,
+                  "fromDeviceId": "SB0170:13",
+                  "toDeviceId": "XT0173:12",
+                  "wireType": "SC",
+                  "wireNo": "SB017013",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "F&G PWR,ONSK",
+                  "fromPageZone": "37.C1",
+                  "toPageZone": "37.C4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                },
+                {
+                  "rowId": "row-34",
+                  "rowIndex": 44,
+                  "fromDeviceId": "SB0170:14",
+                  "toDeviceId": "XT0173:13",
+                  "wireType": "SC",
+                  "wireNo": "SB017014",
+                  "wireId": "WHT",
+                  "gaugeSize": "20",
+                  "fromLocation": "CONTROL JB70 TT6",
+                  "toLocation": "F&G PWR,ONSK",
+                  "fromPageZone": "37.C1",
+                  "toPageZone": "37.C4",
+                  "lengthDisplay": "120 in",
+                  "lengthInches": 120
+                }
+              ],
+              "deviceToDeviceSubsections": [
+                {
+                  "label": "HL0171",
+                  "rowCount": 2
+                },
+                {
+                  "label": "HL0172",
+                  "rowCount": 2
+                },
+                {
+                  "label": "HL0173",
+                  "rowCount": 2
+                },
+                {
+                  "label": "SA0170",
+                  "rowCount": 2
+                },
+                {
+                  "label": "SB0170",
+                  "rowCount": 2
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

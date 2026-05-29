@@ -5,12 +5,10 @@ import path from "node:path";
 
 import {
   readProjectManifest,
-  readSheetSchema,
 } from "@/lib/project-state/share-project-state-handlers";
-import { readWireBrandListSchema } from "@/lib/project-state/share-print-schema-handlers";
+import { readWireListPrintSchema } from "@/lib/project-state/share-print-schema-handlers";
 import { normalizeDisplayTitle } from "@/lib/workbook/normalize-sheet-name";
 import type { ManifestAssignment, ProjectManifest } from "@/types/project-manifest";
-import type { BrandListSchemaRow } from "@/lib/wire-brand-list/schema";
 import {
   EXPORTS_DIRECTORY,
   UNITS_DIRECTORY,
@@ -31,6 +29,8 @@ export interface CrossWireSchemaProjectInfo {
 
 export interface CrossWireRow {
   fromDeviceId: string;
+  fromLocation: string;
+  wireType: string;
   wireNo: string;
   wireId: string;
   gaugeSize: string;
@@ -166,6 +166,42 @@ function resolveDestinationAssignment(
   return null;
 }
 
+function buildCrossWireRowsFromLocationGroup(
+  sheetName: string,
+  locationGroup: {
+    location: string;
+    subsections: Array<{
+      rows: Array<{
+        fromDeviceId: string;
+        toDeviceId: string;
+        wireType: string;
+        wireNo: string;
+        wireId: string;
+        gaugeSize: string;
+        fromLocation: string;
+        toLocation: string;
+        lengthInches?: number;
+      }>;
+    }>;
+  },
+): CrossWireRow[] {
+  return locationGroup.subsections.flatMap((subsection) =>
+    subsection.rows.map((row) => ({
+      fromDeviceId: row.fromDeviceId ?? "",
+      fromLocation: String(row.fromLocation ?? "").trim() || sheetName,
+      wireType: row.wireType ?? "",
+      wireNo: row.wireNo ?? "",
+      wireId: row.wireId ?? "",
+      gaugeSize: row.gaugeSize ?? "",
+      length: typeof row.lengthInches === "number" && Number.isFinite(row.lengthInches) ? row.lengthInches : null,
+      toDeviceId: row.toDeviceId ?? "",
+      toLocation: row.toLocation ?? locationGroup.location ?? "",
+      bundleName: "",
+      bundleDisplay: "",
+    })),
+  );
+}
+
 // ============================================================================
 // Core generator
 // ============================================================================
@@ -173,20 +209,16 @@ function resolveDestinationAssignment(
 /**
  * Generate a cross-wire schema for a project.
  *
- * Iterates all operational assignments in the manifest, loads each one's
- * raw sheet schema (which contains ALL wire rows including unbranded wires
- * like grounds and clips), then extracts every row whose toLocation differs
- * from the assignment's own sheet name. Those "external" rows are collected,
- * deduplicated, and grouped by:
+ * Iterates all operational assignments in the manifest, loads each sheet's
+ * saved wire-list print schema, then extracts the wire-list location groups
+ * whose `isExternal` flag is true. Those external location groups are merged
+ * by destination location and grouped by:
  *
  *   unitType (source) → assignment (source) → toLocation (destination)
  *
- * Brand list schemas are used as optional enrichment to attach bundle names
- * and measured lengths to rows that have been branded. Unbranded wires
- * (grounds, clips, etc.) will still appear with empty bundle fields.
- *
- * Each destination group also attempts to resolve the toLocation to a known
- * sibling assignment using the manifest's assignment name index.
+ * This keeps the cross-wire generator aligned with the print schema's
+ * existing external/internal classification instead of re-deriving it from
+ * raw wire rows.
  */
 export async function generateCrossWireSchema(projectId: string): Promise<CrossWireSchema> {
   const manifest = await readProjectManifest(projectId);
@@ -236,79 +268,28 @@ export async function generateCrossWireSchema(projectId: string): Promise<CrossW
         continue;
       }
 
-      // Primary data source: raw sheet schema (has ALL wires, including unbranded).
-      // Requires legals to have been processed (legal:backfill or project upload).
-      const sheetSchema = await readSheetSchema(projectId, slug);
+      const sheetSchema = await readWireListPrintSchema(projectId, slug);
       if (!sheetSchema) {
         missingSchemas.push(slug);
         continue;
       }
 
-      // Optional enrichment: brand list schema provides bundleName, bundleDisplay, length.
-      const brandSchema = await readWireBrandListSchema(projectId, slug);
+      const wireListPage = sheetSchema.pages.find((page) => page.pageType === "wire-list");
+      const externalLocationGroups = wireListPage?.locationGroups.filter((group) => group.isExternal) ?? [];
 
-      // Build wireId → brand row lookup for enrichment
-      const brandLookup = new Map<string, BrandListSchemaRow>();
-      if (brandSchema) {
-        for (const prefixGroup of brandSchema.prefixGroups) {
-          for (const bundle of prefixGroup.bundles) {
-            for (const brandRow of bundle.rows as BrandListSchemaRow[]) {
-              if (brandRow.wireId) {
-                brandLookup.set(brandRow.wireId, brandRow);
-              }
-            }
-          }
-        }
-      }
-
-      const sheetName = sheetSchema.name;
-      const sheetNameUpper = sheetName.toUpperCase();
-      const strippedSheet = normalizeLocationKey(sheetName);
-      const externalRows: CrossWireRow[] = [];
-
-      // Walk all raw wire rows and collect externally-located ones.
-      // This captures ALL wire types including unbranded (grounds, clips, etc.).
-      for (const row of sheetSchema.rows) {
-        const toLocRaw = (row.toLocation ?? "").trim();
-        if (!toLocRaw) continue;
-
-        const toLocationNorm = toLocRaw.toUpperCase();
-
-        // Row is internal if toLocation matches the current sheet name
-        if (toLocationNorm === sheetNameUpper) continue;
-
-        // Also skip rows where the normalised location maps to the sheet itself
-        const strippedLocation = normalizeLocationKey(toLocRaw);
-        if (strippedLocation && strippedLocation === strippedSheet) continue;
-
-        // Enrich with brand list data if available for this wire
-        const brandRow = row.wireId ? brandLookup.get(row.wireId) : undefined;
-
-        externalRows.push({
-          fromDeviceId: row.fromDeviceId ?? "",
-          wireNo: row.wireNo ?? "",
-          wireId: row.wireId ?? "",
-          gaugeSize: row.gaugeSize ?? "",
-          length: brandRow?.length ?? null,
-          toDeviceId: row.toDeviceId ?? "",
-          toLocation: toLocRaw,
-          bundleName: brandRow?.bundleName ?? "",
-          bundleDisplay: brandRow?.bundleDisplay ?? "",
-        });
-      }
-
-      if (externalRows.length === 0) {
+      if (externalLocationGroups.length === 0) {
         internalOnlyAssignments.push(slug);
         continue;
       }
 
-      // Group external rows by toLocation
+      // Merge all external location groups from the wire-list schema by destination location.
       const byDestination = new Map<string, CrossWireRow[]>();
-      for (const row of externalRows) {
-        const key = (row.toLocation ?? "").trim();
-        const existing = byDestination.get(key) ?? [];
-        existing.push(row);
-        byDestination.set(key, existing);
+      for (const locationGroup of externalLocationGroups) {
+        const locationKey = (locationGroup.location ?? "").trim();
+        const existing = byDestination.get(locationKey) ?? [];
+        const groupRows = buildCrossWireRowsFromLocationGroup(sheetSchema.sheetName, locationGroup);
+        existing.push(...groupRows);
+        byDestination.set(locationKey, existing);
       }
 
       const destinationGroups: CrossWireDestinationGroup[] = [];
@@ -337,7 +318,7 @@ export async function generateCrossWireSchema(projectId: string): Promise<CrossW
 
       assignmentGroups.push({
         sheetSlug: slug,
-        sheetName: sheetSchema.name,
+        sheetName: sheetSchema.sheetName,
         unitType: assignment.unitType ?? unitType,
         destinationGroups,
         totalRows: groupTotalRows,

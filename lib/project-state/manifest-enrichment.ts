@@ -164,10 +164,11 @@ function sanitizeManifest(manifest: ProjectManifest): ProjectManifest {
         : [],
       whiteLabels: Array.isArray(a.whiteLabels) ? a.whiteLabels as string[] : [],
       blueLabels: Array.isArray(a.blueLabels) ? a.blueLabels as string[] : [],
+      heatShrinkLabels: Array.isArray(a.heatShrinkLabels)
+        ? a.heatShrinkLabels as string[]
+        : [],
       partNumbers: Array.isArray(a.partNumbers) ? a.partNumbers as string[] : [],
       files: (typeof a.files === 'object' && a.files !== null ? a.files : {}) as ManifestAssignmentNode['files'],
-      buildUpEstTime: typeof a.buildUpEstTime === 'string' ? a.buildUpEstTime : undefined,
-      wireListEstTime: typeof a.wireListEstTime === 'string' ? a.wireListEstTime : undefined,
       layout: (a.layout ?? null) as ManifestAssignmentNode['layout'],
       devices: (typeof a.devices === 'object' && a.devices !== null ? a.devices : {}) as ManifestAssignmentNode['devices'],
     }

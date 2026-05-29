@@ -1,0 +1,43 @@
+{
+  "sheetSlug": "hmi-s-pwr-s",
+  "sheetName": "HMI-S PWR_S",
+  "sourceSheetName": "HMI-S PWR_S",
+  "metadata": {
+    "normalizedSheetName": "hmi-s-pwr-s",
+    "bundleNames": [
+      "BA"
+    ]
+  },
+  "rows": [
+    {
+      "importedRowId": "hmi-s-pwr-s-13",
+      "rowIndex": 13,
+      "matchKey": "BA1100:NEG|-0V|WHT|16|XT0111:22|HMI-S",
+      "fromDeviceId": "BA1100:NEG",
+      "wireNo": "-0V",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "length": 60,
+      "toDeviceId": "XT0111:22",
+      "toLocation": "HMI-S",
+      "devicePrefix": "BA1100",
+      "bundleName": "BA",
+      "bundleDisplay": "BA"
+    },
+    {
+      "importedRowId": "hmi-s-pwr-s-14",
+      "rowIndex": 14,
+      "matchKey": "BA1100:POS|FU1101LD|WHT|16|FU1101:LD|HMI-S",
+      "fromDeviceId": "BA1100:POS",
+      "wireNo": "FU1101LD",
+      "wireId": "WHT",
+      "gaugeSize": "16",
+      "length": 60,
+      "toDeviceId": "FU1101:LD",
+      "toLocation": "HMI-S",
+      "devicePrefix": "BA1100",
+      "bundleName": "BA",
+      "bundleDisplay": "BA"
+    }
+  ]
+}

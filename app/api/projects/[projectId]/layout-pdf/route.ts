@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
+import { PDFDocument } from 'pdf-lib'
 
 import { resolveProjectRootDirectory, readProjectManifest } from '@/lib/project-state/share-project-state-handlers'
 import { getProjectRevisionHistory } from '@/lib/revision/revision-discovery'
@@ -107,13 +108,30 @@ export async function GET(
   }
 
   if (request.nextUrl.searchParams.get('raw') === '1') {
+    const requestedPage = Number(request.nextUrl.searchParams.get('page') || '')
+    const shouldDownload = request.nextUrl.searchParams.get('download') === '1'
     const fileBuffer = await fs.readFile(resolvedFilePath)
-    const stats = await fs.stat(resolvedFilePath)
-    return new NextResponse(fileBuffer, {
+    let responseBuffer = fileBuffer
+    let downloadName = resolvedFilename
+
+    if (Number.isFinite(requestedPage) && requestedPage >= 1) {
+      const sourceDocument = await PDFDocument.load(fileBuffer)
+      const pageIndex = requestedPage - 1
+      if (pageIndex >= 0 && pageIndex < sourceDocument.getPageCount()) {
+        const extractedDocument = await PDFDocument.create()
+        const [copiedPage] = await extractedDocument.copyPages(sourceDocument, [pageIndex])
+        extractedDocument.addPage(copiedPage)
+        responseBuffer = Buffer.from(await extractedDocument.save())
+        const baseName = resolvedFilename.replace(/\.pdf$/i, '')
+        downloadName = `${baseName}-page-${requestedPage}.pdf`
+      }
+    }
+
+    return new NextResponse(responseBuffer, {
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Length': stats.size.toString(),
-        'Content-Disposition': `inline; filename="${resolvedFilename}"`,
+        'Content-Length': responseBuffer.length.toString(),
+        'Content-Disposition': `${shouldDownload ? 'attachment' : 'inline'}; filename="${downloadName}"`,
         'Cache-Control': 'public, max-age=3600',
       },
     })

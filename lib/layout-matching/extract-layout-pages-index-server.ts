@@ -46,9 +46,38 @@ interface ServerPdfPageViewport {
 interface ServerPdfPageProxy {
   getViewport: (params: { scale: number }) => ServerPdfPageViewport
   getTextContent: () => Promise<{ items: Array<Record<string, unknown>> }>
+  render: (params: {
+    canvasContext: unknown
+    viewport: ServerPdfPageViewport
+    canvasFactory?: {
+      create: (width: number, height: number) => { canvas: unknown; context: unknown }
+      reset: (target: { canvas: unknown; context: unknown }, width: number, height: number) => void
+      destroy: (target: { canvas: unknown; context: unknown }) => void
+    }
+  }) => { promise: Promise<void> }
+}
+
+interface NodeCanvasModule {
+  createCanvas: (width: number, height: number) => {
+    width: number
+    height: number
+    getContext: (type: "2d") => unknown
+    toDataURL: (type?: string, quality?: number) => string
+  }
 }
 
 let serverPdfJsPromise: Promise<ServerPdfJsLib> | null = null
+let nodeCanvasPromise: Promise<NodeCanvasModule | null> | null = null
+
+async function loadNodeCanvasModule(): Promise<NodeCanvasModule | null> {
+  if (!nodeCanvasPromise) {
+    nodeCanvasPromise = import("@napi-rs/canvas")
+      .then((module) => ({ createCanvas: module.createCanvas }))
+      .catch(() => null)
+  }
+
+  return nodeCanvasPromise
+}
 
 async function loadServerPdfJs(): Promise<ServerPdfJsLib> {
   if (!serverPdfJsPromise) {
@@ -215,6 +244,51 @@ function buildDebugSummary(pages: LayoutPageIndexItem[]) {
   }
 }
 
+async function createNodeCanvasFactory() {
+  const canvasModule = await loadNodeCanvasModule()
+  if (!canvasModule) {
+    return null
+  }
+
+  return {
+    create(width: number, height: number) {
+      const canvas = canvasModule.createCanvas(Math.ceil(width), Math.ceil(height))
+      const context = canvas.getContext("2d")
+      return { canvas, context }
+    },
+    reset(
+      target: { canvas: { width: number; height: number } },
+      width: number,
+      height: number,
+    ) {
+      target.canvas.width = Math.ceil(width)
+      target.canvas.height = Math.ceil(height)
+    },
+    destroy(target: { canvas: { width: number; height: number } }) {
+      target.canvas.width = 0
+      target.canvas.height = 0
+    },
+  }
+}
+
+async function renderLayoutPageToDataImageUrl(page: ServerPdfPageProxy, scale = 1): Promise<string> {
+  const viewport = page.getViewport({ scale })
+  const canvasFactory = await createNodeCanvasFactory()
+  if (!canvasFactory) {
+    return ""
+  }
+  const canvasTarget = canvasFactory.create(viewport.width, viewport.height)
+
+  await page.render({
+    canvasContext: canvasTarget.context,
+    viewport,
+    canvasFactory,
+  }).promise
+
+  const canvasWithDataUrl = canvasTarget.canvas as { toDataURL: (type?: string, quality?: number) => string }
+  return canvasWithDataUrl.toDataURL("image/jpeg", 0.7)
+}
+
 export async function extractLayoutPagesIndexOnServer(pdfPath: string): Promise<LayoutPagesIndexDocument> {
   const pdfBytes = await fs.readFile(pdfPath)
   const pdfjsLib = await loadServerPdfJs()
@@ -237,6 +311,7 @@ export async function extractLayoutPagesIndexOnServer(pdfPath: string): Promise<
     const railGroups = extractRailGroups(items)
     const devices = railGroups.flatMap((group) => group.devices)
     const panducts = extractPanducts(items)
+    const imageUrl = await renderLayoutPageToDataImageUrl(page).catch(() => "")
 
     const layoutPage: LayoutPageIndexItem = {
       pageNumber,
@@ -261,7 +336,7 @@ export async function extractLayoutPagesIndexOnServer(pdfPath: string): Promise<
       panducts,
       textContent: text,
       textItems: toSlimTextItems(items),
-      imageUrl: "",
+      imageUrl,
     }
 
     layoutPage.anchors = buildAnchors(layoutPage)
