@@ -334,7 +334,7 @@ function PersonnelSignoffTable({
   return (
     <div
       className={cn(
-        "border border-foreground/30 rounded-md overflow-hidden",
+        "border border-foreground/30  overflow-hidden",
         className,
       )}
     >
@@ -654,7 +654,7 @@ function IPVIdentityFilterReferenceCard({
   return (
     <div
       className={cn(
-        "flex min-h-0 flex-col overflow-hidden  max-h-max  bg-background",
+        "flex h-full min-h-0 flex-col overflow-hidden max-h-max bg-background",
         className,
       )}
     >
@@ -667,7 +667,7 @@ function IPVIdentityFilterReferenceCard({
         </span>
       </div>
 
-      <div className="min-h-0 overflow-hidden">
+      <div className="min-h-0 flex-1 overflow-hidden">
         <table className="w-full border-collapse text-[8px] leading-tight">
           <thead className="bg-muted/20">
             <tr className="border-b border-foreground/10">
@@ -705,6 +705,62 @@ function IPVIdentityFilterReferenceCard({
                 <td className="px-1.5 py-0.5">{row.location}</td>
               </tr>
             ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function IPVBlueLabelsReferenceCard({
+  values,
+  className,
+}: {
+  values: string[];
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "flex h-full min-h-0 flex-col overflow-hidden max-h-max bg-background",
+        className,
+      )}
+    >
+      <div className="flex items-center justify-between gap-3 border-b border-foreground/20 bg-muted/20 px-2 py-1.5">
+        <span className="text-[9px] font-semibold uppercase tracking-wide text-foreground">
+          Blue Labels
+        </span>
+        <span className="text-[9px] font-mono text-muted-foreground">
+          {values.length}
+        </span>
+      </div>
+
+      <div className="min-h-0 flex-1 overflow-hidden">
+        <table className="w-full border-collapse text-[8px] leading-tight">
+          <thead className="bg-muted/20">
+            <tr className="border-b border-foreground/10">
+              <th className="px-1.5 py-1 text-left font-semibold uppercase tracking-wide">
+                Device ID
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {values.length > 0 ? (
+              values.map((value, index) => (
+                <tr
+                  key={`blue-label-${index}-${value}`}
+                  className="border-b border-foreground/10 last:border-b-0"
+                >
+                  <td className="px-1.5 py-0.5 font-medium">{value}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td className="px-1.5 py-2 text-center text-muted-foreground">
+                  No blue labels
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -972,6 +1028,8 @@ function sortSingleConnectionsByBlueLabelSequence(
 type IPVSchemaItem =
   | { type: "header"; deviceId: string }
   | { type: "row"; row: SemanticWireListRow; isUnique: boolean; seq: number };
+
+type IPVChecklistGroupingMode = "schema-order" | "device-grouped";
 
 function buildIPVSchema(
   rows: SemanticWireListRow[],
@@ -3580,6 +3638,223 @@ function WireListIPVPage({
   currentSheetName,
   blueLabels,
   ipvChecklistGroups,
+  groupingMode = "schema-order",
+  sheetTitle,
+  pageNumber,
+  totalPages,
+  paperSize = "letter",
+}: {
+  rows: SemanticWireListRow[];
+  currentSheetName: string;
+  blueLabels: BlueLabelSequenceMap | null;
+  ipvChecklistGroups?: Array<{
+    deviceId: string;
+    rows: SemanticWireListRow[];
+  }>;
+  groupingMode?: IPVChecklistGroupingMode;
+  sheetTitle?: string;
+  pageNumber?: number;
+  totalPages?: number;
+  paperSize?: PrintPaperSize;
+}) {
+  const schema = buildIPVSchema(
+    rows,
+    currentSheetName,
+    blueLabels,
+    ipvChecklistGroups,
+  );
+  const schemaRows = schema.filter(
+    (item): item is Extract<IPVSchemaItem, { type: "row" }> => item.type === "row",
+  );
+  const totalWires = schema.filter((item) => item.type === "row").length;
+
+  return (
+    <PrintPage
+      className="print-wire-list-ipv-page shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
+      footerText={sheetTitle}
+      pageNumber={pageNumber}
+      totalPages={totalPages}
+      paperSize={paperSize}
+    >
+      <div className="w-full py-2.5">
+        {/* Page Header */}
+        <div className="mb-3 flex items-center justify-between border-b border-border pb-2">
+          <div>
+            <h1 className="text-[16px] font-bold text-foreground">
+              {currentSheetName} — Wire List
+            </h1>
+            <p className="text-[10px] text-muted-foreground mt-0.5">
+              {groupingMode === "schema-order"
+                ? "Schema order"
+                : "Grouped by source device"}
+            </p>
+          </div>
+          <div className="text-right text-[10px] text-muted-foreground">
+            <div className="font-medium">{totalWires} wires</div>
+          </div>
+        </div>
+
+        <div className="min-w-0 overflow-hidden rounded border border-border/40">
+          <table className="w-full border-collapse text-[10px] leading-tight">
+            <thead className="bg-muted/80">
+              <tr className="border-b border-foreground/20">
+                <th className="px-2 py-1.5 text-left text-[9px] font-semibold uppercase tracking-wide">
+                  FROM DEVICE
+                </th>
+                <th className="px-2 py-1.5 text-left text-[9px] font-semibold uppercase tracking-wide">
+                  WIRE NO.
+                </th>
+                <th className="px-2 py-1.5 text-left text-[9px] font-semibold uppercase tracking-wide">
+                  WIRE ID
+                </th>
+                <th className="px-2 py-1.5 text-left text-[9px] font-semibold uppercase tracking-wide">
+                  SIZE
+                </th>
+                <th className="px-2 py-1.5 text-left text-[9px] font-semibold uppercase tracking-wide">
+                  TO DEVICE
+                </th>
+                <th className="px-2 py-1.5 text-left text-[9px] font-semibold uppercase tracking-wide">
+                  LOCATION
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {schema.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="px-3 py-5 text-center text-[11px] text-muted-foreground"
+                  >
+                    No wire connections found
+                  </td>
+                </tr>
+              ) : (
+                groupingMode === "schema-order"
+                  ? schema.map((item, idx) => {
+                      if (item.type === "header") {
+                        return (
+                          <tr
+                            key={`ipv-schema-header-${item.deviceId}-${idx}`}
+                            className="border-y border-foreground/10 bg-muted/30"
+                          >
+                            <td
+                              colSpan={6}
+                              className="px-2 py-1 text-[9px] font-semibold uppercase tracking-wide text-muted-foreground"
+                            >
+                              {item.deviceId}
+                            </td>
+                          </tr>
+                        );
+                      }
+
+                      const { row, seq } = item;
+                      const endpoints = getDisplayEndpoints(row);
+                      const isExternal = !isInternalIPVRow(row, currentSheetName);
+                      const locationValue = isExternal
+                        ? endpoints.toLocation || row.location || "—"
+                        : currentSheetName || endpoints.toLocation || row.location || "—";
+
+                      return (
+                        <tr
+                          key={`ipv-schema-row-${row.__rowId}-${seq}`}
+                          className={cn(
+                            "border-b border-foreground/10",
+                            isExternal
+                              ? "bg-amber-50/60 dark:bg-amber-950/20"
+                              : seq % 2 === 0 && "bg-muted/10",
+                          )}
+                        >
+                          <td className="px-2 py-1 text-[11px] font-medium leading-tight">
+                            {endpoints.fromDeviceId || "—"}
+                          </td>
+                          <td className="px-2 py-1 text-[11px] font-medium tabular-nums leading-tight">
+                            {row.wireNo || "—"}
+                          </td>
+                          <td className="px-2 py-1 text-[11px] leading-tight">
+                            {row.wireId || "—"}
+                          </td>
+                          <td className="px-2 py-1 text-[11px] leading-tight">
+                            {row.gaugeSize || "—"}
+                          </td>
+                          <td className="px-2 py-1 text-[11px] font-medium leading-tight">
+                            {endpoints.toDeviceId || "—"}
+                          </td>
+                          <td className={cn("px-2 py-1 text-[11px] leading-tight", isExternal && "font-semibold text-amber-800 dark:text-amber-300")}>
+                            {locationValue}
+                          </td>
+                        </tr>
+                      );
+                    })
+                  : schema.map((item, idx) => {
+                      if (item.type === "header") {
+                        return (
+                          <tr
+                            key={`header-${item.deviceId}-${idx}`}
+                            className="border-y border-foreground/10 bg-muted/30"
+                          >
+                            <td
+                              colSpan={6}
+                              className="px-1 py-1 text-[9px] font-semibold uppercase tracking-wide text-muted-foreground"
+                            >
+                              {item.deviceId}
+                            </td>
+                          </tr>
+                        );
+                      }
+
+                      const { row, seq } = item;
+                      const endpoints = getDisplayEndpoints(row);
+                      const isExternal = !isInternalIPVRow(row, currentSheetName);
+                      const locationValue = isExternal
+                        ? endpoints.toLocation || row.location || "—"
+                        : currentSheetName || endpoints.toLocation || row.location || "—";
+
+                      return (
+                        <tr
+                          key={`ipv-grouped-row-${row.__rowId}-${seq}`}
+                          className={cn(
+                            "border-b border-foreground/10",
+                            isExternal
+                              ? "bg-amber-50/60 dark:bg-amber-950/20"
+                              : seq % 2 === 0 && "bg-muted/10",
+                          )}
+                        >
+                          <td className="px-1 py-0.5 text-[10px] font-medium leading-tight">
+                            {endpoints.fromDeviceId || "—"}
+                          </td>
+                          <td className="px-1 py-0.5 text-[10px] font-medium tabular-nums leading-tight">
+                            {row.wireNo || "—"}
+                          </td>
+                          <td className="px-1 py-0.5 text-[10px] leading-tight">
+                            {row.wireId || "—"}
+                          </td>
+                          <td className="px-1 py-0.5 text-[10px] leading-tight">
+                            {row.gaugeSize || "—"}
+                          </td>
+                          <td className="px-1 py-0.5 text-[10px] font-medium leading-tight">
+                            {endpoints.toDeviceId || "—"}
+                          </td>
+                          <td className={cn("px-1 py-0.5 text-[10px] leading-tight", isExternal && "font-semibold text-amber-800 dark:text-amber-300")}>
+                            {locationValue}
+                          </td>
+                        </tr>
+                      );
+                    })
+              )}
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </PrintPage>
+  );
+}
+
+function WireListIPVReviewPage({
+  rows,
+  currentSheetName,
+  blueLabels,
+  ipvChecklistGroups,
   sheetTitle,
   pageNumber,
   totalPages,
@@ -3614,14 +3889,13 @@ function WireListIPVPage({
       paperSize={paperSize}
     >
       <div className="w-full py-2.5">
-        {/* Page Header */}
         <div className="mb-3 flex items-center justify-between border-b border-border pb-2">
           <div>
             <h1 className="text-[14px] font-bold text-foreground">
-              Wire List — IPV Checklist
+            {sheetTitle} - IPV Review
             </h1>
-            <p className="text-[10px] text-muted-foreground mt-0.5">
-              Sorted by blue label sequence
+            <p className="mt-0.5 text-[10px] text-muted-foreground">
+              IPV validation with notes
             </p>
           </div>
           <div className="text-right text-[10px] text-muted-foreground">
@@ -3633,7 +3907,7 @@ function WireListIPVPage({
           <table className="w-full border-collapse text-[9px] leading-tight">
             <thead className="bg-muted/80">
               <tr className="border-b border-foreground/20">
-                <th className="w-9 px-1 py-1 text-center text-[8px] font-semibold print:hidden">
+                <th className="w-9 px-1 py-1 text-center text-[8px] font-semibold">
                   IPV
                 </th>
                 <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase tracking-wide">
@@ -3654,13 +3928,16 @@ function WireListIPVPage({
                 <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase tracking-wide">
                   LOCATION
                 </th>
+                <th className="px-1 py-1 text-left text-[8px] font-semibold uppercase tracking-wide">
+                  NOTES
+                </th>
               </tr>
             </thead>
             <tbody>
               {schema.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={7}
+                    colSpan={8}
                     className="px-3 py-5 text-center text-[11px] text-muted-foreground"
                   >
                     No wire connections found
@@ -3671,14 +3948,10 @@ function WireListIPVPage({
                   if (item.type === "header") {
                     return (
                       <tr
-                        key={`header-${item.deviceId}-${idx}`}
+                        key={`ipv-review-header-${item.deviceId}-${idx}`}
                         className="border-y border-foreground/10 bg-muted/30"
                       >
-                        <td className="px-1 py-1 print:hidden" />
-                        <td
-                          colSpan={6}
-                          className="px-1 py-1 text-[9px] font-semibold uppercase tracking-wide text-muted-foreground"
-                        >
+                        <td colSpan={8} className="px-1 py-1 text-[9px] font-semibold uppercase tracking-wide text-muted-foreground">
                           {item.deviceId}
                         </td>
                       </tr>
@@ -3688,51 +3961,57 @@ function WireListIPVPage({
                   const { row, seq, isUnique } = item;
                   const endpoints = getDisplayEndpoints(row);
                   const isExternal = !isInternalIPVRow(row, currentSheetName);
-                  const toDeviceValue = isUnique ? "" : endpoints.toDeviceId || "—";
+                  const toDeviceValue = isUnique ? endpoints.toDeviceId || "—" : "";
                   const locationValue = isExternal
                     ? endpoints.toLocation || row.location || "—"
                     : currentSheetName || endpoints.toLocation || row.location || "—";
 
                   return (
-                    <Fragment key={row.__rowId}>
-                      <tr
+                    <tr
+                      key={`ipv-review-row-${row.__rowId}-${seq}`}
+                      className={cn(
+                        "border-b border-foreground/10",
+                        isExternal
+                          ? "bg-amber-50/60 dark:bg-amber-950/20"
+                          : seq % 2 === 0 && "bg-muted/10",
+                      )}
+                    >
+                      <td className="px-1 py-0.5 text-center">
+                        <div className="mx-auto h-3 w-3 rounded-sm border border-foreground/30" />
+                      </td>
+                      <td className="px-1 py-0.5 text-[10px] font-medium leading-tight">
+                        {endpoints.fromDeviceId || "—"}
+                      </td>
+                      <td className="px-1 py-0.5 text-[10px] font-medium tabular-nums leading-tight">
+                        {row.wireNo || "—"}
+                      </td>
+                      <td className="px-1 py-0.5 text-[10px] leading-tight">
+                        {row.wireId || "—"}
+                      </td>
+                      <td className="px-1 py-0.5 text-[10px] leading-tight">
+                        {row.gaugeSize || "—"}
+                      </td>
+                      <td className="px-1 py-0.5 text-[10px] font-medium leading-tight">
+                        {toDeviceValue}
+                      </td>
+                      <td
                         className={cn(
-                          "border-b border-foreground/10",
-                          isExternal
-                            ? "bg-amber-50/60 dark:bg-amber-950/20"
-                            : seq % 2 === 0 && "bg-muted/10",
+                          "px-1 py-0.5 text-[10px] leading-tight",
+                          isExternal && "font-semibold text-blac",
                         )}
                       >
-                        <td className="px-1 py-0.5 text-center print:hidden">
-                          <div className="mx-auto h-3 w-3 rounded-sm border border-foreground/30" />
-                        </td>
-                        <td className="px-1 py-0.5 text-[10px] font-medium leading-tight">
-                          {endpoints.fromDeviceId || "—"}
-                        </td>
-                        <td className="px-1 py-0.5 text-[10px] font-medium tabular-nums leading-tight">
-                          {row.wireNo || "—"}
-                        </td>
-                        <td className="px-1 py-0.5 text-[10px] leading-tight">
-                          {row.wireId || "—"}
-                        </td>
-                        <td className="px-1 py-0.5 text-[10px] leading-tight">
-                          {row.gaugeSize || "—"}
-                        </td>
-                        <td className="px-1 py-0.5 text-[10px] font-medium leading-tight">
-                          {toDeviceValue}
-                        </td>
-                        <td className={cn("px-1 py-0.5 text-[10px] leading-tight", isExternal && "font-semibold text-amber-800 dark:text-amber-300")}>
-                          {locationValue}
-                        </td>
-                      </tr>
-                    </Fragment>
+                        {locationValue}
+                      </td>
+                      <td className="px-1 py-0.5 text-[10px] leading-tight text-muted-foreground">
+                        __________________
+                      </td>
+                    </tr>
                   );
                 })
               )}
             </tbody>
           </table>
         </div>
-
       </div>
     </PrintPage>
   );
@@ -3793,6 +4072,24 @@ function IPVCoverPage({
       date: "",
       time: "",
     },
+    {
+      id: "ipv-sign-4",
+      badgeNumber: "",
+      date: "",
+      time: "",
+    },
+    {
+      id: "ipv-sign-5",
+      badgeNumber: "",
+      date: "",
+      time: "",
+    },
+    {
+      id: "ipv-sign-6",
+      badgeNumber: "",
+      date: "",
+      time: "",
+    },
   ];
 
   return (
@@ -3811,7 +4108,7 @@ function IPVCoverPage({
         <div className="flex items-center justify-between border-b border-border pb-3">
           <div>
             <h1 className="text-[16px] font-bold text-foreground">
-            {currentSheetName}  -  IPV
+            {currentSheetName}
             </h1>
            
           </div>
@@ -3831,7 +4128,7 @@ function IPVCoverPage({
               <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
                 Assignment Details
               </div>
-              <div className="rounded-md border border-foreground/30 overflow-hidden">
+              <div className="border border-foreground/30 overflow-hidden">
                 <table className="w-full border-collapse text-[10px]">
                   <tbody>
                     <tr className="border-b border-foreground/10">
@@ -3867,7 +4164,7 @@ function IPVCoverPage({
             <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
               Layout Reference
             </div>
-            <div className="flex-1 min-h-0 rounded-md border border-foreground/20 bg-muted/10 p-1.5">
+            <div className="flex-1 min-h-0  border border-foreground/20 bg-muted/10 p-1.5">
               {layoutImageUrl ? (
                 <img
                   src={layoutImageUrl}
@@ -3916,17 +4213,10 @@ function IPVReferenceListsPage({
   totalPages?: number;
   paperSize?: PrintPaperSize;
 }) {
-  const referenceCards = buildIPVReferenceCardGroups({
-    currentSheetName,
-    blueLabels,
-    blueLabelReferences,
-    panducts,
-    rails,
-    externalLocations,
-    whiteLabels,
-    heatShrinkLabels,
-    partNumbers,
-  });
+  const resolvedBlueLabelReferences =
+    blueLabelReferences && blueLabelReferences.length > 0
+      ? blueLabelReferences
+      : getSheetDeviceSequence(currentSheetName, blueLabels);
   const identityFilterReferenceGroups = buildIdentityFilterReferenceGroups(
     identityFilterLocationGroups ?? [],
   );
@@ -3954,50 +4244,31 @@ function IPVReferenceListsPage({
         </div>
 
         <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden">
-          {identityFilterReferenceGroups.length > 0 ? (
-            <div className="space-y-1.5">
-           
-              <div
-                className={cn(
-                  "grid gap-2 content-start",
-                  paperSize === "tabloid"
-                    ? "grid-cols-[repeat(auto-fit,minmax(360px,1fr))]"
-                    : "grid-cols-1",
-                )}
-              >
-                {identityFilterReferenceGroups.map((group) => (
+          <div
+            className={cn(
+              "grid min-h-0 flex-1 gap-2",
+              paperSize === "tabloid"
+                ? "grid-cols-[minmax(0,1fr)_minmax(0,1fr)]"
+                : "grid-cols-1",
+            )}
+          >
+            <IPVBlueLabelsReferenceCard values={resolvedBlueLabelReferences} />
+            <div className="flex min-h-0 flex-1 flex-col gap-2">
+              {identityFilterReferenceGroups.length > 0 ? (
+                identityFilterReferenceGroups.map((group) => (
                   <IPVIdentityFilterReferenceCard
                     key={`${group.sectionKind ?? "unknown"}:${group.title}`}
                     group={group}
+                    className={cn(
+                      identityFilterReferenceGroups.length === 1 ? "h-full" : "",
+                    )}
                   />
-                ))}
-              </div>
-            </div>
-          ) : null}
-
-          <div className="space-y-1.5">
-            <div className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-              Assignment Reference Values
-            </div>
-            <div
-              className={cn(
-                "grid gap-2 content-start",
-                paperSize === "tabloid"
-                  ? "grid-cols-[repeat(auto-fit,minmax(210px,1fr))]"
-                  : "grid-cols-2 auto-rows-fr",
-              )}
-            >
-              {referenceCards.map((card) => (
-                <div key={card.title} className="min-h-0">
-                  <IPVReferenceListCard
-                    title={card.title}
-                    values={card.values}
-                    emptyLabel={card.emptyLabel}
-                    expandContent
-                    className="max-h-max"
-                  />
+                ))
+              ) : (
+                <div className="flex h-full min-h-0 items-center justify-center border border-dashed border-foreground/20 bg-muted/10 text-[10px] text-muted-foreground">
+                  No identity filter references
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>
@@ -5878,6 +6149,9 @@ export function SingleSheetPrintWorkspace({
   const [printViewTab, setPrintViewTab] = useState<"wire-list" | "cross-wire">(
     initialPrintViewTab,
   );
+  const [ipvPacketTab, setIpvPacketTab] = useState<
+    "cover" | "wire-list" | "ipv"
+  >("cover");
   const [wiringExecutionActive, setWiringExecutionActive] = useState(false);
   const { user } = useCurrentUser();
   const paperLayout = useMemo(
@@ -7625,6 +7899,10 @@ export function SingleSheetPrintWorkspace({
 
   const showingCrossWirePreview =
     crossWireOnly || printViewTab === "cross-wire";
+  const showIpvPacketTabs =
+    settings.mode === "standardize" &&
+    settings.showIPVWireList &&
+    !showingCrossWirePreview;
 
   const activePreviewRowCount =
     settings.mode === "branding"
@@ -9944,10 +10222,52 @@ export function SingleSheetPrintWorkspace({
                       {crossWireOnly ? "Cross Wire" : "Preview"}
                     </span>
                   )}
+                  {showIpvPacketTabs ? (
+                    <div className="flex items-center gap-1 rounded-md bg-muted p-0.5">
+                      <button
+                        type="button"
+                        className={cn(
+                          "px-2.5 py-1 rounded text-xs font-medium transition-colors",
+                          ipvPacketTab === "cover"
+                            ? "bg-background text-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-foreground",
+                        )}
+                        onClick={() => setIpvPacketTab("cover")}
+                      >
+                        Cover
+                      </button>
+                      <button
+                        type="button"
+                        className={cn(
+                          "px-2.5 py-1 rounded text-xs font-medium transition-colors",
+                          ipvPacketTab === "wire-list"
+                            ? "bg-background text-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-foreground",
+                        )}
+                        onClick={() => setIpvPacketTab("wire-list")}
+                      >
+                        Wire List
+                      </button>
+                      <button
+                        type="button"
+                        className={cn(
+                          "px-2.5 py-1 rounded text-xs font-medium transition-colors",
+                          ipvPacketTab === "ipv"
+                            ? "bg-background text-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-foreground",
+                        )}
+                        onClick={() => setIpvPacketTab("ipv")}
+                      >
+                        IPV
+                      </button>
+                    </div>
+                  ) : null}
                   <span className="text-xs text-muted-foreground">
                     {showingCrossWirePreview
                       ? `${crossWirePageCount} page${crossWirePageCount !== 1 ? "s" : ""} | ${crossWireVisibleSections.length} section${crossWireVisibleSections.length !== 1 ? "s" : ""} | ${crossWireVisibleSections.reduce((sum, s) => sum + s.visibleRows.length, 0)} rows`
-                      : `${previewPageCount} page${previewPageCount !== 1 ? "s" : ""} | ${activePreviewSectionCount} section${activePreviewSectionCount !== 1 ? "s" : ""} | ${settings.mode === "branding" ? brandingVisibleRowCount : totalRowCount} rows`}
+                      : showIpvPacketTabs
+                        ? `${ipvPacketTab === "cover" ? 2 : 1} page${ipvPacketTab === "cover" ? "s" : ""} | ${ipvPacketTab === "cover" ? "Cover + References" : ipvPacketTab === "wire-list" ? "Schema Wire List" : "IPV Review"}`
+                        : `${previewPageCount} page${previewPageCount !== 1 ? "s" : ""} | ${activePreviewSectionCount} section${activePreviewSectionCount !== 1 ? "s" : ""} | ${settings.mode === "branding" ? brandingVisibleRowCount : totalRowCount} rows`}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -10104,208 +10424,278 @@ export function SingleSheetPrintWorkspace({
                     </PrintPage>
                   ) : (
                     <>
-                      <StandardWorkspacePreviewDocument
-                        enabled={!crossWireOnly && printViewTab === "wire-list"}
-                        showCoverPage={settings.showCoverPage}
-                        showTableOfContents={
-                          settings.showTableOfContents &&
-                          processedLocationGroups.length > 0
-                        }
-                        showIPVCodes={settings.showIPVCodes}
-                        showIPVWireList={settings.showIPVWireList}
-                        showFeedbackSection={settings.showFeedbackSection}
-                        hasVisibleSections={hasNonCrossWireSections}
-                        renderCoverPage={() => (
-                          <CoverPage
-                            projectInfo={projectInfo}
-                            sheetTitle={sheetTitle}
-                            currentSheetName={currentSheetName}
-                            coverImageUrl={settings.coverImageUrl}
-                            swsType={swsType}
-                            coverSubtitle={currentSheetName}
-                            pageNumber={1}
-                            totalPages={previewPageCount}
-                            paperSize={settings.paperSize}
-                          />
-                        )}
-                        renderTableOfContentsPage={() => (
-                          <TableOfContentsPage
-                            locationGroups={processedLocationGroups}
-                            showFeedbackSection={settings.showFeedbackSection}
+                      {!crossWireOnly && printViewTab === "wire-list" ? (
+                        showIpvPacketTabs ? (
+                          <>
+                            {ipvPacketTab === "cover" ? (
+                              <>
+                                <IPVCoverPage
+                                  projectInfo={projectInfo}
+                                  sheetTitle={sheetTitle}
+                                  currentSheetName={currentSheetName}
+                                  blueLabels={blueLabels ?? null}
+                                  blueLabelReferences={ipvCoverReferenceData.blueLabels}
+                                  panducts={ipvCoverReferenceData.panducts}
+                                  rails={ipvCoverReferenceData.rails}
+                                  externalLocations={ipvCoverReferenceData.externalLocations}
+                                  whiteLabels={ipvCoverReferenceData.whiteLabels}
+                                  heatShrinkLabels={ipvCoverReferenceData.heatShrinkLabels}
+                                  partNumbers={ipvCoverReferenceData.partNumbers}
+                                  layoutImageUrl={ipvCoverReferenceData.layoutImageUrl}
+                                  pageNumber={1}
+                                  totalPages={2}
+                                  paperSize={settings.paperSize}
+                                />
+                                <IPVReferenceListsPage
+                                  currentSheetName={currentSheetName}
+                                  blueLabels={blueLabels ?? null}
+                                  blueLabelReferences={ipvCoverReferenceData.blueLabels}
+                                  panducts={ipvCoverReferenceData.panducts}
+                                  rails={ipvCoverReferenceData.rails}
+                                  externalLocations={ipvCoverReferenceData.externalLocations}
+                                  whiteLabels={ipvCoverReferenceData.whiteLabels}
+                                  heatShrinkLabels={ipvCoverReferenceData.heatShrinkLabels}
+                                  partNumbers={ipvCoverReferenceData.partNumbers}
+                                  identityFilterLocationGroups={processedLocationGroups}
+                                  pageNumber={2}
+                                  totalPages={2}
+                                  paperSize={settings.paperSize}
+                                />
+                              </>
+                            ) : null}
+
+                            {ipvPacketTab === "wire-list" ? (
+                              <WireListIPVPage
+                                rows={rows}
+                                currentSheetName={currentSheetName}
+                                blueLabels={blueLabels ?? null}
+                                ipvChecklistGroups={schemaHydration?.ipvChecklistGroups}
+                                groupingMode="schema-order"
+                                sheetTitle={sheetTitle}
+                                pageNumber={1}
+                                totalPages={1}
+                                paperSize={settings.paperSize}
+                              />
+                            ) : null}
+
+                            {ipvPacketTab === "ipv" ? (
+                              <WireListIPVReviewPage
+                                rows={rows}
+                                currentSheetName={currentSheetName}
+                                blueLabels={blueLabels ?? null}
+                                ipvChecklistGroups={schemaHydration?.ipvChecklistGroups}
+                                sheetTitle={sheetTitle}
+                                pageNumber={1}
+                                totalPages={1}
+                                paperSize={settings.paperSize}
+                              />
+                            ) : null}
+                          </>
+                        ) : (
+                          <StandardWorkspacePreviewDocument
+                            enabled={!crossWireOnly && printViewTab === "wire-list"}
                             showCoverPage={settings.showCoverPage}
-                            showTableOfContents={settings.showTableOfContents}
-                            showIPVCodes={settings.showIPVCodes}
-                            showEstTime={settings.showEstTime}
-                            totalPages={previewPageCount}
-                            currentSheetName={currentSheetName}
-                            hiddenSections={activeHiddenSections}
-                            crossWireSections={settings.crossWireSections}
-                            wireListSortMode={settings.wireListSortMode}
-                            paperSize={settings.paperSize}
-                          />
-                        )}
-                        renderIpvCodesPage={() => (
-                          <IPVCodesPage
-                            pageNumber={
-                              (settings.showCoverPage ? 1 : 0) +
-                              (settings.showTableOfContents ? 1 : 0) +
-                              1
+                            showTableOfContents={
+                              settings.showTableOfContents &&
+                              processedLocationGroups.length > 0
                             }
-                            totalPages={previewPageCount}
-                            paperSize={settings.paperSize}
-                          />
-                        )}
-                        renderPreviewDocument={() => (
-                          <StandardWireListPreviewDocument
-                            visibleSections={visiblePreviewSections}
-                            renderPage={(content) => (
-                              <PrintPage
-                                className="shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
+                            showIPVCodes={settings.showIPVCodes}
+                            showIPVWireList={settings.showIPVWireList}
+                            showFeedbackSection={settings.showFeedbackSection}
+                            hasVisibleSections={hasNonCrossWireSections}
+                            renderCoverPage={() => (
+                              <CoverPage
+                                projectInfo={projectInfo}
+                                sheetTitle={sheetTitle}
+                                currentSheetName={currentSheetName}
+                                coverImageUrl={settings.coverImageUrl}
+                                swsType={swsType}
+                                coverSubtitle={currentSheetName}
+                                pageNumber={1}
+                                totalPages={previewPageCount}
+                                paperSize={settings.paperSize}
+                              />
+                            )}
+                            renderTableOfContentsPage={() => (
+                              <TableOfContentsPage
+                                locationGroups={processedLocationGroups}
+                                showFeedbackSection={settings.showFeedbackSection}
+                                showCoverPage={settings.showCoverPage}
+                                showTableOfContents={settings.showTableOfContents}
+                                showIPVCodes={settings.showIPVCodes}
+                                showEstTime={settings.showEstTime}
+                                totalPages={previewPageCount}
+                                currentSheetName={currentSheetName}
+                                hiddenSections={activeHiddenSections}
+                                crossWireSections={settings.crossWireSections}
+                                wireListSortMode={settings.wireListSortMode}
+                                paperSize={settings.paperSize}
+                              />
+                            )}
+                            renderIpvCodesPage={() => (
+                              <IPVCodesPage
                                 pageNumber={
                                   (settings.showCoverPage ? 1 : 0) +
                                   (settings.showTableOfContents ? 1 : 0) +
-                                  (settings.showIPVCodes ? 1 : 0) +
                                   1
                                 }
                                 totalPages={previewPageCount}
                                 paperSize={settings.paperSize}
+                              />
+                            )}
+                            renderPreviewDocument={() => (
+                              <StandardWireListPreviewDocument
+                                visibleSections={visiblePreviewSections}
+                                renderPage={(content) => (
+                                  <PrintPage
+                                    className="shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
+                                    pageNumber={
+                                      (settings.showCoverPage ? 1 : 0) +
+                                      (settings.showTableOfContents ? 1 : 0) +
+                                      (settings.showIPVCodes ? 1 : 0) +
+                                      1
+                                    }
+                                    totalPages={previewPageCount}
+                                    paperSize={settings.paperSize}
+                                  >
+                                    <ProjectInfoHeader
+                                      projectInfo={projectInfo}
+                                      sheetTitle={sheetTitle}
+                                      totalRows={processedLocationGroups.reduce(
+                                        (sum, g) => sum + g.totalRows,
+                                        0,
+                                      )}
+                                      pageNumber={
+                                        (settings.showCoverPage ? 1 : 0) +
+                                        (settings.showTableOfContents ? 1 : 0) +
+                                        (settings.showIPVCodes ? 1 : 0) +
+                                        1
+                                      }
+                                      totalPages={previewPageCount}
+                                    />
+                                    {content}
+                                  </PrintPage>
+                                )}
+                                renderSection={({
+                                  group,
+                                  subsection,
+                                  visibleRows,
+                                }) => (
+                                  <div className="rounded-sm w-full">
+                                    <PrintPreviewTable
+                                      rows={visibleRows}
+                                      settings={{
+                                        ...settings,
+                                        showComments: false,
+                                      }}
+                                      currentSheetName={currentSheetName}
+                                      comments={comments}
+                                      onCommentChange={handleCommentChange}
+                                      sectionKind={subsection.sectionKind}
+                                      sectionLabel={subsection.label}
+                                      matchMetadata={subsection.matchMetadata}
+                                      partNumberMap={effectivePartNumberMap}
+                                      cablePartNumberMap={cablePartNumberMap}
+                                      getRowLength={effectiveGetRowLength}
+                                      hiddenRows={settings.hiddenRows}
+                                      onToggleRowHidden={toggleRowHidden}
+                                      locationNormalizedTitleByName={
+                                        locationNormalizedTitleByName
+                                      }
+                                      isExternal={group.isExternal}
+                                    />
+                                  </div>
+                                )}
+                              />
+                            )}
+                            renderFeedbackPage={() => (
+                              <PrintPage
+                                className="feedback-page shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
+                                pageNumber={
+                                  previewPageCount -
+                                  (settings.showIPVWireList ? 3 : 0)
+                                }
+                                totalPages={previewPageCount}
+                                paperSize={settings.paperSize}
                               >
-                                <ProjectInfoHeader
-                                  projectInfo={projectInfo}
-                                  sheetTitle={sheetTitle}
-                                  totalRows={processedLocationGroups.reduce(
-                                    (sum, g) => sum + g.totalRows,
-                                    0,
-                                  )}
-                                  pageNumber={
-                                    (settings.showCoverPage ? 1 : 0) +
-                                    (settings.showTableOfContents ? 1 : 0) +
-                                    (settings.showIPVCodes ? 1 : 0) +
-                                    1
-                                  }
-                                  totalPages={previewPageCount}
-                                />
-                                {content}
+                                <div className="pt-4">
+                                  <PrintFeedbackSection
+                                    config={{
+                                      showFeedbackSection:
+                                        settings.showFeedbackSection,
+                                      feedbackSections: settings.feedbackSections,
+                                      feedbackRenderMode:
+                                        settings.feedbackRenderMode,
+                                      feedbackValues: {
+                                        projectName: projectInfo.projectName,
+                                        pdNumber: projectInfo.pdNumber,
+                                        sheetName: currentSheetName,
+                                        revision: projectInfo.revision,
+                                      },
+                                      customQuestions: settings.customQuestions,
+                                    }}
+                                    sheetName={currentSheetName}
+                                    projectName={projectInfo.projectName}
+                                    withLeadingPageBreak={false}
+                                  />
+                                </div>
                               </PrintPage>
                             )}
-                            renderSection={({
-                              group,
-                              subsection,
-                              visibleRows,
-                            }) => (
-                              <div className="rounded-sm w-full">
-                                <PrintPreviewTable
-                                  rows={visibleRows}
-                                  settings={{
-                                    ...settings,
-                                    showComments: false,
-                                  }}
-                                  currentSheetName={currentSheetName}
-                                  comments={comments}
-                                  onCommentChange={handleCommentChange}
-                                  sectionKind={subsection.sectionKind}
-                                  sectionLabel={subsection.label}
-                                  matchMetadata={subsection.matchMetadata}
-                                  partNumberMap={effectivePartNumberMap}
-                                  cablePartNumberMap={cablePartNumberMap}
-                                  getRowLength={effectiveGetRowLength}
-                                  hiddenRows={settings.hiddenRows}
-                                  onToggleRowHidden={toggleRowHidden}
-                                  locationNormalizedTitleByName={
-                                    locationNormalizedTitleByName
-                                  }
-                                  isExternal={group.isExternal}
-                                />
-                              </div>
+                            renderIPVCoverPage={() => (
+                              <IPVCoverPage
+                                projectInfo={projectInfo}
+                                sheetTitle={sheetTitle}
+                                currentSheetName={currentSheetName}
+                                blueLabels={blueLabels ?? null}
+                                blueLabelReferences={ipvCoverReferenceData.blueLabels}
+                                panducts={ipvCoverReferenceData.panducts}
+                                rails={ipvCoverReferenceData.rails}
+                                externalLocations={
+                                  ipvCoverReferenceData.externalLocations
+                                }
+                                whiteLabels={ipvCoverReferenceData.whiteLabels}
+                                heatShrinkLabels={
+                                  ipvCoverReferenceData.heatShrinkLabels
+                                }
+                                partNumbers={ipvCoverReferenceData.partNumbers}
+                                layoutImageUrl={ipvCoverReferenceData.layoutImageUrl}
+                                pageNumber={previewPageCount - 2}
+                                totalPages={previewPageCount}
+                                paperSize={settings.paperSize}
+                              />
+                            )}
+                            renderIPVReferencePage={() => (
+                              <IPVReferenceListsPage
+                                currentSheetName={currentSheetName}
+                                blueLabels={blueLabels ?? null}
+                                blueLabelReferences={ipvCoverReferenceData.blueLabels}
+                                panducts={ipvCoverReferenceData.panducts}
+                                rails={ipvCoverReferenceData.rails}
+                                externalLocations={ipvCoverReferenceData.externalLocations}
+                                whiteLabels={ipvCoverReferenceData.whiteLabels}
+                                heatShrinkLabels={ipvCoverReferenceData.heatShrinkLabels}
+                                partNumbers={ipvCoverReferenceData.partNumbers}
+                                identityFilterLocationGroups={processedLocationGroups}
+                                pageNumber={previewPageCount - 1}
+                                totalPages={previewPageCount}
+                                paperSize={settings.paperSize}
+                              />
+                            )}
+                            renderIPVWireListPage={() => (
+                              <WireListIPVPage
+                                rows={rows}
+                                currentSheetName={currentSheetName}
+                                blueLabels={blueLabels ?? null}
+                                ipvChecklistGroups={schemaHydration?.ipvChecklistGroups}
+                                sheetTitle={sheetTitle}
+                                pageNumber={previewPageCount}
+                                totalPages={previewPageCount}
+                                paperSize={settings.paperSize}
+                              />
                             )}
                           />
-                        )}
-                        renderFeedbackPage={() => (
-                          <PrintPage
-                            className="feedback-page shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
-                            pageNumber={
-                              previewPageCount -
-                              (settings.showIPVWireList ? 3 : 0)
-                            }
-                            totalPages={previewPageCount}
-                            paperSize={settings.paperSize}
-                          >
-                            <div className="pt-4">
-                              <PrintFeedbackSection
-                                config={{
-                                  showFeedbackSection:
-                                    settings.showFeedbackSection,
-                                  feedbackSections: settings.feedbackSections,
-                                  feedbackRenderMode:
-                                    settings.feedbackRenderMode,
-                                  feedbackValues: {
-                                    projectName: projectInfo.projectName,
-                                    pdNumber: projectInfo.pdNumber,
-                                    sheetName: currentSheetName,
-                                    revision: projectInfo.revision,
-                                  },
-                                  customQuestions: settings.customQuestions,
-                                }}
-                                sheetName={currentSheetName}
-                                projectName={projectInfo.projectName}
-                                withLeadingPageBreak={false}
-                              />
-                            </div>
-                          </PrintPage>
-                        )}
-                        renderIPVCoverPage={() => (
-                          <IPVCoverPage
-                            projectInfo={projectInfo}
-                            sheetTitle={sheetTitle}
-                            currentSheetName={currentSheetName}
-                            blueLabels={blueLabels ?? null}
-                            blueLabelReferences={ipvCoverReferenceData.blueLabels}
-                            panducts={ipvCoverReferenceData.panducts}
-                            rails={ipvCoverReferenceData.rails}
-                            externalLocations={
-                              ipvCoverReferenceData.externalLocations
-                            }
-                            whiteLabels={ipvCoverReferenceData.whiteLabels}
-                            heatShrinkLabels={
-                              ipvCoverReferenceData.heatShrinkLabels
-                            }
-                            partNumbers={ipvCoverReferenceData.partNumbers}
-                            layoutImageUrl={ipvCoverReferenceData.layoutImageUrl}
-                            pageNumber={previewPageCount - 2}
-                            totalPages={previewPageCount}
-                            paperSize={settings.paperSize}
-                          />
-                        )}
-                        renderIPVReferencePage={() => (
-                          <IPVReferenceListsPage
-                            currentSheetName={currentSheetName}
-                            blueLabels={blueLabels ?? null}
-                            blueLabelReferences={ipvCoverReferenceData.blueLabels}
-                            panducts={ipvCoverReferenceData.panducts}
-                            rails={ipvCoverReferenceData.rails}
-                            externalLocations={ipvCoverReferenceData.externalLocations}
-                            whiteLabels={ipvCoverReferenceData.whiteLabels}
-                            heatShrinkLabels={ipvCoverReferenceData.heatShrinkLabels}
-                            partNumbers={ipvCoverReferenceData.partNumbers}
-                            identityFilterLocationGroups={processedLocationGroups}
-                            pageNumber={previewPageCount - 1}
-                            totalPages={previewPageCount}
-                            paperSize={settings.paperSize}
-                          />
-                        )}
-                        renderIPVWireListPage={() => (
-                          <WireListIPVPage
-                            rows={rows}
-                            currentSheetName={currentSheetName}
-                            blueLabels={blueLabels ?? null}
-                            ipvChecklistGroups={schemaHydration?.ipvChecklistGroups}
-                            sheetTitle={sheetTitle}
-                            pageNumber={previewPageCount}
-                            totalPages={previewPageCount}
-                            paperSize={settings.paperSize}
-                          />
-                        )}
-                      />
+                        )
+                      ) : null}
 
                       <CrossWireWorkspacePreviewDocument
                         enabled={

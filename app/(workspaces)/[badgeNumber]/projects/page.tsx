@@ -17,9 +17,6 @@ import type { ProjectManifest } from "@/types/project-manifest";
 import type { UserSettings } from "@/types/user-settings";
 import { useSession } from "@/hooks/use-session";
 
-import { Label } from "@/components/ui/label";
-import { LegalSourceIndexPanel } from "@/components/projects/legal-source-index-panel";
-
 import {
   ProjectsCollection,
   ProjectsSidePanelNav,
@@ -422,11 +419,6 @@ export default function ProjectsWorkspacePage({
       }
     >
       <div className="flex-1 p-2 sm:p-3 md:p-4 lg:p-6">
-        <LegalSourceIndexPanel
-          onCreated={() => {
-            void handleRefresh();
-          }}
-        />
         <ProjectsCollection
           badgeNumber={params.badgeNumber}
           projects={projects}
