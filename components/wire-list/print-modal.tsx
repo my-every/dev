@@ -409,8 +409,8 @@ function IPVReferenceListCard({
         className,
       )}
     >
-      <div className="flex items-center justify-between gap-4 border-b border-foreground/20 px-2 py-1.5">
-        <span className="text-[9px] font-semibold uppercase tracking-wide text-foreground/80">
+      <div className="flex items-center justify-between gap-4 border-b border-foreground px-2 py-1.5 bg-muted/10">
+        <span className="text-[9px] font-semibold uppercase tracking-wide text-foreground">
           {title}
         </span>
         <span className="text-[9px] font-mono text-muted-foreground">
@@ -654,12 +654,12 @@ function IPVIdentityFilterReferenceCard({
   return (
     <div
       className={cn(
-        "flex min-h-0 flex-col overflow-hidden border border-foreground/30 bg-background",
+        "flex min-h-0 flex-col overflow-hidden  max-h-max  bg-background",
         className,
       )}
     >
-      <div className="flex items-center justify-between gap-3 border-b border-foreground/20 bg-muted/40 px-2 py-1.5">
-        <span className="text-[9px] font-semibold uppercase tracking-wide text-foreground/80">
+      <div className="flex items-center justify-between gap-3 border-b border-foreground/20 bg-muted/20 px-2 py-1.5">
+        <span className="text-[9px] font-semibold uppercase tracking-wide text-foreground">
           {group.title}
         </span>
         <span className="text-[9px] font-mono text-muted-foreground">
@@ -706,16 +706,6 @@ function IPVIdentityFilterReferenceCard({
               </tr>
             ))}
           </tbody>
-          <tfoot>
-            <tr className="border-t border-foreground/20 bg-muted/30">
-              <td colSpan={5} className="px-1.5 py-1 text-right text-[8px] font-semibold uppercase tracking-wide text-foreground/80">
-                Total Rows
-              </td>
-              <td className="px-1.5 py-1 text-left font-mono text-[8px] font-semibold">
-                {group.rowCount}
-              </td>
-            </tr>
-          </tfoot>
         </table>
       </div>
     </div>
@@ -3966,9 +3956,7 @@ function IPVReferenceListsPage({
         <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden">
           {identityFilterReferenceGroups.length > 0 ? (
             <div className="space-y-1.5">
-              <div className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-                Identity Filter References
-              </div>
+           
               <div
                 className={cn(
                   "grid gap-2 content-start",
