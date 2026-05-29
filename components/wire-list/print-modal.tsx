@@ -598,10 +598,11 @@ function buildIPVReferenceCardGroups({
   heatShrinkLabels?: string[];
   partNumbers?: string[];
 }): IPVReferenceCardGroup[] {
-  const resolvedBlueLabelReferences =
-    blueLabelReferences && blueLabelReferences.length > 0
-      ? blueLabelReferences
-      : buildBlueLabelReferenceRows(currentSheetName, blueLabels);
+  const resolvedBlueLabelReferences = resolveBlueLabelReferenceValues({
+    currentSheetName,
+    blueLabels,
+    blueLabelReferences,
+  });
   const resolvedPanducts = collapseReferenceValuesWithQty(panducts);
   const resolvedRails = collapseReferenceValuesWithQty(rails);
 
@@ -719,10 +720,14 @@ function IPVBlueLabelsReferenceCard({
   values: string[];
   className?: string;
 }) {
+  const displayValues = values
+    .map((value) => String(value ?? "").trim())
+    .filter(Boolean);
+
   return (
     <div
       className={cn(
-        "flex h-full min-h-0 flex-col overflow-hidden max-h-max bg-background",
+        "flex  flex-col overflow-hidden min-h-max bg-background",
         className,
       )}
     >
@@ -731,38 +736,32 @@ function IPVBlueLabelsReferenceCard({
           Blue Labels
         </span>
         <span className="text-[9px] font-mono text-muted-foreground">
-          {values.length}
+          {displayValues.length}
         </span>
       </div>
 
       <div className="min-h-0 flex-1 overflow-hidden">
-        <table className="w-full border-collapse text-[8px] leading-tight">
-          <thead className="bg-muted/20">
-            <tr className="border-b border-foreground/10">
-              <th className="px-1.5 py-1 text-left font-semibold uppercase tracking-wide">
-                Device ID
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {values.length > 0 ? (
-              values.map((value, index) => (
-                <tr
+        <div className="border-b border-foreground/10 bg-muted/20 px-1.5 py-1 text-[8px] font-semibold uppercase tracking-wide">
+          Device ID
+        </div>
+        <div className="h-full min-h-0 overflow-y-auto">
+          {displayValues.length > 0 ? (
+            <div className="text-[8px] leading-tight">
+              {displayValues.map((value, index) => (
+                <div
                   key={`blue-label-${index}-${value}`}
-                  className="border-b border-foreground/10 last:border-b-0"
+                  className="border-b border-foreground/10 px-1.5 py-0.5 font-medium last:border-b-0"
                 >
-                  <td className="px-1.5 py-0.5 font-medium">{value}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td className="px-1.5 py-2 text-center text-muted-foreground">
-                  No blue labels
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+                  {value}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="px-1.5 py-2 text-center text-[8px] text-muted-foreground">
+              No blue labels
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -1153,6 +1152,42 @@ function buildBlueLabelReferenceRows(
   return getSheetDeviceSequence(currentSheetName, blueLabels).map(
     (deviceId, index) =>
       `${String(index + 1).padStart(2, "0")}. ${deviceId.trim()}`,
+  );
+}
+
+function sanitizeBlueLabelReferenceValues(values?: string[]): string[] {
+  if (!values || values.length === 0) {
+    return [];
+  }
+
+  return values
+    .map((value) => String(value ?? "").replace(/^\s*\d+\.\s*/, "").trim())
+    .filter(Boolean);
+}
+
+function resolveBlueLabelReferenceValues({
+  currentSheetName,
+  blueLabels,
+  blueLabelReferences,
+}: {
+  currentSheetName: string;
+  blueLabels: BlueLabelSequenceMap | null;
+  blueLabelReferences?: string[];
+}): string[] {
+  const explicitValues = sanitizeBlueLabelReferenceValues(blueLabelReferences);
+  if (explicitValues.length > 0) {
+    return explicitValues;
+  }
+
+  const sequenceValues = sanitizeBlueLabelReferenceValues(
+    getSheetDeviceSequence(currentSheetName, blueLabels),
+  );
+  if (sequenceValues.length > 0) {
+    return sequenceValues;
+  }
+
+  return sanitizeBlueLabelReferenceValues(
+    buildBlueLabelReferenceRows(currentSheetName, blueLabels),
   );
 }
 
@@ -3685,7 +3720,7 @@ function WireListIPVPage({
             </h1>
             <p className="text-[10px] text-muted-foreground mt-0.5">
               {groupingMode === "schema-order"
-                ? "Schema order"
+                ? "Grouped by Blue Label Sequence"
                 : "Grouped by source device"}
             </p>
           </div>
@@ -3892,18 +3927,65 @@ function WireListIPVReviewPage({
         <div className="mb-3 flex items-center justify-between border-b border-border pb-2">
           <div>
             <h1 className="text-[14px] font-bold text-foreground">
-            {sheetTitle} - IPV Review
+            {sheetTitle} - IPV Checklist
             </h1>
             <p className="mt-0.5 text-[10px] text-muted-foreground">
-              IPV validation with notes
+             Review and mark each row after each completion.
             </p>
           </div>
           <div className="text-right text-[10px] text-muted-foreground">
             <div className="font-medium">{totalWires} wires</div>
           </div>
         </div>
+        
+        {/* IPV Codes Table */}
+        <div className="grid grid-cols-2 mb-3 gap-4">
+          {Object.entries(IPV_CODES).map(([category, codes]) => (
+            <div
+              key={category}
+              className="border border-foreground/20 rounded-sm overflow-hidden"
+            >
+              <div className="bg-muted/80 px-2 py-1.5 border-b border-foreground/20">
+                <h2 className="text-[12px] font-bold text-foreground">
+                  {category}
+                </h2>
+              </div>
+              <table className="w-full text-[10px]">
+                <thead>
+                  <tr className="border-b border-foreground/10 bg-muted/40">
+                    <th className="px-2 py-1 text-left font-semibold w-12">
+                      Code
+                    </th>
+                    <th className="px-2 py-1 text-left font-semibold">
+                      Description
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {codes.map((item, idx) => (
+                    <tr
+                      key={item.code}
+                      className={
+                        idx < codes.length - 1
+                          ? "border-b border-foreground/5"
+                          : ""
+                      }
+                    >
+                      <td className="px-2 py-1 font-mono font-bold text-foreground">
+                        {item.code}
+                      </td>
+                      <td className="px-2 py-1 text-muted-foreground">
+                        {item.description}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))}
+        </div>
 
-        <div className="min-w-0 overflow-hidden rounded border border-border/40">
+        <div className="min-w-0 overflow-hidden  border border-border/40">
           <table className="w-full border-collapse text-[9px] leading-tight">
             <thead className="bg-muted/80">
               <tr className="border-b border-foreground/20">
@@ -4213,10 +4295,11 @@ function IPVReferenceListsPage({
   totalPages?: number;
   paperSize?: PrintPaperSize;
 }) {
-  const resolvedBlueLabelReferences =
-    blueLabelReferences && blueLabelReferences.length > 0
-      ? blueLabelReferences
-      : getSheetDeviceSequence(currentSheetName, blueLabels);
+  const resolvedBlueLabelReferences = resolveBlueLabelReferenceValues({
+    currentSheetName,
+    blueLabels,
+    blueLabelReferences,
+  });
   const identityFilterReferenceGroups = buildIdentityFilterReferenceGroups(
     identityFilterLocationGroups ?? [],
   );
@@ -4239,7 +4322,7 @@ function IPVReferenceListsPage({
             </p>
           </div>
           <div className="text-right text-[10px] text-muted-foreground">
-            <div className="font-medium">IPV reference values</div>
+            <div className="font-medium">Prep & IPV Guide</div>
           </div>
         </div>
 
