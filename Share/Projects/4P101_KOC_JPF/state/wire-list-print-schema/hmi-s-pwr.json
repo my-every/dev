@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-05-05T13:51:29.306Z",
+  "generatedAt": "2026-05-30T00:04:05.695Z",
   "sheetName": "HMI S PWR",
   "mode": "standardize",
-  "totalPages": 3,
+  "totalPages": 1,
   "totalRows": 9,
   "settings": {
     "showEstTime": false,
-    "showFromCheckbox": true,
-    "showToCheckbox": true,
-    "showIPV": true,
+    "showFromCheckbox": false,
+    "showToCheckbox": false,
+    "showIPV": false,
     "showComments": true,
     "showLength": false,
-    "showCoverPage": true,
-    "showTableOfContents": true,
+    "showCoverPage": false,
+    "showTableOfContents": false,
     "showIPVCodes": false,
     "showFeedbackSection": false,
     "showDeviceSubheaders": false,
@@ -86,189 +86,182 @@
     "brandingSortMode": "device-prefix",
     "wireListSortMode": "device-prefix"
   },
-  "pages": [
-    {
-      "pageType": "cover",
-      "pageNumber": 1,
-      "projectInfo": {
-        "projectNumber": "4P101",
-        "projectName": "4P101",
-        "revision": "C.4_M.1",
-        "pdNumber": "4P101",
-        "unitNumber": "",
-        "preparedBy": "",
-        "badgeNumber": "",
-        "date": "",
-        "time": "",
-        "personnel": [
+  "ipvChecklist": {
+    "totalRows": 9,
+    "groups": [
+      {
+        "deviceId": "GR0341",
+        "rows": [
           {
-            "id": "1",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
-          },
-          {
-            "id": "2",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
-          },
-          {
-            "id": "3",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
-          },
-          {
-            "id": "4",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
-          },
-          {
-            "id": "5",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
-          },
-          {
-            "id": "6",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
+            "rowId": "row-2",
+            "rowIndex": 12,
+            "fromDeviceId": "GR0341",
+            "toDeviceId": "IEG0230:11",
+            "wireType": "SC",
+            "wireNo": "IEG023011",
+            "wireId": "GRN",
+            "gaugeSize": "14",
+            "fromLocation": "HMI-S PWR",
+            "toLocation": "CONTROL B",
+            "fromPageZone": "10.B2",
+            "toPageZone": "10.B2",
+            "lengthDisplay": "120 in",
+            "lengthInches": 120
           }
         ]
       },
-      "sheetTitle": "HMI-S PWR"
-    },
-    {
-      "pageType": "toc",
-      "pageNumber": 2,
-      "locationGroups": [
-        {
-          "location": "HMI-S PWR",
-          "isExternal": false,
-          "sections": [
-            {
-              "index": 1,
-              "label": "Single Connections",
-              "rowCount": 1,
-              "estimatedPage": 3,
-              "subEntries": [
-                {
-                  "label": "BA - FU",
-                  "rowCount": 1
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "location": "CONTROL A",
-          "isExternal": true,
-          "sections": [
-            {
-              "index": 1,
-              "label": "Cables",
-              "rowCount": 1,
-              "estimatedPage": 3,
-              "subEntries": []
-            }
-          ]
-        },
-        {
-          "location": "CONTROL B",
-          "isExternal": true,
-          "sections": [
-            {
-              "index": 1,
-              "label": "Grounds",
-              "rowCount": 1,
-              "estimatedPage": 3,
-              "subEntries": []
-            },
-            {
-              "index": 2,
-              "label": "Cables",
-              "rowCount": 1,
-              "estimatedPage": 3,
-              "subEntries": []
-            }
-          ]
-        },
-        {
-          "location": "CONTROL,JB70",
-          "isExternal": true,
-          "sections": [
-            {
-              "index": 1,
-              "label": "Single Connections",
-              "rowCount": 1,
-              "estimatedPage": 3,
-              "subEntries": [
-                {
-                  "label": "FU - AT",
-                  "rowCount": 1
-                }
-              ]
-            },
-            {
-              "index": 2,
-              "label": "Cables",
-              "rowCount": 1,
-              "estimatedPage": 3,
-              "subEntries": []
-            }
-          ]
-        },
-        {
-          "location": "RAIL,RIGHT,JB70",
-          "isExternal": true,
-          "sections": [
-            {
-              "index": 1,
-              "label": "Single Connections",
-              "rowCount": 3,
-              "estimatedPage": 3,
-              "subEntries": [
-                {
-                  "label": "BA - XT",
-                  "rowCount": 1
-                },
-                {
-                  "label": "FU - XT",
-                  "rowCount": 2
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "summary": {
-        "locations": 5,
-        "sections": 11,
-        "rows": 9,
-        "pages": 3
+      {
+        "deviceId": "FU1100",
+        "rows": [
+          {
+            "rowId": "row-4",
+            "rowIndex": 14,
+            "fromDeviceId": "FU1100:LD",
+            "toDeviceId": "AT1100:POS",
+            "wireType": "SC",
+            "wireNo": "FU1100",
+            "wireId": "WHT",
+            "gaugeSize": "14",
+            "fromLocation": "HMI-S PWR",
+            "toLocation": "CONTROL,JB70",
+            "fromPageZone": "45.D3",
+            "toPageZone": "45.D3",
+            "lengthDisplay": "120 in",
+            "lengthInches": 120
+          },
+          {
+            "rowId": "row-7",
+            "rowIndex": 17,
+            "fromDeviceId": "FU1100:LI",
+            "toDeviceId": "XT0111:21",
+            "wireType": "SC",
+            "wireNo": "FU0136",
+            "wireId": "WHT",
+            "gaugeSize": "14",
+            "fromLocation": "HMI-S PWR",
+            "toLocation": "RAIL,RIGHT,JB70",
+            "fromPageZone": "45.D3",
+            "toPageZone": "45.D5",
+            "lengthDisplay": "120 in",
+            "lengthInches": 120
+          }
+        ]
+      },
+      {
+        "deviceId": "FU1101",
+        "rows": [
+          {
+            "rowId": "row-8",
+            "rowIndex": 18,
+            "fromDeviceId": "FU1101:LI",
+            "toDeviceId": "XT0111:21",
+            "wireType": "SC",
+            "wireNo": "FU0136",
+            "wireId": "WHT",
+            "gaugeSize": "14",
+            "fromLocation": "HMI-S PWR",
+            "toLocation": "RAIL,RIGHT,JB70",
+            "fromPageZone": "45.C2",
+            "toPageZone": "45.D5",
+            "lengthDisplay": "120 in",
+            "lengthInches": 120
+          }
+        ]
+      },
+      {
+        "deviceId": "BA1100",
+        "rows": [
+          {
+            "rowId": "row-0",
+            "rowIndex": 10,
+            "fromDeviceId": "BA1100:POS",
+            "toDeviceId": "FU1101:LD",
+            "wireType": "SC",
+            "wireNo": "FU1101LD",
+            "wireId": "WHT",
+            "gaugeSize": "16",
+            "fromLocation": "HMI-S PWR",
+            "toLocation": "HMI-S PWR",
+            "fromPageZone": "45.D1",
+            "toPageZone": "45.C2",
+            "lengthDisplay": "60 in",
+            "lengthInches": 60
+          },
+          {
+            "rowId": "row-1",
+            "rowIndex": 11,
+            "fromDeviceId": "BA1100:L1",
+            "toDeviceId": "AU0080:L2",
+            "wireType": "WC0008",
+            "wireNo": "AU0080L2",
+            "wireId": "ENET",
+            "gaugeSize": "CABLE",
+            "fromLocation": "HMI-S PWR",
+            "toLocation": "CONTROL A",
+            "fromPageZone": "2.A5",
+            "toPageZone": "2.A4",
+            "lengthDisplay": "120 in",
+            "lengthInches": 120
+          },
+          {
+            "rowId": "row-3",
+            "rowIndex": 13,
+            "fromDeviceId": "BA1100:L2",
+            "toDeviceId": "AU0070:L1",
+            "wireType": "WC0010",
+            "wireNo": "BA1100L2",
+            "wireId": "ENET",
+            "gaugeSize": "CABLE",
+            "fromLocation": "HMI-S PWR",
+            "toLocation": "CONTROL B",
+            "fromPageZone": "2.A5",
+            "toPageZone": "2.A6",
+            "lengthDisplay": "120 in",
+            "lengthInches": 120
+          },
+          {
+            "rowId": "row-5",
+            "rowIndex": 15,
+            "fromDeviceId": "BA1100:DEVICE",
+            "toDeviceId": "AT1100:L1",
+            "wireType": "WC0101",
+            "wireNo": "BA1100DEVICE",
+            "wireId": "ENET",
+            "gaugeSize": "CABLE",
+            "fromLocation": "HMI-S PWR",
+            "toLocation": "CONTROL,JB70",
+            "fromPageZone": "45.D1",
+            "toPageZone": "45.D3",
+            "lengthDisplay": "120 in",
+            "lengthInches": 120
+          },
+          {
+            "rowId": "row-6",
+            "rowIndex": 16,
+            "fromDeviceId": "BA1100:NEG",
+            "toDeviceId": "XT0111:22",
+            "wireType": "SC",
+            "wireNo": "-0V",
+            "wireId": "WHT",
+            "gaugeSize": "16",
+            "fromLocation": "HMI-S PWR",
+            "toLocation": "RAIL,RIGHT,JB70",
+            "fromPageZone": "45.D1",
+            "toPageZone": "45.D5",
+            "lengthDisplay": "120 in",
+            "lengthInches": 120
+          }
+        ]
       }
-    },
+    ]
+  },
+  "pages": [
     {
       "pageType": "wire-list",
-      "pageNumber": 3,
+      "pageNumber": 1,
       "locationGroups": [
         {
-          "location": "HMI-S PWR",
+          "location": "HMI S PWR",
           "isExternal": false,
           "totalRows": 1,
           "subsections": [
@@ -304,9 +297,9 @@
           ]
         },
         {
-          "location": "CONTROL A",
+          "location": "CTRL",
           "isExternal": true,
-          "totalRows": 1,
+          "totalRows": 3,
           "subsections": [
             {
               "label": "Cables",
@@ -322,7 +315,7 @@
                   "wireNo": "AU0080L2",
                   "wireId": "ENET",
                   "gaugeSize": "CABLE",
-                  "fromLocation": "HMI S PWR",
+                  "fromLocation": "HMI-S PWR",
                   "toLocation": "CONTROL A",
                   "fromPageZone": "2.A5",
                   "toPageZone": "2.A4",
@@ -331,14 +324,7 @@
                 }
               ],
               "deviceToDeviceSubsections": []
-            }
-          ]
-        },
-        {
-          "location": "CONTROL B",
-          "isExternal": true,
-          "totalRows": 2,
-          "subsections": [
+            },
             {
               "label": "Grounds",
               "sectionKind": "grounds",
@@ -353,7 +339,7 @@
                   "wireNo": "IEG023011",
                   "wireId": "GRN",
                   "gaugeSize": "14",
-                  "fromLocation": "HMI S PWR",
+                  "fromLocation": "HMI-S PWR",
                   "toLocation": "CONTROL B",
                   "fromPageZone": "10.B2",
                   "toPageZone": "10.B2",
@@ -377,7 +363,7 @@
                   "wireNo": "BA1100L2",
                   "wireId": "ENET",
                   "gaugeSize": "CABLE",
-                  "fromLocation": "HMI S PWR",
+                  "fromLocation": "HMI-S PWR",
                   "toLocation": "CONTROL B",
                   "fromPageZone": "2.A5",
                   "toPageZone": "2.A6",
@@ -390,7 +376,7 @@
           ]
         },
         {
-          "location": "CONTROL,JB70",
+          "location": "CTRL A",
           "isExternal": true,
           "totalRows": 2,
           "subsections": [
@@ -408,7 +394,7 @@
                   "wireNo": "FU1100",
                   "wireId": "WHT",
                   "gaugeSize": "14",
-                  "fromLocation": "HMI S PWR",
+                  "fromLocation": "HMI-S PWR",
                   "toLocation": "CONTROL,JB70",
                   "fromPageZone": "45.D3",
                   "toPageZone": "45.D3",
@@ -437,7 +423,7 @@
                   "wireNo": "BA1100DEVICE",
                   "wireId": "ENET",
                   "gaugeSize": "CABLE",
-                  "fromLocation": "HMI S PWR",
+                  "fromLocation": "HMI-S PWR",
                   "toLocation": "CONTROL,JB70",
                   "fromPageZone": "45.D1",
                   "toPageZone": "45.D3",
@@ -450,7 +436,7 @@
           ]
         },
         {
-          "location": "RAIL,RIGHT,JB70",
+          "location": "RAIL RIGHT",
           "isExternal": true,
           "totalRows": 3,
           "subsections": [
@@ -468,7 +454,7 @@
                   "wireNo": "-0V",
                   "wireId": "WHT",
                   "gaugeSize": "16",
-                  "fromLocation": "HMI S PWR",
+                  "fromLocation": "HMI-S PWR",
                   "toLocation": "RAIL,RIGHT,JB70",
                   "fromPageZone": "45.D1",
                   "toPageZone": "45.D5",
@@ -484,7 +470,7 @@
                   "wireNo": "FU0136",
                   "wireId": "WHT",
                   "gaugeSize": "14",
-                  "fromLocation": "HMI S PWR",
+                  "fromLocation": "HMI-S PWR",
                   "toLocation": "RAIL,RIGHT,JB70",
                   "fromPageZone": "45.D3",
                   "toPageZone": "45.D5",
@@ -500,7 +486,7 @@
                   "wireNo": "FU0136",
                   "wireId": "WHT",
                   "gaugeSize": "14",
-                  "fromLocation": "HMI S PWR",
+                  "fromLocation": "HMI-S PWR",
                   "toLocation": "RAIL,RIGHT,JB70",
                   "fromPageZone": "45.C2",
                   "toPageZone": "45.D5",

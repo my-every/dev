@@ -1,0 +1,63 @@
+{
+  "generatedAt": "2026-05-30T00:04:05.911Z",
+  "sheetSlug": "rail-left-jb70",
+  "sheetName": "RAIL LEFT JB70",
+  "totalRows": 1,
+  "references": {
+    "assignmentName": "RAIL,LEFT,JB70",
+    "whiteLabels": [],
+    "blueLabels": [
+      "XTFGA",
+      "XT0431",
+      "GR0431"
+    ],
+    "heatShrinkLabels": [],
+    "partNumbers": [
+      "903849C1"
+    ],
+    "panducts": [],
+    "rails": [
+      "54.0\" Rail"
+    ],
+    "identityFilters": [
+      {
+        "title": "Grounds",
+        "sectionKind": "grounds",
+        "rowCount": 1,
+        "rows": [
+          {
+            "fromDeviceId": "GR0431",
+            "toDeviceId": "FRAME",
+            "wireNo": "GR0431",
+            "wireId": "GRN/YEL",
+            "gaugeSize": "14",
+            "location": "RAIL,LEFT,JB70"
+          }
+        ]
+      }
+    ]
+  },
+  "groups": [
+    {
+      "deviceId": "GR0431",
+      "rows": [
+        {
+          "rowId": "row-0",
+          "rowIndex": 10,
+          "fromDeviceId": "GR0431",
+          "toDeviceId": "FRAME",
+          "wireType": "SC",
+          "wireNo": "GR0431",
+          "wireId": "GRN/YEL",
+          "gaugeSize": "14",
+          "fromLocation": "RAIL,LEFT,JB70",
+          "toLocation": "RAIL,LEFT,JB70",
+          "fromPageZone": "10.B2",
+          "toPageZone": "10.B2",
+          "lengthDisplay": "60 in",
+          "lengthInches": 60
+        }
+      ]
+    }
+  ]
+}

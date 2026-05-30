@@ -18,7 +18,10 @@ export function BrandingPreviewContent({
     <>
       {sections.length > 0 ? (
         sections.map((section, index) => (
-          <div key={`${section.group.location}-${section.subsection.label}`} className={index > 0 ? "mt-5" : ""}>
+          <div
+            key={`${section.group.location}-${section.subsection.label}-${index}`}
+            className={index > 0 ? "mt-5" : ""}
+          >
             <SectionHeaderBlock
               title={`${section.group.location} - ${section.subsection.label}`}
               count={section.rows.length}

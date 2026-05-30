@@ -217,6 +217,36 @@
       ],
       "externalLocations": [
         {
+          "location": "CTRL",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "CTRL A",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "GEN CTRL",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "HMI S PWR",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "PLC",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "RAIL RIGHT",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
           "location": "CONTROL B",
           "wireListVisible": false,
           "brandingVisible": false
@@ -233,16 +263,6 @@
         },
         {
           "location": "FIRE SYSTEM RAIL",
-          "wireListVisible": false,
-          "brandingVisible": false
-        },
-        {
-          "location": "GEN CTRL",
-          "wireListVisible": false,
-          "brandingVisible": false
-        },
-        {
-          "location": "PLC",
           "wireListVisible": false,
           "brandingVisible": false
         },
@@ -341,6 +361,9 @@
         "FU0014",
         "FU0015"
       ],
+      "heatShrinkLabels": [
+        "WC4524"
+      ],
       "partNumbers": [
         "1043265-1",
         "1043265-3",
@@ -374,11 +397,10 @@
         "903849C1"
       ],
       "files": {
-        "wireListSchemaPath": "state/sheets/control-a.json",
+        "wireListSchemaPath": "state/wire-list-print-schema/control-a.json",
+        "ipvWireListSchemaPath": "state/ipv/control-a-ipv.json",
         "brandListSchemaPath": "state/wire-brand-list/control-a.json"
       },
-      "buildUpEstTime": "6h 21m",
-      "wireListEstTime": "4h 20m",
       "layout": {
         "primaryPage": {
           "pageNumber": 1,
@@ -449,13 +471,13 @@
           "crossWireVisible": false
         },
         "RAIL RIGHT JB70": {
-          "wireListVisible": true,
-          "brandingVisible": true,
-          "crossWireVisible": true
+          "wireListVisible": false,
+          "brandingVisible": false,
+          "crossWireVisible": false
         }
       },
-      "totalEstimatedMinutes": 641,
-      "remainingMinutes": 641,
+      "totalEstimatedMinutes": 0,
+      "remainingMinutes": 0,
       "priority": {
         "score": null,
         "level": "low",
@@ -467,7 +489,7 @@
       "priorityLevel": "low",
       "boardAssignment": {
         "assignmentId": "4p101-koc-jpf:control-a",
-        "estimatedMinutes": 641,
+        "estimatedMinutes": 0,
         "assignedBadge": null,
         "assignedAt": null,
         "workAreaId": null,
@@ -489,8 +511,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "control-b": {
       "sheetSlug": "control-b",
@@ -510,8 +531,8 @@
       "boxNumber": "2424882-101",
       "panducts": [
         "3X5X21.3",
-        "2X5X22.7",
-        "2X5X30.7",
+        "2X5X22.7 x2",
+        "2X5X30.7 x2",
         "NOTCH PANDUCT"
       ],
       "rails": [
@@ -519,6 +540,31 @@
         "RAIL 56.75\""
       ],
       "externalLocations": [
+        {
+          "location": "CTRL",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "CTRL A",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "HMI S PWR",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "PLC",
+          "wireListVisible": false,
+          "brandingVisible": false
+        },
+        {
+          "location": "RAIL RIGHT",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
         {
           "location": "CONTROL B",
           "wireListVisible": false,
@@ -541,11 +587,6 @@
         },
         {
           "location": "GEN CTRL",
-          "wireListVisible": false,
-          "brandingVisible": false
-        },
-        {
-          "location": "PLC",
           "wireListVisible": false,
           "brandingVisible": false
         },
@@ -646,6 +687,9 @@
         "KA2160",
         "KA2161"
       ],
+      "heatShrinkLabels": [
+        "WC4524"
+      ],
       "partNumbers": [
         "1043265-1",
         "1043265-3",
@@ -689,11 +733,10 @@
         "903849C1"
       ],
       "files": {
-        "wireListSchemaPath": "state/sheets/control-b.json",
+        "wireListSchemaPath": "state/wire-list-print-schema/control-b.json",
+        "ipvWireListSchemaPath": "state/ipv/control-b-ipv.json",
         "brandListSchemaPath": "state/wire-brand-list/control-b.json"
       },
-      "buildUpEstTime": "5h 1m",
-      "wireListEstTime": "3h 26m",
       "layout": {
         "primaryPage": {
           "pageNumber": 1,
@@ -764,13 +807,13 @@
           "crossWireVisible": false
         },
         "RAIL RIGHT JB70": {
-          "wireListVisible": true,
-          "brandingVisible": true,
-          "crossWireVisible": true
+          "wireListVisible": false,
+          "brandingVisible": false,
+          "crossWireVisible": false
         }
       },
-      "totalEstimatedMinutes": 507,
-      "remainingMinutes": 507,
+      "totalEstimatedMinutes": 0,
+      "remainingMinutes": 0,
       "priority": {
         "score": null,
         "level": "low",
@@ -782,7 +825,7 @@
       "priorityLevel": "low",
       "boardAssignment": {
         "assignmentId": "4p101-koc-jpf:control-b",
-        "estimatedMinutes": 507,
+        "estimatedMinutes": 0,
         "assignedBadge": null,
         "assignedAt": null,
         "workAreaId": null,
@@ -804,8 +847,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "control-jb70": {
       "sheetSlug": "control-jb70",
@@ -825,7 +867,23 @@
       "boxNumber": "2424882-101",
       "panducts": [],
       "rails": [],
-      "externalLocations": [],
+      "externalLocations": [
+        {
+          "location": "CTRL",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "HMI S PWR",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "RAIL RIGHT",
+          "wireListVisible": true,
+          "brandingVisible": true
+        }
+      ],
       "whiteLabels": [
         "AT1100G"
       ],
@@ -843,6 +901,7 @@
         "HA0472",
         "SB0472"
       ],
+      "heatShrinkLabels": [],
       "partNumbers": [
         "1103208-101",
         "1577354-4502",
@@ -853,11 +912,10 @@
         "2380746-5"
       ],
       "files": {
-        "wireListSchemaPath": "state/sheets/control-jb70.json",
+        "wireListSchemaPath": "state/wire-list-print-schema/control-jb70.json",
+        "ipvWireListSchemaPath": "state/ipv/control-jb70-ipv.json",
         "brandListSchemaPath": "state/wire-brand-list/control-jb70.json"
       },
-      "buildUpEstTime": "51m",
-      "wireListEstTime": "35m",
       "layout": {
         "primaryPage": {
           "pageNumber": 6,
@@ -897,8 +955,8 @@
       },
       "devices": {},
       "panelNumber": "1053331-1100",
-      "totalEstimatedMinutes": 86,
-      "remainingMinutes": 86,
+      "totalEstimatedMinutes": 0,
+      "remainingMinutes": 0,
       "priority": {
         "score": null,
         "level": "low",
@@ -910,7 +968,7 @@
       "priorityLevel": "low",
       "boardAssignment": {
         "assignmentId": "4p101-koc-jpf:control-jb70",
-        "estimatedMinutes": 86,
+        "estimatedMinutes": 0,
         "assignedBadge": null,
         "assignedAt": null,
         "workAreaId": null,
@@ -932,8 +990,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "control-jb72": {
       "sheetSlug": "control-jb72",
@@ -953,7 +1010,13 @@
       "boxNumber": "2424882-301",
       "panducts": [],
       "rails": [],
-      "externalLocations": [],
+      "externalLocations": [
+        {
+          "location": "GEN CTRL",
+          "wireListVisible": true,
+          "brandingVisible": true
+        }
+      ],
       "whiteLabels": [],
       "blueLabels": [
         "HL0171",
@@ -962,17 +1025,17 @@
         "SA0170",
         "SB0170"
       ],
+      "heatShrinkLabels": [],
       "partNumbers": [
         "2380746-10",
         "2380746-7",
         "2380746-9"
       ],
       "files": {
-        "wireListSchemaPath": "state/sheets/control-jb72.json",
+        "wireListSchemaPath": "state/wire-list-print-schema/control-jb72.json",
+        "ipvWireListSchemaPath": "state/ipv/control-jb72-ipv.json",
         "brandListSchemaPath": "state/wire-brand-list/control-jb72.json"
       },
-      "buildUpEstTime": "20m",
-      "wireListEstTime": "13m",
       "layout": {
         "primaryPage": {
           "pageNumber": 8,
@@ -988,8 +1051,8 @@
         "pages": []
       },
       "devices": {},
-      "totalEstimatedMinutes": 33,
-      "remainingMinutes": 33,
+      "totalEstimatedMinutes": 0,
+      "remainingMinutes": 0,
       "priority": {
         "score": null,
         "level": "low",
@@ -1001,7 +1064,7 @@
       "priorityLevel": "low",
       "boardAssignment": {
         "assignmentId": "4p101-koc-jpf:control-jb72",
-        "estimatedMinutes": 33,
+        "estimatedMinutes": 0,
         "assignedBadge": null,
         "assignedAt": null,
         "workAreaId": null,
@@ -1023,8 +1086,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "fg-e-ctrl": {
       "sheetSlug": "fg-e-ctrl",
@@ -1043,13 +1105,23 @@
       "normalizedTitle": "GEN CTRL",
       "boxNumber": "2424882-301",
       "panducts": [
-        "2X5X48",
+        "2X5X48 x2",
         "2X5X21.3"
       ],
       "rails": [
         "RAIL 45.5\""
       ],
       "externalLocations": [
+        {
+          "location": "CTRL",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "RAIL RIGHT",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
         {
           "location": "GEN CMPNT",
           "wireListVisible": false,
@@ -1133,6 +1205,9 @@
         "GR0152",
         "IEG0150"
       ],
+      "heatShrinkLabels": [
+        "WC8066"
+      ],
       "partNumbers": [
         "1043265-1",
         "1043265-3",
@@ -1160,11 +1235,10 @@
         "903849C1"
       ],
       "files": {
-        "wireListSchemaPath": "state/sheets/fg-e-ctrl.json",
+        "wireListSchemaPath": "state/wire-list-print-schema/fg-e-ctrl.json",
+        "ipvWireListSchemaPath": "state/ipv/fg-e-ctrl-ipv.json",
         "brandListSchemaPath": "state/wire-brand-list/fg-e-ctrl.json"
       },
-      "buildUpEstTime": "5h 25m",
-      "wireListEstTime": "3h 30m",
       "layout": {
         "primaryPage": {
           "pageNumber": 9,
@@ -1221,8 +1295,8 @@
         }
       },
       "panelNumber": "1053331-501",
-      "totalEstimatedMinutes": 535,
-      "remainingMinutes": 535,
+      "totalEstimatedMinutes": 0,
+      "remainingMinutes": 0,
       "priority": {
         "score": null,
         "level": "low",
@@ -1234,7 +1308,7 @@
       "priorityLevel": "low",
       "boardAssignment": {
         "assignmentId": "4p101-koc-jpf:fg-e-ctrl",
-        "estimatedMinutes": 535,
+        "estimatedMinutes": 0,
         "assignedBadge": null,
         "assignedAt": null,
         "workAreaId": null,
@@ -1256,8 +1330,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "fo-conv-vfd": {
       "sheetSlug": "fo-conv-vfd",
@@ -1293,6 +1366,7 @@
         "GR1125",
         "IEG1123"
       ],
+      "heatShrinkLabels": [],
       "partNumbers": [
         "1043265-1",
         "1043265-3",
@@ -1304,11 +1378,10 @@
         "903849C1"
       ],
       "files": {
-        "wireListSchemaPath": "state/sheets/fo-conv-vfd.json",
+        "wireListSchemaPath": "state/wire-list-print-schema/fo-conv-vfd.json",
+        "ipvWireListSchemaPath": "state/ipv/fo-conv-vfd-ipv.json",
         "brandListSchemaPath": "state/wire-brand-list/fo-conv-vfd.json"
       },
-      "buildUpEstTime": "9m",
-      "wireListEstTime": "6m",
       "layout": {
         "primaryPage": {
           "pageNumber": 12,
@@ -1324,8 +1397,8 @@
       },
       "devices": {},
       "panelNumber": "1058112-2300",
-      "totalEstimatedMinutes": 15,
-      "remainingMinutes": 15,
+      "totalEstimatedMinutes": 0,
+      "remainingMinutes": 0,
       "priority": {
         "score": null,
         "level": "low",
@@ -1337,7 +1410,7 @@
       "priorityLevel": "low",
       "boardAssignment": {
         "assignmentId": "4p101-koc-jpf:fo-conv-vfd",
-        "estimatedMinutes": 15,
+        "estimatedMinutes": 0,
         "assignedBadge": null,
         "assignedAt": null,
         "workAreaId": null,
@@ -1359,8 +1432,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "gen-ctrl": {
       "sheetSlug": "gen-ctrl",
@@ -1380,15 +1452,30 @@
       "boxNumber": "2424882-301",
       "panducts": [
         "2X5X36",
-        "2X5X25.3",
+        "2X5X25.3 x3",
         "1X4X31",
         "1X4X22",
         "2X5X21.3"
       ],
       "rails": [
-        "RAIL 27\""
+        "RAIL 27\" x2"
       ],
       "externalLocations": [
+        {
+          "location": "CTRL",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "GEN CTRL",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "PLC",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
         {
           "location": "CONTROL A",
           "wireListVisible": false,
@@ -1472,6 +1559,9 @@
         "PEG0140",
         "GR0146"
       ],
+      "heatShrinkLabels": [
+        "WC8009"
+      ],
       "partNumbers": [
         "1043265-1",
         "1043265-4",
@@ -1498,11 +1588,10 @@
         "903849C1"
       ],
       "files": {
-        "wireListSchemaPath": "state/sheets/gen-ctrl.json",
+        "wireListSchemaPath": "state/wire-list-print-schema/gen-ctrl.json",
+        "ipvWireListSchemaPath": "state/ipv/gen-ctrl-ipv.json",
         "brandListSchemaPath": "state/wire-brand-list/gen-ctrl.json"
       },
-      "buildUpEstTime": "5h 13m",
-      "wireListEstTime": "3h 22m",
       "layout": {
         "primaryPage": {
           "pageNumber": 8,
@@ -1558,8 +1647,8 @@
           "crossWireVisible": true
         }
       },
-      "totalEstimatedMinutes": 515,
-      "remainingMinutes": 515,
+      "totalEstimatedMinutes": 0,
+      "remainingMinutes": 0,
       "priority": {
         "score": null,
         "level": "low",
@@ -1571,7 +1660,7 @@
       "priorityLevel": "low",
       "boardAssignment": {
         "assignmentId": "4p101-koc-jpf:gen-ctrl",
-        "estimatedMinutes": 515,
+        "estimatedMinutes": 0,
         "assignedBadge": null,
         "assignedAt": null,
         "workAreaId": null,
@@ -1593,8 +1682,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "hmi-s-pwr": {
       "sheetSlug": "hmi-s-pwr",
@@ -1612,7 +1700,23 @@
       "boxNumber": "2424882-101",
       "panducts": [],
       "rails": [],
-      "externalLocations": [],
+      "externalLocations": [
+        {
+          "location": "CTRL",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "CTRL A",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "RAIL RIGHT",
+          "wireListVisible": true,
+          "brandingVisible": true
+        }
+      ],
       "whiteLabels": [
         "IEG023011"
       ],
@@ -1622,6 +1726,7 @@
         "FU1101",
         "BA1100"
       ],
+      "heatShrinkLabels": [],
       "partNumbers": [
         "1043265-1",
         "1043265-3",
@@ -1630,11 +1735,10 @@
         "903849C1"
       ],
       "files": {
-        "wireListSchemaPath": "state/sheets/hmi-s-pwr.json",
+        "wireListSchemaPath": "state/wire-list-print-schema/hmi-s-pwr.json",
+        "ipvWireListSchemaPath": "state/ipv/hmi-s-pwr-ipv.json",
         "brandListSchemaPath": "state/wire-brand-list/hmi-s-pwr.json"
       },
-      "buildUpEstTime": "10m",
-      "wireListEstTime": "7m",
       "layout": {
         "primaryPage": {
           "pageNumber": 4,
@@ -1650,8 +1754,8 @@
       },
       "devices": {},
       "panelNumber": "1058134-30",
-      "totalEstimatedMinutes": 17,
-      "remainingMinutes": 17,
+      "totalEstimatedMinutes": 0,
+      "remainingMinutes": 0,
       "priority": {
         "score": null,
         "level": "low",
@@ -1663,7 +1767,7 @@
       "priorityLevel": "low",
       "boardAssignment": {
         "assignmentId": "4p101-koc-jpf:hmi-s-pwr",
-        "estimatedMinutes": 17,
+        "estimatedMinutes": 0,
         "assignedBadge": null,
         "assignedAt": null,
         "workAreaId": null,
@@ -1685,8 +1789,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "plc": {
       "sheetSlug": "plc",
@@ -1707,6 +1810,11 @@
       "panducts": [],
       "rails": [],
       "externalLocations": [
+        {
+          "location": "CTRL",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
         {
           "location": "CONTROL A",
           "wireListVisible": false,
@@ -1775,6 +1883,7 @@
         "XT1124",
         "GR0234"
       ],
+      "heatShrinkLabels": [],
       "partNumbers": [
         "1043265-1",
         "1043265-4",
@@ -1793,11 +1902,10 @@
         "903849C1"
       ],
       "files": {
-        "wireListSchemaPath": "state/sheets/plc.json",
+        "wireListSchemaPath": "state/wire-list-print-schema/plc.json",
+        "ipvWireListSchemaPath": "state/ipv/plc-ipv.json",
         "brandListSchemaPath": "state/wire-brand-list/plc.json"
       },
-      "buildUpEstTime": "28m",
-      "wireListEstTime": "19m",
       "layout": {
         "primaryPage": {
           "pageNumber": 5,
@@ -1836,8 +1944,8 @@
         }
       },
       "panelNumber": "1058112-2001",
-      "totalEstimatedMinutes": 47,
-      "remainingMinutes": 47,
+      "totalEstimatedMinutes": 0,
+      "remainingMinutes": 0,
       "priority": {
         "score": null,
         "level": "low",
@@ -1849,7 +1957,7 @@
       "priorityLevel": "low",
       "boardAssignment": {
         "assignmentId": "4p101-koc-jpf:plc",
-        "estimatedMinutes": 47,
+        "estimatedMinutes": 0,
         "assignedBadge": null,
         "assignedAt": null,
         "workAreaId": null,
@@ -1871,8 +1979,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "prox-turb": {
       "sheetSlug": "prox-turb",
@@ -1906,13 +2013,13 @@
         "GR1210",
         "GR1211"
       ],
+      "heatShrinkLabels": [],
       "partNumbers": [],
       "files": {
-        "wireListSchemaPath": "state/sheets/prox-turb.json",
+        "wireListSchemaPath": "state/wire-list-print-schema/prox-turb.json",
+        "ipvWireListSchemaPath": "state/ipv/prox-turb-ipv.json",
         "brandListSchemaPath": "state/wire-brand-list/prox-turb.json"
       },
-      "buildUpEstTime": "2m",
-      "wireListEstTime": "2m",
       "layout": {
         "primaryPage": {
           "pageNumber": 11,
@@ -1929,8 +2036,8 @@
       },
       "devices": {},
       "panelNumber": "981070",
-      "totalEstimatedMinutes": 4,
-      "remainingMinutes": 4,
+      "totalEstimatedMinutes": 0,
+      "remainingMinutes": 0,
       "priority": {
         "score": null,
         "level": "low",
@@ -1942,7 +2049,7 @@
       "priorityLevel": "low",
       "boardAssignment": {
         "assignmentId": "4p101-koc-jpf:prox-turb",
-        "estimatedMinutes": 4,
+        "estimatedMinutes": 0,
         "assignedBadge": null,
         "assignedAt": null,
         "workAreaId": null,
@@ -1964,8 +2071,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "rail-left-jb70": {
       "sheetSlug": "rail-left-jb70",
@@ -1994,15 +2100,15 @@
         "XT0431",
         "GR0431"
       ],
+      "heatShrinkLabels": [],
       "partNumbers": [
         "903849C1"
       ],
       "files": {
-        "wireListSchemaPath": "state/sheets/rail-left-jb70.json",
+        "wireListSchemaPath": "state/wire-list-print-schema/rail-left-jb70.json",
+        "ipvWireListSchemaPath": "state/ipv/rail-left-jb70-ipv.json",
         "brandListSchemaPath": "state/wire-brand-list/rail-left-jb70.json"
       },
-      "buildUpEstTime": "1m",
-      "wireListEstTime": "1m",
       "layout": {
         "primaryPage": {
           "pageNumber": 2,
@@ -2018,8 +2124,8 @@
         "pages": []
       },
       "devices": {},
-      "totalEstimatedMinutes": 2,
-      "remainingMinutes": 2,
+      "totalEstimatedMinutes": 0,
+      "remainingMinutes": 0,
       "priority": {
         "score": null,
         "level": "low",
@@ -2031,7 +2137,7 @@
       "priorityLevel": "low",
       "boardAssignment": {
         "assignmentId": "4p101-koc-jpf:rail-left-jb70",
-        "estimatedMinutes": 2,
+        "estimatedMinutes": 0,
         "assignedBadge": null,
         "assignedAt": null,
         "workAreaId": null,
@@ -2053,8 +2159,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     },
     "rail-right-jb70": {
       "sheetSlug": "rail-right-jb70",
@@ -2074,13 +2179,35 @@
       "boxNumber": "2424882-101",
       "panducts": [],
       "rails": [],
-      "externalLocations": [],
+      "externalLocations": [
+        {
+          "location": "CTRL",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "CTRL A",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "GEN CTRL",
+          "wireListVisible": true,
+          "brandingVisible": true
+        },
+        {
+          "location": "HMI S PWR",
+          "wireListVisible": true,
+          "brandingVisible": true
+        }
+      ],
       "whiteLabels": [],
       "blueLabels": [
         "XT0111",
         "XTFGB",
         "GR0532"
       ],
+      "heatShrinkLabels": [],
       "partNumbers": [
         "1066730-7",
         "1066730-8",
@@ -2088,11 +2215,10 @@
         "903849C1"
       ],
       "files": {
-        "wireListSchemaPath": "state/sheets/rail-right-jb70.json",
+        "wireListSchemaPath": "state/wire-list-print-schema/rail-right-jb70.json",
+        "ipvWireListSchemaPath": "state/ipv/rail-right-jb70-ipv.json",
         "brandListSchemaPath": "state/wire-brand-list/rail-right-jb70.json"
       },
-      "buildUpEstTime": "56m",
-      "wireListEstTime": "38m",
       "layout": {
         "primaryPage": {
           "pageNumber": 3,
@@ -2108,8 +2234,8 @@
         "pages": []
       },
       "devices": {},
-      "totalEstimatedMinutes": 94,
-      "remainingMinutes": 94,
+      "totalEstimatedMinutes": 0,
+      "remainingMinutes": 0,
       "priority": {
         "score": null,
         "level": "low",
@@ -2121,7 +2247,7 @@
       "priorityLevel": "low",
       "boardAssignment": {
         "assignmentId": "4p101-koc-jpf:rail-right-jb70",
-        "estimatedMinutes": 94,
+        "estimatedMinutes": 0,
         "assignedBadge": null,
         "assignedAt": null,
         "workAreaId": null,
@@ -2143,8 +2269,7 @@
       "assignedBadge": null,
       "workflowStatus": "pending",
       "linkedOperationCode": null,
-      "defaultOperationCodeByStage": {},
-      "actualMinutes": 0
+      "defaultOperationCodeByStage": {}
     }
   },
   "referenceSheets": {
@@ -2223,8 +2348,8 @@
     "completedAssignments": 0,
     "inProgressAssignments": 0,
     "blockedAssignments": 0,
-    "totalEstimatedMinutes": 2496,
-    "totalRemainingMinutes": 2496,
+    "totalEstimatedMinutes": 0,
+    "totalRemainingMinutes": 0,
     "totalActualMinutes": 0,
     "overallProgress": 0,
     "highestPriority": "low",
@@ -3483,7 +3608,7 @@
         "blue-labels"
       ],
       "matchingStrategy": "reference-sheet-header-to-assignment-name",
-      "generatedAt": "2026-05-29T02:28:17.490Z"
+      "generatedAt": "2026-05-30T00:04:06.172Z"
     }
   }
 }

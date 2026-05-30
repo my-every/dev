@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-05-05T13:51:38.532Z",
+  "generatedAt": "2026-05-30T00:04:05.950Z",
   "mode": "branding-export",
   "sheetSlug": "rail-left-jb70",
   "sheetName": "RAIL LEFT JB70",
-  "totalRows": 0,
+  "totalRows": 1,
   "header": {
     "locationTitle": "RAIL LEFT JB70",
     "fromLabel": "From",
@@ -22,15 +22,46 @@
   },
   "projectInfo": {
     "projectNumber": "4P101",
-    "projectName": "4P101",
+    "projectName": "KOC-JPF",
     "revision": "C.4_M.1"
   },
   "importHints": {
     "canonicalSheetName": "RAIL,LEFT,JB70",
     "normalizedSheetName": "rail-left-jb70",
-    "bundleNames": [],
-    "bundleDisplays": []
+    "bundleNames": [
+      "GR"
+    ],
+    "bundleDisplays": [
+      "GR"
+    ]
   },
-  "prefixGroups": [],
-  "schemaHash": "2f8f4ae0f25fd57ef6350ffff267a1b433a72fde3e984fc362a75f435b725640"
+  "prefixGroups": [
+    {
+      "prefix": "GR",
+      "bundles": [
+        {
+          "bundleName": "GR",
+          "toLocation": "RAIL,LEFT,JB70",
+          "rows": [
+            {
+              "rowId": "row-0",
+              "rowIndex": 10,
+              "fromDeviceId": "GR0431:",
+              "fromTerminalOrder": null,
+              "wireNo": "GR0431",
+              "wireId": "GRN/YEL",
+              "gaugeSize": "14",
+              "length": 60,
+              "toDeviceId": "FRAME",
+              "toLocation": "RAIL,LEFT,JB70",
+              "bundleName": "GR",
+              "bundleDisplay": "GR",
+              "devicePrefix": "GR"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "schemaHash": "3a362f2c6be1182468ee2921a3c0d22e43336b3627d58b61160d319525a6f72d"
 }

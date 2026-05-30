@@ -194,10 +194,10 @@ const PROJECT_SECTIONS: ScrollspySection[] = [
   { id: "details", label: "Details", icon: <FileText className="h-4 w-4" /> },
   { id: "assignments", label: "Assignments", icon: <GitBranch className="h-4 w-4" /> },
   { id: "legals", label: "Legals", icon: <Upload className="h-4 w-4" /> },
-{ id: "brand-lists", label: "Brand Lists", icon: <FileSpreadsheet className="h-4 w-4" /> },
-    { id: "wire-lists", label: "Wire Lists", icon: <Layers className="h-4 w-4" /> },
-    { id: "cross-wire", label: "Cross Wire", icon: <ExternalLink className="h-4 w-4" /> },
-    { id: "visibility-matrix", label: "Settings", icon: <Grid3X3 className="h-4 w-4" /> },
+  { id: "brand-lists", label: "Brand Lists", icon: <FileSpreadsheet className="h-4 w-4" /> },
+  { id: "wire-lists", label: "Wire Lists", icon: <Layers className="h-4 w-4" /> },
+  { id: "cross-wire", label: "Cross Wire", icon: <ExternalLink className="h-4 w-4" /> },
+  { id: "visibility-matrix", label: "Settings", icon: <Grid3X3 className="h-4 w-4" /> },
 ];
 
 const PROJECT_STATUS_OPTIONS = [
@@ -390,16 +390,16 @@ export function ProjectDetailsWorkspace({
   const searchParams = useSearchParams();
   const { toast } = useToast();
   const { flashAside, openAside, closeAside } = useLayoutUI();
-  
+
   const contentRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const isScrollingRef = useRef(false);
-  
+
   const [activeSection, setActiveSection] = useState(initialSection);
   const [project, setProject] = useState<ProjectManifest | null>(initialProject);
   const [loading, setLoading] = useState(!initialProject);
   const [error, setError] = useState<string | null>(null);
-  
+
   const [editDraft, setEditDraft] = useState<ProjectManifest | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -551,10 +551,10 @@ export function ProjectDetailsWorkspace({
 
   useEffect(() => {
     if (loading || !contentRef.current) return;
-    
+
     const sectionParam = searchParams.get("section");
     const targetSection = sectionParam || initialSection;
-    
+
     if (targetSection && targetSection !== "details") {
       const container = contentRef.current;
       const el = container?.querySelector(`[data-section="${targetSection}"]`);
@@ -662,9 +662,9 @@ export function ProjectDetailsWorkspace({
       if (locations.length > 0) {
         included.push(assignment);
       } else {
-        excluded.push({ 
-          assignment, 
-          reason: "No external locations configured" 
+        excluded.push({
+          assignment,
+          reason: "No external locations configured"
         });
       }
     }
@@ -680,9 +680,9 @@ export function ProjectDetailsWorkspace({
       if (locations.length > 0) {
         included.push(assignment);
       } else {
-        excluded.push({ 
-          assignment, 
-          reason: "No external locations" 
+        excluded.push({
+          assignment,
+          reason: "No external locations"
         });
       }
     }
@@ -802,14 +802,14 @@ export function ProjectDetailsWorkspace({
       const updated = await res.json();
       const savedProject = updated.project ?? updated;
       setProject(savedProject);
-      
+
       // Exit edit mode first, then toast and log activity
       setEditDraft(null);
       setIsEditing(false);
       toast({ title: "Project saved" });
-      
+
       // Log activity (fire and forget - don't block on this)
-      logActivityWithFlash("PROJECT_DETAILS_UPDATED", { 
+      logActivityWithFlash("PROJECT_DETAILS_UPDATED", {
         fields: Object.keys(editDraft),
         legalSync: updated.legalSync,
       }).catch(() => {
@@ -855,14 +855,14 @@ export function ProjectDetailsWorkspace({
 
   const handleDelete = useCallback(async () => {
     if (!project) return;
-    
+
     setDeleting(true);
     setShowDeleteDialog(false);
-    
+
     // Capture project info before deletion for activity log
     const projectName = project.name;
     const pdNumber = project.pdNumber;
-    
+
     try {
       const res = await fetch(`/api/projects/${encodeURIComponent(project.id)}`, {
         method: "DELETE",
@@ -871,7 +871,7 @@ export function ProjectDetailsWorkspace({
         const errData = await res.json().catch(() => ({}));
         throw new Error(errData.error ?? "Delete failed");
       }
-      
+
       // Log the deletion activity
       try {
         await activityService.logAction(badgeNumber, "1st", {
@@ -886,22 +886,22 @@ export function ProjectDetailsWorkspace({
       } catch (logErr) {
         console.error("[v0] Failed to log delete activity:", logErr);
       }
-      
+
       toast({ title: "Project deleted", description: `"${projectName}" has been permanently removed.` });
-      
+
       // Open activity aside and auto-close after 5 seconds
       openAside();
       setTimeout(() => {
         closeAside();
       }, 5000);
-      
+
       // Navigate back to projects list after a short delay
       setTimeout(() => {
         router.push(`/${badgeNumber}/projects`);
       }, 500);
     } catch (err) {
-      toast({ 
-        title: "Delete failed", 
+      toast({
+        title: "Delete failed",
         description: err instanceof Error ? err.message : "Could not delete project",
         variant: "destructive"
       });
@@ -965,7 +965,7 @@ export function ProjectDetailsWorkspace({
         `/api/projects/${encodeURIComponent(project.id)}/assignments/${encodeURIComponent(sheetSlug)}`,
         {
           method: "PATCH",
-          headers: { 
+          headers: {
             "Content-Type": "application/json",
             "x-badge-number": badgeNumber ?? "unknown",
           },
@@ -995,10 +995,10 @@ export function ProjectDetailsWorkspace({
       }
       toast({ title: "Unit type updated" });
     } catch (err) {
-      toast({ 
-        title: "Error", 
+      toast({
+        title: "Error",
         description: err instanceof Error ? err.message : "Failed to update unit type",
-        variant: "destructive" 
+        variant: "destructive"
       });
     }
   }, [project, badgeNumber, toast]);
@@ -1008,19 +1008,19 @@ export function ProjectDetailsWorkspace({
   // we clear that assignment's boxSide first
   const handleAssignmentBoxSideChange = useCallback(async (sheetSlug: string, boxSide: string) => {
     if (!project) return;
-    
+
     // Get the current assignment to find its unitType
     const currentAssignment = project.assignments?.[sheetSlug];
     const currentUnitType = currentAssignment?.unitType;
-    
+
     // Find if any other assignment with the same unitType has this boxSide
     const conflictingSlug = Object.entries(project.assignments ?? {}).find(
-      ([slug, assignment]) => 
-        slug !== sheetSlug && 
-        assignment.unitType === currentUnitType && 
+      ([slug, assignment]) =>
+        slug !== sheetSlug &&
+        assignment.unitType === currentUnitType &&
         assignment.boxSide === boxSide
     )?.[0];
-    
+
     try {
       // If there's a conflict, clear the other assignment's boxSide first
       if (conflictingSlug) {
@@ -1028,7 +1028,7 @@ export function ProjectDetailsWorkspace({
           `/api/projects/${encodeURIComponent(project.id)}/assignments/${encodeURIComponent(conflictingSlug)}`,
           {
             method: "PATCH",
-            headers: { 
+            headers: {
               "Content-Type": "application/json",
               "x-badge-number": badgeNumber ?? "unknown",
             },
@@ -1053,12 +1053,12 @@ export function ProjectDetailsWorkspace({
           }
         }
       }
-      
+
       const res = await fetch(
         `/api/projects/${encodeURIComponent(project.id)}/assignments/${encodeURIComponent(sheetSlug)}`,
         {
           method: "PATCH",
-          headers: { 
+          headers: {
             "Content-Type": "application/json",
             "x-badge-number": badgeNumber ?? "unknown",
           },
@@ -1088,10 +1088,10 @@ export function ProjectDetailsWorkspace({
       }
       toast({ title: "Box side updated" });
     } catch (err) {
-      toast({ 
-        title: "Error", 
+      toast({
+        title: "Error",
         description: err instanceof Error ? err.message : "Failed to update box side",
-        variant: "destructive" 
+        variant: "destructive"
       });
     }
   }, [project, badgeNumber, toast]);
@@ -1682,7 +1682,7 @@ export function ProjectDetailsWorkspace({
       }
 
       const result = await response.json();
-      
+
       // Refresh the project data to pick up the updated settings
       if (result.project) {
         setProject(result.project);
@@ -1708,19 +1708,19 @@ export function ProjectDetailsWorkspace({
       if (locRes.ok) {
         const locData = await locRes.json();
         setSchemaExternalLocations(locData.bySheet ?? {});
-        
+
         // Rebuild settings matrices from the updated project
         if (result.project?.assignments) {
           const newWireSettings: WireListSettingsMatrix = {};
           const newBrandSettings: WireListSettingsMatrix = {};
           const newCrossSettings: WireListSettingsMatrix = {};
-          
+
           for (const [slug, assignment] of Object.entries(result.project.assignments as Record<string, { externalLocations?: Array<{ location: string; wireListVisible?: boolean; brandingVisible?: boolean }> }>)) {
             const extLocs = assignment.externalLocations ?? [];
             newWireSettings[slug] = {};
             newBrandSettings[slug] = {};
             newCrossSettings[slug] = {};
-            
+
             for (const loc of extLocs) {
               const key = loc.location?.trim().toUpperCase();
               if (key) {
@@ -1732,7 +1732,7 @@ export function ProjectDetailsWorkspace({
               }
             }
           }
-          
+
           setWireListSettingsMatrix(newWireSettings);
           setBrandListSettingsMatrix(newBrandSettings);
           setCrossWireSettingsMatrix(newCrossSettings);
@@ -1856,7 +1856,7 @@ export function ProjectDetailsWorkspace({
 
   useEffect(() => {
     if (!project?.assignments || loading) return;
-    
+
     // Helper to infer box side key from string
     const inferBoxSideKey = (boxSide: string | undefined): string | undefined => {
       if (!boxSide) return undefined;
@@ -1876,7 +1876,7 @@ export function ProjectDetailsWorkspace({
       }
       return undefined;
     };
-    
+
     // Build location-to-boxSide lookup map from all assignments
     const locationToBoxSide: Record<string, string> = {};
     for (const assignment of Object.values(project.assignments)) {
@@ -1894,16 +1894,16 @@ export function ProjectDetailsWorkspace({
         locationToBoxSide[`${boxNum} PANEL`] = boxSideKey;
       }
     }
-    
+
     const newWireSettings: WireListSettingsMatrix = {};
     const newBrandSettings: WireListSettingsMatrix = {};
     const newCrossSettings: WireListSettingsMatrix = {};
-    
+
     for (const [slug, assignment] of Object.entries(project.assignments)) {
       newWireSettings[slug] = {};
       newBrandSettings[slug] = {};
       newCrossSettings[slug] = {};
-      
+
       const assignmentBoxSideKey = inferBoxSideKey(assignment.boxSide);
       const explicitLocations = new Map(
         (assignment.externalLocations ?? [])
@@ -1925,16 +1925,16 @@ export function ProjectDetailsWorkspace({
       const locationKeys = Array.from(
         new Set([...schemaLocations.map((location) => location.trim().toUpperCase()), ...fallbackAssignmentLocations]),
       );
-      
+
       for (const locationKey of locationKeys) {
         if (!locationKey) continue;
         const loc = explicitLocations.get(locationKey);
-        
+
         // Check if there are explicit user-set values (wireListVisible/brandingVisible explicitly set)
         const hasExplicitWire = loc?.wireListVisible !== undefined;
         const hasExplicitBrand = loc?.brandingVisible !== undefined;
         const hasExplicitCross = (loc as { crossWireVisible?: boolean } | undefined)?.crossWireVisible !== undefined;
-        
+
         if (hasExplicitWire && hasExplicitBrand) {
           // User has customized these settings - use them
           newWireSettings[slug][locationKey] = loc!.wireListVisible!;
@@ -1945,7 +1945,7 @@ export function ProjectDetailsWorkspace({
         } else {
           // Compute defaults from boxSide logic
           let targetBoxSideKey = locationToBoxSide[locationKey];
-          
+
           if (!targetBoxSideKey) {
             // Try partial match
             for (const [knownLoc, boxSide] of Object.entries(locationToBoxSide)) {
@@ -1955,17 +1955,17 @@ export function ProjectDetailsWorkspace({
               }
             }
           }
-          
+
           if (!targetBoxSideKey) {
             // Try inferring from location text itself
             targetBoxSideKey = inferBoxSideKey(locationKey);
           }
-          
+
           // Get defaults based on boxSide relationship
           const defaults = assignmentBoxSideKey && targetBoxSideKey
             ? getDefaultExternalLocationSettings(assignmentBoxSideKey, targetBoxSideKey)
             : { wire_list: true, brand_list: true, cross_wire: true };
-          
+
           newWireSettings[slug][locationKey] = hasExplicitWire ? loc!.wireListVisible! : defaults.wire_list;
           newBrandSettings[slug][locationKey] = hasExplicitBrand ? loc!.brandingVisible! : defaults.brand_list;
           // Use crossWireVisible if explicitly set, otherwise use defaults
@@ -1974,7 +1974,7 @@ export function ProjectDetailsWorkspace({
         }
       }
     }
-    
+
     setWireListSettingsMatrix(newWireSettings);
     setBrandListSettingsMatrix(newBrandSettings);
     setCrossWireSettingsMatrix(newCrossSettings);
@@ -2216,7 +2216,7 @@ export function ProjectDetailsWorkspace({
         {/* Scrollable content */}
         <div className="flex-1 min-w-0 overflow-y-auto overscroll-contain" ref={contentRef}>
           <div className="w-full px-4 py-6 space-y-12 lg:px-6 xl:px-8">
-            
+
             {/* ─── Details Section ───────────────────────────────��─────────── */}
             <section data-section="details" className="scroll-mt-6">
               <SectionHeader
@@ -2308,9 +2308,9 @@ export function ProjectDetailsWorkspace({
                         </ColorPicker>
                       </div>
                     </div>
-                    
+
                     <Separator />
-                    
+
                     {/* Danger zone - delete project */}
                     <div className="space-y-2">
                       <div className="text-xs font-semibold uppercase tracking-wide text-destructive">
@@ -2381,9 +2381,9 @@ export function ProjectDetailsWorkspace({
                         </span>
                       </DetailRow>
                     </div>
-                    
+
                     <Separator />
-                    
+
                     <div className="space-y-2">
                       <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                         Workspace Actions
@@ -2489,120 +2489,120 @@ export function ProjectDetailsWorkspace({
                       <TableBody>
                         {assignmentGroups
                           ? assignmentGroups.map(([unitType, groupAssignments]) => (
-                              <React.Fragment key={unitType}>
-                                <tr className="bg-muted/40 border-b border-border/60">
-                                  <td colSpan={6} className="px-4 py-2">
-                                    <div className="flex items-center gap-2">
-                                      <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                                        {unitType}
-                                      </span>
-                                      <span className="text-[11px] text-muted-foreground/50">
-                                        {groupAssignments.length} assignment{groupAssignments.length !== 1 ? "s" : ""}
-                                      </span>
-                                    </div>
-                                  </td>
-                                </tr>
-                                {groupAssignments.map((assignment, idx) => {
-                                  return (
-                                    <TableRow key={assignment.sheetSlug} index={idx}>
+                            <React.Fragment key={unitType}>
+                              <tr className="bg-muted/40 border-b border-border/60">
+                                <td colSpan={6} className="px-4 py-2">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                                      {unitType}
+                                    </span>
+                                    <span className="text-[11px] text-muted-foreground/50">
+                                      {groupAssignments.length} assignment{groupAssignments.length !== 1 ? "s" : ""}
+                                    </span>
+                                  </div>
+                                </td>
+                              </tr>
+                              {groupAssignments.map((assignment, idx) => {
+                                return (
+                                  <TableRow key={assignment.sheetSlug} index={idx}>
                                     <TableCell className="py-2.5 max-w-[160px]">
                                       <div className="truncate text-sm font-medium text-foreground" title={normalizeDisplayTitle(assignment.sheetName)}>
                                         {normalizeDisplayTitle(assignment.sheetName)}
-                                        </div>
-                                      </TableCell>
-                                      <TableCell className="py-2.5">
-                                        <StageSelectorCell
-                                          currentStage={assignment.stage}
-                                          onSave={(newStage) => updateAssignment(assignment.sheetSlug, { stage: newStage })}
-                                        />
-                                      </TableCell>
-                                      <TableCell className="py-2.5">
-                                        <StatusButtonCell
-                                          currentStatus={assignment.status}
-                                          onSave={(newStatus) => updateAssignment(assignment.sheetSlug, { status: newStatus })}
-                                        />
-                                      </TableCell>
-                                      <TableCell className="py-2.5">
-                                        <div className="flex items-center gap-1.5">
-                                          {(assignment as Record<string, unknown>).blueLabels && ((assignment as Record<string, unknown>).blueLabels as unknown[])?.length ? (
-                                            <AssignmentLabelDownloadButton
-                                              projectId={project?.id ?? ""}
-                                              assignmentSlug={assignment.sheetSlug}
-                                              labelType="blue"
-                                            />
-                                          ) : null}
-                                          {(assignment as Record<string, unknown>).whiteLabels && ((assignment as Record<string, unknown>).whiteLabels as unknown[])?.length ? (
-                                            <AssignmentLabelDownloadButton
-                                              projectId={project?.id ?? ""}
-                                              assignmentSlug={assignment.sheetSlug}
-                                              labelType="white"
-                                            />
-                                          ) : null}
-                                          {(assignment as Record<string, unknown>).partNumbers && ((assignment as Record<string, unknown>).partNumbers as unknown[])?.length ? (
-                                            <AssignmentLabelDownloadButton
-                                              projectId={project?.id ?? ""}
-                                              assignmentSlug={assignment.sheetSlug}
-                                              labelType="cable"
-                                            />
-                                          ) : null}
-                                        </div>
-                                      </TableCell>
-                                    </TableRow>
-                                  );
-                                })}
-                              </React.Fragment>
-                            ))
+                                      </div>
+                                    </TableCell>
+                                    <TableCell className="py-2.5">
+                                      <StageSelectorCell
+                                        currentStage={assignment.stage}
+                                        onSave={(newStage) => updateAssignment(assignment.sheetSlug, { stage: newStage })}
+                                      />
+                                    </TableCell>
+                                    <TableCell className="py-2.5">
+                                      <StatusButtonCell
+                                        currentStatus={assignment.status}
+                                        onSave={(newStatus) => updateAssignment(assignment.sheetSlug, { status: newStatus })}
+                                      />
+                                    </TableCell>
+                                    <TableCell className="py-2.5">
+                                      <div className="flex items-center gap-1.5">
+                                        {(assignment as Record<string, unknown>).blueLabels && ((assignment as Record<string, unknown>).blueLabels as unknown[])?.length ? (
+                                          <AssignmentLabelDownloadButton
+                                            projectId={project?.id ?? ""}
+                                            assignmentSlug={assignment.sheetSlug}
+                                            labelType="blue"
+                                          />
+                                        ) : null}
+                                        {(assignment as Record<string, unknown>).whiteLabels && ((assignment as Record<string, unknown>).whiteLabels as unknown[])?.length ? (
+                                          <AssignmentLabelDownloadButton
+                                            projectId={project?.id ?? ""}
+                                            assignmentSlug={assignment.sheetSlug}
+                                            labelType="white"
+                                          />
+                                        ) : null}
+                                        {(assignment as Record<string, unknown>).partNumbers && ((assignment as Record<string, unknown>).partNumbers as unknown[])?.length ? (
+                                          <AssignmentLabelDownloadButton
+                                            projectId={project?.id ?? ""}
+                                            assignmentSlug={assignment.sheetSlug}
+                                            labelType="cable"
+                                          />
+                                        ) : null}
+                                      </div>
+                                    </TableCell>
+                                  </TableRow>
+                                );
+                              })}
+                            </React.Fragment>
+                          ))
                           : assignmentEntries.map((assignment, idx) => {
-                              return (
-                                <TableRow key={assignment.sheetSlug} index={idx}>
-                                  <TableCell className="py-2.5 max-w-[160px]">
-                                    <div className="truncate text-sm font-medium text-foreground" title={normalizeDisplayTitle(assignment.sheetName)}>
-                                      {normalizeDisplayTitle(assignment.sheetName)}
-                                    </div>
-                                  </TableCell>
-                                  <TableCell className="py-2.5">
-                                    <StageSelectorCell
-                                      currentStage={assignment.stage}
-                                      onSave={(newStage) => updateAssignment(assignment.sheetSlug, { stage: newStage })}
-                                    />
-                                  </TableCell>
-                                  <TableCell className="py-2.5">
-                                    <StatusButtonCell
-                                      currentStatus={assignment.status}
-                                      onSave={(newStatus) => updateAssignment(assignment.sheetSlug, { status: newStatus })}
-                                    />
-                                  </TableCell>
-                                  <TableCell className="py-2.5">
-                                    {assignment.unitType || "—"}
-                                  </TableCell>
-                                  <TableCell className="py-2.5">
-                                    <div className="flex items-center gap-1.5">
-                                      {(assignment as Record<string, unknown>).blueLabels && ((assignment as Record<string, unknown>).blueLabels as unknown[])?.length ? (
-                                        <AssignmentLabelDownloadButton
-                                          projectId={project?.id ?? ""}
-                                          assignmentSlug={assignment.sheetSlug}
-                                          labelType="blue"
-                                        />
-                                      ) : null}
-                                      {(assignment as Record<string, unknown>).whiteLabels && ((assignment as Record<string, unknown>).whiteLabels as unknown[])?.length ? (
-                                        <AssignmentLabelDownloadButton
-                                          projectId={project?.id ?? ""}
-                                          assignmentSlug={assignment.sheetSlug}
-                                          labelType="white"
-                                        />
-                                      ) : null}
-                                      {(assignment as Record<string, unknown>).partNumbers && ((assignment as Record<string, unknown>).partNumbers as unknown[])?.length ? (
-                                        <AssignmentLabelDownloadButton
-                                          projectId={project?.id ?? ""}
-                                          assignmentSlug={assignment.sheetSlug}
-                                          labelType="cable"
-                                        />
-                                      ) : null}
-                                    </div>
-                                  </TableCell>
-                                </TableRow>
-                              );
-                            })}
+                            return (
+                              <TableRow key={assignment.sheetSlug} index={idx}>
+                                <TableCell className="py-2.5 max-w-[160px]">
+                                  <div className="truncate text-sm font-medium text-foreground" title={normalizeDisplayTitle(assignment.sheetName)}>
+                                    {normalizeDisplayTitle(assignment.sheetName)}
+                                  </div>
+                                </TableCell>
+                                <TableCell className="py-2.5">
+                                  <StageSelectorCell
+                                    currentStage={assignment.stage}
+                                    onSave={(newStage) => updateAssignment(assignment.sheetSlug, { stage: newStage })}
+                                  />
+                                </TableCell>
+                                <TableCell className="py-2.5">
+                                  <StatusButtonCell
+                                    currentStatus={assignment.status}
+                                    onSave={(newStatus) => updateAssignment(assignment.sheetSlug, { status: newStatus })}
+                                  />
+                                </TableCell>
+                                <TableCell className="py-2.5">
+                                  {assignment.unitType || "—"}
+                                </TableCell>
+                                <TableCell className="py-2.5">
+                                  <div className="flex items-center gap-1.5">
+                                    {(assignment as Record<string, unknown>).blueLabels && ((assignment as Record<string, unknown>).blueLabels as unknown[])?.length ? (
+                                      <AssignmentLabelDownloadButton
+                                        projectId={project?.id ?? ""}
+                                        assignmentSlug={assignment.sheetSlug}
+                                        labelType="blue"
+                                      />
+                                    ) : null}
+                                    {(assignment as Record<string, unknown>).whiteLabels && ((assignment as Record<string, unknown>).whiteLabels as unknown[])?.length ? (
+                                      <AssignmentLabelDownloadButton
+                                        projectId={project?.id ?? ""}
+                                        assignmentSlug={assignment.sheetSlug}
+                                        labelType="white"
+                                      />
+                                    ) : null}
+                                    {(assignment as Record<string, unknown>).partNumbers && ((assignment as Record<string, unknown>).partNumbers as unknown[])?.length ? (
+                                      <AssignmentLabelDownloadButton
+                                        projectId={project?.id ?? ""}
+                                        assignmentSlug={assignment.sheetSlug}
+                                        labelType="cable"
+                                      />
+                                    ) : null}
+                                  </div>
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
                       </TableBody>
                     </Table>
                   </div>
@@ -2870,7 +2870,7 @@ export function ProjectDetailsWorkspace({
                     <Download className="h-3.5 w-3.5 text-muted-foreground" />
                   </a>
                 ) : null}
-                
+
                 {brandListAssignments.length === 0 ? (
                   <EmptyStateCard
                     title="No brand list sheets"
@@ -2960,9 +2960,9 @@ export function ProjectDetailsWorkspace({
                 ) : null}
 
                 <div className="flex flex-wrap items-center gap-2">
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
+                  <Button
+                    size="sm"
+                    variant="outline"
                     disabled={regeneratingWire}
                     onClick={() => void handleRegenerateWireExports()}
                   >
@@ -2978,7 +2978,7 @@ export function ProjectDetailsWorkspace({
                     Open Wire Review
                   </Button>
                 </div>
-                
+
                 {assignmentEntries.length === 0 ? (
                   <EmptyStateCard
                     title="No wire list sheets"
@@ -3050,8 +3050,8 @@ export function ProjectDetailsWorkspace({
                     </a>
                   </Button>
                   <Button size="sm" variant="outline" onClick={openCrossWirePrintModal}>
-                      <ExternalLink className="mr-2 h-3.5 w-3.5" />
-                      Print Preview
+                    <ExternalLink className="mr-2 h-3.5 w-3.5" />
+                    Print Preview
                   </Button>
                 </div>
 
@@ -3119,7 +3119,7 @@ export function ProjectDetailsWorkspace({
                         </p>
                         <div className="space-y-1.5">
                           {crossWireExcluded.map(({ assignment, reason }) => {
-                  const normalizedTitle = normalizeDisplayTitle(assignment.sheetName);
+                            const normalizedTitle = normalizeDisplayTitle(assignment.sheetName);
                             return (
                               <div key={assignment.sheetSlug} className="flex items-center justify-between gap-2 text-xs">
                                 <span className="truncate text-foreground/70" title={normalizedTitle}>
@@ -3188,14 +3188,14 @@ export function ProjectDetailsWorkspace({
         projectId={project.id}
         badgeNumber={badgeNumber}
       />
-<MultiWireListPrintWorkspaceDialog
-  open={wireReviewOpen}
-  onOpenChange={setWireReviewOpen}
-  projectId={project.id}
-  projectName={project.name}
-  projectColor={project.color ?? undefined}
-  sheets={assignmentEntries.map((a) => ({ slug: a.sheetSlug, name: a.sheetName, rowCount: 0 }))}
-  />
+      <MultiWireListPrintWorkspaceDialog
+        open={wireReviewOpen}
+        onOpenChange={setWireReviewOpen}
+        projectId={project.id}
+        projectName={project.name}
+        projectColor={project.color ?? undefined}
+        sheets={assignmentEntries.map((a) => ({ slug: a.sheetSlug, name: a.sheetName, rowCount: 0 }))}
+      />
       <AnimatePresence>
         {wirePrintModalOpen ? (
           <>
@@ -3312,7 +3312,7 @@ export function ProjectDetailsWorkspace({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel  className="" disabled={deleting}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="" disabled={deleting}>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={deleting}

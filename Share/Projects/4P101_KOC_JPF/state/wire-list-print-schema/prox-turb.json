@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-05-05T13:51:32.038Z",
+  "generatedAt": "2026-05-30T00:04:05.836Z",
   "sheetName": "PROX TURB",
   "mode": "standardize",
-  "totalPages": 3,
+  "totalPages": 1,
   "totalRows": 2,
   "settings": {
     "showEstTime": false,
-    "showFromCheckbox": true,
-    "showToCheckbox": true,
-    "showIPV": true,
+    "showFromCheckbox": false,
+    "showToCheckbox": false,
+    "showIPV": false,
     "showComments": true,
     "showLength": false,
-    "showCoverPage": true,
-    "showTableOfContents": true,
+    "showCoverPage": false,
+    "showTableOfContents": false,
     "showIPVCodes": false,
     "showFeedbackSection": false,
     "showDeviceSubheaders": false,
@@ -86,104 +86,60 @@
     "brandingSortMode": "device-prefix",
     "wireListSortMode": "device-prefix"
   },
-  "pages": [
-    {
-      "pageType": "cover",
-      "pageNumber": 1,
-      "projectInfo": {
-        "projectNumber": "4P101",
-        "projectName": "4P101",
-        "revision": "C.4_M.1",
-        "pdNumber": "4P101",
-        "unitNumber": "",
-        "preparedBy": "",
-        "badgeNumber": "",
-        "date": "",
-        "time": "",
-        "personnel": [
+  "ipvChecklist": {
+    "totalRows": 2,
+    "groups": [
+      {
+        "deviceId": "GR1210",
+        "rows": [
           {
-            "id": "1",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
-          },
-          {
-            "id": "2",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
-          },
-          {
-            "id": "3",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
-          },
-          {
-            "id": "4",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
-          },
-          {
-            "id": "5",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
-          },
-          {
-            "id": "6",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
+            "rowId": "row-0",
+            "rowIndex": 10,
+            "fromDeviceId": "GR1210",
+            "toDeviceId": "FRAME",
+            "wireType": "SC",
+            "wireNo": "GR1210",
+            "wireId": "GRN/YEL",
+            "gaugeSize": "14",
+            "fromLocation": "PROX,TURB",
+            "toLocation": "PROX,TURB",
+            "fromPageZone": "10.A6",
+            "toPageZone": "10.A6",
+            "lengthDisplay": "60 in",
+            "lengthInches": 60
           }
         ]
       },
-      "sheetTitle": "PROX,TURB"
-    },
-    {
-      "pageType": "toc",
-      "pageNumber": 2,
-      "locationGroups": [
-        {
-          "location": "PROX,TURB",
-          "isExternal": false,
-          "sections": [
-            {
-              "index": 1,
-              "label": "Grounds",
-              "rowCount": 2,
-              "estimatedPage": 3,
-              "subEntries": []
-            }
-          ]
-        }
-      ],
-      "summary": {
-        "locations": 1,
-        "sections": 1,
-        "rows": 2,
-        "pages": 3
+      {
+        "deviceId": "GR1211",
+        "rows": [
+          {
+            "rowId": "row-1",
+            "rowIndex": 11,
+            "fromDeviceId": "GR1211",
+            "toDeviceId": "FRAME",
+            "wireType": "SC",
+            "wireNo": "GR1211",
+            "wireId": "GRN/YEL",
+            "gaugeSize": "14",
+            "fromLocation": "PROX,TURB",
+            "toLocation": "PROX,TURB",
+            "fromPageZone": "10.A6",
+            "toPageZone": "10.A6",
+            "lengthDisplay": "60 in",
+            "lengthInches": 60
+          }
+        ]
       }
-    },
+    ]
+  },
+  "pages": [
     {
       "pageType": "wire-list",
-      "pageNumber": 3,
+      "pageNumber": 1,
       "locationGroups": [
         {
-          "location": "PROX,TURB",
+          "location": "PROX TURB",
           "isExternal": false,
           "totalRows": 2,
           "subsections": [

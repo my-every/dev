@@ -8,6 +8,10 @@ import { ActivityTimelineContextPanel } from "@/components/activity";
 import { Button } from "@/components/ui/button";
 import { CreateProjectDialog } from "@/components/projects/create-project-dialog";
 import type { CommandSearchGroup } from "@/components/layout/layout-composite";
+import {
+  RecentExportCommandSearch,
+  type RecentExportCommandSearchConfig,
+} from "@/components/layout/recent-export-command-search";
 import { type ViewMode } from "@/app/(workspaces)/[badgeNumber]/_components";
 import type {
   LegalDrawingsLibraryManifest,
@@ -217,6 +221,22 @@ export default function ProjectsWorkspacePage({
     [params.badgeNumber, projects],
   );
 
+  const recentExportCommandSearchConfig = useMemo<RecentExportCommandSearchConfig>(
+    () => ({
+      badgeNumber: params.badgeNumber,
+      projectLinks: projects.map((project) => ({
+        id: project.id,
+        pdNumber: project.pdNumber,
+        name: project.name,
+        href: `/${params.badgeNumber}/projects/${encodeURIComponent(project.id)}`,
+        color: project.color ?? null,
+      })),
+      defaultWindow: "90",
+      initialMode: "project-updates",
+    }),
+    [params.badgeNumber, projects],
+  );
+
   const canViewUpcomingProjects =
     viewerSettings?.dashboardAccess?.projectSchedule ??
     Boolean(user && ["DEVELOPER", "MANAGER", "SUPERVISOR", "TEAM_LEAD"].includes(user.role));
@@ -320,7 +340,7 @@ export default function ProjectsWorkspacePage({
         monthSet.add(monthKey);
       }
     });
-    
+
     return Array.from(monthSet)
       .sort()
       .map((monthKey) => ({
@@ -343,6 +363,14 @@ export default function ProjectsWorkspacePage({
       showSubHeader={true}
       commandSearchGroups={commandSearchGroups}
       commandSearchPlaceholder="Search projects.."
+      renderCommandSearchModal={({ open, onOpenChange }) => (
+        <RecentExportCommandSearch
+          open={open}
+          onOpenChange={onOpenChange}
+          placeholder="Search by PD# or project name, then press Enter to refresh"
+          config={recentExportCommandSearchConfig}
+        />
+      )}
       sidePanel={
         <ProjectsSidePanelNav
           mode={mode}

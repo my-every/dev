@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-05-05T13:51:30.265Z",
+  "generatedAt": "2026-05-30T00:04:05.734Z",
   "mode": "branding-export",
   "sheetSlug": "hmi-s-pwr",
   "sheetName": "HMI S PWR",
-  "totalRows": 5,
+  "totalRows": 9,
   "header": {
     "locationTitle": "HMI S PWR",
     "fromLabel": "From",
@@ -22,7 +22,7 @@
   },
   "projectInfo": {
     "projectNumber": "4P101",
-    "projectName": "4P101",
+    "projectName": "KOC-JPF",
     "revision": "C.4_M.1"
   },
   "importHints": {
@@ -30,13 +30,20 @@
     "normalizedSheetName": "hmi-s-pwr",
     "bundleNames": [
       "BA - FU",
+      "Cable: WC0008",
+      "Cable: WC0010",
       "FU - AT",
+      "Cable: WC0101",
       "BA - XT",
       "FU - XT"
     ],
     "bundleDisplays": [
       "BA - FU",
+      "Cable: WC0008 - CONTROL A",
+      "Cable: WC0008 - CONTROL B",
+      "Cable: WC0010 - CONTROL B",
       "FU - AT - CONTROL JB70",
+      "Cable: WC0101 - CONTROL JB70",
       "BA - XT - RAIL RIGHT JB70",
       "FU - XT - RAIL RIGHT JB70"
     ]
@@ -72,6 +79,94 @@
               "terminalInstructions": []
             }
           ]
+        },
+        {
+          "bundleName": "Cable: WC0008",
+          "toLocation": "CONTROL A",
+          "rows": [
+            {
+              "rowId": "row-1",
+              "rowIndex": 11,
+              "fromDeviceId": "BA1100:L1",
+              "fromTerminal": "L1",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "",
+              "wireId": "",
+              "gaugeSize": "",
+              "length": 120,
+              "toDeviceId": "AU0080:L2",
+              "toTerminal": "L2",
+              "toLocation": "CONTROL A",
+              "bundleName": "Cable: WC0008",
+              "bundleDisplay": "Cable: WC0008 - CONTROL A",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "GR",
+      "bundles": [
+        {
+          "bundleName": "Cable: WC0008",
+          "toLocation": "CONTROL B",
+          "rows": [
+            {
+              "rowId": "row-2",
+              "rowIndex": 12,
+              "fromDeviceId": "GR0341:",
+              "fromTerminalOrder": null,
+              "wireNo": "IEG023011",
+              "wireId": "GRN",
+              "gaugeSize": "14",
+              "length": 120,
+              "toDeviceId": "IEG0230:11",
+              "toTerminal": "11",
+              "toLocation": "CONTROL B",
+              "bundleName": "Cable: WC0008",
+              "bundleDisplay": "Cable: WC0008 - CONTROL B",
+              "devicePrefix": "GR"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "Cable: WC0010",
+          "toLocation": "CONTROL B",
+          "rows": [
+            {
+              "rowId": "row-3",
+              "rowIndex": 13,
+              "fromDeviceId": "BA1100:L2",
+              "fromTerminal": "L2",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "",
+              "wireId": "",
+              "gaugeSize": "",
+              "length": 120,
+              "toDeviceId": "AU0070:L1",
+              "toTerminal": "L1",
+              "toLocation": "CONTROL B",
+              "bundleName": "Cable: WC0010",
+              "bundleDisplay": "Cable: WC0010 - CONTROL B",
+              "devicePrefix": "BA",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
         }
       ]
     },
@@ -100,6 +195,39 @@
               "bundleName": "FU - AT",
               "bundleDisplay": "FU - AT - CONTROL JB70",
               "devicePrefix": "FU",
+              "isNegative": false,
+              "terminalHardware": {},
+              "terminalInstructions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "prefix": "BA",
+      "bundles": [
+        {
+          "bundleName": "Cable: WC0101",
+          "toLocation": "CONTROL,JB70",
+          "rows": [
+            {
+              "rowId": "row-5",
+              "rowIndex": 15,
+              "fromDeviceId": "BA1100:DEVICE",
+              "fromTerminal": "DEVICE",
+              "fromTerminalSide": "unknown",
+              "fromTerminalTier": "",
+              "fromTerminalOrder": null,
+              "wireNo": "",
+              "wireId": "",
+              "gaugeSize": "",
+              "length": 120,
+              "toDeviceId": "AT1100:L1",
+              "toTerminal": "L1",
+              "toLocation": "CONTROL,JB70",
+              "bundleName": "Cable: WC0101",
+              "bundleDisplay": "Cable: WC0101 - CONTROL JB70",
+              "devicePrefix": "BA",
               "isNegative": false,
               "terminalHardware": {},
               "terminalInstructions": []
@@ -197,5 +325,5 @@
       ]
     }
   ],
-  "schemaHash": "f9325ad4bbfe190815770ee2d22a0ba211f05a000e0378b3afae48b1ca89615b"
+  "schemaHash": "1268c15b3aac062597419beecc1c03d616be2d5ac85455b3e6d719b1fa6fd424"
 }

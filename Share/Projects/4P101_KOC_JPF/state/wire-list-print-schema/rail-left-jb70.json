@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-05-05T13:51:34.493Z",
+  "generatedAt": "2026-05-30T00:04:05.911Z",
   "sheetName": "RAIL LEFT JB70",
   "mode": "standardize",
-  "totalPages": 3,
+  "totalPages": 1,
   "totalRows": 1,
   "settings": {
     "showEstTime": false,
-    "showFromCheckbox": true,
-    "showToCheckbox": true,
-    "showIPV": true,
+    "showFromCheckbox": false,
+    "showToCheckbox": false,
+    "showIPV": false,
     "showComments": true,
     "showLength": false,
-    "showCoverPage": true,
-    "showTableOfContents": true,
+    "showCoverPage": false,
+    "showTableOfContents": false,
     "showIPVCodes": false,
     "showFeedbackSection": false,
     "showDeviceSubheaders": false,
@@ -86,104 +86,39 @@
     "brandingSortMode": "device-prefix",
     "wireListSortMode": "device-prefix"
   },
-  "pages": [
-    {
-      "pageType": "cover",
-      "pageNumber": 1,
-      "projectInfo": {
-        "projectNumber": "4P101",
-        "projectName": "4P101",
-        "revision": "C.4_M.1",
-        "pdNumber": "4P101",
-        "unitNumber": "",
-        "preparedBy": "",
-        "badgeNumber": "",
-        "date": "",
-        "time": "",
-        "personnel": [
+  "ipvChecklist": {
+    "totalRows": 1,
+    "groups": [
+      {
+        "deviceId": "GR0431",
+        "rows": [
           {
-            "id": "1",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
-          },
-          {
-            "id": "2",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
-          },
-          {
-            "id": "3",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
-          },
-          {
-            "id": "4",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
-          },
-          {
-            "id": "5",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
-          },
-          {
-            "id": "6",
-            "badgeNumber": "",
-            "date": "",
-            "time": "",
-            "isAssembler": false,
-            "isInspector": false
+            "rowId": "row-0",
+            "rowIndex": 10,
+            "fromDeviceId": "GR0431",
+            "toDeviceId": "FRAME",
+            "wireType": "SC",
+            "wireNo": "GR0431",
+            "wireId": "GRN/YEL",
+            "gaugeSize": "14",
+            "fromLocation": "RAIL,LEFT,JB70",
+            "toLocation": "RAIL,LEFT,JB70",
+            "fromPageZone": "10.B2",
+            "toPageZone": "10.B2",
+            "lengthDisplay": "60 in",
+            "lengthInches": 60
           }
         ]
-      },
-      "sheetTitle": "RAIL,LEFT,JB70"
-    },
-    {
-      "pageType": "toc",
-      "pageNumber": 2,
-      "locationGroups": [
-        {
-          "location": "RAIL,LEFT,JB70",
-          "isExternal": false,
-          "sections": [
-            {
-              "index": 1,
-              "label": "Grounds",
-              "rowCount": 1,
-              "estimatedPage": 3,
-              "subEntries": []
-            }
-          ]
-        }
-      ],
-      "summary": {
-        "locations": 1,
-        "sections": 1,
-        "rows": 1,
-        "pages": 3
       }
-    },
+    ]
+  },
+  "pages": [
     {
       "pageType": "wire-list",
-      "pageNumber": 3,
+      "pageNumber": 1,
       "locationGroups": [
         {
-          "location": "RAIL,LEFT,JB70",
+          "location": "RAIL LEFT",
           "isExternal": false,
           "totalRows": 1,
           "subsections": [

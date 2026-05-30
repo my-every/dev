@@ -60,6 +60,7 @@ export function PageContent({
   floatingActions,
   commandSearchGroups,
   commandSearchPlaceholder,
+  renderCommandSearchModal,
   variant = "default",
   showAside = true,
   showBreadcrumbs = false,
@@ -82,7 +83,16 @@ export function PageContent({
 }: LayoutPageProps) {
   const prefersReducedMotion = useReducedMotion();
   const isMobile = useIsMobile();
-  const { isSidePanelOpen, closeSidePanel, toggleSidePanel, toggleAside, isAsideOpen } = useLayoutUI();
+  const {
+    isSidePanelOpen,
+    closeSidePanel,
+    toggleSidePanel,
+    toggleAside,
+    isAsideOpen,
+    isCommandSearchOpen,
+    openCommandSearch,
+    closeCommandSearch,
+  } = useLayoutUI();
 
   return (
     <>
@@ -112,7 +122,7 @@ export function PageContent({
             classNames?.mainInner,
           )}
         >
-          
+
 
           {showHeader ? (
             <motion.header
@@ -124,17 +134,17 @@ export function PageContent({
               animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
               transition={SPRING}
             >
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="absolute top-4 -left-2.5 z-30 hidden rounded-full p-1 border-border bg-card lg:flex sm:top-5 sm:-left-3"
-                  onClick={toggleSidePanel}
-                  aria-label={isSidePanelOpen ? "Close side panel" : "Open side panel"}
-                >
-                  {isSidePanelOpen ? <ChevronLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
-                </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="absolute top-4 -left-2.5 z-30 hidden rounded-full p-1 border-border bg-card lg:flex sm:top-5 sm:-left-3"
+                onClick={toggleSidePanel}
+                aria-label={isSidePanelOpen ? "Close side panel" : "Open side panel"}
+              >
+                {isSidePanelOpen ? <ChevronLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
+              </Button>
 
-           
+
               <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3 md:gap-4">
                 {showBreadcrumbs ? (
                   <div className="max-w-max ml-1 sm:ml-2">
@@ -195,22 +205,22 @@ export function PageContent({
                 </div>
               ) : null}
 
-                {(aside || asideTitle) ? (
-                  <div className="ml-2 shrink-0">
-                    <button
-                      type="button"
-                      onClick={toggleAside}
-                      className="relative rounded-xl border border-border bg-card p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                      aria-label={isAsideOpen ? "Close activity panel" : "Open activity panel"}
-                    >
-                      <Bell className="h-4 w-4" />
-                      <span className="absolute -right-0.5 -top-0.5 flex h-2 w-2">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
-                        <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-                      </span>
-                    </button>
-                  </div>
-                ) : null}
+              {(aside || asideTitle) ? (
+                <div className="ml-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={toggleAside}
+                    className="relative rounded-xl border border-border bg-card p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    aria-label={isAsideOpen ? "Close activity panel" : "Open activity panel"}
+                  >
+                    <Bell className="h-4 w-4" />
+                    <span className="absolute -right-0.5 -top-0.5 flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+                    </span>
+                  </button>
+                </div>
+              ) : null}
             </motion.header>
           ) : null}
 
@@ -231,11 +241,11 @@ export function PageContent({
             <div className="text-lg">{subHeader}</div>
           ) : null}
 
-          <div 
+          <div
             className={cn(
               "flex-1 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-border",
-              isMobile 
-                ? "h-0 min-h-0 grow overflow-y-auto overflow-x-hidden -webkit-overflow-scrolling-touch" 
+              isMobile
+                ? "h-0 min-h-0 grow overflow-y-auto overflow-x-hidden -webkit-overflow-scrolling-touch"
                 : "min-h-0 w-full max-w-full overflow-x-hidden overflow-y-auto"
             )}
             style={isMobile ? { WebkitOverflowScrolling: 'touch' } : undefined}
@@ -280,10 +290,23 @@ export function PageContent({
         </div>
       </CompositeFloatingActions>
 
-      <CompositeCommandSearchModal
-        groups={commandSearchGroups ?? []}
-        placeholder={commandSearchPlaceholder}
-      />
+      {renderCommandSearchModal
+        ? renderCommandSearchModal({
+          open: isCommandSearchOpen,
+          onOpenChange: (nextOpen) => {
+            if (nextOpen) {
+              openCommandSearch();
+            } else {
+              closeCommandSearch();
+            }
+          },
+        })
+        : (
+          <CompositeCommandSearchModal
+            groups={commandSearchGroups ?? []}
+            placeholder={commandSearchPlaceholder}
+          />
+        )}
     </>
   );
 }
