@@ -5,7 +5,7 @@
  * These types support pattern extraction, filtering, and specialized views.
  */
 
-import type { PartNumberLookupResult } from "@/lib/part-number-list";
+import type { CablePartNumberLookupResult, PartNumberLookupResult } from "@/lib/part-number-list";
 import type { SemanticWireListRow } from "@/lib/workbook/types";
 
 // ============================================================================
@@ -143,6 +143,8 @@ export interface PatternExtractionContext {
   normalizedSheetName: string;
   /** Device ID to Part Number List lookup map (if available) */
   partNumberMap?: Map<string, PartNumberLookupResult> | null;
+  /** Cable code (WC####) to Cable Part Numbers lookup map (if available) */
+  cablePartNumberMap?: Map<string, CablePartNumberLookupResult> | null;
 }
 
 // ============================================================================

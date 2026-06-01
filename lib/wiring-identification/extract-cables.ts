@@ -9,6 +9,7 @@
  */
 
 import type { PatternExtractionContext, PatternMatchRow } from "./types";
+import { normalizeDeviceId, type CablePartNumberLookupResult } from "@/lib/part-number-list";
 
 // Common/standard wire types that are NOT cables
 const STANDARD_WIRE_TYPES = new Set(["W", "SC", "JC", "JUMPER CLIP", "CLIP", ""]);
@@ -16,6 +17,49 @@ const STANDARD_WIRE_TYPES = new Set(["W", "SC", "JC", "JUMPER CLIP", "CLIP", ""]
 // Pattern for cable part numbers (WC followed by alphanumeric characters)
 // Examples: WC0019, WC7024, WCCC7582, WCPDT6210, WC5540
 const CABLE_TYPE_PATTERN = /^WC[A-Z0-9]+$/i;
+
+function normalizeCableCode(value: string | undefined): string {
+  const normalized = normalizeDeviceId(String(value ?? ""));
+  if (!normalized) {
+    return "";
+  }
+
+  return CABLE_TYPE_PATTERN.test(normalized) ? normalized : "";
+}
+
+/**
+ * Resolve a cable wire type (WC####) from a wiring row, hedging with Cable Part Numbers lookup.
+ *
+ * Priority:
+ * 1) `row.wireType` when it is a WC code (e.g. WC0006)
+ * 2) any WC token found in `wireNo`, `wireId`, `fromDeviceId`, `toDeviceId`
+ * 3) if a `cablePartNumberMap` is provided, only return a code that exists in that map
+ */
+export function resolveCableWireTypeValue(
+  row: {
+    wireType?: string;
+    wireNo?: string;
+    wireId?: string;
+    fromDeviceId?: string;
+    toDeviceId?: string;
+  },
+  cablePartNumberMap?: Map<string, CablePartNumberLookupResult> | null,
+): string {
+  const candidates = [
+    normalizeCableCode(row.wireType),
+    normalizeCableCode(row.wireNo),
+    normalizeCableCode(row.wireId),
+    normalizeCableCode(row.fromDeviceId),
+    normalizeCableCode(row.toDeviceId),
+  ].filter(Boolean);
+
+  if (cablePartNumberMap && cablePartNumberMap.size > 0) {
+    const knownCode = candidates.find((candidate) => cablePartNumberMap.has(candidate));
+    return knownCode ?? "";
+  }
+
+  return candidates[0] ?? "";
+}
 
 /**
  * Check if a wire type represents a cable (WC#### pattern).
@@ -45,7 +89,7 @@ export function isCableWireId(wireId: string): boolean {
  * Groups rows by their cable part number (WC####).
  */
 export function extractCables(context: PatternExtractionContext): PatternMatchRow[] {
-  const { rows } = context;
+  const { rows, cablePartNumberMap } = context;
   
   const matches: PatternMatchRow[] = [];
   
@@ -53,7 +97,7 @@ export function extractCables(context: PatternExtractionContext): PatternMatchRo
   const cableGroups = new Map<string, PatternMatchRow[]>();
   
   for (const row of rows) {
-    const wireType = (row.wireType || "").trim().toUpperCase();
+    const wireType = resolveCableWireTypeValue(row, cablePartNumberMap);
     const wireId = (row.wireId || "").trim().toUpperCase();
     
     // Match either WC#### type OR Wire ID = "CABLE"

@@ -20,7 +20,12 @@ import {
   type BlueLabelSequenceMatrixEntry,
   type IdentificationFilterKind,
 } from "@/lib/wiring-identification";
-import { buildPartNumberMap, type PartNumberLookupResult } from "@/lib/part-number-list";
+import {
+  buildCablePartNumberMap,
+  buildPartNumberMap,
+  type CablePartNumberLookupResult,
+  type PartNumberLookupResult,
+} from "@/lib/part-number-list";
 import type { AssignmentPreparationQuickRefCard } from "@/components/dashboard/assignment-preperation-print-out";
 
 interface DashboardMatrixResult {
@@ -32,6 +37,7 @@ interface DashboardMatrixResult {
   rowsBySheet: Map<string, import("@/lib/workbook/types").SemanticWireListRow[]>;
   blueLabels: BlueLabelSequenceMap;
   partNumberMap: Map<string, PartNumberLookupResult>;
+  cablePartNumberMap: Map<string, CablePartNumberLookupResult>;
 }
 
 interface AssignmentPreparationPrintPayload {
@@ -46,7 +52,6 @@ const QUICK_REF_FILTER_KINDS: IdentificationFilterKind[] = [
   "clips",
   "jumpers",
   "af_jumpers",
-  "xt_jumpers",
   "xt_clips",
   "ka_jumpers",
   "ka_relay_plugin_jumpers",
@@ -57,6 +62,74 @@ const QUICK_REF_FILTER_KINDS: IdentificationFilterKind[] = [
   "resistors",
   "cables",
 ];
+
+function buildAfFamilyCards(
+  kind: IdentificationFilterKind,
+  filterResult: ReturnType<typeof applyIdentificationFilter>,
+) {
+  const getRowPrefix = (deviceId: string): string => (deviceId.split(":")[0] || "").trim().toUpperCase();
+
+  const afAuRows = filterResult.rows.filter((row) => {
+    const fromPrefix = getRowPrefix(row.fromDeviceId);
+    const toPrefix = getRowPrefix(row.toDeviceId);
+    return (fromPrefix === "AF" && toPrefix === "AU") || (fromPrefix === "AU" && toPrefix === "AF");
+  });
+
+  const afRows = filterResult.rows.filter((row) => {
+    const fromPrefix = getRowPrefix(row.fromDeviceId);
+    const toPrefix = getRowPrefix(row.toDeviceId);
+    return fromPrefix === "AF" && toPrefix === "AF";
+  });
+
+  const mapRows = (sourceRows: typeof filterResult.rows) =>
+    sourceRows.slice(0, 12).map((row) => {
+      const metadata = filterResult.matchMetadata[row.__rowId];
+      const resolvedWireType =
+        String(row.wireType ?? "").trim() ||
+        String(metadata?.meta?.runId ?? metadata?.meta?.cableType ?? "").trim();
+      const instruction =
+        metadata?.badge?.trim() ||
+        String(
+          metadata?.meta?.clipType ||
+            metadata?.meta?.jumperType ||
+            metadata?.meta?.signalType ||
+            metadata?.meta?.warningDescription ||
+            "Quick reference",
+        );
+
+      return {
+        key: `${kind}:${row.__rowId}`,
+        fromDeviceId: row.fromDeviceId,
+        toDeviceId: row.toDeviceId,
+        wireId: row.wireId,
+        wireType: resolvedWireType,
+        gaugeSize: row.gaugeSize,
+        instruction,
+      };
+    });
+
+  const cards: AssignmentPreparationQuickRefCard[] = [];
+
+  if (afAuRows.length > 0) {
+    cards.push({
+      kind,
+      title: "AF/AU Jumpers",
+      instruction: "AF and AU identity jumpers (COM, SH, V+) - sequential devices",
+      rows: mapRows(afAuRows),
+    });
+  }
+
+  if (afRows.length > 0) {
+    cards.push({
+      kind,
+      title: "AF Jumpers",
+      instruction: "AF identity jumpers (COM, SH, V+) - sequential AF devices",
+      rows: mapRows(afRows),
+    });
+  }
+
+  return cards;
+}
 
 function findPartNumberListSheet(sheets: ParsedWorkbookSheet[]): ParsedWorkbookSheet | null {
   return (
@@ -71,6 +144,14 @@ function findBlueLabelsSheet(sheets: ParsedWorkbookSheet[]): ParsedWorkbookSheet
   return (
     sheets.find((sheet) => sheet.originalName.trim().toUpperCase() === "BLUE LABELS") ??
     sheets.find((sheet) => sheet.originalName.toUpperCase().includes("BLUE LABEL")) ??
+    null
+  );
+}
+
+function findCablePartNumbersSheet(sheets: ParsedWorkbookSheet[]): ParsedWorkbookSheet | null {
+  return (
+    sheets.find((sheet) => sheet.originalName.trim().toUpperCase() === "CABLE PART NUMBERS") ??
+    sheets.find((sheet) => sheet.originalName.toUpperCase().includes("CABLE PART NUMBER")) ??
     null
   );
 }
@@ -114,21 +195,29 @@ export function BlueLabelMatrixWidget() {
     const targetSheet = selectedSheetTab;
 
     return QUICK_REF_FILTER_KINDS
-      .map((kind) => {
+      .flatMap((kind) => {
         const filterResult = applyIdentificationFilter(
           activeSheetRows,
           kind,
           result.blueLabels,
           targetSheet,
           result.partNumberMap,
+          result.cablePartNumberMap,
         );
 
         if (filterResult.rows.length === 0) {
           return null;
         }
 
+        if (kind === "af_jumpers") {
+          return buildAfFamilyCards(kind, filterResult);
+        }
+
         const rows = filterResult.rows.slice(0, 12).map((row) => {
           const metadata = filterResult.matchMetadata[row.__rowId];
+          const resolvedWireType =
+            String(row.wireType ?? "").trim() ||
+            String(metadata?.meta?.runId ?? metadata?.meta?.cableType ?? "").trim();
           const instruction =
             metadata?.badge?.trim() ||
             String(
@@ -144,7 +233,7 @@ export function BlueLabelMatrixWidget() {
             fromDeviceId: row.fromDeviceId,
             toDeviceId: row.toDeviceId,
             wireId: row.wireId,
-            wireType: row.wireType,
+            wireType: resolvedWireType,
             gaugeSize: row.gaugeSize,
             instruction,
           };
@@ -157,6 +246,7 @@ export function BlueLabelMatrixWidget() {
           rows,
         };
       })
+      .flat()
       .filter((value): value is AssignmentPreparationQuickRefCard => Boolean(value));
   }, [activeSheetRows, result, selectedSheetTab]);
 
@@ -175,6 +265,7 @@ export function BlueLabelMatrixWidget() {
       const workbook = parseResult.workbook;
       const blueLabelsSheet = findBlueLabelsSheet(workbook.sheets);
       const partNumberListSheet = findPartNumberListSheet(workbook.sheets);
+      const cablePartNumbersSheet = findCablePartNumbersSheet(workbook.sheets);
 
       if (!blueLabelsSheet) {
         setError("Blue Labels sheet was not found in this workbook.");
@@ -186,6 +277,7 @@ export function BlueLabelMatrixWidget() {
         excludeReferenceSheets: true,
       });
       const partNumberMap = buildPartNumberMap(partNumberListSheet);
+      const cablePartNumberMap = buildCablePartNumberMap(cablePartNumbersSheet ?? partNumberListSheet);
       const entries = buildBlueLabelSequenceMatrix(blueLabels, { rowsBySheet, partNumberMap });
 
       if (entries.length === 0) {
@@ -226,6 +318,7 @@ export function BlueLabelMatrixWidget() {
         rowsBySheet,
         blueLabels,
         partNumberMap,
+        cablePartNumberMap,
       });
       const nextSheetTabs = Array.from(new Set(entries.map((entry) => entry.sheetName))).sort((a, b) =>
         a.localeCompare(b),

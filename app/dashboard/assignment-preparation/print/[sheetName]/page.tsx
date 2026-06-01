@@ -71,7 +71,7 @@ export default function AssignmentPreparationPrintRoutePage() {
   }, [searchParams]);
 
   return (
-    <main className="min-h-screen bg-background p-4 print:bg-white print:p-0">
+    <main className="min-h-screen bg-background p-4 print:min-h-0 print:bg-white print:p-0">
       <div className="mx-auto mb-3 flex w-full max-w-[16.6in] items-center justify-end gap-2 print:hidden">
         <Button type="button" variant="outline" onClick={() => window.print()}>
           Print / Save PDF

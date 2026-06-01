@@ -27,7 +27,7 @@ import type {
   BlueLabelSequenceMap,
   IdentificationSummary,
 } from "./types";
-import type { PartNumberLookupResult } from "@/lib/part-number-list";
+import type { CablePartNumberLookupResult, PartNumberLookupResult } from "@/lib/part-number-list";
 import type { SemanticWireListRow } from "@/lib/workbook/types";
 
 import { FILTER_METADATA } from "./constants";
@@ -788,6 +788,7 @@ export function applyIdentificationFilter(
   blueLabels: BlueLabelSequenceMap | null,
   currentSheetName: string,
   partNumberMap: Map<string, PartNumberLookupResult> | null = null,
+  cablePartNumberMap: Map<string, CablePartNumberLookupResult> | null = null,
 ): IdentificationFilterResult {
   const normalizedSheetName = normalizeSheetName(currentSheetName);
 
@@ -797,6 +798,7 @@ export function applyIdentificationFilter(
     currentSheetName,
     normalizedSheetName,
     partNumberMap,
+    cablePartNumberMap,
   };
 
   // Get filter definition

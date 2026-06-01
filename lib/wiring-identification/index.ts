@@ -35,7 +35,7 @@ export {
 } from "./extract-ka-twin-ferrules";
 export { extractKtJumpers, countKtJumpers } from "./extract-kt-jumpers";
 export { extractFuJumpers, countFuJumpers } from "./extract-fu-jumpers";
-export { extractCables, countCables, isCableType, isCableWireId } from "./extract-cables";
+export { extractCables, countCables, isCableType, isCableWireId, resolveCableWireTypeValue } from "./extract-cables";
 export { extractSingleConnections, extractSingleConnectionsByLocation, countSingleConnections } from "./extract-single-connections";
 export { extractVioJumpers, countVioJumpers, isVioJumper } from "./extract-vio-jumpers";
 export { extractResistors, countResistors, isResistorWireId, isResistorDevice } from "./extract-resistors";

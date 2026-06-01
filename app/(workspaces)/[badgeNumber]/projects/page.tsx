@@ -371,25 +371,7 @@ export default function ProjectsWorkspacePage({
           config={recentExportCommandSearchConfig}
         />
       )}
-      sidePanel={
-        <ProjectsSidePanelNav
-          mode={mode}
-          onSidePanelTabChange={(tab) => {
-            if (tab === "legals") {
-              setLegalsTabVisited(true);
-            }
-          }}
-          data={{
-            badgeNumber: params.badgeNumber,
-            monthLabel: canViewUpcomingProjects
-              ? `${currentMonthLabel} + Upcoming`
-              : currentMonthLabel,
-            availableMonths: availableMonths,
-            priorityProjects: priorityProjects,
-            legalProjects: legalNavProjects,
-          }}
-        />
-      }
+      showPanel={false}
       showAside={true}
       asideTitle="Activity"
       aside={

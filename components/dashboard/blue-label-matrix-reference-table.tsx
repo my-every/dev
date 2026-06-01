@@ -8,7 +8,7 @@ interface BlueLabelMatrixReferenceTableProps {
   entries: BlueLabelSequenceMatrixEntry[];
 }
 
-const BLUE_LABEL_PRIMARY_COLUMN_MAX_ROWS = 47;
+const BLUE_LABEL_PRIMARY_COLUMN_MAX_ROWS = 46;
 
 export function BlueLabelMatrixReferenceTable({ entries }: BlueLabelMatrixReferenceTableProps) {
   const matrixColumns = useMemo(() => {
@@ -24,7 +24,7 @@ export function BlueLabelMatrixReferenceTable({ entries }: BlueLabelMatrixRefere
   }, [entries]);
 
   return (
-    <Card className="w-full max-w-lg min-w-0 gap-2 max-h-max rounded-none py-2 shadow-none print:break-inside-avoid-page">
+    <Card className="flex w-full max-h-max max-w-lg min-w-0 flex-col gap-2 rounded-none py-2 shadow-none print:break-inside-avoid-page">
       <CardHeader className="gap-1 px-3">
         <CardTitle className="text-[12px] leading-tight">Device ID / Blue Label Sequence Reference</CardTitle>
         <CardDescription className="text-[10px] leading-tight">
@@ -32,7 +32,7 @@ export function BlueLabelMatrixReferenceTable({ entries }: BlueLabelMatrixRefere
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="px-3">
+      <CardContent className="flex-1 px-3">
         <div
           className={`grid grid-cols-1 gap-2 ${
             matrixColumns.length > 1 ? "md:grid-cols-2 print:grid-cols-2" : ""

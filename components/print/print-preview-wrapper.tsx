@@ -98,7 +98,7 @@ function PrintPreviewContent({ children, title = "Print Preview" }: PrintPreview
       </div>
 
       {/* Scrollable viewport */}
-      <div className="overflow-auto print:overflow-visible min-h-[calc(100vh-52px)]">
+      <div className="min-h-[calc(100vh-52px)] overflow-auto print:min-h-0 print:overflow-visible">
         {/* 
           Transform-based scaling: The page content has a fixed width and layout.
           CSS transform scales the visual appearance without affecting internal layout.

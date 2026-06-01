@@ -79,7 +79,7 @@ export default function AssignmentPreparationProjectPrintPage() {
 
   return (
     <PrintPreviewWrapper title="Assignment Preparation Print Preview">
-      <main className="min-h-max bg-background p-0 print:bg-white print:p-0">
+      <main className="min-h-max bg-background p-0 print:min-h-0 print:bg-white print:p-0">
         {error ? (
           <div className="mx-auto w-full max-w-[16.6in] rounded-md border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700 print:hidden">
             {error}
