@@ -11,7 +11,16 @@
 
 import type { BlueLabelEntry, BlueLabelSequenceMap } from "./types";
 import type { ParsedWorkbookSheet, ParsedSheetRow } from "@/lib/workbook/types";
-import { getBaseDeviceId } from "./device-parser";
+import type { SemanticWireListRow } from "@/lib/workbook/types";
+import { lookupPartNumber, type PartNumberLookupResult } from "@/lib/part-number-list";
+import {
+  areSameBaseDevice,
+  getBaseDeviceId,
+  isCableLikeRow,
+  isClipLikeRow,
+  isGroundColor,
+  parseDevicePrefix,
+} from "./device-parser";
 
 // ============================================================================
 // Blue Labels Parsing
@@ -222,9 +231,9 @@ export function parseBlueLabelRawData(
 export function areDevicesAdjacent(
   deviceA: string,
   deviceB: string,
-  blueLabels: BlueLabelSequenceMap
+  blueLabels: BlueLabelSequenceMap | null | undefined
 ): boolean {
-  if (!blueLabels.isValid) return false;
+  if (!blueLabels?.isValid) return false;
   
   const baseA = getBaseDeviceId(deviceA);
   const baseB = getBaseDeviceId(deviceB);
@@ -247,9 +256,9 @@ export function areDevicesAdjacentInSheet(
   deviceA: string,
   deviceB: string,
   sheetName: string,
-  blueLabels: BlueLabelSequenceMap,
+  blueLabels: BlueLabelSequenceMap | null | undefined,
 ): boolean {
-  if (!blueLabels.isValid) return false;
+  if (!blueLabels?.isValid) return false;
 
   const sequence = getResolvedSheetSequence(sheetName, blueLabels);
   if (sequence.length === 0) return false;
@@ -275,9 +284,9 @@ export function areDevicesAdjacentInSheet(
 export function areDevicesSequential(
   deviceA: string,
   deviceB: string,
-  blueLabels: BlueLabelSequenceMap
+  blueLabels: BlueLabelSequenceMap | null | undefined
 ): boolean {
-  if (!blueLabels.isValid) return false;
+  if (!blueLabels?.isValid) return false;
   
   const baseA = getBaseDeviceId(deviceA);
   const baseB = getBaseDeviceId(deviceB);
@@ -301,9 +310,9 @@ export function areDevicesSequential(
  */
 export function getDeviceSequenceIndex(
   deviceId: string,
-  blueLabels: BlueLabelSequenceMap
+  blueLabels: BlueLabelSequenceMap | null | undefined
 ): number | null {
-  if (!blueLabels.isValid) return null;
+  if (!blueLabels?.isValid) return null;
   
   const baseId = getBaseDeviceId(deviceId);
   const entry = blueLabels.deviceMap.get(baseId);
@@ -314,9 +323,9 @@ export function getDeviceSequenceIndex(
 export function getDeviceSequenceIndexInSheet(
   deviceId: string,
   sheetName: string,
-  blueLabels: BlueLabelSequenceMap,
+  blueLabels: BlueLabelSequenceMap | null | undefined,
 ): number | null {
-  if (!blueLabels.isValid) return null;
+  if (!blueLabels?.isValid) return null;
 
   const sequence = getResolvedSheetSequence(sheetName, blueLabels);
   if (sequence.length === 0) return null;
@@ -335,9 +344,9 @@ export function getDeviceSequenceIndexInSheet(
  */
 export function getSheetDeviceSequence(
   sheetName: string,
-  blueLabels: BlueLabelSequenceMap
+  blueLabels: BlueLabelSequenceMap | null | undefined
 ): string[] {
-  if (!blueLabels.isValid) return [];
+  if (!blueLabels?.isValid) return [];
   return getResolvedSheetSequence(sheetName, blueLabels);
 }
 
@@ -349,4 +358,263 @@ export function getSheetDeviceSequence(
  */
 export function hasBlueLabelData(blueLabels: BlueLabelSequenceMap | null | undefined): boolean {
   return blueLabels != null && blueLabels.isValid;
+}
+
+export type BlueLabelSequenceMatrixIdentifierType =
+  | "string"
+  | "ground"
+  | "clip"
+  | "cable"
+  | "jumper"
+  | "resistor"
+  | "terminal"
+  | "relay"
+  | "device"
+  | "unknown"
+  | (string & {});
+
+export interface BlueLabelSequenceMatrixEntry {
+  sequenceIndex: number;
+  deviceId: string;
+  partNumber: string;
+  sheetName: string;
+  type: BlueLabelSequenceMatrixIdentifierType;
+  location: string;
+}
+
+export interface BuildBlueLabelSequenceMatrixOptions {
+  rowsBySheet?: Map<string, SemanticWireListRow[]>;
+  partNumberMap?: Map<string, PartNumberLookupResult> | null;
+  fallbackLocation?: string;
+}
+
+export interface ReferenceSheetFilterOptions {
+  additionalReferenceSheetNames?: string[];
+  additionalReferenceSheetPatterns?: RegExp[];
+}
+
+export interface BuildRowsByNormalizedSheetNameOptions
+  extends ReferenceSheetFilterOptions {
+  excludeReferenceSheets?: boolean;
+}
+
+const DEFAULT_REFERENCE_SHEET_NAMES = new Set([
+  "BLUE LABELS",
+  "WHITE LABELS",
+  "PART NUMBER LIST",
+  "PANEL ERRORS",
+]);
+
+const DEFAULT_REFERENCE_SHEET_PATTERNS: RegExp[] = [
+  /\b(?:BLUE|WHITE|YELLOW|RED|GREEN|ORANGE|PURPLE|BLACK|BROWN|GRAY|GREY)\s+LABELS?\b/i,
+  /\bPART\s+NUMBER\s+LIST\b/i,
+  /\bPANEL\s+ERRORS?\b/i,
+];
+
+function normalizeSheetNameForReferenceCheck(sheetName: string): string {
+  return sheetName.trim().toUpperCase().replace(/\s+/g, " ");
+}
+
+export function isReferenceSheetName(
+  sheetName: string,
+  options: ReferenceSheetFilterOptions = {},
+): boolean {
+  const normalizedName = normalizeSheetNameForReferenceCheck(sheetName);
+
+  if (DEFAULT_REFERENCE_SHEET_NAMES.has(normalizedName)) {
+    return true;
+  }
+
+  const additionalNames = options.additionalReferenceSheetNames ?? [];
+  if (
+    additionalNames
+      .map((name) => normalizeSheetNameForReferenceCheck(name))
+      .includes(normalizedName)
+  ) {
+    return true;
+  }
+
+  for (const pattern of DEFAULT_REFERENCE_SHEET_PATTERNS) {
+    if (pattern.test(sheetName)) {
+      return true;
+    }
+  }
+
+  for (const pattern of options.additionalReferenceSheetPatterns ?? []) {
+    if (pattern.test(sheetName)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+export function filterOperationalWorkbookSheets(
+  sheets: Array<Pick<ParsedWorkbookSheet, "originalName" | "semanticRows">>,
+  options: ReferenceSheetFilterOptions = {},
+): Array<Pick<ParsedWorkbookSheet, "originalName" | "semanticRows">> {
+  return sheets.filter((sheet) => !isReferenceSheetName(sheet.originalName, options));
+}
+
+export function buildRowsByNormalizedSheetName(
+  sheets: Array<Pick<ParsedWorkbookSheet, "originalName" | "semanticRows">>,
+  options: BuildRowsByNormalizedSheetNameOptions = {},
+): Map<string, SemanticWireListRow[]> {
+  const {
+    excludeReferenceSheets = true,
+    additionalReferenceSheetNames,
+    additionalReferenceSheetPatterns,
+  } = options;
+
+  const sourceSheets = excludeReferenceSheets
+    ? filterOperationalWorkbookSheets(sheets, {
+        additionalReferenceSheetNames,
+        additionalReferenceSheetPatterns,
+      })
+    : sheets;
+
+  const result = new Map<string, SemanticWireListRow[]>();
+
+  for (const sheet of sourceSheets) {
+    const key = normalizeSheetName(sheet.originalName);
+    const rows = sheet.semanticRows ?? [];
+    if (rows.length === 0) {
+      continue;
+    }
+
+    const existing = result.get(key);
+    if (existing) {
+      existing.push(...rows);
+      continue;
+    }
+
+    result.set(key, [...rows]);
+  }
+
+  return result;
+}
+
+function normalizeLocationValue(value: string | undefined): string {
+  const normalized = (value ?? "").trim();
+  if (!normalized || normalized === "-") {
+    return "";
+  }
+  return normalized;
+}
+
+function getRowsForDeviceInSheet(
+  deviceId: string,
+  sheetRows: SemanticWireListRow[],
+): SemanticWireListRow[] {
+  const baseDeviceId = getBaseDeviceId(deviceId).toUpperCase();
+  return sheetRows.filter((row) => {
+    const fromBase = getBaseDeviceId(row.fromDeviceId || "").toUpperCase();
+    const toBase = getBaseDeviceId(row.toDeviceId || "").toUpperCase();
+    return fromBase === baseDeviceId || toBase === baseDeviceId;
+  });
+}
+
+export function resolveBlueLabelMatrixLocation(
+  candidateRows: SemanticWireListRow[],
+  fallbackLocation: string,
+): string {
+  for (const row of candidateRows) {
+    const fromLocation = normalizeLocationValue(row.fromLocation);
+    const toLocation = normalizeLocationValue(row.toLocation);
+    const rowLocation = normalizeLocationValue(row.location);
+
+    // Preserve legacy behavior first: location column is authoritative.
+    if (rowLocation) return rowLocation;
+    if (fromLocation) return fromLocation;
+    if (toLocation) return toLocation;
+  }
+
+  return fallbackLocation;
+}
+
+export function resolveBlueLabelMatrixIdentifierType(
+  deviceId: string,
+  candidateRows: SemanticWireListRow[],
+): BlueLabelSequenceMatrixIdentifierType {
+  if (candidateRows.length > 0) {
+    if (candidateRows.some((row) => isGroundColor(row.wireId))) {
+      return "ground";
+    }
+
+    if (candidateRows.some((row) => isClipLikeRow(row))) {
+      return "clip";
+    }
+
+    if (
+      candidateRows.some(
+        (row) => (row.wireId || "").trim().toUpperCase() === "LEAD",
+      )
+    ) {
+      return "resistor";
+    }
+
+    if (candidateRows.some((row) => isCableLikeRow(row))) {
+      return "cable";
+    }
+
+    if (
+      candidateRows.some((row) =>
+        areSameBaseDevice(row.fromDeviceId || "", row.toDeviceId || ""),
+      )
+    ) {
+      return "jumper";
+    }
+  }
+
+  const prefix = parseDevicePrefix(deviceId).toUpperCase();
+  if (prefix === "XT") return "terminal";
+  if (prefix === "KA") return "relay";
+  if (!prefix) return "unknown";
+
+  return "device";
+}
+
+export function resolveBlueLabelMatrixPartNumber(
+  deviceId: string,
+  partNumberMap: Map<string, PartNumberLookupResult> | null | undefined,
+): string {
+  if (!partNumberMap || partNumberMap.size === 0) {
+    return "";
+  }
+
+  return lookupPartNumber(partNumberMap, deviceId)?.partNumber ?? "";
+}
+
+export function buildBlueLabelSequenceMatrix(
+  blueLabels: BlueLabelSequenceMap | null | undefined,
+  options: BuildBlueLabelSequenceMatrixOptions = {},
+): BlueLabelSequenceMatrixEntry[] {
+  if (!blueLabels?.isValid) {
+    return [];
+  }
+
+  const rowsBySheet = options.rowsBySheet ?? new Map<string, SemanticWireListRow[]>();
+  const partNumberMap = options.partNumberMap ?? null;
+  const entries: BlueLabelSequenceMatrixEntry[] = [];
+
+  for (const [sheetName, sequence] of blueLabels.sheetSequences.entries()) {
+    const normalizedSheetName = normalizeSheetName(sheetName);
+    const sheetRows = rowsBySheet.get(normalizedSheetName) ?? [];
+    const fallbackLocation = options.fallbackLocation || sheetName;
+
+    sequence.forEach((deviceId, sequenceIndex) => {
+      const candidateRows = getRowsForDeviceInSheet(deviceId, sheetRows);
+
+      entries.push({
+        sequenceIndex,
+        deviceId,
+        partNumber: resolveBlueLabelMatrixPartNumber(deviceId, partNumberMap),
+        sheetName,
+        type: resolveBlueLabelMatrixIdentifierType(deviceId, candidateRows),
+        location: resolveBlueLabelMatrixLocation(candidateRows, fallbackLocation),
+      });
+    });
+  }
+
+  return entries;
 }

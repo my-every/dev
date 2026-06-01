@@ -150,7 +150,12 @@
 /* Print Styles for Wire List */
 @media print {
   @page {
-    margin: 0.4in 0.4in 0.7in 0.4in;
+    size: tabloid landscape;
+    margin: 0in;
+  }
+
+  body {
+    display: block;
   }
 
   .print-content {
@@ -219,15 +224,17 @@
     display: none;
   }
 
-  /* Page break control for continuous flow */
+  /* Only insert a page break when another print page follows. */
   .print-page {
-    page-break-after: always;
-    break-after: page;
+    margin-left: auto;
+    margin-right: auto;
+    page-break-after: auto;
+    break-after: auto;
   }
 
-  .print-page:last-child {
-    page-break-after: avoid;
-    break-after: avoid;
+  .print-page + .print-page {
+    page-break-before: always;
+    break-before: page;
   }
 
   /* Allow sections to flow across pages to fill space */
@@ -265,3 +272,47 @@
     min-height: 0 !important;
   }
 }
+
+.assignment-prep-dashboard-print {
+  width: min(100%, 16.6in);
+  min-height: auto;
+  max-height: none;
+  margin: 0 auto;
+}
+
+.assignment-prep-dashboard-print,
+.assignment-prep-dashboard-print * {
+  box-sizing: border-box;
+}
+
+/* Assignment prep columns: balance content across columns on screen so all content
+   is visible. In print, switch to auto-fill (top→bottom) with the explicit page
+   height budget so the browser's @page engine handles pagination. */
+.assignment-prep-columns {
+  column-fill: balance;
+}
+
+
+
+.print-preview-stage {
+  min-width: var(--preview-min-width);
+}
+
+.print-preview-page {
+  width: var(--preview-page-width);
+  min-width: var(--preview-page-width);
+  transform: scale(var(--preview-scale));
+  transform-origin: top center;
+}
+
+@media print {
+  .print-preview-stage {
+    min-width: 0 !important;
+  }
+
+  .print-preview-page {
+    transform: none !important;
+  }
+}
+
+

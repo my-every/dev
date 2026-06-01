@@ -60,9 +60,10 @@ function PrintPreviewContent({ children, title = "Print Preview" }: PrintPreview
 
   // Calculate the scale factor
   const scale = zoom / 100;
-  
-  // Fixed page width in pixels (matches print width for letter size content)
-  const PAGE_WIDTH = 860;
+
+  // Fixed page width in pixels for tabloid landscape content.
+  // 16.6in * 96dpi is ~1594px, which matches the print page width budget closely.
+  const PAGE_WIDTH = 1594;
 
   return (
     <div className="min-h-screen bg-neutral-400 print:bg-white print:min-h-0">
@@ -103,24 +104,23 @@ function PrintPreviewContent({ children, title = "Print Preview" }: PrintPreview
           CSS transform scales the visual appearance without affecting internal layout.
           This works like a PDF viewer - zoom changes the visual size, not the page layout.
         */}
-        <div 
-          className="flex justify-center py-8 print:py-0 print:block"
-          style={{
-            // Ensure container is wide enough for scaled content + padding
-            minWidth: PAGE_WIDTH * scale + 48,
-          }}
+        <div
+          className="print-preview-stage flex justify-center py-8 print:py-0 print:block"
+          style={
+            {
+              "--preview-min-width": `${PAGE_WIDTH * scale + 48}px`,
+            } as React.CSSProperties
+          }
         >
           {/* Fixed-width page container that gets visually scaled */}
           <div
-            className="print:transform-none"
-            style={{
-              // Fixed page width - internal layout is always the same
-              width: PAGE_WIDTH,
-              minWidth: PAGE_WIDTH,
-              // Visual scaling via CSS transform
-              transform: `scale(${scale})`,
-              transformOrigin: "top center",
-            }}
+            className="print-preview-page print:transform-none"
+            style={
+              {
+                "--preview-page-width": `${PAGE_WIDTH}px`,
+                "--preview-scale": scale,
+              } as React.CSSProperties
+            }
           >
             {children}
           </div>

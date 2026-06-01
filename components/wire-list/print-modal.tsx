@@ -669,25 +669,25 @@ function IPVIdentityFilterReferenceCard({
       </div>
 
       <div className="min-h-0 flex-1 overflow-hidden">
-        <table className="w-full border-collapse text-[8px] leading-tight">
+        <table className="w-full table-fixed border-collapse text-[8px] leading-tight">
           <thead className="bg-muted/20">
             <tr className="border-b border-foreground/10">
-              <th className="px-1.5 py-1 text-left font-semibold uppercase tracking-wide">
+              <th className="px-1.5 py-1.5 text-left font-semibold uppercase tracking-wide">
                 From
               </th>
-              <th className="px-1 py-1 text-left font-semibold uppercase tracking-wide">
+              <th className="px-1 py-1.5 text-left font-semibold uppercase tracking-wide">
                 No
               </th>
-              <th className="px-1 py-1 text-left font-semibold uppercase tracking-wide">
+              <th className="px-1 py-1.5 text-left font-semibold uppercase tracking-wide">
                 Wire ID
               </th>
-              <th className="px-1 py-1 text-left font-semibold uppercase tracking-wide">
+              <th className="px-1 py-1.5 text-left font-semibold uppercase tracking-wide">
                 Size
               </th>
-              <th className="px-1.5 py-1 text-left font-semibold uppercase tracking-wide">
+              <th className="px-1.5 py-1.5 text-left font-semibold uppercase tracking-wide">
                 To
               </th>
-              <th className="px-1.5 py-1 text-left font-semibold uppercase tracking-wide">
+              <th className="px-1.5 py-1.5 text-left font-semibold uppercase tracking-wide">
                 Location
               </th>
             </tr>
@@ -698,12 +698,12 @@ function IPVIdentityFilterReferenceCard({
                 key={`${group.title}-${index}-${row.fromDeviceId}-${row.wireNo}`}
                 className="border-b border-foreground/10 last:border-b-0"
               >
-                <td className="px-1.5 py-0.5 font-medium">{row.fromDeviceId}</td>
-                <td className="px-1 py-0.5 font-mono">{row.wireNo}</td>
-                <td className="px-1 py-0.5">{row.wireId}</td>
-                <td className="px-1 py-0.5">{row.gaugeSize}</td>
-                <td className="px-1.5 py-0.5 font-medium">{row.toDeviceId}</td>
-                <td className="px-1.5 py-0.5">{row.location}</td>
+                <td className="px-1.5 py-1 font-medium">{row.fromDeviceId}</td>
+                <td className="px-1 py-1 font-mono">{row.wireNo}</td>
+                <td className="px-1 py-1">{row.wireId}</td>
+                <td className="px-1 py-1">{row.gaugeSize}</td>
+                <td className="px-1.5 py-1 font-medium">{row.toDeviceId}</td>
+                <td className="px-1.5 py-1">{row.location}</td>
               </tr>
             ))}
           </tbody>
@@ -741,16 +741,16 @@ function IPVBlueLabelsReferenceCard({
       </div>
 
       <div className="min-h-0 flex-1 overflow-hidden">
-        <div className="border-b border-foreground/10 bg-muted/20 px-1.5 py-1 text-[8px] font-semibold uppercase tracking-wide">
+        <div className="border-b border-foreground/10 bg-muted/20 px-1.5 py-1.5 text-[8px] font-semibold uppercase tracking-wide">
           Device ID
         </div>
         <div className="h-full min-h-0 overflow-y-auto">
           {displayValues.length > 0 ? (
-            <div className="text-[8px] leading-tight">
+            <div className="grid grid-cols-4 text-[8px] leading-tight">
               {displayValues.map((value, index) => (
                 <div
                   key={`blue-label-${index}-${value}`}
-                  className="border-b border-foreground/10 px-1.5 py-0.5 font-medium last:border-b-0"
+                  className="border-b border-r border-foreground/10 px-1.5 py-0.5 font-medium"
                 >
                   {value}
                 </div>
@@ -3588,6 +3588,15 @@ function IPVCodesPage({
   totalPages: number;
   paperSize?: PrintPaperSize;
 }) {
+  const quickReferenceRows = Object.entries(IPV_CODES).flatMap(
+    ([category, codes]) =>
+      codes.map((item) => ({
+        category,
+        code: item.code,
+        description: item.description,
+      })),
+  );
+
   return (
     <PrintPage
       className="print-ipv-codes-page shadow-[0_4px_20px_rgba(0,0,0,0.15),0_0_0_1px_rgba(0,0,0,0.05)]"
@@ -3600,10 +3609,10 @@ function IPVCodesPage({
         <div className="flex items-center justify-between mb-4 pb-3 border-b border-border">
           <div>
             <h1 className="text-[15px] font-bold text-foreground">
-              IPV Discrepancy Codes
+              IPV Quick Reference
             </h1>
             <p className="text-[10px] text-muted-foreground mt-0.5">
-              REF: WI 5.7.2-01 | Issue No.: 02 | Issue Date: 08/18
+              Compact discrepancy code guide
             </p>
           </div>
           <img
@@ -3613,51 +3622,45 @@ function IPVCodesPage({
           />
         </div>
 
-        {/* IPV Codes Table */}
-        <div className="grid grid-cols-2 gap-4">
-          {Object.entries(IPV_CODES).map(([category, codes]) => (
-            <div
-              key={category}
-              className="border border-foreground/20 rounded-sm overflow-hidden"
-            >
-              <div className="bg-muted/80 px-2 py-1.5 border-b border-foreground/20">
-                <h2 className="text-[12px] font-bold text-foreground">
-                  {category}
-                </h2>
-              </div>
-              <table className="w-full text-[10px]">
-                <thead>
-                  <tr className="border-b border-foreground/10 bg-muted/40">
-                    <th className="px-2 py-1 text-left font-semibold w-12">
-                      Code
-                    </th>
-                    <th className="px-2 py-1 text-left font-semibold">
-                      Description
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {codes.map((item, idx) => (
-                    <tr
-                      key={item.code}
-                      className={
-                        idx < codes.length - 1
-                          ? "border-b border-foreground/5"
-                          : ""
-                      }
-                    >
-                      <td className="px-2 py-1 font-mono font-bold text-foreground">
-                        {item.code}
-                      </td>
-                      <td className="px-2 py-1 text-muted-foreground">
-                        {item.description}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ))}
+        {/* Compact IPV quick reference */}
+        <div className="overflow-hidden rounded-sm border border-foreground/20">
+          <table className="w-full table-fixed text-[9px] leading-tight">
+            <thead>
+              <tr className="border-b border-foreground/10 bg-muted/40">
+                <th className="w-24 px-2 py-1.5 text-left font-semibold uppercase tracking-wide">
+                  Category
+                </th>
+                <th className="w-14 px-2 py-1.5 text-left font-semibold uppercase tracking-wide">
+                  Code
+                </th>
+                <th className="px-2 py-1.5 text-left font-semibold uppercase tracking-wide">
+                  Description
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {quickReferenceRows.map((item, idx) => (
+                <tr
+                  key={`${item.category}-${item.code}`}
+                  className={cn(
+                    "border-b border-foreground/5",
+                    idx % 2 === 0 ? "bg-background" : "bg-muted/10",
+                    idx === quickReferenceRows.length - 1 ? "border-b-0" : "",
+                  )}
+                >
+                  <td className="px-2 py-1 text-[8px] font-semibold uppercase tracking-wide text-foreground/80">
+                    {item.category}
+                  </td>
+                  <td className="px-2 py-1 font-mono font-bold text-foreground">
+                    {item.code}
+                  </td>
+                  <td className="px-2 py-1 text-muted-foreground">
+                    {item.description}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </PrintPage>
@@ -4199,13 +4202,15 @@ function IPVCoverPage({
           </div>
         </div>
 
-        <div
-          className={cn(
-            "grid flex-1 min-h-0 gap-3 overflow-hidden",
-            paperSize === "tabloid" ? "grid-cols-[0.95fr_1.55fr]" : "grid-cols-1",
-          )}
-        >
-          <div className="flex min-h-0 flex-col gap-2.5">
+        <div className="flex flex-1 min-h-0 flex-col gap-3 overflow-hidden">
+          <div
+            className={cn(
+              "grid gap-3",
+              paperSize === "tabloid"
+                ? "grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]"
+                : "grid-cols-1",
+            )}
+          >
             <div className="space-y-1.5">
               <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
                 Assignment Details
@@ -4242,11 +4247,11 @@ function IPVCoverPage({
             </div>
           </div>
 
-          <div className="flex min-h-0 flex-col space-y-1.5">
+          <div className="flex min-h-0 flex-1 flex-col space-y-1.5">
             <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
               Layout Reference
             </div>
-            <div className="flex-1 min-h-0  border border-foreground/20 bg-muted/10 p-1.5">
+            <div className="flex-1 min-h-0 border border-foreground/20 bg-muted/10 p-1.5">
               {layoutImageUrl ? (
                 <img
                   src={layoutImageUrl}
@@ -4326,33 +4331,37 @@ function IPVReferenceListsPage({
           </div>
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden">
-          <div
+        <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden">
+          <IPVBlueLabelsReferenceCard
+            values={resolvedBlueLabelReferences}
             className={cn(
-              "grid min-h-0 flex-1 gap-2",
-              paperSize === "tabloid"
-                ? "grid-cols-[minmax(0,1fr)_minmax(0,1fr)]"
-                : "grid-cols-1",
+              "shrink-0",
+              paperSize === "tabloid" ? "max-h-[34%]" : "max-h-[42%]",
             )}
-          >
-            <IPVBlueLabelsReferenceCard values={resolvedBlueLabelReferences} />
-            <div className="flex min-h-0 flex-1 flex-col gap-2">
-              {identityFilterReferenceGroups.length > 0 ? (
-                identityFilterReferenceGroups.map((group) => (
+          />
+
+          <div className="min-h-0 flex-1 overflow-hidden">
+            {identityFilterReferenceGroups.length > 0 ? (
+              <div
+                className={cn(
+                  "grid h-full min-h-0 gap-2 content-start",
+                  paperSize === "tabloid"
+                    ? "grid-cols-[repeat(auto-fit,minmax(420px,1fr))]"
+                    : "grid-cols-1",
+                )}
+              >
+                {identityFilterReferenceGroups.map((group) => (
                   <IPVIdentityFilterReferenceCard
                     key={`${group.sectionKind ?? "unknown"}:${group.title}`}
                     group={group}
-                    className={cn(
-                      identityFilterReferenceGroups.length === 1 ? "h-full" : "",
-                    )}
                   />
-                ))
-              ) : (
-                <div className="flex h-full min-h-0 items-center justify-center border border-dashed border-foreground/20 bg-muted/10 text-[10px] text-muted-foreground">
-                  No identity filter references
-                </div>
-              )}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex h-full min-h-0 items-center justify-center border border-dashed border-foreground/20 bg-muted/10 text-[10px] text-muted-foreground">
+                No identity filter references
+              </div>
+            )}
           </div>
         </div>
       </div>
